@@ -8,6 +8,7 @@ import CourseScopePage from './pages/CourseScopePage'
 import ReadingPage from './pages/ReadingPage'
 import WordDataPage from './pages/WordDataPage'
 import LoginPage from './pages/LoginPage'
+import StudentHomePage from './pages/StudentHomePage'
 
 export default function App() {
   const { loading, user, displayName, signOut } = useAuth()
@@ -19,6 +20,7 @@ export default function App() {
   >('all-words')
   const wordData = useMemo(() => loadOrBuildWordData(readings), [])
   const determiners = useMemo(() => buildDeterminerData(wordData), [wordData])
+  const isAdminArea = window.location.pathname.startsWith('/admin')
 
   if (loading) {
     return (
@@ -30,19 +32,31 @@ export default function App() {
 
   if (!user) return <LoginPage />
 
+  if (!isAdminArea) {
+    return (
+      <StudentHomePage
+        displayName={displayName ?? 'Player'}
+        onSignOut={() => void signOut()}
+      />
+    )
+  }
+
   return (
     <main className="min-h-screen bg-slate-100 px-5 py-8 text-slate-900 sm:px-8 sm:py-12">
       <div className="mx-auto mb-4 flex max-w-3xl items-center justify-between gap-4 text-sm">
         <p className="truncate text-slate-600">
-          Signed in as <span className="font-bold text-slate-900">{displayName ?? 'Player'}</span>
+          Admin tools · Signed in as <span className="font-bold text-slate-900">{displayName ?? 'Player'}</span>
         </p>
-        <button
-          type="button"
-          onClick={() => void signOut()}
-          className="shrink-0 font-bold text-blue-700 hover:text-blue-900"
-        >
-          Sign out
-        </button>
+        <div className="flex shrink-0 items-center gap-4">
+          <a href="/" className="font-bold text-blue-700 hover:text-blue-900">Student app</a>
+          <button
+            type="button"
+            onClick={() => void signOut()}
+            className="font-bold text-blue-700 hover:text-blue-900"
+          >
+            Sign out
+          </button>
+        </div>
       </div>
       <nav
         aria-label="Main sections"
