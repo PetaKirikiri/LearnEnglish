@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import ReadingPage from './ReadingPage'
+import SentenceGlideGame from '../game/SentenceGlideGame'
 
 export default function StudentHomePage({
   displayName,
@@ -8,15 +9,17 @@ export default function StudentHomePage({
   displayName: string
   onSignOut: () => void
 }) {
-  const [showStories, setShowStories] = useState(false)
+  const [screen, setScreen] = useState<'home' | 'stories' | 'game'>('home')
 
-  if (showStories) {
+  if (screen === 'game') return <SentenceGlideGame onExit={() => setScreen('home')} />
+
+  if (screen === 'stories') {
     return (
       <main className="min-h-screen bg-sky-50 px-5 py-6 text-slate-900 sm:px-8 sm:py-10">
         <div className="mx-auto mb-5 flex max-w-3xl items-center justify-between">
           <button
             type="button"
-            onClick={() => setShowStories(false)}
+            onClick={() => setScreen('home')}
             className="rounded-full bg-white px-4 py-2 text-sm font-black text-blue-700 shadow-sm"
           >
             ← Home
@@ -60,17 +63,17 @@ export default function StudentHomePage({
           </div>
           <button
             type="button"
-            onClick={() => setShowStories(true)}
+            onClick={() => setScreen('game')}
             className="mt-7 w-full rounded-2xl bg-orange-500 px-6 py-4 text-lg font-black text-white shadow-lg shadow-orange-200 transition hover:bg-orange-600"
           >
-            Start learning
+            Play Sentence Glide
           </button>
         </section>
 
         <section className="mt-5 grid gap-4 sm:grid-cols-2">
           <button
             type="button"
-            onClick={() => setShowStories(true)}
+            onClick={() => setScreen('stories')}
             className="rounded-3xl bg-white/95 p-6 text-left text-slate-900 shadow-lg transition hover:-translate-y-0.5"
           >
             <span className="text-3xl" aria-hidden="true">📖</span>
