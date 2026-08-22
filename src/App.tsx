@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useAuth } from './auth/authContext'
 import { readings } from './content/readings'
 import { buildDeterminerData } from './lib/determinerData'
 import { loadOrBuildWordData } from './lib/wordData'
@@ -6,8 +7,10 @@ import DeterminersPage from './pages/DeterminersPage'
 import CourseScopePage from './pages/CourseScopePage'
 import ReadingPage from './pages/ReadingPage'
 import WordDataPage from './pages/WordDataPage'
+import LoginPage from './pages/LoginPage'
 
 export default function App() {
+  const { loading, user, displayName, signOut } = useAuth()
   const [activeTab, setActiveTab] = useState<
     'stories' | 'word-data' | 'syllabus'
   >('stories')
@@ -17,8 +20,30 @@ export default function App() {
   const wordData = useMemo(() => loadOrBuildWordData(readings), [])
   const determiners = useMemo(() => buildDeterminerData(wordData), [wordData])
 
+  if (loading) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-slate-100 text-sm font-bold text-slate-500">
+        Opening FIFA English…
+      </main>
+    )
+  }
+
+  if (!user) return <LoginPage />
+
   return (
     <main className="min-h-screen bg-slate-100 px-5 py-8 text-slate-900 sm:px-8 sm:py-12">
+      <div className="mx-auto mb-4 flex max-w-3xl items-center justify-between gap-4 text-sm">
+        <p className="truncate text-slate-600">
+          Signed in as <span className="font-bold text-slate-900">{displayName ?? 'Player'}</span>
+        </p>
+        <button
+          type="button"
+          onClick={() => void signOut()}
+          className="shrink-0 font-bold text-blue-700 hover:text-blue-900"
+        >
+          Sign out
+        </button>
+      </div>
       <nav
         aria-label="Main sections"
         className="mx-auto mb-6 flex max-w-3xl rounded-2xl bg-white p-1.5 shadow-md"
