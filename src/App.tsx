@@ -9,12 +9,13 @@ import ReadingPage from './pages/ReadingPage'
 import WordDataPage from './pages/WordDataPage'
 import LoginPage from './pages/LoginPage'
 import StudentHomePage from './pages/StudentHomePage'
+import ContentLibraryPage from './pages/ContentLibraryPage'
 
 export default function App() {
   const { loading, user, displayName, signOut } = useAuth()
   const [activeTab, setActiveTab] = useState<
-    'stories' | 'word-data' | 'syllabus'
-  >('stories')
+    'content' | 'stories' | 'word-data' | 'syllabus'
+  >('content')
   const [activeWordDataView, setActiveWordDataView] = useState<
     'all-words' | 'determiners'
   >('all-words')
@@ -60,8 +61,9 @@ export default function App() {
       </div>
       <nav
         aria-label="Main sections"
-        className="mx-auto mb-6 flex max-w-3xl rounded-2xl bg-white p-1.5 shadow-md"
+        className="mx-auto mb-6 flex max-w-3xl flex-wrap rounded-2xl bg-white p-1.5 shadow-md"
       >
+        <button type="button" aria-pressed={activeTab === 'content'} onClick={() => setActiveTab('content')} className={`flex-1 rounded-xl px-3 py-3 text-sm font-bold transition ${activeTab === 'content' ? 'bg-blue-700 text-white' : 'text-slate-600 hover:bg-blue-50'}`}>Content Library</button>
         <button
           type="button"
           aria-pressed={activeTab === 'stories'}
@@ -100,7 +102,9 @@ export default function App() {
         </button>
       </nav>
 
-      {activeTab === 'stories' ? (
+      {activeTab === 'content' ? (
+        <ContentLibraryPage />
+      ) : activeTab === 'stories' ? (
         <ReadingPage />
       ) : activeTab === 'syllabus' ? (
         <CourseScopePage />

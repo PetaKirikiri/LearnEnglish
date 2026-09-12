@@ -340,3 +340,12 @@ export function getLessonAudioItems() {
   const byUrl = new Map(questions.map(({ audioUrl, spokenText }) => [audioUrl, { audioUrl, spokenText }]))
   return Array.from(byUrl.values())
 }
+
+// The admin catalogue uses the same complete pools as the learner's rounds.
+export function getQuizCatalogue() {
+  const random = createRandom(20260912)
+  return {
+    vocabulary: createVocabularyPool(random).sort((a, b) => a.spokenText.localeCompare(b.spokenText)),
+    sentences: createSentencePool(random).sort((a, b) => a.sourceTitle.localeCompare(b.sourceTitle) || a.example.localeCompare(b.example) || a.answer.localeCompare(b.answer)),
+  }
+}
