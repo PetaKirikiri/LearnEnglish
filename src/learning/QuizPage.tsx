@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   getReviewQuestionIds,
   loadLearningMemory,
@@ -51,6 +51,9 @@ export default function QuizPage({
   )
   const [questionIndex, setQuestionIndex] = useState(0)
   const [selected, setSelected] = useState<string | null>(null)
+  const [paused, setPaused] = useState(false)
+  const answerLocked = useRef(false)
+  const advanced = useRef(false)
   const [score, setScore] = useState(0)
   const [finished, setFinished] = useState(false)
   const [progress, setProgress] = useState(loadProgress)
@@ -59,7 +62,10 @@ export default function QuizPage({
   const title = mode === 'vocabulary' ? 'Vocabulary' : 'Sentence structures'
 
   function choose(choice: string) {
-    if (selected || !question) return
+    if (answerLocked.current || selected || !question) return
+    answerLocked.current = true
+    advanced.current = false
+    setPaused(false)
     const correct = choice === question.answer
     const nextMemory = recordAnswer(learningMemory, question, correct)
     setSelected(choice)
@@ -69,8 +75,10 @@ export default function QuizPage({
     if (correct) setScore((value) => value + 1)
   }
 
-  function next() {
-    if (!selected) return
+  const next = useCallback(() => {
+    if (!selected || finished || advanced.current) return
+    advanced.current = true
+    stopEnglishSpeech()
     if (questionIndex === questions.length - 1) {
       trackProgress(userId, 'round_completed', { mode, roundId }, roundId)
       const nextProgress = {
@@ -88,9 +96,20 @@ export default function QuizPage({
 
     setQuestionIndex((value) => value + 1)
     setSelected(null)
-  }
+    answerLocked.current = false
+    setPaused(false)
+  }, [selected, finished, questionIndex, questions.length, userId, mode, roundId, progress, score])
+
+  useEffect(() => {
+    if (!selected || finished || paused) return
+    const timer = window.setTimeout(next, isCorrect ? 1200 : 5000)
+    return () => window.clearTimeout(timer)
+  }, [selected, finished, paused, isCorrect, next])
 
   function restart() {
+    answerLocked.current = false
+    advanced.current = false
+    setPaused(false)
     setRoundId(crypto.randomUUID())
     setReviewQuestionIds(getReviewQuestionIds(learningMemory, mode))
     setRound((value) => value + 1)
@@ -102,7 +121,7 @@ export default function QuizPage({
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (finished || !question) return
+      if (finished || !question || event.repeat) return
       const choiceIndex = Number(event.key) - 1
       if (!selected && choiceIndex >= 0 && choiceIndex < question.choices.length) {
         choose(question.choices[choiceIndex])
@@ -219,14 +238,17 @@ export default function QuizPage({
                   </div>
                 ) : null}
                 {canSpeakEnglish() ? (
-                  <button type="button" onClick={() => speakEnglish(question.spokenText, question.audioUrl)} className="mt-2 font-black text-blue-700 hover:text-blue-900">
+                  <button type="button" onClick={() => { setPaused(true); speakEnglish(question.spokenText, question.audioUrl) }} className="mt-2 font-black text-blue-700 hover:text-blue-900">
                     🔊 Listen to the English
                   </button>
                 ) : null}
               </div>
-              <button type="button" onClick={next} className={`shrink-0 rounded-2xl px-8 py-4 text-lg font-black text-white ${isCorrect ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-red-600 hover:bg-red-700'}`}>
-                {questionIndex === questions.length - 1 ? 'See score' : 'Continue'}
-              </button>
+              <div className="shrink-0 space-y-2">
+                <p role="status" className="text-sm text-slate-700">{paused ? 'Paused for reading' : questionIndex === questions.length - 1 ? 'Showing score shortly…' : 'Moving on automatically…'}</p>
+                <button type="button" onClick={() => setPaused(value => !value)} className="rounded-xl border border-slate-400 px-5 py-3 font-bold text-slate-800">
+                  {paused ? 'Resume' : 'Pause to read'}
+                </button>
+              </div>
             </div>
           </footer>
         ) : null}
