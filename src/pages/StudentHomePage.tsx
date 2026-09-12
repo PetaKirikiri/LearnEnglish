@@ -6,9 +6,13 @@ import type { QuizMode } from '../learning/quizContent'
 
 export default function StudentHomePage({
   displayName,
+  userId,
+  syncState,
   onSignOut,
 }: {
   displayName: string
+  userId: string
+  syncState: string
   onSignOut: () => void
 }) {
   const [screen, setScreen] = useState<'home' | 'stories' | 'quiz'>('home')
@@ -18,7 +22,7 @@ export default function StudentHomePage({
   const sentenceReviewCount = getReviewCount(learningMemory, 'sentences')
 
   if (screen === 'quiz') {
-    return <QuizPage mode={quizMode} learnerId={displayName} onExit={() => setScreen('home')} />
+    return <QuizPage mode={quizMode} learnerId={displayName} userId={userId} onExit={() => setScreen('home')} />
   }
 
   if (screen === 'stories') {
@@ -55,6 +59,7 @@ export default function StudentHomePage({
             Sign out
           </button>
         </header>
+        <p role="status" className="mt-3 text-xs text-blue-100">{syncState === 'saved' ? 'Progress saved' : syncState === 'pending' ? 'Saving progress…' : 'Progress waiting to sync. Keep this browser data until you reconnect.'}</p>
 
         <section className="mt-9">
           <p className="text-sm font-black uppercase tracking-[0.18em] text-blue-100">Choose a lesson</p>

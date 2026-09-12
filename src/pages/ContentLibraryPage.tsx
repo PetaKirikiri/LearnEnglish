@@ -76,7 +76,7 @@ export default function ContentLibraryPage() {
       <aside className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-950">
         <p><strong>Content gaps:</strong> Chapter 6 has not been supplied separately. Sentence translations and tap-for-word explanations have not been added.</p>
         <p>The vocabulary exercises use selected Thai meanings. The larger word dictionary contains automatic translations that still need review.</p>
-        <p><strong>Completion:</strong> The app tracks practice rounds and mistakes; course-wide mastery and a finish point are not set up yet.</p>
+        <p><strong>Completion:</strong> Open Progress to see each learner’s words, mistakes, activity, and mastery of the current exercises.</p>
       </aside>
 
       <div className="grid gap-4 sm:grid-cols-2">

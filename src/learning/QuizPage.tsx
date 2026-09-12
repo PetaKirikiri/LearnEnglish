@@ -7,6 +7,8 @@ import {
 } from './learningMemory'
 import { createQuizRound, type QuizMode } from './quizContent'
 import { canSpeakEnglish, speakEnglish, stopEnglishSpeech } from './speech'
+import { trackProgress } from './progressSync'
+import { questionProgressKey } from './progressData'
 
 type SavedProgress = Record<QuizMode, { best: number; rounds: number }>
 
@@ -29,13 +31,16 @@ function loadProgress(): SavedProgress {
 export default function QuizPage({
   mode,
   learnerId,
+  userId,
   onExit,
 }: {
   mode: QuizMode
   learnerId: string
+  userId: string
   onExit: () => void
 }) {
   const [round, setRound] = useState(0)
+  const [roundId, setRoundId] = useState(() => crypto.randomUUID())
   const [learningMemory, setLearningMemory] = useState(() => loadLearningMemory(learnerId))
   const [reviewQuestionIds, setReviewQuestionIds] = useState(() => (
     getReviewQuestionIds(learningMemory, mode)
@@ -60,12 +65,14 @@ export default function QuizPage({
     setSelected(choice)
     setLearningMemory(nextMemory)
     saveLearningMemory(learnerId, nextMemory)
+    trackProgress(userId, 'answer', { questionId: questionProgressKey(question), mode, word: question.mode === 'vocabulary' ? question.spokenText : undefined, correct, roundId }, `${roundId.slice(0, 24)}${questionIndex.toString(16).padStart(12, '0')}`)
     if (correct) setScore((value) => value + 1)
   }
 
   function next() {
     if (!selected) return
     if (questionIndex === questions.length - 1) {
+      trackProgress(userId, 'round_completed', { mode, roundId }, roundId)
       const nextProgress = {
         ...progress,
         [mode]: {
@@ -84,6 +91,7 @@ export default function QuizPage({
   }
 
   function restart() {
+    setRoundId(crypto.randomUUID())
     setReviewQuestionIds(getReviewQuestionIds(learningMemory, mode))
     setRound((value) => value + 1)
     setQuestionIndex(0)

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { isSupabaseConfigured, supabase } from '../lib/supabase'
 import { tryAutomaticLineSignIn } from '../lib/lineAuth'
 import { AuthContext, type AuthContextValue } from './authContext'
+import { trackProgress } from '../learning/progressSync'
 
 function nameFromSession(session: Session | null): string | null {
   const metadata = session?.user.user_metadata
@@ -29,6 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const lineResult = await tryAutomaticLineSignIn()
       if (!active || lineResult.redirected) return
       setSession(lineResult.session)
+      if (lineResult.session) trackProgress(lineResult.session.user.id, 'login')
       setAutomaticLoginError(lineResult.error)
       setLoading(false)
     })
@@ -70,10 +72,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return 'Login did not return a session.'
       }
 
-      const { error: sessionError } = await supabase.auth.setSession({
+      const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
         access_token: payload.access_token,
         refresh_token: payload.refresh_token,
       })
+      if (!sessionError && sessionData.session) trackProgress(sessionData.session.user.id, 'login')
       return sessionError?.message ?? null
     },
     async signOut() {
