@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import ReadingPage from './ReadingPage'
-import SentenceGlideGame from '../game/SentenceGlideGame'
+import QuizPage from '../learning/QuizPage'
+import { getReviewCount, loadLearningMemory } from '../learning/learningMemory'
+import type { QuizMode } from '../learning/quizContent'
 
 export default function StudentHomePage({
   displayName,
@@ -9,9 +11,15 @@ export default function StudentHomePage({
   displayName: string
   onSignOut: () => void
 }) {
-  const [screen, setScreen] = useState<'home' | 'stories' | 'game'>('home')
+  const [screen, setScreen] = useState<'home' | 'stories' | 'quiz'>('home')
+  const [quizMode, setQuizMode] = useState<QuizMode>('vocabulary')
+  const learningMemory = loadLearningMemory(displayName)
+  const vocabularyReviewCount = getReviewCount(learningMemory, 'vocabulary')
+  const sentenceReviewCount = getReviewCount(learningMemory, 'sentences')
 
-  if (screen === 'game') return <SentenceGlideGame onExit={() => setScreen('home')} />
+  if (screen === 'quiz') {
+    return <QuizPage mode={quizMode} learnerId={displayName} onExit={() => setScreen('home')} />
+  }
 
   if (screen === 'stories') {
     return (
@@ -32,7 +40,7 @@ export default function StudentHomePage({
   }
 
   return (
-    <main className="min-h-screen overflow-hidden bg-gradient-to-b from-blue-700 via-blue-600 to-sky-100 text-white">
+    <main className="min-h-screen overflow-hidden bg-blue-700 text-white">
       <div className="mx-auto max-w-3xl px-5 pb-12 pt-7 sm:px-8 sm:pt-10">
         <header className="flex items-center justify-between gap-4">
           <div>
@@ -48,43 +56,47 @@ export default function StudentHomePage({
           </button>
         </header>
 
-        <section className="mt-9 rounded-[2rem] bg-white p-6 text-slate-900 shadow-2xl sm:p-8">
-          <div className="flex items-start justify-between gap-5">
-            <div>
-              <p className="text-sm font-black uppercase tracking-wider text-orange-500">Weekly challenge</p>
-              <h2 className="mt-2 text-3xl font-black">Ready to play?</h2>
-              <p className="mt-2 max-w-md leading-6 text-slate-600">
-                Learn words, answer questions, and build your score for the week.
-              </p>
-            </div>
-            <div className="grid h-20 w-20 shrink-0 place-items-center rounded-3xl bg-orange-100 text-4xl" aria-hidden="true">
-              🏆
-            </div>
+        <section className="mt-9">
+          <p className="text-sm font-black uppercase tracking-[0.18em] text-blue-100">Choose a lesson</p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2">
+            <button
+              type="button"
+              onClick={() => { setQuizMode('vocabulary'); setScreen('quiz') }}
+              className="rounded-[2rem] bg-white p-6 text-left text-slate-900 shadow-xl transition hover:-translate-y-0.5 sm:p-7"
+            >
+              <span className="grid h-16 w-16 place-items-center rounded-2xl bg-orange-100 text-3xl" aria-hidden="true">ก</span>
+              <span className="mt-5 block text-2xl font-black">Vocabulary</span>
+              <span className="mt-2 block text-sm leading-6 text-slate-500">Learn the English words from your stories.</span>
+              {vocabularyReviewCount > 0 ? (
+                <span className="mt-3 inline-block rounded-full bg-orange-100 px-3 py-1 text-xs font-black text-orange-700">{vocabularyReviewCount} to review</span>
+              ) : null}
+              <span className="mt-5 block font-black text-orange-600">Start lesson →</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setQuizMode('sentences'); setScreen('quiz') }}
+              className="rounded-[2rem] bg-white p-6 text-left text-slate-900 shadow-xl transition hover:-translate-y-0.5 sm:p-7"
+            >
+              <span className="grid h-16 w-16 place-items-center rounded-2xl bg-emerald-100 text-3xl" aria-hidden="true">Aa</span>
+              <span className="mt-5 block text-2xl font-black">Sentences</span>
+              <span className="mt-2 block text-sm leading-6 text-slate-500">Choose missing words from real story sentences.</span>
+              {sentenceReviewCount > 0 ? (
+                <span className="mt-3 inline-block rounded-full bg-emerald-100 px-3 py-1 text-xs font-black text-emerald-700">{sentenceReviewCount} to review</span>
+              ) : null}
+              <span className="mt-5 block font-black text-emerald-700">Start lesson →</span>
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={() => setScreen('game')}
-            className="mt-7 w-full rounded-2xl bg-orange-500 px-6 py-4 text-lg font-black text-white shadow-lg shadow-orange-200 transition hover:bg-orange-600"
-          >
-            Play Sentence Glide
-          </button>
         </section>
 
-        <section className="mt-5 grid gap-4 sm:grid-cols-2">
+        <section className="mt-5">
           <button
             type="button"
             onClick={() => setScreen('stories')}
-            className="rounded-3xl bg-white/95 p-6 text-left text-slate-900 shadow-lg transition hover:-translate-y-0.5"
+            className="w-full rounded-3xl bg-white/95 p-5 text-left text-slate-900 shadow-lg transition hover:-translate-y-0.5"
           >
-            <span className="text-3xl" aria-hidden="true">📖</span>
-            <span className="mt-3 block text-xl font-black">Read stories</span>
-            <span className="mt-1 block text-sm leading-6 text-slate-500">Practice with all 10 English stories.</span>
+            <span className="mr-4 text-3xl" aria-hidden="true">📖</span>
+            <span className="text-xl font-black">Read the stories</span>
           </button>
-          <div className="rounded-3xl bg-white/95 p-6 text-slate-900 shadow-lg">
-            <span className="text-3xl" aria-hidden="true">⭐</span>
-            <span className="mt-3 block text-xl font-black">Your score</span>
-            <span className="mt-1 block text-sm leading-6 text-slate-500">Your points and leaderboard will appear here.</span>
-          </div>
         </section>
       </div>
     </main>

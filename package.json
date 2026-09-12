@@ -7,6 +7,7 @@
     "dev": "vite",
     "dev:phone": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
+    "audio:generate": "node --import tsx scripts/generateLessonAudio.ts",
     "typecheck:test": "tsc -p tsconfig.test.json",
     "lint": "eslint . --max-warnings=0",
     "preview": "vite preview",
