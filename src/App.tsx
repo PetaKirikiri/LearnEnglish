@@ -12,12 +12,13 @@ import StudentHomePage from './pages/StudentHomePage'
 import ContentLibraryPage from './pages/ContentLibraryPage'
 import LearnerProgressPage from './pages/LearnerProgressPage'
 import { useLearningActivity } from './learning/useLearningActivity'
+import TrainingPlanPage from './pages/TrainingPlanPage'
 
 export default function App() {
   const { loading, user, displayName, signOut } = useAuth()
   const [activeTab, setActiveTab] = useState<
-    'progress' | 'content' | 'stories' | 'word-data' | 'syllabus'
-  >('progress')
+    'progress' | 'training-plan' | 'content' | 'stories' | 'word-data' | 'syllabus'
+  >(window.location.hash === '#training-plan' ? 'training-plan' : 'progress')
   const [activeWordDataView, setActiveWordDataView] = useState<
     'all-words' | 'determiners'
   >('all-words')
@@ -69,6 +70,7 @@ export default function App() {
         className="mx-auto mb-6 flex max-w-3xl flex-wrap rounded-2xl bg-white p-1.5 shadow-md"
       >
         <button type="button" aria-pressed={activeTab === 'progress'} onClick={() => setActiveTab('progress')} className={`flex-1 rounded-xl px-3 py-3 text-sm font-bold transition ${activeTab === 'progress' ? 'bg-blue-700 text-white' : 'text-slate-600 hover:bg-blue-50'}`}>Progress</button>
+        <button type="button" aria-pressed={activeTab === 'training-plan'} onClick={() => setActiveTab('training-plan')} className={`flex-1 rounded-xl px-3 py-3 text-sm font-bold transition ${activeTab === 'training-plan' ? 'bg-blue-700 text-white' : 'text-slate-600 hover:bg-blue-50'}`}>Training Plan</button>
         <button type="button" aria-pressed={activeTab === 'content'} onClick={() => setActiveTab('content')} className={`flex-1 rounded-xl px-3 py-3 text-sm font-bold transition ${activeTab === 'content' ? 'bg-blue-700 text-white' : 'text-slate-600 hover:bg-blue-50'}`}>Content Library</button>
         <button
           type="button"
@@ -110,6 +112,8 @@ export default function App() {
 
       {activeTab === 'progress' ? (
         <LearnerProgressPage />
+      ) : activeTab === 'training-plan' ? (
+        <TrainingPlanPage />
       ) : activeTab === 'content' ? (
         <ContentLibraryPage />
       ) : activeTab === 'stories' ? (
