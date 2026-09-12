@@ -3,7 +3,7 @@ import { readings } from '../content/readings'
 import { parseWords } from '../lib/wordData'
 import { createQuizRound, getQuizCatalogue } from './quizContent'
 import { grammarLessons } from './grammarLessons'
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 
 const storyText = readings.map(({ title, paragraphs }) => [title, ...paragraphs].join(' ')).join(' ')
 const storyWords = new Set(parseWords(storyText))
@@ -44,6 +44,19 @@ describe('story-powered quiz content', () => {
       expect(parseWords(q.contextSentence!)).toContain(q.spokenText)
       expect(parseWords(q.contextSentence!).length).toBeLessThanOrEqual(9)
       expect(existsSync(`public${q.contextAudioUrl}`)).toBe(true)
+      const wav = readFileSync(`public${q.contextAudioUrl}`)
+      let samples: Buffer | undefined
+      for (let offset = 12; offset + 8 <= wav.length;) {
+        const size = wav.readUInt32LE(offset + 4)
+        if (wav.toString('ascii', offset, offset + 4) === 'data') {
+          samples = wav.subarray(offset + 8, offset + 8 + size)
+          break
+        }
+        offset += 8 + size + size % 2
+      }
+      // A valid header or a successful play() promise can still be silent.
+      expect(samples?.length, q.contextAudioUrl).toBeGreaterThan(22050)
+      expect(samples?.some(byte => byte !== 0), q.contextAudioUrl).toBe(true)
     }
   })
 
