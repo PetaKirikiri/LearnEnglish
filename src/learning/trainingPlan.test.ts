@@ -13,11 +13,13 @@ describe('training plan review', () => {
 
   it('keeps frequent words with missing exercises visible instead of skipping them', () => {
     const plan = buildTrainingPlan()
-    const them = plan.find(item => item.word === 'them')!
+    const them = plan.find(item => item.word === 'father')!
     expect(them.examples.length).toBeGreaterThan(0)
     expect(them.examples.every(example => !example.questions.length)).toBe(true)
     expect(exampleEvidence(them.examples[0], new Map()).status).toBe('No exercise yet')
     expect(plan.slice(0, 3).map(item => item.word)).toEqual(['the', 'a', 'is'])
+    expect(plan.find(item => item.word === 'them')!.examples.some(example => example.questions.length)).toBe(true)
+    expect(plan.find(item => item.word === 'our')!.examples.some(example => example.questions.length)).toBe(true)
   })
 
   it('connects evidence to the exact sentence and target word only', () => {

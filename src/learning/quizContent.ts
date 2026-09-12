@@ -1,5 +1,6 @@
 import { readings } from '../content/readings'
 import { buildWordData, parseWords } from '../lib/wordData'
+import { grammarLessons } from './grammarLessons'
 
 export type QuizMode = 'vocabulary' | 'sentences'
 
@@ -14,6 +15,10 @@ export type QuizQuestion = {
   example: string
   spokenText: string
   audioUrl: string
+  grammarFocus?: string
+  thaiPrompt?: string
+  explanation?: string
+  explanationThai?: string
 }
 
 type StorySentence = {
@@ -137,29 +142,6 @@ const excludedVocabulary = new Set([
   'stephanie', 'tristan', 'turkey', 'usa',
 ])
 
-const contrastGroups: readonly (readonly string[])[] = [
-  ['a', 'the'],
-  ['is', 'are', 'was', 'were'],
-  ['my', 'your', 'his', 'her', 'our', 'their'],
-  ['this', 'that', 'these', 'those'],
-  ['in', 'on', 'at', 'over', 'under', 'above', 'below', 'inside', 'outside'],
-  ['before', 'after'],
-  ['up', 'down'],
-  ['can', 'will', 'would'],
-  ['mother', 'father', 'brother', 'sister'],
-  ['grandmother', 'grandfather'],
-  ['train', 'trains', 'bus', 'buses', 'car', 'cars', 'plane', 'planes'],
-  ['house', 'houses', 'home', 'homes', 'apartment', 'apartments'],
-  ['city', 'cities', 'countryside'],
-  ['morning', 'afternoon', 'night', 'midnight'],
-  ['hot', 'cold', 'warm', 'chilly'],
-  ['bird', 'birds', 'cat', 'cats'],
-  ['school', 'home'],
-  ['sun', 'stars'],
-  ['food', 'foods'],
-  ['water', 'ground'],
-]
-
 function createRandom(seed: number) {
   let value = (seed || 1) >>> 0
 
@@ -219,34 +201,30 @@ function replaceFirstWord(text: string, word: string) {
 
 function createSentencePool(random: () => number): QuizQuestion[] {
   const sentences = getStorySentences()
-  const corpusWords = new Set(sentences.flatMap(({ text }) => parseWords(text)))
-
-  const pool = sentences.flatMap((sentence) => {
-    const sentenceWords = new Set(parseWords(sentence.text))
-    const possibleGroups = contrastGroups.filter((group) => group.some((word) => sentenceWords.has(word)))
-    if (possibleGroups.length === 0) return []
-
-    return possibleGroups.flatMap((group) => group
-      .filter((word) => sentenceWords.has(word))
-      .flatMap((answer) => {
-        const distractors = group.filter((word) => word !== answer && corpusWords.has(word))
-        if (distractors.length === 0) return []
-
-        const choices = shuffle([answer, ...shuffle(distractors, random).slice(0, 3)], random)
-
-        return [{
-          id: `sentence-${sentence.id}-${answer}`,
-          mode: 'sentences' as const,
-          instruction: 'Choose the missing word',
-          prompt: replaceFirstWord(sentence.text, answer),
-          choices,
-          answer,
-          sourceTitle: sentence.sourceTitle,
-          example: sentence.text,
-          spokenText: sentence.text,
-          audioUrl: `/audio/lessons/sentence-${sentence.id}.wav`,
-        }]
-      }))
+  const pool = grammarLessons.map((lesson): QuizQuestion => {
+    const sentence = sentences.find(({ text }) => text === lesson.sentence)
+    if (!sentence) throw new Error(`Grammar lesson source not found: ${lesson.sentence}`)
+    const prompt = replaceFirstWord(sentence.text, lesson.target)
+    if (prompt === sentence.text || !lesson.choices.includes(lesson.target)) {
+      throw new Error(`Invalid grammar lesson target: ${lesson.target}`)
+    }
+    return {
+      // New IDs keep old story-recall answers from counting as grammar mastery.
+      id: `grammar-v1-${sentence.id}-${lesson.target.toLowerCase()}`,
+      mode: 'sentences',
+      instruction: 'Choose the word that fits this meaning',
+      prompt,
+      choices: shuffle(lesson.choices, random),
+      answer: lesson.target,
+      sourceTitle: sentence.sourceTitle,
+      example: sentence.text,
+      spokenText: sentence.text,
+      audioUrl: `/audio/lessons/sentence-${sentence.id}.wav`,
+      grammarFocus: lesson.focus,
+      thaiPrompt: lesson.thai,
+      explanation: lesson.why,
+      explanationThai: lesson.whyThai,
+    }
   })
 
   return shuffle(pool, random)

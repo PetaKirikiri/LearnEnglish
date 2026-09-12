@@ -21,7 +21,7 @@ export type TrainingWord = {
 export function buildTrainingPlan(stories: readonly Reading[] = readings, questions: readonly QuizQuestion[] = getQuizCatalogue().sentences): TrainingWord[] {
   const exerciseIndex = new Map<string, Map<string, QuizQuestion>>()
   for (const question of questions) {
-    const key = JSON.stringify([question.sourceTitle, question.example, question.answer])
+    const key = JSON.stringify([question.sourceTitle, question.example, question.answer.toLowerCase()])
     const entries = exerciseIndex.get(key) ?? new Map<string, QuizQuestion>()
     entries.set(question.id, question)
     exerciseIndex.set(key, entries)

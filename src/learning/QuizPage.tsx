@@ -56,7 +56,7 @@ export default function QuizPage({
   const [progress, setProgress] = useState(loadProgress)
   const question = questions[questionIndex]
   const isCorrect = selected === question?.answer
-  const title = mode === 'vocabulary' ? 'Vocabulary' : 'Sentences'
+  const title = mode === 'vocabulary' ? 'Vocabulary' : 'Sentence structures'
 
   function choose(choice: string) {
     if (selected || !question) return
@@ -161,6 +161,7 @@ export default function QuizPage({
         <section className="flex flex-1 flex-col justify-center py-8 sm:py-12">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-blue-700">{title}</p>
           <p className="mt-2 text-base font-bold text-slate-500">{question.instruction}</p>
+          {question.thaiPrompt ? <p lang="th" className="mt-5 rounded-2xl bg-blue-50 p-4 text-lg leading-relaxed text-blue-950">{question.thaiPrompt}</p> : null}
           <h1 className={`mt-6 font-black leading-tight ${mode === 'vocabulary' ? 'text-5xl sm:text-6xl' : 'text-3xl sm:text-4xl'}`}>
             {question.prompt}
           </h1>
@@ -210,6 +211,13 @@ export default function QuizPage({
                   {isCorrect ? 'Correct!' : `Correct answer: ${question.answer}`}
                 </p>
                 <p className="mt-1 text-sm leading-5 text-slate-600">From “{question.sourceTitle}”: {question.example}</p>
+                {question.explanation ? (
+                  <div className="mt-3 space-y-2 text-sm leading-relaxed text-slate-800">
+                    <p className="font-bold">{question.grammarFocus}</p>
+                    <p lang="th">{question.explanationThai}</p>
+                    <p>{question.explanation}</p>
+                  </div>
+                ) : null}
                 {canSpeakEnglish() ? (
                   <button type="button" onClick={() => speakEnglish(question.spokenText, question.audioUrl)} className="mt-2 font-black text-blue-700 hover:text-blue-900">
                     🔊 Listen to the English

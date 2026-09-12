@@ -83,7 +83,7 @@ export default function StudentHomePage({
               className="rounded-[2rem] bg-white p-6 text-left text-slate-900 shadow-xl transition hover:-translate-y-0.5 sm:p-7"
             >
               <span className="grid h-16 w-16 place-items-center rounded-2xl bg-emerald-100 text-3xl" aria-hidden="true">Aa</span>
-              <span className="mt-5 block text-2xl font-black">Sentences</span>
+              <span className="mt-5 block text-2xl font-black">Sentence structures</span>
               <span className="mt-2 block text-sm leading-6 text-slate-500">Choose missing words from real story sentences.</span>
               {sentenceReviewCount > 0 ? (
                 <span className="mt-3 inline-block rounded-full bg-emerald-100 px-3 py-1 text-xs font-black text-emerald-700">{sentenceReviewCount} to review</span>

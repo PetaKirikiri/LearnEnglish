@@ -30,7 +30,7 @@ function Exercise({ question }: { question: QuizQuestion }) {
         <div><p className="text-xs font-bold uppercase text-slate-500">Full source sentence</p><p className="mt-1 leading-7">{question.example}</p></div>
         {question.mode === 'vocabulary'
           ? <div><p className="text-xs font-bold uppercase text-slate-500">Lesson Thai meaning</p><p lang="th" className="mt-1 text-lg">{thaiMeaning(question)}</p></div>
-          : <p className="text-sm text-amber-800">Thai sentence translation: not added yet.</p>}
+          : <div className="space-y-3"><p className="font-bold">{question.grammarFocus}</p><p lang="th">{question.thaiPrompt}</p><p lang="th">{question.explanationThai}</p><p className="text-sm text-slate-600">{question.explanation}</p></div>}
         <div><p className="mb-2 text-xs font-bold uppercase text-slate-500">English audio</p><audio controls preload="none" src={question.audioUrl} className="w-full max-w-sm">Your browser does not support audio playback.</audio></div>
       </div>
     </details>
@@ -49,7 +49,7 @@ export default function ContentLibraryPage() {
   const filteredStories = selectedReadings.filter(reading => matches(reading.title, ...reading.paragraphs))
   const filteredWords = wordData.ranking.filter(({ word }) => storyWords.has(word) && matches(word, thaiTranslations[word] ?? ''))
   const filteredQuestions = (view === 'vocabulary' ? catalogue.vocabulary : catalogue.sentences).filter(question => (
-    (!story || question.sourceTitle === story) && matches(question.prompt, question.answer, question.example, question.sourceTitle, ...question.choices)
+    (!story || question.sourceTitle === story) && matches(question.prompt, question.answer, question.example, question.sourceTitle, question.thaiPrompt ?? '', question.grammarFocus ?? '', ...question.choices)
   ))
   const count = view === 'stories' ? filteredStories.length : view === 'words' ? filteredWords.length : filteredQuestions.length
   const pageCount = Math.max(1, Math.ceil(count / pageSize))
@@ -74,7 +74,8 @@ export default function ContentLibraryPage() {
       </header>
 
       <aside className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-950">
-        <p><strong>Content gaps:</strong> Chapter 6 has not been supplied separately. Sentence translations and tap-for-word explanations have not been added.</p>
+        <p><strong>Sentence structures:</strong> Individually authored grammar questions with Thai meanings and explanations. No random noun substitutions. Old story-recall scores do not count as mastery of these new exercises.</p>
+        <p><strong>Content gaps:</strong> Chapter 6 has not been supplied separately. Tap-for-word explanations and grammar exercises for every source sentence have not been added.</p>
         <p>The vocabulary exercises use selected Thai meanings. The larger word dictionary contains automatic translations that still need review.</p>
         <p><strong>Completion:</strong> Open Progress to see each learner’s words, mistakes, activity, and mastery of the current exercises.</p>
       </aside>
