@@ -4,6 +4,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import QuizPage from './QuizPage'
 import { createQuizRound } from './quizContent'
 import { trackProgress } from './progressSync'
+import { speakEnglish, type SpeechState } from './speech'
 
 vi.mock('./progressSync', () => ({ trackProgress: vi.fn() }))
 vi.mock('../lib/supabase', () => ({ supabase: null }))
@@ -73,4 +74,33 @@ it('pauses when listening and cancels pending advancement when unmounted', () =>
   advance(10000)
   expect(container.textContent).toBe('Exited')
   expect(vi.mocked(trackProgress).mock.calls).toHaveLength(1)
+})
+
+it('automatically reads the full sentence and waits for it to end before advancing', () => {
+  const question = createQuizRound('sentences')[0]
+  expect(speakEnglish).toHaveBeenLastCalledWith(question.spokenText, question.audioUrl, expect.any(Function))
+  const notify = vi.mocked(speakEnglish).mock.calls.at(-1)![2]!
+  act(() => notify('playing'))
+  answer(0)
+  advance(10000)
+  expect(container.querySelector('h1')?.textContent).toBe(question.prompt)
+  act(() => notify('ended'))
+  advance(1200)
+  const next = createQuizRound('sentences')[1]
+  expect(speakEnglish).toHaveBeenLastCalledWith(next.spokenText, next.audioUrl, expect.any(Function))
+})
+
+it('autoplays vocabulary in a short sentence and keeps the Thai-to-English target hidden', () => {
+  act(() => root.render(<QuizPage key="vocab" mode="vocabulary" learnerId="test" userId="test" onExit={() => {}} />))
+  const question = createQuizRound('vocabulary')[0]
+  expect(speakEnglish).toHaveBeenLastCalledWith(question.contextSentence, question.contextAudioUrl, expect.any(Function))
+  const context = container.querySelector('[lang="en"]')!
+  expect(context).toBeTruthy()
+  expect(context.textContent).toBe(question.prompt === question.spokenText ? question.contextSentence : question.contextSentence!.replace(new RegExp(`\\b${question.spokenText}\\b`, 'ig'), '_____'))
+})
+
+it('offers a tap to play when the browser blocks autoplay', () => {
+  const notify = vi.mocked(speakEnglish).mock.calls.at(-1)![2] as (state: SpeechState) => void
+  act(() => notify('blocked'))
+  expect(container.textContent).toContain('Tap to play audio')
 })

@@ -1,6 +1,7 @@
 import { readings } from '../content/readings'
 import { buildWordData, parseWords } from '../lib/wordData'
 import { grammarLessons } from './grammarLessons'
+import { vocabularyContexts } from './vocabularyContexts'
 
 export type QuizMode = 'vocabulary' | 'sentences'
 
@@ -15,6 +16,8 @@ export type QuizQuestion = {
   example: string
   spokenText: string
   audioUrl: string
+  contextSentence?: string
+  contextAudioUrl?: string
   grammarFocus?: string
   thaiPrompt?: string
   explanation?: string
@@ -269,6 +272,8 @@ function createVocabularyPool(random: () => number): QuizQuestion[] {
       example: example.text,
       spokenText: word,
       audioUrl: `/audio/lessons/vocabulary-${word}.wav`,
+      contextSentence: vocabularyContexts[word],
+      contextAudioUrl: `/audio/lessons/vocabulary-context-${word}.wav`,
     }]
   })
 
@@ -316,6 +321,11 @@ export function getLessonAudioItems() {
   const random = createRandom(20260912)
   const questions = [...createVocabularyPool(random), ...createSentencePool(random)]
   const byUrl = new Map(questions.map(({ audioUrl, spokenText }) => [audioUrl, { audioUrl, spokenText }]))
+  for (const question of questions) {
+    if (question.contextSentence && question.contextAudioUrl) {
+      byUrl.set(question.contextAudioUrl, { audioUrl: question.contextAudioUrl, spokenText: question.contextSentence })
+    }
+  }
   return Array.from(byUrl.values())
 }
 

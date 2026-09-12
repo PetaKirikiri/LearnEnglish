@@ -6,7 +6,7 @@ import {
   saveLearningMemory,
 } from './learningMemory'
 import { createQuizRound, type QuizMode } from './quizContent'
-import { canSpeakEnglish, speakEnglish, stopEnglishSpeech } from './speech'
+import { canSpeakEnglish, speakEnglish, stopEnglishSpeech, type SpeechState } from './speech'
 import { trackProgress } from './progressSync'
 import { questionProgressKey } from './progressData'
 
@@ -52,6 +52,7 @@ export default function QuizPage({
   const [questionIndex, setQuestionIndex] = useState(0)
   const [selected, setSelected] = useState<string | null>(null)
   const [paused, setPaused] = useState(false)
+  const [speechState, setSpeechState] = useState<SpeechState>('ended')
   const answerLocked = useRef(false)
   const advanced = useRef(false)
   const [score, setScore] = useState(0)
@@ -60,6 +61,14 @@ export default function QuizPage({
   const question = questions[questionIndex]
   const isCorrect = selected === question?.answer
   const title = mode === 'vocabulary' ? 'Vocabulary' : 'Sentence structures'
+  const audioText = question?.contextSentence ?? question?.spokenText
+  const audioUrl = question?.contextAudioUrl ?? question?.audioUrl
+
+  useEffect(() => {
+    if (finished || !audioText || !audioUrl) return
+    speakEnglish(audioText, audioUrl, setSpeechState)
+    return stopEnglishSpeech
+  }, [audioText, audioUrl, question?.id, roundId, finished])
 
   function choose(choice: string) {
     if (answerLocked.current || selected || !question) return
@@ -101,10 +110,10 @@ export default function QuizPage({
   }, [selected, finished, questionIndex, questions.length, userId, mode, roundId, progress, score])
 
   useEffect(() => {
-    if (!selected || finished || paused) return
+    if (!selected || finished || paused || speechState === 'playing') return
     const timer = window.setTimeout(next, isCorrect ? 1200 : 5000)
     return () => window.clearTimeout(timer)
-  }, [selected, finished, paused, isCorrect, next])
+  }, [selected, finished, paused, isCorrect, next, speechState])
 
   function restart() {
     answerLocked.current = false
@@ -184,13 +193,21 @@ export default function QuizPage({
           <h1 className={`mt-6 font-black leading-tight ${mode === 'vocabulary' ? 'text-5xl sm:text-6xl' : 'text-3xl sm:text-4xl'}`}>
             {question.prompt}
           </h1>
-          {mode === 'vocabulary' && canSpeakEnglish() ? (
+          {question.contextSentence ? (
+            <div className="mt-4 rounded-2xl bg-white p-4">
+              <p className="text-xs font-bold uppercase tracking-wide text-slate-500">In a short sentence</p>
+              <p className="mt-2 text-xl leading-relaxed" lang="en">{question.contextSentence.split(/(\b[\p{L}]+\b)/u).map((part, index) => part.toLowerCase() === question.spokenText.toLowerCase()
+                ? <strong key={index} className="text-blue-700">{question.prompt !== question.spokenText && !selected ? '_____' : part}</strong>
+                : part)}</p>
+            </div>
+          ) : null}
+          {canSpeakEnglish() ? (
             <button
               type="button"
-              onClick={() => speakEnglish(question.spokenText, question.audioUrl)}
+              onClick={() => { if (selected) setPaused(true); speakEnglish(audioText!, audioUrl!, setSpeechState) }}
               className="mt-5 inline-flex w-fit items-center gap-2 rounded-full border-2 border-blue-200 bg-white px-4 py-2 font-black text-blue-700 hover:bg-blue-50"
             >
-              <span aria-hidden="true">🔊</span> Listen
+              <span aria-hidden="true">🔊</span> {speechState === 'blocked' ? 'Tap to play audio' : 'Listen again'}
             </button>
           ) : null}
 
@@ -238,13 +255,13 @@ export default function QuizPage({
                   </div>
                 ) : null}
                 {canSpeakEnglish() ? (
-                  <button type="button" onClick={() => { setPaused(true); speakEnglish(question.spokenText, question.audioUrl) }} className="mt-2 font-black text-blue-700 hover:text-blue-900">
+                  <button type="button" onClick={() => { setPaused(true); speakEnglish(audioText!, audioUrl!, setSpeechState) }} className="mt-2 font-black text-blue-700 hover:text-blue-900">
                     🔊 Listen to the English
                   </button>
                 ) : null}
               </div>
               <div className="shrink-0 space-y-2">
-                <p role="status" className="text-sm text-slate-700">{paused ? 'Paused for reading' : questionIndex === questions.length - 1 ? 'Showing score shortly…' : 'Moving on automatically…'}</p>
+                <p role="status" className="text-sm text-slate-700">{paused ? 'Paused for reading' : speechState === 'playing' ? 'Listening…' : questionIndex === questions.length - 1 ? 'Showing score shortly…' : 'Moving on automatically…'}</p>
                 <button type="button" onClick={() => setPaused(value => !value)} className="rounded-xl border border-slate-400 px-5 py-3 font-bold text-slate-800">
                   {paused ? 'Resume' : 'Pause to read'}
                 </button>

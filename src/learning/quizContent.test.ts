@@ -38,6 +38,15 @@ describe('story-powered quiz content', () => {
       .not.toEqual(createQuizRound('vocabulary', 1).map(({ id }) => id))
   })
 
+  it('gives every vocabulary word a short context and its matching audio', () => {
+    for (const q of getQuizCatalogue().vocabulary) {
+      expect(q.contextSentence).toBeTruthy()
+      expect(parseWords(q.contextSentence!)).toContain(q.spokenText)
+      expect(parseWords(q.contextSentence!).length).toBeLessThanOrEqual(9)
+      expect(existsSync(`public${q.contextAudioUrl}`)).toBe(true)
+    }
+  })
+
   it('only serves authored grammar contrasts with meaning, feedback, and existing audio', () => {
     const questions = getQuizCatalogue().sentences
     expect(questions).toHaveLength(grammarLessons.length)
