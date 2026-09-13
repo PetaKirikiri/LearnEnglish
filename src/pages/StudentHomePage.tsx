@@ -3,6 +3,7 @@ import ReadingPage from './ReadingPage'
 import QuizPage from '../learning/QuizPage'
 import { getReviewCount, loadLearningMemory } from '../learning/learningMemory'
 import type { QuizMode } from '../learning/quizContent'
+import GroupLeaderboardPage from './GroupLeaderboardPage'
 
 export default function StudentHomePage({
   displayName,
@@ -15,11 +16,13 @@ export default function StudentHomePage({
   syncState: string
   onSignOut: () => void
 }) {
-  const [screen, setScreen] = useState<'home' | 'stories' | 'quiz'>('home')
+  const [screen, setScreen] = useState<'home' | 'stories' | 'quiz' | 'leaderboard'>(() => new URLSearchParams(window.location.search).has('group') ? 'leaderboard' : 'home')
   const [quizMode, setQuizMode] = useState<QuizMode>('vocabulary')
   const learningMemory = loadLearningMemory(displayName)
   const vocabularyReviewCount = getReviewCount(learningMemory, 'vocabulary')
   const sentenceReviewCount = getReviewCount(learningMemory, 'sentences')
+
+  if (screen === 'leaderboard') return <GroupLeaderboardPage userId={userId} onExit={() => setScreen('home')} onPlay={() => { setQuizMode('vocabulary'); setScreen('quiz') }} />
 
   if (screen === 'quiz') {
     return <QuizPage mode={quizMode} learnerId={displayName} userId={userId} onExit={() => setScreen('home')} />
@@ -96,6 +99,7 @@ export default function StudentHomePage({
             <span aria-hidden="true" className="text-2xl text-[#3c7b57] transition-transform group-hover:translate-x-1">›</span>
           </button>
         </nav>
+        <button type="button" onClick={() => setScreen('leaderboard')} className="mt-4 flex min-h-16 w-full items-center justify-between rounded-2xl bg-white px-6 py-4 text-left font-bold text-slate-700 hover:bg-slate-100"><span>🏆 Leaderboard</span><span aria-hidden="true">›</span></button>
         <p role="status" className={`mt-6 text-center text-xs leading-5 ${syncState === 'saved' ? 'sr-only' : 'text-slate-500'}`}>{syncState === 'saved' ? 'Progress saved' : syncState === 'pending' ? 'Saving…' : 'Progress waiting to sync. Keep this browser data until you reconnect.'}</p>
       </div>
     </main>

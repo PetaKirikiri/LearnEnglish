@@ -1,0 +1,28 @@
+import { act } from 'react'
+import { createRoot } from 'react-dom/client'
+import { expect, it, vi } from 'vitest'
+import QuizPage from './QuizPage'
+import { createQuizRound } from './quizContent'
+import { questionProgressKey } from './progressData'
+import { trackProgress } from './progressSync'
+
+vi.mock('./progressSync', () => ({ trackProgress: vi.fn() }))
+vi.mock('./speech', () => ({ canSpeakEnglish: () => false, speakEnglish: vi.fn(), stopEnglishSpeech: vi.fn() }))
+
+it('submits the actual selected answer for server-side scoring, once per question', () => {
+  vi.useFakeTimers()
+  localStorage.clear()
+  Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
+  const container = document.createElement('div')
+  const root = createRoot(container)
+  try {
+    act(() => root.render(<QuizPage mode="vocabulary" learnerId="test" userId="test" onExit={() => {}} />))
+    const question = createQuizRound('vocabulary')[0]
+    const button = [...container.querySelectorAll('button')].find(b => b.textContent === `${question.choices.indexOf(question.answer) + 1}${question.answer}`)
+    expect(button).toBeTruthy()
+    act(() => { button!.click(); button!.click() })
+    expect(trackProgress).toHaveBeenCalledExactlyOnceWith('test', 'answer', expect.objectContaining({
+      questionId: questionProgressKey(question), choice: question.answer, correct: true,
+    }), expect.any(String))
+  } finally { act(() => root.unmount()); vi.useRealTimers() }
+})

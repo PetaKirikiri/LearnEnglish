@@ -80,7 +80,7 @@ export default function QuizPage({
     setSelected(choice)
     setLearningMemory(nextMemory)
     saveLearningMemory(learnerId, nextMemory)
-    trackProgress(userId, 'answer', { questionId: questionProgressKey(question), mode, word: question.mode === 'vocabulary' ? question.spokenText : undefined, correct, roundId }, `${roundId.slice(0, 24)}${questionIndex.toString(16).padStart(12, '0')}`)
+    trackProgress(userId, 'answer', { questionId: questionProgressKey(question), mode, word: question.mode === 'vocabulary' ? question.spokenText : undefined, correct, choice, roundId }, `${roundId.slice(0, 24)}${questionIndex.toString(16).padStart(12, '0')}`)
     if (correct) setScore((value) => value + 1)
   }
 

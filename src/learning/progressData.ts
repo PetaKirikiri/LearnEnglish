@@ -10,6 +10,7 @@ export type ProgressEvent = {
     mode?: 'vocabulary' | 'sentences'
     word?: string
     correct?: boolean
+    choice?: string
     roundId?: string
     seconds?: number
     correctCount?: number
