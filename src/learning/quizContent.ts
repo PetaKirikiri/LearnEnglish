@@ -3,6 +3,8 @@ import { buildWordData, parseWords } from '../lib/wordData'
 import { grammarLessons } from './grammarLessons'
 import { grammarExpansion } from './grammarExpansion'
 import { vocabularyContexts } from './vocabularyContexts'
+import { compareContent, questionBlock } from './contentOrder'
+import { hasCompletedQuestion, type LearningMemory } from './learningMemory'
 
 export type QuizMode = 'vocabulary' | 'sentences'
 
@@ -325,11 +327,19 @@ export function createQuizRound(
   return chosen
 }
 
-// One learner stream; modes remain metadata for learning history only.
-export function createPracticeRound(round = 0, reviewQuestionIds: readonly string[] = []): readonly QuizQuestion[] {
-  const sentences = createQuizRound('sentences', round, reviewQuestionIds.filter(id => id.startsWith('grammar-')))
-  const words = createQuizRound('vocabulary', round, reviewQuestionIds.filter(id => id.startsWith('vocabulary-')))
-  return sentences.slice(0, 5).flatMap((question, index) => [question, words[index]])
+// The Content table and learner share this order. Round numbers only shuffle
+// answer buttons; they never unlock later targets or bypass unfinished work.
+export function createPracticeRound(round = 0, memory: LearningMemory = {}): readonly QuizQuestion[] {
+  const random = createRandom(20260912 + round * 97)
+  const bank = [...createSentencePool(random), ...createVocabularyPool(random)].sort(compareContent)
+  const next = bank.find(q => !hasCompletedQuestion(memory[q.id]))
+  if (!next) {
+    // Completed course: continue revising the least recently practised items.
+    return bank.sort((a, b) => (memory[a.id]?.lastAnsweredAt ?? 0) - (memory[b.id]?.lastAnsweredAt ?? 0) || compareContent(a, b)).slice(0, questionsPerRound)
+  }
+  return bank.filter(q => questionBlock(q) === questionBlock(next) && !hasCompletedQuestion(memory[q.id]))
+    .sort((a, b) => (memory[a.id]?.lastAnsweredAt ?? 0) - (memory[b.id]?.lastAnsweredAt ?? 0) || compareContent(a, b))
+    .slice(0, questionsPerRound)
 }
 
 export function getLessonAudioItems() {

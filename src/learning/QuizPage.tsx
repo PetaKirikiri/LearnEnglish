@@ -6,7 +6,6 @@ import WordHelp from './WordHelp'
 import QuestionFlag from './QuestionFlag'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
-  getReviewQuestionIds,
   loadLearningMemory,
   recordAnswer,
   saveLearningMemory,
@@ -30,12 +29,10 @@ export default function QuizPage({
   const [round, setRound] = useState(0)
   const [roundId, setRoundId] = useState(() => crypto.randomUUID())
   const [learningMemory, setLearningMemory] = useState(() => loadLearningMemory(learnerId))
-  const [reviewQuestionIds, setReviewQuestionIds] = useState(() => (
-    [...getReviewQuestionIds(learningMemory, 'sentences'), ...getReviewQuestionIds(learningMemory, 'vocabulary')]
-  ))
+  const [roundMemory, setRoundMemory] = useState(learningMemory)
   const questions = useMemo(
-    () => createPracticeRound(round, reviewQuestionIds),
-    [reviewQuestionIds, round],
+    () => createPracticeRound(round, roundMemory),
+    [roundMemory, round],
   )
   const [questionIndex, setQuestionIndex] = useState(0)
   const [selected, setSelected] = useState<string | null>(null)
@@ -64,7 +61,7 @@ export default function QuizPage({
     advanced.current = false
     setPaused(false)
     const correct = choice === question.answer
-    const nextMemory = recordAnswer(learningMemory, question, correct)
+    const nextMemory = recordAnswer(learningMemory, question, correct, Date.now(), roundId)
     setSelected(choice)
     setLearningMemory(nextMemory)
     saveLearningMemory(learnerId, nextMemory)
@@ -78,7 +75,7 @@ export default function QuizPage({
     if (questionIndex === questions.length - 1) {
       trackProgress(userId, 'round_completed', { roundId }, roundId)
       setRoundId(crypto.randomUUID())
-      setReviewQuestionIds([...getReviewQuestionIds(learningMemory, 'sentences'), ...getReviewQuestionIds(learningMemory, 'vocabulary')])
+      setRoundMemory(learningMemory)
       setRound(value => value + 1)
       setQuestionIndex(0)
       setSelected(null)

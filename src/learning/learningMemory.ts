@@ -10,6 +10,8 @@ export type LearningRecord = {
   wrongCount: number
   lastAnsweredAt: number
   lastWrongAt?: number
+  correctPasses?: string[]
+  correctDates?: string[]
 }
 
 export type LearningMemory = Readonly<Record<string, LearningRecord>>
@@ -46,6 +48,7 @@ export function recordAnswer(
   question: QuizQuestion,
   correct: boolean,
   answeredAt = Date.now(),
+  passId?: string,
 ): LearningMemory {
   const previous = memory[question.id]
 
@@ -61,8 +64,15 @@ export function recordAnswer(
       wrongCount: (previous?.wrongCount ?? 0) + (correct ? 0 : 1),
       lastAnsweredAt: answeredAt,
       lastWrongAt: correct ? previous?.lastWrongAt : answeredAt,
+      correctPasses: correct ? [...new Set([...(previous?.correctPasses ?? []), ...(passId ? [passId] : [])])].slice(-3) : [],
+      correctDates: correct ? [...new Set([...(previous?.correctDates ?? []), ...(passId ? [new Date(answeredAt).toLocaleDateString('en-CA', { timeZone: 'Asia/Bangkok' })] : [])])].slice(-3) : [],
     },
   }
+}
+
+// Old answer counters remain history, but cannot prove separate passes/dates.
+export function hasCompletedQuestion(record?: LearningRecord) {
+  return new Set(record?.correctPasses ?? []).size >= 3 && new Set(record?.correctDates ?? []).size >= 3
 }
 
 function reviewWeight(record: LearningRecord) {

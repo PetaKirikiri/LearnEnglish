@@ -18,7 +18,7 @@ describe('story-powered quiz content', () => {
       const examples = questions.filter(q => q.answer.toLowerCase() === word)
       expect(examples.length, word).toBeGreaterThanOrEqual(5)
       expect(new Set(examples.map(q => q.example.toLowerCase())).size, word).toBe(examples.length)
-      for (const q of examples) expect(createPracticeRound(0, [q.id])[0].id).toBe(q.id)
+      for (const q of examples) expect(createQuizRound('sentences', 0, [q.id])[0].id).toBe(q.id)
     }
   })
   it('does not use meaning-only contrasts as grammar distractors', () => {
@@ -37,7 +37,7 @@ describe('story-powered quiz content', () => {
     expect(new Set(questions.map(q => q.id)).size).toBe(10)
     expect(new Set(questions.map(q => q.sourceTitle)).size).toBe(8)
     for (const q of questions) {
-      expect(createPracticeRound(0, [q.id])[0].id).toBe(q.id)
+      expect(createQuizRound('sentences', 0, [q.id])[0].id).toBe(q.id)
       expect(existsSync(`public${q.gapAudioUrl}`)).toBe(true)
     }
   })
@@ -45,7 +45,7 @@ describe('story-powered quiz content', () => {
     const retired = 'grammar-v1-climate-around-the-world-17-and'
     expect(getQuizCatalogue().sentences.some(q => q.id === retired)).toBe(false)
     for (let round = 0; round < 12; round++) {
-      expect(createPracticeRound(round, [retired]).some(q => q.id === retired)).toBe(false)
+      expect(createQuizRound('sentences', round, [retired]).some(q => q.id === retired)).toBe(false)
     }
     expect(storyText).toContain('It is very cloudy and rainy here, although it is not snowy.')
   })
@@ -148,11 +148,10 @@ describe('story-powered quiz content', () => {
   })
 })
 
-it('builds one varied practice stream and brings mistakes back for review', () => {
+it('starts the learner on the complete the block rather than alternating random modes', () => {
   const first = createPracticeRound()
   expect(first).toHaveLength(10)
   expect(new Set(first.map(q => q.id)).size).toBe(10)
-  expect(first.map(q => q.mode)).toEqual(Array.from({ length: 5 }, () => ['sentences', 'vocabulary']).flat())
-  const review = createPracticeRound(1, [first[0].id, first[1].id])
-  expect(review.slice(0, 2).map(q => q.id)).toEqual(first.slice(0, 2).map(q => q.id))
+  expect(first.every(q => q.mode === 'sentences' && q.answer.toLowerCase() === 'the')).toBe(true)
+  expect(createPracticeRound(999).map(q => q.id)).toEqual(first.map(q => q.id))
 })

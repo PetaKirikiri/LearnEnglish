@@ -6,6 +6,8 @@ import StudentHomePage from '../pages/StudentHomePage'
 import { createPracticeRound } from './quizContent'
 import { trackProgress } from './progressSync'
 import { speakEnglish, type SpeechState } from './speech'
+import { orderedQuestionBank } from './questionSheet'
+import { recordAnswer, saveLearningMemory, type LearningMemory } from './learningMemory'
 
 vi.mock('./progressSync', () => ({ trackProgress: vi.fn() }))
 vi.mock('../lib/supabase', () => ({ supabase: null }))
@@ -74,7 +76,7 @@ it('opens the leaderboard beside the profile without losing or advancing the que
   expect(vi.mocked(trackProgress).mock.calls.filter(call => call[1] === 'answer')).toHaveLength(1)
 })
 
-it('opens on a question and continues through mixed rounds without a menu or results screen', () => {
+it('opens on the content block and continues without a menu or results screen', () => {
   for (let i = 0; i < 10; i++) {
     answer(i)
     advance(1200)
@@ -141,13 +143,19 @@ it('autoplays a gapped sentence, then the complete sentence only after answering
   act(() => notify('ended'))
   advance(1200)
   const next = createPracticeRound()[1]
-  expect(speakEnglish).toHaveBeenLastCalledWith(next.contextSentence, next.contextAudioUrl, expect.any(Function))
+  expect(speakEnglish).toHaveBeenLastCalledWith(next.prompt, next.gapAudioUrl, expect.any(Function))
 })
 
 it('autoplays vocabulary in a short sentence and keeps the Thai-to-English target hidden', () => {
-  answer(0)
-  advance(1200)
-  const question = createPracticeRound()[1]
+  let memory: LearningMemory = {}
+  for (const { question: q } of orderedQuestionBank()) {
+    if (q.mode === 'vocabulary') break
+    for (let day = 0; day < 3; day++) memory = recordAnswer(memory, q, true, Date.UTC(2026, 8, 1 + day), `pass-${day}`)
+  }
+  saveLearningMemory('vocab-test', memory)
+  act(() => root.render(<StudentHomePage key="vocab" displayName="vocab-test" userId="vocab-test" syncState="saved" onSignOut={() => {}} />))
+  const question = createPracticeRound(0, memory)[0]
+  expect(question.mode).toBe('vocabulary')
   expect(speakEnglish).toHaveBeenLastCalledWith(question.contextSentence, question.contextAudioUrl, expect.any(Function))
   const context = container.querySelector('[lang="en"]')!
   expect(context).toBeTruthy()
@@ -180,12 +188,12 @@ it('allows learners to turn auto progression off', () => {
   expect(localStorage.getItem('fifa:auto:test')).toBe('false')
 })
 
-it('tracks each question under its own learning category in the same round', () => {
+it('tracks the active content block without injecting random vocabulary', () => {
   answer(0)
   advance(1200)
   answer(1)
   const events = vi.mocked(trackProgress).mock.calls.filter(call => call[1] === 'answer')
-  expect(events.map(call => call[2]?.mode)).toEqual(['sentences', 'vocabulary'])
+  expect(events.map(call => call[2]?.mode)).toEqual(['sentences', 'sentences'])
   expect(events[0][2]?.roundId).toBe(events[1][2]?.roundId)
 })
 
