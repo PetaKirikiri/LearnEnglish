@@ -124,8 +124,11 @@ export default function QuizPage({
   return (
     <main className="session-shell game-surface min-h-[100dvh] px-5 py-6 sm:px-8 sm:py-8">
       <div className="mx-auto flex min-h-[calc(100dvh-2.5rem)] max-w-2xl flex-col sm:min-h-[calc(100dvh-4rem)]">
-        <header className="flex items-center gap-4">
-          <div className="flex-1" />
+        <header className="lesson-header">
+          <div className="lesson-brand">
+            <img src="/brand/success-mark.png" alt="Success logo" width="36" height="36" />
+            <span>English<br />Success</span>
+          </div>
           <LeaderboardButton userId={userId} onClick={() => setLeaderboardOpen(true)} />
           <details className="account-menu">
             <summary aria-label={`Account: ${learnerId}`}><span className="account-avatar" aria-hidden="true">{learnerId.slice(0, 1).toUpperCase()}</span></summary>

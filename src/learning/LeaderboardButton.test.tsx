@@ -29,6 +29,9 @@ async function render() {
 }
 it('shows the champion beside the header cup and opens every member without losing the question', async () => {
   await render()
+  expect(container.querySelector('header > :first-child')!.className).toBe('lesson-brand')
+  expect(container.querySelector('.lesson-brand')!.textContent).toBe('EnglishSuccess')
+  expect(container.querySelector('.lesson-brand img')!.getAttribute('src')).toBe('/brand/success-mark.png')
   const question = container.querySelector('h1')!.textContent
   const button = container.querySelector<HTMLButtonElement>('header button[aria-label="Leaderboard"]')!
   expect(button.className).toBe('champion-button')
