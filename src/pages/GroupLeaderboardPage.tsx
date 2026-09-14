@@ -1,4 +1,5 @@
 import { useMemberLeaderboard } from '../learning/useMemberLeaderboard'
+import MemberAvatar from '../ui/MemberAvatar'
 
 export default function GroupLeaderboardPage({ userId, onExit }: { userId: string; onExit: () => void; onPlay: () => void }) {
   const current = useMemberLeaderboard(userId)
@@ -20,11 +21,12 @@ export default function GroupLeaderboardPage({ userId, onExit }: { userId: strin
           <rect x="69" y="185" width="102" height="17" rx="4" fill="#a66e19" />
           <path d="M75 30h90" stroke="#fff0bd" strokeWidth="3" strokeLinecap="round" />
         </svg>
-        <span aria-hidden="true" title={leader.name} className="min-w-0 break-words text-2xl font-bold leading-tight text-[#a66e19] sm:text-3xl">{leader.name}</span>
+        <span aria-hidden="true" title={leader.name} className="flex min-w-0 items-center gap-2 break-words text-2xl font-bold leading-tight text-[#a66e19] sm:text-3xl"><MemberAvatar name={leader.name} url={leader.avatarUrl} />{leader.name}</span>
       </div>}
       {!current && <div role="status" aria-label="Loading scores" className="space-y-5 py-6">{[1,2,3].map(n => <div key={n} aria-hidden="true" className="flex items-center gap-4"><span className="h-8 w-8 rounded-full bg-slate-200" /><span className="h-3 w-28 rounded bg-slate-200" /><span className="ml-auto h-3 w-10 rounded bg-slate-200" /></div>)}</div>}
       {current?.rows && <ol aria-label="Rankings">{current.rows.map(row => <li key={row.id} className={`flex min-h-20 items-center gap-4 border-b border-slate-200 px-3 ${row.id === userId ? 'rounded-xl bg-white' : ''}`}>
         <span aria-label={row.points ? `Rank ${row.rank}` : 'Unranked'} className={`w-7 text-center text-lg font-semibold tabular-nums ${row.rank === 1 && row.points > 0 ? 'text-amber-700' : 'text-slate-400'}`}>{row.points ? row.rank : '—'}</span>
+        <MemberAvatar name={row.name} url={row.avatarUrl} />
         <span className="min-w-0 flex-1 break-words font-semibold">{row.name}</span>
         <span aria-label={`${row.points} points`} className="text-xl font-semibold tabular-nums">{row.points}</span>
       </li>)}</ol>}

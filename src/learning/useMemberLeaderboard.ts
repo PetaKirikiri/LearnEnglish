@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 
-type Row = { id: string; name: string; rank: number; points: number }
+type Row = { id: string; name: string; rank: number; points: number; avatarUrl?: string | null }
 type Result = { userId: string; rows?: Row[]; champion?: Row | null; error?: string }
 
 export function useMemberLeaderboard(userId: string) {
