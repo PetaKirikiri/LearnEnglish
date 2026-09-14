@@ -1,4 +1,4 @@
-# Fifa English
+# EnglishSuccess
 
 An English reading app built with the same core stack and configuration as the Connectors project: React, TypeScript, Vite, Tailwind CSS, Vitest, and ESLint.
 

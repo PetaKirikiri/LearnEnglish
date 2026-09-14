@@ -140,3 +140,7 @@ button:not(:disabled), summary { cursor: pointer; }
 .card-bottom p { color: #626d61; font-size: 11px; }.practice-card-primary .card-bottom p { color: #bbc9b5; }
 .journey-heading > span, .journey-milestone > div:first-child, .home-footer { font-size: 11px; }
 @media (max-width: 700px) { .card-kicker { font-size: 10px; }.card-bottom p { font-size: 11px; } }
+
+.englishsuccess-corner-logo { width:44px; height:44px; object-fit:contain; flex-shrink:0; }
+.app-brand .englishsuccess-corner-logo { margin-left:auto; }
+@media(max-width:480px){ .lesson-header { gap:7px; } .lesson-brand { min-width:100px; font-size:13px; } .lesson-header .champion-button { max-width:35%; } }

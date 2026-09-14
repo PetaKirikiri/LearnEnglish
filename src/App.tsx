@@ -42,7 +42,7 @@ export default function App() {
   if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-slate-100 text-sm font-bold text-slate-500">
-        Opening FIFA English…
+        Opening EnglishSuccess…
       </main>
     )
   }

@@ -15,7 +15,7 @@ export default function CourseScopePage() {
     <section className="mx-auto max-w-[96rem] overflow-hidden rounded-3xl bg-white shadow-xl shadow-slate-200/70">
       <header className="bg-blue-700 px-7 py-9 text-white sm:px-12">
         <p className="mb-2 text-sm font-bold uppercase tracking-[0.22em] text-blue-100">
-          Fifa English course guide
+          EnglishSuccess course guide
         </p>
         <h1 className="text-4xl font-black tracking-tight sm:text-5xl">
           Scope &amp; Sequence

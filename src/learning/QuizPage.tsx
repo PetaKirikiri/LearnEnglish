@@ -126,14 +126,14 @@ export default function QuizPage({
       <div className="mx-auto flex min-h-[calc(100dvh-2.5rem)] max-w-2xl flex-col sm:min-h-[calc(100dvh-4rem)]">
         <header className="lesson-header">
           <div className="lesson-brand">
-            <img src="/brand/success-mark.png" alt="Success logo" width="36" height="36" />
-            <span>English<br />Success</span>
+            <span>EnglishSuccess</span>
           </div>
           <LeaderboardButton userId={userId} onClick={() => setLeaderboardOpen(true)} />
           <details className="account-menu">
             <summary aria-label={`Account: ${learnerId}`}><span className="account-avatar" aria-hidden="true">{learnerId.slice(0, 1).toUpperCase()}</span></summary>
             <div><span className="block px-3 py-2 text-sm font-semibold">{learnerId}</span>{syncState && <span role="status" className="block px-3 pb-2 text-xs text-slate-500">{syncState === 'saved' ? 'All saved' : syncState === 'pending' ? 'Saving…' : 'Waiting to sync'}</span>}{appDestination(userId, '/admin') === 'admin' && <a href="/admin" className="flex min-h-11 items-center rounded-[7px] px-3 py-2 text-[13px] hover:bg-[#f7f7f3]">Admin</a>}<button type="button" onClick={onSignOut}>Sign out</button></div>
           </details>
+          <img className="englishsuccess-corner-logo" src="/brand/englishsuccess-logo.png" alt="EnglishSuccess wolf with graduation cap and monocle" width={44} height={44} />
         </header>
 
         <section key={`${roundId}:${questionIndex}`} className="question-enter question-panel flex flex-1 flex-col justify-center py-8 sm:py-12">

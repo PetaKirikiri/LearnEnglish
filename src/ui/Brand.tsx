@@ -1,3 +1,3 @@
 export default function Brand() {
-  return <div className="app-brand"><span className="brand-mark" aria-hidden="true"><i /><i /><i /></span><span>FIFA<span className="brand-secondary"> / English</span></span></div>
+  return <div className="app-brand"><span>EnglishSuccess</span><img className="englishsuccess-corner-logo" src="/brand/englishsuccess-logo.png" alt="EnglishSuccess wolf with graduation cap and monocle" width={44} height={44} /></div>
 }
