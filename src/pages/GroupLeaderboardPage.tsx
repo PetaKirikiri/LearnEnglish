@@ -1,13 +1,18 @@
-import { useMemberLeaderboard } from '../learning/useMemberLeaderboard'
+import { useState } from 'react'
+import { useMemberLeaderboard, type LeaderboardPeriod } from '../learning/useMemberLeaderboard'
 import MemberAvatar from '../ui/MemberAvatar'
 
 export default function GroupLeaderboardPage({ userId, onExit }: { userId: string; onExit: () => void; onPlay: () => void }) {
-  const current = useMemberLeaderboard(userId)
+  const [period, setPeriod] = useState<LeaderboardPeriod>('week')
+  const current = useMemberLeaderboard(userId, period)
   const leader = current?.rows?.find(row => row.rank === 1 && row.points > 0)
 
   return <main aria-label="Leaderboard" className="min-h-[100dvh] bg-[#f7f7f3] px-5 py-6 text-slate-900">
     <div className="mx-auto max-w-lg">
       <button aria-label="Back to lesson" onClick={onExit} className="icon-button mb-6 text-2xl">‹</button>
+      <div role="group" aria-label="Score period" className="mb-6 flex gap-1 rounded-xl bg-[#e8eadf] p-1">
+        {([['today', 'Today'], ['week', 'This week'], ['month', 'This month']] as const).map(([value, label]) => <button key={value} type="button" aria-pressed={period === value} onClick={() => setPeriod(value)} className={`min-h-11 flex-1 rounded-lg px-2 text-sm font-semibold ${period === value ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>{label}</button>)}
+      </div>
       {leader && <div role="img" aria-label={`First place: ${leader.name}`} className="mx-auto mb-6 flex max-w-sm items-center justify-center gap-3">
         <svg aria-hidden="true" viewBox="0 0 240 210" className="h-[126px] w-[144px] shrink-0 sm:h-[147px] sm:w-[168px]">
           <defs>
