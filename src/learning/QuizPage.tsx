@@ -1,3 +1,8 @@
+import Icon from '../ui/Icon'
+import GroupLeaderboardPage from '../pages/GroupLeaderboardPage'
+import { appDestination } from '../auth/appAccess'
+import WordHelp from './WordHelp'
+import QuestionFlag from './QuestionFlag'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   getReviewQuestionIds,
@@ -5,70 +10,52 @@ import {
   recordAnswer,
   saveLearningMemory,
 } from './learningMemory'
-import { createQuizRound, type QuizMode } from './quizContent'
+import { createPracticeRound } from './quizContent'
 import { canSpeakEnglish, speakEnglish, stopEnglishSpeech, type SpeechState } from './speech'
 import { trackProgress } from './progressSync'
 import { questionProgressKey } from './progressData'
 
-type SavedProgress = Record<QuizMode, { best: number; rounds: number }>
-
-const progressKey = 'fifa-english:quiz-progress:v1'
-const emptyProgress: SavedProgress = {
-  vocabulary: { best: 0, rounds: 0 },
-  sentences: { best: 0, rounds: 0 },
-}
-
-function loadProgress(): SavedProgress {
-  try {
-    const saved = window.localStorage.getItem(progressKey)
-    if (!saved) return emptyProgress
-    return { ...emptyProgress, ...JSON.parse(saved) as SavedProgress }
-  } catch {
-    return emptyProgress
-  }
-}
-
 export default function QuizPage({
-  mode,
   learnerId,
   userId,
-  onExit,
+  onSignOut,
+  syncState,
 }: {
-  mode: QuizMode
   learnerId: string
   userId: string
-  onExit: () => void
+  onSignOut: () => void
+  syncState?: string
 }) {
   const [round, setRound] = useState(0)
   const [roundId, setRoundId] = useState(() => crypto.randomUUID())
   const [learningMemory, setLearningMemory] = useState(() => loadLearningMemory(learnerId))
   const [reviewQuestionIds, setReviewQuestionIds] = useState(() => (
-    getReviewQuestionIds(learningMemory, mode)
+    [...getReviewQuestionIds(learningMemory, 'sentences'), ...getReviewQuestionIds(learningMemory, 'vocabulary')]
   ))
   const questions = useMemo(
-    () => createQuizRound(mode, round, reviewQuestionIds),
-    [mode, reviewQuestionIds, round],
+    () => createPracticeRound(round, reviewQuestionIds),
+    [reviewQuestionIds, round],
   )
   const [questionIndex, setQuestionIndex] = useState(0)
   const [selected, setSelected] = useState<string | null>(null)
   const [paused, setPaused] = useState(false)
+  const [reportOpen, setReportOpen] = useState(false)
+  const [leaderboardOpen, setLeaderboardOpen] = useState(false)
+  const [autoAdvance, setAutoAdvance] = useState(() => localStorage.getItem(`fifa:auto:${userId}`) !== 'false')
   const [speechState, setSpeechState] = useState<SpeechState>('ended')
   const answerLocked = useRef(false)
   const advanced = useRef(false)
-  const [score, setScore] = useState(0)
-  const [finished, setFinished] = useState(false)
-  const [progress, setProgress] = useState(loadProgress)
   const question = questions[questionIndex]
   const isCorrect = selected === question?.answer
-  const title = mode === 'vocabulary' ? 'Vocabulary' : 'Sentence structures'
-  const audioText = question?.contextSentence ?? question?.spokenText
-  const audioUrl = question?.contextAudioUrl ?? question?.audioUrl
+  const audioText = question?.mode === 'sentences' && !selected ? question?.prompt : question?.contextSentence ?? question?.spokenText
+  const audioUrl = question?.mode === 'sentences' && !selected ? question?.gapAudioUrl : question?.contextAudioUrl ?? question?.audioUrl
+  const audioAllowed = question?.mode === 'sentences' || Boolean(selected) || (question?.mode === 'vocabulary' && question?.prompt === question?.spokenText)
 
   useEffect(() => {
-    if (finished || !audioText || !audioUrl) return
+    if (leaderboardOpen || !audioAllowed || !audioText || !audioUrl) return
     speakEnglish(audioText, audioUrl, setSpeechState)
     return stopEnglishSpeech
-  }, [audioText, audioUrl, question?.id, roundId, finished])
+  }, [audioText, audioUrl, question?.id, roundId, audioAllowed, leaderboardOpen])
 
   function choose(choice: string) {
     if (answerLocked.current || selected || !question) return
@@ -80,26 +67,23 @@ export default function QuizPage({
     setSelected(choice)
     setLearningMemory(nextMemory)
     saveLearningMemory(learnerId, nextMemory)
-    trackProgress(userId, 'answer', { questionId: questionProgressKey(question), mode, word: question.mode === 'vocabulary' ? question.spokenText : undefined, correct, choice, roundId }, `${roundId.slice(0, 24)}${questionIndex.toString(16).padStart(12, '0')}`)
-    if (correct) setScore((value) => value + 1)
+    trackProgress(userId, 'answer', { questionId: questionProgressKey(question), mode: question.mode, word: question.mode === 'vocabulary' ? question.spokenText : undefined, correct, choice, roundId }, `${roundId.slice(0, 24)}${questionIndex.toString(16).padStart(12, '0')}`)
   }
 
   const next = useCallback(() => {
-    if (!selected || finished || advanced.current) return
+    if (!selected || reportOpen || advanced.current) return
     advanced.current = true
     stopEnglishSpeech()
     if (questionIndex === questions.length - 1) {
-      trackProgress(userId, 'round_completed', { mode, roundId }, roundId)
-      const nextProgress = {
-        ...progress,
-        [mode]: {
-          best: Math.max(progress[mode].best, score),
-          rounds: progress[mode].rounds + 1,
-        },
-      }
-      setProgress(nextProgress)
-      window.localStorage.setItem(progressKey, JSON.stringify(nextProgress))
-      setFinished(true)
+      trackProgress(userId, 'round_completed', { roundId }, roundId)
+      setRoundId(crypto.randomUUID())
+      setReviewQuestionIds([...getReviewQuestionIds(learningMemory, 'sentences'), ...getReviewQuestionIds(learningMemory, 'vocabulary')])
+      setRound(value => value + 1)
+      setQuestionIndex(0)
+      setSelected(null)
+      answerLocked.current = false
+      advanced.current = false
+      setPaused(false)
       return
     }
 
@@ -107,30 +91,19 @@ export default function QuizPage({
     setSelected(null)
     answerLocked.current = false
     setPaused(false)
-  }, [selected, finished, questionIndex, questions.length, userId, mode, roundId, progress, score])
+  }, [selected, reportOpen, questionIndex, questions.length, userId, roundId, learningMemory])
 
   useEffect(() => {
-    if (!selected || finished || paused || speechState === 'playing') return
+    if (leaderboardOpen || !selected || paused || reportOpen || !autoAdvance || speechState === 'playing') return
     const timer = window.setTimeout(next, isCorrect ? 1200 : 5000)
     return () => window.clearTimeout(timer)
-  }, [selected, finished, paused, isCorrect, next, speechState])
-
-  function restart() {
-    answerLocked.current = false
-    advanced.current = false
-    setPaused(false)
-    setRoundId(crypto.randomUUID())
-    setReviewQuestionIds(getReviewQuestionIds(learningMemory, mode))
-    setRound((value) => value + 1)
-    setQuestionIndex(0)
-    setSelected(null)
-    setScore(0)
-    setFinished(false)
-  }
+  }, [selected, paused, reportOpen, autoAdvance, isCorrect, next, speechState, leaderboardOpen])
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (finished || !question || event.repeat) return
+      if (leaderboardOpen || !question || event.repeat || reportOpen) return
+      const target = event.target as HTMLElement
+      if (target.closest('button, input, textarea, select, summary, [role="button"]')) return
       const choiceIndex = Number(event.key) - 1
       if (!selected && choiceIndex >= 0 && choiceIndex < question.choices.length) {
         choose(question.choices[choiceIndex])
@@ -147,72 +120,37 @@ export default function QuizPage({
     stopEnglishSpeech()
   }, [])
 
-  if (finished) {
-    const percentage = Math.round((score / questions.length) * 100)
-
-    return (
-      <main className="grid min-h-[100dvh] place-items-center bg-slate-50 px-5 py-10 text-slate-900">
-        <section className="w-full max-w-lg rounded-[2rem] bg-white p-8 text-center shadow-xl sm:p-10">
-          <div className="mx-auto grid h-24 w-24 place-items-center rounded-full bg-blue-100 text-5xl" aria-hidden="true">
-            {percentage >= 80 ? '⭐' : '💪'}
-          </div>
-          <p className="mt-6 text-sm font-black uppercase tracking-[0.18em] text-blue-700">{title} complete</p>
-          <h1 className="mt-2 text-5xl font-black">{score}/{questions.length}</h1>
-          <p className="mt-3 text-lg font-bold text-slate-500">{percentage}% correct</p>
-          <p className="mt-2 text-sm text-slate-500">Best score: {progress[mode].best}/{questions.length}</p>
-          <button type="button" onClick={restart} className="mt-8 w-full rounded-2xl bg-blue-700 px-6 py-4 text-lg font-black text-white hover:bg-blue-800">
-            Practice again
-          </button>
-          <button type="button" onClick={onExit} className="mt-3 w-full rounded-2xl px-6 py-3 font-bold text-slate-500 hover:bg-slate-100">
-            Back to lessons
-          </button>
-        </section>
-      </main>
-    )
-  }
-
+  if (leaderboardOpen) return <GroupLeaderboardPage userId={userId} onExit={() => setLeaderboardOpen(false)} onPlay={() => setLeaderboardOpen(false)} />
   if (!question) return null
 
   return (
-    <main className="min-h-[100dvh] bg-slate-50 px-4 py-5 text-slate-900 sm:px-8 sm:py-8">
+    <main className="session-shell game-surface min-h-[100dvh] px-5 py-6 sm:px-8 sm:py-8">
       <div className="mx-auto flex min-h-[calc(100dvh-2.5rem)] max-w-2xl flex-col sm:min-h-[calc(100dvh-4rem)]">
         <header className="flex items-center gap-4">
-          <button type="button" aria-label="Back to lessons" onClick={onExit} className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-2xl font-black text-slate-500 hover:bg-slate-200">
-            ×
+          <div className="flex-1" />
+          <button type="button" aria-label="Leaderboard" title="Leaderboard" onClick={() => setLeaderboardOpen(true)} className="icon-button shrink-0">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3h8v6a4 4 0 0 1-8 0V3ZM8 5H5v2a4 4 0 0 0 4 4m7-6h3v2a4 4 0 0 1-4 4M12 13v5m-4 3h8m-6-3h4l2 3H8l2-3Z" /></svg>
           </button>
-          <div className="h-3 flex-1 overflow-hidden rounded-full bg-slate-200">
-            <div className="h-full rounded-full bg-blue-600 transition-[width]" style={{ width: `${((questionIndex + 1) / questions.length) * 100}%` }} />
-          </div>
-          <span className="w-12 text-right text-sm font-black text-slate-500">{questionIndex + 1}/{questions.length}</span>
+          <details className="account-menu">
+            <summary aria-label={`Account: ${learnerId}`}><span className="account-avatar" aria-hidden="true">{learnerId.slice(0, 1).toUpperCase()}</span></summary>
+            <div><span className="block px-3 py-2 text-sm font-semibold">{learnerId}</span>{syncState && <span role="status" className="block px-3 pb-2 text-xs text-slate-500">{syncState === 'saved' ? 'All saved' : syncState === 'pending' ? 'Saving…' : 'Waiting to sync'}</span>}{appDestination(userId, '/admin') === 'admin' && <a href="/admin" className="flex min-h-11 items-center rounded-[7px] px-3 py-2 text-[13px] hover:bg-[#f7f7f3]">Admin</a>}<button type="button" onClick={onSignOut}>Sign out</button></div>
+          </details>
         </header>
 
-        <section className="flex flex-1 flex-col justify-center py-8 sm:py-12">
-          <p className="text-sm font-black uppercase tracking-[0.16em] text-blue-700">{title}</p>
-          <p className="mt-2 text-base font-bold text-slate-500">{question.instruction}</p>
-          {question.thaiPrompt ? <p lang="th" className="mt-5 rounded-2xl bg-blue-50 p-4 text-lg leading-relaxed text-blue-950">{question.thaiPrompt}</p> : null}
-          <h1 className={`mt-6 font-black leading-tight ${mode === 'vocabulary' ? 'text-5xl sm:text-6xl' : 'text-3xl sm:text-4xl'}`}>
-            {question.prompt}
+        <section key={`${roundId}:${questionIndex}`} className="question-enter question-panel flex flex-1 flex-col justify-center py-8 sm:py-12">
+          <h1 className={`mt-6 font-semibold tracking-tight leading-[1.45] ${question?.mode === 'vocabulary' ? 'text-5xl sm:text-6xl' : 'text-[28px] sm:text-4xl'}`}>
+            {question?.mode === 'sentences' ? <WordHelp key={question.id} text={question.prompt} /> : question.prompt}
           </h1>
           {question.contextSentence ? (
             <div className="mt-4 rounded-2xl bg-white p-4">
-              <p className="text-xs font-bold uppercase tracking-wide text-slate-500">In a short sentence</p>
               <p className="mt-2 text-xl leading-relaxed" lang="en">{question.contextSentence.split(/(\b[\p{L}]+\b)/u).map((part, index) => part.toLowerCase() === question.spokenText.toLowerCase()
                 ? <strong key={index} className="text-blue-700">{question.prompt !== question.spokenText && !selected ? '_____' : part}</strong>
                 : part)}</p>
             </div>
           ) : null}
-          {canSpeakEnglish() ? (
-            <button
-              type="button"
-              onClick={() => { if (selected) setPaused(true); speakEnglish(audioText!, audioUrl!, setSpeechState) }}
-              className="mt-5 inline-flex w-fit items-center gap-2 rounded-full border-2 border-blue-200 bg-white px-4 py-2 font-black text-blue-700 hover:bg-blue-50"
-            >
-              <span aria-hidden="true">🔊</span> {speechState === 'blocked' ? 'Tap to play audio' : 'Listen again'}
-            </button>
-          ) : null}
 
-          <div className="mt-10 grid gap-3 sm:grid-cols-2">
-            {question.choices.map((choice, index) => {
+          <div className={`mt-8 grid gap-3 ${question.choices.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
+            {question.choices.map((choice) => {
               const isAnswer = choice === question.answer
               const isSelected = choice === selected
               const stateClass = selected
@@ -229,13 +167,20 @@ export default function QuizPage({
                   type="button"
                   disabled={selected !== null}
                   onClick={() => choose(choice)}
-                  className={`min-h-20 rounded-2xl border-2 px-5 py-4 text-left text-lg font-black shadow-sm transition ${stateClass}`}
+                  className={`answer-option min-h-16 rounded-xl border px-4 py-4 text-center text-lg font-semibold transition active:scale-[.98] ${stateClass}`}
                 >
-                  <span className="mr-3 inline-grid h-7 w-7 place-items-center rounded-lg border border-current text-xs opacity-60">{index + 1}</span>
                   {choice}
                 </button>
               )
             })}
+          </div>
+          <div className="mt-5 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              {canSpeakEnglish() && audioAllowed && <button type="button" onClick={() => { if (speechState === 'playing') { stopEnglishSpeech(); setSpeechState('ended') } else { if (selected) setPaused(true); speakEnglish(audioText!, audioUrl!, setSpeechState) } }} aria-label={speechState === 'playing' ? 'Stop audio' : 'Play audio'} className="icon-button"><Icon name={speechState === 'playing' ? 'pause' : 'sound'} /></button>}
+              {speechState === 'playing' && audioAllowed && <span className="text-xs font-semibold text-teal-700" role="status">Playing</span>}
+              {speechState === 'blocked' && audioAllowed && <span className="text-xs text-slate-500" role="status">Tap to listen</span>}
+            </div>
+            <QuestionFlag question={question} userId={userId} onOpenChange={setReportOpen} />
           </div>
         </section>
 
@@ -246,25 +191,21 @@ export default function QuizPage({
                 <p className={`text-xl font-black ${isCorrect ? 'text-emerald-800' : 'text-red-800'}`}>
                   {isCorrect ? 'Correct!' : `Correct answer: ${question.answer}`}
                 </p>
-                <p className="mt-1 text-sm leading-5 text-slate-600">From “{question.sourceTitle}”: {question.example}</p>
-                {question.explanation ? (
-                  <div className="mt-3 space-y-2 text-sm leading-relaxed text-slate-800">
-                    <p className="font-bold">{question.grammarFocus}</p>
-                    <p lang="th">{question.explanationThai}</p>
-                    <p>{question.explanation}</p>
+                <details key={question.id} className="mt-2 text-sm text-slate-700" onToggle={event => { if (event.currentTarget.open) setPaused(true) }}>
+                  <summary className="w-fit cursor-pointer font-semibold">Why?</summary>
+                  <div className="mt-3 space-y-2 leading-relaxed">
+                    <p>{question.example}</p>
+                    {question.explanation && <p>{question.explanation}</p>}
+                    {question.explanationThai && <p lang="th">{question.explanationThai}</p>}
                   </div>
-                ) : null}
-                {canSpeakEnglish() ? (
-                  <button type="button" onClick={() => { setPaused(true); speakEnglish(audioText!, audioUrl!, setSpeechState) }} className="mt-2 font-black text-blue-700 hover:text-blue-900">
-                    🔊 Listen to the English
-                  </button>
-                ) : null}
+                </details>
               </div>
               <div className="shrink-0 space-y-2">
-                <p role="status" className="text-sm text-slate-700">{paused ? 'Paused for reading' : speechState === 'playing' ? 'Listening…' : questionIndex === questions.length - 1 ? 'Showing score shortly…' : 'Moving on automatically…'}</p>
-                <button type="button" onClick={() => setPaused(value => !value)} className="rounded-xl border border-slate-400 px-5 py-3 font-bold text-slate-800">
-                  {paused ? 'Resume' : 'Pause to read'}
-                </button>
+                <button type="button" aria-pressed={autoAdvance} onClick={() => setAutoAdvance(value => { localStorage.setItem(`fifa:auto:${userId}`, String(!value)); return !value })} className="flex min-h-11 items-center gap-2 text-xs font-semibold"><span className={`h-2 w-2 rounded-full ${autoAdvance ? 'bg-teal-600' : 'bg-slate-400'}`} />Auto {autoAdvance ? 'on' : 'off'}</button>
+                <p role="status" className="sr-only">{paused ? 'Paused for reading' : speechState === 'playing' ? 'Listening…' : 'Moving on automatically…'}</p>
+                {autoAdvance ? <button type="button" onClick={() => setPaused(value => !value)} className="rounded-xl border border-slate-400 px-5 py-3 font-bold text-slate-800">
+                  {paused ? 'Resume' : 'Pause'}
+                </button> : <button type="button" onClick={next} className="primary-action">Next<Icon name="arrow" /></button>}
               </div>
             </div>
           </footer>

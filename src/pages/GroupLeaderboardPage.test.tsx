@@ -3,67 +3,95 @@ import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import GroupLeaderboardPage from './GroupLeaderboardPage'
 
-const { rpc } = vi.hoisted(() => ({ rpc: vi.fn() }))
+const rpc = vi.hoisted(() => vi.fn())
 vi.mock('../lib/supabase', () => ({ supabase: { rpc } }))
 let root: Root
 let container: HTMLDivElement
-const group = { id: 'g1', name: 'FIFA & friends', invite_code: 'ABCD1234EFAB5678', members: 2 }
-const board = { weekStart: '2026-09-07', weekEnd: '2026-09-14', rows: [{ id: 'me', name: 'Peta', rank: 1, points: 20 }, { id: 'friend', name: 'Friend', rank: 1, points: 20 }] }
 beforeEach(() => {
-  vi.clearAllMocks()
-  window.history.replaceState(null, '', '/')
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
-  container = document.createElement('div'); document.body.append(container); root = createRoot(container)
-  rpc.mockImplementation(async (name: string) => ({ data: name === 'fifa_english_my_groups' ? [] : board, error: null }))
+  window.history.replaceState(null, '', '/app')
+  rpc.mockReset()
+  rpc.mockResolvedValue({ error: null, data: { rows: [{ id: 'me', name: 'Fifa', rank: 1, points: 100 }, { id: 'friend', name: 'Peta', rank: 2, points: 70 }] } })
+  container = document.createElement('div')
+  document.body.append(container)
+  root = createRoot(container)
 })
 afterEach(() => { act(() => root.unmount()); container.remove() })
-async function render() { await act(async () => root.render(<GroupLeaderboardPage userId="me" onExit={() => {}} onPlay={() => {}} />)) }
-async function click(text: string) {
-  const button = [...container.querySelectorAll('button')].find(b => b.textContent === text)
-  expect(button).toBeTruthy()
-  await act(async () => button!.click())
+async function render() {
+  await act(async () => { root.render(<GroupLeaderboardPage userId="me" onExit={() => {}} onPlay={() => {}} />) })
 }
-
-it('creates a group with explicit consent and loads its real board', async () => {
-  await render()
-  await click('Create group')
-  expect(container.textContent).toContain('Your individual answers stay private.')
-  rpc.mockImplementation(async (name: string) => ({ data: name === 'fifa_english_create_group' ? group.id : name === 'fifa_english_my_groups' ? [group] : board, error: null }))
-  await click('Create')
-  expect(rpc).toHaveBeenCalledWith('fifa_english_create_group', { group_name: 'FIFA & friends' })
-  expect(container.querySelectorAll('ol li')).toHaveLength(2)
-  expect(container.textContent).toContain('You')
-})
-
-it('opens an invite without silently joining, then joins only on confirmation', async () => {
-  window.history.replaceState(null, '', '/?group=abcd1234efab5678')
-  await render()
-  expect(rpc.mock.calls.some(([name]) => name === 'fifa_english_join_group')).toBe(false)
-  rpc.mockImplementation(async (name: string) => ({ data: name === 'fifa_english_join_group' ? group.id : name === 'fifa_english_my_groups' ? [group] : board, error: null }))
-  await click('Join')
-  expect(rpc).toHaveBeenCalledWith('fifa_english_join_group', { code: group.invite_code })
-  expect(window.location.search).toBe('')
-})
-
-it('clears the old board while the previous week is loading', async () => {
-  let resolvePrevious!: (value: unknown) => void
-  rpc.mockImplementation(async (name: string, args?: { previous_week: boolean }) => {
-    if (name === 'fifa_english_my_groups') return { data: [group], error: null }
-    if (args?.previous_week) return new Promise(resolve => { resolvePrevious = resolve })
-    return { data: board, error: null }
-  })
+it('shows only names, ranks, scores and one back button', async () => {
   await render()
   expect(container.querySelectorAll('ol li')).toHaveLength(2)
-  await click('Last week')
-  expect(container.querySelector('ol')).toBeNull()
-  expect(container.textContent).toContain('Loading scores')
-  await act(async () => resolvePrevious({ data: { ...board, rows: board.rows.map(r => ({ ...r, points: 0 })) }, error: null }))
-  expect(container.textContent).toContain('No points were earned last week.')
+  expect(container.querySelector('[role="img"]')?.getAttribute('aria-label')).toBe('First place: Fifa')
+  const champion = container.querySelector('[role="img"]')!
+  expect(champion.className).toContain('flex')
+  const name = champion.querySelector('svg')!.nextElementSibling!
+  expect(name.textContent).toBe('Fifa')
+  expect(name.className).toContain('text-[#a66e19]')
+  expect(name.className).not.toContain('absolute')
+  expect(container.querySelector('ol')?.textContent).toBe('1Fifa1002Peta70')
+  expect(container.querySelectorAll('button')).toHaveLength(1)
+  expect(container.querySelector('button')?.getAttribute('aria-label')).toBe('Back to lesson')
+  expect(container.querySelector('header, h1, h2, form, details, select, dialog, input')).toBeNull()
+  expect(container.textContent).not.toMatch(/group|Invite|Scoring|Play|week|Resets|Leaderboard/i)
 })
-
-it('shows a load error instead of invented scores', async () => {
-  rpc.mockResolvedValue({ data: null, error: { message: 'offline' } })
+it('does not open setup controls even from an old invite URL', async () => {
+  window.history.replaceState(null, '', '/app?group=abcdefghijklmnop')
   await render()
-  expect(container.querySelector('[role="alert"]')?.textContent).toContain('Could not load groups')
-  expect(container.querySelector('ol')).toBeNull()
+  expect(container.querySelector('form, dialog, input')).toBeNull()
+  expect(container.querySelectorAll('button')).toHaveLength(1)
+  expect(container.querySelectorAll('ol li')).toHaveLength(2)
+  expect(rpc.mock.calls.map(call => call[0])).toEqual(['fifa_english_leaderboard'])
+})
+it('does not ask a learner without scores to join or create anything', async () => {
+  rpc.mockResolvedValue({ data: { rows: [] }, error: null })
+  await render()
+  expect(container.textContent).toBe('‹No scores yet.')
+  expect(container.querySelectorAll('button')).toHaveLength(1)
+})
+it('keeps rankings visible while refreshing in the background', async () => {
+  await render()
+  rpc.mockImplementation(() => new Promise(() => {}))
+  act(() => window.dispatchEvent(new Event('fifa-progress-sync')))
+  expect(container.querySelectorAll('ol li')).toHaveLength(2)
+  expect(container.querySelector('[aria-label="Loading scores"]')).toBeNull()
+})
+it('reports a load failure without opening a dialog or adding controls', async () => {
+  rpc.mockRejectedValue(new Error('offline'))
+  await render()
+  expect(container.textContent).toContain('Scores unavailable.')
+  expect(container.querySelectorAll('button')).toHaveLength(1)
+  expect(container.querySelector('dialog')).toBeNull()
+  expect(container.querySelector('[role="img"]')).toBeNull()
+})
+it('updates the name on the cup when the leader changes', async () => {
+  await render()
+  rpc.mockResolvedValue({ error: null, data: { rows: [{ id: 'friend', name: 'Peta', rank: 1, points: 120 }, { id: 'me', name: 'Fifa', rank: 2, points: 100 }] } })
+  await act(async () => window.dispatchEvent(new Event('fifa-progress-sync')))
+  expect(container.querySelector('[role="img"]')?.getAttribute('aria-label')).toBe('First place: Peta')
+  expect(container.querySelector('[role="img"]')?.textContent).toBe('Peta')
+})
+it('does not award a cup when everyone has zero points', async () => {
+  rpc.mockResolvedValue({ error: null, data: { rows: [{ id: 'me', name: 'Fifa', rank: 1, points: 0 }] } })
+  await render()
+  expect(container.querySelector('[role="img"]')).toBeNull()
+})
+it('keeps all returned members visible, including new and inactive zero-point members', async () => {
+  rpc.mockResolvedValue({ error: null, data: { rows: [
+    { id: 'me', name: 'Fifa', rank: 1, points: 100 },
+    { id: 'new', name: 'New member', rank: 2, points: 0 },
+    { id: 'inactive', name: 'Inactive member', rank: 2, points: 0 },
+  ] } })
+  await render()
+  expect(container.querySelectorAll('ol li')).toHaveLength(3)
+  expect(container.querySelector('ol')?.textContent).toBe('1Fifa100—New member0—Inactive member0')
+  expect(rpc.mock.calls).toEqual([['fifa_english_leaderboard']])
+})
+it('keeps member names visible if a background refresh fails', async () => {
+  await render()
+  rpc.mockRejectedValue(new Error('offline'))
+  await act(async () => window.dispatchEvent(new Event('fifa-progress-sync')))
+  expect(container.querySelectorAll('ol li')).toHaveLength(2)
+  expect(container.textContent).toContain('Scores unavailable.')
 })

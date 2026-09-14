@@ -64,21 +64,19 @@ export default function ContentLibraryPage() {
   return (
     <section className="mx-auto max-w-5xl space-y-6">
       <header className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
-        <p className="text-xs font-bold uppercase tracking-widest text-blue-700">Course content</p>
         <h1 className="mt-2 text-3xl font-black">Content Library</h1>
-        <p className="mt-3 text-slate-600">Browse everything saved in the course and inspect the exercises FIFA can receive.</p>
         <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {tabs.map(tab => <button key={tab.id} type="button" onClick={() => { setView(tab.id); setPage(0) }} aria-pressed={view === tab.id} className={`rounded-2xl border p-4 text-left ${view === tab.id ? 'border-blue-700 bg-blue-50 text-blue-900' : 'border-slate-200 hover:bg-slate-50'}`}><strong className="block text-3xl">{tab.count}</strong><span className="mt-1 block text-sm">{tab.label}</span></button>)}
         </div>
         <p className="mt-4 text-sm text-slate-500">{wordData.totalWords.toLocaleString()} total words including titles · {sentenceCount} distinct sentences used in exercises · 10 questions per practice round</p>
       </header>
 
-      <aside className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-950">
+      <details className="rounded-2xl bg-white p-5 text-sm leading-6 text-slate-500"><summary className="cursor-pointer font-semibold">Course notes</summary>
         <p><strong>Sentence structures:</strong> Individually authored grammar questions with Thai meanings and explanations. No random noun substitutions. Old story-recall scores do not count as mastery of these new exercises.</p>
-        <p><strong>Content gaps:</strong> Chapter 6 has not been supplied separately. Tap-for-word explanations and grammar exercises for every source sentence have not been added.</p>
+        <p><strong>Content gaps:</strong> Chapter 6 has not been supplied separately. Grammar exercises do not yet cover every source sentence.</p>
         <p>The vocabulary exercises use selected Thai meanings. The larger word dictionary contains automatic translations that still need review.</p>
         <p><strong>Completion:</strong> Open Progress to see each learner’s words, mistakes, activity, and mastery of the current exercises.</p>
-      </aside>
+      </details>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="text-sm font-bold">Search {tabs.find(tab => tab.id === view)?.label.toLowerCase()}<input type="search" value={search} onChange={event => { setSearch(event.target.value); setPage(0) }} placeholder="English, Thai, or story text…" className="mt-2 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 font-normal" /></label>

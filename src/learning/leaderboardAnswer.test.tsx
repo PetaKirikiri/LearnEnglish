@@ -2,7 +2,7 @@ import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import { expect, it, vi } from 'vitest'
 import QuizPage from './QuizPage'
-import { createQuizRound } from './quizContent'
+import { createPracticeRound } from './quizContent'
 import { questionProgressKey } from './progressData'
 import { trackProgress } from './progressSync'
 
@@ -16,9 +16,9 @@ it('submits the actual selected answer for server-side scoring, once per questio
   const container = document.createElement('div')
   const root = createRoot(container)
   try {
-    act(() => root.render(<QuizPage mode="vocabulary" learnerId="test" userId="test" onExit={() => {}} />))
-    const question = createQuizRound('vocabulary')[0]
-    const button = [...container.querySelectorAll('button')].find(b => b.textContent === `${question.choices.indexOf(question.answer) + 1}${question.answer}`)
+    act(() => root.render(<QuizPage learnerId="test" userId="test" onSignOut={() => {}} />))
+    const question = createPracticeRound()[0]
+    const button = [...container.querySelectorAll<HTMLButtonElement>('.answer-option')].find(b => b.textContent === question.answer)
     expect(button).toBeTruthy()
     act(() => { button!.click(); button!.click() })
     expect(trackProgress).toHaveBeenCalledExactlyOnceWith('test', 'answer', expect.objectContaining({

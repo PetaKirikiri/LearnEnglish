@@ -1,6 +1,7 @@
 import { readings } from '../content/readings'
 import { buildWordData, parseWords } from '../lib/wordData'
 import { grammarLessons } from './grammarLessons'
+import { grammarExpansion } from './grammarExpansion'
 import { vocabularyContexts } from './vocabularyContexts'
 
 export type QuizMode = 'vocabulary' | 'sentences'
@@ -13,9 +14,12 @@ export type QuizQuestion = {
   choices: readonly string[]
   answer: string
   sourceTitle: string
+  sourceKind?: 'story' | 'practice'
+  sourceReadingId?: string
   example: string
   spokenText: string
   audioUrl: string
+  gapAudioUrl?: string
   contextSentence?: string
   contextAudioUrl?: string
   grammarFocus?: string
@@ -204,25 +208,29 @@ function replaceFirstWord(text: string, word: string) {
 
 function createSentencePool(random: () => number): QuizQuestion[] {
   const sentences = getStorySentences()
-  const pool = grammarLessons.map((lesson): QuizQuestion => {
+  const pool = [...grammarLessons, ...grammarExpansion].map((lesson): QuizQuestion => {
     const sentence = sentences.find(({ text }) => text === lesson.sentence)
-    if (!sentence) throw new Error(`Grammar lesson source not found: ${lesson.sentence}`)
-    const prompt = replaceFirstWord(sentence.text, lesson.target)
-    if (prompt === sentence.text || !lesson.choices.includes(lesson.target)) {
+    const reading = readings.find(r => r.id === lesson.practice?.readingId)
+    if (!sentence && !reading) throw new Error(`Grammar lesson source not found: ${lesson.sentence}`)
+    const prompt = replaceFirstWord(lesson.sentence, lesson.target)
+    if (prompt === lesson.sentence || !lesson.choices.includes(lesson.target)) {
       throw new Error(`Invalid grammar lesson target: ${lesson.target}`)
     }
     return {
       // New IDs keep old story-recall answers from counting as grammar mastery.
-      id: `grammar-v1-${sentence.id}-${lesson.target.toLowerCase()}`,
+      id: sentence ? `grammar-v1-${sentence.id}-${lesson.target.toLowerCase()}` : lesson.practice!.id,
       mode: 'sentences',
       instruction: 'Choose the word that fits this meaning',
       prompt,
       choices: shuffle(lesson.choices, random),
       answer: lesson.target,
-      sourceTitle: sentence.sourceTitle,
-      example: sentence.text,
-      spokenText: sentence.text,
-      audioUrl: `/audio/lessons/sentence-${sentence.id}.wav`,
+      sourceTitle: sentence ? sentence.sourceTitle : `Practice · ${reading!.title}`,
+      sourceKind: sentence ? 'story' : 'practice',
+      sourceReadingId: sentence ? readings.find(r => r.title === sentence.sourceTitle)!.id : reading!.id,
+      example: lesson.sentence,
+      spokenText: lesson.sentence,
+      audioUrl: sentence ? `/audio/lessons/sentence-${sentence.id}.wav` : `/audio/lessons/${lesson.practice!.id}.wav`,
+      gapAudioUrl: sentence ? `/audio/lessons/gap-${sentence.id}-${lesson.target.toLowerCase()}.wav` : `/audio/lessons/gap-${lesson.practice!.id}.wav`,
       grammarFocus: lesson.focus,
       thaiPrompt: lesson.thai,
       explanation: lesson.why,
@@ -317,11 +325,19 @@ export function createQuizRound(
   return chosen
 }
 
+// One learner stream; modes remain metadata for learning history only.
+export function createPracticeRound(round = 0, reviewQuestionIds: readonly string[] = []): readonly QuizQuestion[] {
+  const sentences = createQuizRound('sentences', round, reviewQuestionIds.filter(id => id.startsWith('grammar-')))
+  const words = createQuizRound('vocabulary', round, reviewQuestionIds.filter(id => id.startsWith('vocabulary-')))
+  return sentences.slice(0, 5).flatMap((question, index) => [question, words[index]])
+}
+
 export function getLessonAudioItems() {
   const random = createRandom(20260912)
   const questions = [...createVocabularyPool(random), ...createSentencePool(random)]
   const byUrl = new Map(questions.map(({ audioUrl, spokenText }) => [audioUrl, { audioUrl, spokenText }]))
   for (const question of questions) {
+    if (question.gapAudioUrl) byUrl.set(question.gapAudioUrl, { audioUrl: question.gapAudioUrl, spokenText: question.prompt.replace('_____', '[[slnc 650]]') })
     if (question.contextSentence && question.contextAudioUrl) {
       byUrl.set(question.contextAudioUrl, { audioUrl: question.contextAudioUrl, spokenText: question.contextSentence })
     }

@@ -33,14 +33,26 @@ export function speakEnglish(text: string, audioUrl: string, onState?: (state: S
     if (id !== playbackId || fallbackStarted) return
     fallbackStarted = true
     if (!canUseBrowserVoice()) { notify('blocked'); return }
-    const utterance = new SpeechSynthesisUtterance(text)
-    const voice = window.speechSynthesis.getVoices().find(v => v.lang.toLowerCase().startsWith('en'))
-    utterance.lang = voice?.lang ?? 'en-US'
-    utterance.voice = voice ?? null
-    utterance.rate = 0.86
-    utterance.onend = () => notify('ended')
-    utterance.onerror = () => notify('blocked')
-    window.speechSynthesis.speak(utterance)
+    const parts = text.split('_____')
+    function speakPart(index: number) {
+      if (id !== playbackId) return
+      if (index >= parts.length) { notify('ended'); return }
+      const advance = () => {
+        if (id !== playbackId) return
+        if (index < parts.length - 1) window.setTimeout(() => speakPart(index + 1), 650)
+        else notify('ended')
+      }
+      if (!parts[index].trim()) { advance(); return }
+      const utterance = new SpeechSynthesisUtterance(parts[index])
+      const voice = window.speechSynthesis.getVoices().find(v => v.lang.toLowerCase().startsWith('en'))
+      utterance.lang = voice?.lang ?? 'en-US'
+      utterance.voice = voice ?? null
+      utterance.rate = 0.86
+      utterance.onend = advance
+      utterance.onerror = () => notify('blocked')
+      window.speechSynthesis.speak(utterance)
+    }
+    speakPart(0)
   }
   if (typeof window !== 'undefined' && 'Audio' in window) {
     // Reuse the element so phones can retain playback permission after a tap.

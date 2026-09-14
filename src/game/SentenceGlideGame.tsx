@@ -21,6 +21,7 @@ const choiceTimeMs = 5000
 
 class GlideScene extends Phaser.Scene {
   private flyer!: Phaser.GameObjects.Container
+  private squirrel!: Phaser.GameObjects.Sprite
   private trail!: Phaser.GameObjects.Graphics
   private speedLines!: Phaser.GameObjects.Graphics
   private distanceText!: Phaser.GameObjects.Text
@@ -36,7 +37,7 @@ class GlideScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('flying-squirrel', '/game/flying-squirrel.png')
+    this.load.image('flying-squirrel-frames', '/game/flying-squirrel-frames.png')
   }
 
   create() {
@@ -57,8 +58,28 @@ class GlideScene extends Phaser.Scene {
 
     this.speedLines = this.add.graphics()
     this.trail = this.add.graphics()
-    const squirrel = this.add.image(0, 0, 'flying-squirrel').setDisplaySize(108, 72)
-    this.flyer = this.add.container(width * 0.28, height * 0.52, [squirrel])
+    const squirrelTexture = this.textures.get('flying-squirrel-frames')
+    const source = squirrelTexture.getSourceImage() as HTMLImageElement
+    const frameWidth = Math.floor(source.width / 4)
+    const frameTop = Math.floor(source.height * 0.16)
+    const frameHeight = Math.floor(source.height * 0.68)
+    for (let index = 0; index < 4; index += 1) {
+      squirrelTexture.add(`glide-${index}`, 0, index * frameWidth, frameTop, frameWidth, frameHeight)
+    }
+    this.anims.create({
+      key: 'squirrel-flap',
+      frames: [0, 1, 2, 1, 0].map((index) => ({ key: 'flying-squirrel-frames', frame: `glide-${index}` })),
+      frameRate: 11,
+      repeat: 0,
+    })
+    this.anims.create({
+      key: 'squirrel-boost',
+      frames: [0, 1, 2, 3, 2, 1, 0].map((index) => ({ key: 'flying-squirrel-frames', frame: `glide-${index}` })),
+      frameRate: 15,
+      repeat: 0,
+    })
+    this.squirrel = this.add.sprite(0, 0, 'flying-squirrel-frames', 'glide-0').setDisplaySize(150, 112)
+    this.flyer = this.add.container(width * 0.28, height * 0.52, [this.squirrel])
 
     this.distanceText = this.add.text(width - 18, height - 18, '0 m', {
       color: '#ffffff',
@@ -79,6 +100,7 @@ class GlideScene extends Phaser.Scene {
       const boost = 26 * responseFactor * streakMultiplier
       this.speed = Math.min(420, this.speed + boost)
       this.lift = -45 - Math.min(streak, 5) * 2
+      this.squirrel.play(streak >= 4 ? 'squirrel-boost' : 'squirrel-flap', true)
       this.cameras.main.flash(90, 255, 180, 55, false)
       this.cameras.main.shake(70 + streak * 12, 0.003 + streak * 0.001)
       const crossedPowerTier = [170, 270, 370].some((tier) => previousSpeed < tier && this.speed >= tier)
@@ -217,6 +239,12 @@ export default function SentenceGlideGame({ onExit }: { onExit: () => void }) {
       width: mountRef.current.clientWidth || 390,
       height: mountRef.current.clientHeight || 844,
       transparent: false,
+      render: {
+        antialias: true,
+        antialiasGL: true,
+        pixelArt: false,
+        roundPixels: false,
+      },
       scene,
       scale: { mode: Phaser.Scale.RESIZE, autoCenter: Phaser.Scale.CENTER_BOTH },
     })

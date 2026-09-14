@@ -1,14 +1,54 @@
 import { describe, expect, it } from 'vitest'
 import { readings } from '../content/readings'
 import { parseWords } from '../lib/wordData'
-import { createQuizRound, getQuizCatalogue } from './quizContent'
+import { createQuizRound, createPracticeRound, getQuizCatalogue } from './quizContent'
 import { grammarLessons } from './grammarLessons'
+import { grammarExpansion } from './grammarExpansion'
 import { existsSync, readFileSync } from 'node:fs'
 
 const storyText = readings.map(({ title, paragraphs }) => [title, ...paragraphs].join(' ')).join(' ')
 const storyWords = new Set(parseWords(storyText))
 
 describe('story-powered quiz content', () => {
+  it('gives every grammar target at least five distinct, individually tracked questions', () => {
+    const questions = getQuizCatalogue().sentences
+    const targets = ['a','and','are','at','because','before','but','by','do','does','for','from','her','in','is','its','me','my','of','our','the','them','these','they','this','to','us','was','we','will','with','your']
+    expect([...new Set(questions.map(q => q.answer.toLowerCase()))].sort()).toEqual(targets)
+    for (const word of targets) {
+      const examples = questions.filter(q => q.answer.toLowerCase() === word)
+      expect(examples.length, word).toBeGreaterThanOrEqual(5)
+      expect(new Set(examples.map(q => q.example.toLowerCase())).size, word).toBe(examples.length)
+      for (const q of examples) expect(createPracticeRound(0, [q.id])[0].id).toBe(q.id)
+    }
+  })
+  it('does not use meaning-only contrasts as grammar distractors', () => {
+    for (const q of getQuizCatalogue().sentences) {
+      const choices = q.choices.map(c => c.toLowerCase())
+      if (q.answer.toLowerCase() === 'before') expect(choices).not.toContain('after')
+      if (q.answer.toLowerCase() === 'because') expect(choices).not.toContain('although')
+      if (q.answer.toLowerCase() === 'but') expect(choices).not.toContain('because')
+      if (q.answer.toLowerCase() === 'and') expect(q.prompt.toLowerCase()).toContain('both')
+    }
+  })
+  it('teaches the in ten distinct story sentences with separate review IDs and audio', () => {
+    const questions = getQuizCatalogue().sentences.filter(q => q.answer.toLowerCase() === 'the')
+    expect(questions).toHaveLength(10)
+    expect(new Set(questions.map(q => q.example)).size).toBe(10)
+    expect(new Set(questions.map(q => q.id)).size).toBe(10)
+    expect(new Set(questions.map(q => q.sourceTitle)).size).toBe(8)
+    for (const q of questions) {
+      expect(createPracticeRound(0, [q.id])[0].id).toBe(q.id)
+      expect(existsSync(`public${q.gapAudioUrl}`)).toBe(true)
+    }
+  })
+  it('excludes the ambiguous cloudy/rainy conjunction question, including from review', () => {
+    const retired = 'grammar-v1-climate-around-the-world-17-and'
+    expect(getQuizCatalogue().sentences.some(q => q.id === retired)).toBe(false)
+    for (let round = 0; round < 12; round++) {
+      expect(createPracticeRound(round, [retired]).some(q => q.id === retired)).toBe(false)
+    }
+    expect(storyText).toContain('It is very cloudy and rainy here, although it is not snowy.')
+  })
   it('builds a full vocabulary round from words in the supplied stories', () => {
     const questions = createQuizRound('vocabulary')
 
@@ -21,12 +61,16 @@ describe('story-powered quiz content', () => {
     }
   })
 
-  it('builds sentence questions from exact story sentences', () => {
-    const questions = createQuizRound('sentences')
-
-    expect(questions).toHaveLength(10)
+  it('distinguishes exact story sentences from labelled story-based practice', () => {
+    const questions = getQuizCatalogue().sentences
     for (const question of questions) {
-      expect(storyText).toContain(question.example)
+      if (question.sourceKind === 'story') {
+        expect(storyText).toContain(question.example)
+      } else {
+        expect(question.sourceKind).toBe('practice')
+        expect(question.sourceTitle).toMatch(/^Practice · /)
+        expect(readings.some(r => r.id === question.sourceReadingId)).toBe(true)
+      }
       expect(question.prompt).toContain('_____')
       expect(question.choices).toContain(question.answer)
       expect(question.example.toLocaleLowerCase('en')).toContain(question.answer.toLowerCase())
@@ -62,10 +106,10 @@ describe('story-powered quiz content', () => {
 
   it('only serves authored grammar contrasts with meaning, feedback, and existing audio', () => {
     const questions = getQuizCatalogue().sentences
-    expect(questions).toHaveLength(grammarLessons.length)
+    expect(questions).toHaveLength(grammarLessons.length + grammarExpansion.length)
     expect(new Set(questions.map(q => q.id)).size).toBe(questions.length)
     for (const question of questions) {
-      expect(question.id).toMatch(/^grammar-v1-/)
+      expect(question.id).toMatch(/^grammar-(v1|practice-v1)-/)
       expect(question.prompt.replace('_____', question.answer)).toBe(question.example)
       expect(new Set(question.choices).size).toBe(question.choices.length)
       expect(question.grammarFocus).toBeTruthy()
@@ -73,6 +117,21 @@ describe('story-powered quiz content', () => {
       expect(question.explanationThai).toMatch(/[\u0e00-\u0e7f]/)
       expect(question.explanation).toBeTruthy()
       expect(existsSync(`public${question.audioUrl}`)).toBe(true)
+      expect(existsSync(`public${question.gapAudioUrl}`)).toBe(true)
+      for (const url of [question.audioUrl, question.gapAudioUrl]) {
+        const wav = readFileSync(`public${url}`)
+        let samples: Buffer | undefined
+        for (let offset = 12; offset + 8 <= wav.length;) {
+          const size = wav.readUInt32LE(offset + 4)
+          if (wav.toString('ascii', offset, offset + 4) === 'data') {
+            samples = wav.subarray(offset + 8, offset + 8 + size)
+            break
+          }
+          offset += 8 + size + size % 2
+        }
+        expect(samples?.length, url).toBeGreaterThan(22050)
+        expect(samples?.some(byte => byte !== 0), url).toBe(true)
+      }
       expect(['father', 'mother', 'sister', 'brother', 'cold', 'train', 'house']).not.toContain(question.answer)
     }
   })
@@ -85,6 +144,15 @@ describe('story-powered quiz content', () => {
   })
 
   it('does not revive retired story-recall questions from review memory', () => {
-    expect(createQuizRound('sentences', 0, ['sentence-story-9-0-sister']).every(q => q.id.startsWith('grammar-v1-'))).toBe(true)
+    expect(createQuizRound('sentences', 0, ['sentence-story-9-0-sister']).every(q => q.id.startsWith('grammar-'))).toBe(true)
   })
+})
+
+it('builds one varied practice stream and brings mistakes back for review', () => {
+  const first = createPracticeRound()
+  expect(first).toHaveLength(10)
+  expect(new Set(first.map(q => q.id)).size).toBe(10)
+  expect(first.map(q => q.mode)).toEqual(Array.from({ length: 5 }, () => ['sentences', 'vocabulary']).flat())
+  const review = createPracticeRound(1, [first[0].id, first[1].id])
+  expect(review.slice(0, 2).map(q => q.id)).toEqual(first.slice(0, 2).map(q => q.id))
 })

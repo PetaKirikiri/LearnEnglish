@@ -48,3 +48,21 @@ it('ignores stale ended callbacks after navigation or stopping', async () => {
   expect(state.mock.calls).toEqual([['playing']])
   expect(media[0].pause).toHaveBeenCalled()
 })
+
+it('keeps a silent gap in fallback speech without speaking the answer or underscores', async () => {
+  vi.useFakeTimers()
+  const utterances: { text: string; onend?: () => void }[] = []
+  vi.stubGlobal('SpeechSynthesisUtterance', class { text: string; constructor(text: string) { this.text = text } })
+  vi.stubGlobal('speechSynthesis', { cancel: vi.fn(), getVoices: () => [], speak: (u: {text:string; onend?: () => void}) => utterances.push(u) })
+  const { speakEnglish, stopEnglishSpeech } = await import('./speech')
+  speakEnglish('Thanks a lot _____ your last letter.', '/gap.wav')
+  media[0].onerror!()
+  expect(utterances.map(u => u.text)).toEqual(['Thanks a lot '])
+  utterances[0].onend!()
+  vi.advanceTimersByTime(649)
+  expect(utterances).toHaveLength(1)
+  vi.advanceTimersByTime(1)
+  expect(utterances.map(u => u.text)).toEqual(['Thanks a lot ', ' your last letter.'])
+  stopEnglishSpeech()
+  vi.useRealTimers()
+})

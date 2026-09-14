@@ -1,3 +1,4 @@
+import QuestionReportsPage from './pages/QuestionReportsPage'
 import { useMemo, useState } from 'react'
 import { useAuth } from './auth/authContext'
 import { readings } from './content/readings'
@@ -10,22 +11,33 @@ import WordDataPage from './pages/WordDataPage'
 import LoginPage from './pages/LoginPage'
 import StudentHomePage from './pages/StudentHomePage'
 import ContentLibraryPage from './pages/ContentLibraryPage'
+import MembersTablePage from './pages/MembersTablePage'
+import QuestionsTablePage from './pages/QuestionsTablePage'
 import LearnerProgressPage from './pages/LearnerProgressPage'
 import { useLearningActivity } from './learning/useLearningActivity'
+import LeaderboardPage from './pages/LeaderboardPage'
 import TrainingPlanPage from './pages/TrainingPlanPage'
+import { appDestination } from './auth/appAccess'
 
 export default function App() {
   const { loading, user, displayName, signOut } = useAuth()
   const [activeTab, setActiveTab] = useState<
-    'progress' | 'training-plan' | 'content' | 'stories' | 'word-data' | 'syllabus'
-  >(window.location.hash === '#training-plan' ? 'training-plan' : 'progress')
+    'members' | 'library' | 'reports' | 'leaderboard' | 'progress' | 'training-plan' | 'content' | 'stories' | 'word-data' | 'syllabus'
+  >(() => {
+    const tab = window.location.hash.slice(1)
+    switch (tab) {
+      case 'members': case 'library': case 'reports': case 'leaderboard': case 'progress':
+      case 'training-plan': case 'content': case 'stories': case 'word-data': case 'syllabus': return tab
+      default: return 'members'
+    }
+  })
   const [activeWordDataView, setActiveWordDataView] = useState<
     'all-words' | 'determiners'
   >('all-words')
   const wordData = useMemo(() => loadOrBuildWordData(readings), [])
   const determiners = useMemo(() => buildDeterminerData(wordData), [wordData])
-  const isAdminArea = window.location.pathname.startsWith('/admin')
-  const syncState = useLearningActivity(user?.id, displayName, !isAdminArea)
+  const destination = user ? appDestination(user.id, window.location.pathname) : 'student'
+  const syncState = useLearningActivity(user?.id, displayName, destination === 'student')
 
   if (loading) {
     return (
@@ -37,7 +49,7 @@ export default function App() {
 
   if (!user) return <LoginPage />
 
-  if (!isAdminArea) {
+  if (destination === 'student') {
     return (
       <StudentHomePage
         userId={user.id}
@@ -49,72 +61,25 @@ export default function App() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-100 px-5 py-8 text-slate-900 sm:px-8 sm:py-12">
-      <div className="mx-auto mb-4 flex max-w-3xl items-center justify-between gap-4 text-sm">
-        <p className="truncate text-slate-600">
-          Admin tools · Signed in as <span className="font-bold text-slate-900">{displayName ?? 'Player'}</span>
-        </p>
-        <div className="flex shrink-0 items-center gap-4">
-          <a href="/" className="font-bold text-blue-700 hover:text-blue-900">Student app</a>
-          <button
-            type="button"
-            onClick={() => void signOut()}
-            className="font-bold text-blue-700 hover:text-blue-900"
-          >
-            Sign out
-          </button>
-        </div>
-      </div>
-      <nav
-        aria-label="Main sections"
-        className="mx-auto mb-6 flex max-w-3xl flex-wrap rounded-2xl bg-white p-1.5 shadow-md"
-      >
-        <button type="button" aria-pressed={activeTab === 'progress'} onClick={() => setActiveTab('progress')} className={`flex-1 rounded-xl px-3 py-3 text-sm font-bold transition ${activeTab === 'progress' ? 'bg-blue-700 text-white' : 'text-slate-600 hover:bg-blue-50'}`}>Progress</button>
-        <button type="button" aria-pressed={activeTab === 'training-plan'} onClick={() => setActiveTab('training-plan')} className={`flex-1 rounded-xl px-3 py-3 text-sm font-bold transition ${activeTab === 'training-plan' ? 'bg-blue-700 text-white' : 'text-slate-600 hover:bg-blue-50'}`}>Training Plan</button>
-        <button type="button" aria-pressed={activeTab === 'content'} onClick={() => setActiveTab('content')} className={`flex-1 rounded-xl px-3 py-3 text-sm font-bold transition ${activeTab === 'content' ? 'bg-blue-700 text-white' : 'text-slate-600 hover:bg-blue-50'}`}>Content Library</button>
-        <button
-          type="button"
-          aria-pressed={activeTab === 'stories'}
-          onClick={() => setActiveTab('stories')}
-          className={`flex-1 rounded-xl px-5 py-3 text-sm font-bold transition ${
-            activeTab === 'stories'
-              ? 'bg-blue-700 text-white'
-              : 'text-slate-600 hover:bg-blue-50'
-          }`}
-        >
-          Stories
-        </button>
-        <button
-          type="button"
-          aria-pressed={activeTab === 'word-data'}
-          onClick={() => setActiveTab('word-data')}
-          className={`flex-1 rounded-xl px-5 py-3 text-sm font-bold transition ${
-            activeTab === 'word-data'
-              ? 'bg-blue-700 text-white'
-              : 'text-slate-600 hover:bg-blue-50'
-          }`}
-        >
-          Word Data
-        </button>
-        <button
-          type="button"
-          aria-pressed={activeTab === 'syllabus'}
-          onClick={() => setActiveTab('syllabus')}
-          className={`flex-1 rounded-xl px-3 py-3 text-sm font-bold transition sm:px-5 ${
-            activeTab === 'syllabus'
-              ? 'bg-blue-700 text-white'
-              : 'text-slate-600 hover:bg-blue-50'
-          }`}
-        >
-          Syllabus
-        </button>
+    <main className="admin-sheet min-h-screen bg-white px-4 py-5 text-slate-900 sm:px-6">
+      <nav aria-label="Main sections" className="mb-4 flex items-center gap-1 border-b border-slate-300">
+        <a href="/app" aria-label="Student app" title="Student app" className="flex h-11 w-11 items-center justify-center text-xl text-slate-500">‹</a>
+        {(['members','content'] as const).map(id=><button key={id} aria-pressed={activeTab===id} onClick={()=>{setActiveTab(id);window.history.replaceState(null,'',`#${id}`)}} className={`min-h-11 border-b-2 px-4 text-sm font-semibold ${activeTab===id ? 'border-teal-800 text-teal-900' : 'border-transparent text-slate-500'}`}>{id==='members' ? 'Members' : 'Content'}</button>)}
       </nav>
 
-      {activeTab === 'progress' ? (
+      {activeTab === 'members' ? (
+        <MembersTablePage />
+      ) : activeTab === 'reports' ? (
+        <QuestionReportsPage />
+      ) : activeTab === 'leaderboard' ? (
+        <LeaderboardPage />
+      ) : activeTab === 'progress' ? (
         <LearnerProgressPage />
       ) : activeTab === 'training-plan' ? (
         <TrainingPlanPage />
       ) : activeTab === 'content' ? (
+        <QuestionsTablePage />
+      ) : activeTab === 'library' ? (
         <ContentLibraryPage />
       ) : activeTab === 'stories' ? (
         <ReadingPage />
