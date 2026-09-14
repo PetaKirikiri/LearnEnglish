@@ -1,37 +1,8 @@
-import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
-
-type Row = { id: string; name: string; rank: number; points: number }
-type Result = { userId: string; rows?: Row[]; error?: string }
+import { useMemberLeaderboard } from '../learning/useMemberLeaderboard'
 
 export default function GroupLeaderboardPage({ userId, onExit }: { userId: string; onExit: () => void; onPlay: () => void }) {
-  const [result, setResult] = useState<Result | null>(null)
-  const [refresh, setRefresh] = useState(0)
-  const current = result?.userId === userId ? result : null
+  const current = useMemberLeaderboard(userId)
   const leader = current?.rows?.find(row => row.rank === 1 && row.points > 0)
-
-  useEffect(() => {
-    let active = true
-    void (async () => {
-      try {
-        // Includes all FIFA English members, even without a group or any points.
-        const board = await supabase.rpc('fifa_english_leaderboard')
-        if (board.error) throw board.error
-        if (active) setResult({ userId, rows: (board.data as { rows: Row[] }).rows })
-      } catch {
-        if (active) setResult(old => ({ userId, rows: old?.userId === userId ? old.rows : undefined, error: 'Scores unavailable. Retrying…' }))
-      }
-    })()
-    return () => { active = false }
-  }, [userId, refresh])
-
-  useEffect(() => {
-    const update = () => { if (document.visibilityState === 'visible') setRefresh(n => n + 1) }
-    const timer = window.setInterval(update, 30000)
-    document.addEventListener('visibilitychange', update)
-    window.addEventListener('fifa-progress-sync', update)
-    return () => { clearInterval(timer); document.removeEventListener('visibilitychange', update); window.removeEventListener('fifa-progress-sync', update) }
-  }, [])
 
   return <main aria-label="Leaderboard" className="min-h-[100dvh] bg-[#f7f7f3] px-5 py-6 text-slate-900">
     <div className="mx-auto max-w-lg">

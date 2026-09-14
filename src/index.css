@@ -66,6 +66,9 @@ button:not(:disabled), summary { cursor: pointer; }
 .brand-mark { width: 28px; height: 28px; display: flex; flex-direction: column; gap: 4px; justify-content: center; transform: skewY(-12deg); }
 .brand-mark i { display: block; background: #354f39; height: 5px; border-radius: 1px; }
 .brand-mark i:nth-child(2) { width: 75%; }.brand-mark i:nth-child(3) { width: 50%; }
+.champion-button { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; max-width: min(65vw, 260px); flex-shrink: 0; padding: 8px 12px; border: 1px solid #ddc489; border-radius: 12px; background: #fffaf0; color: #a66e19; font-size: 16px; font-weight: 700; }
+.champion-button:hover { background: #fff1cc; }
+.champion-button:focus-visible { outline: 2px solid #a66e19; outline-offset: 3px; }
 .account-menu { position: relative; z-index: 10; }
 .account-menu summary { list-style: none; display: flex; gap: 9px; align-items: center; min-height: 44px; font-size: 13px; cursor: pointer; border-radius: 8px; }
 .account-menu summary::-webkit-details-marker { display: none; }
