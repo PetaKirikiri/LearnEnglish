@@ -1,35 +1,45 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { thaiTranslations } from '../content/thaiTranslations.generated'
+import { normalizeHelpWord } from './helpPoints'
 
-type Hint = { index: number; meaning: string; left: number; top: number; below: boolean }
-export default function WordHelp({ text }: { text: string }) {
-  const [hint, setHint] = useState<Hint | null>(null)
-  const wrapper = useRef<HTMLSpanElement>(null)
-  const id = useId()
-  const pinned = useRef<number | null>(null)
-  function show(element: HTMLElement, index: number, meaning: string) {
-    const box = element.getBoundingClientRect()
-    setHint({ index, meaning, left: Math.max(12, Math.min(box.left, window.innerWidth - 204)), top: box.top < 90 ? box.bottom + 8 : box.top - 8, below: box.top < 90 })
+export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining }: {
+  text: string
+  onHelp?: (word: string) => void
+  onOpenChange?: (open: boolean) => void
+  pointsRemaining?: number
+}) {
+  const [hint, setHint] = useState<{ word: string; meaning?: string } | null>(null)
+  const dialog = useRef<HTMLDialogElement>(null)
+  const titleId = useId()
+  const trigger = useRef<HTMLElement | null>(null)
+  function close() {
+    dialog.current?.close()
+    setHint(null)
+    onOpenChange?.(false)
+    trigger.current?.focus()
   }
-  useEffect(() => {
-    const outside = (event: PointerEvent) => { if (!wrapper.current?.contains(event.target as Node)) { setHint(null); pinned.current = null } }
-    const dismiss = () => { setHint(null); pinned.current = null }
-    const escape = (event: KeyboardEvent) => { if (event.key === 'Escape') dismiss() }
-    document.addEventListener('pointerdown', outside)
-    window.addEventListener('keydown', escape)
-    window.addEventListener('scroll', dismiss, true)
-    window.addEventListener('resize', dismiss)
-    return () => { document.removeEventListener('pointerdown', outside); window.removeEventListener('keydown', escape); window.removeEventListener('scroll', dismiss, true); window.removeEventListener('resize', dismiss) }
-  }, [])
-  return <span ref={wrapper}>{text.split(/([A-Za-z]+(?:[’'][A-Za-z]+)?)/g).map((token, index) => {
-    const meaning = thaiTranslations[token.toLowerCase()]
-    if (!meaning || !/^[A-Za-z]/.test(token)) return token
-    const visible = hint?.index === index
-    return <span key={index} role="button" tabIndex={0} aria-label={`Help with ${token}`} aria-expanded={visible} aria-describedby={visible ? id : undefined} className="word-token"
-      onMouseEnter={event => { if (pinned.current === null) show(event.currentTarget, index, meaning) }} onMouseLeave={() => { if (pinned.current === null) setHint(null) }}
-      onFocus={event => { if (event.currentTarget.matches(':focus-visible')) show(event.currentTarget, index, meaning) }} onBlur={() => { setHint(null); pinned.current = null }}
-      onClick={event => { if (pinned.current === index) { pinned.current = null; setHint(null) } else { pinned.current = index; show(event.currentTarget, index, meaning) } }}
-      onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); setHint(null) } if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); if (visible) setHint(null); else show(event.currentTarget, index, meaning) } }}>{token}</span>
-  })}{hint && createPortal(<span id={id} role="tooltip" lang="th" style={{ position: 'fixed', left: hint.left, top: hint.top, transform: hint.below ? undefined : 'translateY(-100%)', zIndex: 100 }} className="pointer-events-none w-48 rounded-xl bg-[#182b37] px-3 py-2 text-sm font-normal leading-6 text-white shadow-xl">{hint.meaning}</span>, document.body)}</span>
+  function open(word: string, element: HTMLElement) {
+    const normalized = normalizeHelpWord(word)
+    const meaning = thaiTranslations[normalized]
+    trigger.current = element
+    // Unknown words still have a token, but no charge for missing information.
+    if (meaning) onHelp?.(normalized)
+    setHint({ word, meaning })
+    onOpenChange?.(true)
+    dialog.current?.showModal()
+  }
+  return <span>{text.split(/([\p{L}]+(?:[’'][\p{L}]+)*)/gu).map((token, index) => {
+    if (!/^\p{L}/u.test(token)) return token
+    return <span key={index} role="button" tabIndex={0} aria-label={`Help with ${token}`} aria-haspopup="dialog" className="word-token"
+      onClick={event => open(token, event.currentTarget)}
+      onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); open(token, event.currentTarget) } }}>{token}</span>
+  })}{createPortal(<dialog ref={dialog} className="word-help-dialog" aria-labelledby={titleId}
+    onKeyDown={event => event.stopPropagation()}
+    onCancel={event => { event.preventDefault(); close() }}
+    onClick={event => { if (event.target === event.currentTarget) { const r = event.currentTarget.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) close() } }}>
+    <div className="flex items-center justify-between gap-4"><h2 id={titleId} className="text-2xl font-bold">{hint?.word}</h2><button type="button" aria-label="Close word help" onClick={close} className="icon-button">×</button></div>
+    <p className="mt-5 text-xl leading-relaxed" lang={hint?.meaning ? 'th' : 'en'}>{hint?.meaning ?? 'Translation not available yet.'}</p>
+    {pointsRemaining !== undefined && <p className="mt-5 text-sm text-slate-500">{pointsRemaining} pts available</p>}
+  </dialog>, document.body)}</span>
 }

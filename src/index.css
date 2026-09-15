@@ -53,6 +53,9 @@ button:not(:disabled), summary { cursor: pointer; }
 .report-dialog::backdrop { background: #10283275; backdrop-filter: blur(4px); }
 .word-token { text-decoration: underline dotted #899ca6; text-underline-offset: 5px; text-decoration-thickness: 1px; border-radius: 3px; cursor: help; }
 .word-token:hover, .word-token[aria-expanded="true"] { color: #17685e; background: #e3f2ed; }
+.word-token:focus-visible { outline: 2px solid #17685e; outline-offset: 3px; }
+.word-help-dialog { margin: auto; width: min(360px, calc(100% - 32px)); max-height: calc(100dvh - 32px); overflow-y: auto; border: 0; border-radius: 20px; padding: 24px; color: #202922; background: #fff; box-shadow: 0 24px 90px #11273340; }
+.word-help-dialog::backdrop { background: #10283265; backdrop-filter: blur(3px); }
 @media (max-width: 600px) { .report-dialog { margin: auto 0 0; width: 100%; max-width: none; border-radius: 24px 24px 0 0; padding-bottom: max(24px, env(safe-area-inset-bottom)); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 

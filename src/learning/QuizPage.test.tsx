@@ -43,6 +43,35 @@ function answer(index: number, correct = true) {
 }
 function advance(ms: number) { act(() => vi.advanceTimersByTime(ms)) }
 
+function openHint(word: string) {
+  act(() => container.querySelector<HTMLElement>(`[aria-label="Help with ${word}"]`)!.click())
+}
+function closeHint() {
+  act(() => document.querySelector<HTMLButtonElement>('[aria-label="Close word help"]')!.click())
+}
+it('reduces the available reward once per word, records hints with the answer, and resets on the next question', () => {
+  openHint('train')
+  expect(container.querySelector('[data-testid="available-points"]')?.textContent).toContain('8 pts')
+  act(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: '1' })))
+  expect(container.querySelector('footer')).toBeNull()
+  closeHint()
+  openHint('train'); closeHint()
+  expect(container.querySelector('[data-testid="available-points"]')?.textContent).toContain('8 pts')
+  openHint('city'); closeHint()
+  expect(container.querySelector('[data-testid="available-points"]')?.textContent).toContain('6 pts')
+  click('Leaderboard'); click('Return to question')
+  expect(container.querySelector('[data-testid="available-points"]')?.textContent).toContain('6 pts')
+  answer(0)
+  const event = vi.mocked(trackProgress).mock.calls.find(call => call[1] === 'answer')!
+  expect(event[2]?.helpWords).toEqual(['train', 'city'])
+  openHint('build')
+  advance(10000)
+  expect(container.querySelector('footer')).not.toBeNull()
+  expect(event[2]?.helpWords).toEqual(['train', 'city'])
+  closeHint(); advance(1200)
+  expect(container.querySelector('[data-testid="available-points"]')?.textContent).toContain('10 pts')
+})
+
 it('keeps every option neutral until answered and clears feedback on every new question', () => {
   for (let i = 0; i < 10; i++) {
     const options = [...container.querySelectorAll<HTMLButtonElement>('.answer-option')]

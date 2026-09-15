@@ -14,6 +14,7 @@ import { createPracticeRound } from './quizContent'
 import { canSpeakEnglish, speakEnglish, stopEnglishSpeech, type SpeechState } from './speech'
 import { trackProgress } from './progressSync'
 import { questionProgressKey } from './progressData'
+import { availableQuestionPoints } from './helpPoints'
 
 export default function QuizPage({
   learnerId,
@@ -38,6 +39,9 @@ export default function QuizPage({
   const [selected, setSelected] = useState<string | null>(null)
   const [paused, setPaused] = useState(false)
   const [reportOpen, setReportOpen] = useState(false)
+  const [helpOpen, setHelpOpen] = useState(false)
+  const [helpWords, setHelpWords] = useState<string[]>([])
+  const helpWordsRef = useRef<string[]>([])
   const [leaderboardOpen, setLeaderboardOpen] = useState(false)
   const [autoAdvance, setAutoAdvance] = useState(() => localStorage.getItem(`fifa:auto:${userId}`) !== 'false')
   const [speechState, setSpeechState] = useState<SpeechState>('ended')
@@ -45,6 +49,12 @@ export default function QuizPage({
   const advanced = useRef(false)
   const question = questions[questionIndex]
   const isCorrect = selected === question?.answer
+  const availablePoints = availableQuestionPoints(helpWords)
+  function openWordHelp(word: string) {
+    if (answerLocked.current || helpWordsRef.current.includes(word)) return
+    helpWordsRef.current = [...helpWordsRef.current, word]
+    setHelpWords(helpWordsRef.current)
+  }
   const audioText = question?.mode === 'sentences' && !selected ? question?.prompt : question?.contextSentence ?? question?.spokenText
   const audioUrl = question?.mode === 'sentences' && !selected ? question?.gapAudioUrl : question?.contextAudioUrl ?? question?.audioUrl
   const audioAllowed = question?.mode === 'sentences' || Boolean(selected) || (question?.mode === 'vocabulary' && question?.prompt === question?.spokenText)
@@ -56,7 +66,7 @@ export default function QuizPage({
   }, [audioText, audioUrl, question?.id, roundId, audioAllowed, leaderboardOpen])
 
   function choose(choice: string) {
-    if (answerLocked.current || selected || !question) return
+    if (answerLocked.current || selected || !question || helpOpen) return
     answerLocked.current = true
     advanced.current = false
     setPaused(false)
@@ -65,12 +75,14 @@ export default function QuizPage({
     setSelected(choice)
     setLearningMemory(nextMemory)
     saveLearningMemory(learnerId, nextMemory)
-    trackProgress(userId, 'answer', { questionId: questionProgressKey(question), mode: question.mode, word: question.mode === 'vocabulary' ? question.spokenText : undefined, correct, choice, roundId }, `${roundId.slice(0, 24)}${questionIndex.toString(16).padStart(12, '0')}`)
+    trackProgress(userId, 'answer', { questionId: questionProgressKey(question), mode: question.mode, word: question.mode === 'vocabulary' ? question.spokenText : undefined, correct, choice, roundId, helpWords: helpWordsRef.current }, `${roundId.slice(0, 24)}${questionIndex.toString(16).padStart(12, '0')}`)
   }
 
   const next = useCallback(() => {
-    if (!selected || reportOpen || advanced.current) return
+    if (!selected || reportOpen || helpOpen || advanced.current) return
     advanced.current = true
+    helpWordsRef.current = []
+    setHelpWords([])
     stopEnglishSpeech()
     if (questionIndex === questions.length - 1) {
       trackProgress(userId, 'round_completed', { roundId }, roundId)
@@ -89,17 +101,17 @@ export default function QuizPage({
     setSelected(null)
     answerLocked.current = false
     setPaused(false)
-  }, [selected, reportOpen, questionIndex, questions.length, userId, roundId, learningMemory])
+  }, [selected, reportOpen, helpOpen, questionIndex, questions.length, userId, roundId, learningMemory])
 
   useEffect(() => {
-    if (leaderboardOpen || !selected || paused || reportOpen || !autoAdvance || speechState === 'playing') return
+    if (leaderboardOpen || !selected || paused || reportOpen || helpOpen || !autoAdvance || speechState === 'playing') return
     const timer = window.setTimeout(next, isCorrect ? 1200 : 5000)
     return () => window.clearTimeout(timer)
-  }, [selected, paused, reportOpen, autoAdvance, isCorrect, next, speechState, leaderboardOpen])
+  }, [selected, paused, reportOpen, helpOpen, autoAdvance, isCorrect, next, speechState, leaderboardOpen])
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (leaderboardOpen || !question || event.repeat || reportOpen) return
+      if (leaderboardOpen || !question || event.repeat || reportOpen || helpOpen) return
       const target = event.target as HTMLElement
       if (target.closest('button, input, textarea, select, summary, [role="button"]')) return
       const choiceIndex = Number(event.key) - 1
@@ -137,14 +149,13 @@ export default function QuizPage({
         </header>
 
         <section key={`${roundId}:${questionIndex}`} className="question-enter question-panel flex flex-1 flex-col justify-center py-8 sm:py-12">
+          {!selected && <p className="text-xs text-slate-500" aria-live="polite" data-testid="available-points">Up to {availablePoints} pts · word help −2</p>}
           <h1 className={`mt-6 font-semibold tracking-tight leading-[1.45] ${question?.mode === 'vocabulary' ? 'text-5xl sm:text-6xl' : 'text-[28px] sm:text-4xl'}`}>
-            {question?.mode === 'sentences' ? <WordHelp key={question.id} text={question.prompt} /> : question.prompt}
+            <WordHelp key={question.id} text={question.prompt} onHelp={openWordHelp} onOpenChange={setHelpOpen} pointsRemaining={!selected ? availablePoints : undefined} />
           </h1>
           {question.contextSentence ? (
             <div className="mt-4 rounded-2xl bg-white p-4">
-              <p className="mt-2 text-xl leading-relaxed" lang="en">{question.contextSentence.split(/(\b[\p{L}]+\b)/u).map((part, index) => part.toLowerCase() === question.spokenText.toLowerCase()
-                ? <strong key={index} className="text-blue-700">{question.prompt !== question.spokenText && !selected ? '_____' : part}</strong>
-                : part)}</p>
+              <p className="mt-2 text-xl leading-relaxed" lang="en"><WordHelp text={question.contextSentence.split(/(\b[\p{L}]+\b)/u).map(part => part.toLowerCase() === question.spokenText.toLowerCase() && question.prompt !== question.spokenText && !selected ? '_____' : part).join('')} onHelp={openWordHelp} onOpenChange={setHelpOpen} pointsRemaining={!selected ? availablePoints : undefined} /></p>
             </div>
           ) : null}
 

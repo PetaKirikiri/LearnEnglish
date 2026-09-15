@@ -1,24 +1,32 @@
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
-import { expect, it } from 'vitest'
+import { expect, it, vi } from 'vitest'
 import WordHelp from './WordHelp'
 
-it('pins hints on click, dismisses on a second click or outside click, and keeps them in the viewport', () => {
+it('tokenizes all words, leaves gaps alone, and only opens help on deliberate activation', () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
   const container = document.createElement('div'); document.body.append(container)
   const root = createRoot(container)
-  act(() => root.render(<WordHelp text="last letter." />))
+  const onHelp = vi.fn(), onOpenChange = vi.fn()
+  act(() => root.render(<WordHelp text="last letter. Zzzunknown _____" onHelp={onHelp} onOpenChange={onOpenChange} pointsRemaining={8} />))
+  expect(container.querySelectorAll('[role="button"]')).toHaveLength(3)
   const token = container.querySelector('[aria-label="Help with letter"]') as HTMLElement
-  token.getBoundingClientRect = () => ({ left: window.innerWidth - 15, top: 200, bottom: 225, right: window.innerWidth, width: 15, height: 25, x: 0, y: 0, toJSON: () => ({}) })
   act(() => token.dispatchEvent(new MouseEvent('mouseover', { bubbles: true })))
+  expect(onHelp).not.toHaveBeenCalled()
+  expect(document.querySelector('dialog')?.open).toBe(false)
   act(() => token.click())
-  expect(document.querySelector('[role="tooltip"]')?.textContent).toBe('จดหมาย')
-  const popup = document.querySelector('[role="tooltip"]') as HTMLElement
-  expect(parseInt(popup.style.left) + 192).toBeLessThanOrEqual(window.innerWidth)
-  act(() => token.click())
-  expect(document.querySelector('[role="tooltip"]')).toBeNull()
-  act(() => token.click())
-  act(() => document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true })))
-  expect(document.querySelector('[role="tooltip"]')).toBeNull()
+  expect(document.querySelector('dialog')?.open).toBe(true)
+  expect(document.querySelector('dialog')?.textContent).toContain('จดหมาย')
+  expect(document.querySelector('dialog')?.textContent).toContain('8 pts available')
+  expect(onHelp).toHaveBeenCalledWith('letter')
+  act(() => document.querySelector<HTMLButtonElement>('[aria-label="Close word help"]')!.click())
+  expect(document.querySelector('dialog')?.open).toBe(false)
+  expect(document.activeElement).toBe(token)
+  const unknown = container.querySelector('[aria-label="Help with Zzzunknown"]') as HTMLElement
+  act(() => unknown.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'Enter' })))
+  expect(document.querySelector('dialog')?.textContent).toContain('Translation not available yet.')
+  expect(onHelp).toHaveBeenCalledTimes(1)
+  act(() => document.querySelector('dialog')!.dispatchEvent(new Event('cancel', { cancelable: true })))
+  expect(onOpenChange).toHaveBeenLastCalledWith(false)
   act(() => root.unmount()); container.remove()
 })
