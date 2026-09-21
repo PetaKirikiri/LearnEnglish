@@ -12,11 +12,11 @@ describe('textbook exam practice in the existing flow',()=>{
  it('covers all seven photographed vocabulary pages, ten place relations and both readings',()=>{
   expect(finalExamVocabulary).toHaveLength(64)
   expect([...new Set(finalExamVocabulary.map(v=>v.page))]).toEqual([34,36,38,40,46,48,50])
-  expect(examPracticeQuestions).toHaveLength(116)
-  expect(examPracticeQuestions.filter(q=>q.examCategory==='grammar').map(q=>q.answer)).toEqual(['under','behind','in front of','between','beside','above','on','in','over','next to'])
-  expect(examPracticeQuestions.filter(q=>q.examCategory==='dialogue')).toHaveLength(16)
-  expect(examPracticeQuestions.filter(q=>q.examCategory==='reading'&&q.sourceReadingId==='different-houses')).toHaveLength(11)
-  expect(examPracticeQuestions.filter(q=>q.examCategory==='reading'&&q.sourceReadingId==='a-train-above-you')).toHaveLength(13)
+  expect(examPracticeQuestions).toHaveLength(424)
+  expect(examPracticeQuestions.filter(q=>q.examCategory==='grammar'&&q.sceneObject===undefined).map(q=>q.answer)).toEqual(['under','behind','in front of','between','beside','above','on','in','over','next to'])
+  expect(examPracticeQuestions.filter(q=>q.examCategory==='dialogue')).toHaveLength(48)
+  expect(examPracticeQuestions.filter(q=>q.examCategory==='reading'&&q.sourceReadingId==='different-houses')).toHaveLength(33)
+  expect(examPracticeQuestions.filter(q=>q.examCategory==='reading'&&q.sourceReadingId==='a-train-above-you')).toHaveLength(39)
   for(const word of ['bike','go to sleep']) expect(examPracticeQuestions.some(q=>q.spokenText===word)).toBe(true)
  })
  it('starts immediately with a sentence blank and balances the four exam categories',()=>{
@@ -43,12 +43,12 @@ describe('textbook exam practice in the existing flow',()=>{
  it('revisits an incorrect exam item and eventually reaches every supplied vocabulary entry',()=>{
   const wrong=examPracticeQuestions.find(q=>q.examCategory==='vocabulary')!
   let memory:LearningMemory=recordAnswer({},wrong,false,1,'wrong')
-  expect(createPracticeRound(0,memory).some(q=>q.id===wrong.id)).toBe(true)
+  expect(Array.from({length:4},(_,i)=>createPracticeRound(i,memory)).flat().some(q=>q.id===wrong.id)).toBe(true)
   const seen=new Set<string>()
-  for(let round=0;round<55;round++) for(const q of createPracticeRound(round,memory)) {
+  for(let round=0;round<150;round++) for(const q of createPracticeRound(round,memory)) {
    seen.add(q.id); memory=recordAnswer(memory,q,true,100+round,`round-${round}`)
   }
-  expect(examPracticeQuestions.every(q=>seen.has(q.id))).toBe(true)
+  expect(examPracticeQuestions.filter(q=>q.examUse!=='assessment').every(q=>seen.has(q.id))).toBe(true)
  })
  it('has four distinct answers, no synonymous place distractors and passage evidence',()=>{
   for(const q of examPracticeQuestions) {

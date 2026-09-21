@@ -314,3 +314,10 @@ body { background: var(--game-bg); }
   .lesson-header .player-controls .champion-button { max-width: 82px; }
 }
 @media (prefers-reduced-motion: reduce) { .answer-feedback { animation: none; } }
+
+/* Neutral selection during the unassisted assessment; reveal results only at the end. */
+.session-shell .answer-option[data-state="chosen"] { border-color: #e4c578; background: #303645; color: #f5e6bf; }
+.exam-progress table th, .exam-progress table td { padding: 8px 6px; }
+.exam-progress table thead { color: #c6b588; }
+.exam-progress table tbody tr { border-top: 1px solid #354a6455; }
+.exam-progress .primary-action:disabled { opacity: .45; cursor: default; }

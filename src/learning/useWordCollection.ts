@@ -12,7 +12,7 @@ function cached(id: string): ProgressEvent[] | null {
   } catch { return null }
 }
 function merge(id: string, ...batches: readonly ProgressEvent[][]) {
-  return [...new Map(batches.flat().filter(e => e.learner_id === id && (e.kind === 'answer' || e.kind === 'legacy_import')).map(e => [e.id, e])).values()]
+  return [...new Map(batches.flat().filter(e => e.learner_id === id && (e.kind === 'answer' || e.kind === 'legacy_import' || (e.kind === 'visit' && e.payload.assessment))).map(e => [e.id, e])).values()]
 }
 // Mounted under QuizPage's userId key, so one account never inherits another's state.
 export function useWordCollection(userId: string) {
@@ -20,13 +20,14 @@ export function useWordCollection(userId: string) {
     const data = cached(userId)
     return { events: merge(userId, data ?? [], pending(userId)), ready: data !== null, now: Date.now() }
   })
+  const [serverReady, setServerReady] = useState(false)
   const [error, setError] = useState(false)
   useEffect(() => {
     let active = true
     let loading = false
     function recorded(event: Event) {
       const answer = (event as CustomEvent<ProgressEvent>).detail
-      if (answer.learner_id !== userId || (answer.kind !== 'answer' && answer.kind !== 'legacy_import')) return
+      if (answer.learner_id !== userId || (answer.kind !== 'answer' && answer.kind !== 'legacy_import' && !(answer.kind === 'visit' && answer.payload.assessment))) return
       setSnapshot(current => ({ ...current, events: merge(userId, current.events, [answer]), now: Date.now() }))
     }
     async function refresh() {
@@ -37,6 +38,7 @@ export function useWordCollection(userId: string) {
         if (active) {
           setSnapshot(current => ({ events: merge(userId, current.events, events, pending(userId)), ready: true, now: Date.now() }))
           setError(false)
+          setServerReady(true)
         }
       } catch { if (active) setError(true) }
       finally { loading = false }
@@ -61,5 +63,5 @@ export function useWordCollection(userId: string) {
     const bank = getQuizCatalogue()
     return buildWordCollection(snapshot.events, [...bank.vocabulary, ...bank.sentences], snapshot.now)
   }, [snapshot])
-  return { collection, ready: snapshot.ready, error }
+  return { collection, events:snapshot.events, serverReady:serverReady && !error, ready: snapshot.ready, error }
 }

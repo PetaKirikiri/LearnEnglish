@@ -1,6 +1,6 @@
 # Exam alignment audit — 21 September 2026
 
-**Assessment: 8.8/10 for alignment of the practice material to the supplied syllabus.** This is an editorial judgement, not a validated prediction of the teacher's paper or Fifa's score. No learner results were used to score readiness.
+**Verified coverage: 64/64 supplied vocabulary entries, all 10 listed place relations, the photographed dialogue patterns, and both reading texts.** Depth and learner evidence are measured separately below.
 
 ## Coverage against the supplied pages
 
@@ -13,27 +13,34 @@
 | Ch. 4 vocabulary p.46 | morning, afternoon, today, tomorrow, evening, night, practice, weekend | 8/8 |
 | Ch. 4 vocabulary p.48 | wake up, go to sleep/bed, get dressed, brush my teeth, make my bed, pack my bag, go to practice, do my homework, play a game, clean my room | 10/10 |
 | Ch. 4 vocabulary p.50 | plane, taxi, car, subway, bus, bicycle/bike, train, fly, drive, ride | 10/10 |
-| Dialogue pp.34,36,37 | What is that / What are these/those; What is in / What's in; Where; There is/are; noun number; listing two objects with both…and | 16 questions |
-| Grammar pp.40–41 | under, behind, in front of, between, beside, above, on, in, over, next to | 10 visible scenes, one target each |
-| Reading p.39 | Different Houses | Full passage retained; 11 questions |
-| Reading p.51 | A Train above You | Full passage retained; 13 questions |
+| Dialogue pp.34,36,37 | What is that / What are these/those; What is in / What's in; Where; There is/are; noun number; listing two objects with both…and | 48 questions |
+| Grammar pp.40–41 | under, behind, in front of, between, beside, above, on, in, over, next to | 40 visible scenes across ten relations |
+| Reading p.39 | Different Houses | Full passage retained; 33 questions |
+| Reading p.51 | A Train above You | Full passage retained; 39 questions |
 
 Vocabulary totals **64 textbook entries**, with **66 question targets** because bicycle/bike and go to bed/go to sleep each receive independent practice. Go to bed and go to sleep have distinct Thai meanings rather than being presented as exact synonyms.
 
 The photos show page 36 explicitly; the other page assignments use the user's outline and book sequence. Images 1 and 2 duplicate a vocabulary page. Some surrounding page content, printed comprehension questions and listening scripts are outside the photo crops. Completeness means the visible supplied scope, not unseen textbook material.
 
-## Skill alignment rubric
+## Depth and skill evidence
 
-Each of the four sections has equal weight, matching the supplied 10/10/10/10 outline.
+The earlier **8.8/10** was an editorial alignment score, not a measure of Fifa's readiness. It is superseded here by explicit coverage and evidence checks; question count alone is not a readiness score.
 
-| Section | Score | What is assessed | Remaining limitation |
-|---|---:|---|---|
-| Vocabulary | 8/10 | English word/phrase meaning in Thai, with English context; every listed item and printed alternative form | The teacher may use pictures, English definitions, spelling or contextual word selection rather than translation choices. These formats are not all reproduced. |
-| Dialogue | 9/10 | Appropriate response function, singular/plural agreement, demonstratives, room contents/location and contracted What's | Uses new examples based on the supplied patterns, not the teacher's unseen dialogue paper or listening audio. |
-| Grammar | 9/10 | Select a preposition from an explicit visual spatial relationship | All ten are tested; additional scenes with varied household objects would improve transfer beyond ball/box drawings. |
-| Reading | 9/10 | Main idea, literal detail, place, number, reference, time, cause/effect, sequence, comparison, inference and checking supported statements | Excerpts scaffold locating evidence. The actual exam may require scanning the entire passage without an isolated excerpt. |
+| Section | Practice | Reserved | What varies |
+|---|---:|---:|---|
+| Vocabulary | 198 | 66 | Each of 66 targets has Thai meaning recognition, English definition matching and a contextual cloze; a fourth prompt is reserved. |
+| Dialogue | 32 | 16 | Room/object substitutions test response function, agreement, demonstratives, location and contents. |
+| Grammar | 30 | 10 | All ten relations use ball, apple and book scenes in practice; the book view reverses horizontal orientation. Cube scenes are reserved. |
+| Reading | 48 | 24 | Original excerpt questions plus different operations using full source paragraphs: detail, reference, sequence, comparison, inference and limits of a claim. |
+| **Total** | **308** | **116** | **424 authored questions** |
 
-Mean: **8.75/10**, displayed as **8.8/10**. Visible vocabulary/topic coverage is complete; exact exam-format equivalence is unknown.
+All 64 listed vocabulary entries are present, with the two printed alternative forms represented separately. Definitions introduce supporting English beyond the word lists; all visible English tokens and help-example tokens have Thai word help. This does not make every supporting word a separate syllabus target.
+
+The existing profile now shows targets encountered and targets demonstrated independently. Demonstrated means three distinct practice examples for vocabulary/position or two for dialogue/reading, across at least two rounds, since the last wrong or assisted answer. Repeating one question cannot satisfy this. Legacy counters cannot establish independent success. These are transparent product criteria, not a validated pass prediction.
+
+A separate 40-question check draws exactly ten unseen questions and distinct targets per section. Reserved IDs are excluded from normal practice. Starting a check reserves its questions in the learner's existing database event stream; an incomplete check resumes with the same choices. Correctness, word help and completed-answer audio are withheld until completion. Results show all four section scores. There is currently enough reserved grammar material for **one completely unseen 40-question check per learner**. After that, the app does not falsely label recycled questions as fresh; ordinary practice continues.
+
+The passages are the textbook passages, not unseen reading passages. Grammar drawings still share a box-based visual model; they do not prove transfer to every real-world scene. The teacher's exact questions, listening scripts, spelling demands and uncropped comprehension exercises are unavailable. No claim is made that practice-bank completion guarantees an exam mark.
 
 ## Ambiguity audit and fixes
 
@@ -47,16 +54,17 @@ Mean: **8.75/10**, displayed as **8.8/10**. Visible vocabulary/topic coverage is
 
 ## What Fifa will actually receive
 
-The common learner scheduler serves only these 116 questions, including for a returning learner with older history. There are no unrelated rare-word interruptions or other-chapter reviews while exam priority is active. Previous results and the collection remain intact.
+The common learner scheduler draws only the 308 practice questions from this syllabus. Reserved assessment questions never enter normal practice. Each ten-question block includes all four sections; each four blocks gives ten questions per section. Two slots per block are available for mistake repair, with remaining slots prioritising unseen content and balancing target exposure. Old learner progress remains intact. Current account events are merged into scheduling memory at round boundaries.
 
-Each ten-question block mixes all four sections; every four consecutive complete blocks provide ten questions per section. Review and mistake repair use this exam bank. The bank is larger than one 40-question sample, deliberately allowing practice variation.
+A 2,000-answer all-correct simulation reached all 308 practice questions by block 79, with 500 questions from each section. A separate all-wrong simulation also reached every practice question within 200 blocks, proving repeated errors cannot permanently starve unseen content. These simulations do not predict how many sessions Fifa will need.
 
-In an isolated simulation of 800 correct answers: 200 questions came from each section, no out-of-syllabus question appeared, and all 116 unique questions had appeared by block 26. This is a scheduler check, not a promise about a learner who makes mistakes or restarts sessions. Seeing all vocabulary requires more than a single 40-question sample.
+## Release verification
 
-## Release checks
-
-- 163 automated tests passed, including source/answer integrity, audio silence and neural voice, unique scoring keys, memory preservation, exam-only scheduling and scene coverage.
+- **169 automated tests passed.** Checks cover unique scoring keys, all supplied targets, four choices, source evidence, overlapping-sense exclusions, silent gaps and audio assets, holdout isolation, error-heavy scheduling, independent evidence, incomplete assessment recovery, and all 40 assessment steps without answer leakage.
 - Production build, test type check and lint passed.
-- All 408 English tokens in the expanded questions and help examples have Thai meanings and word profiles in the language database.
-- All 116 active answer keys and current Thai explanation records are checked against the authored question data before release.
-- The approved dark-and-gold stylesheet is unchanged. Only the small spatial illustration was inserted inside the existing question card.
+- Live language audit: **811/811 English tokens** have Thai meanings and word profiles; 297 missing records added. Added noun/verb families support the new contexts.
+- **424/424 active answer keys and Thai question explainers** are checked against current authored content in the account database.
+- **616 new audio clips**, 1,322 total course clips, use the established neural voice and silent blank treatment.
+- The existing dark-and-gold exercise and collection remain. Only a compact exam progress section inside the profile, neutral assessment selection, and object variations were added.
+
+No real learner answers were fabricated for verification. Assessment scoring is a practice diagnostic; the actual school paper remains unseen.

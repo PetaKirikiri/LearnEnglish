@@ -1,4 +1,5 @@
 import { finalExamVocabulary, type ExamVocabulary } from '../content/finalExamVocabulary'
+import { expandExamQuestions } from './examVariants'
 import { readings } from '../content/readings'
 import type { QuizQuestion } from './quizContent'
 import { explanationContentKey, type Explainer } from './explainers/types'
@@ -108,7 +109,14 @@ const reading=readingRows.map(([key,readingId,page,passage,prompt,answer,distrac
  if(!source.paragraphs.some(p=>p.includes(passage))) throw new Error(`Exam excerpt differs from source: ${key}`)
  return makeQuestion('reading',key,page,prompt,answer,distractors,teaching('หาหลักฐานในข้อความ','อ่านคำถามว่าถามใคร ที่ไหน จำนวน วิธี หรือความหมาย แล้วหาใจความที่ตอบเรื่องเดียวกันในข้อความ',clue,'Where? → a place','How many? → a number',['Where is the house? → In Serbia.','How many houses? → Three houses.']),{passage,contextSentence:passage,spokenText:prompt,sourceReadingId:readingId,sourceTitle:`Practice · ${source.title} · p. ${page}`})
 })
-export const examPracticeQuestions: readonly QuizQuestion[] = [...vocabulary,...vocabularyAlternatives,...dialogue,...grammar,...reading]
+const baseQuestions = [...vocabulary,...vocabularyAlternatives,...dialogue,...grammar,...reading].map(q => ({...q, examTarget:q.id, examUse:'practice' as const, examFormat:q.examCategory==='vocabulary'?'meaning':q.examCategory==='grammar'?'picture':'comprehension'}))
+export const examPracticeQuestions: readonly QuizQuestion[] = expandExamQuestions(baseQuestions)
+for (const q of examPracticeQuestions) {
+ if (examTeaching.has(q.id)) continue
+ const original = examTeaching.get(q.examTarget!)!
+ // The new clue is specific to this question; avoid copying a clue about a different object.
+ examTeaching.set(q.id, {...original, clue_th:q.explanationThai!, examples:[q.example, original.examples[0]]})
+}
 export function buildExamExplainers(): Explainer[] {
  return examPracticeQuestions.map(q=>({question_id:q.id,content_key:explanationContentKey(q),pattern_key:`exam-${q.examCategory}`,...examTeaching.get(q.id)!}))
 }

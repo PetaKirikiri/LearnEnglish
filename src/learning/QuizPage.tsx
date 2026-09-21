@@ -1,3 +1,6 @@
+import ExamProgressPanel from './ExamProgressPanel'
+import { createExamAssessment, memoryFromExamEvents, resumeExamAssessment } from './examReadiness'
+import type { QuizQuestion } from './quizContent'
 import WordCollectionPanel from '../pages/WordCollectionPanel'
 import { useWordCollection } from './useWordCollection'
 import { WORDS_PER_LEVEL } from './wordCollection'
@@ -33,16 +36,18 @@ export default function QuizPage({
   onSignOut: () => void
   syncState?: string
 }) {
-  const { collection, ready: collectionReady, error: collectionError } = useWordCollection(userId)
+  const { collection, events = [], serverReady, ready: collectionReady, error: collectionError } = useWordCollection(userId)
   const [profileOpen, setProfileOpen] = useState(false)
   const [round, setRound] = useState(0)
-  const [roundId, setRoundId] = useState(() => crypto.randomUUID())
+  const [roundId, setRoundId] = useState<string>(() => crypto.randomUUID())
   const [learningMemory, setLearningMemory] = useState(() => loadLearningMemory(learnerId))
   const [roundMemory, setRoundMemory] = useState(learningMemory)
-  const questions = useMemo(
+  const [assessment, setAssessment] = useState<QuizQuestion[] | null>(null)
+  const practiceQuestions = useMemo(
     () => createPracticeRound(round, roundMemory),
     [roundMemory, round],
   )
+  const questions = assessment ?? practiceQuestions
   const [questionIndex, setQuestionIndex] = useState(0)
   const [selected, setSelected] = useState<string | null>(null)
   const [reportOpen, setReportOpen] = useState(false)
@@ -58,6 +63,18 @@ export default function QuizPage({
   const question = questions[questionIndex]
   const isCorrect = selected === question?.answer
   const availablePoints = availableQuestionPoints(helpWords)
+  function startAssessment() {
+    if (assessment) { setProfileOpen(false); return }
+    if (!serverReady) return
+    const resume = resumeExamAssessment(events)
+    const fresh = resume?.questions ?? createExamAssessment(events)
+    if (!fresh) return
+    const id=resume?.roundId ?? crypto.randomUUID()
+    if (!resume) trackProgress(userId,'visit',{assessment:true,roundId:id,assessmentQuestionIds:fresh.map(q=>q.id),assessmentChoices:fresh.map(q=>[...q.choices])})
+    setAssessment(fresh);setRoundId(id);setQuestionIndex(resume?.index ?? 0);setSelected(null)
+    setHelpWords([]);helpWordsRef.current=[];answerLocked.current=false;advanced.current=false
+    setReviewOpen(false);setProfileOpen(false);stopEnglishSpeech()
+  }
   function showProfile() {
     setProfileOpen(true)
     setLeaderboardOpen(false)
@@ -73,9 +90,9 @@ export default function QuizPage({
     helpWordsRef.current = [...helpWordsRef.current, word]
     setHelpWords(helpWordsRef.current)
   }
-  const audioText = question?.mode === 'sentences' && !selected ? question?.prompt : question?.contextSentence ?? question?.spokenText
-  const audioUrl = question?.mode === 'sentences' && !selected ? question?.gapAudioUrl : question?.contextAudioUrl ?? question?.audioUrl
-  const audioAllowed = question?.mode === 'sentences' || Boolean(selected) || (question?.mode === 'vocabulary' && question?.prompt === question?.spokenText)
+  const audioText = question?.gapAudioUrl && (!selected || assessment) ? question?.prompt : question?.contextSentence ?? question?.spokenText
+  const audioUrl = question?.gapAudioUrl && (!selected || assessment) ? question?.gapAudioUrl : question?.contextAudioUrl ?? question?.audioUrl
+  const audioAllowed = Boolean(question?.gapAudioUrl) || question?.mode === 'sentences' || Boolean(selected) || (question?.mode === 'vocabulary' && question?.prompt === question?.spokenText)
 
   useEffect(() => {
     if (profileOpen || leaderboardOpen || !audioAllowed || !audioText || !audioUrl) return
@@ -92,7 +109,7 @@ export default function QuizPage({
     setSelected(choice)
     setLearningMemory(nextMemory)
     saveLearningMemory(learnerId, nextMemory)
-    trackProgress(userId, 'answer', { questionId: questionProgressKey(question), mode: question.mode, word: question.mode === 'vocabulary' ? question.spokenText : undefined, correct, choice, roundId, helpWords: helpWordsRef.current }, `${roundId.slice(0, 24)}${questionIndex.toString(16).padStart(12, '0')}`)
+    trackProgress(userId, 'answer', { assessment: Boolean(assessment), questionId: questionProgressKey(question), mode: question.mode, word: question.mode === 'vocabulary' ? question.spokenText : undefined, correct, choice, roundId, helpWords: helpWordsRef.current }, `${roundId.slice(0, 24)}${questionIndex.toString(16).padStart(12, '0')}`)
   }
 
   const next = useCallback(() => {
@@ -103,9 +120,10 @@ export default function QuizPage({
     setReviewOpen(false)
     stopEnglishSpeech()
     if (questionIndex === questions.length - 1) {
-      trackProgress(userId, 'round_completed', { roundId }, roundId)
+      trackProgress(userId, 'round_completed', { roundId, assessment:Boolean(assessment) }, roundId)
+      if (assessment) {setAssessment(null);setProfileOpen(true)}
       setRoundId(crypto.randomUUID())
-      setRoundMemory(learningMemory)
+      setRoundMemory(memoryFromExamEvents(events, learningMemory))
       setRound(value => value + 1)
       setQuestionIndex(0)
       setSelected(null)
@@ -117,16 +135,16 @@ export default function QuizPage({
     setQuestionIndex((value) => value + 1)
     setSelected(null)
     answerLocked.current = false
-  }, [selected, reportOpen, helpOpen, questionIndex, questions.length, userId, roundId, learningMemory])
+  }, [selected, reportOpen, helpOpen, questionIndex, questions.length, userId, roundId, learningMemory, assessment, events])
 
 
   useEffect(() => {
-    if (!selected || !isCorrect || profileOpen || leaderboardOpen || reportOpen || helpOpen || reviewOpen) return
+    if (assessment || !selected || !isCorrect || profileOpen || leaderboardOpen || reportOpen || helpOpen || reviewOpen) return
     // Allow time for the complete sentence and feedback; a failed media event
     // must not trap the learner. Manual Next remains available throughout.
     const timer = window.setTimeout(next, speechState === 'playing' ? 25000 : 1400)
     return () => window.clearTimeout(timer)
-  }, [selected, isCorrect, profileOpen, leaderboardOpen, reportOpen, helpOpen, reviewOpen, speechState, next])
+  }, [selected, isCorrect, profileOpen, leaderboardOpen, reportOpen, helpOpen, reviewOpen, speechState, next, assessment])
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -177,6 +195,7 @@ export default function QuizPage({
               <button type="button" className="collection-back" onClick={() => setProfileOpen(false)}>← Back to practice</button>
               <h1>{learnerId}’s profile</h1>
             </div>
+            {collectionReady && <ExamProgressPanel events={events} available={Boolean(serverReady)} active={Boolean(assessment)||Boolean(resumeExamAssessment(events))} onStart={startAssessment} />}
             {collectionReady ? <WordCollectionPanel collection={collection} /> : (
               <p role="status">{collectionError ? 'Your collection is unavailable. Reconnect to load your progress.' : 'Loading your collection…'}</p>
             )}
@@ -185,9 +204,9 @@ export default function QuizPage({
         ) : leaderboardOpen ? (
           <GroupLeaderboardPage embedded userId={userId} onExit={() => setLeaderboardOpen(false)} onPlay={() => setLeaderboardOpen(false)} />
         ) : <>
-        <section key={`${roundId}:${questionIndex}`} className="question-enter question-panel flex flex-col" data-mode={question.mode}>
-          <div className="question-meta"><span>{question.mode === 'vocabulary' ? 'Vocabulary' : 'Grammar'}</span>
-          {!selected && <div className="question-rewards">
+        <section key={`${roundId}:${questionIndex}`} className="question-enter question-panel flex flex-col" data-mode={question.mode==='vocabulary' && question.prompt!==question.spokenText ? 'sentences' : question.mode}>
+          <div className="question-meta"><span>{assessment ? `${questionIndex+1} / 40 · ${question.examCategory}` : question.examCategory ?? (question.mode === 'vocabulary' ? 'Vocabulary' : 'Grammar')}</span>
+          {!selected && !assessment && <div className="question-rewards">
             <span className="reward-badge" aria-live="polite" data-testid="available-points" aria-label={`Correct answer earns ${availablePoints} points`}>
               <Icon name="star"/><span>Earn <strong>{availablePoints} pts</strong></span>
             </span>
@@ -195,13 +214,13 @@ export default function QuizPage({
               <BrainIcon/><span>Help</span><strong>−{WORD_HELP_COST} pts</strong>
             </span>
           </div>}</div>
-          {question.placeRelation && <PlaceScene relation={question.placeRelation} />}
-          <h1 className={`mt-6 font-semibold tracking-tight leading-[1.45] ${question?.mode === 'vocabulary' ? 'text-5xl sm:text-6xl' : 'text-[28px] sm:text-4xl'}`}>
-            <WordHelp key={question.id} text={question.prompt} onHelp={openWordHelp} onOpenChange={setHelpOpen} pointsRemaining={!selected ? availablePoints : undefined} />
+          {question.placeRelation && <PlaceScene relation={question.placeRelation} object={question.sceneObject} mirror={question.sceneMirror} />}
+          <h1 className={`mt-6 font-semibold tracking-tight leading-[1.45] ${question?.mode === 'vocabulary' && question.prompt === question.spokenText ? 'text-5xl sm:text-6xl' : 'text-[28px] sm:text-4xl'}`}>
+            {assessment ? question.prompt : <WordHelp key={question.id} text={question.prompt} onHelp={openWordHelp} onOpenChange={setHelpOpen} pointsRemaining={!selected ? availablePoints : undefined} />}
           </h1>
           {question.contextSentence ? (
             <div className="question-context mt-4 rounded-2xl p-4">
-              <p className="mt-2 text-xl leading-relaxed" lang="en"><WordHelp text={question.contextSentence.split(/(\b[\p{L}]+\b)/u).map(part => part.toLowerCase() === question.spokenText.toLowerCase() && question.prompt !== question.spokenText && !selected ? '_____' : part).join('')} onHelp={openWordHelp} onOpenChange={setHelpOpen} pointsRemaining={!selected ? availablePoints : undefined} /></p>
+              <p className="mt-2 text-xl leading-relaxed" lang="en">{assessment ? question.contextSentence : <WordHelp text={question.contextSentence.split(/(\b[\p{L}]+\b)/u).map(part => part.toLowerCase() === question.spokenText.toLowerCase() && question.prompt !== question.spokenText && !selected ? '_____' : part).join('')} onHelp={openWordHelp} onOpenChange={setHelpOpen} pointsRemaining={!selected ? availablePoints : undefined} />}</p>
             </div>
           ) : null}
 
@@ -209,7 +228,7 @@ export default function QuizPage({
             {question.choices.map((choice, index) => {
               const isAnswer = choice === question.answer
               const isSelected = choice === selected
-              const stateClass = selected
+              const stateClass = assessment && selected ? (isSelected ? 'border-blue-500 bg-blue-50' : 'border-slate-200') : selected
                 ? isAnswer
                   ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
                   : isSelected
@@ -222,11 +241,11 @@ export default function QuizPage({
                   key={choice}
                   type="button"
                   disabled={selected !== null}
-                  data-state={selected ? isAnswer ? 'correct' : isSelected ? 'incorrect' : 'inactive' : 'ready'}
+                  data-state={assessment ? (isSelected ? 'chosen' : 'ready') : selected ? isAnswer ? 'correct' : isSelected ? 'incorrect' : 'inactive' : 'ready'}
                   onClick={() => choose(choice)}
                   className={`answer-option min-h-16 rounded-xl border px-4 py-4 text-center text-lg font-semibold transition active:scale-[.98] ${stateClass}`}
                 >
-                  <span className="answer-key" aria-hidden="true" data-marker={selected && isAnswer ? '✓' : selected && isSelected ? '×' : index + 1} />
+                  <span className="answer-key" aria-hidden="true" data-marker={!assessment && selected && isAnswer ? '✓' : !assessment && selected && isSelected ? '×' : index + 1} />
                   <span>{choice}</span>
                 </button>
               )
@@ -242,7 +261,7 @@ export default function QuizPage({
           </div>
         </section>
 
-        {selected ? (
+        {selected && assessment ? <footer className="answer-feedback"><button type="button" onClick={next} className="primary-action">{questionIndex===39 ? 'ดูผล' : 'Next'}<Icon name="arrow" /></button></footer> : selected ? (
           <footer className="answer-feedback" data-correct={isCorrect}>
             <div className="mx-auto flex max-w-2xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0 flex-1">

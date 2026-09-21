@@ -16,6 +16,11 @@ export type QuizQuestion = {
   id: string
   examCategory?: ExamCategory
   examPage?: number
+  examTarget?: string
+  examFormat?: string
+  examUse?: 'practice' | 'assessment'
+  sceneObject?: 'ball' | 'apple' | 'book' | 'cube'
+  sceneMirror?: boolean
   passage?: string
   placeRelation?: PlaceRelation
   mode: QuizMode

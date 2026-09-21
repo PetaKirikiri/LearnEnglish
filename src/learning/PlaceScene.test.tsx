@@ -6,14 +6,14 @@ import { examPracticeQuestions } from './examPracticeContent'
 describe('answerable picture-based place questions', () => {
   it('gives every place question a visible scene and exactly one matching target', () => {
     const questions = examPracticeQuestions.filter(q => q.examCategory === 'grammar')
-    expect(questions).toHaveLength(10)
+    expect(questions).toHaveLength(40)
     for (const q of questions) {
       expect(q.placeRelation).toBe(q.answer)
-      const markup = renderToStaticMarkup(<PlaceScene relation={q.placeRelation!} />)
+      const markup = renderToStaticMarkup(<PlaceScene relation={q.placeRelation!} object={q.sceneObject} mirror={q.sceneMirror} />)
       expect(markup).toContain('role="img"')
-      expect(markup).toContain('data-object="ball"')
+      expect(markup).toContain(`data-object="${q.sceneObject??'ball'}"`)
       expect(markup).toContain('lang="th"')
-      expect(q.prompt).toMatch(/^The ball (is|moves) _____ the box(es)?\.$/)
+      expect(q.prompt).toMatch(/^The (ball|apple|book|cube) (is|moves) _____ the box(es)?\.$/)
       expect(q.choices.filter(choice => choice === q.placeRelation)).toHaveLength(1)
       for (const pair of [['above','over'],['beside','next to']]) expect(pair.every(word=>q.choices.includes(word))).toBe(false)
     }

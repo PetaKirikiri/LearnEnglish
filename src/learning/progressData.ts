@@ -13,6 +13,9 @@ export type ProgressEvent = {
     choice?: string
     helpWords?: string[]
     roundId?: string
+    assessment?: boolean
+    assessmentQuestionIds?: string[]
+    assessmentChoices?: string[][]
     seconds?: number
     correctCount?: number
     wrongCount?: number

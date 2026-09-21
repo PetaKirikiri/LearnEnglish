@@ -6,19 +6,23 @@ import { wordProfileSchema, type NounForms, type VerbForms } from '../src/learni
 import { nouns, verbs, nounMatches, verbMatches, grammarNotes } from './wordGrammar'
 import { nounUsageFrames } from './wordUsageFrames'
 import { countNeighbours, rankedNeighbours } from '../src/learning/wordInfo/corpus'
+import { examDepthNouns, examDepthVerbs } from './examDepthGrammar'
+import { examDepthGlosses } from './examDepthGlosses'
 import { examWordGlosses } from './examWordGlosses'
 config({path:'.env.local',quiet:true})
 const response=await fetch(process.env.VITE_LANGUAGE_SUPABASE_URL+'/rest/v1/rpc/englishsuccess_language',{method:'POST',headers:{apikey:process.env.VITE_LANGUAGE_SUPABASE_ANON_KEY!,'Content-Type':'application/json'},body:'{}'})
 if(!response.ok) throw new Error(`Language read failed: ${response.status}`)
-const snapshot=(process.argv[2] ? JSON.parse(readFileSync(process.argv[2],'utf8')) : await response.json()) as {words:{word:string;thai_gloss:string|null;word_profile:unknown}[]}
+const snapshot=(process.argv[2] && process.argv[2] !== '-' ? JSON.parse(readFileSync(process.argv[2],'utf8')) : await response.json()) as {words:{word:string;thai_gloss:string|null;word_profile:unknown}[]}
 const existing=new Map(snapshot.words.map(w=>[w.word,w]))
-const glosses={...examWordGlosses}
+const glosses={...examWordGlosses,...examDepthGlosses}
 const extraNouns:NounForms[]=finalExamVocabulary.filter(v=>v.plural&&!v.word.includes(' ')).map(v=>({singular:v.word,plural:v.plural!,countability:'countable'}))
 extraNouns.push({singular:'clothes',plural:null,countability:'plural-only',note_th:'ใช้รูปพหูพจน์: clothes are; ถ้านับเป็นชิ้นใช้ an item of clothing'}, {singular:'tooth',plural:'teeth',countability:'countable'})
 for(const v of finalExamVocabulary) if(!v.word.includes(' ')) {glosses[v.word]=v.thai;if(v.plural)glosses[v.plural]=v.thai}
 for(const singular of ['rainstorm','driver','road','percentage','statement','advantage','paragraph']) extraNouns.push({singular,plural:singular+'s',countability:'countable'})
 extraNouns.push({singular:'activity',plural:'activities',countability:'countable'})
 const extraVerbs:VerbForms[]=['brush','pack','clean','flow','jump'].map(base=>({base,third:base==='brush'?'brushes':base+'s',past:base+'ed',participle:base+'ed',ing:base+'ing'}))
+extraNouns.push(...examDepthNouns.filter(n=>!extraNouns.some(e=>e.singular===n.singular)&&!nouns.some(e=>e.singular===n.singular)))
+extraVerbs.push(...examDepthVerbs.filter(v=>!extraVerbs.some(e=>e.base===v.base)&&!verbs.some(e=>e.base===v.base)))
 const allNouns=[...extraNouns,...nouns.filter(n=>!extraNouns.some(e=>e.singular===n.singular))]
 const allVerbs=[...extraVerbs,...verbs.filter(v=>!extraVerbs.some(e=>e.base===v.base))]
 const help=buildExamExplainers()
