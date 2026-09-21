@@ -18,7 +18,8 @@ import { createPracticeRound } from './quizContent'
 import { canSpeakEnglish, speakEnglish, stopEnglishSpeech, type SpeechState } from './speech'
 import { trackProgress } from './progressSync'
 import { questionProgressKey } from './progressData'
-import { availableQuestionPoints } from './helpPoints'
+import { availableQuestionPoints, WORD_HELP_COST } from './helpPoints'
+import { BrainIcon } from './wordInfo/WordVisuals'
 
 export default function QuizPage({
   learnerId,
@@ -185,7 +186,14 @@ export default function QuizPage({
         ) : <>
         <section key={`${roundId}:${questionIndex}`} className="question-enter question-panel flex flex-col" data-mode={question.mode}>
           <div className="question-meta"><span>{question.mode === 'vocabulary' ? 'Vocabulary' : 'Grammar'}</span>
-          {!selected && <p aria-live="polite" data-testid="available-points">Up to {availablePoints} pts · word help −2</p>}</div>
+          {!selected && <div className="question-rewards">
+            <span className="reward-badge" aria-live="polite" data-testid="available-points" aria-label={`Correct answer earns ${availablePoints} points`}>
+              <Icon name="star"/><span>Earn <strong>{availablePoints} pts</strong></span>
+            </span>
+            <span className="help-cost-badge" title={`Each new word you open costs ${WORD_HELP_COST} points`} aria-label={`Word help costs ${WORD_HELP_COST} points per new word`}>
+              <BrainIcon/><span>Help</span><strong>−{WORD_HELP_COST} pts</strong>
+            </span>
+          </div>}</div>
           <h1 className={`mt-6 font-semibold tracking-tight leading-[1.45] ${question?.mode === 'vocabulary' ? 'text-5xl sm:text-6xl' : 'text-[28px] sm:text-4xl'}`}>
             <WordHelp key={question.id} text={question.prompt} onHelp={openWordHelp} onOpenChange={setHelpOpen} pointsRemaining={!selected ? availablePoints : undefined} />
           </h1>

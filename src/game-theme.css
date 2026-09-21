@@ -71,7 +71,14 @@ body { background: var(--game-bg); }
 }
 .question-meta { min-height: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; margin-bottom: 10px; }
 .question-meta > span { color: var(--game-gold); text-transform: uppercase; letter-spacing: 2px; font-size: 10px; font-weight: 650; }
-.question-meta p { color: #a9b8cb; font-size: 10px; }
+.question-rewards { display: flex; align-items: center; gap: 6px; }
+.reward-badge, .help-cost-badge { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; padding: 3px 7px; border: 1px solid; border-radius: 5px; font-size: 11px; line-height: 1; white-space: nowrap; box-shadow: inset 0 1px #ffffff0a; }
+.reward-badge { color: #f2d99c; border-color: #b399565c; background: linear-gradient(135deg, #68552b66, #4539203b); }
+.reward-badge svg { fill: #e8be65; color: #ffe1a0; filter: drop-shadow(0 1px 2px #0006); }
+.help-cost-badge { color: #b8ddf6; border-color: #72acd04d; background: linear-gradient(135deg, #284b6666, #18314c55); }
+.help-cost-badge strong { color: #ffbd91; }
+.question-rewards svg { width: 15px; height: 15px; flex-shrink: 0; }
+.question-rewards strong { font-weight: 750; }
 .session-shell .question-panel h1 { color: #f5f1e8; font-weight: 600; line-height: 1.45; text-wrap: balance; }
 .question-panel[data-mode="vocabulary"] h1 { font-size: clamp(36px, 6vw, 58px); }
 .question-context { color: #d2ddeb; background: #08132180; border: 1px solid #354a64; border-left: 2px solid #a38d5a; border-radius: 6px; }
@@ -224,7 +231,7 @@ body { background: var(--game-bg); }
   .session-shell .question-panel { margin-top: 12px; padding: 14px 20px 16px; }
   .question-meta { margin-bottom: 10px; gap: 4px 8px; }
   .question-meta > span { font-size: 9px; letter-spacing: 1.4px; }
-  .question-meta p { font-size: 9px; }
+  .reward-badge, .help-cost-badge { font-size: 10px; padding: 3px 5px; gap: 4px; }
   .session-shell .question-panel h1 { font-size: 28px; }
   .question-panel[data-mode="vocabulary"] h1 { font-size: 42px; }
   .session-shell .answer-option { min-height: 62px; padding: 12px 14px; font-size: 17px; }

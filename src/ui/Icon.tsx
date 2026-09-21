@@ -1,5 +1,6 @@
-export type IconName = 'back' | 'close' | 'sound' | 'pause' | 'play' | 'flag' | 'check' | 'arrow' | 'book' | 'trophy' | 'grid'
+export type IconName = 'back' | 'close' | 'sound' | 'pause' | 'play' | 'flag' | 'check' | 'arrow' | 'book' | 'trophy' | 'grid' | 'star'
 const paths: Record<IconName, string> = {
+  star: 'm12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z',
   back: 'm14 6-6 6 6 6M8 12h12', close: 'm6 6 12 12M6 18 18 6',
   sound: 'M11 5 6 9H3v6h3l5 4V5Zm4 3a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14',
   pause: 'M8 5v14M16 5v14', play: 'm8 5 11 7-11 7V5Z',
