@@ -7,11 +7,11 @@ import { supabase } from '../lib/supabase'
 
 const plan = buildTrainingPlan()
 const steps = [
-  ['1', 'Choose the next word', 'Start at the highest-frequency unfinished word.'],
-  ['2', 'Practise its meanings', 'Use each story sentence, with Thai meaning and clear context.'],
-  ['3', 'Prove each example', 'Get each sentence right in three separate rounds. Mistakes return.'],
-  ['4', 'Check it later', 'Answer again in a later session without hints.'],
-  ['5', 'Move down the list', 'Advance to the next word; revisit learned words occasionally.'],
+  ['1', 'Focus on two targets', 'Take the next pair in corpus-frequency order.'],
+  ['2', 'Mix the examples', 'Practise both patterns together, not one long word block.'],
+  ['3', 'Prove each example', 'Two correct passes per example unlock the next pair.'],
+  ['4', 'Keep reviewing', 'About three questions in ten revisit earlier targets. Mistakes take priority.'],
+  ['5', 'Keep moving', 'The next pair becomes the focus; earlier pairs remain in review.'],
 ] as const
 
 function Highlight({ text, word }: { text: string; word: string }) {

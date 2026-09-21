@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { readings } from '../content/readings'
-import { thaiTranslations } from '../content/thaiTranslations.generated'
+import { thaiTranslations } from '../content/languageData'
 import { getQuizCatalogue, type QuizQuestion } from '../learning/quizContent'
 import { buildWordData, parseWords } from '../lib/wordData'
 

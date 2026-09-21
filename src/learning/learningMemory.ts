@@ -12,6 +12,8 @@ export type LearningRecord = {
   lastWrongAt?: number
   correctPasses?: string[]
   correctDates?: string[]
+  // First acquisition is permanent; later mistakes schedule review, not a course reset.
+  learnedAt?: number
 }
 
 export type LearningMemory = Readonly<Record<string, LearningRecord>>
@@ -49,8 +51,12 @@ export function recordAnswer(
   correct: boolean,
   answeredAt = Date.now(),
   passId?: string,
+  independent = true,
 ): LearningMemory {
   const previous = memory[question.id]
+  const correctPasses = correct && independent ? [...new Set([...(previous?.correctPasses ?? []), ...(passId ? [passId] : [])])].slice(-5) : []
+  const learnedAt = previous?.learnedAt
+    ?? (hasLearnedQuestion(previous) ? previous!.lastAnsweredAt : correctPasses.length >= 2 ? answeredAt : undefined)
 
   return {
     ...memory,
@@ -64,13 +70,18 @@ export function recordAnswer(
       wrongCount: (previous?.wrongCount ?? 0) + (correct ? 0 : 1),
       lastAnsweredAt: answeredAt,
       lastWrongAt: correct ? previous?.lastWrongAt : answeredAt,
-      correctPasses: correct ? [...new Set([...(previous?.correctPasses ?? []), ...(passId ? [passId] : [])])].slice(-3) : [],
-      correctDates: correct ? [...new Set([...(previous?.correctDates ?? []), ...(passId ? [new Date(answeredAt).toLocaleDateString('en-CA', { timeZone: 'Asia/Bangkok' })] : [])])].slice(-3) : [],
+      correctPasses,
+      learnedAt,
+      correctDates: correct && independent ? [...new Set([...(previous?.correctDates ?? []), ...(passId ? [new Date(answeredAt).toLocaleDateString('en-CA', { timeZone: 'Asia/Bangkok' })] : [])])].slice(-3) : [],
     },
   }
 }
 
 // Old answer counters remain history, but cannot prove separate passes/dates.
+export function hasLearnedQuestion(record?: LearningRecord) {
+  return record?.learnedAt !== undefined || new Set(record?.correctPasses ?? []).size >= 2
+}
+
 export function hasCompletedQuestion(record?: LearningRecord) {
   return new Set(record?.correctPasses ?? []).size >= 3 && new Set(record?.correctDates ?? []).size >= 3
 }

@@ -1,6 +1,6 @@
 import { useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { thaiTranslations } from '../content/thaiTranslations.generated'
+import { thaiTranslations } from '../content/languageData'
 import { normalizeHelpWord } from './helpPoints'
 
 export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining }: {

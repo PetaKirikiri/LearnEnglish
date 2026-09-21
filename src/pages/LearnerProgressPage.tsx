@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { readings } from '../content/readings'
-import { thaiTranslations } from '../content/thaiTranslations.generated'
+import { thaiTranslations } from '../content/languageData'
 import { getQuizCatalogue, type QuizQuestion } from '../learning/quizContent'
 import { questionProgressKey, summarizeProgress, type ProgressEvent } from '../learning/progressData'
 import { loadLearnerEvents } from '../learning/progressSync'

@@ -18,10 +18,11 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center game-surface px-5 py-10 text-slate-900">
-      <section className="w-full max-w-md p-7 sm:p-10">
-        <Brand />
-        <h1 className="mt-10 text-4xl font-semibold tracking-tight">Sign in</h1>
+    <main className="login-screen game-surface">
+      <header className="login-header"><Brand /></header>
+      <section className="login-card">
+        <div className="login-emblem" aria-hidden="true"><span className="rank-emblem" /></div>
+        <h1>Sign in</h1>
 
         {automaticLoginError ? (
           <p className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
@@ -31,7 +32,7 @@ export default function LoginPage() {
 
         <form className="mt-7 space-y-4" onSubmit={submit}>
           <label className="block">
-            <span className="mb-2 block text-sm font-bold text-slate-700">Success Padel name</span>
+            <span className="mb-2 block text-sm font-bold">Success Padel name</span>
             <input
               value={name}
               onChange={(event) => setName(event.target.value)}

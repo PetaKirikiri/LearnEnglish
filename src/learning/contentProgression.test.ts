@@ -2,67 +2,105 @@ import { describe, expect, it } from 'vitest'
 import { createPracticeRound, type QuizQuestion } from './quizContent'
 import { orderedQuestionBank } from './questionSheet'
 import { questionBlock } from './contentOrder'
-import { hasCompletedQuestion, loadLearningMemory, recordAnswer, saveLearningMemory, type LearningMemory } from './learningMemory'
+import { practiceFocus } from './practiceScheduler'
+import { hasLearnedQuestion, loadLearningMemory, recordAnswer, saveLearningMemory, type LearningMemory } from './learningMemory'
 
 const bank = orderedQuestionBank().map(row => row.question)
-const the = bank.filter(q => questionBlock(q) === 'sentences:the')
-function complete(questions: readonly QuizQuestion[] = the, initial: LearningMemory = {}) {
+const blocks = [...new Set(bank.map(questionBlock))]
+const pair = (index: number) => bank.filter(q => blocks.slice(index * 2, index * 2 + 2).includes(questionBlock(q)))
+function complete(questions: readonly QuizQuestion[] = pair(0), initial: LearningMemory = {}) {
   let memory = initial
-  for (let day = 0; day < 3; day++) for (const q of questions) {
-    memory = recordAnswer(memory, q, true, Date.UTC(2026, 8, 1 + day), `pass-${day}`)
+  for (let pass = 0; pass < 2; pass++) for (const q of questions) {
+    memory = recordAnswer(memory, q, true, 1000 + pass, 'pass-' + pass)
   }
   return memory
 }
-describe('Content controls learner progression', () => {
-  it('uses exactly the admin table order, including every the sentence', () => {
-    expect(createPracticeRound().map(q => q.id)).toEqual(bank.slice(0, 10).map(q => q.id))
-    expect(createPracticeRound().map(q => q.id)).toEqual(the.map(q => q.id))
+describe('Paired focus with cumulative review', () => {
+  it('mixes the first two corpus-ranked targets with balanced unique examples', () => {
+    const round = createPracticeRound()
+    expect(blocks.slice(0, 2)).toEqual(['sentences:the', 'sentences:a'])
+    expect(round).toHaveLength(10)
+    expect(new Set(round.map(q => q.id)).size).toBe(10)
+    for (const block of blocks.slice(0, 2)) expect(round.filter(q => questionBlock(q) === block)).toHaveLength(5)
+    expect(round[0].id).toBe(bank[0].id)
+    expect(createPracticeRound(999).slice(0, -1).every(q => blocks.slice(0, 2).includes(questionBlock(q)))).toBe(true)
+    expect(createPracticeRound(0).map(q => q.id)).toEqual(round.map(q => q.id))
   })
-  it('does not move on after a single correct pass or many same-day passes', () => {
-    let memory: LearningMemory = {}
-    for (let pass = 0; pass < 6; pass++) {
-      for (const q of the) memory = recordAnswer(memory, q, true, Date.UTC(2026, 8, 1), `pass-${pass}`)
-      expect(createPracticeRound(pass + 1, memory).every(q => q.answer.toLowerCase() === 'the')).toBe(true)
+  it('does not teach a fixed alternating answer sequence', () => {
+    const orders = Array.from({ length: 12 }, (_, i) => createPracticeRound(i).map(questionBlock))
+    expect(new Set(orders.map(o => o.join(','))).size).toBeGreaterThan(3)
+    for (const order of orders) {
+      for (let i = 2; i < order.length; i++) expect(new Set(order.slice(i - 2, i + 1)).size).toBeGreaterThan(1)
     }
   })
-  it('unlocks a only when all the sentences are complete, then is after a', () => {
+  it('requires every example in both targets and two distinct passes, not three days', () => {
+    let memory: LearningMemory = {}
+    for (const q of pair(0)) for (let n = 0; n < 5; n++) memory = recordAnswer(memory, q, true, 100, 'same-pass')
+    expect(practiceFocus(bank, memory).pair).toBe(1)
+    memory = complete(pair(0).slice(1), memory)
+    expect(practiceFocus(bank, memory).pair).toBe(1)
+    memory = recordAnswer(memory, pair(0)[0], true, 200, 'second-pass')
+    expect(practiceFocus(bank, memory).pair).toBe(2)
+  })
+  it('moves to targets 3 and 4 with seven focus questions and three earlier reviews', () => {
     const memory = complete()
-    const next = createPracticeRound(0, memory)
-    expect(next.every(q => questionBlock(q) === 'sentences:a')).toBe(true)
-    const afterA = createPracticeRound(0, complete(next, memory))
-    expect(afterA.every(q => questionBlock(q) === 'sentences:is')).toBe(true)
+    const round = createPracticeRound(0, memory)
+    expect(round.filter(q => blocks.slice(2, 4).includes(questionBlock(q)))).toHaveLength(7)
+    expect(round.filter(q => blocks.slice(0, 2).includes(questionBlock(q)))).toHaveLength(3)
+    expect(new Set(round.filter(q => blocks.slice(0, 2).includes(questionBlock(q))).map(questionBlock)).size).toBe(2)
+    expect(new Set(round.map(q => q.id)).size).toBe(round.length)
   })
-  it('keeps an incomplete sentence in the active block and resets its evidence after a mistake', () => {
+  it('prioritises mistakes in older material without abandoning the current pair', () => {
     let memory = complete()
-    memory = recordAnswer(memory, the[4], false, Date.UTC(2026, 8, 4), 'mistake')
-    expect(hasCompletedQuestion(memory[the[4].id])).toBe(false)
-    expect(createPracticeRound(500, memory).map(q => q.id)).toEqual([the[4].id])
-    expect(createPracticeRound(0, complete([the[4]], memory)).every(q => q.answer.toLowerCase() === 'a')).toBe(true)
+    const old = pair(0).at(-1)!
+    memory = recordAnswer(memory, old, false, 9000, 'miss')
+    expect(hasLearnedQuestion(memory[old.id])).toBe(true)
+    expect(practiceFocus(bank, memory).pair).toBe(2)
+    expect(createPracticeRound(0, memory)[2].id).toBe(old.id)
   })
-  it('does not let old counters or later-word mistakes bypass the content order', () => {
+  it('does not let legacy totals or random later attempts skip the first pair', () => {
     let memory: LearningMemory = {}
-    for (let i = 0; i < 20; i++) for (const q of the) memory = recordAnswer(memory, q, true, i)
-    const these = bank.find(q => q.answer.toLowerCase() === 'these')!
-    memory = recordAnswer(memory, these, false, 100)
-    expect(createPracticeRound(0, memory).every(q => q.answer.toLowerCase() === 'the')).toBe(true)
+    for (const q of pair(0)) for (let n = 0; n < 20; n++) memory = recordAnswer(memory, q, true, n)
+    memory = complete(pair(4), memory)
+    expect(practiceFocus(bank, memory).pair).toBe(1)
   })
-  it('resumes the active block from persisted progress rather than restarting or skipping', () => {
+  it('persists acquisition and resumes the same pair with review', () => {
     const storage = new Map<string, string>()
-    const adapter = { setItem: (key: string, value: string) => { storage.set(key, value) }, getItem: (key: string) => storage.get(key) ?? null }
-    saveLearningMemory('Fifa', complete(), adapter)
-    expect(createPracticeRound(0, loadLearningMemory('Fifa', adapter)).every(q => q.answer.toLowerCase() === 'a')).toBe(true)
+    const adapter = { setItem: (k: string, v: string) => { storage.set(k, v) }, getItem: (k: string) => storage.get(k) ?? null }
+    const memory = complete()
+    saveLearningMemory('Fifa', memory, adapter)
+    expect(createPracticeRound(2, loadLearningMemory('Fifa', adapter))).toEqual(createPracticeRound(2, memory))
   })
-  it('eventually reaches every ordered content block and keeps revising after completion', () => {
-    let memory: LearningMemory = {}
-    const blocks = [...new Set(bank.map(questionBlock))]
-    const visited: string[] = []
-    for (const block of blocks) {
-      const next = createPracticeRound(0, memory)
-      expect(next.every(q => questionBlock(q) === block)).toBe(true)
-      visited.push(questionBlock(next[0]))
-      memory = complete(bank.filter(q => questionBlock(q) === block), memory)
+  it('rotates review across both earlier targets instead of retiring either', () => {
+    let memory = complete()
+    const reviewed = new Set<string>()
+    for (let round = 0; round < 10; round++) {
+      for (const q of createPracticeRound(round, memory).filter(q => blocks.slice(0, 2).includes(questionBlock(q)))) {
+        reviewed.add(q.id)
+        memory = recordAnswer(memory, q, true, 10000 + round, 'review-' + round)
+      }
     }
-    expect(visited).toEqual(blocks)
-    expect(createPracticeRound(0, memory)).toHaveLength(10)
+    expect(reviewed.size).toBe(pair(0).length)
+  })
+  it('covers both focus banks before repeating already-seen examples', () => {
+    let memory: LearningMemory = {}
+    const seen = new Set<string>()
+    for (let round = 0; round < 2; round++) for (const q of createPracticeRound(round, memory)) {
+      if (seen.has(q.id)) expect(bank.filter(other => questionBlock(other) === questionBlock(q)).every(other => seen.has(other.id))).toBe(true)
+      seen.add(q.id)
+      memory = recordAnswer(memory, q, true, 10000 + round, 'round-' + round)
+    }
+    expect(seen.size).toBe(pair(0).length)
+  })
+  it('eventually reaches every pair and keeps reviewing after course acquisition', () => {
+    let memory: LearningMemory = {}
+    for (let i = 0; i < Math.ceil(blocks.length / 2); i++) {
+      expect(practiceFocus(bank, memory).pair).toBe(i + 1)
+      const round = createPracticeRound(i, memory)
+      expect(round.some(q => blocks.slice(i * 2, i * 2 + 2).includes(questionBlock(q)))).toBe(true)
+      memory = complete(pair(i), memory)
+    }
+    expect(practiceFocus(bank, memory).pair).toBeNull()
+    expect(createPracticeRound(100, memory)).toHaveLength(10)
   })
 })

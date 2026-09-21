@@ -7,9 +7,9 @@ import { createPracticeRound } from './quizContent'
 import { trackProgress } from './progressSync'
 import { speakEnglish, type SpeechState } from './speech'
 import { orderedQuestionBank } from './questionSheet'
-import { recordAnswer, saveLearningMemory, type LearningMemory } from './learningMemory'
+import { loadLearningMemory, recordAnswer, saveLearningMemory, type LearningMemory } from './learningMemory'
 
-vi.mock('./progressSync', () => ({ trackProgress: vi.fn() }))
+vi.mock('./progressSync', () => ({ trackProgress: vi.fn(), pending: () => [], loadLearnerEvents: () => new Promise(() => {}) }))
 vi.mock('../lib/supabase', () => ({ supabase: null }))
 vi.mock('../pages/GroupLeaderboardPage', () => ({ default: ({ onExit }: { onExit: () => void }) => <button onClick={onExit}>Return to question</button> }))
 vi.mock('./speech', () => ({ canSpeakEnglish: () => true, speakEnglish: vi.fn(), stopEnglishSpeech: vi.fn() }))
@@ -68,7 +68,7 @@ it('reduces the available reward once per word, records hints with the answer, a
   advance(10000)
   expect(container.querySelector('footer')).not.toBeNull()
   expect(event[2]?.helpWords).toEqual(['train', 'city'])
-  closeHint(); advance(1200)
+  closeHint(); click('Next')
   expect(container.querySelector('[data-testid="available-points"]')?.textContent).toContain('10 pts')
 })
 
@@ -85,7 +85,7 @@ it('keeps every option neutral until answered and clears feedback on every new q
     answer(i, false)
     const correct = container.querySelector('.answer-option.bg-emerald-50')
     expect(correct?.textContent).toBe(createPracticeRound()[i].answer)
-    advance(5000)
+    click('Next')
   }
   expect(container.querySelector('.answer-option.bg-emerald-50')).toBeNull()
   expect(container.querySelector('footer')).toBeNull()
@@ -98,7 +98,8 @@ it('opens the leaderboard beside the profile without losing or advancing the que
   click('Leaderboard')
   advance(10000)
   act(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' })))
-  expect(container.textContent).toBe('Return to question')
+  expect(container.textContent).toContain('Return to question')
+  expect(container.querySelector('.question-panel')).toBeNull()
   click('Return to question')
   expect(container.querySelector('h1')?.textContent).toBe(question.prompt)
   expect(container.textContent).toContain('Correct!')
@@ -108,54 +109,52 @@ it('opens the leaderboard beside the profile without losing or advancing the que
 it('opens on the content block and continues without a menu or results screen', () => {
   for (let i = 0; i < 10; i++) {
     answer(i)
-    advance(1200)
+    click('Next')
   }
-  expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound(1)[0].prompt)
+  expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound(1, loadLearningMemory('test'))[0].prompt)
   expect(container.textContent).not.toMatch(/Your space|Practice|Words|Sentences|Stories|Home|Round complete/i)
   advance(10000)
   expect(vi.mocked(trackProgress).mock.calls.filter(call => call[1] === 'round_completed')).toHaveLength(1)
   expect(vi.mocked(trackProgress).mock.calls.filter(call => call[1] === 'answer')).toHaveLength(10)
 })
 
-it('gives wrong answers five seconds and supports pausing and resuming', () => {
+it('keeps wrong answers visible indefinitely until Next is tapped', () => {
   answer(0, false)
-  advance(1200)
+  advance(60000)
   expect(container.textContent).toContain('Correct answer:')
-  click('Pause')
-  advance(10000)
-  expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[0].prompt)
-  click('Resume')
-  advance(4999)
-  expect(container.textContent).toContain('Correct answer:')
-  advance(1)
+  expect(container.querySelector('button[aria-label="Pause"]')).toBeNull()
+  expect(vi.mocked(trackProgress).mock.calls.filter(call => call[1] === 'answer')).toHaveLength(1)
+  click('Next')
   expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[1].prompt)
+  expect(container.querySelector('footer')).toBeNull()
 })
 
 it('continues beyond thirty answers without a finish line or resetting visible progress', () => {
+  let currentRound = createPracticeRound()
   for (let index = 0; index < 35; index++) {
-    const question = createPracticeRound(Math.floor(index / 10))[index % 10]
+    if (index % 10 === 0) currentRound = createPracticeRound(Math.floor(index / 10), loadLearningMemory('test'))
+    const question = currentRound[index % 10]
     expect(container.querySelector('h1')?.textContent).toBe(question.prompt)
     expect(container.querySelector('[role="progressbar"]')).toBeNull()
     expect(container.querySelector('header')?.textContent).not.toMatch(/\d+\s*\/\s*10/)
     click(question.answer)
-    advance(1200)
+    click('Next')
     expect(container.querySelector('footer')).toBeNull()
   }
-  expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound(3)[5].prompt)
+  expect(container.querySelector('h1')?.textContent).toBe(currentRound[5].prompt)
   const answers = vi.mocked(trackProgress).mock.calls.filter(call => call[1] === 'answer')
   expect(answers).toHaveLength(35)
   expect(new Set(answers.map(call => call[3])).size).toBe(35)
   expect(vi.mocked(trackProgress).mock.calls.filter(call => call[1] === 'round_completed')).toHaveLength(3)
 })
 
-it('pauses when listening and cancels pending advancement when unmounted', () => {
+it('keeps feedback visible while replaying audio and never advances after unmount', () => {
   answer(0)
   click('Play audio')
-  advance(10000)
-  expect(container.textContent).toContain('Paused for reading')
-  click('Resume')
+  advance(60000)
+  expect(container.textContent).toContain('Correct!')
   act(() => root.render(<div>Exited</div>))
-  advance(10000)
+  advance(60000)
   expect(container.textContent).toBe('Exited')
   expect(vi.mocked(trackProgress).mock.calls).toHaveLength(1)
 })
@@ -170,7 +169,9 @@ it('autoplays a gapped sentence, then the complete sentence only after answering
   advance(10000)
   expect(container.querySelector('h1')?.textContent).toBe(question.prompt)
   act(() => notify('ended'))
-  advance(1200)
+  advance(60000)
+  expect(container.querySelector('footer')).not.toBeNull()
+  click('Next')
   const next = createPracticeRound()[1]
   expect(speakEnglish).toHaveBeenLastCalledWith(next.prompt, next.gapAudioUrl, expect.any(Function))
 })
@@ -183,7 +184,11 @@ it('autoplays vocabulary in a short sentence and keeps the Thai-to-English targe
   }
   saveLearningMemory('vocab-test', memory)
   act(() => root.render(<StudentHomePage key="vocab" displayName="vocab-test" userId="vocab-test" syncState="saved" onSignOut={() => {}} />))
-  const question = createPracticeRound(0, memory)[0]
+  const round = createPracticeRound(0, memory)
+  const vocabularyIndex = round.findIndex(q => q.mode === 'vocabulary')
+  expect(vocabularyIndex).toBeGreaterThanOrEqual(0)
+  for (const earlier of round.slice(0, vocabularyIndex)) { click(earlier.answer); click('Next') }
+  const question = round[vocabularyIndex]
   expect(question.mode).toBe('vocabulary')
   expect(speakEnglish).toHaveBeenLastCalledWith(question.contextSentence, question.contextAudioUrl, expect.any(Function))
   const context = container.querySelector('[lang="en"]')!
@@ -197,29 +202,38 @@ it('offers a tap to play when the browser blocks autoplay', () => {
   expect(container.querySelector('button[aria-label="Play audio"]')).not.toBeNull()
 })
 
-it('freezes automatic progression while a report is open and resumes after closing', () => {
+it('blocks Next while a report is open and still waits after closing', () => {
   answer(0)
   click('Flag this question')
   advance(20000)
   expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[0].prompt)
   expect(container.querySelector('dialog')?.open).toBe(true)
+  click('Next')
+  expect(container.querySelector('footer')).not.toBeNull()
   click('Close report')
-  advance(1200)
-  expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[1].prompt)
-})
-it('allows learners to turn auto progression off', () => {
-  answer(0)
-  click('Auto on')
-  advance(20000)
-  expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[0].prompt)
+  advance(60000)
+  expect(container.querySelector('footer')).not.toBeNull()
   click('Next')
   expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[1].prompt)
-  expect(localStorage.getItem('fifa:auto:test')).toBe('false')
+})
+it('ignores the old saved Auto on preference and advances only once with Enter', () => {
+  localStorage.setItem('fifa:auto:test', 'true')
+  act(() => root.render(<StudentHomePage key="old-auto-setting" displayName="test" userId="test" syncState="saved" onSignOut={() => {}} />))
+  answer(0)
+  advance(60000)
+  expect(container.textContent).toContain('Correct!')
+  expect(container.textContent).not.toMatch(/Auto on|Auto off|Moving on automatically|Resume|Pause/)
+  act(() => {
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
+  })
+  expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[1].prompt)
+  expect(container.querySelector('footer')).toBeNull()
 })
 
 it('tracks the active content block without injecting random vocabulary', () => {
   answer(0)
-  advance(1200)
+  click('Next')
   answer(1)
   const events = vi.mocked(trackProgress).mock.calls.filter(call => call[1] === 'answer')
   expect(events.map(call => call[2]?.mode)).toEqual(['sentences', 'sentences'])
@@ -232,4 +246,39 @@ it('shows the admin link only for Peta’s account, never based on the display n
   act(() => root.render(<StudentHomePage displayName="Peta" userId={PETA_ACCOUNT_ID} syncState="saved" onSignOut={() => {}} />))
   expect(container.querySelector('.account-menu a[href="/admin"]')?.textContent).toBe('Admin')
   expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[0].prompt)
+})
+
+it('keeps collection details in the profile and resumes the same question', () => {
+  const prompt = container.querySelector('h1')?.textContent
+  expect(container.querySelector('.learner-level')?.textContent).toBe('Level —')
+  expect(container.querySelector('[aria-label="Word collection"]')).toBeNull()
+  click('Open your profile')
+  expect(container.textContent).toContain('test’s profile')
+  const answersBefore = vi.mocked(trackProgress).mock.calls.length
+  act(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: '1' })))
+  expect(vi.mocked(trackProgress).mock.calls).toHaveLength(answersBefore)
+  click('← Back to practice')
+  expect(container.querySelector('h1')?.textContent).toBe(prompt)
+})
+
+it('keeps the same header controls in place across practice, profile, and leaderboard', () => {
+  const header = container.querySelector('.lesson-header')!
+  const controls = [...header.children]
+  const menu = container.querySelector<HTMLDetailsElement>('.account-menu')!
+  menu.open = true
+  click('Your profile')
+  expect(menu.open).toBe(false)
+  expect(container.querySelector('.lesson-header')).toBe(header)
+  expect([...header.children]).toEqual(controls)
+  expect(container.textContent).toContain('test’s profile')
+  click('Leaderboard')
+  expect(container.querySelector('.lesson-header')).toBe(header)
+  expect(container.textContent).toContain('Return to question')
+  expect(container.textContent).not.toContain('test’s profile')
+  click('Open your profile')
+  expect(container.textContent).toContain('test’s profile')
+  click('← Back to practice')
+  expect(container.querySelector('.question-panel')).not.toBeNull()
+  expect(container.querySelectorAll('.lesson-header')).toHaveLength(1)
+  expect(container.querySelectorAll('.englishsuccess-corner-logo')).toHaveLength(1)
 })

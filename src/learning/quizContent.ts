@@ -1,10 +1,12 @@
 import { readings } from '../content/readings'
+import { lessonThaiTranslations } from '../content/languageData'
 import { buildWordData, parseWords } from '../lib/wordData'
 import { grammarLessons } from './grammarLessons'
 import { grammarExpansion } from './grammarExpansion'
 import { vocabularyContexts } from './vocabularyContexts'
-import { compareContent, questionBlock } from './contentOrder'
-import { hasCompletedQuestion, type LearningMemory } from './learningMemory'
+import { compareContent } from './contentOrder'
+import type { LearningMemory } from './learningMemory'
+import { addRareEncounter, selectPracticeQuestions } from './practiceScheduler'
 
 export type QuizMode = 'vocabulary' | 'sentences'
 
@@ -41,101 +43,6 @@ const questionsPerRound = 10
 // Deliberately reviewed for the meaning used in these stories. The larger admin
 // dictionary remains useful for analysis, but its automatic glosses are not safe
 // enough to teach from without context.
-const lessonThaiTranslations: Readonly<Record<string, string>> = {
-  airport: 'สนามบิน',
-  apartments: 'อพาร์ตเมนต์',
-  basketball: 'บาสเกตบอล',
-  beach: 'ชายหาด',
-  bird: 'นก',
-  birds: 'นก',
-  birdwatching: 'การดูนก',
-  bread: 'ขนมปัง',
-  brother: 'พี่ชายหรือน้องชาย',
-  buses: 'รถโดยสาร',
-  cars: 'รถยนต์',
-  cats: 'แมว',
-  cave: 'ถ้ำ',
-  cheese: 'ชีส',
-  child: 'เด็ก',
-  cities: 'เมืองต่าง ๆ',
-  city: 'เมือง',
-  climate: 'ภูมิอากาศ',
-  cold: 'หนาว',
-  corn: 'ข้าวโพด',
-  countryside: 'ชนบท',
-  diary: 'สมุดบันทึก',
-  doctor: 'แพทย์',
-  elevator: 'ลิฟต์',
-  exercise: 'การออกกำลังกาย',
-  family: 'ครอบครัว',
-  farms: 'ฟาร์ม',
-  father: 'พ่อ',
-  fish: 'ปลา',
-  fishing: 'การตกปลา',
-  folders: 'แฟ้ม',
-  food: 'อาหาร',
-  friends: 'เพื่อน',
-  gate: 'ประตู',
-  grandfather: 'ปู่หรือตา',
-  grandmother: 'ย่าหรือยาย',
-  handouts: 'เอกสารแจก',
-  hills: 'เนินเขา',
-  hobby: 'งานอดิเรก',
-  home: 'บ้าน',
-  houses: 'บ้าน',
-  island: 'เกาะ',
-  meat: 'เนื้อสัตว์',
-  midnight: 'เที่ยงคืน',
-  morning: 'ตอนเช้า',
-  mother: 'แม่',
-  mountain: 'ภูเขา',
-  nest: 'รัง',
-  notebooks: 'สมุด',
-  ocean: 'มหาสมุทร',
-  pancakes: 'แพนเค้ก',
-  pencils: 'ดินสอ',
-  people: 'ผู้คน',
-  photographs: 'รูปถ่าย',
-  pilot: 'นักบิน',
-  plane: 'เครื่องบิน',
-  platform: 'ชานชาลา',
-  police: 'ตำรวจ',
-  questions: 'คำถาม',
-  rocks: 'หิน',
-  salt: 'เกลือ',
-  sauce: 'ซอส',
-  school: 'โรงเรียน',
-  shape: 'รูปร่าง',
-  sister: 'พี่สาวหรือน้องสาว',
-  skiing: 'การเล่นสกี',
-  sky: 'ท้องฟ้า',
-  station: 'สถานี',
-  stars: 'ดวงดาว',
-  storms: 'พายุ',
-  streets: 'ถนน',
-  suburbs: 'ชานเมือง',
-  suitcase: 'กระเป๋าเดินทาง',
-  sun: 'ดวงอาทิตย์',
-  supplies: 'อุปกรณ์การเรียน',
-  sweaters: 'เสื้อกันหนาว',
-  teacher: 'ครู',
-  temperature: 'อุณหภูมิ',
-  thunder: 'ฟ้าร้อง',
-  ticket: 'ตั๋ว',
-  tracks: 'รางรถไฟ',
-  traffic: 'การจราจร',
-  train: 'รถไฟ',
-  trains: 'รถไฟ',
-  treehouses: 'บ้านต้นไม้',
-  trip: 'การเดินทาง',
-  vinegar: 'น้ำส้มสายชู',
-  volcano: 'ภูเขาไฟ',
-  warm: 'อบอุ่น',
-  water: 'น้ำ',
-  weather: 'สภาพอากาศ',
-  winter: 'ฤดูหนาว',
-  woods: 'ป่า',
-}
 
 const excludedVocabulary = new Set([
   'a', 'about', 'above', 'all', 'also', 'an', 'and', 'are', 'as', 'at', 'be', 'before', 'but',
@@ -327,19 +234,11 @@ export function createQuizRound(
   return chosen
 }
 
-// The Content table and learner share this order. Round numbers only shuffle
-// answer buttons; they never unlock later targets or bypass unfinished work.
+// The admin preview and learner share the same paired focus/review scheduler.
 export function createPracticeRound(round = 0, memory: LearningMemory = {}): readonly QuizQuestion[] {
   const random = createRandom(20260912 + round * 97)
   const bank = [...createSentencePool(random), ...createVocabularyPool(random)].sort(compareContent)
-  const next = bank.find(q => !hasCompletedQuestion(memory[q.id]))
-  if (!next) {
-    // Completed course: continue revising the least recently practised items.
-    return bank.sort((a, b) => (memory[a.id]?.lastAnsweredAt ?? 0) - (memory[b.id]?.lastAnsweredAt ?? 0) || compareContent(a, b)).slice(0, questionsPerRound)
-  }
-  return bank.filter(q => questionBlock(q) === questionBlock(next) && !hasCompletedQuestion(memory[q.id]))
-    .sort((a, b) => (memory[a.id]?.lastAnsweredAt ?? 0) - (memory[b.id]?.lastAnsweredAt ?? 0) || compareContent(a, b))
-    .slice(0, questionsPerRound)
+  return addRareEncounter(selectPracticeQuestions(bank, memory, random, questionsPerRound), bank, memory, round, random)
 }
 
 export function getLessonAudioItems() {

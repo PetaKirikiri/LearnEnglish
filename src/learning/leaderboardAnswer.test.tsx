@@ -6,7 +6,7 @@ import { createPracticeRound } from './quizContent'
 import { questionProgressKey } from './progressData'
 import { trackProgress } from './progressSync'
 
-vi.mock('./progressSync', () => ({ trackProgress: vi.fn() }))
+vi.mock('./progressSync', () => ({ trackProgress: vi.fn(), pending: () => [], loadLearnerEvents: () => new Promise(() => {}) }))
 vi.mock('../lib/supabase', () => ({ supabase: null }))
 vi.mock('./speech', () => ({ canSpeakEnglish: () => false, speakEnglish: vi.fn(), stopEnglishSpeech: vi.fn() }))
 

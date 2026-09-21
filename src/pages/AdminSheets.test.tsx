@@ -5,6 +5,23 @@ import MembersTablePage from './MembersTablePage'
 import QuestionsTablePage from './QuestionsTablePage'
 import { orderedQuestionBank, questionExampleCount } from '../learning/questionSheet'
 import { createPracticeRound } from '../learning/quizContent'
+it('previews the next focus pair together with earlier targets for review',()=>{
+  act(()=>root.render(<QuestionsTablePage/>))
+  const view=container.querySelector('select')!
+  act(()=>{view.value='round';view.dispatchEvent(new Event('change',{bubbles:true}))})
+  const pair=container.querySelector<HTMLInputElement>('input[aria-label="Focus pair"]')!
+  act(()=>{
+    const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value')!.set!
+    setter.call(pair,'2')
+    pair.dispatchEvent(new Event('input',{bubbles:true}))
+    pair.dispatchEvent(new Event('change',{bubbles:true}))
+  })
+  const targets=[...container.querySelectorAll('tbody tr')].map(row=>row.querySelectorAll('td')[2].textContent)
+  expect(targets.filter(target=>target==='the'||target==='a')).toHaveLength(3)
+  expect(targets).toContain('the')
+  expect(targets).toContain('a')
+  expect(new Set(targets.filter(target=>target!=='the'&&target!=='a')).size).toBe(2)
+})
 const {rpc}=vi.hoisted(()=>({rpc:vi.fn()}))
 vi.mock('../lib/supabase',()=>({supabase:{rpc}}))
 let root:Root,container:HTMLDivElement
@@ -16,7 +33,8 @@ it('shows joined members even if they have never answered a question',async()=>{
   expect(container.querySelectorAll('tbody tr')).toHaveLength(1)
   expect(container.textContent).toContain('New member')
   expect(container.textContent).toContain('Friends')
-  expect(container.querySelector('h1,select,button')).toBeNull()
+  expect(container.querySelector('h1,select')).toBeNull()
+  expect(container.querySelector('button')?.getAttribute('aria-label')).toBe('Open New member profile')
   expect(container.querySelector('input')?.getAttribute('placeholder')).toBe('Search')
   expect(container.textContent).not.toMatch(/People who|Dates are|members shown|Filter group/)
   expect(container.querySelectorAll('tbody td')[4].textContent).toBe('0')

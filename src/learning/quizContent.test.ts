@@ -148,10 +148,10 @@ describe('story-powered quiz content', () => {
   })
 })
 
-it('starts the learner on the complete the block rather than alternating random modes', () => {
+it('starts on the first two content targets, rather than random later material', () => {
   const first = createPracticeRound()
   expect(first).toHaveLength(10)
   expect(new Set(first.map(q => q.id)).size).toBe(10)
-  expect(first.every(q => q.mode === 'sentences' && q.answer.toLowerCase() === 'the')).toBe(true)
-  expect(createPracticeRound(999).map(q => q.id)).toEqual(first.map(q => q.id))
+  expect(new Set(first.map(q => q.answer.toLowerCase()))).toEqual(new Set(['the', 'a']))
+  expect(createPracticeRound(999).slice(0, -1).every(q => ['the', 'a'].includes(q.answer.toLowerCase()))).toBe(true)
 })

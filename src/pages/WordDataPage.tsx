@@ -1,4 +1,4 @@
-import { thaiTranslations } from '../content/thaiTranslations.generated'
+import { thaiTranslations } from '../content/languageData'
 import type { WordData } from '../lib/wordData'
 
 type WordDataPageProps = {

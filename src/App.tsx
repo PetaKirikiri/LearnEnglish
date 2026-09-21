@@ -18,6 +18,7 @@ import { useLearningActivity } from './learning/useLearningActivity'
 import LeaderboardPage from './pages/LeaderboardPage'
 import TrainingPlanPage from './pages/TrainingPlanPage'
 import { appDestination } from './auth/appAccess'
+import Brand from './ui/Brand'
 
 export default function App() {
   const { loading, user, displayName, signOut } = useAuth()
@@ -41,7 +42,7 @@ export default function App() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-100 text-sm font-bold text-slate-500">
+      <main className="game-surface loading-screen flex min-h-screen items-center justify-center text-sm font-bold">
         Opening EnglishSuccess…
       </main>
     )
@@ -62,9 +63,10 @@ export default function App() {
 
   return (
     <main className="admin-sheet min-h-screen bg-white px-4 py-5 text-slate-900 sm:px-6">
-      <nav aria-label="Main sections" className="mb-4 flex items-center gap-1 border-b border-slate-300">
+      <nav aria-label="Main sections" className="admin-navigation mb-4 flex items-center gap-1 border-b border-slate-300">
         <a href="/app" aria-label="Student app" title="Student app" className="flex h-11 w-11 items-center justify-center text-xl text-slate-500">‹</a>
         {(['members','content'] as const).map(id=><button key={id} aria-pressed={activeTab===id} onClick={()=>{setActiveTab(id);window.history.replaceState(null,'',`#${id}`)}} className={`min-h-11 border-b-2 px-4 text-sm font-semibold ${activeTab===id ? 'border-teal-800 text-teal-900' : 'border-transparent text-slate-500'}`}>{id==='members' ? 'Members' : 'Content'}</button>)}
+        <Brand />
       </nav>
 
       {activeTab === 'members' ? (

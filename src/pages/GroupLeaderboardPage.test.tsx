@@ -33,8 +33,9 @@ it('shows names, ranks, scores and the three period controls', async () => {
   expect(container.querySelector('ol')?.textContent).toBe('1Fifa1002Peta70')
   expect(container.querySelectorAll('button')).toHaveLength(4)
   expect(container.querySelector('button')?.getAttribute('aria-label')).toBe('Back to lesson')
-  expect(container.querySelector('header, h1, h2, form, details, select, dialog, input')).toBeNull()
-  expect(container.textContent).not.toMatch(/group|Invite|Scoring|Play|Resets|Leaderboard/i)
+  expect(container.querySelector('h1')?.textContent).toBe('Leaderboard')
+  expect(container.querySelector('header, h2, form, details, select, dialog, input')).toBeNull()
+  expect(container.textContent).not.toMatch(/group|Invite|Scoring|Play|Resets/i)
 })
 it('does not open setup controls even from an old invite URL', async () => {
   window.history.replaceState(null, '', '/app?group=abcdefghijklmnop')

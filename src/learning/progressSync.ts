@@ -12,11 +12,12 @@ function status(id: string, state: SyncState) {
   states.set(id, state)
   window.dispatchEvent(new Event('fifa-progress-sync'))
 }
-function pending(id: string): ProgressEvent[] {
+export function pending(id: string): ProgressEvent[] {
   try { return JSON.parse(localStorage.getItem(queueKey(id)) ?? '[]') as ProgressEvent[] } catch { return [] }
 }
 
 export function queueProgress(event: ProgressEvent) {
+  window.dispatchEvent(new CustomEvent('fifa-progress-recorded', { detail: event }))
   const queue = pending(event.learner_id)
   if (!queue.some(item => item.id === event.id)) queue.push(event)
   try {

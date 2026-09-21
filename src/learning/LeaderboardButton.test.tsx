@@ -5,7 +5,7 @@ import QuizPage from './QuizPage'
 
 const rpc = vi.hoisted(() => vi.fn())
 vi.mock('../lib/supabase', () => ({ supabase: { rpc } }))
-vi.mock('./progressSync', () => ({ trackProgress: vi.fn() }))
+vi.mock('./progressSync', () => ({ trackProgress: vi.fn(), pending: () => [], loadLearnerEvents: () => new Promise(() => {}) }))
 vi.mock('./speech', () => ({ canSpeakEnglish: () => false, speakEnglish: vi.fn(), stopEnglishSpeech: vi.fn() }))
 let root: Root
 let container: HTMLDivElement
@@ -29,9 +29,10 @@ async function render() {
 }
 it('shows the champion beside the header cup and opens every member without losing the question', async () => {
   await render()
-  expect(container.querySelector('header > :first-child')!.className).toBe('lesson-brand')
-  expect(container.querySelector('.lesson-brand')!.textContent).toBe('EnglishSuccess')
-  expect(container.querySelector('header > .englishsuccess-corner-logo:last-child')!.getAttribute('src')).toBe('/brand/englishsuccess-logo.png')
+  expect(container.querySelector('header > :first-child')!.className).toBe('player-tools')
+  expect(container.querySelector('.lesson-brand .brand-wordmark')!.textContent).toBe('EnglishSuccess')
+  expect(container.querySelector('header > .lesson-brand:last-child .englishsuccess-corner-logo')!.getAttribute('src')).toBe('/brand/englishsuccess-logo.png')
+  expect(container.querySelector('.player-controls .champion-button')!.nextElementSibling!.className).toBe('account-menu')
   const question = container.querySelector('h1')!.textContent
   const button = container.querySelector<HTMLButtonElement>('header button[aria-label="Leaderboard"]')!
   expect(button.className).toBe('champion-button')
