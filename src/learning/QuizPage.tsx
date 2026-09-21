@@ -185,7 +185,7 @@ export default function QuizPage({
             </div>
           ) : null}
 
-          <div className={`mt-8 grid gap-3 ${question.choices.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
+          <div className={`mt-5 grid gap-3 ${question.choices.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
             {question.choices.map((choice, index) => {
               const isAnswer = choice === question.answer
               const isSelected = choice === selected
