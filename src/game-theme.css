@@ -177,21 +177,18 @@ body { background: var(--game-bg); }
 .teaching-orbit .orbit-side > span { padding: 3px; border: 1px solid #52647c55; border-radius: 5px; background: #102137; font-size: 14px; }
 .teaching-orbit + .teaching-orbit { margin-top: 12px; padding-top: 12px; border-top: 1px solid #7185a329; }
 .word-confidence { flex-shrink: 0; margin-top: 12px; padding-bottom: 8px; border-bottom: 1px solid #7185a329; }
-.confidence-visual-heading { display: flex; align-items: center; gap: 14px; color: #b1c1d6; }
-.confidence-visual-heading > svg { width: 31px; height: 31px; }
+.confidence-visual-heading { display: flex; align-items: center; gap: 9px; color: #b1c1d6; }
+.confidence-visual-heading > svg { width: 29px; height: 29px; flex-shrink: 0; color: #e5ca8c; filter: drop-shadow(0 2px 3px #0006); }
+.confidence-visual-heading h3 { font-size: 12px; }
 .confidence-track { flex: 1; height: 1px; background: linear-gradient(to right, #53668055, #c3a76b66); }
 .confidence-value { display: flex; align-items: baseline; gap: 4px; color: #eddaad; font-size: 16px; font-weight: 700; }
 .confidence-value small { font-size: 11px; color: #a6b6ca; font-weight: 500; }
-.confidence-scores { display: grid; grid-template-columns: repeat(5,1fr); gap: 7px; margin-top: 11px; }
-.confidence-scores button { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 76px; padding: 7px 3px; border: 1px solid #53658166; border-radius: 6px; background: linear-gradient(145deg, #213149, #0e1c2e); color: #9dabbf; box-shadow: inset 0 1px #ffffff0a; transition: background .15s, border-color .15s; }
-.confidence-emblem { display: block; width: 49px; max-width: 100%; aspect-ratio: 1; background: url('/brand/ranks/insignias-v1.png') 0 100% / 400% 200% no-repeat; filter: grayscale(1) brightness(.7); opacity: .55; }
-.confidence-power { display: flex; gap: 3px; height: 5px; }
-.confidence-power i { width: 5px; border-radius: 1px; background: #293b51; }
-.confidence-power i[data-filled="true"] { background: #7a8ca5; }
+.confidence-scores { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 7px; margin-top: 11px; }
+.confidence-scores button { min-width: 0; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 76px; padding: 7px 3px; border: 1px solid #53658166; border-radius: 6px; background: linear-gradient(145deg, #213149, #0e1c2e); color: #9dabbf; box-shadow: inset 0 1px #ffffff0a; transition: background .15s, border-color .15s; }
+.confidence-face-art { display: block; width: 56px; max-width: 100%; aspect-ratio: 1; background: url('/brand/confidence/faces-v2.png') 0 0 / 300% 200% no-repeat; }
 .confidence-scores button:hover { border-color: #8c9fb7; background: #25364a; }
 .confidence-scores button[aria-pressed=true] { background: radial-gradient(ellipse at 50% 30%, #61c5ff26, transparent 80%), #172e46; border-color: #9fdcff; color: #d3eeff; box-shadow: inset 0 1px #d7eeff44, 0 0 14px #8aceff14; }
-.confidence-scores button[aria-pressed=true] .confidence-emblem { filter: drop-shadow(0 2px 5px #56adff55); opacity: 1; }
-.confidence-scores button[aria-pressed=true] .confidence-power i[data-filled="true"] { background: #b3e4ff; box-shadow: 0 0 5px #7dccff80; }
+.confidence-scores button:focus-visible { outline: 2px solid #f2d795; outline-offset: 3px; }
 .confidence-selected { position: absolute; right: -3px; top: -5px; display: grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; background: #b9e7ff; color: #15283e; font-size: 10px; }
 .confidence-scale { display: flex; justify-content: space-between; margin-top: 7px; color: #b0bfd2; font-size: 10px; }
 .confidence-save-state { display: flex; justify-content: flex-end; align-items: center; min-height: 13px; margin-top: 5px; color: #a7c5bd; font-size: 11px; }
@@ -204,9 +201,9 @@ body { background: var(--game-bg); }
   .teaching-orbit .orbit-side > span { font-size: 13px; }
   .confidence-scores { gap: 5px; }
   .confidence-scores button { min-height: 66px; }
-  .confidence-emblem { width: 40px; }
-  .confidence-power { gap: 2px; }
-  .confidence-power i { width: 4px; }
+  .confidence-face-art { width: 50px; }
+  .confidence-visual-heading { gap: 6px; }
+  .confidence-visual-heading h3 { font-size: 11px; }
 }
 .report-dialog > p { background: #0c1728; border: 1px solid #374d68; color: #d3dfee; }
 .report-dialog [aria-pressed] { background: #142339; border-color: #475c76; color: #d0dcee; border-radius: 6px; }

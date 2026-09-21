@@ -1,0 +1,10 @@
+# Confidence faces
+
+`faces-v2.png` was generated with the built-in image generation tool on 2026-09-21. It is a 3 by 2 atlas, ordered unsure, hesitant, calm, confident, very confident, empty. Keep equal emphasis for unselected faces; selection is a separate frame. Preserve the brain icon in the heading. V2 replaces rejected realistic-eyed gold faces with restrained sculpted facial marks.
+
+## Final generation prompt
+
+Use case: stylized-concept.
+Asset type: refined confidence-expression sprite atlas for a premium navy-and-gold adventure game interface.
+Create a transparent 1536x1024 PNG, precisely 3 columns by 2 rows, 512x512 cells. Five identical-size circular face icons centered on each cell, diameter 380px; sixth bottom-right cell empty. Each face is a shallow sculpted champagne-gold disk, satin finish, restrained bevel and soft top-left light, dark navy recessed facial marks. Premium crafted game UI, readable at 48px. Elegant geometric facial expressions, absolutely NO realistic eyes, NO eyeballs, NO whites of eyes, NO irises, NO pupils, NO tongues, NO cheeks, NO realistic skin. Eyes are simple dark small oval inlays or curved dark strokes; eyebrows and mouth are clean strong sculpted inset lines. Faces retain subtle dimensional material quality, not flat vector emojis, not glossy spherical toy heads.
+Order: top left uncertain with gently worried brow and slight frown; top middle hesitant with asymmetrical brow and nearly straight tilted mouth; top right calm neutral with relaxed simple eyes and small closed smile; bottom left confident with relaxed arched eyes and broad closed smile; bottom middle very confident with joyful closed crescent eyes and unmistakable big uplifted smile (closed mouth, no teeth). Keep emotions encouraging rather than sad or distressed. All five SAME material, size, light, brightness and front-facing angle. No frames, medals, gems, crowns, sparkles, numbers, words, decoration, bodies or borders. Genuine alpha transparent background, no coloured background glow. This is one consistent matched face-expression atlas for a five-step rating control, not rarity ranks.
