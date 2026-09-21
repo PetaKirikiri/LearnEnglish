@@ -1,5 +1,6 @@
 import WordCollectionPanel from '../pages/WordCollectionPanel'
 import { useWordCollection } from './useWordCollection'
+import { WORDS_PER_LEVEL } from './wordCollection'
 import Icon from '../ui/Icon'
 import Brand from '../ui/Brand'
 import GroupLeaderboardPage from '../pages/GroupLeaderboardPage'
@@ -150,7 +151,10 @@ export default function QuizPage({
             <div><span className="block px-3 py-2 text-sm font-semibold">{learnerId}</span><button type="button" onClick={showProfile}>Your profile</button>{syncState && <span role="status" className="block px-3 pb-2 text-xs text-slate-500">{syncState === 'saved' ? 'All saved' : syncState === 'pending' ? 'Saving…' : 'Waiting to sync'}</span>}{appDestination(userId, '/admin') === 'admin' && <a href="/admin" className="flex min-h-11 items-center rounded-[7px] px-3 py-2 text-[13px] hover:bg-[#f7f7f3]">Admin</a>}<button type="button" onClick={onSignOut}>Sign out</button></div>
           </details>
           </div>
-          <button type="button" className="learner-level" aria-label={collectionReady ? `Level ${collection.level}. Open your profile` : 'Open your profile'} onClick={showProfile}>Level {collectionReady ? collection.level : '—'}</button>
+          <button type="button" className="learner-level" aria-label={collectionReady ? `Level ${collection.level}. Open your profile` : 'Open your profile'} title={collectionReady ? `${collection.conquered % WORDS_PER_LEVEL} / ${WORDS_PER_LEVEL} words toward Level ${collection.level + 1}` : 'Loading your progress'} onClick={showProfile}>
+            <span className="level-exp-fill" aria-hidden="true" style={{width: `${collectionReady ? (collection.conquered % WORDS_PER_LEVEL) / WORDS_PER_LEVEL * 100 : 0}%`}} />
+            <span className="level-exp-label">Level {collectionReady ? collection.level : '—'}</span>
+          </button>
           </div>
           <div className="lesson-brand"><Brand /></div>
         </header>

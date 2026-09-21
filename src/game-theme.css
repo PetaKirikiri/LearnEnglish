@@ -251,8 +251,14 @@ body { background: var(--game-bg); }
 .brand-lockup .englishsuccess-corner-logo { width: 60px; height: 68px; margin-left: 0; }
 .session-shell .lesson-brand { flex: 0 1 auto; min-width: 0; margin-left: auto; }
 .session-shell > div > .lesson-header { gap: 20px; }
-.player-tools { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; min-width: 0; }
-.player-tools .learner-level { margin-left: 2px; min-height: 22px; padding: 2px 7px; }
+.player-tools { display: flex; align-items: center; gap: 16px; min-width: 0; flex: 1; max-width: 410px; }
+.player-tools .learner-level { position: relative; isolation: isolate; overflow: hidden; flex: 1; min-width: 80px; max-width: 170px; height: 44px; margin: 0; padding: 8px 14px; border: 1px solid #a58f6270; border-radius: 6px; background: #0a1727; box-shadow: inset 0 2px 8px #0005, 0 1px #ffffff0a; font-size: 12px; text-align: left; }
+.level-exp-fill { position: absolute; z-index: -1; inset: 0 auto 0 0; background: linear-gradient(90deg, #8e71463b, #ddbd7355); border-right: 1px solid #e9cd9199; box-shadow: 3px 0 12px #e3bc6633; transition: width .35s ease; }
+.level-exp-fill::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #ab8b4f, #f1d895); box-shadow: 0 0 8px #e3bc6666; }
+.level-exp-label { position: relative; color: #f0dcae; font-weight: 750; text-shadow: 0 1px 3px #000a; }
+.lesson-header .player-controls .champion-cup { display: block; width: 38px; height: 38px; flex-shrink: 0; background: url('/brand/ranks/champion-cup-v1.png') center / contain no-repeat; filter: drop-shadow(0 2px 3px #0006); }
+.leader-trophy { width: 168px; height: 168px; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 8px 12px #0005); }
+.player-controls { flex-shrink: 0; }
 .player-controls { display: flex; align-items: center; padding: 4px; border: 1px solid #a58f6255; border-radius: 8px; background: linear-gradient(120deg, #e3bf6a12, #14223699); box-shadow: inset 0 1px #ffffff0a; }
 .lesson-header .player-controls .champion-button { max-width: 190px; padding: 5px 10px; min-height: 38px; border: 0; border-radius: 4px 0 0 4px; background: transparent; box-shadow: none; }
 .player-controls .champion-button:hover { background: #e3bf6a12; }
@@ -273,11 +279,20 @@ body { background: var(--game-bg); }
   .brand-wordmark > strong { font-size: 17px; letter-spacing: .2px; margin-top: 4px; }
   .brand-lockup .englishsuccess-corner-logo { width: 42px; height: 54px; }
   .lesson-header .player-controls .champion-button { max-width: 90px; padding: 4px 6px; gap: 6px; font-size: 14px; }
-  .player-controls .champion-button > svg { width: 21px; height: 21px; }
+  .player-tools { gap: 8px; }
+  .player-tools .learner-level { min-width: 64px; height: 42px; padding: 7px 9px; font-size: 10px; }
+  .lesson-header .player-controls .champion-cup { width: 32px; height: 32px; }
+  .leader-trophy { width: 126px; height: 126px; }
   .player-controls .account-menu { margin-left: 1px; padding-left: 4px; }
   .player-controls .account-menu summary { padding: 0 3px; }
   .player-controls .account-avatar { width: 28px; height: 28px; font-size: 12px; }
   .admin-navigation .brand-wordmark { display: none; }
+}
+@media (max-width: 440px) {
+  .lesson-header .player-controls .champion-button .truncate { display: none; }
+  .lesson-header .player-controls .champion-button { padding: 3px; min-height: 36px; }
+  .player-tools .learner-level { min-width: 59px; }
+  .player-tools { gap: 6px; }
 }
 @media (max-width: 360px) {
   .session-shell > div > .lesson-header { padding: 10px 9px; gap: 7px; }

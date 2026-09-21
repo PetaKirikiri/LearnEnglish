@@ -26,7 +26,7 @@ it('shows names, ranks, scores and the three period controls', async () => {
   expect(container.querySelector('[role="img"]')?.getAttribute('aria-label')).toBe('First place: Fifa')
   const champion = container.querySelector('[role="img"]')!
   expect(champion.className).toContain('flex')
-  const name = champion.querySelector('svg')!.nextElementSibling!
+  const name = champion.querySelector('.leader-trophy')!.nextElementSibling!
   expect(name.textContent).toBe('Fifa')
   expect(name.className).toContain('text-[#a66e19]')
   expect(name.className).not.toContain('absolute')

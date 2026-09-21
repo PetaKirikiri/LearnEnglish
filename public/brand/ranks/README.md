@@ -1,5 +1,9 @@
 # Collection rank insignias
 
+`champion-cup-v1.png` is the matching transparent trophy used in the header and leaderboard, generated with the built-in image generation tool on 2026-09-21.
+
+Trophy prompt: Create a single premium game UI trophy icon on a true transparent background. A beautifully crafted three-dimensional golden championship cup, straight-on view, broad elegant handles, angular bevelled bowl, a small inset amber diamond gemstone, short stem and dark navy enamel pedestal with gold trim. Compact restrained laurel accents around the lower bowl, crisp polished gold highlights, darker bronze recesses, tangible metal depth. Match high-end competitive game rank insignia artwork. Proud and aspirational, suitable for a learning adventure for 12 year old boys and girls. Strong readable cup silhouette even at 40 pixels, minimal tiny details, no lettering, no numerals, no text, no watermark, no circular badge background, no square background, no scene, no surrounding particles, no extra objects. Centered with only 8 percent transparent padding, square composition. Beautiful professional 3D game asset, not flat line art, not emoji.
+
 Generated with the built-in image generation tool. `insignias-v1.png` is a transparent 4-column, 2-row sprite atlas. Order: Bronze, Silver, Gold, Platinum / Diamond, Mythic, Legendary, empty. Keep the equal cell geometry when replacing the atlas.
 
 ## Generation prompt
