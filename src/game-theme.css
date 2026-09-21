@@ -146,6 +146,26 @@ body { background: var(--game-bg); }
 .word-help-dialog, .report-dialog { color-scheme: dark; color: #e7edf7; background: linear-gradient(145deg, #24374e, #101c2e); border: 1px solid #61758f; border-radius: 12px; box-shadow: inset 0 1px #ffffff12, 0 25px 100px #0009; }
 .word-help-dialog::backdrop, .report-dialog::backdrop { background: #050c18b8; backdrop-filter: blur(7px); }
 .word-help-dialog h2, .report-dialog h2 { color: #f2dfb3; }
+.word-help-dialog {
+  width: min(440px, calc(100% - 32px)); padding: 0;
+  border-color: #a5906466;
+  background: radial-gradient(ellipse at 85% 0, #45648036, transparent 65%), linear-gradient(145deg, #1c2f47, #0c1728);
+}
+.word-help-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid #c3a76b33; background: #08132140; }
+.word-help-header .brand-wordmark > span { font-size: 9px; letter-spacing: 2px; margin-right: -2px; }
+.word-help-header .brand-wordmark > strong { font-size: 18px; margin-top: 4px; }
+.word-help-header .brand-lockup .englishsuccess-corner-logo { width: 40px; height: 48px; }
+.word-help-header .brand-lockup { gap: 8px; }
+.word-help-content { padding: 26px 26px 30px; }
+.word-help-dialog .word-help-content h2 { font-size: clamp(30px, 7vw, 44px); font-weight: 650; line-height: 1.25; letter-spacing: -.8px; overflow-wrap: anywhere; }
+.word-help-meaning { margin-top: 22px; padding: 20px; border: 1px solid #4d638066; border-left: 2px solid #d0b272; border-radius: 5px; color: #e6edf8; background: #09152499; font-size: 23px; line-height: 1.8; overflow-wrap: anywhere; }
+.word-help-footer { padding: 15px 26px; border-top: 1px solid #7185a329; background: #08132166; color: #cdbb92; font-size: 12px; }
+@media (max-width: 380px) {
+  .word-help-header { padding: 14px 18px; }
+  .word-help-content { padding: 22px 20px; }
+  .word-help-meaning { padding: 16px; font-size: 21px; }
+  .word-help-footer { padding: 14px 20px; }
+}
 .report-dialog > p { background: #0c1728; border: 1px solid #374d68; color: #d3dfee; }
 .report-dialog [aria-pressed] { background: #142339; border-color: #475c76; color: #d0dcee; border-radius: 6px; }
 .report-dialog [aria-pressed="true"] { background: #79694333; border-color: #d2b575; color: #f5dfaf; }

@@ -2,6 +2,8 @@ import { useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { thaiTranslations } from '../content/languageData'
 import { normalizeHelpWord } from './helpPoints'
+import Brand from '../ui/Brand'
+import Icon from '../ui/Icon'
 
 export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining }: {
   text: string
@@ -38,8 +40,11 @@ export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining }
     onKeyDown={event => event.stopPropagation()}
     onCancel={event => { event.preventDefault(); close() }}
     onClick={event => { if (event.target === event.currentTarget) { const r = event.currentTarget.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) close() } }}>
-    <div className="flex items-center justify-between gap-4"><h2 id={titleId} className="text-2xl font-bold">{hint?.word}</h2><button type="button" aria-label="Close word help" onClick={close} className="icon-button">×</button></div>
-    <p className="mt-5 text-xl leading-relaxed" lang={hint?.meaning ? 'th' : 'en'}>{hint?.meaning ?? 'Translation not available yet.'}</p>
-    {pointsRemaining !== undefined && <p className="mt-5 text-sm text-slate-500">{pointsRemaining} pts available</p>}
+    <header className="word-help-header"><button type="button" aria-label="Close word help" onClick={close} className="icon-button"><Icon name="close" /></button><Brand /></header>
+    <div className="word-help-content">
+      <h2 id={titleId}>{hint?.word}</h2>
+      <p className="word-help-meaning" lang={hint?.meaning ? 'th' : 'en'}>{hint?.meaning ?? 'Translation not available yet.'}</p>
+    </div>
+    {pointsRemaining !== undefined && <footer className="word-help-footer"><p>{pointsRemaining} pts available</p></footer>}
   </dialog>, document.body)}</span>
 }
