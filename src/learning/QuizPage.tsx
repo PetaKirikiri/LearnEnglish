@@ -45,6 +45,7 @@ export default function QuizPage({
   const [selected, setSelected] = useState<string | null>(null)
   const [reportOpen, setReportOpen] = useState(false)
   const [helpOpen, setHelpOpen] = useState(false)
+  const [reviewOpen, setReviewOpen] = useState(false)
   const [helpWords, setHelpWords] = useState<string[]>([])
   const helpWordsRef = useRef<string[]>([])
   const [leaderboardOpen, setLeaderboardOpen] = useState(false)
@@ -97,6 +98,7 @@ export default function QuizPage({
     advanced.current = true
     helpWordsRef.current = []
     setHelpWords([])
+    setReviewOpen(false)
     stopEnglishSpeech()
     if (questionIndex === questions.length - 1) {
       trackProgress(userId, 'round_completed', { roundId }, roundId)
@@ -115,6 +117,14 @@ export default function QuizPage({
     answerLocked.current = false
   }, [selected, reportOpen, helpOpen, questionIndex, questions.length, userId, roundId, learningMemory])
 
+
+  useEffect(() => {
+    if (!selected || !isCorrect || profileOpen || leaderboardOpen || reportOpen || helpOpen || reviewOpen) return
+    // Allow time for the complete sentence and feedback; a failed media event
+    // must not trap the learner. Manual Next remains available throughout.
+    const timer = window.setTimeout(next, speechState === 'playing' ? 25000 : 1400)
+    return () => window.clearTimeout(timer)
+  }, [selected, isCorrect, profileOpen, leaderboardOpen, reportOpen, helpOpen, reviewOpen, speechState, next])
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -229,7 +239,7 @@ export default function QuizPage({
                 <p className={`text-xl font-black ${isCorrect ? 'text-emerald-800' : 'text-red-800'}`}>
                   {isCorrect ? 'Correct!' : `Correct answer: ${question.answer}`}
                 </p>
-                <details key={question.id} className="mt-2 text-sm text-slate-700">
+                <details key={question.id} className="mt-2 text-sm text-slate-700" onToggle={event => setReviewOpen(event.currentTarget.open)}>
                   <summary className="w-fit cursor-pointer font-semibold">Why?</summary>
                   <div className="mt-3 space-y-2 leading-relaxed">
                     <p>{question.example}</p>

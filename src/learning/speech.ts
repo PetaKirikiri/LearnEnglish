@@ -1,69 +1,42 @@
 export type SpeechState = 'playing' | 'ended' | 'blocked'
 
-function canUseBrowserVoice() {
-  return typeof window !== 'undefined'
-    && 'speechSynthesis' in window
-    && 'SpeechSynthesisUtterance' in window
-}
-
 let activeAudio: HTMLAudioElement | null = null
 let playbackId = 0
+let loadTimer: ReturnType<typeof setTimeout> | undefined
 
 export function canSpeakEnglish() {
-  return typeof window !== 'undefined' && ('Audio' in window || canUseBrowserVoice())
+  return typeof window !== 'undefined' && 'Audio' in window
 }
 
 export function stopEnglishSpeech() {
   playbackId += 1
+  clearTimeout(loadTimer)
   if (activeAudio) {
     activeAudio.onended = null
     activeAudio.onerror = null
     activeAudio.pause()
   }
-  if (canUseBrowserVoice()) window.speechSynthesis.cancel()
 }
 
-export function speakEnglish(text: string, audioUrl: string, onState?: (state: SpeechState) => void) {
+export function speakEnglish(_text: string, audioUrl: string, onState?: (state: SpeechState) => void) {
   stopEnglishSpeech()
   const id = playbackId
   const notify = (state: SpeechState) => { if (id === playbackId) onState?.(state) }
-  notify('playing')
-  let fallbackStarted = false
-  function fallback() {
-    if (id !== playbackId || fallbackStarted) return
-    fallbackStarted = true
-    if (!canUseBrowserVoice()) { notify('blocked'); return }
-    const parts = text.split('_____')
-    function speakPart(index: number) {
-      if (id !== playbackId) return
-      if (index >= parts.length) { notify('ended'); return }
-      const advance = () => {
-        if (id !== playbackId) return
-        if (index < parts.length - 1) window.setTimeout(() => speakPart(index + 1), 650)
-        else notify('ended')
-      }
-      if (!parts[index].trim()) { advance(); return }
-      const utterance = new SpeechSynthesisUtterance(parts[index])
-      const voice = window.speechSynthesis.getVoices().find(v => v.lang.toLowerCase().startsWith('en'))
-      utterance.lang = voice?.lang ?? 'en-US'
-      utterance.voice = voice ?? null
-      utterance.rate = 0.86
-      utterance.onend = advance
-      utterance.onerror = () => notify('blocked')
-      window.speechSynthesis.speak(utterance)
-    }
-    speakPart(0)
+  if (!canSpeakEnglish()) { notify('blocked'); return }
+  // Keep one phone-unlocked player, but never substitute an arbitrary device
+  // voice when the neural recording is unavailable.
+  activeAudio ??= new Audio()
+  activeAudio.src = audioUrl.startsWith('/audio/lessons/') ? `${audioUrl}?voice=kokoro-heart-v1` : audioUrl
+  activeAudio.onended = () => { if (id === playbackId) { clearTimeout(loadTimer); notify('ended') } }
+  const failed = () => {
+    if (id !== playbackId) return
+    stopEnglishSpeech()
+    onState?.('blocked')
   }
-  if (typeof window !== 'undefined' && 'Audio' in window) {
-    // Reuse the element so phones can retain playback permission after a tap.
-    activeAudio ??= new Audio()
-    activeAudio.src = audioUrl
-    activeAudio.onended = () => notify('ended')
-    activeAudio.onerror = fallback
-    void activeAudio.play().catch((error: unknown) => {
-      if (id !== playbackId) return
-      if (error instanceof Error && error.name === 'NotAllowedError') notify('blocked')
-      else fallback()
-    })
-  } else fallback()
+  activeAudio.onerror = failed
+  notify('playing')
+  loadTimer = setTimeout(failed, 10000)
+  void activeAudio.play().then(() => {
+    if (id === playbackId) clearTimeout(loadTimer)
+  }, failed)
 }

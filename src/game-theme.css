@@ -94,6 +94,7 @@ body { background: var(--game-bg); }
 .session-shell .answer-option[data-state="inactive"] { color: #8c9bb0; background: #121f31; border-color: #2a3a50; box-shadow: none; }
 .answer-option[data-state="correct"] .answer-key, .answer-option[data-state="incorrect"] .answer-key { border-color: currentColor; color: inherit; font-size: 16px; }
 .session-shell .answer-feedback {
+  position: sticky; bottom: 12px; z-index: 4;
   width: 100%; max-width: 720px; margin: 0 auto 24px; padding: 22px 26px;
   border: 1px solid #68896f; border-radius: 10px; background: linear-gradient(120deg, #163c36f5, #0f2329f5);
   box-shadow: 0 12px 32px #0003; animation: card-enter .2s ease-out;

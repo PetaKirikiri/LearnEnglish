@@ -151,7 +151,9 @@ it('continues beyond thirty answers without a finish line or resetting visible p
 it('keeps feedback visible while replaying audio and never advances after unmount', () => {
   answer(0)
   click('Play audio')
-  advance(60000)
+  const playing = vi.mocked(speakEnglish).mock.calls.at(-1)![2]!
+  act(() => playing('playing'))
+  advance(10000)
   expect(container.textContent).toContain('Correct!')
   act(() => root.render(<div>Exited</div>))
   advance(60000)
@@ -166,12 +168,14 @@ it('autoplays a gapped sentence, then the complete sentence only after answering
   act(() => notify('playing'))
   answer(0)
   expect(speakEnglish).toHaveBeenLastCalledWith(question.spokenText, question.audioUrl, expect.any(Function))
+  const complete = vi.mocked(speakEnglish).mock.calls.at(-1)![2]!
+  act(() => complete('playing'))
   advance(10000)
   expect(container.querySelector('h1')?.textContent).toBe(question.prompt)
-  act(() => notify('ended'))
-  advance(60000)
+  act(() => complete('ended'))
+  advance(1399)
   expect(container.querySelector('footer')).not.toBeNull()
-  click('Next')
+  advance(1)
   const next = createPracticeRound()[1]
   expect(speakEnglish).toHaveBeenLastCalledWith(next.prompt, next.gapAudioUrl, expect.any(Function))
 })
@@ -202,8 +206,8 @@ it('offers a tap to play when the browser blocks autoplay', () => {
   expect(container.querySelector('button[aria-label="Play audio"]')).not.toBeNull()
 })
 
-it('blocks Next while a report is open and still waits after closing', () => {
-  answer(0)
+it('blocks Next while a report is open and keeps a wrong answer for review', () => {
+  answer(0, false)
   click('Flag this question')
   advance(20000)
   expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[0].prompt)
@@ -216,11 +220,11 @@ it('blocks Next while a report is open and still waits after closing', () => {
   click('Next')
   expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[1].prompt)
 })
-it('ignores the old saved Auto on preference and advances only once with Enter', () => {
+it('advances only once when Enter is pressed during the automatic feedback pause', () => {
   localStorage.setItem('fifa:auto:test', 'true')
   act(() => root.render(<StudentHomePage key="old-auto-setting" displayName="test" userId="test" syncState="saved" onSignOut={() => {}} />))
   answer(0)
-  advance(60000)
+  advance(500)
   expect(container.textContent).toContain('Correct!')
   expect(container.textContent).not.toMatch(/Auto on|Auto off|Moving on automatically|Resume|Pause/)
   act(() => {
@@ -281,4 +285,36 @@ it('keeps the same header controls in place across practice, profile, and leader
   expect(container.querySelector('.question-panel')).not.toBeNull()
   expect(container.querySelectorAll('.lesson-header')).toHaveLength(1)
   expect(container.querySelectorAll('.englishsuccess-corner-logo')).toHaveLength(1)
+})
+
+it('advances a correct answer if audio is blocked, but not while word help is open', () => {
+  answer(0)
+  const notify = vi.mocked(speakEnglish).mock.calls.at(-1)![2]!
+  act(() => notify('blocked'))
+  openHint('city')
+  advance(30000)
+  expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[0].prompt)
+  closeHint()
+  advance(1400)
+  expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[1].prompt)
+  expect(vi.mocked(trackProgress).mock.calls.filter(call => call[1] === 'answer')).toHaveLength(1)
+})
+
+it('does not get stuck on a correct answer if audio never reports completion', () => {
+  answer(0)
+  const notify = vi.mocked(speakEnglish).mock.calls.at(-1)![2]!
+  act(() => notify('playing'))
+  advance(25000)
+  expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[1].prompt)
+})
+
+it('pauses automatic advancement while the explanation is expanded', () => {
+  answer(0)
+  const details = container.querySelector<HTMLDetailsElement>('footer details')!
+  act(() => { details.open = true; details.dispatchEvent(new Event('toggle')) })
+  advance(30000)
+  expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[0].prompt)
+  act(() => { details.open = false; details.dispatchEvent(new Event('toggle')) })
+  advance(1400)
+  expect(container.querySelector('h1')?.textContent).toBe(createPracticeRound()[1].prompt)
 })

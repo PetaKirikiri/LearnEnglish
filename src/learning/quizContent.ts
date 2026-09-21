@@ -246,7 +246,7 @@ export function getLessonAudioItems() {
   const questions = [...createVocabularyPool(random), ...createSentencePool(random)]
   const byUrl = new Map(questions.map(({ audioUrl, spokenText }) => [audioUrl, { audioUrl, spokenText }]))
   for (const question of questions) {
-    if (question.gapAudioUrl) byUrl.set(question.gapAudioUrl, { audioUrl: question.gapAudioUrl, spokenText: question.prompt.replace('_____', '[[slnc 650]]') })
+    if (question.gapAudioUrl) byUrl.set(question.gapAudioUrl, { audioUrl: question.gapAudioUrl, spokenText: question.prompt })
     if (question.contextSentence && question.contextAudioUrl) {
       byUrl.set(question.contextAudioUrl, { audioUrl: question.contextAudioUrl, spokenText: question.contextSentence })
     }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { readings } from '../content/readings'
 import { parseWords } from '../lib/wordData'
-import { createQuizRound, createPracticeRound, getQuizCatalogue } from './quizContent'
+import { createQuizRound, createPracticeRound, getQuizCatalogue, getLessonAudioItems } from './quizContent'
 import { grammarLessons } from './grammarLessons'
 import { grammarExpansion } from './grammarExpansion'
 import { existsSync, readFileSync } from 'node:fs'
@@ -154,4 +154,28 @@ it('starts on the first two content targets, rather than random later material',
   expect(new Set(first.map(q => q.id)).size).toBe(10)
   expect(new Set(first.map(q => q.answer.toLowerCase()))).toEqual(new Set(['the', 'a']))
   expect(createPracticeRound(999).slice(0, -1).every(q => ['the', 'a'].includes(q.answer.toLowerCase()))).toBe(true)
+})
+
+it('ships a matching neural recording for every lesson, with blanks kept silent', () => {
+  const manifest = JSON.parse(readFileSync('public/audio/lessons/voice-manifest.json', 'utf8')) as Record<string, { voice: string; text: string; seconds: number }>
+  for (const item of getLessonAudioItems()) {
+    const entry = manifest[item.audioUrl.split('/').at(-1)!]
+    expect(entry?.voice).toBe('kokoro-1.0-heart-v1')
+    expect(entry?.text).toBe(item.spokenText)
+    expect(entry?.seconds).toBeGreaterThan(0.1)
+    const bytes = readFileSync(`public${item.audioUrl}`)
+    expect(bytes.toString('ascii', 0, 4)).toBe('RIFF')
+    expect(bytes.readUInt32LE(24)).toBe(24000)
+    if (item.audioUrl.includes('/gap-')) {
+      expect(entry.text).toContain('_____')
+      expect(entry.text).not.toContain('slnc')
+      let longestSilence = 0
+      let silence = 0
+      for (let offset = 44; offset + 2 <= bytes.length; offset += 2) {
+        silence = bytes.readInt16LE(offset) === 0 ? silence + 1 : 0
+        longestSilence = Math.max(longestSilence, silence)
+      }
+      expect(longestSilence).toBeGreaterThanOrEqual(24000 * 0.65)
+    }
+  }
 })
