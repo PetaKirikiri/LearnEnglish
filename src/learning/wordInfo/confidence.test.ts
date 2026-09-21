@@ -19,6 +19,15 @@ it('loads account ratings and persists an explicit score from 1 to 5',async()=>{
  expect(cachedConfidence(user,'read')?.pending).toBe(false)
  await expect(saveConfidence(user,'read',6)).rejects.toThrow()
 })
+it('leaves unrated words empty and clears stale saved ratings without writing a default',async()=>{
+ await loadConfidence(user,'city')
+ expect(cachedConfidence(user,'city')?.score).toBe(4)
+ db.maybeSingle.mockResolvedValue({data:null,error:null})
+ expect((await loadConfidence(user,'city')).score).toBeNull()
+ expect(cachedConfidence(user,'city')).toBeNull()
+ expect((await loadConfidence(user,'train')).score).toBeNull()
+ expect(db.upsert).not.toHaveBeenCalled()
+})
 it('keeps failed saves pending and retries them when help reopens',async()=>{
  db.upsert.mockResolvedValueOnce({error:new Error('offline')})
  await expect(saveConfidence(user,'read',2)).rejects.toThrow('offline')

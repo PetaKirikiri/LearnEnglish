@@ -183,13 +183,17 @@ body { background: var(--game-bg); }
 .confidence-value { display: flex; align-items: baseline; gap: 4px; color: #eddaad; font-size: 16px; font-weight: 700; }
 .confidence-value small { font-size: 11px; color: #a6b6ca; font-weight: 500; }
 .confidence-scores { display: grid; grid-template-columns: repeat(5,1fr); gap: 7px; margin-top: 11px; }
-.confidence-scores button { position: relative; display: grid; place-items: center; height: 53px; border: 1px solid #53658166; border-radius: 8px; background: #132339; color: #bdc9d9; transition: background .15s, border-color .15s; }
-.confidence-scores button:nth-child(4) { color: #b4d2cb; }
-.confidence-scores button:nth-child(5) { color: #e4cd95; }
-.confidence-scores button:hover { border-color: #cfb57b; background: #25364a; }
-.confidence-scores button[aria-pressed=true] { background: #8b754530; border-color: #d7b976; color: #f5d992; box-shadow: inset 0 1px #e3c47c22; }
-.confidence-scores button > svg { width: 37px; height: 37px; }
-.confidence-selected { position: absolute; right: -3px; top: -5px; display: grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; background: #dfc185; color: #182334; font-size: 10px; }
+.confidence-scores button { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 76px; padding: 7px 3px; border: 1px solid #53658166; border-radius: 6px; background: linear-gradient(145deg, #213149, #0e1c2e); color: #9dabbf; box-shadow: inset 0 1px #ffffff0a; transition: background .15s, border-color .15s; }
+.confidence-emblem { display: block; width: 49px; max-width: 100%; aspect-ratio: 1; background: url('/brand/ranks/insignias-v1.png') 0 100% / 400% 200% no-repeat; filter: grayscale(1) brightness(.7); opacity: .55; }
+.confidence-power { display: flex; gap: 3px; height: 5px; }
+.confidence-power i { width: 5px; border-radius: 1px; background: #293b51; }
+.confidence-power i[data-filled="true"] { background: #7a8ca5; }
+.confidence-scores button:hover { border-color: #8c9fb7; background: #25364a; }
+.confidence-scores button[aria-pressed=true] { background: radial-gradient(ellipse at 50% 30%, #61c5ff26, transparent 80%), #172e46; border-color: #9fdcff; color: #d3eeff; box-shadow: inset 0 1px #d7eeff44, 0 0 14px #8aceff14; }
+.confidence-scores button[aria-pressed=true] .confidence-emblem { filter: drop-shadow(0 2px 5px #56adff55); opacity: 1; }
+.confidence-scores button[aria-pressed=true] .confidence-power i[data-filled="true"] { background: #b3e4ff; box-shadow: 0 0 5px #7dccff80; }
+.confidence-selected { position: absolute; right: -3px; top: -5px; display: grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; background: #b9e7ff; color: #15283e; font-size: 10px; }
+.confidence-scale { display: flex; justify-content: space-between; margin-top: 7px; color: #b0bfd2; font-size: 10px; }
 .confidence-save-state { display: flex; justify-content: flex-end; align-items: center; min-height: 13px; margin-top: 5px; color: #a7c5bd; font-size: 11px; }
 .confidence-saving { width: 5px; height: 5px; border-radius: 50%; background: #c2ac7d; }
 .word-retry { text-decoration: underline; color: #ebcb8c; font-size: 12px; min-height: 32px; }
@@ -199,8 +203,10 @@ body { background: var(--game-bg); }
   .word-orbit > svg { width: 12px; }
   .teaching-orbit .orbit-side > span { font-size: 13px; }
   .confidence-scores { gap: 5px; }
-  .confidence-scores button { height: 47px; }
-  .confidence-scores button > svg { width: 32px; height: 32px; }
+  .confidence-scores button { min-height: 66px; }
+  .confidence-emblem { width: 40px; }
+  .confidence-power { gap: 2px; }
+  .confidence-power i { width: 4px; }
 }
 .report-dialog > p { background: #0c1728; border: 1px solid #374d68; color: #d3dfee; }
 .report-dialog [aria-pressed] { background: #142339; border-color: #475c76; color: #d0dcee; border-radius: 6px; }

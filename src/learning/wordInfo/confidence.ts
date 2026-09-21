@@ -36,5 +36,6 @@ export async function loadConfidence(id:string,word:string) {
   if(latest?.revision!==cached?.revision)return {score:latest?.score??null,source:latest?.pending?'pending' as const:'saved' as const}
   const score=data?.confidence??null
   if(score!==null){if(!Number.isInteger(score)||score<1||score>5)throw new Error('Invalid saved rating');cache(id,normalized,{score,pending:false,revision:crypto.randomUUID()})}
+  else { try { localStorage.removeItem(keyFor(id,normalized)) } catch { /* The server still owns the unrated state. */ } }
   return {score,source:'saved' as const}
 }
