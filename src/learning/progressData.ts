@@ -68,5 +68,5 @@ export function summarizeProgress(events: readonly ProgressEvent[]) {
 
 export function questionProgressKey(question: QuizQuestion) {
   // Word counts may change as stories are added; the word's identity must not.
-  return question.mode === 'vocabulary' ? `word:${question.spokenText}` : question.id
+  return question.mode === 'vocabulary' && !question.examCategory ? `word:${question.spokenText}` : question.id
 }

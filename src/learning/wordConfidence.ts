@@ -14,9 +14,10 @@ const day = (date: string) => dayFormatter.format(new Date(date))
 // Confidence is evidence of independent recall, not a psychological assessment.
 // Only the tested target counts; surrounding sentence words are not credited.
 export function buildWordConfidence(events: readonly ProgressEvent[], questions: readonly QuizQuestion[], now = Date.now()): WordConfidence[] {
-  const byQuestion = new Map(questions.map(q => [questionProgressKey(q), q]))
+  const wordQuestions = questions.filter(q => q.examCategory !== 'reading' && q.examCategory !== 'dialogue')
+  const byQuestion = new Map(wordQuestions.map(q => [questionProgressKey(q), q]))
   const groups = new Map<string, { row: WordConfidence; days: Set<string>; rounds: Set<string>; examples: Set<string> }>()
-  for (const q of questions) {
+  for (const q of wordQuestions) {
     const word = (q.mode === 'vocabulary' ? q.spokenText : q.answer).toLowerCase()
     const key = `${q.mode}:${word}`
     if (!groups.has(key)) groups.set(key, { row: { key, word, mode: q.mode, status: 'Not practised', correct: 0, wrong: 0, helped: 0, days: 0, rounds: 0, examples: 0, successful: 0, lastAnswered: null, legacy: 0, conqueredAt: null }, days: new Set(), rounds: new Set(), examples: new Set() })

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { readings } from '../content/readings'
 import { parseWords } from '../lib/wordData'
-import { createQuizRound, createPracticeRound, getQuizCatalogue, getLessonAudioItems } from './quizContent'
+import { createQuizRound, createGeneralPracticeRound as createPracticeRound, getQuizCatalogue, getLessonAudioItems } from './quizContent'
 import { grammarLessons } from './grammarLessons'
 import { grammarExpansion } from './grammarExpansion'
 import { existsSync, readFileSync } from 'node:fs'
@@ -11,7 +11,7 @@ const storyWords = new Set(parseWords(storyText))
 
 describe('story-powered quiz content', () => {
   it('gives every grammar target at least five distinct, individually tracked questions', () => {
-    const questions = getQuizCatalogue().sentences
+    const questions = getQuizCatalogue().sentences.filter(q => !q.examCategory)
     const targets = ['a','and','are','at','because','before','but','by','do','does','for','from','her','in','is','its','me','my','of','our','the','them','these','they','this','to','us','was','we','will','with','your']
     expect([...new Set(questions.map(q => q.answer.toLowerCase()))].sort()).toEqual(targets)
     for (const word of targets) {
@@ -22,7 +22,7 @@ describe('story-powered quiz content', () => {
     }
   })
   it('does not use meaning-only contrasts as grammar distractors', () => {
-    for (const q of getQuizCatalogue().sentences) {
+    for (const q of getQuizCatalogue().sentences.filter(q => !q.examCategory)) {
       const choices = q.choices.map(c => c.toLowerCase())
       if (q.answer.toLowerCase() === 'before') expect(choices).not.toContain('after')
       if (q.answer.toLowerCase() === 'because') expect(choices).not.toContain('although')
@@ -31,7 +31,7 @@ describe('story-powered quiz content', () => {
     }
   })
   it('teaches the in ten distinct story sentences with separate review IDs and audio', () => {
-    const questions = getQuizCatalogue().sentences.filter(q => q.answer.toLowerCase() === 'the')
+    const questions = getQuizCatalogue().sentences.filter(q => !q.examCategory).filter(q => q.answer.toLowerCase() === 'the')
     expect(questions).toHaveLength(10)
     expect(new Set(questions.map(q => q.example)).size).toBe(10)
     expect(new Set(questions.map(q => q.id)).size).toBe(10)
@@ -43,7 +43,7 @@ describe('story-powered quiz content', () => {
   })
   it('excludes the ambiguous cloudy/rainy conjunction question, including from review', () => {
     const retired = 'grammar-v1-climate-around-the-world-17-and'
-    expect(getQuizCatalogue().sentences.some(q => q.id === retired)).toBe(false)
+    expect(getQuizCatalogue().sentences.filter(q => !q.examCategory).some(q => q.id === retired)).toBe(false)
     for (let round = 0; round < 12; round++) {
       expect(createQuizRound('sentences', round, [retired]).some(q => q.id === retired)).toBe(false)
     }
@@ -62,7 +62,7 @@ describe('story-powered quiz content', () => {
   })
 
   it('distinguishes exact story sentences from labelled story-based practice', () => {
-    const questions = getQuizCatalogue().sentences
+    const questions = getQuizCatalogue().sentences.filter(q => !q.examCategory)
     for (const question of questions) {
       if (question.sourceKind === 'story') {
         expect(storyText).toContain(question.example)
@@ -83,7 +83,7 @@ describe('story-powered quiz content', () => {
   })
 
   it('gives every vocabulary word a short context and its matching audio', () => {
-    for (const q of getQuizCatalogue().vocabulary) {
+    for (const q of getQuizCatalogue().vocabulary.filter(q => !q.examCategory)) {
       expect(q.contextSentence).toBeTruthy()
       expect(parseWords(q.contextSentence!)).toContain(q.spokenText)
       expect(parseWords(q.contextSentence!).length).toBeLessThanOrEqual(9)
@@ -105,7 +105,7 @@ describe('story-powered quiz content', () => {
   })
 
   it('only serves authored grammar contrasts with meaning, feedback, and existing audio', () => {
-    const questions = getQuizCatalogue().sentences
+    const questions = getQuizCatalogue().sentences.filter(q => !q.examCategory)
     expect(questions).toHaveLength(grammarLessons.length + grammarExpansion.length)
     expect(new Set(questions.map(q => q.id)).size).toBe(questions.length)
     for (const question of questions) {
@@ -137,7 +137,7 @@ describe('story-powered quiz content', () => {
   })
 
   it('tests my versus me or I, not who the narrator visited', () => {
-    const questions = getQuizCatalogue().sentences.filter(q => q.example === 'This week, I went to Colorado to visit my sister.')
+    const questions = getQuizCatalogue().sentences.filter(q => !q.examCategory).filter(q => q.example === 'This week, I went to Colorado to visit my sister.')
     expect(questions).toHaveLength(1)
     expect(questions[0].prompt).toBe('This week, I went to Colorado to visit _____ sister.')
     expect([...questions[0].choices].sort()).toEqual(['I', 'me', 'my'])

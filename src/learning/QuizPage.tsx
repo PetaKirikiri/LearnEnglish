@@ -7,6 +7,7 @@ import GroupLeaderboardPage from '../pages/GroupLeaderboardPage'
 import LeaderboardButton from './LeaderboardButton'
 import { appDestination } from '../auth/appAccess'
 import WordHelp from './WordHelp'
+import PlaceScene from './PlaceScene'
 import QuestionFlag from './QuestionFlag'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
@@ -194,6 +195,7 @@ export default function QuizPage({
               <BrainIcon/><span>Help</span><strong>−{WORD_HELP_COST} pts</strong>
             </span>
           </div>}</div>
+          {question.placeRelation && <PlaceScene relation={question.placeRelation} />}
           <h1 className={`mt-6 font-semibold tracking-tight leading-[1.45] ${question?.mode === 'vocabulary' ? 'text-5xl sm:text-6xl' : 'text-[28px] sm:text-4xl'}`}>
             <WordHelp key={question.id} text={question.prompt} onHelp={openWordHelp} onOpenChange={setHelpOpen} pointsRemaining={!selected ? availablePoints : undefined} />
           </h1>

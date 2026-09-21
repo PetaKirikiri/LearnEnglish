@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest'
 import { wordRarity, RARITIES } from './wordRarity'
 import { PENDING_WORD_RATINGS, wordBenchmark } from './wordBenchmarks'
-import { createPracticeRound, getQuizCatalogue } from './quizContent'
+import { createGeneralPracticeRound as createPracticeRound, getQuizCatalogue } from './quizContent'
 import { questionWord } from './contentOrder'
 import { recordAnswer, type LearningMemory } from './learningMemory'
 it('uses external meaning benchmarks instead of course-topic frequency', () => {
@@ -49,7 +49,7 @@ it('revisits a discovery across sessions until five passes on three dates', () =
 })
 it('audits every current target without inventing advanced content', () => {
   const bank = getQuizCatalogue()
-  for (const q of [...bank.vocabulary,...bank.sentences]) {
+  for (const q of [...bank.vocabulary,...bank.sentences].filter(q => !q.examCategory)) {
     const word = questionWord(q)
     if (wordRarity(word) === null) expect(PENDING_WORD_RATINGS[word]).toBeTruthy()
     else {

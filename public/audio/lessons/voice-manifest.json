@@ -1,4 +1,1096 @@
 {
+  "exam-ch34-v1-dialogue-bathroom.wav": {
+    "fingerprint": "c5a2ea90152636f338c13600e557dc82d4a14526e5ab9c0e1c09fc4832ebad30",
+    "seconds": 2.433,
+    "text": "What is in the bathroom? There is a shower.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-contracted-whats.wav": {
+    "fingerprint": "0028ce9da85e7cb1dec94a9aa080a782570baf65eb9a5fa9ebcc057e0e4c5bb9",
+    "seconds": 2.636,
+    "text": "What\u2019s in your bedroom? There is a television.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-living-room.wav": {
+    "fingerprint": "1564765e8ae87a8079ccc9f58c0fd5a9c2a7c5fbdb514dd423f0dd843c069f15",
+    "seconds": 2.517,
+    "text": "What\u2019s in the living room? There is a couch.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-plural-chairs.wav": {
+    "fingerprint": "5260ec85b6f8ff2828494afa4ed4f2619b7ec5e9c6afeea2b922efc0473a5c03",
+    "seconds": 2.399,
+    "text": "What\u2019s in the room? There are three chairs.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-plural-identify.wav": {
+    "fingerprint": "80d324e18c547ee9ac28b167836e651eaafd29bb670b88cc50d55e302ca7759b",
+    "seconds": 3.316,
+    "text": "What are those next to the couch? Those are my rainboots.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-plural-sinks.wav": {
+    "fingerprint": "8e637c1d2fb89751057ba139725812ddad8cdd9fe9620794338509ab904d403c",
+    "seconds": 2.517,
+    "text": "What is in the bathroom? There are two sinks.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-singular-desk.wav": {
+    "fingerprint": "62cad42886f3998b1211dcd3c576d1c0fb8370a2cd5fa91eb93ae154aa05ffaf",
+    "seconds": 2.052,
+    "text": "What is that? That is a desk.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-singular-tv.wav": {
+    "fingerprint": "a1143d8b59d29066227c8fec32944266abe044451661b3b6c47a97b7d8d5e579",
+    "seconds": 2.465,
+    "text": "What\u2019s in your room? There is a television.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-these-plural.wav": {
+    "fingerprint": "cd263961e85b3b49794c1cd60d1fee3869decff508c1b5060f82d17fefbdb21d",
+    "seconds": 1.743,
+    "text": "What are these next to the couch?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-those-response.wav": {
+    "fingerprint": "baf8107c920c646fad7f782063399191a21b3363a26d2ed46a73d64eb1741fd0",
+    "seconds": 2.503,
+    "text": "What are those? Those are my rainboots.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-two-items.wav": {
+    "fingerprint": "e90c5b7ebf1bd1564a5555bd5fb5e146f8e05c737285e09da50fc5e5db443a99",
+    "seconds": 3.793,
+    "text": "Is there only a bed? No, there is both a bed and a dresser.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-what-bedroom.wav": {
+    "fingerprint": "6a06ade06a6c1804a7ceef81d38d447c319068d8869a28e814340800b22473e0",
+    "seconds": 2.602,
+    "text": "What is that in your bedroom? That is a desk.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-what-question.wav": {
+    "fingerprint": "64651cb9644ec2d0d16e8df51bd0e36a66dd54e8e7477284b7d686e7dff625d5",
+    "seconds": 2.571,
+    "text": "What is in the living room? There is a couch.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-where-bedroom.wav": {
+    "fingerprint": "4c105fa5825b5d13408f3064efa935a47e2c50bad4380c479fed335e46770eb7",
+    "seconds": 2.549,
+    "text": "Where is your bedroom? On the second floor.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-where-question.wav": {
+    "fingerprint": "667f5d183e335302f4c4232db4c630ccfe3cb3dd996510200ec07eefeb984510",
+    "seconds": 2.861,
+    "text": "Where is your bedroom? It is next to the bathroom.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-dialogue-where-response.wav": {
+    "fingerprint": "5a88101b80786b8a4f94c1730482839191c373d1459be31db75d3787035b0ef0",
+    "seconds": 2.871,
+    "text": "Where is the bedroom? It is next to the bathroom.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-grammar-above.wav": {
+    "fingerprint": "9d825e75024e2b4aff7e3771f7ba904a86c4a47c3ea7597948a2d263724c78fe",
+    "seconds": 1.837,
+    "text": "The ball is above the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-grammar-behind.wav": {
+    "fingerprint": "cc9dd94f59dc94243776f2ef0899d8e6c378da1af7aada03a19c3071922759fb",
+    "seconds": 1.902,
+    "text": "The ball is behind the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-grammar-beside.wav": {
+    "fingerprint": "6ca6c1ef155fcaf8857ea6b900985147620aae0a3ce86cfaba799c7bd6dba483",
+    "seconds": 1.879,
+    "text": "The ball is beside the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-grammar-between.wav": {
+    "fingerprint": "2c96e36a63d45c70f513af07f46237c31847539d5bf6700960e34491a6e864af",
+    "seconds": 2.051,
+    "text": "The ball is between the boxes.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-grammar-in-front-of.wav": {
+    "fingerprint": "10e47a6de2b506f339c4c92960ba25f21cdbce7a72a625ad7e45be6d799768ee",
+    "seconds": 1.902,
+    "text": "The ball is in front of the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-grammar-in.wav": {
+    "fingerprint": "3834bca76a82904902414dc239d0c47a9ac0e77b32b758d4fcd8efba75a3adc1",
+    "seconds": 1.592,
+    "text": "The ball is in the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-grammar-next-to.wav": {
+    "fingerprint": "80ddbb6d66f94cea33e34128781535e2aabc2b86c3099f9df2d8ed224d61f300",
+    "seconds": 1.859,
+    "text": "The ball is next to the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-grammar-on.wav": {
+    "fingerprint": "d084703133b9d63ffe6c2efea843d0a794d6a2b7a1365adfac84db1af881cfef",
+    "seconds": 1.656,
+    "text": "The ball is on the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-grammar-over.wav": {
+    "fingerprint": "476a0040d18fac197053733a2e4bc2520dbe805b20d4a7157a750b01e5d8d05c",
+    "seconds": 1.868,
+    "text": "The ball moves over the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-grammar-under.wav": {
+    "fingerprint": "6137a6ff83616ae589c60c1a7878898f60befe9e7aa110b75eea2b3001c2a2c3",
+    "seconds": 1.71,
+    "text": "The ball is under the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-houses-bali.wav": {
+    "fingerprint": "52f28072cfd4e533611b2b9a105bf4b90fe13e1a0bf95b452a774b01e4473902",
+    "seconds": 2.381,
+    "text": "Where can visitors stay in these treehouses?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-houses-main.wav": {
+    "fingerprint": "3bc2aa567c7d345fb9e9196514796cb124ff0fd61d430ce002b1dcb9bce44357",
+    "seconds": 1.741,
+    "text": "What is this passage about?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-houses-percent.wav": {
+    "fingerprint": "f23c6d88e3816bb52229420ea08cec32cc82f9a0e0fbc1bbb60571b25316bd25",
+    "seconds": 3.977,
+    "text": "According to the passage, what percentage of people live in cities?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-houses-rocks.wav": {
+    "fingerprint": "8978963b7b866d0aa045dcefca90579b31c8087adf661de06870d184580938ad",
+    "seconds": 1.743,
+    "text": "What does \u201cthem\u201d refer to?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-houses-serbia.wav": {
+    "fingerprint": "f439b32a170c787590b81baa86190437ac0c85c0906763232730f66a656aadc4",
+    "seconds": 1.996,
+    "text": "Where is the Drina River house?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-houses-soft.wav": {
+    "fingerprint": "38282043b7406b770f644b9a82ae3b6b22d2e184577b66a94a6952ab61674f6b",
+    "seconds": 1.709,
+    "text": "What does \u201csoft\u201d describe?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-houses-space.wav": {
+    "fingerprint": "e82b12ba745c2667ffefc9240fd6a7cc35b7302b9f688606e49db7c365e53542",
+    "seconds": 3.385,
+    "text": "Why are there big houses and farms in the countryside?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-houses-suburbs.wav": {
+    "fingerprint": "faecca50ccd61a7eee43385211316a1eba1d830845a92f168d87e8c996de7f49",
+    "seconds": 1.38,
+    "text": "Where are the suburbs?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-houses-treehouses.wav": {
+    "fingerprint": "9b121846b34c56d7d483182e949f702d391f0ea342b3e9c6290d7f6d4c6eaaf5",
+    "seconds": 2.447,
+    "text": "How many treehouses can visitors stay in?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-houses-water.wav": {
+    "fingerprint": "9864cadb62f9c4525700b5ec92ed443f47540186a13b057d0c515e6d1c37b3c9",
+    "seconds": 2.169,
+    "text": "Which statement matches the passage?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-houses-years.wav": {
+    "fingerprint": "5bf1b265b3bf2542ff5d588a142e86fc36a179922a3c0d52be264b6401dbd2fd",
+    "seconds": 2.691,
+    "text": "How long have people lived in these cave homes?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-busy.wav": {
+    "fingerprint": "6db342d37afef90f3d1361a1eb4be352c5b8c4a722d8d645ed21e1ea91868b25",
+    "seconds": 2.647,
+    "text": "How often can trains come at busy times?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-frequency.wav": {
+    "fingerprint": "e7232da6ad79036f839fff248de2730558be1e9e60956407580b16bb1654fd8b",
+    "seconds": 1.956,
+    "text": "When do trains come less often?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-loop.wav": {
+    "fingerprint": "05aeb8baf4772db491c4616d969b1358317f2715bc5b8a924f0e1bb8cd665b06",
+    "seconds": 3.034,
+    "text": "Where do the tracks go after the loop around the city center?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-main.wav": {
+    "fingerprint": "14eca977548c99407a4f6dc43cd94407d83a4f2f55b4a21c8b2d3acc5804148f",
+    "seconds": 3.785,
+    "text": "What advantage of riding the L does this paragraph describe?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-name.wav": {
+    "fingerprint": "df21f07c97814218ca76fa3ccb23c30c4c22a22e41da17cc471b51f9c7e7923e",
+    "seconds": 2.299,
+    "text": "What is Chicago\u2019s overhead train called?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-noise.wav": {
+    "fingerprint": "0aedd55921183a42e6b0c2b6f51cc637f1910740f27e81629d17e68e27dc1d26",
+    "seconds": 2.031,
+    "text": "What is making the sound like thunder?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-platform.wav": {
+    "fingerprint": "ff53c437f8a214cb4356591a3da07124615747be590ed9f450aca5c66bcbd06f",
+    "seconds": 2.148,
+    "text": "How do riders reach the platform?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-price.wav": {
+    "fingerprint": "aa9dc3a21a1eaa105155c44ff7681b62cc144008f92d830e134719ae85a7f978",
+    "seconds": 1.317,
+    "text": "Which costs less?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-sequence.wav": {
+    "fingerprint": "8be1ea0655ae55ad524aa7c455aa31d00ec102af3508974c0e360800a87f145c",
+    "seconds": 3.788,
+    "text": "What do riders do after buying a ticket and before waiting?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-some.wav": {
+    "fingerprint": "b172df5860df6e2ea423eaa79800c15b75729d65f049fb6da753701fb29a1fad",
+    "seconds": 1.774,
+    "text": "Which statement is supported?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-students.wav": {
+    "fingerprint": "e4f363dafe2bf1a4ebd3b417df7501ad677ba825108ac2ce1d3a4630f9668dca",
+    "seconds": 2.905,
+    "text": "Which activity is mentioned for students on the train?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-support.wav": {
+    "fingerprint": "0b32a9f71bb671e4dcae4532ee04af8d3a727769693515b320a55fea7c48c796",
+    "seconds": 1.645,
+    "text": "What supports the tracks?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-reading-train-traffic.wav": {
+    "fingerprint": "df6e9c4fc9b05ee31c49b3d0b08af0388a5749bfd9b42fae4f02a01f529b8ae9",
+    "seconds": 2.785,
+    "text": "Why can the trains keep moving while cars stop?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-afternoon.wav": {
+    "fingerprint": "5dc7046a28f593c2dfc7808982344b10cfe3a02df6d7185ef011819392321fc6",
+    "seconds": 1.109,
+    "text": "afternoon",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-apartment.wav": {
+    "fingerprint": "5c8b3c9a893b765a028e1728ea69575b8bc755a4c2a59d37b04c2ca99a3a986c",
+    "seconds": 1.067,
+    "text": "apartment",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-armchair.wav": {
+    "fingerprint": "23a1862dd3a4654f07e6dc6e410165c681f6943f92ed7506cc079711e0418591",
+    "seconds": 1.024,
+    "text": "armchair",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-bathroom.wav": {
+    "fingerprint": "58bed578ca4e3911d46ccf87fc4860388daf1fbc517e26a7b79b1705dc01b936",
+    "seconds": 0.981,
+    "text": "bathroom",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-bathtub.wav": {
+    "fingerprint": "de2ec266755d5f7ef5cb081cadb082a3d43de03d976f43454d10e1c8fd778419",
+    "seconds": 0.981,
+    "text": "bathtub",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-bed.wav": {
+    "fingerprint": "ca71a129d594c49c143484282b0a8e17b6d80c85422135b8d0d94c8c1e13f917",
+    "seconds": 0.491,
+    "text": "bed",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-bedroom.wav": {
+    "fingerprint": "0720346f0d32e4b93b5ec462b27b629e01525d88aed0b7a0a8ee4e2bdc73f222",
+    "seconds": 0.917,
+    "text": "bedroom",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-bicycle.wav": {
+    "fingerprint": "f20c71bfbce33412b3b409c92a3002c06a3148d29d877e828aa3feaca9e8d0cd",
+    "seconds": 1.003,
+    "text": "bicycle",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-bike.wav": {
+    "fingerprint": "e95022fb1b0fcceaeb19931103609c066a789e01a0edb56f8cf2bd2c4b10786f",
+    "seconds": 0.789,
+    "text": "bike",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-brush-my-teeth.wav": {
+    "fingerprint": "f252dd65fd4c19e88ba01b31f442791d43073eb4b809f3205448750ad6575b4e",
+    "seconds": 1.216,
+    "text": "brush my teeth",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-bus.wav": {
+    "fingerprint": "210f43905da31be2fffb6ec8df26f1e3f3b69b81819ab8ab8e826a0ec1628f31",
+    "seconds": 0.768,
+    "text": "bus",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-car.wav": {
+    "fingerprint": "94020c2a44f8cddde36a761dffadfdb88815a41efd1111663aea9f2510326ddd",
+    "seconds": 0.789,
+    "text": "car",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-cave.wav": {
+    "fingerprint": "bcf5f65b5afeb1f96a7df3c2de91d8a8b2cbf5aa2f63c4996e6fc535dbf0def0",
+    "seconds": 0.811,
+    "text": "cave",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-city.wav": {
+    "fingerprint": "23cd860c7cad5d13f6d4050a19f7337c294f4c6cda1d562a780345d82ea84c6f",
+    "seconds": 0.811,
+    "text": "city",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-clean-my-room.wav": {
+    "fingerprint": "d4988e623e5e800fe25dc60573a5752946c296266188aa8d151d1b77509d6b18",
+    "seconds": 1.216,
+    "text": "clean my room",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-closet.wav": {
+    "fingerprint": "f6c6e6f4e24fc0f2d0affa1b6581b864a7e52ba26f095101dc8ce293419e8a07",
+    "seconds": 0.96,
+    "text": "closet",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-clothes.wav": {
+    "fingerprint": "d6ae1731052e7d863aadbe6dbc970a03e79100e38a095d30fe0a928c2b600bbf",
+    "seconds": 0.981,
+    "text": "clothes",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-couch.wav": {
+    "fingerprint": "d39bef2e7e35fb80669d9beb81cda90acbdf64904ddcb255cff3d066573fb0e9",
+    "seconds": 0.917,
+    "text": "couch",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-countryside.wav": {
+    "fingerprint": "3464096eefd832676efa4880fcd283efd8343ac92df9bb4f3dfbd0288758aaa0",
+    "seconds": 1.088,
+    "text": "countryside",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-dining-room.wav": {
+    "fingerprint": "cce7f5756a1c3a99fc4a880b8a2e8c83205457567e91841b6b5cb112b7e101c6",
+    "seconds": 1.195,
+    "text": "dining room",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-do-my-homework.wav": {
+    "fingerprint": "071235e488e12a6cabe8974b03866f8c0032267b8d5f04a8357811b1fc5159ef",
+    "seconds": 1.237,
+    "text": "do my homework",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-door.wav": {
+    "fingerprint": "71ac01ab54731136aaf5b589eafb7862c5f56aa7d1c1b198c1baf5674f045136",
+    "seconds": 0.747,
+    "text": "door",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-dresser.wav": {
+    "fingerprint": "2b393917920cc7a60714fd4980b926e53228dc785902c9a934c58ee7a916a2f7",
+    "seconds": 0.896,
+    "text": "dresser",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-drive.wav": {
+    "fingerprint": "fbe3661f826dc3b9946c0b4601bd4419a16f20acf4a91d5f710f80230e40d2f1",
+    "seconds": 0.875,
+    "text": "drive",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-evening.wav": {
+    "fingerprint": "e4280e817a62eab63b01edbcac608e0a364f9b1d2e2e103b9713dab9c163a09d",
+    "seconds": 1.003,
+    "text": "evening",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-farm.wav": {
+    "fingerprint": "c1645d033d3cc0bd6dfff4aa10c2a7dd6fea4ffe5b98dc7d015495f98064a986",
+    "seconds": 0.875,
+    "text": "farm",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-fly.wav": {
+    "fingerprint": "353aa4cc523cf8e8f2538bd8b180f0a0db5098f2f0f6bf075096c958a778d08d",
+    "seconds": 0.832,
+    "text": "fly",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-garden.wav": {
+    "fingerprint": "bd7b6d83aa6fa625495ed8ff202546fe11ced6029d67b2013e7ece85713bbf3a",
+    "seconds": 0.981,
+    "text": "garden",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-get-dressed.wav": {
+    "fingerprint": "95b628beafd3ba00f1e62fb6b9b58211e1403e2e13fbf52f520f93a084665114",
+    "seconds": 1.045,
+    "text": "get dressed",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-go-to-bed.wav": {
+    "fingerprint": "3ec0e275930194b9f6b83415865fe48d782d43173cad0313fd0a8c6feb6b4780",
+    "seconds": 1.088,
+    "text": "go to bed",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-go-to-practice.wav": {
+    "fingerprint": "ee29c0d7b6c2fffc329759b3a0493e11dcd7a65204ac7c564881878c87172e0a",
+    "seconds": 1.216,
+    "text": "go to practice",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-go-to-sleep.wav": {
+    "fingerprint": "d1db82a307db9c2c95b94e7910397ed62462e91c34a131d6781dcd9b99383739",
+    "seconds": 1.109,
+    "text": "go to sleep",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-inside.wav": {
+    "fingerprint": "fb2196d3f9d8fd16170264753fb74bcef9fed58c07aea396bfb2679c6357e8f8",
+    "seconds": 0.981,
+    "text": "inside",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-kitchen.wav": {
+    "fingerprint": "6f1ec991c7668770d8fb8db991a15f39b54036950f21fc081592180eece2e492",
+    "seconds": 0.939,
+    "text": "kitchen",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-lamp.wav": {
+    "fingerprint": "76db1c74e26ec00d20285752dc0087aa3f432fa185c4eee00c00163ae76cb5c2",
+    "seconds": 0.747,
+    "text": "lamp",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-living-room.wav": {
+    "fingerprint": "41222acf0d6a2434eb3047ce9b4f4ad07fe1dd614b71e9d897fc6f8bbf003a17",
+    "seconds": 1.152,
+    "text": "living room",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-make-my-bed.wav": {
+    "fingerprint": "771d5f5150622a465e9cc6e43628158c2f84eda04e2e2f45b7a157ab9bff2881",
+    "seconds": 0.832,
+    "text": "make my bed",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-mirror.wav": {
+    "fingerprint": "2027005ad1db7e65e32eb98655859b4d5c7f8dc0e3a1b5df422d6fb191e8090e",
+    "seconds": 0.832,
+    "text": "mirror",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-morning.wav": {
+    "fingerprint": "918407dda8c43fa26c6034ca24b979f42bdfab09430bc99a11a6118c713d1e59",
+    "seconds": 0.896,
+    "text": "morning",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-night.wav": {
+    "fingerprint": "893ad94e4d476343b929e281ca65e2e11b2516634347195cce81803b095ae60b",
+    "seconds": 0.811,
+    "text": "night",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-outside.wav": {
+    "fingerprint": "665651d7e869b8d0f8049b6915650057a6f617840842cfc5d7806990ecd26d1d",
+    "seconds": 1.045,
+    "text": "outside",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-pack-my-bag.wav": {
+    "fingerprint": "64ab2415b6cf24e6ed581d710f62980ef615999967a77854e263d7fab3d2e739",
+    "seconds": 0.96,
+    "text": "pack my bag",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-plane.wav": {
+    "fingerprint": "48fc241b4febd2a8708a4f7413dd2c73136d3ef6630d3bf3911c561e998e851b",
+    "seconds": 0.832,
+    "text": "plane",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-play-a-game.wav": {
+    "fingerprint": "28a7a6ff834b2fa0695ae8454678f3f8c5d23fd8b5f24f1f5af15811b90f4977",
+    "seconds": 1.088,
+    "text": "play a game",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-practice.wav": {
+    "fingerprint": "446b4888503a7f8f310afd690bc2323b6bd68164aad1076f0e4e1a48af7e0923",
+    "seconds": 1.045,
+    "text": "practice",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-refrigerator.wav": {
+    "fingerprint": "7a88a7a1080f6575349b15aa51b8861cb568b8d03e88c320ecf11efc2141dbc1",
+    "seconds": 1.216,
+    "text": "refrigerator",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-ride.wav": {
+    "fingerprint": "109b4b58d072ecaf03626159eca45dc45e86c5a13eb7e453cc7f5df38d4115ca",
+    "seconds": 0.619,
+    "text": "ride",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-river.wav": {
+    "fingerprint": "d2a86a6fba07d0cfa0bb4e2a3483af87ec2225e41244ca9684c6b13d2ee7e326",
+    "seconds": 0.768,
+    "text": "river",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-roof.wav": {
+    "fingerprint": "154215561811ce08ecdddd6161d775314ee0b61ed987765c414e0b4275839e8b",
+    "seconds": 0.768,
+    "text": "roof",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-shower.wav": {
+    "fingerprint": "16d72d4cc4b9b5cac1f317789d5a852231223820784df962b02d2edba397933c",
+    "seconds": 0.896,
+    "text": "shower",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-sink.wav": {
+    "fingerprint": "1e0fba8fe0dd59c629b442b6b8fe217c606a7f66465f551e4e2cd226b171e5be",
+    "seconds": 0.811,
+    "text": "sink",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-stairs.wav": {
+    "fingerprint": "d5d7290d194384153085cc4eb7270c53cc1cc5f2a829a1ab67639d74f572a7dc",
+    "seconds": 0.981,
+    "text": "stairs",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-stove.wav": {
+    "fingerprint": "7926df421402ea85ef6e11dd922c586195dcdbbf956c4aed85b679e0a0a3d2ee",
+    "seconds": 0.896,
+    "text": "stove",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-subway.wav": {
+    "fingerprint": "9d2e8dacb2e12bd4679e7d714164113df340cd66e70a78ba258f7763a7c67cfa",
+    "seconds": 0.939,
+    "text": "subway",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-table.wav": {
+    "fingerprint": "3973b3de98b11f1d5769569cced7339da5300fac876b2d90de05aa5027601145",
+    "seconds": 0.853,
+    "text": "table",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-taxi.wav": {
+    "fingerprint": "8358f821b5434fee37c02c219481b22b61b899a7ee7ea5cd1a645fca1968219d",
+    "seconds": 0.896,
+    "text": "taxi",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-television.wav": {
+    "fingerprint": "2228b407d3cbfd9c434a3cf4fd3c4eacf544f06aee38c2f318cd1aaa89a60bc3",
+    "seconds": 1.088,
+    "text": "television",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-today.wav": {
+    "fingerprint": "ce6a322a439ebada7566bbd3b5fafa3e889f3118d7f1a5565748da30004cb303",
+    "seconds": 0.853,
+    "text": "today",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-toilet.wav": {
+    "fingerprint": "1b0fad5b8f11c1b9b1e9ccab2f7bf5a13d8390856a08529054188594fa9e5ac1",
+    "seconds": 0.875,
+    "text": "toilet",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-tomorrow.wav": {
+    "fingerprint": "ae273e79e29b6d40beb4cb4a2c8ece8a67737ba8ca14b80cd288ca22461de44c",
+    "seconds": 0.96,
+    "text": "tomorrow",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-train.wav": {
+    "fingerprint": "6e92ef1268dc38946837b8c84d2e47ac954fe1c7e81b2b778d519c682d807842",
+    "seconds": 0.875,
+    "text": "train",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-wake-up.wav": {
+    "fingerprint": "0efd3326f47ff64e9ad784ea613679d76ea329578cb5678724b6156414852523",
+    "seconds": 0.917,
+    "text": "wake up",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-wall.wav": {
+    "fingerprint": "1bc9979d4519e7ee236ac1972f65817208a716a298efae8ae5c330d15fa8c9a4",
+    "seconds": 0.704,
+    "text": "wall",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-weekend.wav": {
+    "fingerprint": "2ac33bc8a255212c220e5f2815e23a1578a56db4d2f9cc85bd8eeafc66f0de31",
+    "seconds": 1.003,
+    "text": "weekend",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-window.wav": {
+    "fingerprint": "9f3bf9dc5cc0222c4f614b6856c11efdc13dcd501bd2900a4d265ae24ca0bede",
+    "seconds": 0.939,
+    "text": "window",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-ch34-v1-vocabulary-yard.wav": {
+    "fingerprint": "730748fa40c78c4366dd3814b94ec08d7694ff4f8aa2078b2a3b38bec36e4bfb",
+    "seconds": 0.875,
+    "text": "yard",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-afternoon.wav": {
+    "fingerprint": "d81c05e8826851773f2863ec9def6e12aa8922b85237260fbbfa847b41a895e2",
+    "seconds": 1.625,
+    "text": "We play in the afternoon.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-apartment.wav": {
+    "fingerprint": "91984e74164e6e2517f698845c323ed2221025d368e80c9a8322158a475af5a4",
+    "seconds": 1.719,
+    "text": "We live in an apartment.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-armchair.wav": {
+    "fingerprint": "c52cdfdc9e6f872ba0a94ee9f0cf6bdede4e392306dfbdf76247698a6a38364c",
+    "seconds": 1.997,
+    "text": "My father sits in the armchair.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-bathroom.wav": {
+    "fingerprint": "a405c4c2700451cf8feebb41c791c836a08d13ea54b04f6f2b973fc1a7671438",
+    "seconds": 1.625,
+    "text": "The bathroom has a shower.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-bathtub.wav": {
+    "fingerprint": "296bec8ce71e00595944a853aff47646684a7dc2ee3906500fabd98ba8345a59",
+    "seconds": 1.881,
+    "text": "The bathtub is in the bathroom.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-bed.wav": {
+    "fingerprint": "b0c6a49bffa28c424b16f6927e8c33d5d89be5c7cfd4b4a4bb5b187b80fd9c09",
+    "seconds": 1.774,
+    "text": "The bed is beside the desk.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-bedroom.wav": {
+    "fingerprint": "baa77053ecdcddb8b4cc63e0fc371e72c2d0e3ee334240c15a05204103d8a1b4",
+    "seconds": 1.613,
+    "text": "My bedroom has a bed.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-bicycle.wav": {
+    "fingerprint": "0705cda1f29336202708e143c3615401b6ac83316d697176ca698759b61ab209",
+    "seconds": 2.019,
+    "text": "I ride my bicycle to school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-bike.wav": {
+    "fingerprint": "9003acbeccdd304de36a72d20d25adbb0a50ec5376cc48eb6daf4315eb84a256",
+    "seconds": 1.721,
+    "text": "I ride my bike to school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-brush-my-teeth.wav": {
+    "fingerprint": "f560d4591933ef5693f67fba31fcc39decfc3b463feb77221cf879384cc18f95",
+    "seconds": 2.051,
+    "text": "I brush my teeth every morning.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-bus.wav": {
+    "fingerprint": "88b64109fb2be00683fe35b14672115325b4990366651a548715ebf8fb420d26",
+    "seconds": 1.805,
+    "text": "The bus stops near my house.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-car.wav": {
+    "fingerprint": "03a0794a2af96ca7671a5f302553d2f9a84327e891a1767c38c489fa9dfb0de3",
+    "seconds": 1.699,
+    "text": "The car stops at the gate.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-cave.wav": {
+    "fingerprint": "ec4d8e8175bab380c0409e557cddd8577f061f7160a7e681f9f2c8dddb9137b6",
+    "seconds": 1.848,
+    "text": "The cave is inside the rock.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-city.wav": {
+    "fingerprint": "7e406737b25874e4309473e1a14545356ee0dad2e6552d8bf9c5379a2357925a",
+    "seconds": 1.848,
+    "text": "Many people live in the city.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-clean-my-room.wav": {
+    "fingerprint": "02fa7757a04fdb50012905cb32cdd71473cf28d465fb40fafa5c2c1e679db74b",
+    "seconds": 1.965,
+    "text": "I clean my room on the weekend.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-closet.wav": {
+    "fingerprint": "1df73c7b9bbaf1de77c00f84a23ff122efad3171cd6bb76afe5b3bf4dde68591",
+    "seconds": 1.848,
+    "text": "My clothes are in the closet.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-clothes.wav": {
+    "fingerprint": "96e29bd59f952a31f4cbd73ccf6445bb1e30dd73869a39b4248e21375ad55d8b",
+    "seconds": 1.485,
+    "text": "My clothes are clean.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-couch.wav": {
+    "fingerprint": "8e8c4c717e00ddfaea0269fdc584ed5c15775664a24cf32526c6fe6f264b0ee5",
+    "seconds": 1.37,
+    "text": "We sit on the couch.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-countryside.wav": {
+    "fingerprint": "251633b2ee274b72316b00b2c4e52c39022a49ce163d1594d3ddcd5bc3af36bc",
+    "seconds": 1.731,
+    "text": "We live in the countryside.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-dining-room.wav": {
+    "fingerprint": "9fb96289668d9e1eac92682c1c718e553617e5f54902a64bf6e16db36d0f936b",
+    "seconds": 1.837,
+    "text": "We eat in the dining room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-do-my-homework.wav": {
+    "fingerprint": "ea52516a5dbfefc51f0cf0eb2ea6311cd4cd787f7a88ce99dd5867371def703c",
+    "seconds": 1.945,
+    "text": "I do my homework after school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-door.wav": {
+    "fingerprint": "9cbfc3a967c20a26ff3132cdcc512bbe520fa2c45e0061d1212026a7d6a864dd",
+    "seconds": 1.433,
+    "text": "Please open the door.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-dresser.wav": {
+    "fingerprint": "24bf90ee7c7626366bd80e2fb9ac7789f25c5ca0d16b37c1e9f27ca07fb23a62",
+    "seconds": 1.754,
+    "text": "My clothes are in the dresser.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-drive.wav": {
+    "fingerprint": "6a2a1a266654e62d5ad4a9bfd8308cd3ee21f76b9f2455b9241ae4e165a82298",
+    "seconds": 1.453,
+    "text": "I can drive a car.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-evening.wav": {
+    "fingerprint": "f5e5dea3f97484274ceb088e44460f61dc56cb16bff2b0c30058be90e7e687fa",
+    "seconds": 1.559,
+    "text": "We eat in the evening.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-farm.wav": {
+    "fingerprint": "3a8ae2ddf914c4d23e593001f1e540629b4ded28583fb8467b12f04de824a0a6",
+    "seconds": 1.687,
+    "text": "There are cows on the farm.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-fly.wav": {
+    "fingerprint": "90b834b29abd01319cfdeae3c319eec54f546527543a5949461736f249585d84",
+    "seconds": 1.848,
+    "text": "Birds fly above the trees.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-garden.wav": {
+    "fingerprint": "7d0b6aa716925aa8c92aa2303b8d376544a0c67b80c11dc9d720e57a2b9ee445",
+    "seconds": 1.882,
+    "text": "There are flowers in the garden.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-get-dressed.wav": {
+    "fingerprint": "5284b0835060ea6f1f01731b7a1087c7b7728219e883bb30609cc52255586afa",
+    "seconds": 1.892,
+    "text": "I get dressed after my shower.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-go-to-bed.wav": {
+    "fingerprint": "5e2e462d521c200667d9286fb593b5af4f3e1aa32cd37153a91dce1320957cff",
+    "seconds": 1.474,
+    "text": "I go to bed at nine.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-go-to-practice.wav": {
+    "fingerprint": "970ff01b9f25b4628c8e01a71b03191f2fbb95065c41df249674b4a08b669b4c",
+    "seconds": 1.923,
+    "text": "I go to practice after school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-go-to-sleep.wav": {
+    "fingerprint": "61f1e3ac4c9634b8e5e0fa8ebecd176765c52f44efb5f4e166a6b2f0172589d3",
+    "seconds": 1.571,
+    "text": "I go to sleep at night.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-inside.wav": {
+    "fingerprint": "1675dac12b5606e3dda285090aef9e68b78edc9c5782a6d54fbd229a79eee63f",
+    "seconds": 1.891,
+    "text": "The cat is inside the house.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-kitchen.wav": {
+    "fingerprint": "acf20e60a94f17813d70416cc61decac98053f54f1744bfc32fe2080caf5f914",
+    "seconds": 1.764,
+    "text": "The stove is in the kitchen.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-lamp.wav": {
+    "fingerprint": "b0425609dcea1d9076f43ec79f569c7ef4b2dccd5ba0c1c216feb0b9b4dc16e9",
+    "seconds": 1.7,
+    "text": "The lamp is on the table.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-living-room.wav": {
+    "fingerprint": "fffc8382babb9dad62a2196625cfe84f9fca22acc6c28b690e3a1555089ca06b",
+    "seconds": 1.945,
+    "text": "The couch is in the living room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-make-my-bed.wav": {
+    "fingerprint": "bd2c73409e18dd5829a1e7e16032d9436128ec287f2ab64c3635f05d14175728",
+    "seconds": 1.943,
+    "text": "I make my bed every morning.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-mirror.wav": {
+    "fingerprint": "79622365434d9bbed96148b163542380609ade39e21d97772c266505251dcc05",
+    "seconds": 1.371,
+    "text": "I look in the mirror.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-morning.wav": {
+    "fingerprint": "cc2032ee986c2026df51b6bb939d778f4700ce7a086142ab65c27d77060f43a0",
+    "seconds": 1.581,
+    "text": "I wake up in the morning.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-night.wav": {
+    "fingerprint": "2489f8633483152fa5a5969874149f09d9da78c7e4def46612789c71c6ed815a",
+    "seconds": 1.36,
+    "text": "I sleep at night.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-outside.wav": {
+    "fingerprint": "dda9f8896d8c07a8f1dbacf2ad648711cc4a1d02cc5428b06a38e695e26fa344",
+    "seconds": 1.858,
+    "text": "The dog is outside the house.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-pack-my-bag.wav": {
+    "fingerprint": "845509cd2733803353e207457b5a0ba27758708cecc7a6725b3c0ce291b5872e",
+    "seconds": 1.871,
+    "text": "I pack my bag before school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-plane.wav": {
+    "fingerprint": "ed59f913585b6772ea4e79ab96f3da27bdf5fa2514a4a2b1607b545b6fea8cc9",
+    "seconds": 2.053,
+    "text": "The plane flies above the city.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-play-a-game.wav": {
+    "fingerprint": "becb5433df4a132934f8254658e256ef5ff00100aa6d5e67706ec01cf8ae5167",
+    "seconds": 1.774,
+    "text": "We play a game after dinner.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-practice.wav": {
+    "fingerprint": "b5003ab7f15aecab294782781edb38d077f88c65bf8cf724f9c8343b58c8f478",
+    "seconds": 1.892,
+    "text": "Football practice starts at four.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-refrigerator.wav": {
+    "fingerprint": "a3ee88eb898b6027a703dd3b3ae74ced7c315dbf8681eb1be6c9ecd0e20646ef",
+    "seconds": 2.127,
+    "text": "The milk is in the refrigerator.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-ride.wav": {
+    "fingerprint": "9003acbeccdd304de36a72d20d25adbb0a50ec5376cc48eb6daf4315eb84a256",
+    "seconds": 1.721,
+    "text": "I ride my bike to school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-river.wav": {
+    "fingerprint": "dcd85467276ad995680c413bdcef605615c8a73748bdac2fb9b49583845b177a",
+    "seconds": 1.922,
+    "text": "The river flows past the house.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-roof.wav": {
+    "fingerprint": "2f3df7bbc2eef5f928ce770885e936ad80b441da97310c262b98d2c68fb55254",
+    "seconds": 1.72,
+    "text": "The roof keeps the rain out.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-shower.wav": {
+    "fingerprint": "67f29e755d67d0ba66db7d259ef0a65d60db82be08dcf48644a5665dfadaf860",
+    "seconds": 1.838,
+    "text": "There is a shower in the bathroom.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-sink.wav": {
+    "fingerprint": "163c3ad5647b77be0ecf1781cc54d3d290f34bfbaf70a0fc370d3e3346e5f55a",
+    "seconds": 1.679,
+    "text": "The sink is in the kitchen.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-stairs.wav": {
+    "fingerprint": "cb0e6664e403973ac7d403d00cba113dcbcc714303f6a57417c27720de5f0d5f",
+    "seconds": 1.421,
+    "text": "We climb the stairs.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-stove.wav": {
+    "fingerprint": "33e3eba6d2473650ac5fc2ceef8d29455b6798a3422c48725ba8a78f76b8e36f",
+    "seconds": 1.474,
+    "text": "We cook on the stove.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-subway.wav": {
+    "fingerprint": "05913dcd64713b7b80ae5e718bfef497dcb33f202265851370134a6865fc351e",
+    "seconds": 1.828,
+    "text": "We take the subway to school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-table.wav": {
+    "fingerprint": "986883a49e370222cdb27bc38128431702dcf4a7f299084759d5a90c31d18523",
+    "seconds": 1.764,
+    "text": "The dishes are on the table.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-taxi.wav": {
+    "fingerprint": "af21005151d49e1ac26af9103363f69f835c112c3c4b6825881cd89b8d446a17",
+    "seconds": 1.955,
+    "text": "We take a taxi to the station.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-television.wav": {
+    "fingerprint": "0af8a7145f5db146566909efded85ae14e8a918e7ae3ab7980f7de82983f254f",
+    "seconds": 2.084,
+    "text": "There is a television in the bedroom.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-today.wav": {
+    "fingerprint": "52c68dd00c8258f274e107fcb5e39fd8b9b5646ef7cebd43ddcb04abefbd8375",
+    "seconds": 1.613,
+    "text": "We have practice today.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-toilet.wav": {
+    "fingerprint": "bd46e831e0f0f9f776270c3598b4c27a76fb7df6551a67796a805161ebdfb1f1",
+    "seconds": 2.007,
+    "text": "There is a toilet in the bathroom.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-tomorrow.wav": {
+    "fingerprint": "40e2e85b212648e13f976caeab2bc897c211079d68244a673285f293945d8dd9",
+    "seconds": 1.647,
+    "text": "We go to school tomorrow.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-train.wav": {
+    "fingerprint": "419f70b9bb766ae77e0fc00d1c51ac01b4f154e135a3d777ee6a795cfbcf22ad",
+    "seconds": 2.552,
+    "text": "The train moves from station to station.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-wake-up.wav": {
+    "fingerprint": "661a68e3256561c64d9621124fb9303908bd5de20851d4072ce17612425a3431",
+    "seconds": 1.464,
+    "text": "I wake up at six.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-wall.wav": {
+    "fingerprint": "fb6968e8a6ef4ba51e7d2d2b15e1e92f63d5cbf3963c13bba46f501d648718c2",
+    "seconds": 1.485,
+    "text": "The map is on the wall.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-weekend.wav": {
+    "fingerprint": "fb2ab284d7be0519d682a55daff2ef03559a6725f1bbc89480a6a7e0ba0e1871",
+    "seconds": 1.569,
+    "text": "We play on the weekend.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-window.wav": {
+    "fingerprint": "7866deb94ca01d6951f6054ae64855b091bfe2946d950b62ab2b1c48c62ce609",
+    "seconds": 1.464,
+    "text": "I look out of the window.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exam-context-yard.wav": {
+    "fingerprint": "0a6947c0dc135a7c7bc52f8d0419a3b39bb56d7ea0bc6d665cc2c50a2be14164",
+    "seconds": 1.743,
+    "text": "The children play in the yard.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "gap-a-big-family-0-for.wav": {
     "fingerprint": "f6ac735cdf49175d557e41b8f5bf66a005081e39d59665eb3e03d147fb2315aa",
     "seconds": 3.068,
@@ -521,6 +1613,126 @@
     "text": "The countryside has a lot _____ space, so there are big houses and even farms.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "gap-exam-ch34-v1-dialogue-contracted-whats.wav": {
+    "fingerprint": "977bf78b7714bb3c640cde236c834ae494dad328b7bd92d1f4e5a6c60880c642",
+    "seconds": 3.083,
+    "text": "_____ in your bedroom? There is a television.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-dialogue-plural-chairs.wav": {
+    "fingerprint": "d9bc1f6a8eded66355dea1ffaef0445050ddb342e78a083a496fa0372316ad0b",
+    "seconds": 3.366,
+    "text": "What\u2019s in the room? There are three _____.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-dialogue-plural-sinks.wav": {
+    "fingerprint": "f57dcd42a9e7e18777d24c1fa63b32f74b9196cdb6e8a13e6a4e70f9ebe746b0",
+    "seconds": 3.613,
+    "text": "What is in the bathroom? There _____ two sinks.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-dialogue-singular-desk.wav": {
+    "fingerprint": "6fb8e771234c820bf54c7f9a3384d844b4b3cdb59ca929538e09a7e634803f2e",
+    "seconds": 3.134,
+    "text": "What is that? That _____ a desk.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-dialogue-singular-tv.wav": {
+    "fingerprint": "e61fbfb7f3f4ade910319675bafb3c545205a4a6c08b1e858fa204f29af6a692",
+    "seconds": 3.472,
+    "text": "What\u2019s in your room? There _____ a television.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-dialogue-these-plural.wav": {
+    "fingerprint": "e81f0327f1fbc1407e6dfa0e0307640515026e404e795265ca2a923de938b50a",
+    "seconds": 2.839,
+    "text": "What _____ these next to the couch?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-dialogue-those-response.wav": {
+    "fingerprint": "18244d60db9eef64dbef18d6af32071c4fbb45dc7a760730abce0e11ef63021b",
+    "seconds": 3.223,
+    "text": "What are those? _____ are my rainboots.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-dialogue-two-items.wav": {
+    "fingerprint": "9098bfe71daddef6be8ee376969efc103c4d915fa639aeb999cd9cdf1ac648ff",
+    "seconds": 4.341,
+    "text": "Is there only a bed? No, there is both a bed _____ a dresser.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-dialogue-what-question.wav": {
+    "fingerprint": "60b8db85ca04dbf334fe862bf0b488adb4e2e8a4b00c962387eda79e6a13309a",
+    "seconds": 3.081,
+    "text": "_____ is in the living room? There is a couch.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-dialogue-where-question.wav": {
+    "fingerprint": "574debb01c60dd14536ba6cc875c23ba1e59887bf05be140a0db61bd40be03c7",
+    "seconds": 3.371,
+    "text": "_____ is your bedroom? It is next to the bathroom.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-grammar-above.wav": {
+    "fingerprint": "ea5fa341de5b48df27b0cc95faf91dce255931525eb414dc44bd57375e7474a8",
+    "seconds": 2.825,
+    "text": "The ball is _____ the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-grammar-behind.wav": {
+    "fingerprint": "ea5fa341de5b48df27b0cc95faf91dce255931525eb414dc44bd57375e7474a8",
+    "seconds": 2.803,
+    "text": "The ball is _____ the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-grammar-beside.wav": {
+    "fingerprint": "ea5fa341de5b48df27b0cc95faf91dce255931525eb414dc44bd57375e7474a8",
+    "seconds": 2.772,
+    "text": "The ball is _____ the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-grammar-between.wav": {
+    "fingerprint": "560ca6feacf35121141155351fd5306eb113c082ed1af3dd1d9b8d0375e905ea",
+    "seconds": 2.879,
+    "text": "The ball is _____ the boxes.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-grammar-in-front-of.wav": {
+    "fingerprint": "ea5fa341de5b48df27b0cc95faf91dce255931525eb414dc44bd57375e7474a8",
+    "seconds": 2.825,
+    "text": "The ball is _____ the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-grammar-in.wav": {
+    "fingerprint": "ea5fa341de5b48df27b0cc95faf91dce255931525eb414dc44bd57375e7474a8",
+    "seconds": 2.803,
+    "text": "The ball is _____ the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-grammar-next-to.wav": {
+    "fingerprint": "ea5fa341de5b48df27b0cc95faf91dce255931525eb414dc44bd57375e7474a8",
+    "seconds": 2.803,
+    "text": "The ball is _____ the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-grammar-on.wav": {
+    "fingerprint": "ea5fa341de5b48df27b0cc95faf91dce255931525eb414dc44bd57375e7474a8",
+    "seconds": 2.803,
+    "text": "The ball is _____ the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-grammar-over.wav": {
+    "fingerprint": "01d952e49055fce6603a213abf49a8a0e722ea7b38f2ef35f47cd2d451f7fb3d",
+    "seconds": 2.857,
+    "text": "The ball moves _____ the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "gap-exam-ch34-v1-grammar-under.wav": {
+    "fingerprint": "ea5fa341de5b48df27b0cc95faf91dce255931525eb414dc44bd57375e7474a8",
+    "seconds": 2.846,
+    "text": "The ball is _____ the box.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "gap-getting-to-know-your-child-1-to.wav": {
     "fingerprint": "2a459dd184dbdfe4ff9d5f5210c7b944346ef87821bb259be3585e5a933b9f30",
     "seconds": 3.31,
@@ -865,7 +2077,7 @@
   },
   "gap-grammar-practice-v1-us-4.wav": {
     "fingerprint": "78f0e5c95d000fc4c0ea624da003b42a09358506e03524433af4b99513628802",
-    "seconds": 3.0,
+    "seconds": 3,
     "text": "Please tell _____ about your family.",
     "voice": "kokoro-1.0-heart-v1"
   },
@@ -1299,6 +2511,186 @@
     "fingerprint": "8acdbe05099a5dd07bfef279faa1c66b792e2e777fb9537dfbc6b9d4c1dff763",
     "seconds": 1.413,
     "text": "The door was open.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-dialogue-bathroom.wav": {
+    "fingerprint": "a5671179ce4efa04e728547c8ad7fb01548cd7e5f173dbf3fa8ea604c72e6d01",
+    "seconds": 1.495,
+    "text": "What is in the bathroom?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-dialogue-living-room.wav": {
+    "fingerprint": "d326fc8e1f4665fd28614bc803920b0d503b7eade3879ca340d8062b6cb2eb8f",
+    "seconds": 1.518,
+    "text": "What\u2019s in the living room?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-dialogue-plural-identify.wav": {
+    "fingerprint": "3fac990edc8449094b353d92e99e377ca9c0635e6a34ed4d2ee27688528a4d0f",
+    "seconds": 1.828,
+    "text": "What are those next to the couch?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-dialogue-what-bedroom.wav": {
+    "fingerprint": "8672aa96c2f96db3345722ba5f861ec334aecf83d8221e61728eddf828a330e1",
+    "seconds": 1.71,
+    "text": "What is that in your bedroom?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-dialogue-where-bedroom.wav": {
+    "fingerprint": "d47c942862c7d8dae26f1a66be7d3e7f7c35e78c359e2fe4d0b2df47d9c66027",
+    "seconds": 1.443,
+    "text": "Where is your bedroom?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-dialogue-where-response.wav": {
+    "fingerprint": "0ec8b527f89f939e60baa0e2c511101cfd81de7f34982465c26782a526416625",
+    "seconds": 1.39,
+    "text": "Where is the bedroom?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-houses-bali.wav": {
+    "fingerprint": "52f28072cfd4e533611b2b9a105bf4b90fe13e1a0bf95b452a774b01e4473902",
+    "seconds": 2.381,
+    "text": "Where can visitors stay in these treehouses?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-houses-main.wav": {
+    "fingerprint": "3bc2aa567c7d345fb9e9196514796cb124ff0fd61d430ce002b1dcb9bce44357",
+    "seconds": 1.741,
+    "text": "What is this passage about?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-houses-percent.wav": {
+    "fingerprint": "f23c6d88e3816bb52229420ea08cec32cc82f9a0e0fbc1bbb60571b25316bd25",
+    "seconds": 3.977,
+    "text": "According to the passage, what percentage of people live in cities?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-houses-rocks.wav": {
+    "fingerprint": "8978963b7b866d0aa045dcefca90579b31c8087adf661de06870d184580938ad",
+    "seconds": 1.743,
+    "text": "What does \u201cthem\u201d refer to?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-houses-serbia.wav": {
+    "fingerprint": "f439b32a170c787590b81baa86190437ac0c85c0906763232730f66a656aadc4",
+    "seconds": 1.996,
+    "text": "Where is the Drina River house?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-houses-soft.wav": {
+    "fingerprint": "38282043b7406b770f644b9a82ae3b6b22d2e184577b66a94a6952ab61674f6b",
+    "seconds": 1.709,
+    "text": "What does \u201csoft\u201d describe?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-houses-space.wav": {
+    "fingerprint": "e82b12ba745c2667ffefc9240fd6a7cc35b7302b9f688606e49db7c365e53542",
+    "seconds": 3.385,
+    "text": "Why are there big houses and farms in the countryside?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-houses-suburbs.wav": {
+    "fingerprint": "faecca50ccd61a7eee43385211316a1eba1d830845a92f168d87e8c996de7f49",
+    "seconds": 1.38,
+    "text": "Where are the suburbs?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-houses-treehouses.wav": {
+    "fingerprint": "9b121846b34c56d7d483182e949f702d391f0ea342b3e9c6290d7f6d4c6eaaf5",
+    "seconds": 2.447,
+    "text": "How many treehouses can visitors stay in?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-houses-water.wav": {
+    "fingerprint": "9864cadb62f9c4525700b5ec92ed443f47540186a13b057d0c515e6d1c37b3c9",
+    "seconds": 2.169,
+    "text": "Which statement matches the passage?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-houses-years.wav": {
+    "fingerprint": "5bf1b265b3bf2542ff5d588a142e86fc36a179922a3c0d52be264b6401dbd2fd",
+    "seconds": 2.691,
+    "text": "How long have people lived in these cave homes?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-busy.wav": {
+    "fingerprint": "6db342d37afef90f3d1361a1eb4be352c5b8c4a722d8d645ed21e1ea91868b25",
+    "seconds": 2.646,
+    "text": "How often can trains come at busy times?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-frequency.wav": {
+    "fingerprint": "e7232da6ad79036f839fff248de2730558be1e9e60956407580b16bb1654fd8b",
+    "seconds": 1.956,
+    "text": "When do trains come less often?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-loop.wav": {
+    "fingerprint": "05aeb8baf4772db491c4616d969b1358317f2715bc5b8a924f0e1bb8cd665b06",
+    "seconds": 3.034,
+    "text": "Where do the tracks go after the loop around the city center?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-main.wav": {
+    "fingerprint": "14eca977548c99407a4f6dc43cd94407d83a4f2f55b4a21c8b2d3acc5804148f",
+    "seconds": 3.785,
+    "text": "What advantage of riding the L does this paragraph describe?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-name.wav": {
+    "fingerprint": "df21f07c97814218ca76fa3ccb23c30c4c22a22e41da17cc471b51f9c7e7923e",
+    "seconds": 2.299,
+    "text": "What is Chicago\u2019s overhead train called?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-noise.wav": {
+    "fingerprint": "0aedd55921183a42e6b0c2b6f51cc637f1910740f27e81629d17e68e27dc1d26",
+    "seconds": 2.031,
+    "text": "What is making the sound like thunder?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-platform.wav": {
+    "fingerprint": "ff53c437f8a214cb4356591a3da07124615747be590ed9f450aca5c66bcbd06f",
+    "seconds": 2.148,
+    "text": "How do riders reach the platform?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-price.wav": {
+    "fingerprint": "aa9dc3a21a1eaa105155c44ff7681b62cc144008f92d830e134719ae85a7f978",
+    "seconds": 1.317,
+    "text": "Which costs less?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-sequence.wav": {
+    "fingerprint": "8be1ea0655ae55ad524aa7c455aa31d00ec102af3508974c0e360800a87f145c",
+    "seconds": 3.788,
+    "text": "What do riders do after buying a ticket and before waiting?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-some.wav": {
+    "fingerprint": "b172df5860df6e2ea423eaa79800c15b75729d65f049fb6da753701fb29a1fad",
+    "seconds": 1.774,
+    "text": "Which statement is supported?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-students.wav": {
+    "fingerprint": "e4f363dafe2bf1a4ebd3b417df7501ad677ba825108ac2ce1d3a4630f9668dca",
+    "seconds": 2.905,
+    "text": "Which activity is mentioned for students on the train?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-support.wav": {
+    "fingerprint": "0b32a9f71bb671e4dcae4532ee04af8d3a727769693515b320a55fea7c48c796",
+    "seconds": 1.645,
+    "text": "What supports the tracks?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "prompt-exam-ch34-v1-reading-train-traffic.wav": {
+    "fingerprint": "df6e9c4fc9b05ee31c49b3d0b08af0388a5749bfd9b42fae4f02a01f529b8ae9",
+    "seconds": 2.785,
+    "text": "Why can the trains keep moving while cars stop?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "sentence-a-big-family-0.wav": {

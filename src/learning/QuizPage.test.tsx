@@ -9,6 +9,12 @@ import { speakEnglish, type SpeechState } from './speech'
 import { orderedQuestionBank } from './questionSheet'
 import { loadLearningMemory, recordAnswer, saveLearningMemory, type LearningMemory } from './learningMemory'
 
+// Exercise the established UI against its original general-course fixtures.
+vi.mock('./quizContent', async importOriginal => {
+  const content = await importOriginal<typeof import('./quizContent')>()
+  return { ...content, createPracticeRound: content.createGeneralPracticeRound }
+})
+
 vi.mock('./progressSync', () => ({ trackProgress: vi.fn(), pending: () => [], loadLearnerEvents: () => new Promise(() => {}) }))
 vi.mock('../lib/supabase', () => ({ supabase: null }))
 vi.mock('../pages/GroupLeaderboardPage', () => ({ default: ({ onExit }: { onExit: () => void }) => <button onClick={onExit}>Return to question</button> }))

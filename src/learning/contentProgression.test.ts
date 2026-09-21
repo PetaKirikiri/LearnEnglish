@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { createPracticeRound, type QuizQuestion } from './quizContent'
+import { createGeneralPracticeRound as createPracticeRound, type QuizQuestion } from './quizContent'
 import { orderedQuestionBank } from './questionSheet'
 import { questionBlock } from './contentOrder'
 import { practiceFocus } from './practiceScheduler'
 import { hasLearnedQuestion, loadLearningMemory, recordAnswer, saveLearningMemory, type LearningMemory } from './learningMemory'
 
-const bank = orderedQuestionBank().map(row => row.question)
+const bank = orderedQuestionBank().map(row => row.question).filter(q => !q.examCategory)
 const blocks = [...new Set(bank.map(questionBlock))]
 const pair = (index: number) => bank.filter(q => blocks.slice(index * 2, index * 2 + 2).includes(questionBlock(q)))
 function complete(questions: readonly QuizQuestion[] = pair(0), initial: LearningMemory = {}) {

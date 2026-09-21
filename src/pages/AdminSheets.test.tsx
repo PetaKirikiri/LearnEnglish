@@ -5,7 +5,8 @@ import MembersTablePage from './MembersTablePage'
 import QuestionsTablePage from './QuestionsTablePage'
 import { orderedQuestionBank, questionExampleCount } from '../learning/questionSheet'
 import { createPracticeRound } from '../learning/quizContent'
-it('previews the next focus pair together with earlier targets for review',()=>{
+import { examPracticeQuestions } from '../learning/examPracticeContent'
+it('previews exam-only practice even with earlier target history',()=>{
   act(()=>root.render(<QuestionsTablePage/>))
   const view=container.querySelector('select')!
   act(()=>{view.value='round';view.dispatchEvent(new Event('change',{bubbles:true}))})
@@ -17,10 +18,10 @@ it('previews the next focus pair together with earlier targets for review',()=>{
     pair.dispatchEvent(new Event('change',{bubbles:true}))
   })
   const targets=[...container.querySelectorAll('tbody tr')].map(row=>row.querySelectorAll('td')[2].textContent)
-  expect(targets.filter(target=>target==='the'||target==='a')).toHaveLength(3)
-  expect(targets).toContain('the')
-  expect(targets).toContain('a')
-  expect(new Set(targets.filter(target=>target!=='the'&&target!=='a')).size).toBe(2)
+  expect(targets).toHaveLength(10)
+  expect(targets.filter(target=>target==='the'||target==='a')).toHaveLength(0)
+  const examSources=[...container.querySelectorAll('tbody tr')].filter(row=>examPracticeQuestions.some(q=>q.prompt===row.querySelector('.question-cell')?.textContent))
+  expect(examSources).toHaveLength(10)
 })
 const {rpc}=vi.hoisted(()=>({rpc:vi.fn()}))
 vi.mock('../lib/supabase',()=>({supabase:{rpc}}))

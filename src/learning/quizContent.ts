@@ -1,3 +1,5 @@
+import { examPracticeQuestions, type ExamCategory, type PlaceRelation } from './examPracticeContent'
+import { selectExamPractice } from './examPracticeScheduler'
 import { readings } from '../content/readings'
 import { lessonThaiTranslations } from '../content/languageData'
 import { buildWordData, parseWords } from '../lib/wordData'
@@ -12,6 +14,10 @@ export type QuizMode = 'vocabulary' | 'sentences'
 
 export type QuizQuestion = {
   id: string
+  examCategory?: ExamCategory
+  examPage?: number
+  passage?: string
+  placeRelation?: PlaceRelation
   mode: QuizMode
   instruction: string
   prompt: string
@@ -235,15 +241,21 @@ export function createQuizRound(
 }
 
 // The admin preview and learner share the same paired focus/review scheduler.
-export function createPracticeRound(round = 0, memory: LearningMemory = {}): readonly QuizQuestion[] {
+export function createGeneralPracticeRound(round = 0, memory: LearningMemory = {}): readonly QuizQuestion[] {
   const random = createRandom(20260912 + round * 97)
   const bank = [...createSentencePool(random), ...createVocabularyPool(random)].sort(compareContent)
   return addRareEncounter(selectPracticeQuestions(bank, memory, random, questionsPerRound), bank, memory, round, random)
 }
 
+// Prioritise the supplied textbook within the existing ten-question practice flow.
+export function createPracticeRound(round = 0, memory: LearningMemory = {}): readonly QuizQuestion[] {
+  const random = createRandom(20260921 + round * 97)
+  return selectExamPractice(examPracticeQuestions, memory, round, random, questionsPerRound).map(q => ({ ...q, choices: shuffle(q.choices, random) }))
+}
+
 export function getLessonAudioItems() {
   const random = createRandom(20260912)
-  const questions = [...createVocabularyPool(random), ...createSentencePool(random)]
+  const questions = [...createVocabularyPool(random), ...createSentencePool(random), ...examPracticeQuestions]
   const byUrl = new Map(questions.map(({ audioUrl, spokenText }) => [audioUrl, { audioUrl, spokenText }]))
   for (const question of questions) {
     if (question.gapAudioUrl) byUrl.set(question.gapAudioUrl, { audioUrl: question.gapAudioUrl, spokenText: question.prompt })
@@ -258,7 +270,7 @@ export function getLessonAudioItems() {
 export function getQuizCatalogue() {
   const random = createRandom(20260912)
   return {
-    vocabulary: createVocabularyPool(random).sort((a, b) => a.spokenText.localeCompare(b.spokenText)),
-    sentences: createSentencePool(random).sort((a, b) => a.sourceTitle.localeCompare(b.sourceTitle) || a.example.localeCompare(b.example) || a.answer.localeCompare(b.answer)),
+    vocabulary: [...createVocabularyPool(random), ...examPracticeQuestions.filter(q => q.mode === 'vocabulary')].sort((a, b) => a.spokenText.localeCompare(b.spokenText)),
+    sentences: [...createSentencePool(random), ...examPracticeQuestions.filter(q => q.mode === 'sentences')].sort((a, b) => a.sourceTitle.localeCompare(b.sourceTitle) || a.example.localeCompare(b.example) || a.answer.localeCompare(b.answer)),
   }
 }
