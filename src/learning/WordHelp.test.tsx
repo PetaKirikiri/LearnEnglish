@@ -2,6 +2,7 @@ import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import { expect, it, vi } from 'vitest'
 import WordHelp from './WordHelp'
+import { wordProfiles } from '../content/languageData'
 
 it('tokenizes all words, leaves gaps alone, and only opens help on deliberate activation', () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
@@ -29,4 +30,29 @@ it('tokenizes all words, leaves gaps alone, and only opens help on deliberate ac
   act(() => document.querySelector('dialog')!.dispatchEvent(new Event('cancel', { cancelable: true })))
   expect(onOpenChange).toHaveBeenLastCalledWith(false)
   act(() => root.unmount()); container.remove()
+})
+
+it('keeps singular and plural word frames with their before and after words in the modal', () => {
+  const container = document.createElement('div'); document.body.append(container)
+  const root = createRoot(container)
+  wordProfiles.city = {
+    nouns: [{ singular: 'city', plural: 'cities', countability: 'countable' }], verbs: [],
+    before: [], after: [], occurrences: 1, corpus_version: 'test',
+    usage_frames: [
+      { word: 'city', before: ['the', 'this'], after: ['is', 'was'], source: 'teaching' },
+      { word: 'cities', before: ['the', 'these'], after: ['are', 'were'], source: 'teaching' },
+    ],
+  }
+  try {
+    act(() => root.render(<WordHelp text="The city is big." />))
+    act(() => container.querySelector<HTMLElement>('[aria-label="Help with city"]')!.click())
+    const frames = [...document.querySelectorAll('.word-help-dialog .teaching-orbit')]
+    expect(frames).toHaveLength(2)
+    expect(frames.map(frame => frame.querySelector('.orbit-focus > span:last-child')?.textContent)).toEqual(['city', 'cities'])
+    expect(frames.map(frame => frame.querySelector('.orbit-before')?.textContent)).toEqual(['thethis', 'thethese'])
+    expect(frames.map(frame => frame.querySelector('.orbit-after')?.textContent)).toEqual(['iswas', 'arewere'])
+    expect(frames.map(frame => frame.querySelectorAll('.word-quantity g').length)).toEqual([1, 3])
+  } finally {
+    act(() => root.unmount()); container.remove(); delete wordProfiles.city
+  }
 })

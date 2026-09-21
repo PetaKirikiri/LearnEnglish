@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { wordProfileSchema, type WordProfile } from '../learning/wordInfo/types'
 import { thaiTranslations as bundledGlosses } from './thaiTranslations.generated'
 import { lessonThaiTranslations as bundledLessonGlosses } from './lessonThaiTranslations'
 
@@ -7,10 +8,13 @@ import { lessonThaiTranslations as bundledLessonGlosses } from './lessonThaiTran
 export const thaiTranslations: Record<string, string> = { ...bundledGlosses }
 export const lessonThaiTranslations: Record<string, string> = { ...bundledLessonGlosses }
 
+export const wordProfiles: Record<string, WordProfile> = {}
+
 const wordSchema = z.object({
   word: z.string().trim().min(1).max(100),
   thai_gloss: z.string().min(1).nullable(),
   lesson_thai_gloss: z.string().min(1).nullable(),
+  word_profile: wordProfileSchema.nullable().optional(),
   corpus_count: z.number().int().nonnegative(),
   corpus_rank: z.number().int().positive().nullable(),
 })
@@ -28,9 +32,11 @@ export type LanguageSnapshot = z.infer<typeof languageSnapshotSchema>
 
 export function installLanguageSnapshot(input: unknown) {
   const snapshot = languageSnapshotSchema.parse(input)
+  for (const word of Object.keys(wordProfiles)) delete wordProfiles[word]
   for (const word of Object.keys(thaiTranslations)) delete thaiTranslations[word]
   for (const word of Object.keys(lessonThaiTranslations)) delete lessonThaiTranslations[word]
   for (const row of snapshot.words) {
+    if (row.word_profile) Object.defineProperty(wordProfiles, row.word, { value: row.word_profile, enumerable: true, configurable: true, writable: true })
     if (row.thai_gloss) Object.defineProperty(thaiTranslations, row.word, { value: row.thai_gloss, enumerable: true, configurable: true, writable: true })
     if (row.lesson_thai_gloss) Object.defineProperty(lessonThaiTranslations, row.word, { value: row.lesson_thai_gloss, enumerable: true, configurable: true, writable: true })
   }

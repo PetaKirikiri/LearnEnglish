@@ -1,9 +1,11 @@
-import { useId, useRef, useState } from 'react'
+import { useContext, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { thaiTranslations } from '../content/languageData'
 import { normalizeHelpWord } from './helpPoints'
-import Brand from '../ui/Brand'
 import Icon from '../ui/Icon'
+import { AuthContext } from '../auth/authContext'
+import WordDetails from './wordInfo/WordDetails'
+import WordConfidence from './wordInfo/WordConfidence'
 
 export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining }: {
   text: string
@@ -11,6 +13,7 @@ export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining }
   onOpenChange?: (open: boolean) => void
   pointsRemaining?: number
 }) {
+  const auth = useContext(AuthContext)
   const [hint, setHint] = useState<{ word: string; meaning?: string } | null>(null)
   const dialog = useRef<HTMLDialogElement>(null)
   const titleId = useId()
@@ -40,11 +43,12 @@ export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining }
     onKeyDown={event => event.stopPropagation()}
     onCancel={event => { event.preventDefault(); close() }}
     onClick={event => { if (event.target === event.currentTarget) { const r = event.currentTarget.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) close() } }}>
-    <header className="word-help-header"><button type="button" aria-label="Close word help" onClick={close} className="icon-button"><Icon name="close" /></button><Brand /></header>
-    <div className="word-help-content">
-      <h2 id={titleId}>{hint?.word}</h2>
-      <p className="word-help-meaning" lang={hint?.meaning ? 'th' : 'en'}>{hint?.meaning ?? 'Translation not available yet.'}</p>
+    <header className="word-help-header"><h2 id={titleId} lang="en">{hint?.word}</h2><button type="button" aria-label="Close word help" onClick={close} className="icon-button"><Icon name="close" /></button></header>
+    {hint && auth?.user?.id && <WordConfidence key={`${auth.user.id}:${hint.word}`} userId={auth.user.id} word={hint.word} />}
+    <div className="word-help-scroll">
+      <p className="word-help-translation" lang={hint?.meaning ? 'th' : 'en'}>{hint?.meaning ?? 'Translation not available yet.'}</p>
+      {hint && <WordDetails word={hint.word} context={text} />}
     </div>
-    {pointsRemaining !== undefined && <footer className="word-help-footer"><p>{pointsRemaining} pts available</p></footer>}
+    {pointsRemaining !== undefined && <p className="sr-only">{pointsRemaining} pts available</p>}
   </dialog>, document.body)}</span>
 }
