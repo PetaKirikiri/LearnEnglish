@@ -134,3 +134,36 @@ it('ignores a late response after switching periods', async () => {
   await act(async () => resolve({ data: { rows: [{ id: 'me', name: 'Fifa', rank: 1, points: 10 }] }, error: null }))
   expect(container.querySelector('ol')!.textContent).toBe('1Fifa500')
 })
+
+it('shows dated activity even when repeated practice earns no points', async () => {
+  rpc.mockResolvedValue({ error: null, data: {
+    periodStart: '2026-09-21', periodEnd: '2026-09-28', timeZone: 'Asia/Bangkok',
+    rows: [
+      { id: 'me', name: 'Fifa', rank: 1, points: 0, answers: 12, lastAnsweredAt: '2026-09-21T17:05:00Z' },
+      { id: 'other', name: 'Peta', rank: 1, points: 0, answers: 0, lastAnsweredAt: '2026-09-20T10:41:00Z' },
+      { id: 'new', name: 'New', rank: 1, points: 0, answers: 0, lastAnsweredAt: null },
+    ],
+  } })
+  await render()
+  expect(container.querySelector('.leaderboard-dates')?.textContent).toBe('21–27 Sept 2026Bangkok time')
+  const rows = container.querySelectorAll('ol li')
+  expect(rows[0].textContent).toContain('12 answers')
+  expect(rows[0].querySelector('time')?.textContent).toBe('22 Sept 2026, 00:05')
+  expect(rows[1].textContent).toContain('0 answersLast answer 20 Sept 2026, 17:41')
+  expect(rows[2].textContent).toContain('0 answersNo answers yet')
+  expect(container.querySelector('[role="img"]')).toBeNull()
+  rpc.mockImplementation(() => new Promise(() => {}))
+  await selectPeriod('Today')
+  expect(container.querySelector('.leaderboard-dates')?.textContent).toBe('')
+  expect(container.querySelector('time')).toBeNull()
+})
+
+it('refreshes activity and date ranges when the browser reconnects or regains focus', async () => {
+  await render()
+  rpc.mockResolvedValue({ error: null, data: { periodStart: '2026-09-28', periodEnd: '2026-10-05', rows: [] } })
+  await act(async () => window.dispatchEvent(new Event('online')))
+  expect(rpc).toHaveBeenCalledTimes(2)
+  expect(container.querySelector('.leaderboard-dates')?.textContent).toContain('28 Sept – 4 Oct 2026')
+  await act(async () => window.dispatchEvent(new Event('focus')))
+  expect(rpc).toHaveBeenCalledTimes(3)
+})

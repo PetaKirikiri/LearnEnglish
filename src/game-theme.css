@@ -131,6 +131,10 @@ body { background: var(--game-bg); }
 .ranking-row[data-self="true"] { border: 1px solid #d5bd794f; border-radius: 7px; background: linear-gradient(100deg, #c9aa6820, #c9aa6808); }
 .ranking-row > span:last-child { color: #f0dba8; }
 .ranking-row .text-amber-700 { color: #f4d799; }
+.leaderboard-dates { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; min-height: 20px; margin: 10px 2px 20px; color: #aabbd1; font-size: 12px; }
+.leaderboard-activity { display: block; margin-top: 3px; color: #d0dded; font-size: 12px; font-weight: 500; }
+.leaderboard-last-answer { display: block; margin-top: 3px; color: #aabbd1; font-size: 11px; font-weight: 400; line-height: 1.5; }
+.ranking-row:has(.leaderboard-activity) { padding-top: 12px; padding-bottom: 12px; }
 .login-screen { min-height: 100dvh; padding: 24px; display: flex; flex-direction: column; align-items: center; }
 .login-header { width: 100%; max-width: 920px; padding: 8px 0; }
 .login-header .app-brand { color: #f0e8d8; font-size: 18px; }
