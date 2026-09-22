@@ -14,12 +14,16 @@ export default function PlaceScene({ relation, object = 'ball', mirror = false }
     over: 'ลูกศรแสดงลูกบอลเคลื่อนข้ามด้านบนกล่องจากซ้ายไปขวา',
     'next to': 'ลูกบอลอยู่ติดกับด้านข้างกล่อง',
   }
-  const ball = (x: number, y: number, r = 18) => <g data-object={object}>{object === 'book' ? <><rect x={x-r} y={y-r} width={r*2} height={r*2} rx="3" fill="#e9ce91" stroke="#fff0c9"/><path d={`M${x-r+5} ${y-r}v${r*2} M${x-r+9} ${y+r-5}h${r}`} stroke="#80603c"/></> : object === 'cube' ? <rect x={x-r} y={y-r} width={r*2} height={r*2} rx="2" fill="#e9ce91" stroke="#fff0c9"/> : <><circle cx={x} cy={y} r={r} fill={`url(#${id}-ball)`} stroke="#f4dfad" strokeWidth="1.5"/><path d={`M ${x-r*.55} ${y-r*.2} Q ${x} ${y-r*.8} ${x+r*.45} ${y-r*.4}`} fill="none" stroke="#fff1cd" strokeWidth="2" opacity=".65"/>{object === 'apple' && <path d={`M${x} ${y-r+2}q0 -12 8 -12 M${x+1} ${y-r}q-14 -12 -17 -3q8 7 17 3`} fill="#8ea777" stroke="#b5c898"/>}</>}</g>
-  const box = (x = 130, y = 65, w = 90, h = 64) => <g data-object="box" stroke="#8bacc8" strokeWidth="1.5" strokeLinejoin="round"><path d={`M${x} ${y} l20 -17 h${w} l-20 17 Z`} fill="#54728e"/><path d={`M${x+w} ${y} l20 -17 v${h} l-20 17 Z`} fill="#253d55"/><rect x={x} y={y} width={w} height={h} rx="2" fill="#365671"/><path d={`M${x+w/2} ${y} v${h}`} stroke="#7591aa" opacity=".5"/></g>
+  const ball = (x: number, y: number, r = 18) => <g data-object={object}>{object === 'book' ? <><rect x={x-r} y={y-r} width={r*2} height={r*2} rx="3" fill="#e9ce91" stroke="#fff0c9"/><path d={`M${x-r+5} ${y-r}v${r*2} M${x-r+9} ${y+r-5}h${r}`} stroke="#80603c"/></> : object === 'cube' ? <rect x={x-r} y={y-r} width={r*2} height={r*2} rx="2" fill="#e9ce91" stroke="#fff0c9"/> : <><circle cx={x} cy={y} r={r} fill={`url(#${id}-ball)`} stroke="#f4dfad" strokeWidth="1.5"/><ellipse cx={x-r*.3} cy={y-r*.35} rx={r*.22} ry={r*.16} fill="#fff1cd" opacity=".35"/>{object === 'apple' && <path d={`M${x} ${y-r+2}q0 -12 8 -12 M${x+1} ${y-r}q-14 -12 -17 -3q8 7 17 3`} fill="#8ea777" stroke="#b5c898"/>}</>}</g>
+  const box = (x = 130, y = 65, w = 90, h = 64) => <g data-object="box" stroke="#8bacc8" strokeWidth="1.5" strokeLinejoin="round">
+    <path d={`M${x} ${y} L${x+20} ${y-17} H${x+w+20} L${x+w} ${y} Z`} fill="#54728e"/>
+    <path d={`M${x+w} ${y} L${x+w+20} ${y-17} V${y+h-17} L${x+w} ${y+h} Z`} fill="#253d55"/>
+    <path d={`M${x} ${y} H${x+w} V${y+h} H${x} Z`} fill="#365671"/>
+  </g>
   return <svg viewBox="0 0 360 156" role="img" aria-label={descriptions[relation].replaceAll('ลูกบอล', object==='ball'?'ลูกบอล':object==='apple'?'แอปเปิล':object==='book'?'หนังสือ':'ลูกบาศก์เล็ก')} lang="th" style={{ display:'block', width:'100%', height:'clamp(110px, 18vh, 156px)', margin:'12px auto 0' }}>
     <defs><radialGradient id={`${id}-ball`} cx="30%" cy="25%"><stop stopColor="#fff0bc"/><stop offset=".6" stopColor="#dfbc6d"/><stop offset="1" stopColor="#a87735"/></radialGradient><marker id={`${id}-arrow`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="none" stroke="#e8cd91" strokeWidth="2"/></marker></defs>
-    <g transform={mirror ? "translate(360 0) scale(-1 1)" : undefined}><path d="M48 139 H312" stroke="#8bacc8" opacity=".2"/>
-    {relation === 'behind' && <>{ball(227,103)}{box()}<circle cx="227" cy="103" r="18" fill="none" stroke="#e8cd91" strokeWidth="1.5" strokeDasharray="3 4" opacity=".55"/></>}
+    <g transform={mirror ? "translate(360 0) scale(-1 1)" : undefined}>
+    {relation === 'behind' && <>{ball(233,103)}{box()}</>}
     {relation === 'in front of' && <>{box()}{ball(172,128)}</>}
     {relation === 'under' && <>{box(130,29,90,42)}<path d="M135 72V138 M215 72V138" stroke="#54728e" strokeWidth="3"/>{ball(175,120)}</>}
     {relation === 'on' && <>{box()}{ball(181,40)}</>}
