@@ -1,5 +1,10 @@
 // Meanings reviewed for the contexts in the expanded exam questions.
-const rows = `wash|ล้าง / อาบ
+const rows = `text|ข้อความ / บทอ่าน
+useful|มีประโยชน์
+moved|ย้ายแล้ว / ย้ายเข้าไปอยู่แล้ว
+money|เงิน
+arrive|มาถึง
+wash|ล้าง / อาบ
 use|ใช้
 sleeping|กำลังนอนหลับ
 used|ถูกใช้

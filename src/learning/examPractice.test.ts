@@ -73,6 +73,10 @@ describe('textbook exam practice in the existing flow',()=>{
  })
  it('plays only the visible prompt before sentence answers, and keeps fifth rounds inside the exam syllabus',()=>{
   const audio=new Map(getLessonAudioItems().map(item=>[item.audioUrl,item.spokenText]))
+  const recordings=JSON.parse(readFileSync('public/audio/lessons/voice-manifest.json','utf8')) as Record<string,{text:string}>
+  for(const q of examPracticeQuestions) for(const url of [q.audioUrl,q.gapAudioUrl,q.contextAudioUrl].filter((url):url is string=>Boolean(url))) {
+   expect(recordings[url.split('/').at(-1)!]?.text, `Outdated recording: ${url}`).toBe(audio.get(url))
+  }
   for(const q of examPracticeQuestions.filter(q=>q.mode==='sentences')) expect(audio.get(q.gapAudioUrl!)).toBe(q.prompt)
   for(const round of [4,9,14]) {
    const questions=createPracticeRound(round)
