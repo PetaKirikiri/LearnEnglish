@@ -297,6 +297,13 @@ daytime|เวลากลางวัน
 summary|สรุป
 combines|รวมเข้าด้วยกัน
 cube|ลูกบาศก์
+holds|จับ / ยึด; holds up = รองรับ
+closing|กำลังปิด
+rules|กติกา / กฎ
+cards|ไพ่ / บัตร
+thirty|สามสิบ
+true|จริง / ถูกต้อง
+choice|ทางเลือก
 drawer|ลิ้นชัก
 drinks|เครื่องดื่ม / ดื่ม
 arm|แขน

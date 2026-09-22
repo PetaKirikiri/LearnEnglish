@@ -180,21 +180,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-dialogue-two-items-assessment-transfer.wav": {
-    "fingerprint": "a00e30eb7e996e16a3c03a020b3b75d53a2b9f66ad52f677087cfb12a4b380ab",
-    "seconds": 2.563,
-    "text": "The room has both a couch and an armchair.",
+    "fingerprint": "ca5f4d52760fe26c10f7910303695da7cb95008597247d7fa88d882fa880a760",
+    "seconds": 2.967,
+    "text": "The room has two seats: a couch and an armchair.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-dialogue-two-items-practice-transfer.wav": {
-    "fingerprint": "ab265c1ec87fdb04dcc797f30adbb333f23f29b4d46c633ca31a977845afefc4",
-    "seconds": 2.713,
-    "text": "There is both a stove and a sink in the kitchen.",
+    "fingerprint": "e6ae25afc581d7ff4a08c1b2a37373ea8bab06810e7e8343896867d91bd4e319",
+    "seconds": 3.329,
+    "text": "There are two things in the kitchen: a stove and a sink.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-dialogue-two-items.wav": {
-    "fingerprint": "e90c5b7ebf1bd1564a5555bd5fb5e146f8e05c737285e09da50fc5e5db443a99",
-    "seconds": 3.793,
-    "text": "Is there only a bed? No, there is both a bed and a dresser.",
+    "fingerprint": "f60630b22767b46bf461282a049f43fdf1fce3c0118ecccc2ce1f75e5d9f7b2c",
+    "seconds": 3.201,
+    "text": "There are two things in the room: a bed and a dresser.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-dialogue-what-bedroom-assessment-transfer.wav": {
@@ -528,9 +528,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-bali-assessment-transfer.wav": {
-    "fingerprint": "7c8b6953447e2a31edbe5b0bf1f6af912201ef5afba57ad264f32a3f7c4cc36f",
-    "seconds": 4.158,
-    "text": "What kind of home can visitors stay in near Diamond Beach? A treehouse.",
+    "fingerprint": "bb7ff764036e8f1457feb2fcb2eb0f20ab78b12bfb913bf30e2000aff0260090",
+    "seconds": 3.808,
+    "text": "What kind of home can you stay in near Diamond Beach? A treehouse.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-bali-practice-transfer.wav": {
@@ -540,9 +540,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-bali.wav": {
-    "fingerprint": "52f28072cfd4e533611b2b9a105bf4b90fe13e1a0bf95b452a774b01e4473902",
-    "seconds": 2.381,
-    "text": "Where can visitors stay in these treehouses?",
+    "fingerprint": "644a9ed73d0d68f870413da6bb0b21d8329f20b2caa7d944d7da9b2c5eb72e89",
+    "seconds": 1.623,
+    "text": "Where are these treehouses?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-main-assessment-transfer.wav": {
@@ -552,21 +552,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-main-practice-transfer.wav": {
-    "fingerprint": "d868d408c9b0e37d8aa5b0cc595f4779fc55ee4875d4535491e9b7c2a7368ca5",
-    "seconds": 3.488,
-    "text": "Which title fits this part? Places people call home.",
+    "fingerprint": "d46da504d5b52e43812d296b2516c0c46ee843997b33c2cd5fb940f6620c776b",
+    "seconds": 2.517,
+    "text": "What is this part about? Different homes.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-main.wav": {
-    "fingerprint": "3bc2aa567c7d345fb9e9196514796cb124ff0fd61d430ce002b1dcb9bce44357",
-    "seconds": 1.741,
-    "text": "What is this passage about?",
+    "fingerprint": "0cc49b48119cf09a0d8d81dad791ab4b0a3e949ab00e2feb39874bc9e54e2b4e",
+    "seconds": 1.613,
+    "text": "What is this text about?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-percent-assessment-transfer.wav": {
-    "fingerprint": "e42d327239994798372a3ec4d1acbe2f9f6f33e3aca6ed90b82e6cfe8fa81cf3",
-    "seconds": 5.067,
-    "text": "Do all people in cities live in apartments? The text only says many people do.",
+    "fingerprint": "6ecc3c92ce09e6ca2e42fcc42582f6990133bb9686f616b1309d7cb6b4ed770a",
+    "seconds": 2.699,
+    "text": "In cities, many people live in apartments.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-percent-practice-transfer.wav": {
@@ -582,9 +582,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-rocks-assessment-transfer.wav": {
-    "fingerprint": "c0d4f3788250ebe1912f24d5c4a44edd713b320d9e19be52556428cc787b93a9",
-    "seconds": 4.522,
-    "text": "How did people build the cave houses? People built homes inside rocks.",
+    "fingerprint": "df797d0c6dc10920866afffd5cd9ed16aad7df8c0ee899b84a4a7928607bfc53",
+    "seconds": 3.838,
+    "text": "Where did people make homes in Cappadocia? Inside rocks.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-rocks-practice-transfer.wav": {
@@ -600,9 +600,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-serbia-assessment-transfer.wav": {
-    "fingerprint": "da52946d83923be0cd7d9a3d8c1c0e7b582068eb669730dc6e9108fc064191a9",
-    "seconds": 3.788,
-    "text": "You want to see the Drina River house. Where should you go? Serbia.",
+    "fingerprint": "baccb888ff6d403599e6054bb7407a8157e75d4c942a40ffe792175d43ee7931",
+    "seconds": 2.977,
+    "text": "Where can you visit the Drina River house? Serbia.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-serbia-practice-transfer.wav": {
@@ -630,9 +630,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-soft.wav": {
-    "fingerprint": "38282043b7406b770f644b9a82ae3b6b22d2e184577b66a94a6952ab61674f6b",
-    "seconds": 1.709,
-    "text": "What does \u201csoft\u201d describe?",
+    "fingerprint": "d6d29b0640b8f03b26f48f985131cb554406b6a3fbc46b164b5f9a76a00448be",
+    "seconds": 1.475,
+    "text": "Which things are soft?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-space-assessment-transfer.wav": {
@@ -684,9 +684,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-treehouses.wav": {
-    "fingerprint": "9b121846b34c56d7d483182e949f702d391f0ea342b3e9c6290d7f6d4c6eaaf5",
-    "seconds": 2.447,
-    "text": "How many treehouses can visitors stay in?",
+    "fingerprint": "a1c152f61d8fa3d6faf1d80321223fdcfdb6edbcae4648c48fd93fa1b170ba82",
+    "seconds": 2.127,
+    "text": "How many treehouses can you stay in?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-water-assessment-transfer.wav": {
@@ -714,9 +714,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-years-practice-transfer.wav": {
-    "fingerprint": "174bcbeafbb161f67aecdfcf1be1aa75a587b0729313b8bbb4700e5a91336dbe",
-    "seconds": 5.919,
-    "text": "Did people start living in these caves yesterday? No. They have lived there for thousands of years.",
+    "fingerprint": "6d78779d152f9dfeeef8f481cd562e72985649063bda05e914f864f748c4618e",
+    "seconds": 5.205,
+    "text": "Have people lived in these cave homes for a long time? Yes, for thousands of years.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-houses-years.wav": {
@@ -726,15 +726,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-busy-assessment-transfer.wav": {
-    "fingerprint": "fbb19782793c0ac4b218dc3233d4a3ccb27e694e3f9be07f97ccdfe790df3212",
-    "seconds": 4.251,
-    "text": "At busy times, how often can a train arrive? Every ten minutes.",
+    "fingerprint": "c1c4642982060457667cc6bbd9d845eaff65e50a33cb10204e393ab858bdf309",
+    "seconds": 3.711,
+    "text": "How often do trains come when it is busy? Every ten minutes.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-busy-practice-transfer.wav": {
-    "fingerprint": "eaffe8c38b3da99da1647ddb13aa56535e30a9076c75618b0dc72fc67d6475fe",
-    "seconds": 4.373,
-    "text": "At busy times, how many minutes can there be between trains? Ten minutes.",
+    "fingerprint": "868316ee35dfb870d4988c2051f6dd5a3ed1b4a738c4388043424c774c11a5f3",
+    "seconds": 4.202,
+    "text": "At busy times, how many minutes are there between trains? Ten minutes.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-busy.wav": {
@@ -744,9 +744,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-frequency-assessment-transfer.wav": {
-    "fingerprint": "32fbe30c6337b1b91a3879cefdaf88a9d4f945c70c72381f09b4fa0b7e389c4f",
-    "seconds": 5.385,
-    "text": "Do trains come as often on weekends as at busy times? No. They come less often.",
+    "fingerprint": "a2fa9020272ef3f4e3a32c106588a6eae2aa4c74ef59f0a66883336b4daa7021",
+    "seconds": 5.173,
+    "text": "Trains come less often on weekends. Is this true? Yes. They come less often.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-frequency-practice-transfer.wav": {
@@ -762,9 +762,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-loop-assessment-transfer.wav": {
-    "fingerprint": "dac2bdb258ed8de50e2b4e241112ba75bf6a72143ba81942d2f838f8dd8941fd",
-    "seconds": 4.93,
-    "text": "Do the tracks go to other parts of the city? Yes. They go beyond the city center.",
+    "fingerprint": "c839f93675c7b2023bc64685ad8bd4f3745ca83fe92d4a7a32f83e7d17e3c16e",
+    "seconds": 5.237,
+    "text": "Do the tracks go to other parts of the city? Yes. They go to other parts of the city.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-loop-practice-transfer.wav": {
@@ -774,15 +774,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-loop.wav": {
-    "fingerprint": "05aeb8baf4772db491c4616d969b1358317f2715bc5b8a924f0e1bb8cd665b06",
-    "seconds": 3.034,
-    "text": "Where do the tracks go after the loop around the city center?",
+    "fingerprint": "ae8c005e5f6a1b1171997dd41c42f05f61e82540cbaa4bf78b59e8700c40c44f",
+    "seconds": 3.393,
+    "text": "The tracks go around the city center. Where do they go next?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-main-assessment-transfer.wav": {
-    "fingerprint": "0e9520d63bffc2505b46576b02a585971cab076cab2a82ff8080004b00f47383",
-    "seconds": 5.961,
-    "text": "Why can riding the train be better than driving in traffic? You can keep moving and read or rest.",
+    "fingerprint": "28d34dde2546ac7a2f2d575a453d4f547233e718ca939cfe14139c8295a0f02b",
+    "seconds": 5.482,
+    "text": "Why is the train a good choice when the roads are busy? You can keep moving and read or rest.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-main-practice-transfer.wav": {
@@ -792,9 +792,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-main.wav": {
-    "fingerprint": "eb2cee0848d49dd7babac72804a9ad6fa9c91d7f671b735605677d11743a1ebc",
-    "seconds": 3.279,
-    "text": "Why is it useful to ride the L when roads are busy?",
+    "fingerprint": "eb9838acad2fb8c3a2163cf166c1a04c6145220923702ee9a1d2a0370f473c19",
+    "seconds": 2.895,
+    "text": "Why take the train when cars are stuck in traffic?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-name-assessment-transfer.wav": {
@@ -822,9 +822,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-noise-practice-transfer.wav": {
-    "fingerprint": "4ba3153fe1cb132f0b975285cca17416c8359b09454564bd0b47a5429e16c8dc",
-    "seconds": 3.074,
-    "text": "Why should you look up? A train is passing overhead.",
+    "fingerprint": "bd0f9d519eb4025838bef55666c932e2b2fa4d99723e381b0d4b5da9ae01cc63",
+    "seconds": 3.041,
+    "text": "Why should you look up? A train is passing above you.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-noise.wav": {
@@ -840,21 +840,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-platform-practice-transfer.wav": {
-    "fingerprint": "81587da6cbb7d0c322f3caf6da71e0b273143bbfb21567c824f88c40f0b51f75",
-    "seconds": 3.585,
-    "text": "Where do the stairs and elevator take riders? The platform.",
+    "fingerprint": "8d14874667fc44dc90853b7005529c38616ad27f11217bef6bf754b93dbd9385",
+    "seconds": 3.862,
+    "text": "Where do you go when you take the stairs or elevator? The platform.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-platform.wav": {
-    "fingerprint": "ff53c437f8a214cb4356591a3da07124615747be590ed9f450aca5c66bcbd06f",
-    "seconds": 2.148,
-    "text": "How do riders reach the platform?",
+    "fingerprint": "c6032d3c065fe5f887ad7d48f85071c1231a8565b4007a5713b1dd6bc91d256a",
+    "seconds": 1.807,
+    "text": "How can you get to the platform?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-price-assessment-transfer.wav": {
-    "fingerprint": "676bb5715a0915266c0e25761871e24f891e7c0b1fe10a986ca5bacc365b48f8",
-    "seconds": 4.631,
-    "text": "You want to spend less money. Should you take a train or a taxi? The train.",
+    "fingerprint": "8ed864fd0024773e66c9042b0e322c06e3f8c24ca36020368eea34923b03cc9d",
+    "seconds": 3.699,
+    "text": "Which ride costs less, the train or the taxi? The train.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-price-practice-transfer.wav": {
@@ -876,15 +876,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-sequence-practice-transfer.wav": {
-    "fingerprint": "d9f9f0143ccce2213102ae70b173a41367052cde05074442c66b2dfa5f043e91",
-    "seconds": 2.687,
-    "text": "What do riders do first? Buy a ticket.",
+    "fingerprint": "7f0c0c4ae401c8c83df9a3b3830a9dfe3494cca61bfb3fb3ba124d7881d06526",
+    "seconds": 3.697,
+    "text": "You are on the platform. What do you do first? Buy a ticket.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-sequence.wav": {
-    "fingerprint": "8be1ea0655ae55ad524aa7c455aa31d00ec102af3508974c0e360800a87f145c",
-    "seconds": 3.788,
-    "text": "What do riders do after buying a ticket and before waiting?",
+    "fingerprint": "e362170b067a659d3f5d2a6f3d8b168314ab9410286fdb3e7c78bb8b562914d7",
+    "seconds": 3.0,
+    "text": "What do riders do next after they buy a ticket?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-some-assessment-transfer.wav": {
@@ -894,9 +894,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-some-practice-transfer.wav": {
-    "fingerprint": "da00fc204ee9d8b947e979aa9aee0b715d58e530788f423b0d95b99f60ace7a6",
-    "seconds": 4.373,
-    "text": "Do all trains run all day and night? The text only says some trains.",
+    "fingerprint": "9034588b8f079e7fe1c439438208a9c809a7fcb58797e5c135e530dcf41d3a0d",
+    "seconds": 3.191,
+    "text": "How many trains run all day and night? Some trains.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-some.wav": {
@@ -936,15 +936,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-support.wav": {
-    "fingerprint": "0b32a9f71bb671e4dcae4532ee04af8d3a727769693515b320a55fea7c48c796",
-    "seconds": 1.645,
-    "text": "What supports the tracks?",
+    "fingerprint": "c2a25b2256328436a77a8138adf79ffbff8d1e80533adf3f53dce88cb71a5258",
+    "seconds": 1.814,
+    "text": "What holds up the train tracks?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-traffic-assessment-transfer.wav": {
-    "fingerprint": "e8dcf84d723effd0bd1372f79601934853931bb673258208fb2b1c3f2349bb81",
-    "seconds": 3.465,
-    "text": "Where are the trains compared with the cars? Above the cars.",
+    "fingerprint": "2692638207b78ec91d6fbfcb755d529b099dbcc4b37819e7b290e29248a721f2",
+    "seconds": 4.009,
+    "text": "The cars are on the road. Where are the trains? Above the cars.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-traffic-practice-transfer.wav": {
@@ -954,9 +954,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-reading-train-traffic.wav": {
-    "fingerprint": "df6e9c4fc9b05ee31c49b3d0b08af0388a5749bfd9b42fae4f02a01f529b8ae9",
-    "seconds": 2.785,
-    "text": "Why can the trains keep moving while cars stop?",
+    "fingerprint": "058828b92084afac6577a8b3b31cd1e6c452055482099969ab00530f3e41ad1a",
+    "seconds": 3.468,
+    "text": "Cars stop in traffic. Why can the trains keep moving?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "exam-ch34-v1-vocabulary-afternoon-assessment.wav": {
@@ -3504,9 +3504,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "gap-exam-ch34-v1-dialogue-two-items.wav": {
-    "fingerprint": "9098bfe71daddef6be8ee376969efc103c4d915fa639aeb999cd9cdf1ac648ff",
-    "seconds": 4.341,
-    "text": "Is there only a bed? No, there is both a bed _____ a dresser.",
+    "fingerprint": "2f8b2431f0bb5a4b3c6e994d268fc385b6672d8734e42a37c9259bd42212f20d",
+    "seconds": 3.807,
+    "text": "There are two things in the room: a bed _____ a dresser.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "gap-exam-ch34-v1-dialogue-what-question.wav": {
@@ -4500,15 +4500,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-dialogue-two-items-assessment-transfer.wav": {
-    "fingerprint": "102b70d7fdb3c7f427c06bb2d3b3f8cb0b901dc9054194af850a86e79a89c23e",
-    "seconds": 3.381,
-    "text": "The room has both a couch _____ an armchair.",
+    "fingerprint": "6ec359dc4dfdf8479dfd239f2a2c9675d9fad5987468f672c1b167b80feeecce",
+    "seconds": 3.807,
+    "text": "The room has two seats: a couch _____ an armchair.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-dialogue-two-items-practice-transfer.wav": {
-    "fingerprint": "24653a299d9e5fe513cd1b2a91879a848bc19d3507463dfadb5063f62c1074e2",
-    "seconds": 3.587,
-    "text": "There is both a stove _____ a sink in the kitchen.",
+    "fingerprint": "eeae9a654c3ec5eb06b0eb43f3bf3d7fa14710282d6c973e99e9f9cb44acfb9d",
+    "seconds": 4.17,
+    "text": "There are two things in the kitchen: a stove _____ a sink.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-dialogue-what-bedroom-assessment-transfer.wav": {
@@ -4770,9 +4770,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-bali-assessment-transfer.wav": {
-    "fingerprint": "74b59db78decc2d139a29b8e2d3dab62782d2119aafe5180c6d0d650b7fe9e7e",
-    "seconds": 3.276,
-    "text": "What kind of home can visitors stay in near Diamond Beach?",
+    "fingerprint": "c8d7e879878bbc2badce10ab9ed5e8eaa95b32c1ac64c60c2e58532dbdeeb549",
+    "seconds": 2.935,
+    "text": "What kind of home can you stay in near Diamond Beach?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-bali-practice-transfer.wav": {
@@ -4782,9 +4782,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-bali.wav": {
-    "fingerprint": "52f28072cfd4e533611b2b9a105bf4b90fe13e1a0bf95b452a774b01e4473902",
-    "seconds": 2.381,
-    "text": "Where can visitors stay in these treehouses?",
+    "fingerprint": "644a9ed73d0d68f870413da6bb0b21d8329f20b2caa7d944d7da9b2c5eb72e89",
+    "seconds": 1.623,
+    "text": "Where are these treehouses?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-main-assessment-transfer.wav": {
@@ -4794,21 +4794,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-main-practice-transfer.wav": {
-    "fingerprint": "050d1863a1cabf04eedae6ade2d76c435f00e8378da1252c074c6dbf922e793c",
-    "seconds": 1.805,
-    "text": "Which title fits this part?",
+    "fingerprint": "2ea0abe9efc6342890bd92178d7e2af552490756de1db870fa7cf8130dfa37ee",
+    "seconds": 1.561,
+    "text": "What is this part about?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-main.wav": {
-    "fingerprint": "3bc2aa567c7d345fb9e9196514796cb124ff0fd61d430ce002b1dcb9bce44357",
-    "seconds": 1.741,
-    "text": "What is this passage about?",
+    "fingerprint": "0cc49b48119cf09a0d8d81dad791ab4b0a3e949ab00e2feb39874bc9e54e2b4e",
+    "seconds": 1.603,
+    "text": "What is this text about?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-percent-assessment-transfer.wav": {
-    "fingerprint": "67e3cc89b3cd92353887c562e41af73bac5c1786c6bf1a9986eda7ad7d42866b",
-    "seconds": 2.563,
-    "text": "Do all people in cities live in apartments?",
+    "fingerprint": "1eb151cb927fcc0f16fa56e05bfae89a387d01c6781ebf6badeb5967d0fd9f11",
+    "seconds": 3.394,
+    "text": "In cities, _____ people live in apartments.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-percent-practice-transfer.wav": {
@@ -4824,9 +4824,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-rocks-assessment-transfer.wav": {
-    "fingerprint": "28227180075467c11cb3d271f81226333130cb45ea51af624866224af827ae24",
-    "seconds": 2.283,
-    "text": "How did people build the cave houses?",
+    "fingerprint": "bbd0be9b3bf5ff74593c1abd102aa06414681410fb25a8bf1294de4b81d86bda",
+    "seconds": 2.596,
+    "text": "Where did people make homes in Cappadocia?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-rocks-practice-transfer.wav": {
@@ -4842,9 +4842,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-serbia-assessment-transfer.wav": {
-    "fingerprint": "50ac98bab9d0e39c3f0969db504929ba3bcd66af750ac1abb0f02fa9d739d501",
-    "seconds": 3.117,
-    "text": "You want to see the Drina River house. Where should you go?",
+    "fingerprint": "af5df2f2abb128f526f17b7aecdcb709673d42b5f85f50c0d5cf3d81668f684b",
+    "seconds": 2.285,
+    "text": "Where can you visit the Drina River house?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-serbia-practice-transfer.wav": {
@@ -4872,9 +4872,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-soft.wav": {
-    "fingerprint": "38282043b7406b770f644b9a82ae3b6b22d2e184577b66a94a6952ab61674f6b",
-    "seconds": 1.709,
-    "text": "What does \u201csoft\u201d describe?",
+    "fingerprint": "d6d29b0640b8f03b26f48f985131cb554406b6a3fbc46b164b5f9a76a00448be",
+    "seconds": 1.475,
+    "text": "Which things are soft?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-space-assessment-transfer.wav": {
@@ -4926,9 +4926,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-treehouses.wav": {
-    "fingerprint": "9b121846b34c56d7d483182e949f702d391f0ea342b3e9c6290d7f6d4c6eaaf5",
-    "seconds": 2.447,
-    "text": "How many treehouses can visitors stay in?",
+    "fingerprint": "a1c152f61d8fa3d6faf1d80321223fdcfdb6edbcae4648c48fd93fa1b170ba82",
+    "seconds": 2.137,
+    "text": "How many treehouses can you stay in?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-water-assessment-transfer.wav": {
@@ -4956,9 +4956,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-years-practice-transfer.wav": {
-    "fingerprint": "fe2119499ff7df66d179253ae9fa9e4b8935e34536cc866a0717982d65399a0e",
-    "seconds": 2.821,
-    "text": "Did people start living in these caves yesterday?",
+    "fingerprint": "945d92fefe47653a2d18d160e290aafbaa384ca787d5bc976f80924883e16b4b",
+    "seconds": 2.98,
+    "text": "Have people lived in these cave homes for a long time?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-houses-years.wav": {
@@ -4968,15 +4968,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-busy-assessment-transfer.wav": {
-    "fingerprint": "1faf36a1b48c87dd534253fa9d5238f2bd0ab3af7a8a2ffed83df1725f6e5b6c",
-    "seconds": 3.093,
-    "text": "At busy times, how often can a train arrive?",
+    "fingerprint": "96fcfc1ebf5ae9249c29813fb95595352bf1e12d60089a986301072b5ee23909",
+    "seconds": 2.447,
+    "text": "How often do trains come when it is busy?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-busy-practice-transfer.wav": {
-    "fingerprint": "e362305f6196690f140fcd80ce4f0a13229a27384af43e4949f3ebd057bd8f5a",
-    "seconds": 3.572,
-    "text": "At busy times, how many minutes can there be between trains?",
+    "fingerprint": "80cb35fe572ff5f61a21a724bed685f77d21e0f8e94ffd818c2d57109c4bfa1a",
+    "seconds": 3.35,
+    "text": "At busy times, how many minutes are there between trains?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-busy.wav": {
@@ -4986,9 +4986,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-frequency-assessment-transfer.wav": {
-    "fingerprint": "29506287076ee05aa563c945a2851ecd0896e0041598c3665c730dce05bad98f",
-    "seconds": 3.511,
-    "text": "Do trains come as often on weekends as at busy times?",
+    "fingerprint": "7bf3253832585060e009dcd293cc88c3e6e83db16afbd75a0b3988231c9ad952",
+    "seconds": 3.127,
+    "text": "Trains come less often on weekends. Is this true?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-frequency-practice-transfer.wav": {
@@ -5016,15 +5016,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-loop.wav": {
-    "fingerprint": "05aeb8baf4772db491c4616d969b1358317f2715bc5b8a924f0e1bb8cd665b06",
-    "seconds": 3.034,
-    "text": "Where do the tracks go after the loop around the city center?",
+    "fingerprint": "ae8c005e5f6a1b1171997dd41c42f05f61e82540cbaa4bf78b59e8700c40c44f",
+    "seconds": 3.383,
+    "text": "The tracks go around the city center. Where do they go next?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-main-assessment-transfer.wav": {
-    "fingerprint": "65517d2f37cf3fa9809161f3403b9f09e5045b23ac49e96e17aa22c4b96befe0",
-    "seconds": 3.511,
-    "text": "Why can riding the train be better than driving in traffic?",
+    "fingerprint": "6f40d1634b167db80f65a964e9cd5d1922c38b0a5556b97a8a245bf83446d57f",
+    "seconds": 3.024,
+    "text": "Why is the train a good choice when the roads are busy?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-main-practice-transfer.wav": {
@@ -5034,9 +5034,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-main.wav": {
-    "fingerprint": "eb2cee0848d49dd7babac72804a9ad6fa9c91d7f671b735605677d11743a1ebc",
-    "seconds": 3.279,
-    "text": "Why is it useful to ride the L when roads are busy?",
+    "fingerprint": "eb9838acad2fb8c3a2163cf166c1a04c6145220923702ee9a1d2a0370f473c19",
+    "seconds": 2.893,
+    "text": "Why take the train when cars are stuck in traffic?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-name-assessment-transfer.wav": {
@@ -5082,21 +5082,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-platform-practice-transfer.wav": {
-    "fingerprint": "ca57491240c49cbfe76aa8d2992bbcad08f7beff2cc7d2406d078b5ed8c4b3ea",
-    "seconds": 2.627,
-    "text": "Where do the stairs and elevator take riders?",
+    "fingerprint": "e86a3df5d620f47d2c801558cd44e4232b6132d2c93e4afc340855f05f725ab9",
+    "seconds": 2.906,
+    "text": "Where do you go when you take the stairs or elevator?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-platform.wav": {
-    "fingerprint": "ff53c437f8a214cb4356591a3da07124615747be590ed9f450aca5c66bcbd06f",
-    "seconds": 2.148,
-    "text": "How do riders reach the platform?",
+    "fingerprint": "c6032d3c065fe5f887ad7d48f85071c1231a8565b4007a5713b1dd6bc91d256a",
+    "seconds": 1.807,
+    "text": "How can you get to the platform?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-price-assessment-transfer.wav": {
-    "fingerprint": "fbad4aa713066b8766b1708e4a324505b70a1de0ef6b91f7a6b19e96b7937019",
-    "seconds": 3.809,
-    "text": "You want to spend less money. Should you take a train or a taxi?",
+    "fingerprint": "d8686f05fa9b887b716a99e5dca07444bc06ed2d5017b04cf809bed0a031d537",
+    "seconds": 3.0,
+    "text": "Which ride costs less, the train or the taxi?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-price-practice-transfer.wav": {
@@ -5118,15 +5118,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-sequence-practice-transfer.wav": {
-    "fingerprint": "0d8e48722b5088b869ee007b42f4ec2845d55b73e4307ce72bc79d458ae8ae9e",
-    "seconds": 1.817,
-    "text": "What do riders do first?",
+    "fingerprint": "b4eeaa9b9e573a98a5b50c73f3783a4945774968574150cc384c1814c0acaf21",
+    "seconds": 2.795,
+    "text": "You are on the platform. What do you do first?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-sequence.wav": {
-    "fingerprint": "8be1ea0655ae55ad524aa7c455aa31d00ec102af3508974c0e360800a87f145c",
-    "seconds": 3.788,
-    "text": "What do riders do after buying a ticket and before waiting?",
+    "fingerprint": "e362170b067a659d3f5d2a6f3d8b168314ab9410286fdb3e7c78bb8b562914d7",
+    "seconds": 3.0,
+    "text": "What do riders do next after they buy a ticket?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-some-assessment-transfer.wav": {
@@ -5136,9 +5136,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-some-practice-transfer.wav": {
-    "fingerprint": "0ba65eee517fa460fdb60eef678ef8e92ea73b3108b7a7cfad92674ec91705e8",
-    "seconds": 2.255,
-    "text": "Do all trains run all day and night?",
+    "fingerprint": "7b927c534118d5da0cee344c7366ec0623c405b748fe9c576cef0d858a48d96f",
+    "seconds": 2.223,
+    "text": "How many trains run all day and night?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-some.wav": {
@@ -5178,15 +5178,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-support.wav": {
-    "fingerprint": "0b32a9f71bb671e4dcae4532ee04af8d3a727769693515b320a55fea7c48c796",
-    "seconds": 1.645,
-    "text": "What supports the tracks?",
+    "fingerprint": "c2a25b2256328436a77a8138adf79ffbff8d1e80533adf3f53dce88cb71a5258",
+    "seconds": 1.814,
+    "text": "What holds up the train tracks?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-traffic-assessment-transfer.wav": {
-    "fingerprint": "c8201db10cabeab5eb07f0958b7c4be40724ba992f57e9112750f306ef7ea1d2",
-    "seconds": 2.306,
-    "text": "Where are the trains compared with the cars?",
+    "fingerprint": "046d4ca7417cc9bd0a671d832665285c940222d04883e8282ad1994c74739bc0",
+    "seconds": 2.815,
+    "text": "The cars are on the road. Where are the trains?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-traffic-practice-transfer.wav": {
@@ -5196,9 +5196,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-reading-train-traffic.wav": {
-    "fingerprint": "df6e9c4fc9b05ee31c49b3d0b08af0388a5749bfd9b42fae4f02a01f529b8ae9",
-    "seconds": 2.785,
-    "text": "Why can the trains keep moving while cars stop?",
+    "fingerprint": "058828b92084afac6577a8b3b31cd1e6c452055482099969ab00530f3e41ad1a",
+    "seconds": 3.468,
+    "text": "Cars stop in traffic. Why can the trains keep moving?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-afternoon-assessment.wav": {
@@ -5208,9 +5208,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-afternoon-context.wav": {
-    "fingerprint": "8628883a7a0c84f6ff1df9cd7ccea18ca13b4d5ad1378d8abbb9a53564fbdaae",
-    "seconds": 4.013,
-    "text": "It is two o'clock in the _____. We have just had lunch.",
+    "fingerprint": "a7fa96cd64e66451484c486ee3cae3fe35fca7b0f6bd23195b31a5f8da72e91b",
+    "seconds": 3.376,
+    "text": "It is two in the _____. Lunch is over.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-afternoon-definition.wav": {
@@ -5238,21 +5238,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-armchair-assessment.wav": {
-    "fingerprint": "8256e015e3efe095368f7cfe96cb806414bfc6967dce600d60a4006b3e426344",
-    "seconds": 4.566,
-    "text": "This soft chair has a place for each arm. It is an _____.",
+    "fingerprint": "ab37a42316eb7a8f09df88698a3d1abc343a5124f514756a46f7b7495b999fe0",
+    "seconds": 5.313,
+    "text": "This soft chair has arms and a seat for one person. It is an _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-armchair-context.wav": {
-    "fingerprint": "2ec4ef8723ffdea2b941345f78596375a41f4d22cfccae4ed917e84e4232511e",
-    "seconds": 3.875,
-    "text": "Dad sits in the _____ and rests his arms on its sides.",
+    "fingerprint": "993f53490b6d4167801c36f7e1c83edf36744cfffc8c9f730a9fc84683ac4fda",
+    "seconds": 4.459,
+    "text": "Dad sits in this soft chair with arms. It is an _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-armchair-definition.wav": {
-    "fingerprint": "e1e9972726ea2cd790aa7f143251675fe6601503bc4c8933602caa90d0579beb",
-    "seconds": 3.787,
-    "text": "A soft chair for one person, with a place to rest each arm.",
+    "fingerprint": "f9d7bf7c17bccd4f273badde4ebed440a89e698f191af9e56763485417607d74",
+    "seconds": 2.691,
+    "text": "A soft chair with arms, for one person.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bathroom-assessment.wav": {
@@ -5394,15 +5394,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bus-definition.wav": {
-    "fingerprint": "b2e6a0501a84ddb3e18dfc5d158afe880451e91519ef692efd58bf2b0076440b",
-    "seconds": 3.01,
-    "text": "A large road vehicle that carries many people.",
+    "fingerprint": "4b38cdfa363dd2a7a04e639f519541082dc03d94e46a17970831f30e7e327a1e",
+    "seconds": 3.669,
+    "text": "It carries many people along the road and stops to pick them up.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-car-assessment.wav": {
-    "fingerprint": "1af12398c5017c310648e2e1af70a125edac60a1e225b0da158daa3705e8fa4b",
-    "seconds": 4.054,
-    "text": "Our family travels by road in our four-wheeled _____.",
+    "fingerprint": "46fb2745fcc6c3c3a46d40e6d9ae58a8d869f5e2509bc31ce7c223ea380e76ed",
+    "seconds": 3.791,
+    "text": "We drive to school in our _____. It has four wheels.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-car-context.wav": {
@@ -5472,9 +5472,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-closet-assessment.wav": {
-    "fingerprint": "389c1d76a297ec658f96cb8bb352dd68ff983d547f50ea09e65dc1a2bf3738b4",
-    "seconds": 3.471,
-    "text": "I open the _____ and take a shirt off a hanger.",
+    "fingerprint": "4c0126f6d733881b4b0136cf6447aff0a71a95932d061c4c9c3846478eac7200",
+    "seconds": 3.073,
+    "text": "My shirts hang inside the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-closet-context.wav": {
@@ -5490,21 +5490,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-clothes-assessment.wav": {
-    "fingerprint": "1383edd4e8d3ef2fedeced587cf500b69a020daae4d6b464c2d6b7634cf7f178",
-    "seconds": 4.307,
-    "text": "The things we wear, such as shirts and dresses, are _____.",
+    "fingerprint": "75cb8c9dacb690bcc34b154f92554a4b7dcc10180ea6ee850771846ba56d0f6c",
+    "seconds": 2.859,
+    "text": "Shirts and dresses are _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-clothes-context.wav": {
-    "fingerprint": "379e2f38e6fd19cee09f036117bf37122db7cd601283e047b29bd81b0a70e5e8",
-    "seconds": 3.286,
-    "text": "Shirts and trousers are types of _____.",
+    "fingerprint": "04abf6a0b91c90dcb8f5a7deab77b9936baa65e7026f1489220ed4070b18e130",
+    "seconds": 2.945,
+    "text": "Shirts and trousers are _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-clothes-definition.wav": {
-    "fingerprint": "74b32bf865096f4e90c89a25ced674d506f93bbf44330b4b3c503be426b51810",
-    "seconds": 2.979,
-    "text": "Things such as shirts and trousers that people wear.",
+    "fingerprint": "c2d71bda86c8988cec0406483795c6154eaeb98a8fc76d4a1e80297e81d3f92d",
+    "seconds": 2.561,
+    "text": "Shirts, trousers and other things you wear.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-couch-assessment.wav": {
@@ -5640,15 +5640,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-evening-context.wav": {
-    "fingerprint": "231be95ce4141d6bdbc525f19dabe2394a7d63197d26ee1bd570ac6529676387",
-    "seconds": 4.502,
-    "text": "The time near the end of the day, before night, is the _____.",
+    "fingerprint": "e2b3556eaaeac9be1e93dbc74ff42c8b06cd3f8d8cacbfba95dda85ddb5cb59d",
+    "seconds": 4.353,
+    "text": "The time after afternoon and before night is the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-evening-definition.wav": {
-    "fingerprint": "9cf0690e40ebb090c546a0268756d853cbfd4f1904015f2ab35dafec083a5c5d",
-    "seconds": 2.646,
-    "text": "The time near the end of the day, before night.",
+    "fingerprint": "34cd16b6208b60e5d7235dae6cacc7ef37bd7eb583d46d00671c2a426c9ea9f4",
+    "seconds": 2.667,
+    "text": "The time after afternoon and before night.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-farm-assessment.wav": {
@@ -5706,9 +5706,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-get-dressed-assessment.wav": {
-    "fingerprint": "231a4731459cb17b39ba509dec12908e5e7faa1600a9c2fd6cf660d347005c74",
-    "seconds": 3.67,
-    "text": "When I put on the clothes I will wear, I _____.",
+    "fingerprint": "376471664d0bba1155e9412f56cad1bec62d165f72377c12fdd0ad911bc730ce",
+    "seconds": 3.905,
+    "text": "I put on my shirt and trousers. I _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-get-dressed-context.wav": {
@@ -5760,15 +5760,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-go-to-sleep-assessment.wav": {
-    "fingerprint": "dabdb35920cd2652fdd0d4421f85c17465adb0debb16e2dbf869fced0e6b49d5",
-    "seconds": 4.901,
-    "text": "I lie in bed for a while. Then I start to sleep. I _____.",
+    "fingerprint": "f284c050dbcf2fc74f3b0dc852426824cdf644576c7139d908f168d9c87777dd",
+    "seconds": 3.593,
+    "text": "I am tired. I lie down and _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-go-to-sleep-context.wav": {
-    "fingerprint": "51320b0835bfd1697c30750ce2c947a42dd486e1259694ffe3ac518cb399e436",
-    "seconds": 4.781,
-    "text": "I am in bed. Soon I am no longer awake. I _____.",
+    "fingerprint": "847f23513c4d2dfd8fa15c023f462878c2cc30f9066f30d78f1d8a66713b6025",
+    "seconds": 4.459,
+    "text": "I close my eyes in bed and start to sleep. I _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-go-to-sleep-definition.wav": {
@@ -5892,9 +5892,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-morning-context.wav": {
-    "fingerprint": "c2896de4317cd8154fae8a15027e314b515fd4dc5d9844a78a4e375e87f17c67",
-    "seconds": 4.228,
-    "text": "It is seven o'clock in the _____. I am getting ready for school.",
+    "fingerprint": "c47368bcc17af6ccc04ffa438b1c9d578ca536303b3080e62c57f3c197ec45a3",
+    "seconds": 3.315,
+    "text": "I get up at seven in the _____ before school.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-morning-definition.wav": {
@@ -5976,21 +5976,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-play-a-game-assessment.wav": {
-    "fingerprint": "f7e57305c9ac62d08f948aa1abf5a029071f9d8b9f46d1a7dd7b093235d6690a",
-    "seconds": 4.438,
-    "text": "I take turns in a board game with my friend. I _____.",
+    "fingerprint": "9a35ecf44827c90194c5a6958e3f38e2e693bdeeefa952866cd2e425622c39d1",
+    "seconds": 3.151,
+    "text": "I _____ with my friend on my phone.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-play-a-game-context.wav": {
-    "fingerprint": "4d26ab17749a86837fa3d6523d344b2cb6d187cab83bbca574a97344c38f5a37",
-    "seconds": 4.886,
-    "text": "I move pieces on a board and take turns for fun. I _____.",
+    "fingerprint": "72b8d88416d8514ee907179699b017a61f42ddbd92014eec5fc806ca09e06146",
+    "seconds": 3.99,
+    "text": "My friend and I play cards for fun. We _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-play-a-game-definition.wav": {
-    "fingerprint": "7ea769f4663c51ae5a4e56eab382114b106d78c2351235dd8c41b9d2079b0d3f",
-    "seconds": 1.967,
-    "text": "Take part in a game for fun.",
+    "fingerprint": "576f7146f6aa4df6d7576cb6624494205bdc5ca05a322d06306b027cc0953e26",
+    "seconds": 1.679,
+    "text": "Play with rules, for fun.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-practice-assessment.wav": {
@@ -6030,21 +6030,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-ride-assessment.wav": {
-    "fingerprint": "31af3d45da4b2b0ac99958605b968afb8055c05d3c8c8afe14a484fbcac5db7c",
-    "seconds": 4.362,
-    "text": "I travel as a passenger on a bus. I _____ the bus.",
+    "fingerprint": "fa17e2f67fcc282831e99b27a1e219198f8f308a3025dbd136a43bf8fe921750",
+    "seconds": 2.747,
+    "text": "I _____ the bus to school.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-ride-context.wav": {
-    "fingerprint": "f7501aaa416a66bc7b5c830fa14b34d19538c8e17b0fe1900f781e43cf7db435",
-    "seconds": 4.564,
-    "text": "I sit on a bicycle and travel on it. I _____ the bicycle.",
+    "fingerprint": "0e98cf28edb1b5468042480f76731ef7fd9e61eda3f002fca1f5548f3a48c5c2",
+    "seconds": 3.064,
+    "text": "I _____ my bicycle to school.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-ride-definition.wav": {
-    "fingerprint": "6440f40d570210265785ee0b0c0690682a4c92698984791f8c097668dbb3cbb1",
-    "seconds": 2.787,
-    "text": "Travel on a bicycle or as a passenger.",
+    "fingerprint": "2e444fe6459530444dce05a4e65cb0637cfe370a9c695af7bb1334a317a7245e",
+    "seconds": 2.007,
+    "text": "Go somewhere on a bike or bus.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-river-assessment.wav": {
@@ -6228,21 +6228,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-today-assessment.wav": {
-    "fingerprint": "4403d5abf30a283918bf154aafcbc283b94c72d61ac5f4baeffa78b75da8fdf4",
-    "seconds": 3.478,
-    "text": "The day we are living in right now is _____.",
+    "fingerprint": "f697571614ca952de9b1c9627d6242f34ddd2dc44fa81d8e7443640531095de9",
+    "seconds": 3.277,
+    "text": "Yesterday was Sunday. _____ is Monday.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-today-context.wav": {
-    "fingerprint": "ccf5004c471744b1978447a80f9335c6d7abf6f38804134b3740e1f662d6cb8a",
-    "seconds": 3.969,
-    "text": "It is Monday now. This same Monday is _____.",
+    "fingerprint": "23a6363092c58b0c8a624502dfc588e4453027797e131b63821fc83a99c58d19",
+    "seconds": 3.029,
+    "text": "_____ is Monday. Tomorrow is Tuesday.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-today-definition.wav": {
-    "fingerprint": "2f5c23f1e72a2f4cf3ff3b49aad7885d1b67a5a638ccdb19df39416257548ab4",
-    "seconds": 1.795,
-    "text": "The day that is happening now.",
+    "fingerprint": "c5cc616fe2be1bec0ae8f051ed787e471c99c97c106ae8f1c87ef8754029f1a5",
+    "seconds": 0.981,
+    "text": "This day.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-toilet-assessment.wav": {

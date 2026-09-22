@@ -1,0 +1,1559 @@
+{
+  "date": "2026-09-22",
+  "scope": {
+    "vocabulary": {
+      "reviewed": 264,
+      "changed": 25
+    },
+    "dialogue": {
+      "reviewed": 48,
+      "changed": 3
+    },
+    "grammar": {
+      "reviewed": 40,
+      "changed": 0
+    },
+    "reading": {
+      "reviewed": 72,
+      "changed": 36
+    }
+  },
+  "changes": [
+    {
+      "id": "exam-ch34-v1-dialogue-two-items",
+      "category": "dialogue",
+      "before": {
+        "prompt": "Is there only a bed? No, there is both a bed _____ a dresser.",
+        "choices": [
+          "and",
+          "but",
+          "or",
+          "because"
+        ],
+        "answer": "and"
+      },
+      "after": {
+        "prompt": "There are two things in the room: a bed _____ a dresser.",
+        "choices": [
+          "and",
+          "but",
+          "or",
+          "because"
+        ],
+        "answer": "and"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-main",
+      "category": "reading",
+      "before": {
+        "prompt": "What is this passage about?",
+        "choices": [
+          "Different kinds of homes.",
+          "Ways to get to school.",
+          "A daily timetable.",
+          "How to cook dinner."
+        ],
+        "answer": "Different kinds of homes."
+      },
+      "after": {
+        "prompt": "What is this text about?",
+        "choices": [
+          "Different kinds of homes.",
+          "Ways to get to school.",
+          "A school day.",
+          "How to cook dinner."
+        ],
+        "answer": "Different kinds of homes."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-treehouses",
+      "category": "reading",
+      "before": {
+        "prompt": "How many treehouses can visitors stay in?",
+        "choices": [
+          "Three.",
+          "One.",
+          "Two.",
+          "Six."
+        ],
+        "answer": "Three."
+      },
+      "after": {
+        "prompt": "How many treehouses can you stay in?",
+        "choices": [
+          "Three.",
+          "One.",
+          "Two.",
+          "Six."
+        ],
+        "answer": "Three."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-support",
+      "category": "reading",
+      "before": {
+        "prompt": "What supports the tracks?",
+        "choices": [
+          "Steel columns.",
+          "Wooden doors.",
+          "Cave walls.",
+          "Tree branches."
+        ],
+        "answer": "Steel columns."
+      },
+      "after": {
+        "prompt": "What holds up the train tracks?",
+        "choices": [
+          "Steel columns.",
+          "Doors.",
+          "Cave walls.",
+          "Trees."
+        ],
+        "answer": "Steel columns."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-platform",
+      "category": "reading",
+      "before": {
+        "prompt": "How do riders reach the platform?",
+        "choices": [
+          "By stairs or elevator.",
+          "By plane or taxi.",
+          "By swimming.",
+          "By bicycle only."
+        ],
+        "answer": "By stairs or elevator."
+      },
+      "after": {
+        "prompt": "How can you get to the platform?",
+        "choices": [
+          "By stairs or elevator.",
+          "By plane or taxi.",
+          "By swimming.",
+          "By bicycle only."
+        ],
+        "answer": "By stairs or elevator."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-price",
+      "category": "reading",
+      "before": {
+        "prompt": "Which costs less?",
+        "choices": [
+          "A train ticket.",
+          "A taxi ride.",
+          "They cost the same.",
+          "The passage does not say."
+        ],
+        "answer": "A train ticket."
+      },
+      "after": {
+        "prompt": "Which costs less?",
+        "choices": [
+          "A train ticket.",
+          "A taxi ride.",
+          "They cost the same.",
+          "We do not know."
+        ],
+        "answer": "A train ticket."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-percent",
+      "category": "reading",
+      "before": {
+        "prompt": "What percent of people live in cities?",
+        "choices": [
+          "Fifty-six percent.",
+          "Six percent.",
+          "Fifty percent.",
+          "Sixty-five percent."
+        ],
+        "answer": "Fifty-six percent."
+      },
+      "after": {
+        "prompt": "What percent of people live in cities?",
+        "choices": [
+          "Fifty-six percent.",
+          "Six percent.",
+          "Fifty percent.",
+          "Sixty-five percent."
+        ],
+        "answer": "Fifty-six percent."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-bali",
+      "category": "reading",
+      "before": {
+        "prompt": "Where can visitors stay in these treehouses?",
+        "choices": [
+          "In Bali, Indonesia.",
+          "In Serbia.",
+          "In Cappadocia, Turkey.",
+          "In Chicago."
+        ],
+        "answer": "In Bali, Indonesia."
+      },
+      "after": {
+        "prompt": "Where are these treehouses?",
+        "choices": [
+          "In Bali, Indonesia.",
+          "In Serbia.",
+          "In Cappadocia, Turkey.",
+          "In Chicago."
+        ],
+        "answer": "In Bali, Indonesia."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-soft",
+      "category": "reading",
+      "before": {
+        "prompt": "What does “soft” describe?",
+        "choices": [
+          "The rocks.",
+          "The people.",
+          "The trains.",
+          "The water."
+        ],
+        "answer": "The rocks."
+      },
+      "after": {
+        "prompt": "Which things are soft?",
+        "choices": [
+          "The rocks.",
+          "The people.",
+          "The trains.",
+          "The water."
+        ],
+        "answer": "The rocks."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-noise",
+      "category": "reading",
+      "before": {
+        "prompt": "What is making the sound like thunder?",
+        "choices": [
+          "A passing train.",
+          "A heavy rainstorm.",
+          "A taxi driver.",
+          "A cave falling down."
+        ],
+        "answer": "A passing train."
+      },
+      "after": {
+        "prompt": "What is making the sound like thunder?",
+        "choices": [
+          "A passing train.",
+          "Rain.",
+          "A taxi driver.",
+          "A door closing."
+        ],
+        "answer": "A passing train."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-traffic",
+      "category": "reading",
+      "before": {
+        "prompt": "Why can the trains keep moving while cars stop?",
+        "choices": [
+          "They run above the street traffic.",
+          "They drive on the same road.",
+          "They wait behind the buses.",
+          "They stop at every car."
+        ],
+        "answer": "They run above the street traffic."
+      },
+      "after": {
+        "prompt": "Cars stop in traffic. Why can the trains keep moving?",
+        "choices": [
+          "They run above the street traffic.",
+          "They drive on the same road.",
+          "They wait behind the buses.",
+          "They stop at every car."
+        ],
+        "answer": "They run above the street traffic."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-loop",
+      "category": "reading",
+      "before": {
+        "prompt": "Where do the tracks go after the loop around the city center?",
+        "choices": [
+          "To different parts of the city.",
+          "Only to one house.",
+          "Into the river.",
+          "Only under the sidewalk."
+        ],
+        "answer": "To different parts of the city."
+      },
+      "after": {
+        "prompt": "The tracks go around the city center. Where do they go next?",
+        "choices": [
+          "To different parts of the city.",
+          "Only to one house.",
+          "Into the river.",
+          "Only under the sidewalk."
+        ],
+        "answer": "To different parts of the city."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-sequence",
+      "category": "reading",
+      "before": {
+        "prompt": "What do riders do after buying a ticket and before waiting?",
+        "choices": [
+          "Go through a gate.",
+          "Buy another ticket.",
+          "Drive a taxi.",
+          "Go to sleep."
+        ],
+        "answer": "Go through a gate."
+      },
+      "after": {
+        "prompt": "What do riders do next after they buy a ticket?",
+        "choices": [
+          "Go through a gate.",
+          "Buy another ticket.",
+          "Drive a taxi.",
+          "Go to sleep."
+        ],
+        "answer": "Go through a gate."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-main",
+      "category": "reading",
+      "before": {
+        "prompt": "Why is it useful to ride the L when roads are busy?",
+        "choices": [
+          "Riders can travel and do other things while roads are busy.",
+          "Riders must drive the train themselves.",
+          "Riders always pay more than a taxi.",
+          "Riders cannot read on the train."
+        ],
+        "answer": "Riders can travel and do other things while roads are busy."
+      },
+      "after": {
+        "prompt": "Why take the train when cars are stuck in traffic?",
+        "choices": [
+          "You can keep travelling and do your homework.",
+          "You have to drive the train.",
+          "It always costs more than a taxi.",
+          "You cannot read on the train."
+        ],
+        "answer": "You can keep travelling and do your homework."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-armchair-definition",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "A soft chair for one person, with a place to rest each arm.",
+        "choices": [
+          "armchair",
+          "bed",
+          "closet",
+          "clothes"
+        ],
+        "answer": "armchair"
+      },
+      "after": {
+        "prompt": "A soft chair with arms, for one person.",
+        "choices": [
+          "armchair",
+          "bed",
+          "closet",
+          "clothes"
+        ],
+        "answer": "armchair"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-armchair-context",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "Dad sits in the _____ and rests his arms on its sides.",
+        "choices": [
+          "armchair",
+          "bed",
+          "closet",
+          "clothes"
+        ],
+        "answer": "armchair"
+      },
+      "after": {
+        "prompt": "Dad sits in this soft chair with arms. It is an _____.",
+        "choices": [
+          "armchair",
+          "bed",
+          "closet",
+          "clothes"
+        ],
+        "answer": "armchair"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-armchair-assessment",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "This soft chair has a place for each arm. It is an _____.",
+        "choices": [
+          "armchair",
+          "bed",
+          "closet",
+          "clothes"
+        ],
+        "answer": "armchair"
+      },
+      "after": {
+        "prompt": "This soft chair has arms and a seat for one person. It is an _____.",
+        "choices": [
+          "armchair",
+          "bed",
+          "closet",
+          "clothes"
+        ],
+        "answer": "armchair"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-closet-assessment",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "I open the _____ and take a shirt off a hanger.",
+        "choices": [
+          "closet",
+          "armchair",
+          "bed",
+          "clothes"
+        ],
+        "answer": "closet"
+      },
+      "after": {
+        "prompt": "My shirts hang inside the _____.",
+        "choices": [
+          "closet",
+          "armchair",
+          "bed",
+          "clothes"
+        ],
+        "answer": "closet"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-clothes-definition",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "Things such as shirts and trousers that people wear.",
+        "choices": [
+          "clothes",
+          "armchair",
+          "bed",
+          "closet"
+        ],
+        "answer": "clothes"
+      },
+      "after": {
+        "prompt": "Shirts, trousers and other things you wear.",
+        "choices": [
+          "clothes",
+          "armchair",
+          "bed",
+          "closet"
+        ],
+        "answer": "clothes"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-clothes-context",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "Shirts and trousers are types of _____.",
+        "choices": [
+          "clothes",
+          "armchair",
+          "bed",
+          "closet"
+        ],
+        "answer": "clothes"
+      },
+      "after": {
+        "prompt": "Shirts and trousers are _____.",
+        "choices": [
+          "clothes",
+          "armchair",
+          "bed",
+          "closet"
+        ],
+        "answer": "clothes"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-clothes-assessment",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "The things we wear, such as shirts and dresses, are _____.",
+        "choices": [
+          "clothes",
+          "armchair",
+          "bed",
+          "closet"
+        ],
+        "answer": "clothes"
+      },
+      "after": {
+        "prompt": "Shirts and dresses are _____.",
+        "choices": [
+          "clothes",
+          "armchair",
+          "bed",
+          "closet"
+        ],
+        "answer": "clothes"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-morning-context",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "It is seven o'clock in the _____. I am getting ready for school.",
+        "choices": [
+          "morning",
+          "afternoon",
+          "today",
+          "tomorrow"
+        ],
+        "answer": "morning"
+      },
+      "after": {
+        "prompt": "I get up at seven in the _____ before school.",
+        "choices": [
+          "morning",
+          "afternoon",
+          "today",
+          "tomorrow"
+        ],
+        "answer": "morning"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-afternoon-context",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "It is two o'clock in the _____. We have just had lunch.",
+        "choices": [
+          "afternoon",
+          "morning",
+          "today",
+          "tomorrow"
+        ],
+        "answer": "afternoon"
+      },
+      "after": {
+        "prompt": "It is two in the _____. Lunch is over.",
+        "choices": [
+          "afternoon",
+          "morning",
+          "today",
+          "tomorrow"
+        ],
+        "answer": "afternoon"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-today-definition",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "The day that is happening now.",
+        "choices": [
+          "today",
+          "morning",
+          "afternoon",
+          "tomorrow"
+        ],
+        "answer": "today"
+      },
+      "after": {
+        "prompt": "This day.",
+        "choices": [
+          "today",
+          "morning",
+          "afternoon",
+          "tomorrow"
+        ],
+        "answer": "today"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-today-context",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "It is Monday now. This same Monday is _____.",
+        "choices": [
+          "today",
+          "morning",
+          "afternoon",
+          "tomorrow"
+        ],
+        "answer": "today"
+      },
+      "after": {
+        "prompt": "_____ is Monday. Tomorrow is Tuesday.",
+        "choices": [
+          "today",
+          "morning",
+          "afternoon",
+          "tomorrow"
+        ],
+        "answer": "today"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-today-assessment",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "The day we are living in right now is _____.",
+        "choices": [
+          "today",
+          "morning",
+          "afternoon",
+          "tomorrow"
+        ],
+        "answer": "today"
+      },
+      "after": {
+        "prompt": "Yesterday was Sunday. _____ is Monday.",
+        "choices": [
+          "today",
+          "morning",
+          "afternoon",
+          "tomorrow"
+        ],
+        "answer": "today"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-evening-definition",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "The time near the end of the day, before night.",
+        "choices": [
+          "evening",
+          "morning",
+          "afternoon",
+          "today"
+        ],
+        "answer": "evening"
+      },
+      "after": {
+        "prompt": "The time after afternoon and before night.",
+        "choices": [
+          "evening",
+          "morning",
+          "afternoon",
+          "today"
+        ],
+        "answer": "evening"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-evening-context",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "The time near the end of the day, before night, is the _____.",
+        "choices": [
+          "evening",
+          "morning",
+          "afternoon",
+          "today"
+        ],
+        "answer": "evening"
+      },
+      "after": {
+        "prompt": "The time after afternoon and before night is the _____.",
+        "choices": [
+          "evening",
+          "morning",
+          "afternoon",
+          "today"
+        ],
+        "answer": "evening"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-get-dressed-assessment",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "When I put on the clothes I will wear, I _____.",
+        "choices": [
+          "get dressed",
+          "wake up",
+          "go to bed",
+          "brush my teeth"
+        ],
+        "answer": "get dressed"
+      },
+      "after": {
+        "prompt": "I put on my shirt and trousers. I _____.",
+        "choices": [
+          "get dressed",
+          "wake up",
+          "go to bed",
+          "brush my teeth"
+        ],
+        "answer": "get dressed"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-play-a-game-definition",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "Take part in a game for fun.",
+        "choices": [
+          "play a game",
+          "wake up",
+          "go to bed",
+          "get dressed"
+        ],
+        "answer": "play a game"
+      },
+      "after": {
+        "prompt": "Play with rules, for fun.",
+        "choices": [
+          "play a game",
+          "wake up",
+          "go to bed",
+          "get dressed"
+        ],
+        "answer": "play a game"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-play-a-game-context",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "I move pieces on a board and take turns for fun. I _____.",
+        "choices": [
+          "play a game",
+          "wake up",
+          "go to bed",
+          "get dressed"
+        ],
+        "answer": "play a game"
+      },
+      "after": {
+        "prompt": "My friend and I play cards for fun. We _____.",
+        "choices": [
+          "play a game",
+          "wake up",
+          "go to bed",
+          "get dressed"
+        ],
+        "answer": "play a game"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-play-a-game-assessment",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "I take turns in a board game with my friend. I _____.",
+        "choices": [
+          "play a game",
+          "wake up",
+          "go to bed",
+          "get dressed"
+        ],
+        "answer": "play a game"
+      },
+      "after": {
+        "prompt": "I _____ with my friend on my phone.",
+        "choices": [
+          "play a game",
+          "wake up",
+          "go to bed",
+          "get dressed"
+        ],
+        "answer": "play a game"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-car-assessment",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "Our family travels by road in our four-wheeled _____.",
+        "choices": [
+          "car",
+          "plane",
+          "subway",
+          "bus"
+        ],
+        "answer": "car"
+      },
+      "after": {
+        "prompt": "We drive to school in our _____. It has four wheels.",
+        "choices": [
+          "car",
+          "plane",
+          "subway",
+          "bus"
+        ],
+        "answer": "car"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-bus-definition",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "A large road vehicle that carries many people.",
+        "choices": [
+          "bus",
+          "plane",
+          "car",
+          "subway"
+        ],
+        "answer": "bus"
+      },
+      "after": {
+        "prompt": "It carries many people along the road and stops to pick them up.",
+        "choices": [
+          "bus",
+          "plane",
+          "car",
+          "subway"
+        ],
+        "answer": "bus"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-ride-definition",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "Travel on a bicycle or as a passenger.",
+        "choices": [
+          "ride",
+          "plane",
+          "taxi",
+          "car"
+        ],
+        "answer": "ride"
+      },
+      "after": {
+        "prompt": "Go somewhere on a bike or bus.",
+        "choices": [
+          "ride",
+          "plane",
+          "taxi",
+          "car"
+        ],
+        "answer": "ride"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-ride-context",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "I sit on a bicycle and travel on it. I _____ the bicycle.",
+        "choices": [
+          "ride",
+          "plane",
+          "taxi",
+          "car"
+        ],
+        "answer": "ride"
+      },
+      "after": {
+        "prompt": "I _____ my bicycle to school.",
+        "choices": [
+          "ride",
+          "plane",
+          "taxi",
+          "car"
+        ],
+        "answer": "ride"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-ride-assessment",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "I travel as a passenger on a bus. I _____ the bus.",
+        "choices": [
+          "ride",
+          "plane",
+          "taxi",
+          "car"
+        ],
+        "answer": "ride"
+      },
+      "after": {
+        "prompt": "I _____ the bus to school.",
+        "choices": [
+          "ride",
+          "plane",
+          "taxi",
+          "car"
+        ],
+        "answer": "ride"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-go-to-sleep-context",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "I am in bed. Soon I am no longer awake. I _____.",
+        "choices": [
+          "go to sleep",
+          "wake up",
+          "get dressed",
+          "brush my teeth"
+        ],
+        "answer": "go to sleep"
+      },
+      "after": {
+        "prompt": "I close my eyes in bed and start to sleep. I _____.",
+        "choices": [
+          "go to sleep",
+          "wake up",
+          "get dressed",
+          "brush my teeth"
+        ],
+        "answer": "go to sleep"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-vocabulary-go-to-sleep-assessment",
+      "category": "vocabulary",
+      "before": {
+        "prompt": "I lie in bed for a while. Then I start to sleep. I _____.",
+        "choices": [
+          "go to sleep",
+          "wake up",
+          "get dressed",
+          "brush my teeth"
+        ],
+        "answer": "go to sleep"
+      },
+      "after": {
+        "prompt": "I am tired. I lie down and _____.",
+        "choices": [
+          "go to sleep",
+          "wake up",
+          "get dressed",
+          "brush my teeth"
+        ],
+        "answer": "go to sleep"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-dialogue-two-items-practice-transfer",
+      "category": "dialogue",
+      "before": {
+        "prompt": "There is both a stove _____ a sink in the kitchen.",
+        "choices": [
+          "and",
+          "or",
+          "but",
+          "because"
+        ],
+        "answer": "and"
+      },
+      "after": {
+        "prompt": "There are two things in the kitchen: a stove _____ a sink.",
+        "choices": [
+          "and",
+          "or",
+          "but",
+          "because"
+        ],
+        "answer": "and"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-dialogue-two-items-assessment-transfer",
+      "category": "dialogue",
+      "before": {
+        "prompt": "The room has both a couch _____ an armchair.",
+        "choices": [
+          "and",
+          "or",
+          "but",
+          "because"
+        ],
+        "answer": "and"
+      },
+      "after": {
+        "prompt": "The room has two seats: a couch _____ an armchair.",
+        "choices": [
+          "and",
+          "or",
+          "but",
+          "because"
+        ],
+        "answer": "and"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-main-practice-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "Which title fits this part?",
+        "choices": [
+          "Places people call home.",
+          "How to catch a train.",
+          "Cooking at home.",
+          "A school timetable."
+        ],
+        "answer": "Places people call home."
+      },
+      "after": {
+        "prompt": "What is this part about?",
+        "choices": [
+          "Different homes.",
+          "Travelling by train.",
+          "Cooking at home.",
+          "A school day."
+        ],
+        "answer": "Different homes."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-name-practice-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "What is the L?",
+        "choices": [
+          "An overhead train.",
+          "A taxi company.",
+          "A cave house.",
+          "A beach."
+        ],
+        "answer": "An overhead train."
+      },
+      "after": {
+        "prompt": "What is the L?",
+        "choices": [
+          "An overhead train.",
+          "A taxi.",
+          "A cave house.",
+          "A beach."
+        ],
+        "answer": "An overhead train."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-platform-practice-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "Where do the stairs and elevator take riders?",
+        "choices": [
+          "The platform.",
+          "Inside a taxi.",
+          "Diamond Beach.",
+          "A treehouse."
+        ],
+        "answer": "The platform."
+      },
+      "after": {
+        "prompt": "Where do you go when you take the stairs or elevator?",
+        "choices": [
+          "The platform.",
+          "Inside a taxi.",
+          "Diamond Beach.",
+          "A treehouse."
+        ],
+        "answer": "The platform."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-frequency-practice-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "When do trains come more often?",
+        "choices": [
+          "At busy times.",
+          "At night.",
+          "On weekends.",
+          "They always come just as often."
+        ],
+        "answer": "At busy times."
+      },
+      "after": {
+        "prompt": "When do trains come more often?",
+        "choices": [
+          "At busy times.",
+          "At night.",
+          "On weekends.",
+          "In the morning only."
+        ],
+        "answer": "At busy times."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-soft-practice-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "What are the rocks in Cappadocia like?",
+        "choices": [
+          "They are kind of soft.",
+          "They are made of steel.",
+          "They are all underwater.",
+          "They are train tracks."
+        ],
+        "answer": "They are kind of soft."
+      },
+      "after": {
+        "prompt": "What are the rocks in Cappadocia like?",
+        "choices": [
+          "They are kind of soft.",
+          "They are made of steel.",
+          "They are under the water.",
+          "They are train tracks."
+        ],
+        "answer": "They are kind of soft."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-years-practice-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "Did people start living in these caves yesterday?",
+        "choices": [
+          "No. They have lived there for thousands of years.",
+          "Yes. They moved in yesterday.",
+          "No. They moved in this morning.",
+          "No one lives in the caves."
+        ],
+        "answer": "No. They have lived there for thousands of years."
+      },
+      "after": {
+        "prompt": "Have people lived in these cave homes for a long time?",
+        "choices": [
+          "Yes, for thousands of years.",
+          "No, for only one day.",
+          "No, for only one week.",
+          "No one lives in the caves."
+        ],
+        "answer": "Yes, for thousands of years."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-noise-practice-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "Why should you look up?",
+        "choices": [
+          "A train is passing overhead.",
+          "A taxi is underground.",
+          "It is raining heavily.",
+          "A bus is in a cave."
+        ],
+        "answer": "A train is passing overhead."
+      },
+      "after": {
+        "prompt": "Why should you look up?",
+        "choices": [
+          "A train is passing above you.",
+          "A taxi is under the road.",
+          "It is raining.",
+          "A bus is in a cave."
+        ],
+        "answer": "A train is passing above you."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-loop-practice-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "What shape do the tracks make around the city center?",
+        "choices": [
+          "A loop.",
+          "A staircase.",
+          "A wall.",
+          "A roof."
+        ],
+        "answer": "A loop."
+      },
+      "after": {
+        "prompt": "What shape do the tracks make around the city center?",
+        "choices": [
+          "A loop.",
+          "Stairs.",
+          "A wall.",
+          "A roof."
+        ],
+        "answer": "A loop."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-sequence-practice-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "What do riders do first?",
+        "choices": [
+          "Buy a ticket.",
+          "Wait for the next train.",
+          "Go through the gate.",
+          "Reach their stop."
+        ],
+        "answer": "Buy a ticket."
+      },
+      "after": {
+        "prompt": "You are on the platform. What do you do first?",
+        "choices": [
+          "Buy a ticket.",
+          "Wait for the next train.",
+          "Go through the gate.",
+          "Reach their stop."
+        ],
+        "answer": "Buy a ticket."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-busy-practice-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "At busy times, how many minutes can there be between trains?",
+        "choices": [
+          "Ten minutes.",
+          "Ten days.",
+          "One month.",
+          "Fifty-six hours."
+        ],
+        "answer": "Ten minutes."
+      },
+      "after": {
+        "prompt": "At busy times, how many minutes are there between trains?",
+        "choices": [
+          "Ten minutes.",
+          "Two minutes.",
+          "Thirty minutes.",
+          "Sixty minutes."
+        ],
+        "answer": "Ten minutes."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-some-practice-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "Do all trains run all day and night?",
+        "choices": [
+          "The text only says some trains.",
+          "Yes, every train does.",
+          "No trains run at night.",
+          "Only taxis run at night."
+        ],
+        "answer": "The text only says some trains."
+      },
+      "after": {
+        "prompt": "How many trains run all day and night?",
+        "choices": [
+          "Some trains.",
+          "All trains.",
+          "No trains.",
+          "Only one train."
+        ],
+        "answer": "Some trains."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-serbia-assessment-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "You want to see the Drina River house. Where should you go?",
+        "choices": [
+          "Serbia.",
+          "Indonesia.",
+          "Turkey.",
+          "Japan."
+        ],
+        "answer": "Serbia."
+      },
+      "after": {
+        "prompt": "Where can you visit the Drina River house?",
+        "choices": [
+          "Serbia.",
+          "Indonesia.",
+          "Turkey.",
+          "Japan."
+        ],
+        "answer": "Serbia."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-rocks-assessment-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "How did people build the cave houses?",
+        "choices": [
+          "People built homes inside rocks.",
+          "People built rocks inside trains.",
+          "People built homes above the sea.",
+          "The houses were made from trees."
+        ],
+        "answer": "People built homes inside rocks."
+      },
+      "after": {
+        "prompt": "Where did people make homes in Cappadocia?",
+        "choices": [
+          "Inside rocks.",
+          "Inside trains.",
+          "Above the sea.",
+          "In trees."
+        ],
+        "answer": "Inside rocks."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-support-assessment-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "What do the steel columns do?",
+        "choices": [
+          "They hold up the tracks.",
+          "They sell train tickets.",
+          "They drive the taxis.",
+          "They form the river."
+        ],
+        "answer": "They hold up the tracks."
+      },
+      "after": {
+        "prompt": "What do the steel columns do?",
+        "choices": [
+          "They hold up the tracks.",
+          "They sell train tickets.",
+          "They drive the taxis.",
+          "They make food."
+        ],
+        "answer": "They hold up the tracks."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-price-assessment-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "You want to spend less money. Should you take a train or a taxi?",
+        "choices": [
+          "The train.",
+          "The taxi.",
+          "Both are free.",
+          "Both have the same price."
+        ],
+        "answer": "The train."
+      },
+      "after": {
+        "prompt": "Which ride costs less, the train or the taxi?",
+        "choices": [
+          "The train.",
+          "The taxi.",
+          "Both are free.",
+          "Both have the same price."
+        ],
+        "answer": "The train."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-frequency-assessment-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "Do trains come as often on weekends as at busy times?",
+        "choices": [
+          "No. They come less often.",
+          "Yes. They come just as often.",
+          "They come every ten seconds.",
+          "There are no trains on weekends."
+        ],
+        "answer": "No. They come less often."
+      },
+      "after": {
+        "prompt": "Trains come less often on weekends. Is this true?",
+        "choices": [
+          "Yes. They come less often.",
+          "No. They come more often.",
+          "They come every ten seconds.",
+          "There are no trains on weekends."
+        ],
+        "answer": "Yes. They come less often."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-percent-assessment-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "Do all people in cities live in apartments?",
+        "choices": [
+          "The text only says many people do.",
+          "Yes, everyone does.",
+          "No one lives in apartments.",
+          "Everyone lives on a farm."
+        ],
+        "answer": "The text only says many people do."
+      },
+      "after": {
+        "prompt": "In cities, _____ people live in apartments.",
+        "choices": [
+          "many",
+          "all",
+          "no",
+          "two"
+        ],
+        "answer": "many"
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-bali-assessment-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "What kind of home can visitors stay in near Diamond Beach?",
+        "choices": [
+          "A treehouse.",
+          "A cave house.",
+          "A home on a train.",
+          "A home under the sea."
+        ],
+        "answer": "A treehouse."
+      },
+      "after": {
+        "prompt": "What kind of home can you stay in near Diamond Beach?",
+        "choices": [
+          "A treehouse.",
+          "A cave house.",
+          "A home on a train.",
+          "A home under the sea."
+        ],
+        "answer": "A treehouse."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-houses-years-assessment-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "How many years have people lived in these cave homes?",
+        "choices": [
+          "Thousands of years.",
+          "A single night.",
+          "A few minutes.",
+          "One school day."
+        ],
+        "answer": "Thousands of years."
+      },
+      "after": {
+        "prompt": "How many years have people lived in these cave homes?",
+        "choices": [
+          "Thousands of years.",
+          "One night.",
+          "A few minutes.",
+          "One school day."
+        ],
+        "answer": "Thousands of years."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-traffic-assessment-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "Where are the trains compared with the cars?",
+        "choices": [
+          "Above the cars.",
+          "Behind every car.",
+          "Inside the buses.",
+          "On the same road."
+        ],
+        "answer": "Above the cars."
+      },
+      "after": {
+        "prompt": "The cars are on the road. Where are the trains?",
+        "choices": [
+          "Above the cars.",
+          "Behind every car.",
+          "Inside the buses.",
+          "On the same road."
+        ],
+        "answer": "Above the cars."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-loop-assessment-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "Do the tracks go to other parts of the city?",
+        "choices": [
+          "Yes. They go beyond the city center.",
+          "No. They only go around the center.",
+          "No. They only go to the river.",
+          "No. They only go inside houses."
+        ],
+        "answer": "Yes. They go beyond the city center."
+      },
+      "after": {
+        "prompt": "Do the tracks go to other parts of the city?",
+        "choices": [
+          "Yes. They go to other parts of the city.",
+          "No. They only go around the center.",
+          "No. They only go to the river.",
+          "No. They only go inside houses."
+        ],
+        "answer": "Yes. They go to other parts of the city."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-busy-assessment-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "At busy times, how often can a train arrive?",
+        "choices": [
+          "Every ten minutes.",
+          "Once a year.",
+          "Every ten days.",
+          "Once a month."
+        ],
+        "answer": "Every ten minutes."
+      },
+      "after": {
+        "prompt": "How often do trains come when it is busy?",
+        "choices": [
+          "Every ten minutes.",
+          "Once a year.",
+          "Every ten days.",
+          "Once a month."
+        ],
+        "answer": "Every ten minutes."
+      }
+    },
+    {
+      "id": "exam-ch34-v1-reading-train-main-assessment-transfer",
+      "category": "reading",
+      "before": {
+        "prompt": "Why can riding the train be better than driving in traffic?",
+        "choices": [
+          "You can keep moving and read or rest.",
+          "You must stop at every car.",
+          "You must drive the train.",
+          "You cannot do homework."
+        ],
+        "answer": "You can keep moving and read or rest."
+      },
+      "after": {
+        "prompt": "Why is the train a good choice when the roads are busy?",
+        "choices": [
+          "You can keep moving and read or rest.",
+          "You must stop at every car.",
+          "You must drive the train.",
+          "You cannot do homework."
+        ],
+        "answer": "You can keep moving and read or rest."
+      }
+    }
+  ]
+}
