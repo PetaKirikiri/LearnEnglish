@@ -106,7 +106,7 @@ export function expandExamQuestions(base: readonly QuizQuestion[]): QuizQuestion
   result.push(next)
  }
  const vocab=base.filter(q=>q.examCategory==='vocabulary')
- const equivalent=[['car','taxi'],['train','subway'],['bike','bicycle'],['garden','yard'],['go to bed','go to sleep'],['bed','couch'],['bathtub','sink']]
+ const equivalent=[['car','taxi'],['train','subway'],['bike','bicycle'],['garden','yard'],['go to bed','go to sleep'],['bed','couch'],['bathtub','sink'],['window','door'],['dining room','kitchen'],['living room','bedroom'],['taxi','bus']]
  for(const q of vocab) {
   const word=q.spokenText, row=examVocabularyVariants.get(word)
   if(!row) throw new Error(`Missing vocabulary variants: ${word}`)

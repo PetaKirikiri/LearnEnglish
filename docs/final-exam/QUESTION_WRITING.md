@@ -23,3 +23,16 @@ Their source passages, syllabus targets and practice/assessment split were
 preserved. Audio, answer keys and Thai explainers must be updated together when
 wording changes. Check the audio manifest against the current spoken text before
 publishing.
+
+## Vocabulary clues
+
+Use a natural sentence that a learner can complete, such as “I wash the dishes
+in the _____.” Avoid a definition awkwardly attached to a blank with a colon
+(“this basin with a tap: the _____”). Definitions should use familiar language;
+words such as “fixture”, “appliance” and “padded” add unnecessary difficulty.
+
+Check the complete sentence against every offered choice after simplifying it.
+Exclude alternatives that also fit a common situation, such as eating meals in
+either a kitchen or dining room, watching TV in a bedroom or living room, or
+looking through a glass door or window. Keep the same textbook vocabulary,
+question IDs and practice/assessment split.

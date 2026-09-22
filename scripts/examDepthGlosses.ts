@@ -296,5 +296,45 @@ least|น้อยที่สุด / อย่างน้อย
 daytime|เวลากลางวัน
 summary|สรุป
 combines|รวมเข้าด้วยกัน
-cube|ลูกบาศก์`
+cube|ลูกบาศก์
+drawer|ลิ้นชัก
+drinks|เครื่องดื่ม / ดื่ม
+arm|แขน
+dad|พ่อ
+his|ของเขา
+sides|ด้านข้าง
+off|ออกจาก / ปิด
+hanger|ไม้แขวนเสื้อ
+turn|หมุน / เปลี่ยน; turn on = เปิด
+check|ตรวจดู
+hair|ผม
+dirty|สกปรก
+pot|หม้อ
+rice|ข้าว
+towards|ไปทาง
+cross|ข้าม
+bridge|สะพาน
+farmer|เกษตรกร
+feeds|ให้อาหาร
+tall|สูง
+plant|ปลูก / ต้นไม้
+covers|คลุม / ปิดด้านบน
+curtains|ผ้าม่าน
+sunlight|แสงแดด
+films|ภาพยนตร์
+shows|รายการ / แสดงให้เห็น
+cartoons|การ์ตูน
+film|ภาพยนตร์
+hangs|แขวน
+lunch|อาหารกลางวัน
+something|บางสิ่งบางอย่าง
+team|ทีม
+alarm|นาฬิกาปลุก / เสียงเตือน
+rings|ดังขึ้น / แหวน
+high|สูง
+clouds|เมฆ
+yellow|สีเหลือง
+feet|เท้า (หลายข้าง)
+teaches|สอน
+longer|นานกว่า / ยาวกว่า; no longer = ไม่...อีกต่อไป`
 export const examDepthGlosses:Record<string,string> = Object.fromEntries(rows.split('\n').map(row=>row.trim().split('|')))

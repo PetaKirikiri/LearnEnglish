@@ -5202,15 +5202,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-afternoon-assessment.wav": {
-    "fingerprint": "3b8978ccd63c4908c12fcd61e7f0540c403831cbed00571f9ff78c5d0ad5bd2a",
-    "seconds": 4.054,
-    "text": "It is two o'clock after noon. It is the _____.",
+    "fingerprint": "a1d0c4dc5c101695cbadf5ccbf3f22a0a4951f09046e474a1ee9f13a953ee2d3",
+    "seconds": 3.614,
+    "text": "We play football at three in the _____, after lunch.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-afternoon-context.wav": {
-    "fingerprint": "be638823dc1c5fb318836f8a5b848de22f422197fb0abfe3ce62143a55086db6",
-    "seconds": 4.246,
-    "text": "The time after noon and before evening is the _____.",
+    "fingerprint": "8628883a7a0c84f6ff1df9cd7ccea18ca13b4d5ad1378d8abbb9a53564fbdaae",
+    "seconds": 4.013,
+    "text": "It is two o'clock in the _____. We have just had lunch.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-afternoon-definition.wav": {
@@ -5220,39 +5220,39 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-apartment-assessment.wav": {
-    "fingerprint": "34b0bde26c2e7b9ef11b4a34d01c859b5054fef2004cf8352c5689746cd0d8a8",
-    "seconds": 5.142,
-    "text": "This home is a set of rooms inside a larger building: an _____.",
+    "fingerprint": "214413e585f221bd17818a8e39a76b8b3bfdaa75921c51f79d582feb1ed3217a",
+    "seconds": 4.267,
+    "text": "There are many homes in our building. Our home is an _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-apartment-context.wav": {
-    "fingerprint": "b5fa36c517513dfb303a143b1d0fb0e5452c1597782378debffc055023cfc6fa",
-    "seconds": 5.163,
-    "text": "Our home is one of many separate homes in this building. It is an _____.",
+    "fingerprint": "6a15e114508242fe9b5103f09a4791020a148562fb721a8361ce7701603ffef2",
+    "seconds": 3.801,
+    "text": "We live in an _____ on the third floor of this building.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-apartment-definition.wav": {
-    "fingerprint": "6c2d9bad00e3fceeffbd0980689770cff0483ff24017b33dea02512193086876",
-    "seconds": 2.777,
-    "text": "A home made of rooms within a larger building.",
+    "fingerprint": "79436fb622e4c504dd263c76a2a673e62635cab9e6bd30bbc6581d2fff3ac966",
+    "seconds": 2.626,
+    "text": "A home inside a building with other homes.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-armchair-assessment.wav": {
-    "fingerprint": "f911f402a9274f8dfaa68274a4d3984641cd414e9e5592c3de40dd1825ac5620",
-    "seconds": 4.993,
-    "text": "One person can relax in this padded chair with arms: an _____.",
+    "fingerprint": "8256e015e3efe095368f7cfe96cb806414bfc6967dce600d60a4006b3e426344",
+    "seconds": 4.566,
+    "text": "This soft chair has a place for each arm. It is an _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-armchair-context.wav": {
-    "fingerprint": "8eb7162f52224ee4e0ac9ca71b36d0deb1c4f6d9d11638bf3ff6831d20f01b42",
-    "seconds": 5.803,
-    "text": "This soft chair for one person has supports for both arms. It is an _____.",
+    "fingerprint": "2ec4ef8723ffdea2b941345f78596375a41f4d22cfccae4ed917e84e4232511e",
+    "seconds": 3.875,
+    "text": "Dad sits in the _____ and rests his arms on its sides.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-armchair-definition.wav": {
-    "fingerprint": "66d91d0b432ff9bc6870488c5794563ad1fd523b1ea91180e5b9a5e4d5e36c47",
-    "seconds": 3.775,
-    "text": "A comfortable chair for one person with supports for the arms.",
+    "fingerprint": "e1e9972726ea2cd790aa7f143251675fe6601503bc4c8933602caa90d0579beb",
+    "seconds": 3.787,
+    "text": "A soft chair for one person, with a place to rest each arm.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bathroom-assessment.wav": {
@@ -5274,9 +5274,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bathtub-assessment.wav": {
-    "fingerprint": "dd111d84c886a1aa221251cf0f529d6c47965e1f78fe6c861650ee7d36c73459",
-    "seconds": 4.374,
-    "text": "I want to sit in water for a bath, so I fill the _____.",
+    "fingerprint": "e26927261f80731ad9b104dbce58927eb13ac39e95d07eb78a22385ed73be7e5",
+    "seconds": 3.069,
+    "text": "I sit in the _____ to have a bath.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bathtub-context.wav": {
@@ -5286,39 +5286,39 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bathtub-definition.wav": {
-    "fingerprint": "a59f79a40e83b2fbe27d41612b9b5a8704ca661adfca3e7bd826752264a06d02",
-    "seconds": 3.818,
-    "text": "A large container that you fill with water to sit and wash in.",
+    "fingerprint": "ba709a64d5aa2ff18e40b0a6a6fb2a5765a71fcc490b98e11cb4e0fc865d0a64",
+    "seconds": 2.499,
+    "text": "You fill it with water and sit in it to wash.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bed-assessment.wav": {
-    "fingerprint": "9be50e0a45ec85acf22679040ac82e6280935875a9d20ca7df06ce6c42889b91",
-    "seconds": 4.331,
-    "text": "The furniture with a mattress where I sleep is my _____.",
+    "fingerprint": "35c7f04a6cd02ad2706ab172b689ce83d3e4187d76671a8a6d6daca301084d9e",
+    "seconds": 3.542,
+    "text": "I put my pillow and blanket on my _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bed-context.wav": {
-    "fingerprint": "7e47cd814e0c4e8a3a9bcf3d8b05b1bbd94213c26dd1111d8afa9352d8a1c1d6",
-    "seconds": 3.945,
-    "text": "I lie on my mattress and pillow in my _____ to sleep.",
+    "fingerprint": "399b58874cb8db19b91d902d2548bc29e4175b9e11f12add8148989b7ca47863",
+    "seconds": 3.203,
+    "text": "I lie in my _____ and go to sleep.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bed-definition.wav": {
-    "fingerprint": "0ff09dbefbe61fa76c473078709e902d716ced21952e91c2e5826126c39a8306",
-    "seconds": 2.145,
-    "text": "Furniture that you lie on to sleep.",
+    "fingerprint": "383274fb50dbd240a0b1ac3199f08304f297cef85f97b0b14197e0e918d6f908",
+    "seconds": 1.923,
+    "text": "You lie on it to sleep at night.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bedroom-assessment.wav": {
-    "fingerprint": "9623435d08d8e3d27e74fb6a22c96d635d2cf9ab64204dfd5337aa56bc3ff0f0",
-    "seconds": 4.481,
-    "text": "My bed is in the room I use for sleeping: my _____.",
+    "fingerprint": "c62518f98793f2c68b9c640dc20822ea71c8393a5455474ff85eb6f8d7ce8089",
+    "seconds": 3.371,
+    "text": "My bed and my clothes are in my _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bedroom-context.wav": {
-    "fingerprint": "071ad12e3f3668751dacf58feed16c27dc744b460e26702bb34cccb7725e750d",
-    "seconds": 3.691,
-    "text": "The room where I sleep in my bed is my _____.",
+    "fingerprint": "ce97746ea127bbeae401553661cf01af4cd5e86bcedac84a9a031e8fbd44a225",
+    "seconds": 2.731,
+    "text": "I sleep in my _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bedroom-definition.wav": {
@@ -5328,21 +5328,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bicycle-assessment.wav": {
-    "fingerprint": "4022ed97a0734d932df8bf1fd3b33b7fd4a4f3729216f395a149eccd0bc96820",
-    "seconds": 4.587,
-    "text": "I pedal this two-wheeled vehicle to school. It is a _____.",
+    "fingerprint": "58837892b7f2a94a8eea3443f3b865bbe27a033e9de9b643ecb6ea1bf1677e74",
+    "seconds": 4.29,
+    "text": "My _____ has two wheels. I use my feet to pedal it.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bicycle-context.wav": {
-    "fingerprint": "26435d0321cd0b6b6ddfca0c860bd909acba4d20a0d755e4b9263f754f43e589",
-    "seconds": 4.63,
-    "text": "This two-wheeled vehicle moves when I pedal it. It is a _____.",
+    "fingerprint": "3b09384f4a4897fd3a4ad167dff024e05df1984300f760c1a62dac828e9dc002",
+    "seconds": 2.975,
+    "text": "I pedal my _____ to school.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bicycle-definition.wav": {
-    "fingerprint": "47b512e3bafebe722ea1008736cc5e445dfe92eb5214df1997ab303da1e910b0",
-    "seconds": 3.277,
-    "text": "A vehicle with two wheels that you move by pedalling.",
+    "fingerprint": "fcc270404bc7d0709107b2bcc2f18ae8fad654ed5f3366863bae1df4b6c46fa0",
+    "seconds": 1.881,
+    "text": "It has two wheels and pedals.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bike-assessment.wav": {
@@ -5382,63 +5382,63 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bus-assessment.wav": {
-    "fingerprint": "83fd9cb818f35f6cd44db1233ab46adce25ad18903a9870825adf87026f8274e",
-    "seconds": 4.929,
-    "text": "Many passengers ride in this large road vehicle: a _____.",
+    "fingerprint": "a8a127e8a73b1da5e2c3b25db3c28fed31cfbb565ea2fe6471982a15ce0577f3",
+    "seconds": 3.863,
+    "text": "The large _____ carries many people along our street.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bus-context.wav": {
-    "fingerprint": "d574266fbfb36040856e49dc76621598fbecad93e4fea1cabcea3c0fddf56927",
-    "seconds": 6.081,
-    "text": "This large road vehicle carries many passengers along a route. It is a _____.",
+    "fingerprint": "c7d1a459826f95f429e1fa954fbd6b1bafd096e4ec8d4ff7cea9784f10aa6264",
+    "seconds": 4.438,
+    "text": "Many children ride to school together on a big yellow _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-bus-definition.wav": {
-    "fingerprint": "9f937cbca649c475c42b47f11577fd08eddcbe3d0d9c39bf3638634124a2e7fd",
-    "seconds": 3.359,
-    "text": "A large road vehicle that carries many passengers.",
+    "fingerprint": "b2e6a0501a84ddb3e18dfc5d158afe880451e91519ef692efd58bf2b0076440b",
+    "seconds": 3.01,
+    "text": "A large road vehicle that carries many people.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-car-assessment.wav": {
-    "fingerprint": "11452c3bf84ba5a808f738a63701db9595bb95f319d5874d83f92912233cf5a6",
-    "seconds": 5.569,
-    "text": "This private four-wheeled road vehicle carries a few people. It is a _____.",
+    "fingerprint": "1af12398c5017c310648e2e1af70a125edac60a1e225b0da158daa3705e8fa4b",
+    "seconds": 4.054,
+    "text": "Our family travels by road in our four-wheeled _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-car-context.wav": {
-    "fingerprint": "dead64360d9f4200a02ceb6a190b6749250471a8781973b2ddf8497d90b68359",
-    "seconds": 5.953,
-    "text": "This small road vehicle has four wheels and seats for a few people. It is a _____.",
+    "fingerprint": "d0d4faafae701b39a4a3643d6670684e425bb3967249f81f9946132cf7c7acf4",
+    "seconds": 4.449,
+    "text": "Our small family _____ has four wheels. We drive it on the road.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-car-definition.wav": {
-    "fingerprint": "be65d400421a941db5bacb0efcacc3ff2546e37b1f02185372420fbcae7a17c4",
-    "seconds": 2.295,
-    "text": "A small road vehicle with four wheels.",
+    "fingerprint": "1b82c5e636cd37fc74e6e6b8d6ff860f0cc48b87b88e3ad0571d47a428f71204",
+    "seconds": 2.434,
+    "text": "It has four wheels, and you can drive it.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-cave-assessment.wav": {
-    "fingerprint": "e57d9adef8ec1526c5c17d47d8811c5dba94f661483250080d3fb4c121998297",
-    "seconds": 4.609,
-    "text": "We enter a natural hollow space in the hillside: a _____.",
+    "fingerprint": "4318835f85fb67f9d9c789367f90473eb12dda7f5507f754215c1e5c777f1ad1",
+    "seconds": 4.587,
+    "text": "There is a large hole in the hill. We can walk inside the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-cave-context.wav": {
-    "fingerprint": "67cc9b213f76a9e16f93f1fab84ad4ce8f73330504f3e73ccb0a519119a36ee5",
-    "seconds": 3.798,
-    "text": "The large natural hole in the rock is a _____.",
+    "fingerprint": "a24a6b801e111caa9a65371cde0adfeda47271b83b25482ca19e968464ff4059",
+    "seconds": 3.039,
+    "text": "We walk into a dark _____ in the rock.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-cave-definition.wav": {
-    "fingerprint": "682d66d0a25e20fce85e6a3a181dacd300a93194bec4ff98bd1feef2d126edd3",
-    "seconds": 3.477,
-    "text": "A large natural hole in the side of a hill or rock.",
+    "fingerprint": "c76f4e4d211a00bd012d3f00b7f7c773c6fb0cab4511da74beb2cccf5a30a70c",
+    "seconds": 3.205,
+    "text": "A large hole in a hill or rock that you can go into.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-city-assessment.wav": {
-    "fingerprint": "99910f94db8d5056ca692d2fe8a94b644aabf8730228f7164823ab05f994aa7a",
-    "seconds": 5.014,
-    "text": "A large urban area with many streets and buildings is a _____.",
+    "fingerprint": "8d694df63a61d0a1a07eaa5144cff2da8c40e10e517f51faacea0bed7e67873c",
+    "seconds": 4.758,
+    "text": "There are many streets, tall buildings and people in this big _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-city-context.wav": {
@@ -5454,39 +5454,39 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-clean-my-room-assessment.wav": {
-    "fingerprint": "c1352dc67041c0127fb4c0130767390f16b022bab454372c807bd112aa0b0bb3",
-    "seconds": 4.822,
-    "text": "I sweep my bedroom floor and clear away the mess. I _____.",
+    "fingerprint": "5ddd133556f2820da680293ff7ec48e460d13f4dbcc97765527e75d48a87f910",
+    "seconds": 3.691,
+    "text": "I pick up the mess and sweep the floor to _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-clean-my-room-context.wav": {
-    "fingerprint": "2c1778d28c3db1b8e78d791bcf14e92a90da243c9e40d910db7379e144a30f03",
-    "seconds": 4.331,
-    "text": "I remove dirt and mess from my bedroom. I _____.",
+    "fingerprint": "6065b6ba15c0509e775660cbf0067e520a08779217756b0ab68453f740173657",
+    "seconds": 3.947,
+    "text": "My bedroom floor is dirty. I need to _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-clean-my-room-definition.wav": {
-    "fingerprint": "79fe20f630c92c2e810a948c31ce1c2347c3317483c23f28f35e25904e00eab9",
-    "seconds": 2.168,
-    "text": "Remove dirt and mess from my room.",
+    "fingerprint": "1f7c4472bb6b5a0f3f29c677f5ce62f277349fcb5c1873f3ea3d364bce79c3ea",
+    "seconds": 1.935,
+    "text": "Make my room clean and tidy.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-closet-assessment.wav": {
-    "fingerprint": "7375692ee1a13af7c4978a4944b24b4080dc653b8f4c7b0b69a0c3608ca1be1a",
-    "seconds": 4.481,
-    "text": "I keep hanging clothes in this storage cupboard: the _____.",
+    "fingerprint": "389c1d76a297ec658f96cb8bb352dd68ff983d547f50ea09e65dc1a2bf3738b4",
+    "seconds": 3.471,
+    "text": "I open the _____ and take a shirt off a hanger.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-closet-context.wav": {
-    "fingerprint": "ab28d3468a950af381546119b7b6683979cf92c89f7bf499e589404fb8d7a610",
-    "seconds": 3.521,
-    "text": "My coats hang on hangers inside the _____.",
+    "fingerprint": "4f4a98401bab880e7da8b4c0e7ba34f6f1cc19f10837e5368ecdb0a2ed752870",
+    "seconds": 2.902,
+    "text": "I hang my coats in the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-closet-definition.wav": {
-    "fingerprint": "6de59381753911f7d772173e9777f9ceb832328d9b24fc111c7f2495bf8c8e9d",
-    "seconds": 3.353,
-    "text": "A cupboard or small space for storing clothes on hangers.",
+    "fingerprint": "9874637ae17937edde3dec4c36c034afa4e95800ea34714ff5ca43f362a7e993",
+    "seconds": 1.848,
+    "text": "You hang your clothes inside it.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-clothes-assessment.wav": {
@@ -5508,15 +5508,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-couch-assessment.wav": {
-    "fingerprint": "8824208a8ab99455b07e00bceadbacbfec8251888b6f1e6fbcf0254b2467930b",
-    "seconds": 5.057,
-    "text": "This long soft seat has room for several people. It is a _____.",
+    "fingerprint": "8a4a0c73f5f5a3a8e06de4b8e269c595ee9519808caa081f95f82b11918ee5c5",
+    "seconds": 3.99,
+    "text": "We sit next to each other on the long, soft _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-couch-context.wav": {
-    "fingerprint": "44b0ad16f3e21fa393938ee131290cc4956422400cb2c8de8c1975b980f67d4d",
-    "seconds": 4.481,
-    "text": "Three people can sit on this long soft seat: the _____.",
+    "fingerprint": "1dcca551109724e18e02f7b6c4682ebe6cf8e5704131fcadc1d127661fc51b56",
+    "seconds": 3.371,
+    "text": "Three people sit together on the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-couch-definition.wav": {
@@ -5526,15 +5526,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-countryside-assessment.wav": {
-    "fingerprint": "3501356661ec38b0a06f8e0e5395ac9ed28bcd601ac0b8bdc4a37d74e86beb61",
-    "seconds": 4.374,
-    "text": "We left the city for open fields and farms in the _____.",
+    "fingerprint": "3cf07530b061573fce88057e1ee7a69076e4d812252554b751d201c682ff7e1a",
+    "seconds": 4.161,
+    "text": "There are fields and farms around our home in the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-countryside-context.wav": {
-    "fingerprint": "6fe4f700073816c1f99795c6e2af52faf077c52df6c84f10f0a83b8685f8b458",
-    "seconds": 5.087,
-    "text": "The area away from cities, with fields and farms, is the _____.",
+    "fingerprint": "35e7cf811fd5b5acff7f77a4d3d802d03998bab7534bad7bc72d106f67b53491",
+    "seconds": 3.841,
+    "text": "We leave the city and visit a farm in the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-countryside-definition.wav": {
@@ -5544,63 +5544,63 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-dining-room-assessment.wav": {
-    "fingerprint": "3785b13093769f76da1a50f9ca6ec2ccb1bfc72bf73d1081283ed4c8ca1b138d",
-    "seconds": 3.947,
-    "text": "The room set aside for eating dinner is the _____.",
+    "fingerprint": "cb04c458412f95d7497923d435fbb09e01938037a7f2117e8599ae2e531fe851",
+    "seconds": 3.009,
+    "text": "Our dinner table is in the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-dining-room-context.wav": {
-    "fingerprint": "8c171765841ea0537ccfc2dd9e261ad4909310eba8e472fd3d812565e82fd55c",
-    "seconds": 3.819,
-    "text": "The room used for family meals is the _____.",
+    "fingerprint": "d416e1873ba20a6fff1174822b43bb115085ee6a38cd4521914773d7c90c4ed4",
+    "seconds": 3.329,
+    "text": "We eat our family meals in the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-dining-room-definition.wav": {
-    "fingerprint": "cd88c696b3e71708420264ba68454ae94acdb816a648a017763e696f32391ef2",
-    "seconds": 1.922,
-    "text": "A room used for eating meals.",
+    "fingerprint": "0ced028d2d3dcdda3aee334e2a6d5658686fe9e0f6cf90aa8472e717be3cc258",
+    "seconds": 1.965,
+    "text": "A room where people eat meals.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-do-my-homework-assessment.wav": {
-    "fingerprint": "1e5c02de0a0290ada715c12b7299ba081dbaa20cd64068dccc8668ac4d273911",
-    "seconds": 4.523,
-    "text": "After school, I finish my assigned schoolwork. I _____.",
+    "fingerprint": "a798acdb0fe1642e9ee3a3ddc6e1814a43a7744d036bf1ffa534dccc108ba45f",
+    "seconds": 5.121,
+    "text": "My teacher gave me work to finish at home. After dinner, I _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-do-my-homework-context.wav": {
-    "fingerprint": "5f52606b6382293dcd54f8c68e0b0e038c42806cc9f81745f8e6e5e2bd91ba73",
-    "seconds": 5.121,
-    "text": "I complete the work my teacher gave me to finish at home. I _____.",
+    "fingerprint": "cda049518f10b569af258eaff156de8c08c8c466e3c1f9d6790241ac87cfc148",
+    "seconds": 3.239,
+    "text": "After school, I _____ in my notebook.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-do-my-homework-definition.wav": {
-    "fingerprint": "56ca1cd5880a441a5f158e4b104f4d70a37a269bec96266cf7b60b436b93c53e",
-    "seconds": 2.265,
-    "text": "Complete the schoolwork assigned for home.",
+    "fingerprint": "3ac51d99a14bc482c9bbb23ed3e97dd86ec45478dcb745c236d3967c21f13f5c",
+    "seconds": 2.831,
+    "text": "Do the work my teacher gave me to finish at home.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-door-assessment.wav": {
-    "fingerprint": "5266282c67877b6c1aab902603a5ba420fadebf7dbdd59b28d4481cb5bb3444f",
-    "seconds": 5.291,
-    "text": "This moving part of the entrance lets people in and out: the _____.",
+    "fingerprint": "da73f277326b43f219b5d1acfbe01689507c64b321eeb6e67e3eb1468049cb37",
+    "seconds": 3.265,
+    "text": "Please close the _____ when you leave the room.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-door-context.wav": {
-    "fingerprint": "d62f892eeac0dba82a06eeb715af6e8547318fb868449374738a834cedbd2623",
-    "seconds": 3.625,
-    "text": "To enter the room, open the _____ in the doorway.",
+    "fingerprint": "ef1de977e9830872898bc22ffd824218a4f969ab069023752c46d09d806955e6",
+    "seconds": 3.226,
+    "text": "Please open the _____ so I can come in.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-door-definition.wav": {
-    "fingerprint": "17fba051bc69cf76181a568be46b7503a868d9fa086cf28c1fd55df02e45c0e1",
-    "seconds": 2.979,
-    "text": "The part of a room entrance that opens and closes.",
+    "fingerprint": "0c74b2bed2ea3feac93c2bb9236379801fd1248e020b5bf45f9f646822af9d53",
+    "seconds": 2.051,
+    "text": "You open it to go into a room.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-dresser-assessment.wav": {
-    "fingerprint": "b5d1fc34c6c459f72c87b3208c106613ff328cdaf25fd6ce281ad1fac61e5747",
-    "seconds": 5.078,
-    "text": "This bedroom furniture stores clothes in drawers. It is a _____.",
+    "fingerprint": "04399b54acac040c11cc59e4f3973c7d893a18fc6b82f2a8cd314ab314ecfc0b",
+    "seconds": 3.283,
+    "text": "I open a drawer in my _____ to get a shirt.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-dresser-context.wav": {
@@ -5610,27 +5610,27 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-dresser-definition.wav": {
-    "fingerprint": "05d2199e622b202c12afd811998770746c8d5227ef4546a959c4d02c2f6cbd23",
-    "seconds": 3.316,
-    "text": "A piece of bedroom furniture with drawers for clothes.",
+    "fingerprint": "4daef3fc0343bcc0fd51a50da346e3673f2df00d06a9a9639f180db677629841",
+    "seconds": 1.943,
+    "text": "You keep clothes in its drawers.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-drive-assessment.wav": {
-    "fingerprint": "574b45f662f622bee98c8b0861720cebfcb4996ca1355d34a37369a4931dcafa",
-    "seconds": 3.883,
-    "text": "When I control the movement of a car, I _____.",
+    "fingerprint": "1e0d2fb7e31cb1e703972c7138442487b0a479cdfa4d7f4a631708647f39fe66",
+    "seconds": 3.21,
+    "text": "Dad teaches me how to _____ his car.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-drive-context.wav": {
-    "fingerprint": "1875fe257c5dca84fa547f9a6958ea86a20524b191e551e38edb10b732552ffd",
-    "seconds": 5.142,
-    "text": "I control the car using its steering wheel and pedals. I _____.",
+    "fingerprint": "2895329092b431ddd7dec53ed08ed25f0fd1c915206b3ab7cda35509e2fcc3e3",
+    "seconds": 2.591,
+    "text": "I can _____ a car.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-drive-definition.wav": {
-    "fingerprint": "33c4092a9887c036205453adc5a2f82bc39d0f8b00c24426ef6d92a6412d5ebd",
-    "seconds": 1.73,
-    "text": "Control a car's movement.",
+    "fingerprint": "bcb9a5ede69c745369eda910f820db60988f7fb86ebe9dfada9db187ae40f3d6",
+    "seconds": 2.138,
+    "text": "Make a car go where you want it to go.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-evening-assessment.wav": {
@@ -5652,21 +5652,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-farm-assessment.wav": {
-    "fingerprint": "dc294febce643e374e87801d573f543866f2d613b820211584f19dbd4ba8eda6",
-    "seconds": 3.926,
-    "text": "They grow crops and raise animals on their _____.",
+    "fingerprint": "18c02812b5c65e928c59ccb608af5a6ea3e860f773216c5e1e9c4e94be299b1d",
+    "seconds": 3.478,
+    "text": "The farmer feeds the animals on the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-farm-context.wav": {
-    "fingerprint": "eccd4ddfe9aff395c1f9ef899e062c993667dca0b7ed4ac57e3a963ae8763d1f",
-    "seconds": 5.483,
-    "text": "This land is used for growing crops and raising cows. It is a _____.",
+    "fingerprint": "5967e5b0aff64fb3e90f19c28c7d51f327b6c9f331778b49f8931f02ff42e3ca",
+    "seconds": 3.67,
+    "text": "They grow rice and keep cows on their _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-farm-definition.wav": {
-    "fingerprint": "fec3944af312b7fb432aced64e7e20b17e797da87b3ced160c2d26fcc657f587",
-    "seconds": 2.828,
-    "text": "Land used to grow crops or raise animals.",
+    "fingerprint": "c8cb7dec5b7f898cc4465bed2f25d3a9c7654c796a9e057eb83723b5cb0ca546",
+    "seconds": 4.159,
+    "text": "A place where people grow food or keep cows and other animals.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-fly-assessment.wav": {
@@ -5688,9 +5688,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-garden-assessment.wav": {
-    "fingerprint": "e7f8367cf82f9ceb4ced1fd124ef40ec6c6f6a7c50f425c05da1f4770af59dd3",
-    "seconds": 4.993,
-    "text": "This area is used for growing plants and flowers: the _____.",
+    "fingerprint": "511aee1e3b70f7bc690071a1e4cac34252faee87a65f1c5503e928c4d6633141",
+    "seconds": 2.902,
+    "text": "I plant flowers in the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-garden-context.wav": {
@@ -5700,9 +5700,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-garden-definition.wav": {
-    "fingerprint": "d2766147697d96e64dfa6bb47e249aff726974d287261eb96b7a08e2d5755eef",
-    "seconds": 2.926,
-    "text": "An area where flowers or other plants are grown.",
+    "fingerprint": "573298a05051019d6469899da19cecb5dbe2abe127386b1f793d5d90712723bc",
+    "seconds": 2.861,
+    "text": "A place where you grow flowers or other plants.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-get-dressed-assessment.wav": {
@@ -5724,15 +5724,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-go-to-bed-assessment.wav": {
-    "fingerprint": "e3b33eabbc81b0b606d994fa85d89453cba19aafb52a3bacb1f8fdba3ac2c46c",
-    "seconds": 4.615,
-    "text": "I get into bed, but I do not fall asleep yet. I _____.",
+    "fingerprint": "25278002a6793641a892ae24c4d140a6c9da9beb7514f8b85e366bd6a2ec76c4",
+    "seconds": 4.31,
+    "text": "I get into bed and lie down for the night. I _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-go-to-bed-context.wav": {
-    "fingerprint": "5cd25cd0ebc2a3a215c39a32650954b53da075d7c59363f0512cff00c7e0e4f6",
-    "seconds": 4.896,
-    "text": "I get into bed to rest, although I am still awake. I _____.",
+    "fingerprint": "4b5cb9a23689b7343c5d4a45cce195434ffd7194234a4883b3812b895274b9ae",
+    "seconds": 3.947,
+    "text": "At night, I get into bed to rest. I _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-go-to-bed-definition.wav": {
@@ -5742,39 +5742,39 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-go-to-practice-assessment.wav": {
-    "fingerprint": "c15ab2baa5a458efbf0bd5b3e7c89a872a1ecc7e2aea34fcc48f628fbdde63fa",
-    "seconds": 3.947,
-    "text": "To attend my team's training session, I _____.",
+    "fingerprint": "e7a6e3608bcabf0b96bf676b9ffe71f9ae1e1006605adc28c3d883d3cbe7111c",
+    "seconds": 4.715,
+    "text": "I go to the football field to train with my team. I _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-go-to-practice-context.wav": {
-    "fingerprint": "0219601098a7afb6400338801fbac017a1fe2e710d84c365c45c7aa192603e31",
-    "seconds": 4.886,
-    "text": "I leave home to attend my football training session. I _____.",
+    "fingerprint": "3c41eed8a9953f2595eb54d235a6dc45e0632c49e2d29ec951b42ae4bf7e5567",
+    "seconds": 4.417,
+    "text": "I leave home to train with my football team. I _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-go-to-practice-definition.wav": {
-    "fingerprint": "03de41804975b4f2011e2dd1f13851c701aa35a4e0488307b84d10ca9ac8c594",
-    "seconds": 1.731,
-    "text": "Travel to a training session.",
+    "fingerprint": "f8227c30591ae84fb3ff1542da87901f207b31eeaba0e5fda74cee2b04769ed6",
+    "seconds": 2.138,
+    "text": "Go to train with a team or teacher.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-go-to-sleep-assessment.wav": {
-    "fingerprint": "d5fe73d65f352bb91c35a566de01aecf948e4c46db4bf698e8d632c0a259577b",
-    "seconds": 5.309,
-    "text": "I am in bed but still awake. When I finally fall asleep, I _____.",
+    "fingerprint": "dabdb35920cd2652fdd0d4421f85c17465adb0debb16e2dbf869fced0e6b49d5",
+    "seconds": 4.901,
+    "text": "I lie in bed for a while. Then I start to sleep. I _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-go-to-sleep-context.wav": {
-    "fingerprint": "c294747b8faa2f64a8dc191c5ee45417a27f0367a7fff3c4b90d2e53393a4a3e",
-    "seconds": 4.545,
-    "text": "I am already in bed. Now I stop being awake and _____.",
+    "fingerprint": "51320b0835bfd1697c30750ce2c947a42dd486e1259694ffe3ac518cb399e436",
+    "seconds": 4.781,
+    "text": "I am in bed. Soon I am no longer awake. I _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-go-to-sleep-definition.wav": {
-    "fingerprint": "1a8c2e309e76b5faafb841ae30595e9269c097adb006f76643e6b650de92b51a",
-    "seconds": 2.434,
-    "text": "Start sleeping, not just getting into bed.",
+    "fingerprint": "fffddbbf3217df507c444ac46d6353ed0248b3d94e052e0434e09e002829bda3",
+    "seconds": 1.171,
+    "text": "Start sleeping.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-inside-assessment.wav": {
@@ -5784,63 +5784,63 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-inside-context.wav": {
-    "fingerprint": "b824f5349b136577be2b6c6f261575793db83ca00ec025d0bcb085a6575e69fc",
-    "seconds": 4.634,
-    "text": "The cat is in the house, not outdoors. It is _____ the house.",
+    "fingerprint": "f18b78b1db723b22fdf065ab3be3ce831aae4109675028b539951fd741d575d0",
+    "seconds": 3.753,
+    "text": "The cat is in the house. It is _____ the house.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-inside-definition.wav": {
-    "fingerprint": "3144b9f0f8dbcb7f44b3b017ff9cb0ab4711317e3c9c4e921c408ca0ac4ee646",
-    "seconds": 2.255,
-    "text": "In the inner part of a place or thing.",
+    "fingerprint": "d980d09dbcd42611cbe94a44aaa48218ae263fb1e43af5d486b7b01df96857da",
+    "seconds": 1.561,
+    "text": "In a room or building.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-kitchen-assessment.wav": {
-    "fingerprint": "45f232e4bc2b950365cb472de3f967f74eb09ff6b61a461867ef6d7afd35e397",
-    "seconds": 4.161,
-    "text": "We prepare food in the room with the stove: the _____.",
+    "fingerprint": "563eb59a8c6522e8a0efa4d2774e32b15a5f31d05577cddd163362cf84f5ef5f",
+    "seconds": 3.67,
+    "text": "The stove and refrigerator are in the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-kitchen-context.wav": {
-    "fingerprint": "0c309c963bccdd62f418814c15238d926d551ce83f543b59db9c722fe475b5d4",
-    "seconds": 4.097,
-    "text": "The room where we prepare and cook meals is the _____.",
+    "fingerprint": "4b0dadc547c3b6beab4cd86b24b591e2e69865a31b5c369783979b2d84ec803e",
+    "seconds": 2.817,
+    "text": "We cook our food in the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-kitchen-definition.wav": {
-    "fingerprint": "e00f385049b801e9816cc40415ae64b21a050a5baf341b3cb3fa6f72347cc33e",
-    "seconds": 2.745,
-    "text": "A room used for preparing and cooking food.",
+    "fingerprint": "1722be658caa5e1080014c0a3750ecb1f6a3c50fac9436100815bb13028ec292",
+    "seconds": 1.913,
+    "text": "A room where people cook food.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-lamp-assessment.wav": {
-    "fingerprint": "d74383587f15c27450400a24bcba4ca5f94e3fa9e44615e4321b492acc59917f",
-    "seconds": 4.545,
-    "text": "This object gives light beside my bed. It is a _____.",
+    "fingerprint": "804978f0da73063ed3ead116232ae3ec4b3cc6a2dfb1af95b2bb19ed7acd85cb",
+    "seconds": 2.954,
+    "text": "I turn on my desk _____ to read.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-lamp-context.wav": {
-    "fingerprint": "239b52a2e3f6b782745a9cb31fa0bb449595feb4c0be12374bb59b52e6035a57",
-    "seconds": 4.161,
-    "text": "I switch on this small light on my desk: the _____.",
+    "fingerprint": "8ca662404ca083f20fc3cd9c8e63d3ffdca2c0f6eb52cd4177239b329e9137a8",
+    "seconds": 3.845,
+    "text": "It is dark, so I turn on the _____ beside my bed.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-lamp-definition.wav": {
-    "fingerprint": "fc43535d84f3b0d45b5714ac9933b6f403e8a2c18fe53b4cc0f1f7904a40dab3",
-    "seconds": 2.457,
-    "text": "An object that produces light in a room.",
+    "fingerprint": "b2a679f401f726143331382aa40594377252dc1f3cc6e293c5685e7c12d41ac7",
+    "seconds": 1.945,
+    "text": "A light you can put on a table.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-living-room-assessment.wav": {
-    "fingerprint": "5da2a6e6fc469771d0f321658a13b51c50d6b925a950c28aada020285b4f5d1b",
-    "seconds": 4.865,
-    "text": "Our family room for sitting on the couch and relaxing is the _____.",
+    "fingerprint": "901d3635e2b579a4f0683e343b704a92803ec330ef741e995f340cda3125b38b",
+    "seconds": 3.841,
+    "text": "Our family sits together on the couch in the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-living-room-context.wav": {
-    "fingerprint": "26cc043868e1ce2bbafd51bb8930c2bc29b25389b78ea767cd59b46953a0c3f7",
-    "seconds": 4.886,
-    "text": "The room with our couch where we sit together and relax is the _____.",
+    "fingerprint": "0569b5b4798ebb1bca38c225cef10e3d76fdd5b92170896a1aa2e5f052145aca",
+    "seconds": 3.947,
+    "text": "We sit on the couch and watch TV in the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-living-room-definition.wav": {
@@ -5850,51 +5850,51 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-make-my-bed-assessment.wav": {
-    "fingerprint": "ada6e29e68c85a9c07021bcc3f259b6e809d0a556970715cc6e5c06a755ff044",
-    "seconds": 3.627,
-    "text": "I straighten my sheets and blanket to _____.",
+    "fingerprint": "1a1cf4769e566b4815e82f78cf8f830efcd5a4c0f48c9a05f6c8336cdc7f17e2",
+    "seconds": 3.769,
+    "text": "I _____ by making the sheets and blanket tidy.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-make-my-bed-context.wav": {
-    "fingerprint": "92de1a406779873af1a43bf3242ad3f43e5fa65c4dc1c9d3f96be61a39af75e6",
-    "seconds": 4.63,
-    "text": "I tidy the sheets and blanket after I get up. I _____.",
+    "fingerprint": "7cf5f64e84ed2be5335628fb507f92442e177c1faed0ecdec189d42c25573746",
+    "seconds": 5.063,
+    "text": "After I get up, I make the sheets and blanket tidy. I _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-make-my-bed-definition.wav": {
-    "fingerprint": "d5815f12837ef3f8f9196fb90e7e7a209fe2bcbb6d1e9474c09514c71f44e7a1",
-    "seconds": 2.394,
-    "text": "Tidy the sheets and blanket on my bed.",
+    "fingerprint": "3631b289cd80a5e0879ddbb229024f342776f5f2cb2febc039f080eea3fa2dc7",
+    "seconds": 2.757,
+    "text": "Make the sheets and blanket on my bed tidy.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-mirror-assessment.wav": {
-    "fingerprint": "b0e285f24a29e114abd05fdd915078a4bc3b97a01b98f5559f0816a9dcd74892",
-    "seconds": 3.627,
-    "text": "To see my reflection, I look in the _____.",
+    "fingerprint": "4a34894ff60531b75e133b4582a9fb9897b4a226c8796163d0923fd37a06891e",
+    "seconds": 3.142,
+    "text": "I look in the _____ to check my hair.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-mirror-context.wav": {
-    "fingerprint": "9895d4f5494d2e84165fed83a11749076aaefe3f1759d24b42354e66faa7c4e0",
-    "seconds": 3.969,
-    "text": "I can see my own face reflected in the _____.",
+    "fingerprint": "77ea2eb0a2c7f382db1865acc045d1b22c9456bc947d3c8bf1b7dc36373d2941",
+    "seconds": 3.073,
+    "text": "I can see my face in the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-mirror-definition.wav": {
-    "fingerprint": "ffae00df23d7b0041e0ba7ccba19f351b66a807b543554d081ee8a5b60552e89",
-    "seconds": 2.636,
-    "text": "A surface in which you can see your own face.",
+    "fingerprint": "ed0dc04e57f3936bdb7da47eb1f5d168efb236368bceb9bc54d0bd0d7cc66797",
+    "seconds": 2.094,
+    "text": "You look in it to see your own face.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-morning-assessment.wav": {
-    "fingerprint": "98b79bfa8513dbadfd05c8a2d86e78739c87cf1142aee3ea3e445a7f0b4722e0",
-    "seconds": 4.797,
-    "text": "It is after sunrise, but not yet noon. It is the _____.",
+    "fingerprint": "85b4c21dfba0193ec3d36a619ca284476de1be0e10eb606f532a5bbdf703ea6e",
+    "seconds": 3.294,
+    "text": "We eat breakfast in the _____ before school.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-morning-context.wav": {
-    "fingerprint": "3f9a42d9ce698df956829bb2ad5ed61b145b5018659af51f823ff9f86369798d",
-    "seconds": 4.374,
-    "text": "The time after sunrise and before noon is the _____.",
+    "fingerprint": "c2896de4317cd8154fae8a15027e314b515fd4dc5d9844a78a4e375e87f17c67",
+    "seconds": 4.228,
+    "text": "It is seven o'clock in the _____. I am getting ready for school.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-morning-definition.wav": {
@@ -5904,9 +5904,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-night-assessment.wav": {
-    "fingerprint": "c8f0ea34d256bedd447c77867692773caac5df478aa848ff3cea51ed6d342955",
-    "seconds": 3.862,
-    "text": "The period that includes midnight is called _____.",
+    "fingerprint": "1cf85e40ef9b8471b8c11db06438f05d4855cc0288a54997df522869b051ee33",
+    "seconds": 3.893,
+    "text": "It is dark outside. I go to sleep at _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-night-context.wav": {
@@ -5922,21 +5922,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-outside-assessment.wav": {
-    "fingerprint": "1ab52027d38d261f2002ece06b62c99ec6b2cae3a72598c754f06390269ad87f",
-    "seconds": 4.874,
-    "text": "We leave the building and stand in the open air. We are _____ the building.",
+    "fingerprint": "d454189c70bd71fbae32fb5594eb3cb9809ac32bd14a2d1746455c5156f258a9",
+    "seconds": 3.711,
+    "text": "We leave the building. Now we are _____ the building.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-outside-context.wav": {
-    "fingerprint": "5feacdecb722628ec32f25e0a98c85f93e06715b99a1fe4d4f91c305a8ef999e",
-    "seconds": 4.687,
-    "text": "The dog is outdoors, not in the house. It is _____ the house.",
+    "fingerprint": "66468b9527cc9839996fcf5a5827d13666408e6c7b106a603525a5ec9a3353b1",
+    "seconds": 3.978,
+    "text": "The dog is not in the house. It is _____ the house.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-outside-definition.wav": {
-    "fingerprint": "66b4b8f130eb9aec56756f1c2a27e0d59d314217636db28054e4be854ca30bc8",
-    "seconds": 1.987,
-    "text": "Not in a building or container.",
+    "fingerprint": "a2a77886265b90c429741402c7754965a87e8f91f15d077c7b6e099a1ac1cf28",
+    "seconds": 2.02,
+    "text": "Not inside a room or building.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-pack-my-bag-assessment.wav": {
@@ -5958,21 +5958,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-plane-assessment.wav": {
-    "fingerprint": "52d45698fe182ea14c9004e409c999fd9479e3b8287830561afeb522f007b096",
-    "seconds": 4.715,
-    "text": "We board a flying vehicle with wings at the airport: a _____.",
+    "fingerprint": "2afb83d08b86968d9dc90a2b39372d59366a7a8bc1b4710ccd714edaa37e5c3b",
+    "seconds": 3.821,
+    "text": "The _____ has wings and flies high above the clouds.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-plane-context.wav": {
-    "fingerprint": "5828d5b0f2c2b882364bace0969fded70ce827a140ff585c623b113cf3371b2d",
-    "seconds": 5.398,
-    "text": "This vehicle has wings and carries people through the air. It is a _____.",
+    "fingerprint": "cbdbc8d48c297e877f765d90974ad5c3b887290efa34160873e52445560eb458",
+    "seconds": 3.393,
+    "text": "We fly to another country in a _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-plane-definition.wav": {
-    "fingerprint": "e0025005f98411e11ce8de72c232a970a1cde5731d68d3cf62052e3073a6a338",
-    "seconds": 2.701,
-    "text": "A vehicle with wings that flies through the air.",
+    "fingerprint": "79e441265fbeb0ff2574e30b2fcac5c2c09e6608ee547139df6224a0cdcd9037",
+    "seconds": 2.755,
+    "text": "It has wings and carries people through the air.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-play-a-game-assessment.wav": {
@@ -5994,27 +5994,27 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-practice-assessment.wav": {
-    "fingerprint": "c0d39edfdb2a1308b8ed43e4e9cc4d21b5a3c41ad2c34639a5b21a3892006bbc",
-    "seconds": 4.374,
-    "text": "Training again and again to get better at a skill is _____.",
+    "fingerprint": "e912dba427ccf3adca8ffed242d1f03187044fc6ff13013777cc9383271fd608",
+    "seconds": 3.779,
+    "text": "I need more _____ to get better at playing football.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-practice-context.wav": {
-    "fingerprint": "57467be5206bef6a49201f422704efb7a5de918a37fd180a5b4c018dc106bbfa",
-    "seconds": 4.011,
-    "text": "Our football training session is called football _____.",
+    "fingerprint": "4acec85a8ebbd6a431cef353969bdea7fd27492a43803e97526253f966590860",
+    "seconds": 3.566,
+    "text": "I have football _____ with my team after school.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-practice-definition.wav": {
-    "fingerprint": "14c4b38e6319bbeb2b235f1bdf90df0af8eef1ba604e4c17481a70c201dc4a23",
-    "seconds": 2.307,
-    "text": "Repeated training to improve a skill.",
+    "fingerprint": "f511b3bcce769f1615a4d22e678a2c852092aefbc600001ed4fd18d0eeaec409",
+    "seconds": 2.997,
+    "text": "Doing something again and again to get better at it.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-refrigerator-assessment.wav": {
-    "fingerprint": "9d23a3549d7e8e12e28c09b43516c935a09e3dc3658411c599dc93132d6dce48",
-    "seconds": 4.331,
-    "text": "The kitchen machine that keeps our food cold is the _____.",
+    "fingerprint": "53e17a9746ce05bb20a813c41e9ce2942edf0958bcbe0ae8130da8a01c8ece1d",
+    "seconds": 3.435,
+    "text": "I take a cold drink out of the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-refrigerator-context.wav": {
@@ -6024,9 +6024,9 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-refrigerator-definition.wav": {
-    "fingerprint": "59340258de099fe51f9cb5fcb34bcfa8cc5324aebd4184eb44445ff2812a46d3",
-    "seconds": 2.785,
-    "text": "A large kitchen machine that keeps food cold.",
+    "fingerprint": "e6470c5443e69e5641ef7c1beb1aaf2ffa68d62db3e55818eb8756e14a4cd77b",
+    "seconds": 1.966,
+    "text": "It keeps food and drinks cold.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-ride-assessment.wav": {
@@ -6048,81 +6048,81 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-river-assessment.wav": {
-    "fingerprint": "e4788397863814a57d4c9b11d1ef38513251f6e80095e2be1fac9428f56ab506",
-    "seconds": 4.161,
-    "text": "The long natural stream of flowing water is a _____.",
+    "fingerprint": "0f64da4f4c1cc524776800598b5383f6827253a5315dd231ff82025663734403",
+    "seconds": 3.115,
+    "text": "We cross a bridge over the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-river-context.wav": {
-    "fingerprint": "224a3573d1b2c3c8f8ecf4168a317ddb917d7a79efe0180817d3d1552e1cecac",
-    "seconds": 5.675,
-    "text": "This natural flow of water runs across the land to the sea. It is a _____.",
+    "fingerprint": "84d517ac91af8c16b5e57c1d7fcbc8962919ce7f61a4e7d7c8c8d2ac301dccd7",
+    "seconds": 3.405,
+    "text": "The _____ flows past our town towards the sea.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-river-definition.wav": {
-    "fingerprint": "1bbd75dc5654c3a87f96a55e547ad9f426d338ebd5c5795bfb0f072654b448e3",
-    "seconds": 2.745,
-    "text": "A long natural flow of water across land.",
+    "fingerprint": "b4ce8c88df24ad4f12a9c79dff7015169eba7857859ee60510574ace4a0719e8",
+    "seconds": 3.043,
+    "text": "Water that flows across the land towards the sea.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-roof-assessment.wav": {
-    "fingerprint": "9751df3bdc29544b671d8acc9ac20a7bca77fb91bf5c24aa690fcf28ed725dd4",
-    "seconds": 4.502,
-    "text": "Rain falls on the house's top covering, called the _____.",
+    "fingerprint": "94920eeab9a5cc2194873bc8a177d724f451be8ba1fe7dd455e799a38f9b3731",
+    "seconds": 2.935,
+    "text": "The _____ covers the top of our house.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-roof-context.wav": {
-    "fingerprint": "ff0ccfa9ab56bce6e84de2b27b1d01f65a5a6e0c1095739ffdd44aa952e0d81b",
-    "seconds": 4.502,
-    "text": "The top covering of the house that keeps rain out is the _____.",
+    "fingerprint": "d060c73976b8dfbdd9b44dada8eacc32aeb851e6ab2bd896d805b80843a3f879",
+    "seconds": 3.542,
+    "text": "Rain falls on the _____ at the top of the house.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-roof-definition.wav": {
-    "fingerprint": "165d0f03f18ddd263dbb5beea6f0a731ed76153afb53e38e148d651ee911e86e",
-    "seconds": 1.892,
-    "text": "The top covering of a building.",
+    "fingerprint": "6e9307ce9ddbc9c215120a3160fe6f6bc151efb4b38cbea185b02170860a5475",
+    "seconds": 2.445,
+    "text": "The top of a house that keeps the rain out.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-shower-assessment.wav": {
-    "fingerprint": "70b34f7195dce7da6a1d2bc11a48350524c82add205f1692907f32f2ce7de2dc",
-    "seconds": 4.054,
-    "text": "I wash standing under water that sprays from the _____.",
+    "fingerprint": "f96d17e02092124225c258dd2d8e223d1215a31687199c1619cef263d2d98ddc",
+    "seconds": 3.822,
+    "text": "Water comes down from the _____ as I wash my hair.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-shower-context.wav": {
-    "fingerprint": "1563378f0dda7c5a5a363403c9dd429d9ab6bc511ec214217c8caf6a970370ef",
-    "seconds": 4.523,
-    "text": "Water sprays down over me as I wash under the _____.",
+    "fingerprint": "7c8b9c7fe1d334f7e311c8e4b7fb1ebe9f1b21e91b09e13fcfa53d4936867123",
+    "seconds": 2.89,
+    "text": "I stand under the _____ to wash.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-shower-definition.wav": {
-    "fingerprint": "5046b347eb4c61258d88305df825cd3eb4be4330b98b9db73eaeccbf44f72612",
-    "seconds": 3.267,
-    "text": "An object that sprays water over your body for washing.",
+    "fingerprint": "ffd81ec6251b5c0caf5f6acd5c15560c758de476d2cb0cb0ffec32759ab5a069",
+    "seconds": 2.307,
+    "text": "You stand under it to wash your body.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-sink-assessment.wav": {
-    "fingerprint": "93a596a499b3f527039d193715aef0934b22467c915c225bf0e21f6596fbab59",
-    "seconds": 5.483,
-    "text": "This basin has a tap and a drain for washing dishes. It is a _____.",
+    "fingerprint": "eb9c0215be1a2ea3593c5a481f2a318fcf54436fbdecd383c39719d0b321dce9",
+    "seconds": 4.284,
+    "text": "After dinner, I put the dirty plates in the _____ to wash them.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-sink-context.wav": {
-    "fingerprint": "b5a8aa57c20bc6445132bb1ec3a90f33f1bb6eaccccf3f0c76549ba21f429e45",
-    "seconds": 4.331,
-    "text": "I wash dishes in this basin with a tap: the _____.",
+    "fingerprint": "9962b6f531d46643851698b794a6c5b64fef19480aa98b08a848b2bb08f26a22",
+    "seconds": 3.009,
+    "text": "I wash the dishes in the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-sink-definition.wav": {
-    "fingerprint": "8490069a4f3ecc6c5613c9274aa1eb30eac5747bb4a8d2933fb34f77527b8c88",
-    "seconds": 3.001,
-    "text": "A basin with taps where you wash hands or dishes.",
+    "fingerprint": "e77f7e5970ccae5e77b957e3f566f5194c05ea6eef8bf24a1eb3883bca3e52b4",
+    "seconds": 2.094,
+    "text": "You wash your hands or dishes here.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-stairs-assessment.wav": {
-    "fingerprint": "0c1940abae514da8da2cf77c57f9e909b85fa71c09367dcf914ce2f98ba169d1",
-    "seconds": 3.99,
-    "text": "The set of steps between the two floors is the _____.",
+    "fingerprint": "cd6294d86b0b60d17095834480eb9d2546b476355d51dc7ae7ad69b0db1ba883",
+    "seconds": 3.62,
+    "text": "I walk up the _____ to my room on the next floor.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-stairs-context.wav": {
@@ -6132,15 +6132,15 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-stairs-definition.wav": {
-    "fingerprint": "0bafd277e219745339d01681015d6905788836699d83d730ee1f2e849b22bf9b",
-    "seconds": 2.296,
-    "text": "A set of steps leading between levels.",
+    "fingerprint": "48e319ceccaef49caa023c28e0029e987624e7649f8cb30102af77b617bd9faf",
+    "seconds": 2.501,
+    "text": "Steps that take you from one floor to another.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-stove-assessment.wav": {
-    "fingerprint": "7770559d213accfb869914eb135b7ca44f62484cc483904a7c71e236b63f3e3a",
-    "seconds": 4.651,
-    "text": "The kitchen appliance that heats our cooking pans is the _____.",
+    "fingerprint": "45facdd44efd94c9919528168c15f7613d5baa95946831e1e1ee7b86a1898d96",
+    "seconds": 3.259,
+    "text": "I put a pot on the _____ to cook the rice.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-stove-context.wav": {
@@ -6150,57 +6150,57 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-stove-definition.wav": {
-    "fingerprint": "07e33224713465ee8d0193d0f6d38e308268d4896bdb8058b24cc2b6fcd0eadb",
-    "seconds": 3.615,
-    "text": "A kitchen appliance used to cook food in pots and pans.",
+    "fingerprint": "fc5ed8c6ba892c2a1ef0748cfc33110a4595f31648ec5ad4cd34f93e5f34d2f6",
+    "seconds": 2.202,
+    "text": "You cook food in pots and pans on it.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-subway-assessment.wav": {
-    "fingerprint": "cbc67284740a8e5c32c21ecdecebefff40a0dec8ad770b070234fc6770accfbb",
-    "seconds": 3.905,
-    "text": "The underground railway in the city is the _____.",
+    "fingerprint": "9a2a0c0a1bdebd382012e500d5653d8878aa56797f7971bec943c16c529e787c",
+    "seconds": 3.448,
+    "text": "The _____ is a train that travels underground.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-subway-context.wav": {
-    "fingerprint": "1a28fb33d28c338120f7647b25f01975c2200a644dea8539a472a0e9bdcf3a2d",
-    "seconds": 4.417,
-    "text": "This city train travels underground. It is the _____.",
+    "fingerprint": "1b0011fb2e69f9caa1d7e67110f0899852e915bfc2f57570f0d9585b48370443",
+    "seconds": 3.222,
+    "text": "We take the _____ under the city streets.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-subway-definition.wav": {
-    "fingerprint": "8715d9dc67750210e03d95be2ea5a276b19f86342a5cc1d6f446f5bef814177c",
-    "seconds": 2.488,
-    "text": "A city railway that runs underground.",
+    "fingerprint": "9388af16ee5be2303a738e17a69cdcdd27d8bdde5d6ef55c7caa617a746c589b",
+    "seconds": 2.074,
+    "text": "A train that runs under a city.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-table-assessment.wav": {
-    "fingerprint": "9f768bed86b8d31a68b993777b06a0c0afad812dcbf81fe83e53724c8d94ffe4",
-    "seconds": 4.971,
-    "text": "We put plates on this flat piece of furniture for meals: a _____.",
+    "fingerprint": "d3cd20f6aa1eddcf0ea8f8bff2467c2c965b442dd242d0119cb2cbe21613beee",
+    "seconds": 3.241,
+    "text": "I put the plates on the _____ before dinner.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-table-context.wav": {
-    "fingerprint": "9c1099e25ed38f7d26713d39188afaafd8168c489aca0c25cf4236e02abc4073",
-    "seconds": 6.166,
-    "text": "This piece of furniture has a flat top and four legs for eating meals. It is a _____.",
+    "fingerprint": "252edaae77b106aeb0e914d6e9fd3f3d7f21bd18e6170766e453c3b4613169ec",
+    "seconds": 3.081,
+    "text": "We sit around the _____ to eat dinner.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-table-definition.wav": {
-    "fingerprint": "b26d3684140499d8dbe37ed2374dfc8f052c4867c04bb378b0203974f25c8d8c",
-    "seconds": 3.893,
-    "text": "Furniture with a flat top and legs, used for meals or work.",
+    "fingerprint": "d279f022b25613df299152270e27e892c4936d389d0ed244abfaf79baaa94a58",
+    "seconds": 1.977,
+    "text": "You put your plates on it when you eat.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-taxi-assessment.wav": {
-    "fingerprint": "891b4ce0073a7e051a1b472349bd22281d664522a0e732eab56cda31d0dd0ec2",
-    "seconds": 5.291,
-    "text": "This car takes paying passengers where they ask to go. It is a _____.",
+    "fingerprint": "854bbcb88d70ae716da4bf2c5350a7117ff1b6d28a226c8fb563fb9c72f2dbd0",
+    "seconds": 3.811,
+    "text": "I get into a _____ and pay the driver for the ride.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-taxi-context.wav": {
-    "fingerprint": "1df85da02e5e7269977b41620c1b2688b00e330e011c60cf4d407ff790c4fd26",
-    "seconds": 5.227,
-    "text": "We pay the driver of this car for a ride across town. It is a _____.",
+    "fingerprint": "ac25cfd36fabdf7ccb5343561e3595b98405ccda2a3d472c9dbeb4d773dcf49b",
+    "seconds": 4.779,
+    "text": "We pay the driver of this car to take us home. It is a _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-taxi-definition.wav": {
@@ -6210,21 +6210,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-television-assessment.wav": {
-    "fingerprint": "0a94ad71679c14734dd8eb48dc3e32e4db700afd50354a7ea9ca9ba826e00a4e",
-    "seconds": 5.057,
-    "text": "The electronic device for watching TV programmes is the _____.",
+    "fingerprint": "dbbf1c5f4a863720234248b491a2e5cc48a9b021c11f4c70707b8fc7282d76b9",
+    "seconds": 3.173,
+    "text": "I turn on the _____ to watch a film.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-television-context.wav": {
-    "fingerprint": "3595fa95b0532b97b9b0487f9bbed950c13c0db4f9d1f0b43d5617e9102df6cf",
-    "seconds": 4.502,
-    "text": "We watch programmes on this electronic screen: the _____.",
+    "fingerprint": "42016a995fa8fe32f0ed58e3be67fe10c59b344657f4eef3548297cc23041d95",
+    "seconds": 2.923,
+    "text": "We watch cartoons on the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-television-definition.wav": {
-    "fingerprint": "10ce7029a07975d77e172025c485c4a4d0c2f8aa46cde9d6384b1d690cb1b0b0",
-    "seconds": 2.775,
-    "text": "An electronic screen used to watch programmes.",
+    "fingerprint": "a1e82681ba18da75dfe717b5530301f25c2f14141fab9cb22a67ad63b408f6c0",
+    "seconds": 2.297,
+    "text": "You watch films and shows on its screen.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-today-assessment.wav": {
@@ -6246,21 +6246,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-toilet-assessment.wav": {
-    "fingerprint": "59e80e8cf0068991ae3bb8acab761de07abaf4d44f33404f3589b97067bdab7a",
-    "seconds": 5.377,
-    "text": "This bathroom fixture has a seat and flushes waste away: the _____.",
+    "fingerprint": "ed7ec8f849114f88f923a0f9c93898a661df0ae74b98b7aa1a0ca58f6d7013e0",
+    "seconds": 3.215,
+    "text": "Please flush the _____ after you use it.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-toilet-context.wav": {
-    "fingerprint": "f4412cc61431199775a0be14cba156d0207cca869aad6c157f4c52697e475ca9",
-    "seconds": 4.225,
-    "text": "The bathroom bowl with a seat and a flush is the _____.",
+    "fingerprint": "58d18122b0b45106e4af1f8c16cd7e8b1fdd787414af845b00c421ae92742302",
+    "seconds": 3.013,
+    "text": "I use the _____, then flush it.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-toilet-definition.wav": {
-    "fingerprint": "2e0e55aedd1fe695d065632ed9868e74676e83b994b13f42ba69279991915227",
-    "seconds": 2.616,
-    "text": "A bowl with a seat used when you need to pee.",
+    "fingerprint": "65d78af81144a98941513ccf2ae7da606daf4bb0941210b524675c555aa96ff3",
+    "seconds": 1.977,
+    "text": "You sit on it when you need to pee.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-tomorrow-assessment.wav": {
@@ -6282,27 +6282,27 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-train-assessment.wav": {
-    "fingerprint": "e2dc99181395ff86a890544e8649304d117eb71f8a06f30628ceb54374707874",
-    "seconds": 4.758,
-    "text": "The connected carriages travelling on railway tracks form a _____.",
+    "fingerprint": "281c990c0ed17ae0458f3e2194379c8aa01ee441b759a769448354e3f9d8326e",
+    "seconds": 3.637,
+    "text": "We wait at the station for the next _____ on the tracks.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-train-context.wav": {
-    "fingerprint": "5da44e3a86c7eba0f578788e2a70c37f0559d0e2110695151750f82f31ab3b1f",
-    "seconds": 5.462,
-    "text": "This connected line of vehicles runs on railway tracks. It is a _____.",
+    "fingerprint": "c1e1a63f4506d2c1c9a280c884c94cf0e0e981bf47879c943b8fae77a3266a56",
+    "seconds": 3.791,
+    "text": "The _____ travels on tracks from station to station.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-train-definition.wav": {
-    "fingerprint": "4d0eae24b972036a0045cb8f86ec9e65137e331c965b3c880f40ec4411b5a336",
-    "seconds": 3.37,
-    "text": "A connected line of vehicles moving on railway tracks.",
+    "fingerprint": "5fde6de5cbdb738f76ab15af9dfcc78653a9c6c89f627070a05db745f2152f4b",
+    "seconds": 2.444,
+    "text": "It carries people along railway tracks.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-wake-up-assessment.wav": {
-    "fingerprint": "97761af9707ac6edf5fb03413ce64b30f63d6da801808424b1558a88fa49d10e",
-    "seconds": 5.469,
-    "text": "I was asleep, but now I open my eyes and stop sleeping. I _____.",
+    "fingerprint": "f09a1aae4d006d03486d9bc6fc66f79f19fa40e975312c93b5bcb547de82e52c",
+    "seconds": 3.478,
+    "text": "My alarm rings at six, and I _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-wake-up-context.wav": {
@@ -6318,21 +6318,21 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-wall-assessment.wav": {
-    "fingerprint": "b0e285960ecfee9d3a29f04b6a33dee0caf3ccb872ac436374847b47fe523569",
-    "seconds": 5.163,
-    "text": "The upright side of this room, between floor and ceiling, is a _____.",
+    "fingerprint": "7e46e7b2a3ac0a75d663a7cdc8e22e5475a0b36dddd67bcd54ea889d5a244415",
+    "seconds": 3.368,
+    "text": "I hang a picture on the _____ above my bed.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-wall-context.wav": {
-    "fingerprint": "339409c848b9d56b15ccafb20f0504a96776b74c32266d7cc101558596716adf",
-    "seconds": 4.609,
-    "text": "The vertical side of the room where we hang a map is the _____.",
+    "fingerprint": "d56b4fcff256281ff259a411a1e6e8018ed1bd23f9fa9798a030a87c9f7727fd",
+    "seconds": 3.24,
+    "text": "The map hangs on the _____ beside the door.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-wall-definition.wav": {
-    "fingerprint": "5128d21d235e27dade9c18768747785a7b087f8f8d59f1b0841adbf6f21dfdc8",
-    "seconds": 2.425,
-    "text": "A vertical side of a room or building.",
+    "fingerprint": "054ca7f027b47c511aa400970683e059f9d77e6a27d827c81fa8c26a7e78ac7b",
+    "seconds": 2.818,
+    "text": "The side of a room, between the floor and ceiling.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-weekend-assessment.wav": {
@@ -6354,39 +6354,39 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-window-assessment.wav": {
-    "fingerprint": "d135b1d588cd537c2a5ec9bc07ec211a964ebf62eca993b4ff841d8d6d587bbf",
-    "seconds": 4.523,
-    "text": "This glass opening lets us see out of the room: the _____.",
+    "fingerprint": "cb39e19d2a8468037e183c607270f32c3bed0d06651547adef2cbc82f8cdff0e",
+    "seconds": 3.492,
+    "text": "Sunlight comes through the _____ into my bedroom.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-window-context.wav": {
-    "fingerprint": "09ecd1be84892149f4c02f91c658a22239b3a0ed9bd4f8e33acdd6ad82f5844b",
-    "seconds": 4.609,
-    "text": "Daylight comes through this glass opening in the wall: the _____.",
+    "fingerprint": "f037a7e63efad029c5a3e3edf0a3377535a6d2f2e3d456fccd64477793317030",
+    "seconds": 3.649,
+    "text": "I open the curtains and look out of the _____.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-window-definition.wav": {
-    "fingerprint": "6a74524089a303cb5c16571ff05062ff4aad76b902715edaa18d123b42bbcfcc",
-    "seconds": 3.105,
-    "text": "An opening with glass that lets light into a room.",
+    "fingerprint": "546833167e28d72b34ed5cd26820ab7406363f8cc0a16bc7864ae50a340adc4a",
+    "seconds": 2.511,
+    "text": "Glass in a wall that lets you see outside.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-yard-assessment.wav": {
-    "fingerprint": "2b67c98b8be036fb18de408e5a874bba3cf231509dd906f1ae37bb39269996de",
-    "seconds": 4.715,
-    "text": "The area of ground beside and around our house is the _____.",
+    "fingerprint": "9dedd95833528696231f720282fec704083d0d61277d1414c17c025f41bfa17d",
+    "seconds": 3.747,
+    "text": "Our dog runs around in the _____ outside our house.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-yard-context.wav": {
-    "fingerprint": "400790bf13b9d797aedaf48d562d0f4bd3558a917167b094fce332efc2c02010",
-    "seconds": 3.905,
-    "text": "The outdoor ground around our house is our _____.",
+    "fingerprint": "6ebad6a6382820bacabe96e09f664c226b79218be7dd36e7ca60073fa6ac03f4",
+    "seconds": 3.355,
+    "text": "The children play in the _____ behind the house.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "prompt-exam-ch34-v1-vocabulary-yard-definition.wav": {
-    "fingerprint": "b2975eb64797069061cacba5082b84e9a8c54156ddf33d6bc327b7e8b61e8bda",
-    "seconds": 2.081,
-    "text": "The outdoor ground around a house.",
+    "fingerprint": "2e8e697cf3a045a5d47a6bf1a3a9b84b988d0157bb72fbe818a97e45d7d8b8b8",
+    "seconds": 2.454,
+    "text": "The ground outside and around a house.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "sentence-a-big-family-0.wav": {

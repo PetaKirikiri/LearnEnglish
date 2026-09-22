@@ -56,6 +56,7 @@ describe('textbook exam practice in the existing flow',()=>{
    expect(new Set(q.choices).size).toBe(4)
    expect(q.choices.filter(c=>c===q.answer)).toHaveLength(1)
    if(q.passage) expect(readings.find(r=>r.id===q.sourceReadingId)!.paragraphs.some(p=>p.includes(q.passage!))).toBe(true)
+   if(q.examCategory==='vocabulary' && q.examFormat!=='meaning') for(const pair of [['window','door'],['dining room','kitchen'],['living room','bedroom'],['taxi','bus']]) if(pair.includes(q.answer)) expect(pair.every(word=>q.choices.includes(word)), q.id).toBe(false)
    if(q.placeRelation) for(const pair of [['above','over'],['beside','next to']]) expect(pair.every(p=>q.choices.includes(p))).toBe(false)
   }
  })
