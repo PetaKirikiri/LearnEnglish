@@ -30,9 +30,9 @@ begin
   end if;
   insert into public.fifa_english_events(id,learner_id,kind,payload)
     values(gen_random_uuid(),learner,'answer',jsonb_build_object('questionId',q,'choice','right','helpWords','[]'::jsonb));
-  if (select count(*) from public.fifa_english_weekly_points where question_id=q) <> 1
-    or (select points from public.fifa_english_weekly_points where question_id=q) <> 6 then
-    raise exception 'Replay changed an earned award';
+  if (select count(*) from public.fifa_english_weekly_points where question_id=q) <> 2
+    or (select sum(points) from public.fifa_english_weekly_points where question_id=q) <> 16 then
+    raise exception 'A second correct repetition did not earn its own points';
   end if;
   if (select count(*) from public.fifa_english_events) <> event_count+3 then raise exception 'Missing test events'; end if;
   perform set_config('request.jwt.claim.sub', learner::text, true);
