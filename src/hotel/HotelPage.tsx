@@ -5,12 +5,21 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
 import { loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type HotelQuestion } from './course'
 import './hotel.css'
-import { ENGLISH_ORIGIN, SHARED_LINE_ID, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
+import { ENGLISH_ORIGIN, PADEL_ORIGIN, SHARED_LINE_ID, hotelAccountUrl, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
+import { finishHotelReturn, prepareHotelReturn } from './accountHandoff'
 
 let loginRequest: Promise<User | null> | undefined
 function loginWithLine(): Promise<User | null> {
   loginRequest ??= (async () => {
     if (!isSupabaseConfigured) throw new Error('Account service is unavailable.')
+    if (window.location.origin !== PADEL_ORIGIN && !isHotelLineEntry(window.location.search)) {
+      window.location.assign(hotelAccountUrl())
+      return null
+    }
+    if (window.location.origin === PADEL_ORIGIN) {
+      window.location.assign(hotelLineEntryUrl())
+      return null
+    }
     if (!isHotelLineEntry(window.location.search) || window.location.origin === ENGLISH_ORIGIN || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
       window.location.assign(hotelLineEntryUrl())
       return null
@@ -27,9 +36,10 @@ function loginWithLine(): Promise<User | null> {
     const { data, error } = await supabase.functions.invoke('line-liff-auth', { body: { id_token: token, access_token: liff.getAccessToken() } })
     if (error || data?.error) throw new Error(error?.message ?? data.error)
     if (!data?.access_token || !data?.refresh_token) throw new Error('LINE did not return a login session.')
-    const result = await supabase.auth.setSession({ access_token: data.access_token, refresh_token: data.refresh_token })
-    if (result.error || !result.data.user) throw new Error(result.error?.message ?? 'Login failed.')
-    return result.data.user
+    // Finish on the canonical domain, using Padel's one-use ticket mechanism.
+    // Do not persist a second account session on the legacy LIFF host.
+    window.location.replace(await prepareHotelReturn(token))
+    return null
   })().catch(error => { loginRequest = undefined; throw error })
   return loginRequest
 }
@@ -45,7 +55,15 @@ export default function HotelPage() {
   }
   useEffect(() => {
     let active = true
+    const ticket = window.location.origin === PADEL_ORIGIN ? new URLSearchParams(window.location.hash.slice(1)).get('ticket') : null
+    if (ticket) window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
     void (async () => {
+      if (window.location.origin === PADEL_ORIGIN) {
+        const account = await finishHotelReturn(ticket)
+        if (account || ticket) return account
+        if (/Line\//i.test(navigator.userAgent)) return loginWithLine()
+        return null
+      }
       if (isHotelLineEntry(window.location.search) || /Line\//i.test(navigator.userAgent)) return loginWithLine()
       // Reuse a server-validated existing EnglishSuccess/Padel account session.
       const { data: session } = await supabase.auth.getSession()
@@ -56,7 +74,7 @@ export default function HotelPage() {
     return () => { active = false }
   }, [])
   return <main className="hotel-shell">
-    <header className="hotel-header"><a href="/hotel">ENGLISH<span>SUCCESS</span></a><span>HOTEL EDITION</span></header>
+    <header className="hotel-header"><a href={isHotelLineEntry(window.location.search) ? hotelAccountUrl() : '/hotel'}>ENGLISH<span>SUCCESS</span></a><span>HOTEL EDITION</span></header>
     {import.meta.env.DEV && window.location.pathname === '/hotel/preview' ? <><p className="hotel-eyebrow" style={{ textAlign: 'center', marginTop: 16 }}>LOCAL PREVIEW · NOT SIGNED IN</p><HotelLesson userId="local-preview" /></> : user ? <HotelLesson key={user.id} userId={user.id} /> : <section className="hotel-welcome">
       <div className="hotel-monogram" aria-hidden="true">H</div><p className="hotel-eyebrow">MAKE YOURSELF AT HOME</p>
       <h1>English,<br /><em>by ear.</em></h1>

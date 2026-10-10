@@ -1,0 +1,26 @@
+import { beforeEach, expect, it, vi } from 'vitest'
+const mock = vi.hoisted(() => ({ session: vi.fn(), user: vi.fn(), verify: vi.fn(), invoke: vi.fn() }))
+vi.mock('../lib/supabase', () => ({ supabase: { auth: { getSession: mock.session, getUser: mock.user, verifyOtp: mock.verify }, functions: { invoke: mock.invoke } } }))
+beforeEach(() => { vi.resetModules(); vi.resetAllMocks() })
+it('preserves the current Padel account instead of replacing it', async () => {
+  mock.session.mockResolvedValue({ data: { session: {} } })
+  mock.user.mockResolvedValue({ data: { user: { id: 'existing' } }, error: null })
+  const { finishHotelReturn } = await import('./accountHandoff')
+  expect(await finishHotelReturn('unused')).toEqual({ id: 'existing' })
+  expect(mock.verify).not.toHaveBeenCalled()
+})
+it('consumes a handoff ticket only once', async () => {
+  mock.session.mockResolvedValue({ data: { session: null } })
+  mock.verify.mockResolvedValue({ data: { user: { id: 'line-member' } }, error: null })
+  const { finishHotelReturn } = await import('./accountHandoff')
+  await Promise.all([finishHotelReturn('one-use'), finishHotelReturn(null)])
+  expect(mock.verify).toHaveBeenCalledExactlyOnceWith({ token_hash: 'one-use', type: 'email' })
+})
+it('uses the same verified LINE recognition handoff and rejects failures', async () => {
+  const { prepareHotelReturn } = await import('./accountHandoff')
+  mock.invoke.mockResolvedValue({ data: { recognised: true, ticket: 'ticket' }, error: null })
+  expect(await prepareHotelReturn('line-token')).toBe('https://successpadel.app/login?app=englishsuccess&mode=hotel#ticket=ticket')
+  expect(mock.invoke.mock.calls[0][0]).toBe('line-liff-recognize')
+  mock.invoke.mockResolvedValue({ data: { recognised: false }, error: null })
+  await expect(prepareHotelReturn('invalid')).rejects.toThrow('Could not finish')
+})

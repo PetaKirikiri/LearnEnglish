@@ -22,11 +22,16 @@ The existing Padel `/login?app=englishsuccess` rewrite serves this app under the
 registered LINE endpoint. The hotel destination is carried through `liff.state`
 and the secondary redirect. No separate hotel LIFF app or environment variable is needed.
 
-LINE entry exchanges the LINE ID token with the existing `line-liff-auth` backend.
+The login first opens `successpadel.app/login?app=englishsuccess&mode=hotel` to reuse
+the canonical Padel account session. LINE entry exchanges the LINE ID token with the existing `line-liff-auth` backend.
 Ordinary visits reuse an existing EnglishSuccess session after server validation
 with `getUser`; this is account reuse, not proof of a fresh LINE login. New visitors
-use LINE. The hotel stays within the shared entry origin after login; audio uses
-the canonical EnglishSuccess origin. Progress remains local to that origin.
+use LINE. After LIFF identity verification, `line-liff-recognize` issues the same
+one-use handoff ticket used by Padel. The canonical successpadel.app page consumes
+it with `verifyOtp`; the ticket travels only in the fragment and is removed immediately.
+An already signed-in canonical account is never replaced. The legacy LIFF endpoint
+may still be visited transiently, but the hotel finishes on successpadel.app.
+Audio uses the canonical EnglishSuccess origin. Progress remains local to the account origin.
 Test on an actual phone in LINE and in a normal browser before sharing with learners.
 No changes to shared SuccessPadel authentication or data are required.
 
