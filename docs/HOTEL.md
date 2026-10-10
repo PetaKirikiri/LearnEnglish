@@ -11,21 +11,22 @@ long-term mastery. Errors restore support; revealed answers do not build mastery
 Both alternatives use identical opacity per aligned segment, with a readable floor.
 English transcript appears only after answering. Advancement is manual.
 
-Progress is versioned local storage scoped by the verified LINE user's Supabase ID.
+Progress is versioned local storage scoped by the signed-in user's Supabase ID and browser origin.
 It is not cloud synced and does not award leaderboard points. Clearing browser data
 removes this mode's progress. Do not describe it as cross-device persistence.
 
-## LINE setup required
+## Shared LINE entry
 
-Create a LIFF app on the same LINE Login channel already accepted by the existing
-`line-liff-auth` function. Set its endpoint to
-`https://learn-english-coral.vercel.app/hotel`, enable `openid` and `profile`, and set
-`VITE_HOTEL_LIFF_ID` to that LIFF ID before building/deploying. Do not reuse an ID
-whose endpoint sends users to another application. Register/confirm the permitted
-return URL in LINE. No secrets belong in Vite variables.
+Uses the existing LIFF app `2010311582-o2c1DCnP` with `app=englishsuccess&mode=hotel`.
+The existing Padel `/login?app=englishsuccess` rewrite serves this app under the
+registered LINE endpoint. The hotel destination is carried through `liff.state`
+and the secondary redirect. No separate hotel LIFF app or environment variable is needed.
 
-The hotel entry always exchanges a LINE ID token with the existing backend. An
-existing name-login session is not accepted as proof of LINE authentication.
+LINE entry exchanges the LINE ID token with the existing `line-liff-auth` backend.
+Ordinary visits reuse an existing EnglishSuccess session after server validation
+with `getUser`; this is account reuse, not proof of a fresh LINE login. New visitors
+use LINE. The hotel stays within the shared entry origin after login; audio uses
+the canonical EnglishSuccess origin. Progress remains local to that origin.
 Test on an actual phone in LINE and in a normal browser before sharing with learners.
 No changes to shared SuccessPadel authentication or data are required.
 

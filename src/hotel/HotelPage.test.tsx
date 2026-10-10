@@ -6,7 +6,7 @@ import HotelPage, { HotelLesson } from './HotelPage'
 const speech = vi.hoisted(() => ({ speak: vi.fn(), stop: vi.fn() }))
 vi.mock('../learning/speech', () => ({ speakEnglish: speech.speak, stopEnglishSpeech: speech.stop }))
 vi.mock('@line/liff', () => ({ default: { init: vi.fn() } }))
-vi.mock('../lib/supabase', () => ({ isSupabaseConfigured: false, supabase: {} }))
+vi.mock('../lib/supabase', () => ({ isSupabaseConfigured: false, supabase: { auth: { getSession: async () => ({ data: { session: null } }) } } }))
 const host = document.createElement('div')
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
 document.body.append(host)
@@ -17,7 +17,7 @@ it('requires LINE rather than accepting a name or existing unrelated session', a
   expect(host.textContent).toContain('Continue with LINE')
   expect(host.querySelector('input')).toBeNull()
   await act(() => (host.querySelector('button') as HTMLButtonElement).click())
-  expect(host.textContent).toContain('Hotel LINE login needs to be configured.')
+  expect(host.textContent).toContain('Account service is unavailable.')
 })
 it('plays on start, waits for audio, records once, and only advances on Next', async () => {
   await act(() => root.render(<HotelLesson userId="test-user" />))

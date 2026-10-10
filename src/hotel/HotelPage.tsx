@@ -5,18 +5,22 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
 import { loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type HotelQuestion } from './course'
 import './hotel.css'
+import { ENGLISH_ORIGIN, SHARED_LINE_ID, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
 
-const hotelLiffId = import.meta.env.VITE_HOTEL_LIFF_ID?.trim()
-// A fresh verified LINE exchange is required; a pre-existing name-login session
-// is deliberately not enough to enter this mode.
-let loginRequest: Promise<User> | undefined
-function loginWithLine(): Promise<User> {
+let loginRequest: Promise<User | null> | undefined
+function loginWithLine(): Promise<User | null> {
   loginRequest ??= (async () => {
-    if (!hotelLiffId || !isSupabaseConfigured) throw new Error('Hotel LINE login needs to be configured.')
-    await liff.init({ liffId: hotelLiffId, withLoginOnExternalBrowser: false })
+    if (!isSupabaseConfigured) throw new Error('Account service is unavailable.')
+    if (!isHotelLineEntry(window.location.search) || window.location.origin === ENGLISH_ORIGIN || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
+      window.location.assign(hotelLineEntryUrl())
+      return null
+    }
+    await liff.init({ liffId: SHARED_LINE_ID, withLoginOnExternalBrowser: false })
     if (!liff.isLoggedIn()) {
-      liff.login({ redirectUri: `${window.location.origin}/hotel` })
-      throw new Error('Opening LINE…')
+      const redirect = new URL('/login', window.location.origin)
+      redirect.search = new URLSearchParams({ app: 'englishsuccess', mode: 'hotel', line_login: '1' }).toString()
+      liff.login({ redirectUri: redirect.href })
+      return null
     }
     const token = liff.getIDToken()
     if (!token) throw new Error('Please sign in to LINE again.')
@@ -40,11 +44,16 @@ export default function HotelPage() {
     finally { setBusy(false) }
   }
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).has('code') || /Line\//i.test(navigator.userAgent) || window.location.search.includes('liff.')) {
-      let active = true
-      void loginWithLine().then(value => { if (active) setUser(value) }, cause => { if (active) setError(cause.message) })
-      return () => { active = false }
-    }
+    let active = true
+    void (async () => {
+      if (isHotelLineEntry(window.location.search) || /Line\//i.test(navigator.userAgent)) return loginWithLine()
+      // Reuse a server-validated existing EnglishSuccess/Padel account session.
+      const { data: session } = await supabase.auth.getSession()
+      if (!session.session) return null
+      const { data, error } = await supabase.auth.getUser()
+      return error ? null : data.user
+    })().then(value => { if (active) setUser(value) }, cause => { if (active) setError(cause.message) })
+    return () => { active = false }
   }, [])
   return <main className="hotel-shell">
     <header className="hotel-header"><a href="/hotel">ENGLISH<span>SUCCESS</span></a><span>HOTEL EDITION</span></header>
@@ -72,7 +81,7 @@ export function HotelLesson({ userId }: { userId: string }) {
   const answered = useRef(false)
   useEffect(() => () => stopEnglishSpeech(), [])
   function play(item = question) {
-    speakEnglish(item.english, item.audioUrl, state => {
+    speakEnglish(item.english, import.meta.env.PROD ? `${ENGLISH_ORIGIN}${item.audioUrl}` : item.audioUrl, state => {
       if (state === 'ended') setHeard(true)
       setAudio(state === 'blocked' ? 'Tap to retry audio' : state === 'playing' ? 'Listening…' : 'Listen again')
     })

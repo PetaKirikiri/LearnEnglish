@@ -6,8 +6,9 @@ import './index.css'
 import './game-theme.css'
 import LanguageGate from './content/LanguageGate'
 import { lazy, Suspense } from 'react'
+import { isHotelLineEntry } from './hotel/lineEntry'
 const HotelPage = lazy(() => import('./hotel/HotelPage'))
-const isHotel = /^\/hotel(?:\/|$)/.test(window.location.pathname)
+const isHotel = /^\/hotel(?:\/|$)/.test(window.location.pathname) || isHotelLineEntry(window.location.search)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
