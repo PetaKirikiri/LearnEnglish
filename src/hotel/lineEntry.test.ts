@@ -2,7 +2,8 @@ import { expect, it } from 'vitest'
 import { hotelLineEntryUrl, hotelAccountUrl, isHotelLineEntry } from './lineEntry'
 it('finishes on the canonical account origin, with a fragment-only ticket', () => {
   const url = new URL(hotelAccountUrl('test-ticket'))
-  expect(url.origin).toBe('https://successpadel.app')
+  expect(url.origin).toBe('https://learn-english-coral.vercel.app')
+  expect(url.pathname).toBe('/hotel')
   expect(url.search).not.toContain('test-ticket')
   expect(url.hash).toBe('#ticket=test-ticket')
 })

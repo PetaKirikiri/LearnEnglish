@@ -1,8 +1,7 @@
 export const ENGLISH_ORIGIN = 'https://learn-english-coral.vercel.app'
 export const SHARED_LINE_ID = '2010311582-o2c1DCnP'
-export const PADEL_ORIGIN = 'https://successpadel.app'
 export function hotelAccountUrl(ticket?: string) {
-  const url = new URL('/login?app=englishsuccess&mode=hotel', PADEL_ORIGIN)
+  const url = new URL('/hotel', ENGLISH_ORIGIN)
   if (ticket) url.hash = new URLSearchParams({ ticket }).toString()
   return url.href
 }

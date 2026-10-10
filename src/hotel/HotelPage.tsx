@@ -5,21 +5,13 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
 import { loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type HotelQuestion } from './course'
 import './hotel.css'
-import { ENGLISH_ORIGIN, PADEL_ORIGIN, SHARED_LINE_ID, hotelAccountUrl, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
+import { ENGLISH_ORIGIN, SHARED_LINE_ID, hotelAccountUrl, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
 import { finishHotelReturn, prepareHotelReturn } from './accountHandoff'
 
 let loginRequest: Promise<User | null> | undefined
 function loginWithLine(): Promise<User | null> {
   loginRequest ??= (async () => {
     if (!isSupabaseConfigured) throw new Error('Account service is unavailable.')
-    if (window.location.origin !== PADEL_ORIGIN && !isHotelLineEntry(window.location.search)) {
-      window.location.assign(hotelAccountUrl())
-      return null
-    }
-    if (window.location.origin === PADEL_ORIGIN) {
-      window.location.assign(hotelLineEntryUrl())
-      return null
-    }
     if (!isHotelLineEntry(window.location.search) || window.location.origin === ENGLISH_ORIGIN || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
       window.location.assign(hotelLineEntryUrl())
       return null
@@ -55,10 +47,10 @@ export default function HotelPage() {
   }
   useEffect(() => {
     let active = true
-    const ticket = window.location.origin === PADEL_ORIGIN ? new URLSearchParams(window.location.hash.slice(1)).get('ticket') : null
+    const ticket = window.location.origin === ENGLISH_ORIGIN ? new URLSearchParams(window.location.hash.slice(1)).get('ticket') : null
     if (ticket) window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
     void (async () => {
-      if (window.location.origin === PADEL_ORIGIN) {
+      if (window.location.origin === ENGLISH_ORIGIN) {
         const account = await finishHotelReturn(ticket)
         if (account || ticket) return account
         if (/Line\//i.test(navigator.userAgent)) return loginWithLine()

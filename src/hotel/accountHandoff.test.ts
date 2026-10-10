@@ -19,7 +19,7 @@ it('consumes a handoff ticket only once', async () => {
 it('uses the same verified LINE recognition handoff and rejects failures', async () => {
   const { prepareHotelReturn } = await import('./accountHandoff')
   mock.invoke.mockResolvedValue({ data: { recognised: true, ticket: 'ticket' }, error: null })
-  expect(await prepareHotelReturn('line-token')).toBe('https://successpadel.app/login?app=englishsuccess&mode=hotel#ticket=ticket')
+  expect(await prepareHotelReturn('line-token')).toBe('https://learn-english-coral.vercel.app/hotel#ticket=ticket')
   expect(mock.invoke.mock.calls[0][0]).toBe('line-liff-recognize')
   mock.invoke.mockResolvedValue({ data: { recognised: false }, error: null })
   await expect(prepareHotelReturn('invalid')).rejects.toThrow('Could not finish')
