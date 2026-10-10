@@ -1,5 +1,11 @@
 {
   "rewrites": [
+    { "source": "/hotel", "destination": "/index.html" },
+    { "source": "/hotel/:path*", "destination": "/index.html" },
+    {
+      "source": "/translator",
+      "destination": "/translator/index.html"
+    },
     {
       "source": "/admin",
       "destination": "/index.html"
@@ -16,5 +22,10 @@
       "source": "/app/:path*",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/translator/*.ts": {
+      "maxDuration": 240
+    }
+  }
 }

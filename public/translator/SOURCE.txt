@@ -1,0 +1,1 @@
+Generated from SubtitleDisplay/src/translator by scripts/export-translator.mjs. Re-export from that source for updates.

@@ -1,0 +1,22 @@
+{
+  "version": "2026-09-v2",
+  "reviewedAt": "2026-09-21",
+  "purpose": "Seven game ranks for young Thai learners. Everyday child vocabulary starts at Bronze; language benchmarks inform, but do not mechanically define, the game ranks.",
+  "groups": [
+    {
+      "tier": "Bronze",
+      "reason": "Basic grammatical forms, numbers, calendar words and familiar school objects used alongside the young-learner starter vocabulary. Explicit forms only; no automatic stemming.",
+      "words": ["are", "is", "was", "were", "does", "did", "has", "its", "cannot", "could", "will", "have to", "apartments", "buses", "cars", "cats", "cities", "friends", "houses", "pencils", "photographs", "questions", "stars", "streets", "sweaters", "farms", "hills", "notebook", "notebooks", "folder", "folders", "pancakes", "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety", "hundred", "first", "second", "third", "fourth", "fifth", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "spring", "summer", "autumn", "winter"]
+    },
+    {
+      "tier": "Silver",
+      "reason": "Concrete everyday meanings in the current course: weather, places, materials, travel and classroom use. A higher dictionary headword band does not turn a literal object into advanced expression.",
+      "words": ["countryside", "suburbs", "cave", "thunder", "volcano", "vinegar", "handouts", "supplies", "temperature", "platform", "tracks", "woods", "storms", "rocks", "meeting", "traffic", "midnight"]
+    },
+    {
+      "tier": "Gold",
+      "reason": "Specialised organisational, professional or abstract meanings beyond the child's everyday starter range. This is a product review, not a claim that Cambridge or Oxford assigns a Gold rank.",
+      "words": ["conference", "colleague", "employ", "employee", "employer", "salary", "department", "industry", "organization", "architect", "architecture", "research", "researcher", "strategy", "survey", "evidence", "factor", "lecture", "professor", "professional", "president", "government", "population", "quantity", "possession", "context", "alternative", "advertise", "advertisement", "advertising", "divorced", "reception", "secretary", "credit", "publish", "journalist"]
+    }
+  ]
+}

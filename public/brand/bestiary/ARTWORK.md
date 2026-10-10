@@ -1,0 +1,8 @@
+# Bestiary artwork
+
+Asset: `creatures.png` (1536 × 1024), generated with the built-in image_gen tool.
+A single three-column, two-row atlas, displayed through CSS without modifying the original image. Creature species are decorative; word rank and conquest state come from real course/progress data. A stable word hash picks one of the six creature portraits. Undiscovered portraits are dimmed in CSS.
+
+## Final generation prompt
+
+Use case: stylized-concept. Asset type: single production game creature sprite atlas for a premium fantasy language-learning bestiary UI. Create ONE landscape image, 1536 x 1024, precisely divided invisibly into 3 columns and 2 rows of six equal 512x512 square cells, NO gutters or borders. Each cell contains ONE different full-body original fantasy monster centered completely inside its cell with generous dark margin, feet near bottom. Top row: mossy horned stone golem glowing teal eyes; small obsidian dragon with folded wings and ember cracks; spectral armored owl gryphon with icy blue feathers. Bottom row: purple crystal armored beetle; golden antlered forest wolf; deep-blue tentacled rune spirit. All are exquisitely rendered polished 3D game collectible creatures, appealing powerful non-gory fantasy, nuanced weathered materials, dramatic rim lighting, collectible monster RPG bestiary asset quality. Pure uniform almost-black navy #0b111b background in all six cells, no landscapes, no text, no UI, no names, no symbols outside creatures, no watermarks. Similar camera angle and creature visual size in every cell. Entire silhouettes visible, no cropped ears wings or claws. This is a texture atlas consumed by CSS at 300% 200% background size.
