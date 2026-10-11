@@ -1,77 +1,79 @@
 import { useEffect, useRef, useState } from 'react'
 import type { User } from '@supabase/supabase-js'
-import liff from '@line/liff'
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import QRCode from 'qrcode'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
 import { loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type HotelQuestion } from './course'
 import './hotel.css'
-import { ENGLISH_ORIGIN, SHARED_LINE_ID, hotelAccountUrl, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
-import { finishHotelReturn, prepareHotelReturn } from './accountHandoff'
+import { ENGLISH_ORIGIN, hotelAccountUrl, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
+import { finishHotelReturn } from './accountHandoff'
+import { bounded, resolveLineAccount } from './lineAccount'
 
-let loginRequest: Promise<User | null> | undefined
-function loginWithLine(): Promise<User | null> {
-  loginRequest ??= (async () => {
-    if (!isSupabaseConfigured) throw new Error('Account service is unavailable.')
-    if (!isHotelLineEntry(window.location.search) || window.location.origin === ENGLISH_ORIGIN || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
-      window.location.assign(hotelLineEntryUrl())
-      return null
-    }
-    await liff.init({ liffId: SHARED_LINE_ID, withLoginOnExternalBrowser: false })
-    if (!liff.isLoggedIn()) {
-      const redirect = new URL('/login', window.location.origin)
-      redirect.search = new URLSearchParams({ app: 'englishsuccess', mode: 'hotel', line_login: '1' }).toString()
-      liff.login({ redirectUri: redirect.href })
-      return null
-    }
-    const token = liff.getIDToken()
-    if (!token) throw new Error('Please sign in to LINE again.')
-    const { data, error } = await supabase.functions.invoke('line-liff-auth', { body: { id_token: token, access_token: liff.getAccessToken() } })
-    if (error || data?.error) throw new Error(error?.message ?? data.error)
-    if (!data?.access_token || !data?.refresh_token) throw new Error('LINE did not return a login session.')
-    // Finish on the canonical domain, using Padel's one-use ticket mechanism.
-    // Do not persist a second account session on the legacy LIFF host.
-    window.location.replace(await prepareHotelReturn(token))
-    return null
-  })().catch(error => { loginRequest = undefined; throw error })
-  return loginRequest
+let recognition: ReturnType<typeof resolveLineAccount> | undefined
+function recognise() {
+  recognition ??= resolveLineAccount().finally(() => { recognition = undefined })
+  return recognition
 }
 
 export default function HotelPage() {
   const [user, setUser] = useState<User | null>(null)
-  const [busy, setBusy] = useState(false)
+  const [busy, setBusy] = useState(() => isHotelLineEntry(window.location.search) && window.location.origin !== ENGLISH_ORIGIN)
   const [error, setError] = useState('')
-  async function signIn() {
+  const [guest, setGuest] = useState(false)
+  const [qr, setQr] = useState('')
+  const [entryUrl] = useState(() => {
+    // This ID makes a saved signup link distinct, not an account credential.
+    const url = new URL(hotelLineEntryUrl())
+    url.searchParams.set('request', crypto.randomUUID())
+    return url.href
+  })
+  const callback = isHotelLineEntry(window.location.search) && window.location.origin !== ENGLISH_ORIGIN
+  async function signIn(create = false) {
+    if (busy) return
+    if (!callback) { window.location.assign(entryUrl); return }
     setBusy(true); setError('')
-    try { setUser(await loginWithLine()) } catch (cause) { setError(cause instanceof Error ? cause.message : 'Please try again.') }
+    try {
+      const result = await resolveLineAccount(create)
+      if (result.kind === 'member') window.location.replace(result.url)
+      else if (result.kind === 'guest') setGuest(true)
+    } catch (cause) { setError(cause instanceof Error ? cause.message : 'Please try again.') }
     finally { setBusy(false) }
   }
+  useEffect(() => {
+    let active = true
+    void QRCode.toDataURL(entryUrl, { width: 280, margin: 3, errorCorrectionLevel: 'H' })
+      .then(value => { if (active) setQr(value) }, () => { if (active) setError('Could not load QR. Use Open LINE below.') })
+    return () => { active = false }
+  }, [entryUrl])
   useEffect(() => {
     let active = true
     const ticket = window.location.origin === ENGLISH_ORIGIN ? new URLSearchParams(window.location.hash.slice(1)).get('ticket') : null
     if (ticket) window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
     void (async () => {
-      if (window.location.origin === ENGLISH_ORIGIN) {
-        const account = await finishHotelReturn(ticket)
-        if (account || ticket) return account
-        if (/Line\//i.test(navigator.userAgent)) return loginWithLine()
+      if (callback) {
+        const result = await recognise()
+        if (!active) return null
+        if (result.kind === 'member') window.location.replace(result.url)
+        else if (result.kind === 'guest') setGuest(true)
         return null
       }
-      if (isHotelLineEntry(window.location.search) || /Line\//i.test(navigator.userAgent)) return loginWithLine()
-      // Reuse a server-validated existing EnglishSuccess/Padel account session.
-      const { data: session } = await supabase.auth.getSession()
-      if (!session.session) return null
-      const { data, error } = await supabase.auth.getUser()
-      return error ? null : data.user
+      const account = await bounded(() => finishHotelReturn(ticket))
+      if (active && !account && !ticket && /Line\//i.test(navigator.userAgent) && !sessionStorage.getItem('hotel:recognition-attempt')) {
+        sessionStorage.setItem('hotel:recognition-attempt', '1')
+        window.location.assign(hotelLineEntryUrl())
+      }
+      return account
     })().then(value => { if (active) setUser(value) }, cause => { if (active) setError(cause.message) })
+      .finally(() => { if (active) setBusy(false) })
     return () => { active = false }
-  }, [])
+  }, [callback])
   return <main className="hotel-shell">
     <header className="hotel-header"><a href={isHotelLineEntry(window.location.search) ? hotelAccountUrl() : '/hotel'}>ENGLISH<span>SUCCESS</span></a><span>HOTEL EDITION</span></header>
     {import.meta.env.DEV && window.location.pathname === '/hotel/preview' ? <><p className="hotel-eyebrow" style={{ textAlign: 'center', marginTop: 16 }}>LOCAL PREVIEW · NOT SIGNED IN</p><HotelLesson userId="local-preview" /></> : user ? <HotelLesson key={user.id} userId={user.id} /> : <section className="hotel-welcome">
       <div className="hotel-monogram" aria-hidden="true">H</div><p className="hotel-eyebrow">MAKE YOURSELF AT HOME</p>
       <h1>English,<br /><em>by ear.</em></h1>
       <p>Listen. Choose. Get a little more confident.</p>
-      <button className="hotel-line" disabled={busy} onClick={() => void signIn()}>{busy ? 'Opening LINE…' : 'Continue with LINE'}</button>
+      {!callback && qr ? <div className="hotel-qr"><img src={qr} width="240" height="240" alt="Scan in LINE to sign in or create your account" /><a href={qr} download="english-success-line.png">Save QR</a><small>LINE → Add friends → QR → choose this image</small></div> : null}
+      <button className="hotel-line" disabled={busy} onClick={() => void signIn(guest)}>{busy ? 'Connecting…' : guest ? 'Create my account' : callback ? 'Retry LINE' : 'Open LINE'}</button>
       {error ? <p role="alert">{error}</p> : null}
     </section>}
   </main>

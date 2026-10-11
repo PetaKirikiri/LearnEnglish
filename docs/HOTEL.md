@@ -23,7 +23,17 @@ registered LINE endpoint. The hotel destination is carried through `liff.state`
 and the secondary redirect. No separate hotel LIFF app or environment variable is needed.
 
 The login starts on EnglishSuccess and goes directly to LINE, with no preliminary
-Padel website redirect. LINE entry exchanges the LINE ID token with the existing `line-liff-auth` backend.
+Padel website redirect. LINE entry first checks `line-liff-recognize`, which never
+creates an account. An unknown user sees **Create my account**. Only that explicit
+confirmation calls the existing `line-liff-auth` backend, which verifies LINE and
+creates the shared profile (or reuses an account created in the meantime).
+The entry screen provides a saveable QR and an Open LINE alternative. Each QR
+has a distinct request ID; this is only a signup entry link, NOT a database-bound
+Padel player claim token and NOT an identity credential. Account identity always
+comes from server-verified LINE. Scanning continues in the scanning LINE browser;
+it does not sign a different desktop browser in automatically.
+SDK and API stages have a 15-second overall deadline with aborted/late-write
+guards. Passive entry and OAuth redirects are bounded to prevent retry loops.
 Ordinary visits reuse an existing EnglishSuccess session after server validation
 with `getUser`; this is account reuse, not proof of a fresh LINE login. New visitors
 use LINE. After LIFF identity verification, `line-liff-recognize` issues the same
