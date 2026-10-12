@@ -1,89 +1,40 @@
 import { useEffect, useRef, useState } from 'react'
 import type { User } from '@supabase/supabase-js'
-import QRCode from 'qrcode'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
 import { loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type HotelQuestion } from './course'
 import './hotel.css'
 import { ENGLISH_ORIGIN, hotelAccountUrl, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
 import { finishHotelReturn } from './accountHandoff'
-import { bounded, resolveLineAccount } from './lineAccount'
-
-let recognition: ReturnType<typeof resolveLineAccount> | undefined
-function recognise() {
-  recognition ??= resolveLineAccount().finally(() => { recognition = undefined })
-  return recognition
-}
+import { bounded } from './lineAccount'
 
 export default function HotelPage() {
   const [user, setUser] = useState<User | null>(null)
-  const [busy, setBusy] = useState(() => isHotelLineEntry(window.location.search) && window.location.origin === ENGLISH_ORIGIN)
-  const [error, setError] = useState('')
-  const [guest, setGuest] = useState(false)
-  const [qr, setQr] = useState('')
-  const [entryUrl] = useState(() => {
-    // This ID makes a saved signup link distinct, not an account credential.
-    const entry = hotelLineEntryUrl()
-    if (!entry) return null
-    const url = new URL(entry)
-    url.searchParams.set('request', crypto.randomUUID())
-    return url.href
-  })
-  const callback = isHotelLineEntry(window.location.search) && window.location.origin === ENGLISH_ORIGIN
-  async function signIn(create = false) {
+  const [busy, setBusy] = useState(true)
+  const [error, setError] = useState(() => new URLSearchParams(window.location.search).get('line_result') === 'new' ? 'No account yet. Tap Sign up to create one.' : '')
+  const entryUrl = hotelLineEntryUrl()
+  function signIn(create = false) {
     if (busy) return
     if (!entryUrl) return
-    if (!callback) { window.location.assign(entryUrl); return }
-    setBusy(true); setError('')
-    try {
-      const result = await resolveLineAccount(create)
-      if (result.kind === 'member') window.location.replace(result.url)
-      else if (result.kind === 'guest') setGuest(true)
-    } catch (cause) { setError(cause instanceof Error ? cause.message : 'Please try again.') }
-    finally { setBusy(false) }
+    window.location.assign(hotelLineEntryUrl(create)!)
   }
-  useEffect(() => {
-    if (!entryUrl) return
-    let active = true
-    void QRCode.toDataURL(entryUrl, { width: 280, margin: 3, errorCorrectionLevel: 'H' })
-      .then(value => { if (active) setQr(value) }, () => { if (active) setError('Could not load QR. Use Open LINE below.') })
-    return () => { active = false }
-  }, [entryUrl])
   useEffect(() => {
     let active = true
     const ticket = window.location.origin === ENGLISH_ORIGIN ? new URLSearchParams(window.location.hash.slice(1)).get('ticket') : null
     if (ticket) window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
-    void (async () => {
-      // Old saved links must leave the Padel host before doing any auth work.
-      if (isHotelLineEntry(window.location.search) && window.location.origin !== ENGLISH_ORIGIN) {
-        window.location.replace(hotelAccountUrl())
-        return null
-      }
-      const account = await bounded(() => finishHotelReturn(ticket))
-      if (account || ticket) return account
-      if (callback) {
-        const result = await recognise()
-        if (!active) return null
-        if (result.kind === 'member') window.location.replace(result.url)
-        else if (result.kind === 'guest') setGuest(true)
-        return null
-      }
-      if (active && entryUrl && /Line\//i.test(navigator.userAgent) && !sessionStorage.getItem('hotel:recognition-attempt')) {
-        sessionStorage.setItem('hotel:recognition-attempt', '1')
-        window.location.assign(entryUrl)
-      }
-      return account
-    })().then(value => { if (active) setUser(value) }, cause => { if (active) setError(cause.message) })
+    // LINE approval finishes at the existing registered callback. This page
+    // only redeems its one-use ticket into an EnglishSuccess browser session.
+    void bounded(() => finishHotelReturn(ticket)).then(value => { if (active) setUser(value) }, cause => { if (active) setError(cause.message) })
       .finally(() => { if (active) setBusy(false) })
     return () => { active = false }
-  }, [callback, entryUrl])
+  }, [])
   return <main className="hotel-shell">
     <header className="hotel-header"><a href={isHotelLineEntry(window.location.search) ? hotelAccountUrl() : '/hotel'}>ENGLISH<span>SUCCESS</span></a><span>HOTEL EDITION</span></header>
     {import.meta.env.DEV && window.location.pathname === '/hotel/preview' ? <><p className="hotel-eyebrow" style={{ textAlign: 'center', marginTop: 16 }}>LOCAL PREVIEW · NOT SIGNED IN</p><HotelLesson userId="local-preview" /></> : user ? <HotelLesson key={user.id} userId={user.id} /> : <section className="hotel-welcome">
       <div className="hotel-monogram" aria-hidden="true">H</div><p className="hotel-eyebrow">MAKE YOURSELF AT HOME</p>
       <h1>English,<br /><em>by ear.</em></h1>
       <p>Listen. Choose. Get a little more confident.</p>
-      {!callback && qr ? <div className="hotel-qr"><img src={qr} width="240" height="240" alt="Scan in LINE to sign in or create your account" /><a href={qr} download="english-success-line.png">Save QR</a><small>LINE → Add friends → QR → choose this image</small></div> : null}
-      <button className="hotel-line" disabled={busy || !entryUrl} onClick={() => void signIn(guest)}>{busy ? 'Connecting…' : guest ? 'Create my account' : callback ? 'Retry LINE' : 'Open LINE'}</button>
+      <button className="hotel-line" disabled={busy || !entryUrl} onClick={() => void signIn(true)}>{busy ? 'Connecting…' : 'Sign up with LINE'}</button>
+      <button className="hotel-reveal" disabled={busy || !entryUrl} onClick={() => void signIn(false)}>Sign in</button>
       {!entryUrl ? <p role="status">English Success LINE sign-in is being configured.</p> : null}
       {error ? <p role="alert">{error}</p> : null}
     </section>}

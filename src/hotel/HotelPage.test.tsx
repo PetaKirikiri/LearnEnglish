@@ -1,32 +1,50 @@
 // @vitest-environment happy-dom
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
-import { afterEach, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import HotelPage, { HotelLesson } from './HotelPage'
 const speech = vi.hoisted(() => ({ speak: vi.fn(), stop: vi.fn() }))
 vi.mock('../learning/speech', () => ({ speakEnglish: speech.speak, stopEnglishSpeech: speech.stop }))
 vi.mock('@line/liff', () => ({ default: { init: vi.fn() } }))
-vi.mock('qrcode', () => ({ default: { toDataURL: async () => 'data:image/png;base64,test' } }))
+vi.mock('./accountHandoff', () => ({ finishHotelReturn: async () => null }))
 vi.mock('../lib/supabase', () => ({ isSupabaseConfigured: false, supabase: { auth: { getSession: async () => ({ data: { session: null } }) } } }))
 const host = document.createElement('div')
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
 document.body.append(host)
 let root = createRoot(host)
+beforeEach(() => { window.location.href = 'https://learn-english-coral.vercel.app/hotel' })
 afterEach(async () => { await act(() => root.unmount()); root = createRoot(host); localStorage.clear(); vi.clearAllMocks(); vi.unstubAllEnvs() })
-it('offers a saveable LINE QR rather than accepting a name as identity', async () => {
+it('offers signup and sign-in without a QR or details form', async () => {
   vi.stubEnv('VITE_HOTEL_LIFF_ID', '2010311582-EnglishTest')
   await act(() => root.render(<HotelPage />))
-  expect(host.textContent).toContain('Open LINE')
-  expect(host.querySelector('a[download]')).not.toBeNull()
-  expect(host.querySelector('img')?.alt).toContain('Scan in LINE')
+  expect(host.textContent).toContain('Sign up with LINE')
+  expect(host.textContent).toContain('Sign in')
+  expect(host.querySelector('a[download]')).toBeNull()
+  expect(host.querySelector('img')).toBeNull()
   expect(host.querySelector('input')).toBeNull()
+  await act(() => (host.querySelector('.hotel-line') as HTMLButtonElement).click())
+  expect(window.location.origin).toBe('https://liff.line.me')
+  expect(new URLSearchParams(window.location.search).get('intent')).toBe('signup')
 })
-it('shows no QR or clickable login when a dedicated English entry is absent', async () => {
+it('does not create signup intent for an ordinary sign-in', async () => {
+  vi.stubEnv('VITE_HOTEL_LIFF_ID', '2010311582-EnglishTest')
+  await act(() => root.render(<HotelPage />))
+  await act(() => (host.querySelector('.hotel-reveal') as HTMLButtonElement).click())
+  expect(window.location.origin).toBe('https://liff.line.me')
+  expect(new URLSearchParams(window.location.search).has('intent')).toBe(false)
+})
+it('enables the existing LINE entry without a dedicated English configuration', async () => {
   vi.stubEnv('VITE_HOTEL_LIFF_ID', '')
   await act(() => root.render(<HotelPage />))
   expect(host.querySelector('img')).toBeNull()
-  expect((host.querySelector('.hotel-line') as HTMLButtonElement).disabled).toBe(true)
-  expect(host.textContent).toContain('being configured')
+  expect((host.querySelector('.hotel-line') as HTMLButtonElement).disabled).toBe(false)
+  expect(host.textContent).not.toContain('being configured')
+})
+it('offers signup after an unknown-account sign-in without opening LINE again', async () => {
+  window.location.href = 'https://learn-english-coral.vercel.app/hotel?line_result=new'
+  await act(() => root.render(<HotelPage />))
+  expect(host.textContent).toContain('No account yet. Tap Sign up')
+  expect(window.location.pathname).toBe('/hotel')
 })
 it('plays on start, waits for audio, records once, and only advances on Next', async () => {
   await act(() => root.render(<HotelLesson userId="test-user" />))

@@ -1,8 +1,7 @@
 # Hotel listening prototype
 
 Route: `/hotel`. Isolated from FIFA curriculum, scoreboard and name login.
-Local development only: `/hotel/preview` shows the lesson with a clearly labelled
-preview identity. Production builds do not enable this preview entry.
+Local-only `/hotel/preview` shows the lesson with a labelled preview identity.
 
 32 locally recorded Kokoro prompts; eight contrasts, two active focuses, every
 fourth question reviews earlier mastered contrasts. Four distinct correct items
@@ -11,45 +10,44 @@ long-term mastery. Errors restore support; revealed answers do not build mastery
 Both alternatives use identical opacity per aligned segment, with a readable floor.
 English transcript appears only after answering. Advancement is manual.
 
-Progress is versioned local storage scoped by the signed-in user's Supabase ID and browser origin.
+Progress is local storage scoped by the signed-in Supabase ID and browser origin.
 It is not cloud synced and does not award leaderboard points. Clearing browser data
-removes this mode's progress. Do not describe it as cross-device persistence.
+removes this mode's progress.
 
-## Separate LINE entry, shared accounts
+## Existing LINE approval, shared accounts, EnglishSuccess destination
 
-Requires `VITE_HOTEL_LIFF_ID`, a dedicated LIFF app in the existing LINE Login
-channel `2010311582`. Set its endpoint to
-`https://learn-english-coral.vercel.app/hotel`, full size, with `openid` and `profile`
-scopes. Leave Padel's existing entry untouched. Configure the resulting ID in
-Vercel and rebuild. Do not reuse Padel's LIFF ID: it is explicitly rejected.
-Without a dedicated ID, login and QR generation are disabled; there is no fallback.
-Only the account services/database are shared, not the website entry.
+Sign up → existing LINE approval → EnglishSuccess `/hotel`.
+No QR, player-claim token, name/email form or second registration confirmation.
+No new LINE Developers configuration or `VITE_HOTEL_LIFF_ID` is needed.
 
-The login starts on EnglishSuccess and goes directly to LINE, with no preliminary
-Padel website redirect. LINE entry first checks `line-liff-recognize`, which never
-creates an account. An unknown user sees **Create my account**. Only that explicit
-confirmation calls the existing `line-liff-auth` backend, which verifies LINE and
-creates the shared profile (or reuses an account created in the meantime).
-The entry screen provides a saveable QR and an Open LINE alternative. Each QR
-has a distinct request ID; this is only a signup entry link, NOT a database-bound
-Padel player claim token and NOT an identity credential. Account identity always
-comes from server-verified LINE. Scanning continues in the scanning LINE browser;
-it does not sign a different desktop browser in automatically.
-SDK and API stages have a 15-second overall deadline with aborted/late-write
-guards. Passive entry and OAuth redirects are bounded to prevent retry loops.
-Ordinary visits reuse an existing EnglishSuccess session after server validation
-with `getUser`; this is account reuse, not proof of a fresh LINE login. New visitors
-use LINE. After LIFF identity verification, `line-liff-recognize` issues the same
-one-use handoff ticket used by Padel. EnglishSuccess `/hotel` consumes
-it with `verifyOtp`; the ticket travels only in the fragment and is removed immediately.
-An already signed-in canonical account is never replaced. Both the LINE endpoint
-and OAuth return stay on EnglishSuccess `/hotel`. Old saved links served under a
-different origin are sent back to EnglishSuccess before any auth initialization.
-Audio uses the canonical EnglishSuccess origin. Progress remains local to the account origin.
-Test on an actual phone in LINE and in a normal browser before sharing with learners.
-No changes to shared SuccessPadel authentication or data are required.
-Console setup and real-device acceptance remain required; passing mocked tests
-does not establish that the configured LINE entry works on a new user's phone.
+The existing registered entry is `2010311582-o2c1DCnP` in channel `2010311582`.
+Its registered endpoint remains `https://success-padel-ffzt.vercel.app/login`.
+The URL carries `app=englishsuccess&mode=hotel` and, only for signup, `intent=signup`.
+At that endpoint, SuccessPadel's `src/main.tsx` intercepts these markers before
+loading App, its providers or any Padel interface. `englishSuccessEntry.ts` finishes
+LINE initialization there, then returns directly to EnglishSuccess. This transient
+callback still has the registered hostname; it displays only EnglishSuccess.
+Do not redirect away before LINE initialization completes or change Padel's endpoint.
+
+The callback verifies identity through existing `line-liff-recognize`. Known members
+are reused; unknown members with explicit signup intent go through `line-liff-auth`,
+which creates/reuses the shared account using verified LINE name/photo. Accounts
+are not created before identity verification. Unknown ordinary sign-ins return to
+Hotel with a signup prompt. Padel's existing browser session is neither read nor
+replaced. Existing QR player-claim links and other Padel entries remain unchanged.
+
+Recognition issues a one-use ticket. Only that ticket goes in the `/hotel#ticket=…`
+fragment, never LINE or session tokens. Hotel removes it immediately and uses
+`verifyOtp` to establish its own session in the shared account DB. A pre-existing
+EnglishSuccess session is validated and retained. Progress stays on this origin.
+
+**Release order:** deploy Padel's isolated callback first, then the English entry.
+Both use Git deployment. No DB migration or new edge function is needed.
+Callback network/SDK work is bounded to 20 seconds and prevents late follow-up
+writes after timeout. A cancelled login does not loop. LINE may still require its
+own authentication/consent; never promise that can be bypassed.
+Mocked tests cover new and existing identities but do not replace an actual new
+user completing LINE consent and arriving signed in at `/hotel` on a phone.
 
 ## Audio
 
