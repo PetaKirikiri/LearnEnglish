@@ -8,6 +8,8 @@ import { finishHotelReturn } from './accountHandoff'
 import { bounded } from './lineAccount'
 import { appDestination } from '../auth/appAccess'
 import HotelContentPage from './HotelContentPage'
+import HotelScoreboard from './HotelScoreboard'
+import { joinHotel, queueHotelAnswer, syncHotelAnswers } from './scoring'
 
 export default function HotelPage() {
   const [user, setUser] = useState<User | null>(null)
@@ -16,6 +18,7 @@ export default function HotelPage() {
   const entryUrl = hotelLineEntryUrl()
   const isAdmin = user ? appDestination(user.id, '/admin') === 'admin' : false
   const showContent = isAdmin && /^\/hotel\/content\/?$/.test(window.location.pathname)
+  const showScores = isAdmin && /^\/hotel\/scoreboard\/?$/.test(window.location.pathname)
   function signIn(create = false) {
     if (busy) return
     if (!entryUrl) return
@@ -32,8 +35,8 @@ export default function HotelPage() {
     return () => { active = false }
   }, [])
   return <main className="hotel-shell">
-    <header className="hotel-header"><a href={isHotelLineEntry(window.location.search) ? hotelAccountUrl() : '/hotel'}>ENGLISH<span>SUCCESS</span></a>{isAdmin ? <a className="hotel-content-link" href={showContent ? '/hotel' : '/hotel/content'}>{showContent ? 'Practice' : 'Content'}</a> : <span>HOTEL EDITION</span>}</header>
-    {showContent ? <HotelContentPage /> : import.meta.env.DEV && window.location.pathname === '/hotel/preview' ? <><p className="hotel-eyebrow" style={{ textAlign: 'center', marginTop: 16 }}>LOCAL PREVIEW · NOT SIGNED IN</p><HotelLesson userId="local-preview" /></> : user ? <HotelLesson key={user.id} userId={user.id} /> : <section className="hotel-welcome">
+    <header className="hotel-header"><a href={isHotelLineEntry(window.location.search) ? hotelAccountUrl() : '/hotel'}>ENGLISH<span>SUCCESS</span></a>{isAdmin ? <nav className="hotel-admin-nav" aria-label="Hotel tools"><a className="hotel-content-link" href="/hotel">Practice</a><a className="hotel-content-link" aria-current={showContent ? 'page' : undefined} href="/hotel/content">Content</a><a className="hotel-content-link" aria-current={showScores ? 'page' : undefined} href="/hotel/scoreboard">Scoreboard</a></nav> : <span>HOTEL EDITION</span>}</header>
+    {showScores ? <HotelScoreboard /> : showContent ? <HotelContentPage /> : import.meta.env.DEV && window.location.pathname === '/hotel/preview' ? <><p className="hotel-eyebrow" style={{ textAlign: 'center', marginTop: 16 }}>LOCAL PREVIEW · NOT SIGNED IN</p><HotelLesson userId="local-preview" /></> : user ? <HotelLesson key={user.id} userId={user.id} /> : <section className="hotel-welcome">
       <div className="hotel-monogram" aria-hidden="true">H</div><p className="hotel-eyebrow">MAKE YOURSELF AT HOME</p>
       <h1>English,<br /><em>by ear.</em></h1>
       <p>Listen. Choose. Get a little more confident.</p>
@@ -55,6 +58,12 @@ export function HotelLesson({ userId }: { userId: string }) {
   const [audio, setAudio] = useState('')
   const [heard, setHeard] = useState(false)
   const [storageError, setStorageError] = useState(false)
+  const [scoreError, setScoreError] = useState(false)
+  const sync = useCallback(() => {
+    if (userId === 'local-preview') return Promise.resolve()
+    return joinHotel().then(() => syncHotelAnswers(userId))
+      .then(() => setScoreError(false), () => setScoreError(true))
+  }, [userId])
   const round = useRef(0)
   const answered = useRef(false)
   const play = useCallback((item: HotelQuestion) => {
@@ -67,6 +76,13 @@ export function HotelLesson({ userId }: { userId: string }) {
     play(firstQuestion.current)
     return () => stopEnglishSpeech()
   }, [play])
+  useEffect(() => {
+    void sync()
+    const retry = () => { if (document.visibilityState === 'visible') void sync() }
+    window.addEventListener('online', retry)
+    document.addEventListener('visibilitychange', retry)
+    return () => { window.removeEventListener('online', retry); document.removeEventListener('visibilitychange', retry) }
+  }, [sync])
   function choose(index: number) {
     if (answered.current || !heard) return
     answered.current = true
@@ -74,6 +90,10 @@ export function HotelLesson({ userId }: { userId: string }) {
     const updated = recordAnswer(progress, question, index === question.correct, revealed)
     setProgress(updated)
     try { localStorage.setItem(`hotel:v1:${userId}`, JSON.stringify(updated)) } catch { setStorageError(true) }
+    if (userId !== 'local-preview') {
+      try { queueHotelAnswer(userId, question.id, index, revealed); void sync() }
+      catch { setStorageError(true) }
+    }
   }
   function next() {
     const item = nextQuestion(progress, question.id, ++round.current)
@@ -91,5 +111,6 @@ export function HotelLesson({ userId }: { userId: string }) {
       </button>)}</div>
       {selected === null ? <button className="hotel-reveal" onClick={() => setRevealed(true)} disabled={revealed}>{revealed ? 'Words visible' : 'Show words'}</button> : <div className="hotel-feedback" aria-live="polite"><p>{question.english}</p><button className="hotel-primary" onClick={next}>Next →</button></div>}
       {storageError ? <p role="alert">Progress could not be saved on this device.</p> : null}
+      {scoreError ? <p role="status">Scores not synced. <button className="hotel-reveal" onClick={() => void sync()}>Retry</button></p> : null}
   </section>
 }

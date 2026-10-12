@@ -14,3 +14,14 @@
 .hotel-content-english button[aria-pressed="true"] { background: #e1e9dd; }
 .hotel-content-english svg { width: 16px; height: 16px; fill: currentColor; }
 .hotel-header .hotel-content-link { font-size: 12px; letter-spacing: 0; font-weight: 500; padding: 12px 0; }
+.hotel-admin-nav { display: flex; gap: 16px; flex-wrap: wrap; justify-content: flex-end; }
+.hotel-admin-nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 5px; }
+.hotel-score-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.hotel-shell .hotel-score-title h1 { margin: 0; }
+.hotel-score-title button, .hotel-score-periods button { background: transparent; color: inherit; border: 1px solid #d9d4c6; border-radius: 5px; min-height: 40px; padding: 8px 12px; cursor: pointer; }
+.hotel-score-periods { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.hotel-score-periods button[aria-pressed="true"] { background: #e1e9dd; border-color: #52624d; }
+.hotel-score-name { display: flex; align-items: center; gap: 8px; }
+.hotel-score-name img { width: 30px; height: 30px; object-fit: cover; border-radius: 50%; }
+.hotel-scoreboard td { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hotel-scoreboard td:nth-child(3) { font-weight: 600; }

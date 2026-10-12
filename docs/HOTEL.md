@@ -1,6 +1,7 @@
 # Hotel listening prototype
 
 Route: `/hotel`. Isolated from FIFA curriculum, scoreboard and name login.
+Admin-only scoreboard: `/hotel/scoreboard`.
 Local-only `/hotel/preview` shows the lesson with a labelled preview identity.
 
 320 locally recorded Kokoro prompts; twenty focuses with sixteen items each,
@@ -36,9 +37,33 @@ Patterns recur across facilities: pool/gym/sauna, at/from/until/by, before/after
 open/closed, early/late, and can/cannot. Times, locations, charges and rules are
 fictional training situations, not verified policies for a real hotel.
 
-Progress is local storage scoped by the signed-in Supabase ID and browser origin.
-It is not cloud synced and does not award leaderboard points. Clearing browser data
-removes this mode's progress.
+Learning progression is local storage scoped by the signed-in Supabase ID and
+browser origin. Clearing browser data removes this mode's learning progression.
+Hotel membership, answers and points are stored separately in the shared accounts
+DB (SuccessPadel), using only `englishsuccess_hotel_*` tables and `hotel_*` RPCs.
+The language DB and existing FIFA/Padel point ledgers are unchanged.
+
+Scoring starts with this release; old local progress is not backfilled as points.
+Correct answers earn 10 points, or 5 after Show words. Each question awards at most
+10 per learner per Bangkok calendar day; improving an assisted answer awards the
+remaining 5. Wrong answers and repeats still count as activity. The DB verifies the
+canonical choice against the shipped answer registry and calculates the award;
+it never accepts client points/correct flags. Retries use stable event UUIDs, and a
+per-account transaction lock prevents concurrent devices from exceeding the cap.
+Offline answers remain in an account-scoped browser queue and sync on subsequent
+answers, Retry, reconnect, or opening the app. Periods use server receipt time;
+offline answers count on the day they sync. Clearing browser data loses unsynced
+answers, not already saved scores. Pending queues are not imported across accounts.
+
+The administrator sees all Hotel members, including zero scorers, with Today,
+This week, This month and All time (Bangkok boundaries), answers, accuracy, LINE
+photo/name and last activity. Membership begins when a signed-in user opens Hotel
+practice. Preview never registers or scores. The table and RPC are admin-only.
+Deploy `20261012120000_hotel_scoreboard.sql` to the accounts DB, then apply the
+registry produced by `scripts/hotelScoringCatalogue.ts` before deploying the UI.
+Refresh that registry whenever the Hotel catalogue changes. Run
+`supabase/tests/hotel_scoreboard.sql` inside a rollback transaction for scoring,
+retry, access and cross-product isolation checks.
 
 ## Existing LINE approval, shared accounts, EnglishSuccess destination
 
