@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import HotelPage, { HotelLesson } from './HotelPage'
 import { PETA_ACCOUNT_ID } from '../auth/appAccess'
+import { hotelQuestions } from './course'
 const speech = vi.hoisted(() => ({ speak: vi.fn(), stop: vi.fn() }))
 const account = vi.hoisted(() => ({ finish: vi.fn(async (): Promise<{ id: string } | null> => null) }))
 vi.mock('../learning/speech', () => ({ speakEnglish: speech.speak, stopEnglishSpeech: speech.stop }))
@@ -59,7 +60,7 @@ it('shows the content table only to the existing admin account', async () => {
   window.location.href = 'https://learn-english-coral.vercel.app/hotel/content'
   account.finish.mockResolvedValue({ id: PETA_ACCOUNT_ID })
   await act(() => root.render(<HotelPage />))
-  expect(host.querySelectorAll('tbody tr')).toHaveLength(32)
+  expect(host.querySelectorAll('tbody tr')).toHaveLength(hotelQuestions.length)
   expect(host.textContent).toContain('Practice')
   expect(speech.speak).not.toHaveBeenCalled()
 })

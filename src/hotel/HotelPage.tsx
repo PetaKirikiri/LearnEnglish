@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
-import { loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type HotelQuestion } from './course'
+import { isSkillComplete, loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type HotelQuestion } from './course'
 import './hotel.css'
 import { ENGLISH_ORIGIN, hotelAccountUrl, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
 import { finishHotelReturn } from './accountHandoff'
@@ -83,7 +83,7 @@ export function HotelLesson({ userId }: { userId: string }) {
   // Freeze fading until the next question: feedback must not move the support.
   const support = selected === null && !revealed
   return <section className="hotel-lesson">
-    <div className="hotel-journey" aria-label="Listening progress">{skills.map(skill => <span key={skill} className={(progress[skill]?.seen.length ?? 0) >= 4 ? 'learned' : ''} />)}</div>
+    <div className="hotel-journey" aria-label="Listening progress">{skills.map(skill => <span key={skill} className={isSkillComplete(progress, skill) ? 'learned' : ''} />)}</div>
       <button className="hotel-listen" onClick={() => play(question)} aria-label="Play English audio"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 27h10l12-10v30L22 37H12zM43 23q12 9 0 18M49 15q21 17 0 34" /></svg></button>
       <p className="hotel-audio" aria-live="polite">{audio}</p>
       <div className="hotel-answers">{order.map(index => <button key={`${question.id}-${index}`} disabled={selected !== null} className={`hotel-answer ${selected !== null && index === question.correct ? 'right' : selected === index ? 'wrong' : ''}`} onClick={() => choose(index)}>

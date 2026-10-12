@@ -11,10 +11,130 @@
     "text": "He is eating.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "hotel-100.wav": {
+    "fingerprint": "c2e1b6d09d409279f4e88f22c746eb4dad67536022fdfffdf50efd950dcce637",
+    "seconds": 1.965,
+    "text": "I drink coffee every morning.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-101.wav": {
+    "fingerprint": "d5abd6d4fec9daa114419dd9696a84729f95ef1c10b33cee6429a0f4c99590ba",
+    "seconds": 1.379,
+    "text": "They are swimming now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-102.wav": {
+    "fingerprint": "ebfbb34ead3759c6f9626a513374f21f1d600c28967c1aebcd0e6a07b9c95cf1",
+    "seconds": 1.71,
+    "text": "They swim every weekend.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-103.wav": {
+    "fingerprint": "deb01839843cc5f127aad4a3a1fe6fdc20316baf9dc98efd5929fc381113c029",
+    "seconds": 1.709,
+    "text": "I am walking to work now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-104.wav": {
+    "fingerprint": "f1d02de44bc60744a5b8193f1d38a40f6dfee3ea3dc6549590fd5669b1ab3a4a",
+    "seconds": 1.805,
+    "text": "I walk to work every day.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-105.wav": {
+    "fingerprint": "2d07fbef59448cc70ff0d14e1782d05868061f64924199c1a966e91344dc3ad1",
+    "seconds": 1.881,
+    "text": "I have already washed the towels.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-106.wav": {
+    "fingerprint": "4ae69c1414dd109102bd857c45b760a9494f52cb2bd7c8b1d25b17694f17f526",
+    "seconds": 1.902,
+    "text": "I am washing the towels now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-107.wav": {
+    "fingerprint": "e0506f027c10011152a574112b1cc128021d14fae7aa186110bea9d80f9c842c",
+    "seconds": 1.646,
+    "text": "She has already cooked dinner.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-108.wav": {
+    "fingerprint": "8d9ebb872fb5a182504fecbac0c2624ca09426c5d5fb35fd2512d655724559fb",
+    "seconds": 1.613,
+    "text": "She is cooking dinner now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-109.wav": {
+    "fingerprint": "45be4ef075f2ed7634522022dff24efb2c8bb18d2bd7c58cfa009faf23fb6514",
+    "seconds": 1.444,
+    "text": "He has already paid.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "hotel-11.wav": {
     "fingerprint": "3d6f36a543d5eb165610fba40b13b9b10610a4d5cd284ee7bfe9bfd01702ea4c",
     "seconds": 1.203,
     "text": "She is sleeping.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-110.wav": {
+    "fingerprint": "c2b94dbf49149f5b319cb17c55246a53d8fe409a50c6d324ae7a819a8be43956",
+    "seconds": 1.349,
+    "text": "He is paying now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-111.wav": {
+    "fingerprint": "9513a4edcfebfb2ac6eeb89f94b88c81c5ff7e55b5c9806a6aa959df0a7eab5d",
+    "seconds": 1.646,
+    "text": "We have already booked a room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-112.wav": {
+    "fingerprint": "3ee8ba1a3998120723488d62f9ed447818fb1df4fe137a4ba67cc8b13f46e925",
+    "seconds": 1.645,
+    "text": "We are booking a room now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-113.wav": {
+    "fingerprint": "5a5561c668dc8e73b171f33469efd370184704d4340d08bfe5aaa3272ae6a5d2",
+    "seconds": 1.827,
+    "text": "I have already called a taxi.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-114.wav": {
+    "fingerprint": "45ed689ced7f157fbbe0b28335e279a3c56a62f1ac359265882d9db881d1a9d6",
+    "seconds": 1.848,
+    "text": "I am calling a taxi now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-115.wav": {
+    "fingerprint": "d547bdc84be8e5b0f65535e1f2de6223a4ab6be88b74a7c89e977f5cc2106230",
+    "seconds": 1.837,
+    "text": "They have already packed their bags.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-116.wav": {
+    "fingerprint": "69ce9fe96f9f03545fad3e719d0ce948fce96c96907f742557f75cf0d54830ea",
+    "seconds": 1.805,
+    "text": "They are packing their bags now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-117.wav": {
+    "fingerprint": "330cfde946c353ebbd791bc2cc8a66bd1de78f6b17788cbb254b4bd60d7ffabd",
+    "seconds": 2.094,
+    "text": "I am going to wash the towels.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-118.wav": {
+    "fingerprint": "4ae69c1414dd109102bd857c45b760a9494f52cb2bd7c8b1d25b17694f17f526",
+    "seconds": 1.902,
+    "text": "I am washing the towels now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-119.wav": {
+    "fingerprint": "21aa974c5f024fe3ff50163ba8987b1840c2d18060e45528b4a5d7673c016ae4",
+    "seconds": 1.667,
+    "text": "She is going to cook dinner.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "hotel-12.wav": {
@@ -23,10 +143,130 @@
     "text": "He is sleeping.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "hotel-120.wav": {
+    "fingerprint": "8d9ebb872fb5a182504fecbac0c2624ca09426c5d5fb35fd2512d655724559fb",
+    "seconds": 1.613,
+    "text": "She is cooking dinner now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-121.wav": {
+    "fingerprint": "3c6efabdd9ecf654dd82cc62d994c5fef0a29915060ccb1fde13c30110669864",
+    "seconds": 1.39,
+    "text": "He is going to pay.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-122.wav": {
+    "fingerprint": "c2b94dbf49149f5b319cb17c55246a53d8fe409a50c6d324ae7a819a8be43956",
+    "seconds": 1.349,
+    "text": "He is paying now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-123.wav": {
+    "fingerprint": "8586d6b9a3e2d02f24b4f4912efed6d93ac8a2533d975df56b499d8c406df057",
+    "seconds": 1.677,
+    "text": "We are going to book a room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-124.wav": {
+    "fingerprint": "3ee8ba1a3998120723488d62f9ed447818fb1df4fe137a4ba67cc8b13f46e925",
+    "seconds": 1.645,
+    "text": "We are booking a room now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-125.wav": {
+    "fingerprint": "9a35f2993b057ba706faf935a00d98eb8db72a0a367dad3dd9b6b2fb0988b48a",
+    "seconds": 1.443,
+    "text": "I will call a taxi.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-126.wav": {
+    "fingerprint": "45ed689ced7f157fbbe0b28335e279a3c56a62f1ac359265882d9db881d1a9d6",
+    "seconds": 1.848,
+    "text": "I am calling a taxi now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-127.wav": {
+    "fingerprint": "063ad11d7b09f966fdba11a9c89c4081f26ce5341372191adb27d6c3400fa724",
+    "seconds": 1.465,
+    "text": "They will leave tomorrow.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-128.wav": {
+    "fingerprint": "d61dc54a5dbb45db905e0ef895061ed193f0ff04f7f77430cfa3770a08235a80",
+    "seconds": 1.379,
+    "text": "They are leaving now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-129.wav": {
+    "fingerprint": "95f0968e7b6d0e0327bd826ff1d5a5a49714a1960d5ededd18907ab569965d9f",
+    "seconds": 1.088,
+    "text": "One towel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "hotel-13.wav": {
     "fingerprint": "854b58dff0c68d5d4d420201ed7ad49667e7f2468d06b2e9181c340e8ac4f339",
     "seconds": 1.38,
     "text": "The woman is eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-130.wav": {
+    "fingerprint": "1cd91e720f98add933156328407826a25d63dfb1dc319fcdcb3bd1564e751f4a",
+    "seconds": 1.119,
+    "text": "Two towels.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-131.wav": {
+    "fingerprint": "7d0a415539c8bef198b9baa6a7d10cc42c0f03ad352129e7af33a1fe2ef9d624",
+    "seconds": 1.421,
+    "text": "I need one towel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-132.wav": {
+    "fingerprint": "c02b7630fae46fe8a75fd46623511a188525b27d4e9bd4095cada78c5f620032",
+    "seconds": 1.548,
+    "text": "I need two towels.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-133.wav": {
+    "fingerprint": "b794372a53f1883b03077792f9be7e8b94c6d7e4fac847c6006e9f3a786f3d11",
+    "seconds": 1.024,
+    "text": "One key.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-134.wav": {
+    "fingerprint": "528d4807d83f76359d99e5a71f5c77ffe81174dc084e088a902d114aff4eb91e",
+    "seconds": 1.098,
+    "text": "Three keys.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-135.wav": {
+    "fingerprint": "768ebfe57f42c4dbd7bc333f814d6157c39bd1f8c0e33ea5cf91b927295bfe17",
+    "seconds": 1.39,
+    "text": "We need one key.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-136.wav": {
+    "fingerprint": "ce491887dd59e16a3a49688b646ce447d9b341fa86c7400667744106ca298684",
+    "seconds": 1.525,
+    "text": "We need three keys.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-137.wav": {
+    "fingerprint": "1c8f5f141f081adf5d8a6d057dcd90c2c0ad5ef7f3427f4140e415b670787594",
+    "seconds": 1.045,
+    "text": "One guest.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-138.wav": {
+    "fingerprint": "ca7ca457e3327eb9822a0da600e77bc4de5dd3d40e900551cc9b35ad403873eb",
+    "seconds": 1.065,
+    "text": "Two guests.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-139.wav": {
+    "fingerprint": "eca3c8f24d234256c233bb775982fc410a20c97203690af2523a90d407b39a7f",
+    "seconds": 1.784,
+    "text": "There is one guest outside.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "hotel-14.wav": {
@@ -35,10 +275,130 @@
     "text": "The woman is sleeping.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "hotel-140.wav": {
+    "fingerprint": "d013e4797eb703b652b98a92405d23b126b8448a9e51608d2ccad616b731b352",
+    "seconds": 1.711,
+    "text": "There are two guests outside.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-141.wav": {
+    "fingerprint": "aba4230f7654cd20a49b6626c940d112d2b6d7777d8763af0abea7197b12b144",
+    "seconds": 1.067,
+    "text": "One night.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-142.wav": {
+    "fingerprint": "656897deb50a270482cb4fc249372af8d5a7b2369c9130301424025418a2446f",
+    "seconds": 1.131,
+    "text": "Three nights.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-143.wav": {
+    "fingerprint": "af98c8ecc3992b99e5c385c238e3f24cf9efb72f6db58bf0f789c142c5eed3da",
+    "seconds": 1.741,
+    "text": "We are staying for one night.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-144.wav": {
+    "fingerprint": "137249a730945961401af65207eff6490bb48a8feb2dadf4a4b550fd2653dfda",
+    "seconds": 1.804,
+    "text": "We are staying for three nights.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-145.wav": {
+    "fingerprint": "944ff96f7a3d1f9e21b377a1adc9a289bdb5345418a9a466899092be02e7b74e",
+    "seconds": 1.003,
+    "text": "My bag.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-146.wav": {
+    "fingerprint": "1f7613e79c27d05aef5703d5f7861b80d0e57fb52490ae008c484d0997ac68f8",
+    "seconds": 1.045,
+    "text": "Your bag.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-147.wav": {
+    "fingerprint": "54fcf4e947249a2c701d6f105df59d04d58bb82c14dd23452809181befc01da7",
+    "seconds": 1.269,
+    "text": "This is my bag.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-148.wav": {
+    "fingerprint": "8cbd9a5e3838a07b9b24fb44ef324a0ca4be1c03119aa697229f4b97f5aaaa23",
+    "seconds": 1.246,
+    "text": "This is your bag.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-149.wav": {
+    "fingerprint": "3a8c056fe1975d557125c16a3b795f2945e29489c3ba9a7872f394ce15d60126",
+    "seconds": 0.981,
+    "text": "Her key.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "hotel-15.wav": {
     "fingerprint": "d489c2cd73ed652a0e72eeda46dfe1f78a7b6b01e82853edbdaa7325ca7536a0",
     "seconds": 1.327,
     "text": "The man is eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-150.wav": {
+    "fingerprint": "471e4305c9eaca084ecb596f2989f0a56be2f38ee4bc825b6ccacfa4712d8b1c",
+    "seconds": 1.003,
+    "text": "His key.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-151.wav": {
+    "fingerprint": "90800158fab05cbc33d7a38a6a995c61a7a501befb108204243049ca670fe77a",
+    "seconds": 1.267,
+    "text": "This is her key.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-152.wav": {
+    "fingerprint": "f1478277c9509c6d4a344fbce1059148173230ab376003022d32e38164c9463d",
+    "seconds": 1.225,
+    "text": "This is his key.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-153.wav": {
+    "fingerprint": "0468486fa4780b66a879f2562c77104f8a71987017b66c31b091ff570355abfa",
+    "seconds": 1.003,
+    "text": "Our room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-154.wav": {
+    "fingerprint": "167bcecf9d5daacdca4012d44417f8729a4a002210b79b212556110f1885a770",
+    "seconds": 1.003,
+    "text": "Their room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-155.wav": {
+    "fingerprint": "952f25e1e75e537d5373674b26e7363f4523d63bb860c1078bf128686fb67ca3",
+    "seconds": 1.391,
+    "text": "Our room is ready.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-156.wav": {
+    "fingerprint": "b797ca2e03f98c8a0eebe27eaa0ede23acc74ff1b5828527a576fec73454fbf9",
+    "seconds": 1.434,
+    "text": "Their room is ready.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-157.wav": {
+    "fingerprint": "5879e10e4564f5c1369939c16f3311bd836506adb0a143e91749e1dfc2448229",
+    "seconds": 1.34,
+    "text": "My phone is here.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-158.wav": {
+    "fingerprint": "f146382d1b5b7cec1fb34f469e311831c3c1f8fe713f002370e426491e50cdff",
+    "seconds": 1.33,
+    "text": "Your phone is here.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-159.wav": {
+    "fingerprint": "25f9df7d900d8f911b15dfa65bbbba02b0021a7cab8fff5270cbc2047b7383dd",
+    "seconds": 1.613,
+    "text": "Her breakfast is ready.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "hotel-16.wav": {
@@ -47,10 +407,130 @@
     "text": "The man is sleeping.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "hotel-160.wav": {
+    "fingerprint": "e6ef37f9f0ebae0e1726927fa0c4f08149140acd51afca823f094dc0587a5072",
+    "seconds": 1.667,
+    "text": "His breakfast is ready.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-161.wav": {
+    "fingerprint": "ba552a61385af099e9eb50679ec3f165fe04a97e5c4bf2974ded216a335cf0c2",
+    "seconds": 1.339,
+    "text": "The room is ready.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-162.wav": {
+    "fingerprint": "d6ddaff3d3505494ba7e6b02ef98148af2f8d84a69f17fd74872039fdf0c7387",
+    "seconds": 1.635,
+    "text": "The room is not ready.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-163.wav": {
+    "fingerprint": "34790aafee51460790a3a26c8519a574a670cd595530511324b1c2646a0e98c5",
+    "seconds": 1.381,
+    "text": "The door is open.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-164.wav": {
+    "fingerprint": "c6453bd6b9b943f428259c8ed65f843f3e4fbea88fee6a5f272551b91056ab5c",
+    "seconds": 1.593,
+    "text": "The door is not open.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-165.wav": {
+    "fingerprint": "c26180d281919598b7f2a4348ea0c8749491cd42d53d75806509e98987feaa22",
+    "seconds": 1.226,
+    "text": "I have a key.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-166.wav": {
+    "fingerprint": "7535dcfc54cf55f6688a513856ceb782861b8bcf15ab054b3fcd18c44dfc58ee",
+    "seconds": 1.485,
+    "text": "I do not have a key.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-167.wav": {
+    "fingerprint": "5ab03374f90ce54276495a0a9bf7b3696062f684cc097a1e68654f357c1fa8d4",
+    "seconds": 1.131,
+    "text": "We have a room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-168.wav": {
+    "fingerprint": "8e69d2364d4a4541ce023a1f49d3ecf90930bc230576d6845eaa4c0dec013475",
+    "seconds": 1.433,
+    "text": "We do not have a room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-169.wav": {
+    "fingerprint": "6df52e09d07660793ae36100d80720dbf5eb32d341206cd32ef37a7bfcc01a1e",
+    "seconds": 1.329,
+    "text": "She wants coffee.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "hotel-17.wav": {
     "fingerprint": "7e4558613d5e820e102f4bd89332f1572bcde2cfd68056c8e31cf3ef9a8aceee",
     "seconds": 1.045,
     "text": "In the room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-170.wav": {
+    "fingerprint": "419f41c1d5933cd57b3b9c67cb8af64b06bcc44ad90940fc4768ca50bd4f871b",
+    "seconds": 1.571,
+    "text": "She does not want coffee.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-171.wav": {
+    "fingerprint": "5552a7a7e809b1b3eb12cdb2e566c4f379b2970fb1037aefa5d3253fd44fa4b8",
+    "seconds": 1.265,
+    "text": "He needs help.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-172.wav": {
+    "fingerprint": "aec385b28a5d350f20af96d41b46d10ff96a86e08258b6eb476cc8d4d3f19f0c",
+    "seconds": 1.569,
+    "text": "He does not need help.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-173.wav": {
+    "fingerprint": "6edaf02d1905e611ba2aa50cd408de96a858686c39e8f822bfbdd32bcfd1295c",
+    "seconds": 1.677,
+    "text": "Breakfast is included.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-174.wav": {
+    "fingerprint": "554aa985c30f8e2ed5b38d1d4331e9ce2e3a839bb356d4281f7a4aff1d5c3323",
+    "seconds": 1.913,
+    "text": "Breakfast is not included.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-175.wav": {
+    "fingerprint": "379bbb0a2cf4be67628026c2bf5d9a88fdd8cf95ba9181b9223845d394902aee",
+    "seconds": 1.286,
+    "text": "The guests are here.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-176.wav": {
+    "fingerprint": "0c97086dbe8343790f1be73c4a9f4e6327e5c86f13f0f8075a7293de46d03827",
+    "seconds": 1.455,
+    "text": "The guests are not here.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-177.wav": {
+    "fingerprint": "d59730855305f7cac1502c843f9b54170bd3bcf8680c8830f3ba9e04b8b76ca8",
+    "seconds": 1.433,
+    "text": "Can you open the door?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-178.wav": {
+    "fingerprint": "b91fec49565348d00d85c892b4ec9e0351a3739014507c060a1f06b9fa0f61c8",
+    "seconds": 1.475,
+    "text": "Can you close the door?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-179.wav": {
+    "fingerprint": "9ec285719240d57a1c18d31bb34be2704a1dd5e6cd9df306ce2669e3db0ab74a",
+    "seconds": 1.549,
+    "text": "Could you open the window?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "hotel-18.wav": {
@@ -59,10 +539,88 @@
     "text": "In the kitchen.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "hotel-180.wav": {
+    "fingerprint": "a0c64fff148bf42618183354fe5c96d6fef2f48342e3e179598ee28c859d638f",
+    "seconds": 1.539,
+    "text": "Could you close the window?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-181.wav": {
+    "fingerprint": "ed171bd3319897863a02f370491707c9aa09aa8818c0178ba3541d4387967847",
+    "seconds": 1.38,
+    "text": "Can I have a towel?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-182.wav": {
+    "fingerprint": "f36515e5ed7144c0d36e7276119f174314f811a9f64735188e360a7de0c85b88",
+    "seconds": 1.538,
+    "text": "Can I have a blanket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-183.wav": {
+    "fingerprint": "2a56635c1ae864d2a6fc41a897398cc65c8f1f24cc2f063105d71942871d8df9",
+    "seconds": 1.455,
+    "text": "Could I have some water?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-184.wav": {
+    "fingerprint": "442bc56ed5ce43af4f3290164473909ad885000e148e16b9fa9be86bd12d0991",
+    "seconds": 1.549,
+    "text": "Could I have some coffee?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-185.wav": {
+    "fingerprint": "597afab7b96cd571d8b83c5ceab4b1a6943716ec414b85a6f294994ed758718c",
+    "seconds": 1.625,
+    "text": "Could you bring the bags here?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-186.wav": {
+    "fingerprint": "84d71fff33bd94d631c8086fb062e4f3da063902379905e26ba1ff2a9f2d06d6",
+    "seconds": 1.838,
+    "text": "Could you take the bags outside?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-187.wav": {
+    "fingerprint": "5060b2a2ac006ebb7284ae493fbf1cef8db68d008b2c87e1e4fa2ea751810195",
+    "seconds": 1.211,
+    "text": "Can you help me?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-188.wav": {
+    "fingerprint": "2f7e4934263e0d08aea3bcc337098201ea6c863bb46d3d322f76f00facfe75d2",
+    "seconds": 1.211,
+    "text": "Can you help him?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-189.wav": {
+    "fingerprint": "1c451ef59f04a4f15e854c9d59c92e70ab4d0b54c7330b2e02761bae4200bed4",
+    "seconds": 1.701,
+    "text": "Could you speak more slowly?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "hotel-19.wav": {
     "fingerprint": "7fdab1f75efd7881a13007d847c0833ec608e158188f70eb8b386c553c8d4b5e",
     "seconds": 1.255,
     "text": "She is in the room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-190.wav": {
+    "fingerprint": "61231e94b312320f5a17b4230ef45ba414589c5cd1077ac1b5f140db7396f116",
+    "seconds": 1.444,
+    "text": "Could you speak louder?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-191.wav": {
+    "fingerprint": "6813db1b77e7d039fb202e15c3c1e3e6c508c46b9b90bc08635236a4c38e1c28",
+    "seconds": 1.245,
+    "text": "Please wait here.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-192.wav": {
+    "fingerprint": "5ad984b5f1be7aac88d0947cf0ba8ba1c1d40a1040112b98ad6d05bcbe058520",
+    "seconds": 1.477,
+    "text": "Please wait outside.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "hotel-2.wav": {
@@ -155,10 +713,112 @@
     "text": "I am cleaning the room now.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "hotel-33.wav": {
+    "fingerprint": "ba573d163cabbdb674633a09dc33daac67e6035e008167e8c1d3312f06544e4b",
+    "seconds": 0.959,
+    "text": "The guest.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-34.wav": {
+    "fingerprint": "5f88e6977c220e20b909370d88b81240fde94017b2ed120bd860281b156d3a13",
+    "seconds": 1.286,
+    "text": "The receptionist.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-35.wav": {
+    "fingerprint": "e67ca8cdc17f7e948254f902485f4f103e249f909dcf2ca03fe6d1d4e5d5419b",
+    "seconds": 1.424,
+    "text": "The guest is waiting.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-36.wav": {
+    "fingerprint": "a001403d2bf04c7e00ca6701d0be779a8a1ae6e2af2856db5cb70ff420aa34a9",
+    "seconds": 1.817,
+    "text": "The receptionist is waiting.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-37.wav": {
+    "fingerprint": "aa64cd21e98cd07f540c366d1bd0d3664d8b2383389f0d34106738a190e50f4e",
+    "seconds": 0.939,
+    "text": "The boy.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-38.wav": {
+    "fingerprint": "cc55f424e17416a4dbae606fbebb17201467b655ae64cfa5aeed80a1bd6ecd22",
+    "seconds": 0.96,
+    "text": "The girl.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-39.wav": {
+    "fingerprint": "7ea7cb516f2c858a95cde8c6bff52974882097c9fda8f51f835508a1f4b7f52a",
+    "seconds": 1.509,
+    "text": "The boy is outside.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "hotel-4.wav": {
     "fingerprint": "cc73b9c67ae34848a452a4e506a2ac6e07a427349fe0e8f0d3c845a4c774a771",
     "seconds": 1.235,
     "text": "The man is here.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-40.wav": {
+    "fingerprint": "659a2e46dfc9efd4be14d2667841b32cb57ef7f95157b19ecffdda0bdeff5d03",
+    "seconds": 1.531,
+    "text": "The girl is outside.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-41.wav": {
+    "fingerprint": "ad6e4c8912f32d42599acccad01d66b7e91f622ed6e183321795412055f09072",
+    "seconds": 1.011,
+    "text": "The teacher.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-42.wav": {
+    "fingerprint": "4372549785a2a4a555c41789fd587e49c29e0eefaebbde5559975820d5e665ad",
+    "seconds": 1.087,
+    "text": "The student.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-43.wav": {
+    "fingerprint": "09a2e01b611bad5cdbaa9837b8e078a2bc7a300e5115ee8db13cf7aff534717b",
+    "seconds": 1.592,
+    "text": "The teacher is talking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-44.wav": {
+    "fingerprint": "6d9bfbc6017b669b8558a9ae2361ea46e200559c40f8e4424a7e203f224ff93b",
+    "seconds": 1.646,
+    "text": "The student is talking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-45.wav": {
+    "fingerprint": "c1676cc6a0a2293e7e9fe81f36f9c119339f1f83d63d2366b244b10c9d36f14c",
+    "seconds": 0.939,
+    "text": "A bag.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-46.wav": {
+    "fingerprint": "66a7b42ee1e2f03caf8139fb9053476375de416c38aec05ace83107c9acfd96b",
+    "seconds": 1.024,
+    "text": "A phone.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-47.wav": {
+    "fingerprint": "12b817a00165ebff634ca3cbb0989a814c50c81316ca41366a5ab2615dc623ba",
+    "seconds": 1.205,
+    "text": "I have a bag.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-48.wav": {
+    "fingerprint": "98e9440fbcb64f6b1759f0bac059ed8b2d05c7cc4f58d73d99fb6085d0cf4b72",
+    "seconds": 1.216,
+    "text": "I have a phone.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-49.wav": {
+    "fingerprint": "4453751f9fc96716d93227258c884c24d4b61eb5e133d2ffae939012a2f4d7db",
+    "seconds": 1.003,
+    "text": "A pillow.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "hotel-5.wav": {
@@ -167,10 +827,130 @@
     "text": "A towel.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "hotel-50.wav": {
+    "fingerprint": "d6e57948c40639f4f26a7668a346ceab7d4d4303e367b768e82fbbf836e56c99",
+    "seconds": 1.131,
+    "text": "A blanket.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-51.wav": {
+    "fingerprint": "f17067d0fccf10868ad6209579e1ef92c399cfda323f41508153435bdefe2c1e",
+    "seconds": 1.411,
+    "text": "Please bring a pillow.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-52.wav": {
+    "fingerprint": "f2b6b4d9d93f67a440819896c89ed10814a811e267916b14d21e093aa7489ea6",
+    "seconds": 1.603,
+    "text": "Please bring a blanket.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-53.wav": {
+    "fingerprint": "233ae1a6c1473707d6dcc03faf0f67dfc76d0ab07d2bee01cf61c2f5e5cdb809",
+    "seconds": 0.926,
+    "text": "A cup.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-54.wav": {
+    "fingerprint": "c231c4a8880bff228f35fc1e2a81da1ce911753197e4cf0b01820e68f4e118f5",
+    "seconds": 1.024,
+    "text": "A plate.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-55.wav": {
+    "fingerprint": "5bc1bc9b2001d8d7951267068e923f1337b67d9b856e16b273506df9fe1c7dde",
+    "seconds": 1.645,
+    "text": "There is a cup on the table.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-56.wav": {
+    "fingerprint": "ffdf3bb83ba069844ef7208a165bd9f320ea707b0f4b9b0fb4c6a4af8585d686",
+    "seconds": 1.741,
+    "text": "There is a plate on the table.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-57.wav": {
+    "fingerprint": "d97de0e990f38a4b983c5066bd3d4343ad72a098a3625382f5ed120bdb18483d",
+    "seconds": 1.193,
+    "text": "She is working.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-58.wav": {
+    "fingerprint": "9c69ee785d77f4039877b61a4c3670ccd7eed50e723f196d98d8a76b3ca513e8",
+    "seconds": 1.172,
+    "text": "He is working.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-59.wav": {
+    "fingerprint": "518005e6b9182085c775bbd35dde1bbe474ce67c031c1390007feb0f40681599",
+    "seconds": 1.286,
+    "text": "She needs a key.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "hotel-6.wav": {
     "fingerprint": "8bc1d21ec4930ad7e3085e608ff0a45fe723bd0297297a2bf1af309efcf7abd5",
     "seconds": 0.939,
     "text": "A key.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-60.wav": {
+    "fingerprint": "38c7fc512de124a01b7667fbb01e6129b45da3d22807906a7f5533b9cc6c3022",
+    "seconds": 1.265,
+    "text": "He needs a key.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-61.wav": {
+    "fingerprint": "e10b16a6592cf3b665a45ca727c06bfe33dfcaacd7e2c592456d3c3b378c9246",
+    "seconds": 1.216,
+    "text": "I am waiting.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-62.wav": {
+    "fingerprint": "a2b08d7fa76c838af098103e2b76ef26abe915a78524a2da61799af2695591cd",
+    "seconds": 1.138,
+    "text": "We are waiting.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-63.wav": {
+    "fingerprint": "a705ebcd7792fee8d293e78db753ad86eebc0e5bb4da0cfc22886e2b67b4e451",
+    "seconds": 1.202,
+    "text": "I need a room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-64.wav": {
+    "fingerprint": "5e66cc1a7528085b46f0100cc6178f289dd8ad48e24ef57840daa87726850c73",
+    "seconds": 1.179,
+    "text": "We need a room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-65.wav": {
+    "fingerprint": "fa82b5bce5ade606c67d688c8abd0cbeb77c3bd4149a359781132d5a3105a336",
+    "seconds": 1.024,
+    "text": "He is here.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-66.wav": {
+    "fingerprint": "9e72424b807d2dce5d7e8d3504dcd354633ec4b80b75c2d3298d7c384d429a75",
+    "seconds": 1.055,
+    "text": "They are here.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-67.wav": {
+    "fingerprint": "7473b8de1d4f943aabd41a4acc5aa16e368652c348a56af0d1af9b12e3aa2b77",
+    "seconds": 1.477,
+    "text": "He wants breakfast.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-68.wav": {
+    "fingerprint": "4ba0ec07f21efdd83625a034703b4ea811c63ed5b17ae628566bd33ca0f8a143",
+    "seconds": 1.423,
+    "text": "They want breakfast.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-69.wav": {
+    "fingerprint": "d93996d2d9e81f77cf8c3c034a61178d6f606974bc2ab6d4746257a728df9c43",
+    "seconds": 1.173,
+    "text": "I am reading.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "hotel-7.wav": {
@@ -179,16 +959,196 @@
     "text": "I need a towel.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "hotel-70.wav": {
+    "fingerprint": "bb3d688e9b3cac2015cce0598d7f485317a92cade663295fd9e21d5a629c5739",
+    "seconds": 1.259,
+    "text": "I am writing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-71.wav": {
+    "fingerprint": "331150be139bf5887134ec80b3be33b6f86d26e8ccb2565e88e40bf60d705160",
+    "seconds": 1.152,
+    "text": "She is reading.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-72.wav": {
+    "fingerprint": "9320a8ce4f55788fc86a636f0fe83be992b2cc8dcbd920b869d9d155b9860f51",
+    "seconds": 1.216,
+    "text": "She is writing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-73.wav": {
+    "fingerprint": "6ec6fd91267c63861529ebd966e42dbc3a6e17b70d254d04bf39ea63433c59fb",
+    "seconds": 1.528,
+    "text": "I am opening the door.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-74.wav": {
+    "fingerprint": "f9951485ef35aa37d70c35fc769b62af44f0b7c831877135853a1e2c906e2d90",
+    "seconds": 1.592,
+    "text": "I am closing the door.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-75.wav": {
+    "fingerprint": "62c9cba5a2d1c3bfac559802b552d7bc0de4134a1e504327da06688edaf6b34e",
+    "seconds": 1.623,
+    "text": "He is opening the window.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-76.wav": {
+    "fingerprint": "4cc7dca09627b718128f1f0def263a28c32f254bb3bbdd2b1316b172fffd283e",
+    "seconds": 1.666,
+    "text": "He is closing the window.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-77.wav": {
+    "fingerprint": "8bb3e2da40aaa1d3d26f9948027251dbafdc2195d3c44a5d089909cd42ee4958",
+    "seconds": 1.339,
+    "text": "The guest is sitting.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-78.wav": {
+    "fingerprint": "099f1cefcdb596f19d69b244ee0841174b4910d299c06b8435a126a090b3ce2e",
+    "seconds": 1.403,
+    "text": "The guest is standing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-79.wav": {
+    "fingerprint": "85cd5e1b1739b393b6f5c8fe025b52c68211536e40fc13e17141b7ee94e58f4d",
+    "seconds": 1.7,
+    "text": "The woman is sitting outside.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "hotel-8.wav": {
     "fingerprint": "a845fee89d2b6f0e1eee4c14385fd831b930f44ef575f6d395084a4c7abba93a",
     "seconds": 1.203,
     "text": "I need a key.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "hotel-80.wav": {
+    "fingerprint": "a5c5fd90e9cb1fc28e5c685ddc43ae49853a17acaedef3e45fdabd8f83484b22",
+    "seconds": 1.859,
+    "text": "The woman is standing outside.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-81.wav": {
+    "fingerprint": "ee49b84e0245a362b0445643f8a989eafb45a636cf09ca46a2b37bf9f5c55ee3",
+    "seconds": 1.097,
+    "text": "On the table.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-82.wav": {
+    "fingerprint": "c90b62b1a37540f69734c7ee7b711a2bc5d791434b7a6259b0162d30ec189850",
+    "seconds": 1.223,
+    "text": "Under the table.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-83.wav": {
+    "fingerprint": "1d29bb2b93f99dbe655b09af93dc644ada2d80216f789a0f35b797367759c4b2",
+    "seconds": 1.646,
+    "text": "The bag is on the table.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-84.wav": {
+    "fingerprint": "deb81e7c857aec506babb1000ae50979c36f99454b2eab4e60929732f6ae5186",
+    "seconds": 1.721,
+    "text": "The bag is under the table.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-85.wav": {
+    "fingerprint": "e1027f450cdf9a4fb43df0fed3a9b9c735eb08963a8fb64e2989511e34b157b6",
+    "seconds": 1.243,
+    "text": "Inside the room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-86.wav": {
+    "fingerprint": "3416f98b1a12c9f183e54b4c4825f48407743974bd66c5564f3101d061e950b8",
+    "seconds": 1.285,
+    "text": "Outside the room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-87.wav": {
+    "fingerprint": "669286da9b9a0ec95da9bf745234ec1d19326ef5c70e121b2a9368aeb4b9ec40",
+    "seconds": 1.807,
+    "text": "The guest is inside the room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-88.wav": {
+    "fingerprint": "a748637a68e354fbfa7c3be96df375caff6e8053ef91c5897593bd025d4a8dc0",
+    "seconds": 1.849,
+    "text": "The guest is outside the room.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-89.wav": {
+    "fingerprint": "38d92dc583d632fac7061763d3252f7cc9c811046fa6da32fdfadea84575feb1",
+    "seconds": 1.265,
+    "text": "Next to the door.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "hotel-9.wav": {
     "fingerprint": "7b8f23035939f2d36f0c1ee865a811db8f1317102c913881ee3b81414652d9b7",
     "seconds": 1.098,
     "text": "She is eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-90.wav": {
+    "fingerprint": "8cc61a1e86a801b3bc4f52e4ccfa329f44766c738121af75589d1ad503b9f2bd",
+    "seconds": 1.232,
+    "text": "Behind the door.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-91.wav": {
+    "fingerprint": "e5564faf05b1c7166767bd9bd7a85ea56a69094a87cfc88c17f2ef817be54640",
+    "seconds": 1.754,
+    "text": "The chair is next to the door.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-92.wav": {
+    "fingerprint": "01d118798e0458bb9df59258a7730968302fb7c8cd68d7d7827abc99197aeca4",
+    "seconds": 1.892,
+    "text": "The chair is behind the door.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-93.wav": {
+    "fingerprint": "841bff8171eae298684c3fec73952f5a0fc5ace7fe9a9d53029a3103461976cd",
+    "seconds": 1.317,
+    "text": "She is cooking now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-94.wav": {
+    "fingerprint": "562ec3ea6360092c7927088e7a13c58ed3262ac91c0481b2cbc5ed6e9e866bcf",
+    "seconds": 1.646,
+    "text": "She cooks every evening.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-95.wav": {
+    "fingerprint": "d8ec5975ae29417872730224e4d43200151582f1a4139b1c88f91805884505ff",
+    "seconds": 1.38,
+    "text": "He is cleaning now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-96.wav": {
+    "fingerprint": "bb8c92e6799419301236083c62fe62462f6cf3d76083ba8adc3c15df6cc15add",
+    "seconds": 1.784,
+    "text": "He cleans every morning.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-97.wav": {
+    "fingerprint": "6fb409f329996c69a9e9c5cb4254e76d8309bd49baf0693fb5e1ab4442fc7a5f",
+    "seconds": 1.837,
+    "text": "We are eating breakfast now.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-98.wav": {
+    "fingerprint": "54510d00534c6e9da9a598c9fb842c84ae2ec91a6205b0cbb1ce03a0bd86265f",
+    "seconds": 1.976,
+    "text": "We eat breakfast every morning.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-99.wav": {
+    "fingerprint": "90712b1a3bd15fbe725c8ba13a8d9080b9014299cd359c6896af9e5ec12e5433",
+    "seconds": 1.794,
+    "text": "I am drinking coffee now.",
     "voice": "kokoro-1.0-heart-v1"
   }
 }
