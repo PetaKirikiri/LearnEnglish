@@ -1,5 +1,9 @@
 export const ENGLISH_ORIGIN = 'https://learn-english-coral.vercel.app'
-export const SHARED_LINE_ID = '2010311582-o2c1DCnP'
+// Dedicated English Success entry. Never fall back to the Padel LIFF app.
+export function hotelLineId(): string {
+  const id = import.meta.env.VITE_HOTEL_LIFF_ID?.trim() ?? ''
+  return /^2010311582-[A-Za-z0-9]+$/.test(id) && id !== '2010311582-o2c1DCnP' ? id : ''
+}
 export function hotelAccountUrl(ticket?: string) {
   const url = new URL('/hotel', ENGLISH_ORIGIN)
   if (ticket) url.hash = new URLSearchParams({ ticket }).toString()
@@ -16,6 +20,8 @@ export function isHotelLineEntry(search: string): boolean {
   } catch { return false }
 }
 export function hotelLineEntryUrl() {
+  const id = hotelLineId()
+  if (!id) return null
   const params = new URLSearchParams({ app: 'englishsuccess', mode: 'hotel', line_login: '1' })
-  return `https://liff.line.me/${SHARED_LINE_ID}?${params}`
+  return `https://liff.line.me/${id}?${params}`
 }

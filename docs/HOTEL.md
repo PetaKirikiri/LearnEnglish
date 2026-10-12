@@ -15,12 +15,15 @@ Progress is versioned local storage scoped by the signed-in user's Supabase ID a
 It is not cloud synced and does not award leaderboard points. Clearing browser data
 removes this mode's progress. Do not describe it as cross-device persistence.
 
-## Shared LINE entry
+## Separate LINE entry, shared accounts
 
-Uses the existing LIFF app `2010311582-o2c1DCnP` with `app=englishsuccess&mode=hotel`.
-The existing Padel `/login?app=englishsuccess` rewrite serves this app under the
-registered LINE endpoint. The hotel destination is carried through `liff.state`
-and the secondary redirect. No separate hotel LIFF app or environment variable is needed.
+Requires `VITE_HOTEL_LIFF_ID`, a dedicated LIFF app in the existing LINE Login
+channel `2010311582`. Set its endpoint to
+`https://learn-english-coral.vercel.app/hotel`, full size, with `openid` and `profile`
+scopes. Leave Padel's existing entry untouched. Configure the resulting ID in
+Vercel and rebuild. Do not reuse Padel's LIFF ID: it is explicitly rejected.
+Without a dedicated ID, login and QR generation are disabled; there is no fallback.
+Only the account services/database are shared, not the website entry.
 
 The login starts on EnglishSuccess and goes directly to LINE, with no preliminary
 Padel website redirect. LINE entry first checks `line-liff-recognize`, which never
@@ -39,12 +42,14 @@ with `getUser`; this is account reuse, not proof of a fresh LINE login. New visi
 use LINE. After LIFF identity verification, `line-liff-recognize` issues the same
 one-use handoff ticket used by Padel. EnglishSuccess `/hotel` consumes
 it with `verifyOtp`; the ticket travels only in the fragment and is removed immediately.
-An already signed-in canonical account is never replaced. The legacy LIFF endpoint
-may still be visited transiently during LINE authentication, but the hotel finishes
-on `https://learn-english-coral.vercel.app/hotel`, never on the Padel site.
+An already signed-in canonical account is never replaced. Both the LINE endpoint
+and OAuth return stay on EnglishSuccess `/hotel`. Old saved links served under a
+different origin are sent back to EnglishSuccess before any auth initialization.
 Audio uses the canonical EnglishSuccess origin. Progress remains local to the account origin.
 Test on an actual phone in LINE and in a normal browser before sharing with learners.
 No changes to shared SuccessPadel authentication or data are required.
+Console setup and real-device acceptance remain required; passing mocked tests
+does not establish that the configured LINE entry works on a new user's phone.
 
 ## Audio
 

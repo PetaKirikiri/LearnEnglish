@@ -5,11 +5,23 @@ const mock = vi.hoisted(() => ({ init: vi.fn(), logged: vi.fn(), token: vi.fn(),
 vi.mock('@line/liff', () => ({ default: { init: mock.init, isLoggedIn: mock.logged, getIDToken: mock.token, getAccessToken: mock.access, login: mock.login } }))
 vi.mock('../lib/supabase', () => ({ isSupabaseConfigured: true, supabase: { functions: { invoke: mock.invoke } } }))
 beforeEach(() => {
+  vi.stubEnv('VITE_HOTEL_LIFF_ID', '2010311582-EnglishTest')
+  window.location.href = 'https://learn-english-coral.vercel.app/hotel'
   vi.resetAllMocks(); sessionStorage.clear()
   mock.init.mockResolvedValue(undefined); mock.logged.mockReturnValue(true)
   mock.token.mockReturnValue('verified-by-server'); mock.access.mockReturnValue('line-access')
 })
-afterEach(() => vi.useRealTimers())
+afterEach(() => { vi.useRealTimers(); vi.unstubAllEnvs() })
+it('refuses to initialise on the Padel domain', async () => {
+  window.location.href = 'https://success-padel-ffzt.vercel.app/login'
+  await expect(resolveLineAccount()).rejects.toThrow('Open English Success')
+  expect(mock.init).not.toHaveBeenCalled()
+})
+it('refuses the old Padel entry even if configured accidentally', async () => {
+  vi.stubEnv('VITE_HOTEL_LIFF_ID', '2010311582-o2c1DCnP')
+  await expect(resolveLineAccount()).rejects.toThrow('being configured')
+  expect(mock.init).not.toHaveBeenCalled()
+})
 it('recognises an existing account without registering it', async () => {
   mock.invoke.mockResolvedValue({ data: { recognised: true, ticket: 'one-use' } })
   expect(await resolveLineAccount()).toEqual({ kind: 'member', url: 'https://learn-english-coral.vercel.app/hotel#ticket=one-use' })
@@ -56,6 +68,7 @@ it('stops repeated OAuth redirects', async () => {
   expect(await resolveLineAccount()).toEqual({ kind: 'redirect' })
   await expect(resolveLineAccount()).rejects.toThrow('did not complete')
   expect(mock.login).toHaveBeenCalledTimes(1)
+  expect(mock.login.mock.calls[0][0].redirectUri).toBe('https://learn-english-coral.vercel.app/hotel?app=englishsuccess&mode=hotel')
 })
 it('aborts stalled account requests', async () => {
   vi.useFakeTimers()

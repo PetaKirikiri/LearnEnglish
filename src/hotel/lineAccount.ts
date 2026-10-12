@@ -1,6 +1,6 @@
 import liff from '@line/liff'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { hotelAccountUrl, SHARED_LINE_ID } from './lineEntry'
+import { ENGLISH_ORIGIN, hotelAccountUrl, hotelLineId } from './lineEntry'
 
 export type AccountResult = { kind: 'member'; url: string } | { kind: 'guest' } | { kind: 'redirect' }
 
@@ -28,9 +28,12 @@ async function invoke(name: string, body: object, signal: AbortSignal) {
 }
 
 export async function resolveLineAccount(createAccount = false): Promise<AccountResult> {
+  const liffId = hotelLineId()
+  if (!liffId) throw new Error('English Success LINE sign-in is being configured. Please try again later.')
+  if (window.location.origin !== ENGLISH_ORIGIN) throw new Error('Open English Success to sign in.')
   if (!isSupabaseConfigured) throw new Error('Account service is unavailable.')
   return bounded(async signal => {
-    await liff.init({ liffId: SHARED_LINE_ID, withLoginOnExternalBrowser: false })
+    await liff.init({ liffId, withLoginOnExternalBrowser: false })
     signal.throwIfAborted()
     if (!liff.isLoggedIn()) {
       // One redirect per callback document chain. Never bounce forever if LINE
@@ -40,7 +43,7 @@ export async function resolveLineAccount(createAccount = false): Promise<Account
         throw new Error('LINE did not complete sign-in. Open the QR in LINE and try again.')
       }
       sessionStorage.setItem('hotel:line-login-attempt', '1')
-      const redirect = new URL('/login', window.location.origin)
+      const redirect = new URL(hotelAccountUrl())
       redirect.search = new URLSearchParams({ app: 'englishsuccess', mode: 'hotel' }).toString()
       liff.login({ redirectUri: redirect.href })
       return { kind: 'redirect' }
