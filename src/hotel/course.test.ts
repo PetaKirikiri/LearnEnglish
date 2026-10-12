@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'vitest'
-import { hotelQuestions, isSkillComplete, nextQuestion, recordAnswer, skills, supportOpacity, type Progress } from './course'
+import { describe, expect, it, vi } from 'vitest'
+import { hotelQuestions, isSkillComplete, loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type Progress } from './course'
 describe('hotel listening course', () => {
-  it('has 192 real questions, balanced answers and sixteen contexts per focus', () => {
-    expect(hotelQuestions).toHaveLength(192)
-    expect(new Set(hotelQuestions.map(q => q.id)).size).toBe(192)
-    expect(skills).toHaveLength(12)
+  it('has 224 real questions, balanced answers and sixteen contexts per focus', () => {
+    expect(hotelQuestions).toHaveLength(224)
+    expect(new Set(hotelQuestions.map(q => q.id)).size).toBe(224)
+    expect(skills).toHaveLength(14)
     for (const skill of skills) {
       const items = hotelQuestions.filter(q => q.skill === skill)
       expect(items).toHaveLength(16)
@@ -16,16 +16,38 @@ describe('hotel listening course', () => {
       }
     }
   })
-  it('preserves old question IDs and does not treat the starter four as a completed topic', () => {
+  it('preserves unchanged IDs, versions replacements, and does not skip expanded topics', () => {
     expect(hotelQuestions.find(q => q.id === 'hotel-1')?.english).toBe('The woman.')
-    expect(hotelQuestions.find(q => q.id === 'hotel-32')?.english).toBe('I am cleaning the room now.')
+    expect(hotelQuestions.find(q => q.id === 'hotel-32-r2')?.english).toBe('I am asking housekeeping now.')
+    expect(hotelQuestions.find(q => q.id === 'hotel-32')).toBeUndefined()
     let progress: Progress = {}
-    for (const q of hotelQuestions.filter(q => Number(q.id.slice(6)) <= 32)) progress = recordAnswer(progress, q, true, false)
+    for (const q of hotelQuestions.filter(q => parseInt(q.id.slice(6)) <= 32)) progress = recordAnswer(progress, q, true, false)
     expect(progress.people.seen).toHaveLength(4)
     expect(isSkillComplete(progress, 'people')).toBe(false)
     const next = nextQuestion(progress, undefined, 0, () => 0)
     expect(next.skill).toBe('people')
     expect(Number(next.id.slice(6))).toBeGreaterThan(32)
+  })
+  it('keeps unchanged mastery but does not transfer it to replacement meanings', () => {
+    vi.stubGlobal('localStorage', { getItem: () => JSON.stringify({
+      things: { seen: ['hotel-5', 'hotel-5', 'hotel-7'], correct: 9, attempts: 12 },
+      intention: { seen: ['hotel-31', 'hotel-32'], correct: 2, attempts: 3 },
+    }) })
+    try {
+      const progress = loadProgress('existing-learner')
+      expect(progress.things).toEqual({ seen: ['hotel-5'], correct: 9, attempts: 12 })
+      expect(progress.intention).toEqual({ seen: [], correct: 2, attempts: 3 })
+      expect(isSkillComplete(progress, 'intention')).toBe(false)
+    } finally { vi.unstubAllGlobals() }
+  })
+  it('teaches guest-facing reception interactions rather than personal chores', () => {
+    const prompts = hotelQuestions.map(q => q.english)
+    expect(prompts).toEqual(expect.arrayContaining([
+      'How was your flight?', 'What do you have planned for today?',
+      'If you need any help, please call reception.',
+      'I will ask housekeeping.', 'May I see your passport?',
+    ]))
+    expect(prompts.filter(text => /^(I|We)\b.*\b(eat|eating|eaten|clean|cleaning|cleaned|wash|washing|washed|cook|cooking)\b/i.test(text))).toEqual([])
   })
   it('starts with two focuses and reviews completed ones', () => {
     expect(nextQuestion({}, undefined, 0).skill).toBe('people')

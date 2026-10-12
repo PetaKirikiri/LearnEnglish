@@ -2,12 +2,15 @@ import { expandedHotelPairs } from './expandedContent'
 
 export type Segment = { text: string; skill: string }
 export type HotelQuestion = { id: string; english: string; skill: string; answers: [Segment[], Segment[]]; correct: 0 | 1; audioUrl: string }
-export const skills = ['people', 'things', 'person', 'action', 'place', 'quantity', 'possession', 'negative', 'ongoing', 'finished', 'intention', 'requests']
-export const skillNames = ['People', 'Things', 'Who', 'Actions', 'Places', 'One or more', 'Whose', 'Not', 'Happening now', 'Already done', 'Plans', 'Requests']
+export const skills = ['people', 'things', 'person', 'action', 'place', 'quantity', 'possession', 'negative', 'ongoing', 'finished', 'intention', 'requests', 'conversation', 'help']
+export const skillNames = ['People', 'Things', 'Who', 'Actions', 'Places', 'One or more', 'Whose', 'Not', 'Happening now', 'Already done', 'Plans', 'Requests', 'Guest conversation', 'Offering help']
+// Revised meanings get fresh IDs/audio paths; unchanged items retain mastery.
+const revisedItems = new Set([7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 127, 128, 131, 132, 135, 136, 139, 140, 143, 144, 147, 148, 153, 154, 155, 156, 157, 158, 159, 160, 165, 166, 167, 168, 169, 170, 171, 172, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188])
 const questions: HotelQuestion[] = []
 function pair(skill: string, english: readonly [string, string], thai: readonly [string, string], prefix = '', prefixSkill = skill) {
   english.forEach((text, correct) => {
-    const id = `hotel-${questions.length + 1}`
+    const number = questions.length + 1
+    const id = `hotel-${number}${revisedItems.has(number) ? '-r2' : ''}`
     questions.push({ id, english: text, skill, correct: correct as 0 | 1,
       answers: thai.map(value => [...(prefix ? [{ text: prefix, skill: prefixSkill }] : []), { text: value, skill }]) as HotelQuestion['answers'],
       audioUrl: `/audio/hotel/${id}.wav` })
@@ -16,19 +19,19 @@ function pair(skill: string, english: readonly [string, string], thai: readonly 
 pair('people', ['The woman.', 'The man.'], ['ผู้หญิง', 'ผู้ชาย'])
 pair('people', ['The woman is here.', 'The man is here.'], ['ผู้หญิงอยู่ที่นี่', 'ผู้ชายอยู่ที่นี่'])
 pair('things', ['A towel.', 'A key.'], ['ผ้าขนหนู', 'กุญแจ'])
-pair('things', ['I need a towel.', 'I need a key.'], ['ฉันต้องการผ้าขนหนู', 'ฉันต้องการกุญแจ'])
-pair('person', ['She is eating.', 'He is eating.'], ['ผู้หญิงคนนั้นกำลังกิน', 'ผู้ชายคนนั้นกำลังกิน'])
-pair('person', ['She is sleeping.', 'He is sleeping.'], ['ผู้หญิงคนนั้นกำลังนอนหลับ', 'ผู้ชายคนนั้นกำลังนอนหลับ'])
-pair('action', ['The woman is eating.', 'The woman is sleeping.'], ['กำลังกิน', 'กำลังนอนหลับ'], 'ผู้หญิง', 'people')
-pair('action', ['The man is eating.', 'The man is sleeping.'], ['กำลังกิน', 'กำลังนอนหลับ'], 'ผู้ชาย', 'people')
-pair('place', ['In the room.', 'In the kitchen.'], ['ในห้อง', 'ในครัว'])
-pair('place', ['She is in the room.', 'She is in the kitchen.'], ['อยู่ในห้อง', 'อยู่ในครัว'], 'ผู้หญิงคนนั้น', 'person')
-pair('ongoing', ['I am eating now.', 'I eat every day.'], ['ฉันกำลังกินอยู่ตอนนี้', 'ฉันกินทุกวัน'])
-pair('ongoing', ['I am working now.', 'I work every day.'], ['ฉันกำลังทำงานอยู่ตอนนี้', 'ฉันทำงานทุกวัน'])
-pair('finished', ['I have already eaten.', 'I am eating now.'], ['ฉันกินแล้ว', 'ฉันกำลังกินอยู่ตอนนี้'])
-pair('finished', ['I have already cleaned the room.', 'I am cleaning the room now.'], ['ฉันทำความสะอาดห้องแล้ว', 'ฉันกำลังทำความสะอาดห้องอยู่ตอนนี้'])
-pair('intention', ['I am going to eat.', 'I am eating now.'], ['ฉันจะกิน', 'ฉันกำลังกินอยู่ตอนนี้'])
-pair('intention', ['I am going to clean the room.', 'I am cleaning the room now.'], ['ฉันจะทำความสะอาดห้อง', 'ฉันกำลังทำความสะอาดห้องอยู่ตอนนี้'])
+pair('things', ['Do you need a towel?', 'Do you need a key?'], ['คุณต้องการผ้าขนหนูไหม', 'คุณต้องการกุญแจไหม'])
+pair('person', ['She is checking in.', 'He is checking in.'], ['ผู้หญิงคนนั้นกำลังเช็กอิน', 'ผู้ชายคนนั้นกำลังเช็กอิน'])
+pair('person', ['She has a reservation.', 'He has a reservation.'], ['ผู้หญิงคนนั้นจองไว้แล้ว', 'ผู้ชายคนนั้นจองไว้แล้ว'])
+pair('action', ['Are you checking in?', 'Are you checking out?'], ['คุณจะเช็กอินใช่ไหม', 'คุณจะเช็กเอาต์ใช่ไหม'])
+pair('action', ['Would you like to book a room?', 'Would you like to change your booking?'], ['คุณต้องการจองห้องพักไหม', 'คุณต้องการเปลี่ยนแปลงการจองไหม'])
+pair('place', ['In the lobby.', 'In the restaurant.'], ['ในล็อบบี้', 'ในห้องอาหาร'])
+pair('place', ['You can wait in the lobby.', 'You can wait in the restaurant.'], ['คุณรอในล็อบบี้ได้', 'คุณรอในห้องอาหารได้'])
+pair('ongoing', ['We are serving breakfast now.', 'We serve breakfast until ten.'], ['ตอนนี้เรากำลังให้บริการอาหารเช้า', 'เราให้บริการอาหารเช้าถึงสิบโมง'])
+pair('ongoing', ['The shuttle is leaving now.', 'The shuttle leaves every hour.'], ['รถรับส่งกำลังออกตอนนี้', 'รถรับส่งออกทุกชั่วโมง'])
+pair('finished', ['Your taxi has arrived.', 'Your taxi has not arrived yet.'], ['แท็กซี่ของคุณมาถึงแล้ว', 'แท็กซี่ของคุณยังมาไม่ถึง'])
+pair('finished', ['Housekeeping has finished your room.', 'Housekeeping is still preparing your room.'], ['แม่บ้านจัดเตรียมห้องของคุณเสร็จแล้ว', 'แม่บ้านยังเตรียมห้องของคุณอยู่'])
+pair('intention', ['I will check that for you.', 'I am checking that for you now.'], ['ฉันจะตรวจสอบเรื่องนั้นให้คุณ', 'ตอนนี้ฉันกำลังตรวจสอบเรื่องนั้นให้คุณ'])
+pair('intention', ['I will ask housekeeping.', 'I am asking housekeeping now.'], ['ฉันจะสอบถามแม่บ้านให้', 'ตอนนี้ฉันกำลังสอบถามแม่บ้านให้'])
 for (const [skill, english, thai] of expandedHotelPairs) pair(skill, english, thai)
 // IDs stay fixed; curriculum order is shared by practice and the content table.
 export const hotelQuestions: readonly HotelQuestion[] = [...questions].sort((a, b) => skills.indexOf(a.skill) - skills.indexOf(b.skill))
@@ -71,7 +74,10 @@ export function loadProgress(userId: string): Progress {
     const result: Progress = {}
     for (const skill of skills) {
       const value = (parsed as Progress)[skill]
-      if (value && Array.isArray(value.seen) && value.seen.every(id => typeof id === 'string') && Number.isFinite(value.correct) && Number.isFinite(value.attempts)) result[skill] = value
+      if (value && Array.isArray(value.seen) && value.seen.every(id => typeof id === 'string') && Number.isFinite(value.correct) && Number.isFinite(value.attempts)) {
+        const activeIds = new Set(hotelQuestions.filter(q => q.skill === skill).map(q => q.id))
+        result[skill] = { ...value, seen: [...new Set(value.seen.filter(id => activeIds.has(id)))] }
+      }
     }
     return result
   } catch { return {} }

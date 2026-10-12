@@ -3,7 +3,7 @@
 Route: `/hotel`. Isolated from FIFA curriculum, scoreboard and name login.
 Local-only `/hotel/preview` shows the lesson with a labelled preview identity.
 
-192 locally recorded Kokoro prompts; twelve contrasts with sixteen items each,
+224 locally recorded Kokoro prompts; fourteen focuses with sixteen items each,
 two active focuses, every fourth question reviews earlier completed contrasts.
 All sixteen distinct unassisted correct items unlock the next focus. This is a
 prototype recognition threshold, not a claim of
@@ -11,15 +11,22 @@ long-term mastery. Errors restore support; revealed answers do not build mastery
 Both alternatives use identical opacity per aligned segment, with a readable floor.
 English transcript appears only after answering. Advancement is manual.
 Completed topics continue rotating in review; there is no final batch or end screen.
-Existing hotel-1 through hotel-32 IDs and recordings remain unchanged. Stored
-correct answers are retained, but completing the old four-item starter set does
-not skip the expanded topic. The review cursor rotates independently of the
+The reception revision replaces 152 prompts and retains 40 unchanged prompts.
+Replacements use `-r2` IDs and new audio paths so old mastery and cached recordings
+cannot be applied to a new meaning. Loading progress retains unchanged active IDs
+and historical attempt/correct totals, but removes obsolete IDs from mastery.
+Completing the old four-item starter set does not skip the expanded topic.
+The review cursor rotates independently of the
 four-question review interval so no completed topics are starved.
 
 `course.ts` and `expandedContent.ts` are the shared practice/content-page source.
 The admin-only `/hotel/content` table shows all items in curriculum order. Actual
-practice interleaves the two active focuses and earlier review. New contrasts add
-quantity, possession, negatives, and requests alongside the original topics.
+practice interleaves the two active focuses and earlier review. Short chunks grow
+into receptionist-to-guest interactions: bookings, room readiness, directions,
+transport, requests, and offers of help. Conversation and help add 32 prompts,
+including flights, daily plans, and calling reception. Housekeeping is referred
+to as another team, not as the receptionist's own cleaning work. The foundational
+person, quantity, possession, negative, and time/aspect contrasts remain.
 
 Progress is local storage scoped by the signed-in Supabase ID and browser origin.
 It is not cloud synced and does not award leaderboard points. Clearing browser data
