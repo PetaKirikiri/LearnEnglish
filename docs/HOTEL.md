@@ -43,6 +43,10 @@ EnglishSuccess session is validated and retained. Progress stays on this origin.
 
 **Release order:** deploy Padel's isolated callback first, then the English entry.
 Both use Git deployment. No DB migration or new edge function is needed.
+The old project-level Vercel rewrites named `EnglishSuccess LINE initial redirect`
+and `EnglishSuccess LINE entry` must remain disabled. They served English's HTML
+under the LINE callback hostname with incompatible asset URLs, bypassing the
+handler and producing a blank page. Routing is now handled by the callback code.
 Callback network/SDK work is bounded to 20 seconds and prevents late follow-up
 writes after timeout. A cancelled login does not loop. LINE may still require its
 own authentication/consent; never promise that can be bypassed.
