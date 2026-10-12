@@ -3,6 +3,7 @@ import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import HotelPage, { HotelLesson } from './HotelPage'
+import { PETA_ACCOUNT_ID } from '../auth/appAccess'
 const speech = vi.hoisted(() => ({ speak: vi.fn(), stop: vi.fn() }))
 const account = vi.hoisted(() => ({ finish: vi.fn(async (): Promise<{ id: string } | null> => null) }))
 vi.mock('../learning/speech', () => ({ speakEnglish: speech.speak, stopEnglishSpeech: speech.stop }))
@@ -53,6 +54,22 @@ it('opens a signed-in account directly into the lesson', async () => {
   expect(host.querySelectorAll('.hotel-answer')).toHaveLength(2)
   expect(host.textContent).not.toMatch(/YOUR LISTENING ROOM|A little English|Start listening|Progress stays on this device/)
   expect(speech.speak).toHaveBeenCalledTimes(1)
+})
+it('shows the content table only to the existing admin account', async () => {
+  window.location.href = 'https://learn-english-coral.vercel.app/hotel/content'
+  account.finish.mockResolvedValue({ id: PETA_ACCOUNT_ID })
+  await act(() => root.render(<HotelPage />))
+  expect(host.querySelectorAll('tbody tr')).toHaveLength(32)
+  expect(host.textContent).toContain('Practice')
+  expect(speech.speak).not.toHaveBeenCalled()
+})
+it('keeps answer tables out of the learner route', async () => {
+  window.location.href = 'https://learn-english-coral.vercel.app/hotel/content'
+  account.finish.mockResolvedValue({ id: 'learner' })
+  await act(() => root.render(<HotelPage />))
+  expect(host.querySelector('table')).toBeNull()
+  expect(host.querySelectorAll('.hotel-answer')).toHaveLength(2)
+  expect(host.querySelector('a[href="/hotel/content"]')).toBeNull()
 })
 it('allows a tap on audio when the phone blocks automatic playback', async () => {
   await act(() => root.render(<HotelLesson userId="test-user" />))

@@ -6,12 +6,16 @@ import './hotel.css'
 import { ENGLISH_ORIGIN, hotelAccountUrl, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
 import { finishHotelReturn } from './accountHandoff'
 import { bounded } from './lineAccount'
+import { appDestination } from '../auth/appAccess'
+import HotelContentPage from './HotelContentPage'
 
 export default function HotelPage() {
   const [user, setUser] = useState<User | null>(null)
   const [busy, setBusy] = useState(true)
   const [error, setError] = useState(() => new URLSearchParams(window.location.search).get('line_result') === 'new' ? 'No account yet. Tap Sign up to create one.' : '')
   const entryUrl = hotelLineEntryUrl()
+  const isAdmin = user ? appDestination(user.id, '/admin') === 'admin' : false
+  const showContent = isAdmin && /^\/hotel\/content\/?$/.test(window.location.pathname)
   function signIn(create = false) {
     if (busy) return
     if (!entryUrl) return
@@ -28,8 +32,8 @@ export default function HotelPage() {
     return () => { active = false }
   }, [])
   return <main className="hotel-shell">
-    <header className="hotel-header"><a href={isHotelLineEntry(window.location.search) ? hotelAccountUrl() : '/hotel'}>ENGLISH<span>SUCCESS</span></a><span>HOTEL EDITION</span></header>
-    {import.meta.env.DEV && window.location.pathname === '/hotel/preview' ? <><p className="hotel-eyebrow" style={{ textAlign: 'center', marginTop: 16 }}>LOCAL PREVIEW · NOT SIGNED IN</p><HotelLesson userId="local-preview" /></> : user ? <HotelLesson key={user.id} userId={user.id} /> : <section className="hotel-welcome">
+    <header className="hotel-header"><a href={isHotelLineEntry(window.location.search) ? hotelAccountUrl() : '/hotel'}>ENGLISH<span>SUCCESS</span></a>{isAdmin ? <a className="hotel-content-link" href={showContent ? '/hotel' : '/hotel/content'}>{showContent ? 'Practice' : 'Content'}</a> : <span>HOTEL EDITION</span>}</header>
+    {showContent ? <HotelContentPage /> : import.meta.env.DEV && window.location.pathname === '/hotel/preview' ? <><p className="hotel-eyebrow" style={{ textAlign: 'center', marginTop: 16 }}>LOCAL PREVIEW · NOT SIGNED IN</p><HotelLesson userId="local-preview" /></> : user ? <HotelLesson key={user.id} userId={user.id} /> : <section className="hotel-welcome">
       <div className="hotel-monogram" aria-hidden="true">H</div><p className="hotel-eyebrow">MAKE YOURSELF AT HOME</p>
       <h1>English,<br /><em>by ear.</em></h1>
       <p>Listen. Choose. Get a little more confident.</p>

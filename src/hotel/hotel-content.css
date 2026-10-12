@@ -1,0 +1,16 @@
+.hotel-content { max-width: 1200px; margin: 28px auto; }
+.hotel-shell .hotel-content h1 { margin: 0 0 20px; font: 600 20px Arial, sans-serif; letter-spacing: 0; }
+.hotel-content h1 span { margin-left: 8px; color: #6f746b; font-size: 14px; font-weight: 400; }
+.hotel-content-scroll { overflow-x: auto; }
+.hotel-content table { border-collapse: collapse; width: 100%; font-size: 14px; text-align: left; }
+.hotel-content th, .hotel-content td { padding: 10px 12px; border-bottom: 1px solid #d9d4c6; vertical-align: middle; }
+.hotel-content th { font-size: 12px; font-weight: 600; color: #626b60; white-space: nowrap; }
+.hotel-content td:first-child { color: #6f746b; font-variant-numeric: tabular-nums; }
+.hotel-content td:nth-child(2) { min-width: 120px; }
+.hotel-content td[lang="th"] { min-width: 190px; }
+.hotel-content-correct { color: #286241; }
+.hotel-content-english { display: flex; align-items: center; gap: 8px; min-width: 265px; }
+.hotel-content-english button { flex: 0 0 40px; width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid #d9d4c6; border-radius: 5px; background: transparent; color: inherit; cursor: pointer; }
+.hotel-content-english button[aria-pressed="true"] { background: #e1e9dd; }
+.hotel-content-english svg { width: 16px; height: 16px; fill: currentColor; }
+.hotel-header .hotel-content-link { font-size: 12px; letter-spacing: 0; font-weight: 500; padding: 12px 0; }
