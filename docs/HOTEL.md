@@ -3,7 +3,7 @@
 Route: `/hotel`. Isolated from FIFA curriculum, scoreboard and name login.
 Local-only `/hotel/preview` shows the lesson with a labelled preview identity.
 
-224 locally recorded Kokoro prompts; fourteen focuses with sixteen items each,
+320 locally recorded Kokoro prompts; twenty focuses with sixteen items each,
 two active focuses, every fourth question reviews earlier completed contrasts.
 All sixteen distinct unassisted correct items unlock the next focus. This is a
 prototype recognition threshold, not a claim of
@@ -19,7 +19,8 @@ Completing the old four-item starter set does not skip the expanded topic.
 The review cursor rotates independently of the
 four-question review interval so no completed topics are starved.
 
-`course.ts` and `expandedContent.ts` are the shared practice/content-page source.
+`course.ts`, `expandedContent.ts`, and `routineContent.ts` are the shared
+practice/content-page source.
 The admin-only `/hotel/content` table shows all items in curriculum order. Actual
 practice interleaves the two active focuses and earlier review. Short chunks grow
 into receptionist-to-guest interactions: bookings, room readiness, directions,
@@ -27,6 +28,13 @@ transport, requests, and offers of help. Conversation and help add 32 prompts,
 including flights, daily plans, and calling reception. Housekeeping is referred
 to as another team, not as the receptionist's own cleaning work. The foundational
 person, quantity, possession, negative, and time/aspect contrasts remain.
+
+The routines expansion adds 96 prompts (hotel-225 through hotel-320): facilities,
+opening/closing hours, early check-in and late checkout, wake-up calls,
+arrivals/departures, and hotel rules. Existing IDs, audio and progress are unchanged.
+Patterns recur across facilities: pool/gym/sauna, at/from/until/by, before/after,
+open/closed, early/late, and can/cannot. Times, locations, charges and rules are
+fictional training situations, not verified policies for a real hotel.
 
 Progress is local storage scoped by the signed-in Supabase ID and browser origin.
 It is not cloud synced and does not award leaderboard points. Clearing browser data

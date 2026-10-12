@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
 import { hotelQuestions, isSkillComplete, loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type Progress } from './course'
 describe('hotel listening course', () => {
-  it('has 224 real questions, balanced answers and sixteen contexts per focus', () => {
-    expect(hotelQuestions).toHaveLength(224)
-    expect(new Set(hotelQuestions.map(q => q.id)).size).toBe(224)
-    expect(skills).toHaveLength(14)
+  it('has 320 real questions, balanced answers and sixteen contexts per focus', () => {
+    expect(hotelQuestions).toHaveLength(320)
+    expect(new Set(hotelQuestions.map(q => q.id)).size).toBe(320)
+    expect(skills).toHaveLength(20)
     for (const skill of skills) {
       const items = hotelQuestions.filter(q => q.skill === skill)
       expect(items).toHaveLength(16)
@@ -58,6 +58,31 @@ describe('hotel listening course', () => {
     expect(nextQuestion(progress, undefined, 1).skill).toBe('action')
     expect(['people','things']).toContain(nextQuestion(progress, undefined, 3).skill)
   })
+  it('covers facilities, daily times, rules, wake-up calls and early or late stays', () => {
+    const prompts = hotelQuestions.map(q => q.english)
+    expect(prompts).toEqual(expect.arrayContaining([
+      'The pool is on the second floor.', 'The gym is on the second floor.',
+      'The sauna is next to the pool.', 'The pool opens at seven in the morning.',
+      'The pool closes at seven in the evening.',
+      'You can check in from two in the afternoon.', 'Please check out by eleven in the morning.',
+      'Would you like an early check-in?', 'Would you like a late checkout?',
+      'What time would you like your wake-up call?',
+      'Are you arriving today?', 'Are you departing today?',
+      'Please keep the noise down after ten at night.',
+    ]))
+    expect(hotelQuestions.find(q => q.id === 'hotel-224')?.english).toBe('We can store your bags after checkout.')
+    expect(hotelQuestions.find(q => q.id === 'hotel-225')?.english).toBe('The pool.')
+    expect(hotelQuestions.find(q => q.id === 'hotel-320')?.audioUrl).toBe('/audio/hotel/hotel-320.wav')
+  })
+  it('continues into new routines for a learner who completed the previous catalogue', () => {
+    let progress: Progress = {}
+    for (const q of hotelQuestions.filter(q => parseInt(q.id.slice(6)) <= 224)) {
+      progress = recordAnswer(progress, q, true, false)
+    }
+    expect(nextQuestion(progress, undefined, 0).skill).toBe('facilities')
+    expect(nextQuestion(progress, undefined, 1).skill).toBe('hours')
+    expect(nextQuestion(progress, undefined, 3).skill).toBe('people')
+  })
   it('does not credit repeated or assisted guesses and restores support after error', () => {
     const q = hotelQuestions[0]
     let progress = recordAnswer({}, q, true, true)
@@ -73,7 +98,7 @@ describe('hotel listening course', () => {
     let progress: Progress = {}
     let previous: string | undefined
     const encountered = new Set<string>()
-    for (let round = 0; round < 400; round++) {
+    for (let round = 0; round < hotelQuestions.length * 2; round++) {
       const q = nextQuestion(progress, previous, round, () => 0)
       expect(q).toBeDefined()
       expect(q.id).not.toBe(previous)
