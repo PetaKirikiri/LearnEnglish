@@ -10,6 +10,7 @@ import { appDestination } from '../auth/appAccess'
 import HotelContentPage from './HotelContentPage'
 import HotelScoreboard from './HotelScoreboard'
 import { joinHotel, queueHotelAnswer, syncHotelAnswers } from './scoring'
+import Icon from '../ui/Icon'
 
 export default function HotelPage() {
   const [user, setUser] = useState<User | null>(null)
@@ -35,7 +36,14 @@ export default function HotelPage() {
     return () => { active = false }
   }, [])
   return <main className="hotel-shell">
-    <header className="hotel-header"><a href={isHotelLineEntry(window.location.search) ? hotelAccountUrl() : '/hotel'}>ENGLISH<span>SUCCESS</span></a>{isAdmin ? <nav className="hotel-admin-nav" aria-label="Hotel tools"><a className="hotel-content-link" href="/hotel">Practice</a><a className="hotel-content-link" aria-current={showContent ? 'page' : undefined} href="/hotel/content">Content</a><a className="hotel-content-link" aria-current={showScores ? 'page' : undefined} href="/hotel/scoreboard">Scoreboard</a></nav> : <span>HOTEL EDITION</span>}</header>
+    <header className="hotel-header">
+      <a href={isHotelLineEntry(window.location.search) ? hotelAccountUrl() : '/hotel'}>ENGLISH<span>SUCCESS</span></a>
+      {isAdmin ? <nav className="hotel-admin-nav" aria-label="Hotel tools">
+        <a className="hotel-nav-icon" aria-label="Practice" title="Practice" aria-current={!showContent && !showScores ? 'page' : undefined} href="/hotel"><Icon name="play" /></a>
+        <a className="hotel-content-link" aria-current={showContent ? 'page' : undefined} href="/hotel/content">Content</a>
+        <a className="hotel-nav-icon" aria-label="Scoreboard" title="Scoreboard" aria-current={showScores ? 'page' : undefined} href="/hotel/scoreboard"><Icon name="trophy" /></a>
+      </nav> : <span>HOTEL EDITION</span>}
+    </header>
     {showScores ? <HotelScoreboard /> : showContent ? <HotelContentPage /> : import.meta.env.DEV && window.location.pathname === '/hotel/preview' ? <><p className="hotel-eyebrow" style={{ textAlign: 'center', marginTop: 16 }}>LOCAL PREVIEW · NOT SIGNED IN</p><HotelLesson userId="local-preview" /></> : user ? <HotelLesson key={user.id} userId={user.id} /> : <section className="hotel-welcome">
       <div className="hotel-monogram" aria-hidden="true">H</div><p className="hotel-eyebrow">MAKE YOURSELF AT HOME</p>
       <h1>English,<br /><em>by ear.</em></h1>

@@ -63,7 +63,9 @@ it('shows the content table only to the existing admin account', async () => {
   account.finish.mockResolvedValue({ id: PETA_ACCOUNT_ID })
   await act(() => root.render(<HotelPage />))
   expect(host.querySelectorAll('tbody tr')).toHaveLength(hotelQuestions.length)
-  expect(host.textContent).toContain('Practice')
+  expect(host.querySelector('a[aria-label="Practice"] svg')).not.toBeNull()
+  expect(host.querySelector('a[aria-label="Scoreboard"] svg')).not.toBeNull()
+  expect(host.querySelector('nav')?.textContent).toBe('Content')
   expect(speech.speak).not.toHaveBeenCalled()
 })
 it('keeps answer tables out of the learner route', async () => {
@@ -72,6 +74,12 @@ it('keeps answer tables out of the learner route', async () => {
   await act(() => root.render(<HotelPage />))
   expect(host.querySelector('table')).toBeNull()
   expect(host.querySelectorAll('.hotel-answer')).toHaveLength(2)
+  expect(host.querySelector('a[href="/hotel/content"]')).toBeNull()
+})
+it('does not expose content navigation or tables before sign-in', async () => {
+  window.location.href = 'https://learn-english-coral.vercel.app/hotel/content'
+  await act(async () => { root.render(<HotelPage />) })
+  expect(host.querySelector('table')).toBeNull()
   expect(host.querySelector('a[href="/hotel/content"]')).toBeNull()
 })
 it('allows a tap on audio when the phone blocks automatic playback', async () => {
