@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
 import { loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type HotelQuestion } from './course'
@@ -44,7 +44,7 @@ export default function HotelPage() {
 export function HotelLesson({ userId }: { userId: string }) {
   const [progress, setProgress] = useState(() => loadProgress(userId))
   const [question, setQuestion] = useState<HotelQuestion>(() => nextQuestion(progress))
-  const [started, setStarted] = useState(false)
+  const firstQuestion = useRef(question)
   const [flipped, setFlipped] = useState(() => Math.random() < 0.5)
   const [selected, setSelected] = useState<number | null>(null)
   const [revealed, setRevealed] = useState(false)
@@ -53,13 +53,16 @@ export function HotelLesson({ userId }: { userId: string }) {
   const [storageError, setStorageError] = useState(false)
   const round = useRef(0)
   const answered = useRef(false)
-  useEffect(() => () => stopEnglishSpeech(), [])
-  function play(item = question) {
+  const play = useCallback((item: HotelQuestion) => {
     speakEnglish(item.english, import.meta.env.PROD ? `${ENGLISH_ORIGIN}${item.audioUrl}` : item.audioUrl, state => {
       if (state === 'ended') setHeard(true)
       setAudio(state === 'blocked' ? 'Tap to retry audio' : state === 'playing' ? 'Listening…' : 'Listen again')
     })
-  }
+  }, [])
+  useEffect(() => {
+    play(firstQuestion.current)
+    return () => stopEnglishSpeech()
+  }, [play])
   function choose(index: number) {
     if (answered.current || !heard) return
     answered.current = true
@@ -77,14 +80,12 @@ export function HotelLesson({ userId }: { userId: string }) {
   const support = selected === null && !revealed
   return <section className="hotel-lesson">
     <div className="hotel-journey" aria-label="Listening progress">{skills.map(skill => <span key={skill} className={(progress[skill]?.seen.length ?? 0) >= 4 ? 'learned' : ''} />)}</div>
-    {!started ? <div className="hotel-start"><p className="hotel-eyebrow">YOUR LISTENING ROOM</p><h1>A little English.<br /><em>Every day.</em></h1><button className="hotel-primary" onClick={() => { setStarted(true); play() }}>Start listening →</button><small>Progress stays on this device.</small></div> : <>
-      <button className="hotel-listen" onClick={() => play()} aria-label="Play English audio"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 27h10l12-10v30L22 37H12zM43 23q12 9 0 18M49 15q21 17 0 34" /></svg></button>
+      <button className="hotel-listen" onClick={() => play(question)} aria-label="Play English audio"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 27h10l12-10v30L22 37H12zM43 23q12 9 0 18M49 15q21 17 0 34" /></svg></button>
       <p className="hotel-audio" aria-live="polite">{audio}</p>
       <div className="hotel-answers">{order.map(index => <button key={`${question.id}-${index}`} disabled={selected !== null} className={`hotel-answer ${selected !== null && index === question.correct ? 'right' : selected === index ? 'wrong' : ''}`} onClick={() => choose(index)}>
         <span lang="th">{question.answers[index].map((segment, i) => <span key={i} style={{ opacity: support ? supportOpacity(progress, segment.skill) : 1 }}>{segment.text}</span>)}</span>
       </button>)}</div>
       {selected === null ? <button className="hotel-reveal" onClick={() => setRevealed(true)} disabled={revealed}>{revealed ? 'Words visible' : 'Show words'}</button> : <div className="hotel-feedback" aria-live="polite"><p>{question.english}</p><button className="hotel-primary" onClick={next}>Next →</button></div>}
       {storageError ? <p role="alert">Progress could not be saved on this device.</p> : null}
-    </>}
   </section>
 }

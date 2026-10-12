@@ -4,15 +4,16 @@ import { createRoot } from 'react-dom/client'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import HotelPage, { HotelLesson } from './HotelPage'
 const speech = vi.hoisted(() => ({ speak: vi.fn(), stop: vi.fn() }))
+const account = vi.hoisted(() => ({ finish: vi.fn(async (): Promise<{ id: string } | null> => null) }))
 vi.mock('../learning/speech', () => ({ speakEnglish: speech.speak, stopEnglishSpeech: speech.stop }))
 vi.mock('@line/liff', () => ({ default: { init: vi.fn() } }))
-vi.mock('./accountHandoff', () => ({ finishHotelReturn: async () => null }))
+vi.mock('./accountHandoff', () => ({ finishHotelReturn: account.finish }))
 vi.mock('../lib/supabase', () => ({ isSupabaseConfigured: false, supabase: { auth: { getSession: async () => ({ data: { session: null } }) } } }))
 const host = document.createElement('div')
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
 document.body.append(host)
 let root = createRoot(host)
-beforeEach(() => { window.location.href = 'https://learn-english-coral.vercel.app/hotel' })
+beforeEach(() => { window.location.href = 'https://learn-english-coral.vercel.app/hotel'; account.finish.mockResolvedValue(null) })
 afterEach(async () => { await act(() => root.unmount()); root = createRoot(host); localStorage.clear(); vi.clearAllMocks(); vi.unstubAllEnvs() })
 it('offers signup and sign-in without a QR or details form', async () => {
   vi.stubEnv('VITE_HOTEL_LIFF_ID', '2010311582-EnglishTest')
@@ -46,9 +47,23 @@ it('offers signup after an unknown-account sign-in without opening LINE again', 
   expect(host.textContent).toContain('No account yet. Tap Sign up')
   expect(window.location.pathname).toBe('/hotel')
 })
-it('plays on start, waits for audio, records once, and only advances on Next', async () => {
+it('opens a signed-in account directly into the lesson', async () => {
+  account.finish.mockResolvedValue({ id: 'signed-in-user' })
+  await act(() => root.render(<HotelPage />))
+  expect(host.querySelectorAll('.hotel-answer')).toHaveLength(2)
+  expect(host.textContent).not.toMatch(/YOUR LISTENING ROOM|A little English|Start listening|Progress stays on this device/)
+  expect(speech.speak).toHaveBeenCalledTimes(1)
+})
+it('allows a tap on audio when the phone blocks automatic playback', async () => {
   await act(() => root.render(<HotelLesson userId="test-user" />))
-  await act(() => (host.querySelector('.hotel-primary') as HTMLButtonElement).click())
+  await act(() => speech.speak.mock.calls[0][2]('blocked'))
+  expect(host.textContent).toContain('Tap to retry audio')
+  expect(host.querySelectorAll('.hotel-answer')).toHaveLength(2)
+  await act(() => (host.querySelector('.hotel-listen') as HTMLButtonElement).click())
+  expect(speech.speak).toHaveBeenCalledTimes(2)
+})
+it('plays on entry, waits for audio, records once, and only advances on Next', async () => {
+  await act(() => root.render(<HotelLesson userId="test-user" />))
   expect(speech.speak).toHaveBeenCalledTimes(1)
   const choice = host.querySelector('.hotel-answer') as HTMLButtonElement
   await act(() => choice.click())
