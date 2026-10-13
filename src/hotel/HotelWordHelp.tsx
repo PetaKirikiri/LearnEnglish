@@ -5,10 +5,12 @@ import { hotelWordGlosses } from './wordGlosses'
 import { speakEnglish } from '../learning/speech'
 import type { HotelQuestion } from './course'
 import './word-help.css'
+import { hotelWordProfiles, hotelWordExamples } from './wordProfiles'
 
 export default function HotelWordHelp({ question, onListen, tokenOpacity, onHelp }: { question: HotelQuestion; onListen?: () => void; tokenOpacity?: (word: string) => number; onHelp?: (word: string) => void }) {
   const [, refresh] = useState(0)
   return <WordHelp text={question.english} translations={hotelWordGlosses} theme="hotel"
+    profiles={hotelWordProfiles} examplesForWord={hotelWordExamples}
     tokenOpacity={tokenOpacity} onHelp={onHelp}
     onListen={onListen ?? (() => speakEnglish(question.english, question.audioUrl))}
     onOpenChange={open => {

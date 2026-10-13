@@ -2,8 +2,9 @@ import { wordProfiles } from '../../content/languageData'
 import { normalizeHelpWord } from '../helpPoints'
 import { FlowArrow, QuantityIcon } from './WordVisuals'
 import { tenseInContext } from './tense'
-export default function WordDetails({word,context}:{word:string;context:string}) {
- const normalized=normalizeHelpWord(word),profile=wordProfiles[normalized]
+import type { WordProfile } from './types'
+export default function WordDetails({word,context,profile: suppliedProfile,examples}:{word:string;context:string;profile?:WordProfile;examples?:string[]}) {
+ const normalized=normalizeHelpWord(word),profile=suppliedProfile??wordProfiles[normalized]
  if(!profile)return <p className="word-data-note" lang="th">ยังไม่มีข้อมูลรูปคำ</p>
  const ambiguous=profile.nouns.length>0&&profile.verbs.length>0
  return <div className="word-details" lang="th">
@@ -12,10 +13,13 @@ export default function WordDetails({word,context}:{word:string;context:string})
    const tense=tenseInContext(normalized,context,verb)
    return <section key={verb.base}><h3>{ambiguous?'เมื่อใช้เป็นกริยา':'รูปคำกริยา'}</h3>
     {tense&&<p className="word-tense">{tense}</p>}
-    <div className="word-forms verb-forms">{([['รูปพื้นฐาน',verb.base],...(verb.base==='be'?[['ปัจจุบัน · I / you / we / they','am / are']]:[]),['ปัจจุบัน · he / she / it',verb.third],['อดีต · ช่อง 2',verb.past],['ช่อง 3 · ใช้กับกริยาช่วย',verb.participle],['รูป -ing',verb.ing]]).map(([label,value])=><div key={label} data-current={(tense?.includes('รูปถูกกระทำ')?label.startsWith('ช่อง 3'):value.split(' / ').includes(normalized))||undefined}><span>{label}</span><b lang="en">{value}</b></div>)}</div>
+    <div className="word-forms verb-forms">{([['รูปพื้นฐาน',verb.base],...(verb.base==='be'?[['ปัจจุบัน · I','am'],['ปัจจุบัน · you / we / they','are']]:[]),['ปัจจุบัน · he / she / it',verb.third],['อดีต · ช่อง 2',verb.past],['ช่อง 3 · ใช้กับกริยาช่วย',verb.participle],['รูป -ing',verb.ing]]).map(([label,value])=><div key={label} data-current={(tense?.includes('รูปถูกกระทำ')?label.startsWith('ช่อง 3'):value.split(' / ').includes(normalized))||undefined}><span>{label}</span><b lang="en">{value}</b></div>)}</div>
     {!tense&&<p className="word-data-note">รูปคำอย่างเดียวอาจบอกเวลาไม่ได้ ต้องดูกริยาช่วยและประโยคด้วย</p>}
    </section>
   })}
+  {suppliedProfile && profile.nouns.map(noun=><section key={noun.singular}><h3>{ambiguous?'เมื่อใช้เป็นคำนาม':'รูปคำนาม'}</h3>
+   <div className="word-forms">{([[noun.countability==='uncountable'?'นับไม่ได้':'เอกพจน์',noun.singular],...(noun.plural?[[ 'พหูพจน์',noun.plural]]:[])]).map(([label,value])=><div key={label}><span>{label}</span><b lang="en">{value}</b></div>)}</div>
+  </section>)}
   {(profile.usage_frames?.length||profile.before.length||profile.after.length)?<section className="word-neighbours" aria-label="รูปแบบคำก่อนและหลัง">
    {profile.usage_frames?.length?profile.usage_frames.map((frame,index)=><div className="word-orbit teaching-orbit" key={index} data-source="teaching">
     <div className="orbit-side orbit-before">{frame.before.map(before=><span key={before} lang="en">{before}</span>)}</div>
@@ -32,6 +36,7 @@ export default function WordDetails({word,context}:{word:string;context:string})
    </div>}
   </section>:null}
   {profile.nouns.map(noun=>(noun.note_th||noun.countability==='uncountable'||noun.countability==='plural-only')&&<p className="word-data-note" key={noun.singular}>{noun.note_th??(noun.countability==='uncountable'?'คำนามนับไม่ได้':'ใช้รูปพหูพจน์')}</p>)}
+  {examples?.length ? <section className="word-examples"><h3>ตัวอย่างในบทเรียน</h3>{examples.map(sentence=><p key={sentence} lang="en">{sentence.split(/([\p{L}]+(?:[’'][\p{L}]+)*)/gu).map((part,index)=>normalizeHelpWord(part)===normalized?<strong key={index}>{part}</strong>:part)}</p>)}</section> : null}
 
 
 

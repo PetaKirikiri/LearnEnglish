@@ -6,8 +6,9 @@ import Icon from '../ui/Icon'
 import { AuthContext } from '../auth/authContext'
 import WordDetails from './wordInfo/WordDetails'
 import WordConfidence from './wordInfo/WordConfidence'
+import type { WordProfile } from './wordInfo/types'
 
-export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, translations = {}, theme, onListen, tokenOpacity }: {
+export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, translations = {}, theme, onListen, tokenOpacity, profiles, examplesForWord }: {
   text: string
   onHelp?: (word: string) => void
   onOpenChange?: (open: boolean) => void
@@ -16,6 +17,8 @@ export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, 
   theme?: 'hotel'
   onListen?: () => void
   tokenOpacity?: (word: string) => number
+  profiles?: Record<string, WordProfile>
+  examplesForWord?: (word: string, context: string) => string[]
 }) {
   const auth = useContext(AuthContext)
   const [hint, setHint] = useState<{ word: string; meaning?: string } | null>(null)
@@ -52,7 +55,7 @@ export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, 
     {hint && auth?.user?.id && <WordConfidence key={`${auth.user.id}:${hint.word}`} userId={auth.user.id} word={hint.word} />}
     <div className="word-help-scroll">
       <p className="word-help-translation" lang={hint && (translations[normalizeHelpWord(hint.word)] ?? thaiTranslations[normalizeHelpWord(hint.word)]) ? 'th' : 'en'}>{hint ? translations[normalizeHelpWord(hint.word)] ?? thaiTranslations[normalizeHelpWord(hint.word)] ?? 'Translation not available yet.' : ''}</p>
-      {hint && <WordDetails word={hint.word} context={text} />}
+      {hint && <WordDetails word={hint.word} context={text} profile={profiles?.[normalizeHelpWord(hint.word)]} examples={examplesForWord?.(hint.word,text)} />}
     </div>
     {pointsRemaining !== undefined && <p className="sr-only">{pointsRemaining} pts available</p>}
   </dialog>, document.body)}</span>

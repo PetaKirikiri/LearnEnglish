@@ -1,6 +1,10 @@
 // Hotel-context meanings supplement the shared language database. They do not
 // change FIFA's meanings (e.g. "left" here is direction, not past leave).
 export const hotelWordGlosses: Record<string, string> = {
+  is:'เป็น; อยู่; คือ; ใช้กับกริยา -ing เพื่อบอกว่ากำลังทำ',
+  are:'เป็น; อยู่; คือ; ใช้กับ you / we / they หรือหลายสิ่ง',
+  be:'เป็น; อยู่; รูปพื้นฐานของ am / is / are',
+  was:'เป็น; อยู่ (ในอดีต ใช้กับ I / he / she / it)',
   woman:'ผู้หญิง', guest:'แขก', receptionist:'พนักงานต้อนรับ', waiting:'กำลังรอ', driver:'คนขับรถ', manager:'ผู้จัดการ', porter:'พนักงานยกกระเป๋า',
   towel:'ผ้าขนหนู', key:'กุญแจ', passport:'หนังสือเดินทาง', booking:'การจอง', confirmation:'การยืนยัน', pillow:'หมอน', blanket:'ผ้าห่ม', receipt:'ใบเสร็จ', bill:'ใบเรียกเก็บเงิน',
   checking:'กำลังตรวจสอบ; checking in = เช็กอิน', reservation:'การจอง', room:'ห้องพัก', check:'ตรวจสอบ; check in = เช็กอิน; check out = เช็กเอาต์', lobby:'ล็อบบี้', bags:'กระเป๋า', change:'เปลี่ยน', sign:'เซ็นชื่อ', pay:'ชำระเงิน', extend:'ขยายเวลา; พักต่อ', cancel:'ยกเลิก', follow:'ตาม',

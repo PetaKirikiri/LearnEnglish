@@ -12,3 +12,5 @@
 .word-help-hotel .orbit-focus { background: #ede6d6; color: #233e39; }
 .word-help-hotel .orbit-side > span, .word-help-hotel .word-tense { color: #233e39; }
 .word-help-hotel .word-quantity { color: #8b7448; }
+.word-help-hotel .word-examples p { padding: 10px 12px; background: #f6f2e9; border-radius: 8px; line-height: 1.6; }
+.word-help-hotel .word-examples strong { color: #233e39; text-decoration: underline; text-underline-offset: 3px; }

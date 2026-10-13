@@ -126,6 +126,13 @@ shared language database on demand for existing word profiles and details, with
 local glosses available if that request fails. Its audio button replays the whole
 recorded sentence, not an isolated word.
 
+Hotel supplies its own complete profile overlay for all 271 English tokens:
+explicit noun/verb families (reusing the shared lexical inventory), usage notes,
+and neighbouring words counted directly from Hotel sentences. Shared FIFA profiles
+are not overwritten. Every profile shows up to two actual Hotel examples, starting
+with the current sentence. Non-verbs are not forced into a verb table. Coverage and
+modal-opening tests run across every token, including when the database is offline.
+
 Show words restores all English to full opacity. Using it or opening word help
 before answering keeps the existing assisted-answer scoring and mastery rules.
 The default visible English is not charged as help. Opening word help does not
