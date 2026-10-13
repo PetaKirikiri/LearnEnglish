@@ -9,8 +9,15 @@ two active focuses, every fourth question reviews earlier completed contrasts.
 All sixteen distinct unassisted correct items unlock the next focus. This is a
 prototype recognition threshold, not a claim of
 long-term mastery. Errors restore support; revealed answers do not build mastery.
-Both alternatives use identical opacity per aligned segment, with a readable floor.
-English transcript appears after answering or when Show words is tapped. Advancement is manual.
+Thai alternatives stay fully readable. English is shown from the start, with
+individual word opacity based on learner-specific repeated successful encounters.
+The first two unassisted successes keep a word fully visible; successes three to
+eight gradually fade it to 25%. New words stay visible even beside familiar words.
+Wrong answers reduce familiarity; word lookups restore that word's support.
+These are support heuristics, not evidence of individual word mastery. Encounters
+count once per distinct word per answered question, never for reloads or replays.
+Word memory is stored separately under `hotel:words:v1:<userId>` on this device;
+existing learners begin with full word support. Advancement is manual.
 Completed topics continue rotating in review; there is no final batch or end screen.
 The reception revision replaces 152 prompts and retains 40 unchanged prompts.
 Replacements use `-r2` IDs and new audio paths so old mastery and cached recordings
@@ -119,9 +126,11 @@ shared language database on demand for existing word profiles and details, with
 local glosses available if that request fails. Its audio button replays the whole
 recorded sentence, not an isolated word.
 
-Show words before answering keeps the existing assisted-answer scoring and mastery
-rules. Opening word help does not submit an answer. Reviewing words after answering
-does not deduct additional points or change the submitted attempt.
+Show words restores all English to full opacity. Using it or opening word help
+before answering keeps the existing assisted-answer scoring and mastery rules.
+The default visible English is not charged as help. Opening word help does not
+submit an answer. Reviewing words after answering does not deduct additional points
+or change the submitted attempt.
 
 ## Review
 

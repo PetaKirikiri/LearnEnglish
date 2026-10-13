@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
-import { isSkillComplete, loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type HotelQuestion } from './course'
+import { isSkillComplete, loadProgress, nextQuestion, recordAnswer, skills, type HotelQuestion } from './course'
 import './hotel.css'
 import { ENGLISH_ORIGIN, hotelAccountUrl, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
 import { finishHotelReturn } from './accountHandoff'
@@ -12,6 +12,7 @@ import HotelScoreboard from './HotelScoreboard'
 import { joinHotel, queueHotelAnswer, syncHotelAnswers } from './scoring'
 import Icon from '../ui/Icon'
 import HotelWordHelp from './HotelWordHelp'
+import { loadWordFamiliarity, recordWordExposure, wordMemoryKey, wordOpacity, type WordFamiliarity } from './wordFamiliarity'
 
 export default function HotelPage() {
   const [user, setUser] = useState<User | null>(null)
@@ -59,11 +60,13 @@ export default function HotelPage() {
 
 export function HotelLesson({ userId }: { userId: string }) {
   const [progress, setProgress] = useState(() => loadProgress(userId))
+  const [wordMemory, setWordMemory] = useState(() => loadWordFamiliarity(userId))
   const [question, setQuestion] = useState<HotelQuestion>(() => nextQuestion(progress))
   const firstQuestion = useRef(question)
   const [flipped, setFlipped] = useState(() => Math.random() < 0.5)
   const [selected, setSelected] = useState<number | null>(null)
   const [revealed, setRevealed] = useState(false)
+  const [helped, setHelped] = useState(false)
   const [audio, setAudio] = useState('')
   const [heard, setHeard] = useState(false)
   const [storageError, setStorageError] = useState(false)
@@ -96,17 +99,28 @@ export function HotelLesson({ userId }: { userId: string }) {
     if (answered.current || !heard) return
     answered.current = true
     setSelected(index)
-    const updated = recordAnswer(progress, question, index === question.correct, revealed)
+    const assisted = revealed || helped
+    const updated = recordAnswer(progress, question, index === question.correct, assisted)
+    saveWords(recordWordExposure(wordMemory, question.english, index === question.correct, assisted))
     setProgress(updated)
     try { localStorage.setItem(`hotel:v1:${userId}`, JSON.stringify(updated)) } catch { setStorageError(true) }
     if (userId !== 'local-preview') {
-      try { queueHotelAnswer(userId, question.id, index, revealed); void sync() }
+      try { queueHotelAnswer(userId, question.id, index, assisted); void sync() }
       catch { setStorageError(true) }
     }
   }
+  function saveWords(memory: WordFamiliarity) {
+    setWordMemory(memory)
+    try { localStorage.setItem(wordMemoryKey(userId), JSON.stringify(memory)) } catch { setStorageError(true) }
+  }
+  function helpWord(word: string) {
+    if (selected === null) setHelped(true)
+    // A lookup is evidence that this word still needs visible support.
+    saveWords({ ...wordMemory, [word]: { seen: wordMemory[word]?.seen ?? 0, strength: 0 } })
+  }
   function next() {
     const item = nextQuestion(progress, question.id, ++round.current)
-    setQuestion(item); setSelected(null); setRevealed(false); setHeard(false); setFlipped(Math.random() < 0.5); answered.current = false; play(item)
+    setQuestion(item); setSelected(null); setRevealed(false); setHelped(false); setHeard(false); setFlipped(Math.random() < 0.5); answered.current = false; play(item)
   }
   const order = flipped ? [1, 0] : [0, 1]
   // Freeze fading until the next question: feedback must not move the support.
@@ -115,10 +129,10 @@ export function HotelLesson({ userId }: { userId: string }) {
     <div className="hotel-journey" aria-label="Listening progress">{skills.map(skill => <span key={skill} className={isSkillComplete(progress, skill) ? 'learned' : ''} />)}</div>
       <button className="hotel-listen" onClick={() => play(question)} aria-label="Play English audio"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 27h10l12-10v30L22 37H12zM43 23q12 9 0 18M49 15q21 17 0 34" /></svg></button>
       <p className="hotel-audio" aria-live="polite">{audio}</p>
+      <p className="hotel-sentence" lang="en"><HotelWordHelp key={question.id} question={question} onListen={() => play(question)} onHelp={helpWord} tokenOpacity={word => support ? wordOpacity(wordMemory, word) : 1} /></p>
       <div className="hotel-answers">{order.map(index => <button key={`${question.id}-${index}`} disabled={selected !== null} className={`hotel-answer ${selected !== null && index === question.correct ? 'right' : selected === index ? 'wrong' : ''}`} onClick={() => choose(index)}>
-        <span lang="th">{question.answers[index].map((segment, i) => <span key={i} style={{ opacity: support ? supportOpacity(progress, segment.skill) : 1 }}>{segment.text}</span>)}</span>
+        <span lang="th">{question.answers[index].map((segment, i) => <span key={i}>{segment.text}</span>)}</span>
       </button>)}</div>
-      {revealed || selected !== null ? <p className="hotel-sentence" lang="en"><HotelWordHelp key={question.id} question={question} onListen={() => play(question)} /></p> : null}
       {selected === null ? <button className="hotel-reveal" onClick={() => setRevealed(true)} disabled={revealed}>{revealed ? 'Words visible' : 'Show words'}</button> : <div className="hotel-feedback" aria-live="polite"><button className="hotel-primary" onClick={next}>Next →</button></div>}
       {storageError ? <p role="alert">Progress could not be saved on this device.</p> : null}
       {scoreError ? <p role="status">Scores not synced. <button className="hotel-reveal" onClick={() => void sync()}>Retry</button></p> : null}

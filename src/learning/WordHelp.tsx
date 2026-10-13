@@ -7,7 +7,7 @@ import { AuthContext } from '../auth/authContext'
 import WordDetails from './wordInfo/WordDetails'
 import WordConfidence from './wordInfo/WordConfidence'
 
-export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, translations = {}, theme, onListen }: {
+export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, translations = {}, theme, onListen, tokenOpacity }: {
   text: string
   onHelp?: (word: string) => void
   onOpenChange?: (open: boolean) => void
@@ -15,6 +15,7 @@ export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, 
   translations?: Record<string, string>
   theme?: 'hotel'
   onListen?: () => void
+  tokenOpacity?: (word: string) => number
 }) {
   const auth = useContext(AuthContext)
   const [hint, setHint] = useState<{ word: string; meaning?: string } | null>(null)
@@ -40,6 +41,7 @@ export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, 
   return <span>{text.split(/([\p{L}]+(?:[’'][\p{L}]+)*)/gu).map((token, index) => {
     if (!/^\p{L}/u.test(token)) return token
     return <span key={index} role="button" tabIndex={0} aria-label={`Help with ${token}`} aria-haspopup="dialog" className="word-token"
+      style={tokenOpacity ? { opacity: tokenOpacity(token) } : undefined}
       onClick={event => open(token, event.currentTarget)}
       onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); open(token, event.currentTarget) } }}>{token}</span>
   })}{createPortal(<dialog ref={dialog} className={`word-help-dialog${theme ? ` word-help-${theme}` : ''}`} aria-labelledby={titleId}
