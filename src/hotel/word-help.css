@@ -1,0 +1,14 @@
+.hotel-sentence { margin: 24px 0; font: 24px/1.5 Georgia, serif; }
+.hotel-shell .word-token { cursor: pointer; border-radius: 3px; }
+.hotel-shell .word-token:hover { background: #e1e9dd; }
+.hotel-shell .word-token:focus-visible { outline: 2px solid #937b4d; outline-offset: 3px; }
+.word-help-dialog.word-help-hotel { color-scheme: light; color: #233e39; background: #fffdf8; border-color: #cfc9bc; font-family: Arial, sans-serif; }
+.word-help-hotel .word-help-header h2, .word-help-hotel .word-help-translation, .word-help-hotel .word-forms b { color: #233e39; }
+.word-help-hotel .word-help-header h2 { flex: 1; }
+.word-help-hotel .icon-button { color: #233e39; background: #f6f2e9; border: 1px solid #cfc9bc; min-width: 44px; min-height: 44px; }
+.word-help-hotel .icon-button:hover { color: #233e39; background: #e1e9dd; }
+.word-help-hotel .word-data-note, .word-help-hotel .word-details h3, .word-help-hotel .word-forms span { color: #626b60; }
+.word-help-hotel .word-forms > div, .word-help-hotel .teaching-orbit .orbit-side > span { background: #f6f2e9; border-color: #d9d4c6; }
+.word-help-hotel .orbit-focus { background: #ede6d6; color: #233e39; }
+.word-help-hotel .orbit-side > span, .word-help-hotel .word-tense { color: #233e39; }
+.word-help-hotel .word-quantity { color: #8b7448; }

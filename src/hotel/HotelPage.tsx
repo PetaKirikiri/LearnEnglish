@@ -11,6 +11,7 @@ import HotelContentPage from './HotelContentPage'
 import HotelScoreboard from './HotelScoreboard'
 import { joinHotel, queueHotelAnswer, syncHotelAnswers } from './scoring'
 import Icon from '../ui/Icon'
+import HotelWordHelp from './HotelWordHelp'
 
 export default function HotelPage() {
   const [user, setUser] = useState<User | null>(null)
@@ -117,7 +118,8 @@ export function HotelLesson({ userId }: { userId: string }) {
       <div className="hotel-answers">{order.map(index => <button key={`${question.id}-${index}`} disabled={selected !== null} className={`hotel-answer ${selected !== null && index === question.correct ? 'right' : selected === index ? 'wrong' : ''}`} onClick={() => choose(index)}>
         <span lang="th">{question.answers[index].map((segment, i) => <span key={i} style={{ opacity: support ? supportOpacity(progress, segment.skill) : 1 }}>{segment.text}</span>)}</span>
       </button>)}</div>
-      {selected === null ? <button className="hotel-reveal" onClick={() => setRevealed(true)} disabled={revealed}>{revealed ? 'Words visible' : 'Show words'}</button> : <div className="hotel-feedback" aria-live="polite"><p>{question.english}</p><button className="hotel-primary" onClick={next}>Next →</button></div>}
+      {revealed || selected !== null ? <p className="hotel-sentence" lang="en"><HotelWordHelp key={question.id} question={question} onListen={() => play(question)} /></p> : null}
+      {selected === null ? <button className="hotel-reveal" onClick={() => setRevealed(true)} disabled={revealed}>{revealed ? 'Words visible' : 'Show words'}</button> : <div className="hotel-feedback" aria-live="polite"><button className="hotel-primary" onClick={next}>Next →</button></div>}
       {storageError ? <p role="alert">Progress could not be saved on this device.</p> : null}
       {scoreError ? <p role="status">Scores not synced. <button className="hotel-reveal" onClick={() => void sync()}>Retry</button></p> : null}
   </section>

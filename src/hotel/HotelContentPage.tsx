@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
 import { hotelQuestions, skillNames, skills, type HotelQuestion } from './course'
 import './hotel-content.css'
+import HotelWordHelp from './HotelWordHelp'
 
 export default function HotelContentPage() {
   const [playing, setPlaying] = useState<string | null>(null)
@@ -34,7 +35,7 @@ export default function HotelContentPage() {
           <td>{skillNames[skills.indexOf(question.skill)]}</td>
           <td><div className="hotel-content-english"><button type="button" onClick={() => play(question)} aria-label={`${playing === question.id ? 'Stop' : 'Play'} ${question.english}`} aria-pressed={playing === question.id}>
             <svg viewBox="0 0 24 24" aria-hidden="true">{playing === question.id ? <path d="M7 5h3v14H7zM14 5h3v14h-3z" /> : <path d="m8 5 11 7-11 7z" />}</svg>
-          </button><span>{question.english}</span></div></td>
+          </button><HotelWordHelp question={question} /></div></td>
           <td lang="th" className="hotel-content-correct">{question.answers[question.correct].map(segment => segment.text).join('')}</td>
           <td lang="th">{question.answers[question.correct === 0 ? 1 : 0].map(segment => segment.text).join('')}</td>
         </tr>)}</tbody>

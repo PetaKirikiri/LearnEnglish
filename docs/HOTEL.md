@@ -10,7 +10,7 @@ All sixteen distinct unassisted correct items unlock the next focus. This is a
 prototype recognition threshold, not a claim of
 long-term mastery. Errors restore support; revealed answers do not build mastery.
 Both alternatives use identical opacity per aligned segment, with a readable floor.
-English transcript appears only after answering. Advancement is manual.
+English transcript appears after answering or when Show words is tapped. Advancement is manual.
 Completed topics continue rotating in review; there is no final batch or end screen.
 The reception revision replaces 152 prompts and retains 40 unchanged prompts.
 Replacements use `-r2` IDs and new audio paths so old mastery and cached recordings
@@ -109,6 +109,19 @@ user completing LINE consent and arriving signed in at `/hotel` on a phone.
 Run `node --import tsx scripts/generateHotelAudio.ts` from the repository root.
 Uses the existing cached Kokoro runtime; no runtime AI API or browser voice fallback.
 Recordings and voice manifest live in `public/audio/hotel/`.
+
+## Word help
+
+Visible English words in practice and the admin content table open FIFA's shared
+word-help modal. Hotel adds context-specific Thai glosses for words outside FIFA's
+dictionary; every Hotel English token has an offline gloss. The modal loads the
+shared language database on demand for existing word profiles and details, with
+local glosses available if that request fails. Its audio button replays the whole
+recorded sentence, not an isolated word.
+
+Show words before answering keeps the existing assisted-answer scoring and mastery
+rules. Opening word help does not submit an answer. Reviewing words after answering
+does not deduct additional points or change the submitted attempt.
 
 ## Review
 
