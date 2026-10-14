@@ -1,0 +1,33 @@
+body:has(.padel-shell) { min-width: 0; }
+.padel-shell { background: #12243a; color: #f0f6fc; }
+.padel-shell .hotel-header { border-color: #34485e; height: auto; min-height: 88px; flex-wrap: wrap; padding-block: 16px; }
+.padel-shell .padel-brand { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 5px; color: #f0f6fc; }
+.padel-brand strong { font: 800 26px/1 Arial, sans-serif; letter-spacing: 2px; }
+.padel-shell .padel-brand span { font: 600 10px/1.3 Arial, sans-serif; letter-spacing: 2px; margin: 0; }
+.padel-brand i { font-style: normal; color: #ffad72; margin-inline: 2px; }
+.padel-brand:focus-visible, .padel-shell a:focus-visible { outline: 2px solid #ffad72; outline-offset: 6px; border-radius: 2px; }
+.padel-shell .hotel-journey span { background: #34485e; }
+.padel-shell .hotel-journey .learned { background: #ffad72; }
+.padel-shell .hotel-listen { background: #ffad72; border-color: #ffad72; }
+.padel-shell .hotel-listen svg { stroke: #12243a; }
+.padel-shell .hotel-answer { background: #21384f; color: #f0f6fc; border-color: #496079; }
+.padel-shell .hotel-answer.right { background: #214c45; border-color: #82d5b8; }
+.padel-shell .hotel-answer.wrong { background: #552f3b; border-color: #f1a6b1; }
+.padel-shell .hotel-primary { background: #ffad72; color: #12243a; font-weight: 700; }
+.padel-shell .hotel-sentence { font-family: Arial, sans-serif; font-weight: 600; }
+.padel-shell .word-token:hover { background: #34485e; }
+.padel-shell .hotel-reveal, .padel-shell .hotel-audio { color: #b5c7da; }
+.padel-shell .hotel-nav-icon, .padel-shell .hotel-content-link { border-color: #496079; color: #f0f6fc; }
+.padel-shell .hotel-admin-nav a[aria-current="page"] { background: #34485e; color: #ffad72; }
+.padel-shell .padel-login h1 { font-family: Arial, sans-serif; }
+.padel-preview { text-align: center; font-size: 10px; color: #b5c7da; letter-spacing: 2px; margin: 12px 0 0; }
+.word-help-dialog.word-help-padel { background: #f0f6fc; color: #12243a; }
+.word-help-padel .word-help-header h2, .word-help-padel .word-help-translation, .word-help-padel .word-forms b { color: #12243a; }
+.word-help-padel .orbit-focus { background: #ffe1c9; color: #12243a; }
+.word-help-padel .icon-button { color: #12243a; }
+.padel-shell .hotel-content-scroll { background: #f0f6fc; color: #12243a; }
+.padel-shell .hotel-content th { background: #dae6f2; color: #12243a; }
+.padel-shell .hotel-content h1 span { color: #b5c7da; }
+.padel-shell .hotel-nav-icon:hover { background: #34485e; }
+.padel-shell .hotel-content .word-token:hover { background: #dae6f2; }
+@media(max-width: 400px) { .padel-shell .hotel-header { gap: 10px; } .padel-shell .hotel-admin-nav { gap: 6px; } .padel-brand strong { font-size: 23px; } }

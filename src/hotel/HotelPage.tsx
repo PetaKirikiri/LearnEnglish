@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import type { ComponentType } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
 import { isSkillComplete, loadProgress, nextQuestion, recordAnswer, skills, type HotelQuestion } from './course'
@@ -13,6 +14,25 @@ import { joinHotel, queueHotelAnswer, syncHotelAnswers } from './scoring'
 import Icon from '../ui/Icon'
 import HotelWordHelp from './HotelWordHelp'
 import { loadWordFamiliarity, recordWordExposure, wordMemoryKey, wordOpacity, type WordFamiliarity } from './wordFamiliarity'
+
+// One listening interaction, with explicit course boundaries for content,
+// storage and scoring. Padel must never submit attempts to Hotel's scoreboard.
+export type ListeningCourse = {
+  skills: string[]
+  loadProgress: typeof loadProgress
+  nextQuestion: typeof nextQuestion
+  isSkillComplete: typeof isSkillComplete
+  progressKey: (userId: string) => string
+  wordMemoryKey: (userId: string) => string
+  WordHelp: ComponentType<Parameters<typeof HotelWordHelp>[0]>
+  sync?: (userId: string) => Promise<unknown>
+  queue?: typeof queueHotelAnswer
+}
+const hotelCourse: ListeningCourse = {
+  skills, loadProgress, nextQuestion, isSkillComplete,
+  progressKey: id => `hotel:v1:${id}`, wordMemoryKey, WordHelp: HotelWordHelp,
+  sync: id => joinHotel().then(() => syncHotelAnswers(id)), queue: queueHotelAnswer,
+}
 
 export default function HotelPage() {
   const [user, setUser] = useState<User | null>(null)
@@ -58,10 +78,11 @@ export default function HotelPage() {
   </main>
 }
 
-export function HotelLesson({ userId }: { userId: string }) {
-  const [progress, setProgress] = useState(() => loadProgress(userId))
-  const [wordMemory, setWordMemory] = useState(() => loadWordFamiliarity(userId))
-  const [question, setQuestion] = useState<HotelQuestion>(() => nextQuestion(progress))
+export function HotelLesson({ userId, course = hotelCourse }: { userId: string; course?: ListeningCourse }) {
+  const [progress, setProgress] = useState(() => course.loadProgress(userId))
+  const [wordMemory, setWordMemory] = useState(() => loadWordFamiliarity(userId, course.wordMemoryKey(userId)))
+  const [question, setQuestion] = useState<HotelQuestion>(() => course.nextQuestion(progress))
+  const CourseWordHelp = course.WordHelp
   const firstQuestion = useRef(question)
   const [flipped, setFlipped] = useState(() => Math.random() < 0.5)
   const [selected, setSelected] = useState<number | null>(null)
@@ -72,10 +93,10 @@ export function HotelLesson({ userId }: { userId: string }) {
   const [storageError, setStorageError] = useState(false)
   const [scoreError, setScoreError] = useState(false)
   const sync = useCallback(() => {
-    if (userId === 'local-preview') return Promise.resolve()
-    return joinHotel().then(() => syncHotelAnswers(userId))
+    if (userId === 'local-preview' || !course.sync) return Promise.resolve()
+    return course.sync(userId)
       .then(() => setScoreError(false), () => setScoreError(true))
-  }, [userId])
+  }, [userId, course])
   const round = useRef(0)
   const answered = useRef(false)
   const play = useCallback((item: HotelQuestion) => {
@@ -103,15 +124,15 @@ export function HotelLesson({ userId }: { userId: string }) {
     const updated = recordAnswer(progress, question, index === question.correct, assisted)
     saveWords(recordWordExposure(wordMemory, question.english, index === question.correct, assisted))
     setProgress(updated)
-    try { localStorage.setItem(`hotel:v1:${userId}`, JSON.stringify(updated)) } catch { setStorageError(true) }
-    if (userId !== 'local-preview') {
-      try { queueHotelAnswer(userId, question.id, index, assisted); void sync() }
+    try { localStorage.setItem(course.progressKey(userId), JSON.stringify(updated)) } catch { setStorageError(true) }
+    if (userId !== 'local-preview' && course.queue) {
+      try { course.queue(userId, question.id, index, assisted); void sync() }
       catch { setStorageError(true) }
     }
   }
   function saveWords(memory: WordFamiliarity) {
     setWordMemory(memory)
-    try { localStorage.setItem(wordMemoryKey(userId), JSON.stringify(memory)) } catch { setStorageError(true) }
+    try { localStorage.setItem(course.wordMemoryKey(userId), JSON.stringify(memory)) } catch { setStorageError(true) }
   }
   function helpWord(word: string) {
     if (selected === null) setHelped(true)
@@ -119,17 +140,17 @@ export function HotelLesson({ userId }: { userId: string }) {
     saveWords({ ...wordMemory, [word]: { seen: wordMemory[word]?.seen ?? 0, strength: 0 } })
   }
   function next() {
-    const item = nextQuestion(progress, question.id, ++round.current)
+    const item = course.nextQuestion(progress, question.id, ++round.current)
     setQuestion(item); setSelected(null); setRevealed(false); setHelped(false); setHeard(false); setFlipped(Math.random() < 0.5); answered.current = false; play(item)
   }
   const order = flipped ? [1, 0] : [0, 1]
   // Freeze fading until the next question: feedback must not move the support.
   const support = selected === null && !revealed
   return <section className="hotel-lesson">
-    <div className="hotel-journey" aria-label="Listening progress">{skills.map(skill => <span key={skill} className={isSkillComplete(progress, skill) ? 'learned' : ''} />)}</div>
+    <div className="hotel-journey" aria-label="Listening progress">{course.skills.map(skill => <span key={skill} className={course.isSkillComplete(progress, skill) ? 'learned' : ''} />)}</div>
       <button className="hotel-listen" onClick={() => play(question)} aria-label="Play English audio"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 27h10l12-10v30L22 37H12zM43 23q12 9 0 18M49 15q21 17 0 34" /></svg></button>
       <p className="hotel-audio" aria-live="polite">{audio}</p>
-      <p className="hotel-sentence" lang="en"><HotelWordHelp key={question.id} question={question} onListen={() => play(question)} onHelp={helpWord} tokenOpacity={word => support ? wordOpacity(wordMemory, word) : 1} /></p>
+      <p className="hotel-sentence" lang="en"><CourseWordHelp key={question.id} question={question} onListen={() => play(question)} onHelp={helpWord} tokenOpacity={word => support ? wordOpacity(wordMemory, word) : 1} /></p>
       <div className="hotel-answers">{order.map(index => <button key={`${question.id}-${index}`} disabled={selected !== null} className={`hotel-answer ${selected !== null && index === question.correct ? 'right' : selected === index ? 'wrong' : ''}`} onClick={() => choose(index)}>
         <span lang="th">{question.answers[index].map((segment, i) => <span key={i}>{segment.text}</span>)}</span>
       </button>)}</div>

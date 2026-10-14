@@ -156,3 +156,26 @@ it('fades familiar English independently, keeps Thai readable, and restores Engl
   await act(() => (host.querySelector('.hotel-answer') as HTMLButtonElement).click())
   expect(scores.queue).toHaveBeenCalledWith('test-user', expect.any(String), expect.any(Number), true)
 })
+it('credits only the words in each correctly answered sentence through the real lesson flow', async () => {
+  const random = vi.spyOn(Math, 'random').mockReturnValue(0)
+  try {
+    await act(() => root.render(<HotelLesson userId="word-test-user" />))
+    const expected: Record<string, number> = {}
+    for (let round = 0; round < 3; round++) {
+      const spoken = speech.speak.mock.calls.at(-1)!
+      const question = hotelQuestions.find(q => q.english === spoken[0])!
+      for (const word of new Set(question.english.toLowerCase().match(/[a-z]+/g)!)) expected[word] = (expected[word] ?? 0) + 1
+      await act(() => spoken[2]('ended'))
+      const meaning = question.answers[question.correct].map(segment => segment.text).join('')
+      const choice = [...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].find(button => button.textContent === meaning)!
+      await act(() => choice.click())
+      const saved = JSON.parse(localStorage.getItem('hotel:words:v1:word-test-user')!)
+      expect(Object.fromEntries(Object.entries(saved).map(([word, value]) => [word, (value as {strength:number}).strength]))).toEqual(expected)
+      expect(scores.queue.mock.calls.at(-1)?.[3]).toBe(false)
+      if (round < 2) await act(() => (host.querySelector('.hotel-primary') as HTMLButtonElement).click())
+    }
+    expect(expected.the).toBe(2)
+    expect(expected.woman).toBe(1)
+    expect(expected.man).toBe(1)
+  } finally { random.mockRestore() }
+})

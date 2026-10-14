@@ -1,5 +1,9 @@
 {
   "rewrites": [
+    { "source": "/padel-coach", "destination": "/index.html" },
+    { "source": "/padel-coach/:path*", "destination": "/index.html" },
+    { "source": "/padel", "destination": "/index.html" },
+    { "source": "/padel/:path*", "destination": "/index.html" },
     { "source": "/hotel", "destination": "/index.html" },
     { "source": "/hotel/:path*", "destination": "/index.html" },
     {

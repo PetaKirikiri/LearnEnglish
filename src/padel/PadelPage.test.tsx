@@ -1,0 +1,126 @@
+// @vitest-environment happy-dom
+import { act } from 'react'
+import { createRoot } from 'react-dom/client'
+import { afterEach, beforeEach, expect, it, vi } from 'vitest'
+import PadelPage from './PadelPage'
+import { padelQuestions } from './course'
+import { PETA_ACCOUNT_ID } from '../auth/appAccess'
+const account = vi.hoisted(() => ({ finish: vi.fn(async (): Promise<{id:string} | null> => null) }))
+const speech = vi.hoisted(() => ({ speak: vi.fn(), stop: vi.fn() }))
+const hotel = vi.hoisted(() => ({ join:vi.fn(),queue:vi.fn(),sync:vi.fn() }))
+vi.mock('../hotel/accountHandoff',()=>({finishHotelReturn:account.finish}))
+vi.mock('../learning/speech',()=>({speakEnglish:speech.speak,stopEnglishSpeech:speech.stop}))
+vi.mock('../hotel/scoring',()=>({joinHotel:hotel.join,queueHotelAnswer:hotel.queue,syncHotelAnswers:hotel.sync,loadHotelScoreboard:vi.fn()}))
+vi.mock('../lib/supabase',()=>({isSupabaseConfigured:false,supabase:{auth:{getSession:async()=>({data:{session:null}})}}}))
+Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
+const host=document.createElement('div');document.body.append(host)
+let root=createRoot(host)
+beforeEach(()=>{window.location.href='https://learn-english-coral.vercel.app/padel';account.finish.mockResolvedValue(null)})
+afterEach(async()=>{await act(()=>root.unmount());root=createRoot(host);localStorage.clear();vi.restoreAllMocks();vi.clearAllMocks();vi.unstubAllEnvs()})
+it('links local preview practice to the complete content table and back',async()=>{
+  vi.stubEnv('DEV',true)
+  window.location.pathname='/padel/preview'
+  await act(()=>root.render(<PadelPage/>))
+  expect(host.querySelector('.hotel-content-link')?.getAttribute('href')).toBe('/padel/preview/content')
+  await act(()=>root.unmount());root=createRoot(host)
+  window.location.pathname='/padel/preview/content'
+  await act(()=>root.render(<PadelPage/>))
+  expect(host.querySelectorAll('tbody tr')).toHaveLength(324)
+  expect(host.querySelector('[aria-label="Practice"]')?.getAttribute('href')).toBe('/padel/preview')
+  expect(host.querySelector('.hotel-content-link')?.getAttribute('aria-current')).toBe('page')
+})
+it('does not expose development preview content in production',async()=>{
+  vi.stubEnv('DEV',false)
+  window.location.pathname='/padel/preview/content'
+  await act(()=>root.render(<PadelPage/>))
+  expect(host.querySelector('table')).toBeNull()
+  expect(host.querySelector('nav')).toBeNull()
+  expect(host.querySelector('.hotel-line')).not.toBeNull()
+})
+it('shows Padel branding and sends signup to the shared LINE identity flow',async()=>{
+  await act(()=>root.render(<PadelPage/>))
+  expect(host.querySelector('.padel-brand strong')?.textContent).toBe('SUCCESS')
+  expect(host.querySelector('.padel-brand span')?.textContent).toBe('PADEL & PILATES')
+  expect(host.querySelector('.padel-brand img')).toBeNull()
+  expect(document.title).toBe('Success Padel & Pilates · English')
+  expect(host.querySelector('input')).toBeNull()
+  expect(host.querySelector('a[href="/padel/content"]')).toBeNull()
+  await act(()=>host.querySelector<HTMLButtonElement>('.hotel-line')!.click())
+  expect(new URLSearchParams(window.location.search).get('mode')).toBe('padel')
+  expect(new URLSearchParams(window.location.search).get('intent')).toBe('signup')
+})
+it('opens practice immediately, preserves audio gating, manual Next and separate storage',async()=>{
+  account.finish.mockResolvedValue({id:'staff'})
+  vi.spyOn(Math,'random').mockReturnValue(0)
+  localStorage.setItem('hotel:words:v1:staff',JSON.stringify({the:{seen:8,strength:8}}))
+  await act(()=>root.render(<PadelPage/>))
+  expect(host.querySelectorAll('.hotel-answer')).toHaveLength(2)
+  expect(host.querySelector<HTMLElement>('.word-token')?.style.opacity).toBe('1')
+  expect(speech.speak.mock.calls[0][0]).toBe('The player.')
+  const q=padelQuestions[0]
+  const correct=[...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].find(b=>b.textContent===q.answers[q.correct][0].text)!
+  expect(host.querySelector('.right')).toBeNull()
+  await act(()=>correct.click())
+  expect(localStorage.getItem('padel:v1:staff')).toBeNull()
+  await act(()=>speech.speak.mock.calls[0][2]('ended'))
+  await act(()=>{correct.click();correct.click()})
+  expect(JSON.parse(localStorage.getItem('padel:v1:staff')!).people.attempts).toBe(1)
+  expect(JSON.parse(localStorage.getItem('padel:words:v1:staff')!).player.strength).toBe(1)
+  expect(localStorage.getItem('hotel:v1:staff')).toBeNull()
+  expect(hotel.queue).not.toHaveBeenCalled();expect(hotel.join).not.toHaveBeenCalled()
+  expect(speech.speak).toHaveBeenCalledTimes(1)
+  await act(()=>host.querySelector<HTMLButtonElement>('.hotel-primary')!.click())
+  expect(speech.speak.mock.calls[1][0]).toBe('A racket.')
+})
+it('restores word-specific fading and opens Padel word help without answering',async()=>{
+  account.finish.mockResolvedValue({id:'staff'})
+  vi.spyOn(Math,'random').mockReturnValue(0)
+  localStorage.setItem('padel:words:v1:staff',JSON.stringify({the:{seen:8,strength:8}}))
+  await act(()=>root.render(<PadelPage/>))
+  const words=host.querySelectorAll<HTMLElement>('.word-token')
+  expect(words[0].style.opacity).toBe('0.25');expect(words[1].style.opacity).toBe('1')
+  await act(()=>words[1].click())
+  expect(document.querySelector<HTMLDialogElement>('dialog')?.open).toBe(true)
+  expect(document.querySelector('.word-help-translation')?.textContent).toBe('ผู้เล่น')
+  expect(document.querySelector('dialog')?.classList.contains('word-help-padel')).toBe(true)
+  expect(localStorage.getItem('padel:v1:staff')).toBeNull()
+  await act(()=>document.querySelector<HTMLButtonElement>('[aria-label="Close word help"]')!.click())
+  await act(()=>speech.speak.mock.calls[0][2]('ended'))
+  const answer=[...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].find(b=>b.textContent==='ผู้เล่น')!
+  await act(()=>answer.click())
+  expect(JSON.parse(localStorage.getItem('padel:v1:staff')!).people.seen).toEqual([])
+})
+it('limits the content table to the existing admin and shows all course rows',async()=>{
+  window.location.pathname='/padel/content'
+  account.finish.mockResolvedValue({id:PETA_ACCOUNT_ID})
+  await act(()=>root.render(<PadelPage/>))
+  expect(host.querySelectorAll('tbody tr')).toHaveLength(324)
+  expect(host.querySelector('nav')?.textContent).toBe('Content')
+  expect(speech.speak).not.toHaveBeenCalled()
+  await act(()=>root.unmount());root=createRoot(host)
+  account.finish.mockResolvedValue({id:'staff'})
+  await act(()=>root.render(<PadelPage/>))
+  expect(host.querySelector('table')).toBeNull()
+  expect(host.querySelector('nav')).toBeNull()
+})
+it('teaches Pilates in the opening practice pool with separate word progress',async()=>{
+  account.finish.mockResolvedValue({id:'staff'})
+  vi.spyOn(Math,'random').mockReturnValue(0.6)
+  await act(()=>root.render(<PadelPage/>))
+  expect(speech.speak.mock.calls[0][0]).toBe('The customer.')
+  await act(()=>speech.speak.mock.calls[0][2]('ended'))
+  const q=padelQuestions.find(q=>q.english==='The customer.')!
+  const answer=[...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].find(b=>b.textContent===q.answers[q.correct][0].text)!
+  await act(()=>answer.click())
+  expect(JSON.parse(localStorage.getItem('padel:v1:staff')!).people.seen).toContain(q.id)
+  expect(JSON.parse(localStorage.getItem('padel:words:v1:staff')!).customer.strength).toBe(1)
+  expect(hotel.queue).not.toHaveBeenCalled()
+})
+it('redeems the same one-use ticket and removes it from the address',async()=>{
+  window.location.hash='#ticket=single-use'
+  account.finish.mockResolvedValue({id:'staff'})
+  await act(()=>root.render(<PadelPage/>))
+  expect(account.finish).toHaveBeenCalledWith('single-use')
+  expect(window.location.hash).toBe('')
+  expect(window.location.pathname).toBe('/padel')
+})

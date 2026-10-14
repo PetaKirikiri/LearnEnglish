@@ -1,0 +1,26 @@
+.coach-shell .hotel-lesson { padding-top: 40px; }
+.coach-shell .hotel-listen, .coach-shell .hotel-primary { background: #b5edcd; border-color: #b5edcd; }
+.coach-shell .hotel-listen svg { width: 44px; height: 44px; }
+.coach-shell .hotel-admin-nav a[aria-current="page"] { color: #b5edcd; }
+.coach-sentence { display: flex; flex-wrap: wrap; align-items: start; justify-content: center; gap: 4px; margin: 24px 0; font-size: 28px; line-height: 1.5; }
+.coach-token { display: inline-flex; flex-direction: column; align-items: center; gap: 7px; border: 0; background: transparent; color: inherit; padding: 8px 5px; border-radius: 7px; font: inherit; cursor: pointer; }
+.coach-token small { color: #b5c7da; font-size: 14px; font-weight: 400; }
+.coach-token:hover, .coach-token:focus-visible { background: #34485e; opacity: 1 !important; }
+.coach-token:focus-visible { outline: 2px solid #b5edcd; outline-offset: 2px; }
+.coach-shell .hotel-answer { font-family: inherit; font-size: 20px; }
+.coach-shell .hotel-answer:disabled { cursor: default; }
+.coach-shell .hotel-answer:disabled:not(.right):not(.wrong) { opacity: .7; }
+.coach-result { display: block; margin-bottom: 14px; font-size: 16px; }
+.coach-word-dialog { width: min(480px, calc(100vw - 32px)); margin: auto; padding: 26px; border: 1px solid #496079; border-radius: 22px; color: #12243a; background: #f0f6fc; text-align: left; }
+.coach-word-dialog::backdrop { background: #071525b8; }
+.coach-word-dialog header { display: flex; align-items: center; gap: 10px; }
+.coach-word-dialog h2 { margin: 0 auto 0 0; font-size: 32px; }
+.coach-word-dialog header button, .coach-table-audio { display: inline-flex; align-items: center; justify-content: center; color: inherit; border: 1px solid #bbcbd9; border-radius: 10px; background: transparent; width: 44px; height: 44px; flex-shrink: 0; cursor: pointer; }
+.coach-word-dialog svg, .coach-table-audio svg { width: 22px; height: 22px; }
+.coach-gloss { font-size: 23px; font-weight: 600; }
+.coach-word-dialog p { margin-top: 16px; }
+.coach-table-audio { margin-right: 12px; vertical-align: middle; }
+.coach-shell .hotel-content td { min-width: 70px; }
+.coach-shell .hotel-content td:nth-child(3) { min-width: 280px; }
+.coach-shell .hotel-content td:nth-child(n+4) { min-width: 220px; }
+@media (max-width: 480px) { .coach-shell .hotel-lesson { padding-top: 24px; } .coach-shell .hotel-answer { font-size: 18px; } .coach-token { font-size: 25px; } }

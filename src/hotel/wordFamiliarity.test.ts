@@ -2,6 +2,19 @@
 import { afterEach, expect, it } from 'vitest'
 import { loadWordFamiliarity, recordWordExposure, wordMemoryKey, wordOpacity, type WordFamiliarity } from './wordFamiliarity'
 afterEach(() => localStorage.clear())
+it('keeps independent scores for A B C D followed by A C D, including after reload', () => {
+  const first = recordWordExposure({}, 'A B C D.', true, false)
+  expect(first).toEqual({ a: { seen: 1, strength: 1 }, b: { seen: 1, strength: 1 }, c: { seen: 1, strength: 1 }, d: { seen: 1, strength: 1 } })
+  localStorage.setItem(wordMemoryKey('learner'), JSON.stringify(first))
+  const second = recordWordExposure(loadWordFamiliarity('learner'), 'A C D.', true, false)
+  expect(second).toEqual({ a: { seen: 2, strength: 2 }, b: { seen: 1, strength: 1 }, c: { seen: 2, strength: 2 }, d: { seen: 2, strength: 2 } })
+  const third = recordWordExposure(second, 'A C D.', true, false)
+  expect(wordOpacity(third, 'a')).toBeLessThan(wordOpacity(third, 'b'))
+  expect(wordOpacity(third, 'c')).toBe(wordOpacity(third, 'a'))
+  expect(wordOpacity(third, 'd')).toBe(wordOpacity(third, 'a'))
+  expect(third.b).toEqual({ seen: 1, strength: 1 })
+  expect(first.a.strength).toBe(1)
+})
 it('fades each word gradually with successful repeated encounters across sentences', () => {
   let memory: WordFamiliarity = {}
   expect(wordOpacity(memory, 'The')).toBe(1)

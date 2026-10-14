@@ -2,9 +2,9 @@ import { normalizeHelpWord } from '../learning/helpPoints'
 
 export type WordFamiliarity = Record<string, { seen: number; strength: number }>
 export const wordMemoryKey = (userId: string) => `hotel:words:v1:${userId}`
-export function loadWordFamiliarity(userId: string): WordFamiliarity {
+export function loadWordFamiliarity(userId: string, key = wordMemoryKey(userId)): WordFamiliarity {
   try {
-    const raw = JSON.parse(localStorage.getItem(wordMemoryKey(userId)) ?? '{}')
+    const raw = JSON.parse(localStorage.getItem(key) ?? '{}')
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {}
     return Object.fromEntries(Object.entries(raw).filter(([word, value]) => {
       const item = value as WordFamiliarity[string] | null

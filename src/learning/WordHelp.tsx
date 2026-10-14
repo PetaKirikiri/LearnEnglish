@@ -14,7 +14,7 @@ export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, 
   onOpenChange?: (open: boolean) => void
   pointsRemaining?: number
   translations?: Record<string, string>
-  theme?: 'hotel'
+  theme?: 'hotel' | 'padel'
   onListen?: () => void
   tokenOpacity?: (word: string) => number
   profiles?: Record<string, WordProfile>
@@ -47,7 +47,7 @@ export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, 
       style={tokenOpacity ? { opacity: tokenOpacity(token) } : undefined}
       onClick={event => open(token, event.currentTarget)}
       onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); open(token, event.currentTarget) } }}>{token}</span>
-  })}{createPortal(<dialog ref={dialog} className={`word-help-dialog${theme ? ` word-help-${theme}` : ''}`} aria-labelledby={titleId}
+  })}{createPortal(<dialog ref={dialog} className={`word-help-dialog${theme ? ` word-help-hotel${theme === 'padel' ? ' word-help-padel' : ''}` : ''}`} aria-labelledby={titleId}
     onKeyDown={event => event.stopPropagation()}
     onCancel={event => { event.preventDefault(); close() }}
     onClick={event => { if (event.target === event.currentTarget) { const r = event.currentTarget.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) close() } }}>
