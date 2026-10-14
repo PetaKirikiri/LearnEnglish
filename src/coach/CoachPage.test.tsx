@@ -6,6 +6,7 @@ import CoachPage from './CoachPage'
 import { PETA_ACCOUNT_ID } from '../auth/appAccess'
 import { loadProgress, loadWords, memoryKey, progressKey, questions } from './course'
 import { coachLineEntryUrl, isCoachLineEntry } from './lineEntry'
+import { DAVID_INVITE_KEY, DAVID_PROFILE } from './guestInvite'
 const account = vi.hoisted(() => ({ finish: vi.fn(async (): Promise<{ id: string } | null> => null) }))
 const speech = vi.hoisted(() => ({ speak: vi.fn(), stop: vi.fn() }))
 vi.mock('../hotel/accountHandoff', () => ({ finishHotelReturn: account.finish }))
@@ -16,6 +17,36 @@ let root = createRoot(host)
 beforeEach(() => { window.location.href = 'https://learn-english-coral.vercel.app/padel-coach'; account.finish.mockResolvedValue(null) })
 afterEach(async () => { await act(() => root.unmount()); root = createRoot(host); localStorage.clear(); vi.restoreAllMocks(); vi.clearAllMocks(); vi.unstubAllEnvs() })
 const answer = (text: string) => [...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].find(b => b.textContent === text)!
+
+it('opens David directly in production without a handshake and retains his own progress on return', async () => {
+  vi.stubEnv('DEV', false); vi.spyOn(Math, 'random').mockReturnValue(0)
+  window.location.search = `?invite=${DAVID_INVITE_KEY}`
+  await act(() => root.render(<CoachPage />))
+  expect(host.querySelector('.coach-guest-profile')?.textContent).toBe('Coach David')
+  expect(host.querySelector('.hotel-line')).toBeNull()
+  expect(host.querySelector('nav')).toBeNull()
+  expect(host.querySelectorAll('.hotel-answer')).toHaveLength(2)
+  expect(account.finish).not.toHaveBeenCalled()
+  await act(() => speech.speak.mock.calls[0][2]('ended'))
+  await act(() => answer('Très bien.').click())
+  expect(loadProgress(DAVID_PROFILE.id)[questions[0].id].attempts).toBe(1)
+  expect(loadProgress('coach')).toEqual({})
+  await act(() => root.unmount()); root = createRoot(host)
+  window.location.search = ''
+  await act(() => root.render(<CoachPage />))
+  expect(host.querySelector('.coach-guest-profile')?.textContent).toBe('Coach David')
+  expect(loadProgress(DAVID_PROFILE.id)[questions[0].id].attempts).toBe(1)
+  expect(account.finish).not.toHaveBeenCalled()
+})
+
+it('does not grant content access through David’s invite', async () => {
+  vi.stubEnv('DEV', false)
+  window.location.href = `https://learn-english-coral.vercel.app/padel-coach/content?invite=${DAVID_INVITE_KEY}`
+  await act(() => root.render(<CoachPage />))
+  expect(host.querySelector('table')).toBeNull()
+  expect(host.querySelector('.hotel-line')).not.toBeNull()
+  expect(host.querySelector('.coach-guest-profile')).toBeNull()
+})
 
 it('uses Thai audio and French binary answers; gates answers on listening; only advances manually', async () => {
   account.finish.mockResolvedValue({ id: 'coach' }); vi.spyOn(Math, 'random').mockReturnValue(0)

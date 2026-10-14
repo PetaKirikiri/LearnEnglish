@@ -1,4 +1,8 @@
 .coach-shell .hotel-lesson { padding-top: 40px; }
+.coach-guest-profile { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #b5edcd; }
+.coach-guest-profile button { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 10px; background: transparent; color: inherit; cursor: pointer; }
+.coach-guest-profile button:focus-visible { outline: 2px solid #b5edcd; }
+.coach-guest-profile svg { width: 20px; height: 20px; }
 .coach-shell .hotel-listen, .coach-shell .hotel-primary { background: #b5edcd; border-color: #b5edcd; }
 .coach-shell .hotel-listen svg { width: 44px; height: 44px; }
 .coach-shell .hotel-admin-nav a[aria-current="page"] { color: #b5edcd; }

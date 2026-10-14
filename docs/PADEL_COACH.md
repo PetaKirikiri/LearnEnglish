@@ -12,7 +12,13 @@ Thai listening for a French-speaking padel coach. Separate from the English-for-
 - Two active topics; each question requires two consecutive unaided correct answers. Every fourth round reviews a completed topic. Practice continues when the course is complete. These are practice thresholds, not a claim that guessing is impossible or speech is mastered.
 - Progress is learner-scoped on this device under `padel-coach:v1:<id>` and `padel-coach:words:v1:<id>`. This course does not write Hotel or Padel staff scores, and does not yet sync its progress between devices.
 
-## Audio
+## Temporary Coach David invite
+
+`/padel-coach?invite=Ajrvq8avW0wX7R_A3HPkJeby` opens practice directly as **Coach David**, including from WhatsApp, without invoking LINE or the shared-account handshake. The invite is deliberately open: anyone with this link can use this temporary profile. Its key is an entry selector, not a security credential.
+
+The browser remembers the profile; his existing course progress and word memory use the separate `guest:coach-david:v1` learner ID. Progress stays in this browser, not in the shared accounts database, and does not sync across phones/browsers. The close icon leaves the temporary profile without deleting its progress or signing out another LINE account. Reopening the invite restores it. This invite grants no admin/content access, no other course access, and no shared-account API permissions. A LINE return ticket takes precedence over the remembered guest.
+
+## Audio generation
 
 `node --import tsx scripts/generateCoachAudio.ts` generates local Thai Kanya recordings for all unique sentences and help chunks. Files are content-addressed; tests check the manifest against the exact displayed Thai. French choices are authored, not machine-translated at runtime. Tactical instructions are contextual requests, not universal rules about when to move or hit. A Thai-speaking padel coach should review idiom/pronunciation before a wider release.
 
