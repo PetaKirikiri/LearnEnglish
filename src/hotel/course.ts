@@ -1,86 +1,111 @@
-import { expandedHotelPairs } from './expandedContent'
-import { hotelRoutinePairs } from './routineContent'
+import { grammarSkills, meaningPairs, formItems } from './grammarContent'
+import { recordAnswer as legacyRecordAnswer } from './legacyCourse'
+import type { HotelQuestion as LegacyQuestion, Progress as LegacyProgress } from './legacyCourse'
+export type { Segment } from './legacyCourse'
 
-export type Segment = { text: string; skill: string }
-export type HotelQuestion = { id: string; english: string; skill: string; answers: [Segment[], Segment[]]; correct: 0 | 1; audioUrl: string }
-export const skills = ['people', 'things', 'person', 'action', 'place', 'quantity', 'possession', 'negative', 'ongoing', 'finished', 'intention', 'requests', 'conversation', 'help', 'facilities', 'hours', 'stay_times', 'wake_up', 'arrivals', 'rules']
-export const skillNames = ['People', 'Things', 'Who', 'Actions', 'Places', 'One or more', 'Whose', 'Not', 'Happening now', 'Already done', 'Plans', 'Requests', 'Guest conversation', 'Offering help', 'Facilities', 'Opening hours', 'Check-in & checkout', 'Wake-up calls', 'Arrivals & departures', 'Hotel rules']
-// Revised meanings get fresh IDs/audio paths; unchanged items retain mastery.
-const revisedItems = new Set([7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 127, 128, 131, 132, 135, 136, 139, 140, 143, 144, 147, 148, 153, 154, 155, 156, 157, 158, 159, 160, 165, 166, 167, 168, 169, 170, 171, 172, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188])
-const questions: HotelQuestion[] = []
-function pair(skill: string, english: readonly [string, string], thai: readonly [string, string], prefix = '', prefixSkill = skill) {
-  english.forEach((text, correct) => {
-    const number = questions.length + 1
-    const id = `hotel-${number}${revisedItems.has(number) ? '-r2' : ''}`
-    questions.push({ id, english: text, skill, correct: correct as 0 | 1,
-      answers: thai.map(value => [...(prefix ? [{ text: prefix, skill: prefixSkill }] : []), { text: value, skill }]) as HotelQuestion['answers'],
-      audioUrl: `/audio/hotel/${id}.wav` })
+export type GrammarTarget = {
+  kind: 'meaning' | 'form'; context: string; phase: 'practice' | 'transfer'
+  targets: string[]; explanation: string; contrast: string; thai?: string
+  prompt?: string; promptAudioUrl?: string
+}
+export type HotelQuestion = LegacyQuestion & { grammar?: GrammarTarget }
+export const skills: string[] = grammarSkills.map(([id]) => id)
+export const skillNames: string[] = grammarSkills.map(([,name]) => name)
+const tokens = (s: string): string[] => s.toLowerCase().match(/[a-z]+(?:'[a-z]+)*/g) ?? []
+const items: HotelQuestion[] = []
+for (const skill of skills) {
+  const pairs = meaningPairs.filter(p => p.skill === skill)
+  pairs.forEach((pair, context) => pair.english.forEach((english, side) => {
+    const id = `hotel-g2-${skill}-${context + 1}-${side + 1}`
+    const other = tokens(pair.english[1 - side])
+    // Credit changed grammatical forms, not stable incidental nouns. Role
+    // contrasts also credit explicitly authored role words when both recur.
+    const roleWords = ['roles','passive'].includes(skill) ? pair.target[side].split(' ') : []
+    const targets = tokens(english).filter(w => !other.includes(w) || roleWords.includes(w))
+    items.push({ id, english, skill, correct: side as 0 | 1, audioUrl: `/audio/hotel/${id}.wav`,
+      answers: pair.thai.map(text => [{text,skill}]) as HotelQuestion['answers'],
+      grammar: {kind:'meaning',context:`${skill}-${context}`,phase:context >= pairs.length - 2 ? 'transfer' : 'practice', targets,
+        contrast:pair.english[1-side],explanation:pair.explanation},
+    })
+  }))
+  const forms = formItems.filter(f => f.skill === skill)
+  forms.forEach((form, context) => {
+    const id = `hotel-g2-${skill}-${context + 1}`
+    const correct = (context % 2) as 0 | 1
+    const choices = correct ? [form.wrong,form.right] : [form.right,form.wrong]
+    items.push({id,english:form.prompt.replace('_____',form.right),skill,correct,audioUrl:`/audio/hotel/${id}.wav`,
+      answers: choices.map(text => [{text,skill}]) as HotelQuestion['answers'],
+      grammar:{kind:'form',context:`${skill}-${context}`,phase:context >= forms.length - 2 ? 'transfer' : 'practice',
+        targets:tokens(form.right).length > 1 ? tokens(form.right).filter(w => !tokens(form.wrong).includes(w)) : tokens(form.right),explanation:form.explanation,contrast:form.prompt.replace('_____',form.wrong),
+        thai:form.thai,prompt:form.prompt,promptAudioUrl:`/audio/hotel/${id}-prompt.wav`},
+    })
   })
 }
-pair('people', ['The woman.', 'The man.'], ['ผู้หญิง', 'ผู้ชาย'])
-pair('people', ['The woman is here.', 'The man is here.'], ['ผู้หญิงอยู่ที่นี่', 'ผู้ชายอยู่ที่นี่'])
-pair('things', ['A towel.', 'A key.'], ['ผ้าขนหนู', 'กุญแจ'])
-pair('things', ['Do you need a towel?', 'Do you need a key?'], ['คุณต้องการผ้าขนหนูไหม', 'คุณต้องการกุญแจไหม'])
-pair('person', ['She is checking in.', 'He is checking in.'], ['ผู้หญิงคนนั้นกำลังเช็กอิน', 'ผู้ชายคนนั้นกำลังเช็กอิน'])
-pair('person', ['She has a reservation.', 'He has a reservation.'], ['ผู้หญิงคนนั้นจองไว้แล้ว', 'ผู้ชายคนนั้นจองไว้แล้ว'])
-pair('action', ['Are you checking in?', 'Are you checking out?'], ['คุณจะเช็กอินใช่ไหม', 'คุณจะเช็กเอาต์ใช่ไหม'])
-pair('action', ['Would you like to book a room?', 'Would you like to change your booking?'], ['คุณต้องการจองห้องพักไหม', 'คุณต้องการเปลี่ยนแปลงการจองไหม'])
-pair('place', ['In the lobby.', 'In the restaurant.'], ['ในล็อบบี้', 'ในห้องอาหาร'])
-pair('place', ['You can wait in the lobby.', 'You can wait in the restaurant.'], ['คุณรอในล็อบบี้ได้', 'คุณรอในห้องอาหารได้'])
-pair('ongoing', ['We are serving breakfast now.', 'We serve breakfast until ten.'], ['ตอนนี้เรากำลังให้บริการอาหารเช้า', 'เราให้บริการอาหารเช้าถึงสิบโมง'])
-pair('ongoing', ['The shuttle is leaving now.', 'The shuttle leaves every hour.'], ['รถรับส่งกำลังออกตอนนี้', 'รถรับส่งออกทุกชั่วโมง'])
-pair('finished', ['Your taxi has arrived.', 'Your taxi has not arrived yet.'], ['แท็กซี่ของคุณมาถึงแล้ว', 'แท็กซี่ของคุณยังมาไม่ถึง'])
-pair('finished', ['Housekeeping has finished your room.', 'Housekeeping is still preparing your room.'], ['แม่บ้านจัดเตรียมห้องของคุณเสร็จแล้ว', 'แม่บ้านยังเตรียมห้องของคุณอยู่'])
-pair('intention', ['I will check that for you.', 'I am checking that for you now.'], ['ฉันจะตรวจสอบเรื่องนั้นให้คุณ', 'ตอนนี้ฉันกำลังตรวจสอบเรื่องนั้นให้คุณ'])
-pair('intention', ['I will ask housekeeping.', 'I am asking housekeeping now.'], ['ฉันจะสอบถามแม่บ้านให้', 'ตอนนี้ฉันกำลังสอบถามแม่บ้านให้'])
-for (const [skill, english, thai] of expandedHotelPairs) pair(skill, english, thai)
-for (const [skill, english, thai] of hotelRoutinePairs) pair(skill, english, thai)
-// IDs stay fixed; curriculum order is shared by practice and the content table.
-export const hotelQuestions: readonly HotelQuestion[] = [...questions].sort((a, b) => skills.indexOf(a.skill) - skills.indexOf(b.skill))
-export type Progress = Record<string, { seen: string[]; correct: number; attempts: number }>
-export function isSkillComplete(progress: Progress, skill: string) {
-  const items = hotelQuestions.filter(q => q.skill === skill)
-  return items.length > 0 && items.every(q => progress[skill]?.seen.includes(q.id))
+export const hotelQuestions: readonly HotelQuestion[] = items
+export const progressKey = (id: string) => `hotel:grammar:v2:${id}`
+export const grammarWordMemoryKey = (id: string) => `hotel:grammar-words:v2:${id}`
+export const RETENTION_MS = 24 * 60 * 60 * 1000
+export type Evidence = { attempts:number; streak:number; firstCorrect:number; lastCorrect:number; retained:boolean }
+export type Progress = Record<string, LegacyProgress[string] & { items?:Record<string,Evidence>; recent?:boolean[] }>
+const group = (skill:string) => hotelQuestions.filter(q=>q.skill===skill)
+const successful = (p:Progress,q:HotelQuestion) => (p[q.skill]?.items?.[q.id]?.streak ?? 0) >= 2
+export function practiceReady(progress:Progress,skill:string) {
+  return group(skill).filter(q=>q.grammar?.phase==='practice').every(q=>successful(progress,q))
 }
-export function recordAnswer(progress: Progress, question: HotelQuestion, correct: boolean, assisted: boolean): Progress {
-  const prior = progress[question.skill] ?? { seen: [], correct: 0, attempts: 0 }
-  return { ...progress, [question.skill]: { attempts: prior.attempts + 1,
-    correct: prior.correct + Number(correct),
-    seen: !correct ? prior.seen.slice(0, -2) : assisted ? prior.seen : [...new Set([...prior.seen, question.id])],
-  } }
+export function isSkillReady(progress:Progress,skill:string) {
+  const recent=progress[skill]?.recent ?? []
+  return group(skill).length>0 && group(skill).every(q=>successful(progress,q)) && recent.length===12 && recent.filter(Boolean).length>=10
 }
-export function supportOpacity(progress: Progress, skill: string) {
-  const total = hotelQuestions.filter(q => q.skill === skill).length
-  return Math.max(0.45, 1 - (progress[skill]?.seen.length ?? 0) / Math.max(1, total) * 0.55)
+export function isSkillComplete(progress:Progress,skill:string) {
+  if (!isSkillReady(progress,skill)) return false
+  const retained=group(skill).filter(q=>progress[skill]?.items?.[q.id]?.retained)
+  return new Set(retained.map(q=>q.grammar!.context)).size>=4 && new Set(retained.filter(q=>q.grammar?.phase==='transfer').map(q=>q.grammar!.context)).size>=2
 }
-export function nextQuestion(progress: Progress, previous?: string, round = 0, random = Math.random) {
-  const unfinished = skills.filter(skill => !isSkillComplete(progress, skill))
-  const focus = unfinished.slice(0, 2)
-  const review = skills.filter(skill => !unfinished.includes(skill))
-  const reviewing = round % 4 === 3 && review.length > 0
-  // Advance review separately: using round % review.length would starve half
-  // the completed topics whenever their count divides the review interval.
-  const focusRound = review.length ? round - Math.floor((round + 1) / 4) : round
-  const selectedSkill = !focus.length ? skills[round % skills.length]
-    : reviewing ? review[Math.floor(round / 4) % review.length] : focus[focusRound % focus.length]
-  const candidates = hotelQuestions.filter(q => q.skill === selectedSkill && q.id !== previous)
-  const unseen = candidates.filter(q => !progress[q.skill]?.seen.includes(q.id))
-  // Introduce the short chunk pair before its longer sentence contexts.
-  const available = unseen.length ? unseen.slice(0, 2) : candidates
-  return available[Math.min(available.length - 1, Math.floor(random() * available.length))]
+export function recordAnswer(progress:Progress,question:HotelQuestion,correct:boolean,assisted:boolean,now=Date.now()):Progress {
+  // Shared Padel lessons retain their v1 behaviour; never change their contract.
+  if (!question.grammar) return legacyRecordAnswer(progress,question,correct,assisted)
+  const prior=progress[question.skill] ?? {seen:[],correct:0,attempts:0}
+  const old=prior.items?.[question.id] ?? {attempts:0,streak:0,firstCorrect:0,lastCorrect:0,retained:false}
+  const earned=correct&&!assisted
+  const entry:Evidence={attempts:old.attempts+1,streak:earned?old.streak+1:0,
+    firstCorrect:earned?(old.firstCorrect||now):0,lastCorrect:earned?now:0,
+    retained:earned&&(old.retained||(old.streak>0&&now-old.firstCorrect>=RETENTION_MS))}
+  const all={...prior.items,[question.id]:entry}
+  return {...progress,[question.skill]:{attempts:prior.attempts+1,correct:prior.correct+Number(correct),items:all,
+    recent:[...(prior.recent??[]),earned].slice(-12),seen:Object.entries(all).filter(([,v])=>v.streak>=2).map(([id])=>id)}}
 }
-export function loadProgress(userId: string): Progress {
+export function nextQuestion(progress:Progress,previous?:string,round=0,random=Math.random,now=Date.now()):HotelQuestion {
+  const focus=skills.filter(s=>!isSkillReady(progress,s)).slice(0,2)
+  const review=skills.filter(s=>isSkillReady(progress,s))
+  const focusRound=review.length?round-Math.floor((round+1)/4):round
+  const reviewing=(!focus.length || round%4===3)&&review.length>0
+  const skill=reviewing?review[Math.floor(round/4)%review.length]:focus[focusRound%focus.length]
+  const pool=group(skill).filter(q=>q.id!==previous && (q.grammar?.phase==='practice'||practiceReady(progress,skill)))
+  const due=pool.filter(q=>{const e=progress[skill]?.items?.[q.id];return e&&!e.retained&&now-e.firstCorrect>=RETENTION_MS})
+  const unfinished=pool.filter(q=>!successful(progress,q))
+  let available=reviewing&&due.length?due:unfinished.length?unfinished:pool
+  // Prefer the least practised evidence, rather than cycling one answer pair.
+  const min=Math.min(...available.map(q=>progress[skill]?.items?.[q.id]?.attempts??0))
+  available=available.filter(q=>(progress[skill]?.items?.[q.id]?.attempts??0)===min)
+  return available[Math.min(available.length-1,Math.max(0,Math.floor(random()*available.length)))]
+}
+export function loadProgress(userId:string):Progress {
   try {
-    const parsed: unknown = JSON.parse(localStorage.getItem(`hotel:v1:${userId}`) ?? '{}')
-    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {}
-    const result: Progress = {}
-    for (const skill of skills) {
-      const value = (parsed as Progress)[skill]
-      if (value && Array.isArray(value.seen) && value.seen.every(id => typeof id === 'string') && Number.isFinite(value.correct) && Number.isFinite(value.attempts)) {
-        const activeIds = new Set(hotelQuestions.filter(q => q.skill === skill).map(q => q.id))
-        result[skill] = { ...value, seen: [...new Set(value.seen.filter(id => activeIds.has(id)))] }
+    const raw:unknown=JSON.parse(localStorage.getItem(progressKey(userId))??'{}')
+    if(!raw||typeof raw!=='object'||Array.isArray(raw)) return {}
+    const result:Progress={}
+    for(const skill of skills){
+      const row=(raw as Progress)[skill]
+      if(!row||!Number.isSafeInteger(row.attempts)||!Number.isSafeInteger(row.correct)||row.correct<0||row.attempts<row.correct) continue
+      const valid:Record<string,Evidence>={}
+      for(const q of group(skill)){
+        const e=row.items?.[q.id]
+        if(e&&[e.attempts,e.streak,e.firstCorrect,e.lastCorrect].every(n=>Number.isSafeInteger(n)&&n>=0)&&e.streak<=e.attempts&&e.lastCorrect>=e.firstCorrect&&typeof e.retained==='boolean')
+          valid[q.id]={...e,retained:e.retained&&e.streak>=2&&e.lastCorrect-e.firstCorrect>=RETENTION_MS}
       }
+      result[skill]={attempts:row.attempts,correct:row.correct,items:valid,recent:Array.isArray(row.recent)?row.recent.filter(v=>typeof v==='boolean').slice(-12):[],seen:Object.entries(valid).filter(([,v])=>v.streak>=2).map(([id])=>id)}
     }
     return result
-  } catch { return {} }
+  }catch{return {}}
 }
+export function supportOpacity(progress:Progress,skill:string){return isSkillComplete(progress,skill)?0.25:1}

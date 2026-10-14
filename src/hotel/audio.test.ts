@@ -7,7 +7,8 @@ import { hotelQuestions } from './course'
 
 it('ships a matching, nonempty neural recording for every Hotel question', () => {
   const manifest = JSON.parse(readFileSync(resolve('public/audio/hotel/voice-manifest.json'), 'utf8'))
-  for (const question of hotelQuestions) {
+  const recordings = hotelQuestions.flatMap(q => [{id:q.id,english:q.english,audioUrl:q.audioUrl},...(q.grammar?.prompt ? [{id:`${q.id}-prompt`,english:q.grammar.prompt,audioUrl:q.grammar.promptAudioUrl!}] : [])])
+  for (const question of recordings) {
     const name = question.audioUrl.split('/').at(-1)!
     const entry = manifest[name]
     expect(entry, question.id).toBeDefined()

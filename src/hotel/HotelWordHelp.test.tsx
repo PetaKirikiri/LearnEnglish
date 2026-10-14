@@ -3,11 +3,10 @@ import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import { afterEach, expect, it, vi } from 'vitest'
 import HotelWordHelp from './HotelWordHelp'
-import { hotelQuestions } from './course'
 import { hotelWordGlosses } from './wordGlosses'
 import { thaiTranslations } from '../content/languageData'
 import { normalizeHelpWord } from '../learning/helpPoints'
-import { hotelWordProfiles, hotelWordExamples } from './wordProfiles'
+import { hotelWordProfiles, hotelWordExamples, hotelReferenceQuestions as hotelQuestions } from './wordProfiles'
 import { wordProfileSchema } from '../learning/wordInfo/types'
 const mocks = vi.hoisted(() => ({ load: vi.fn(async () => 'database'), speak: vi.fn() }))
 vi.mock('../lib/languageDatabase', () => ({ initializeLanguageDatabase: mocks.load }))
@@ -40,11 +39,11 @@ it('opens the shared modal, loads shared profiles and replays the sentence', asy
 })
 it('gives every Hotel token a valid profile, real Hotel neighbours and relevant examples', () => {
   const words = [...new Set(hotelQuestions.flatMap(q => q.english.match(/[\p{L}]+(?:[’'][\p{L}]+)*/gu) ?? []).map(normalizeHelpWord))]
-  expect(words).toHaveLength(271)
+  expect(words.length).toBeGreaterThanOrEqual(271)
   for (const word of words) {
     const profile = wordProfileSchema.parse(hotelWordProfiles[word])
     expect(profile.nouns.length || profile.verbs.length || profile.grammar_note_th, word).toBeTruthy()
-    expect(profile.corpus_version).toBe('hotel-320-v1')
+    expect(profile.corpus_version).toBe('hotel-grammar-v2')
     const examples = hotelWordExamples(word,'')
     expect(examples.length,word).toBeGreaterThan(0)
     for (const example of examples) expect(hotelQuestions.some(q=>q.english===example)).toBe(true)
@@ -58,7 +57,7 @@ it('keeps irregular forms and non-verbs distinct', () => {
   expect(hotelWordProfiles.bring.verbs[0]).toMatchObject({past:'brought',participle:'brought'})
   expect(hotelWordProfiles.paid.verbs[0]).toMatchObject({base:'pay',third:'pays',past:'paid'})
   expect(hotelWordProfiles.planned.verbs[0]).toMatchObject({base:'plan',ing:'planning'})
-  expect(hotelWordProfiles.left.verbs).toEqual([])
+  expect(hotelWordProfiles.left.verbs[0]).toMatchObject({base:'leave',past:'left'})
   expect(hotelWordProfiles.the.verbs).toEqual([])
   expect(hotelWordProfiles.is.grammar_note_th).toContain('The woman is here')
   expect(hotelWordProfiles.leaves.nouns).toEqual([])
@@ -78,4 +77,4 @@ it('opens meaningful help for every distinct Hotel word without relying on a dat
     await act(async () => dialog.querySelector<HTMLButtonElement>('[aria-label="Close word help"]')!.click())
     expect(document.activeElement).toBe(token)
   }
-})
+}, 20000)

@@ -1,6 +1,11 @@
 // Hotel-context meanings supplement the shared language database. They do not
 // change FIFA's meanings (e.g. "left" here is direction, not past leave).
 export const hotelWordGlosses: Record<string, string> = {
+  him:'เขา (ผู้รับการกระทำ)', gave:'ให้แล้ว', brought:'นำมาแล้ว', rooms:'ห้องหลายห้อง',
+  hers:'ของเธอ', mine:'ของฉัน', yours:'ของคุณ', theirs:'ของพวกเขา', yesterday:'เมื่อวาน',
+  checks:'ตรวจสอบ', bookings:'การจองหลายรายการ', seen:'พบแล้ว / เห็นแล้ว', helps:'ช่วย', helping:'กำลังช่วย',
+  transfers:'การรับส่ง', carries:'ยก / ถือ', carrying:'กำลังยก / ถือ', balcony:'ระเบียง',
+  explain:'อธิบาย', tell:'บอก', forward:'ข้างหน้า; look forward to = รอคอย', seeing:'การพบ / กำลังพบ', helped:'ช่วยแล้ว',
   is:'เป็น; อยู่; คือ; ใช้กับกริยา -ing เพื่อบอกว่ากำลังทำ',
   are:'เป็น; อยู่; คือ; ใช้กับ you / we / they หรือหลายสิ่ง',
   be:'เป็น; อยู่; รูปพื้นฐานของ am / is / are',

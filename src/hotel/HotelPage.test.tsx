@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import HotelPage, { HotelLesson } from './HotelPage'
 import { PETA_ACCOUNT_ID } from '../auth/appAccess'
-import { hotelQuestions } from './course'
+import { hotelQuestions, progressKey, grammarWordMemoryKey, recordAnswer, type Progress } from './course'
 const speech = vi.hoisted(() => ({ speak: vi.fn(), stop: vi.fn() }))
 const account = vi.hoisted(() => ({ finish: vi.fn(async (): Promise<{ id: string } | null> => null) }))
 const scores = vi.hoisted(() => ({ join: vi.fn(async () => {}), queue: vi.fn(), sync: vi.fn(async () => {}), load: vi.fn(async () => []) }))
@@ -96,16 +96,16 @@ it('plays on entry, waits for audio, records once, and only advances on Next', a
   expect(speech.speak).toHaveBeenCalledTimes(1)
   const choice = host.querySelector('.hotel-answer') as HTMLButtonElement
   await act(() => choice.click())
-  expect(localStorage.getItem('hotel:v1:test-user')).toBeNull()
+  expect(localStorage.getItem(progressKey('test-user'))).toBeNull()
   await act(() => speech.speak.mock.calls[0][2]('ended'))
   await act(() => { choice.click(); choice.click() })
-  const stored = JSON.parse(localStorage.getItem('hotel:v1:test-user')!)
-  expect(stored.people.attempts).toBe(1)
+  const stored = JSON.parse(localStorage.getItem(progressKey('test-user'))!)
+  expect(stored.roles.attempts).toBe(1)
   expect(scores.queue).toHaveBeenCalledTimes(1)
   expect(scores.queue.mock.calls[0][0]).toBe('test-user')
   expect(speech.speak).toHaveBeenCalledTimes(1)
   expect(host.textContent).toContain('Next')
-  expect(localStorage.getItem('hotel:v1:someone-else')).toBeNull()
+  expect(localStorage.getItem(progressKey('someone-else'))).toBeNull()
   await act(() => (host.querySelector('.hotel-primary') as HTMLButtonElement).click())
   expect(speech.speak).toHaveBeenCalledTimes(2)
 })
@@ -142,40 +142,74 @@ it('shows English immediately and treats word lookup as assisted help without an
   expect(scores.queue).toHaveBeenCalledWith('test-user', expect.any(String), expect.any(Number), true)
 })
 it('fades familiar English independently, keeps Thai readable, and restores English on request', async () => {
-  localStorage.setItem('hotel:words:v1:test-user', JSON.stringify({ the: { seen: 8, strength: 8 } }))
+  const random = vi.spyOn(Math, 'random').mockReturnValue(0)
+  localStorage.setItem(grammarWordMemoryKey('test-user'), JSON.stringify({ she: { seen: 8, strength: 8 } }))
   await act(() => root.render(<HotelLesson userId="test-user" />))
   const words = host.querySelectorAll<HTMLElement>('.word-token')
-  expect(words[0].textContent).toBe('The')
+  expect(words[0].textContent).toBe('She')
   expect(words[0].style.opacity).toBe('0.25')
   expect(words[1].style.opacity).toBe('1')
   expect(host.querySelector('.hotel-answer [style]')).toBeNull()
-  expect(localStorage.getItem('hotel:words:v1:someone-else')).toBeNull()
+  expect(localStorage.getItem(grammarWordMemoryKey('someone-else'))).toBeNull()
   await act(() => (host.querySelector('.hotel-reveal') as HTMLButtonElement).click())
   expect(words[0].style.opacity).toBe('1')
   await act(() => speech.speak.mock.calls[0][2]('ended'))
   await act(() => (host.querySelector('.hotel-answer') as HTMLButtonElement).click())
   expect(scores.queue).toHaveBeenCalledWith('test-user', expect.any(String), expect.any(Number), true)
+  random.mockRestore()
 })
-it('credits only the words in each correctly answered sentence through the real lesson flow', async () => {
+it('credits only the tested forms, not incidental vocabulary, through the real lesson flow', async () => {
   const random = vi.spyOn(Math, 'random').mockReturnValue(0)
   try {
     await act(() => root.render(<HotelLesson userId="word-test-user" />))
     const expected: Record<string, number> = {}
     for (let round = 0; round < 3; round++) {
       const spoken = speech.speak.mock.calls.at(-1)!
-      const question = hotelQuestions.find(q => q.english === spoken[0])!
-      for (const word of new Set(question.english.toLowerCase().match(/[a-z]+/g)!)) expected[word] = (expected[word] ?? 0) + 1
+      const question = hotelQuestions.find(q => (q.grammar?.prompt ?? q.english) === spoken[0])!
+      for (const word of new Set(question.english.toLowerCase().match(/[a-z]+/g)!)) expected[word] = (expected[word] ?? 0) + Number(question.grammar!.targets.includes(word))
       await act(() => spoken[2]('ended'))
       const meaning = question.answers[question.correct].map(segment => segment.text).join('')
       const choice = [...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].find(button => button.textContent === meaning)!
       await act(() => choice.click())
-      const saved = JSON.parse(localStorage.getItem('hotel:words:v1:word-test-user')!)
+      const saved = JSON.parse(localStorage.getItem(grammarWordMemoryKey('word-test-user'))!)
       expect(Object.fromEntries(Object.entries(saved).map(([word, value]) => [word, (value as {strength:number}).strength]))).toEqual(expected)
       expect(scores.queue.mock.calls.at(-1)?.[3]).toBe(false)
       if (round < 2) await act(() => (host.querySelector('.hotel-primary') as HTMLButtonElement).click())
     }
-    expect(expected.the).toBe(2)
-    expect(expected.woman).toBe(1)
-    expect(expected.man).toBe(1)
+    expect(expected.called).toBe(0)
+    expect(expected.her).toBeGreaterThan(0)
   } finally { random.mockRestore() }
+})
+
+it('keeps the completed form out of the prompt audio until after answering', async () => {
+  let progress:Progress={}
+  for(const q of hotelQuestions.filter(q=>q.skill==='roles')) for(let i=0;i<2;i++) progress=recordAnswer(progress,q,true,false,1000+i)
+  localStorage.setItem(progressKey('test-user'),JSON.stringify(progress))
+  const random=vi.spyOn(Math,'random').mockReturnValue(0)
+  try {
+    await act(()=>root.render(<HotelLesson userId="test-user" />))
+    const form=hotelQuestions.find(q=>q.skill==='object_forms')!
+    expect(speech.speak.mock.calls[0][0]).toBe(form.grammar!.prompt)
+    expect(speech.speak.mock.calls[0][1]).toBe(form.grammar!.promptAudioUrl)
+    expect(host.querySelector('p[lang="en"]')?.textContent).toContain('_____')
+    expect(host.querySelector('p[lang="en"]')?.textContent).not.toContain(form.english)
+    expect(host.querySelector('.hotel-answer.right')).toBeNull()
+    await act(()=>speech.speak.mock.calls[0][2]('ended'))
+    await act(()=>host.querySelector<HTMLButtonElement>('.hotel-answer')!.click())
+    expect(speech.speak.mock.calls.at(-1)?.[0]).toBe(form.english)
+    expect(host.querySelector('p[lang="en"]')?.textContent).toBe(form.english)
+  } finally {random.mockRestore()}
+})
+
+it('holds transfer meanings audio-only and marks text reveal as assisted',async()=>{
+  let progress:Progress={}
+  for(const q of hotelQuestions.filter(q=>q.skill==='roles'&&q.grammar!.phase==='practice')) for(let i=0;i<2;i++) progress=recordAnswer(progress,q,true,false,1000+i)
+  localStorage.setItem(progressKey('test-user'),JSON.stringify(progress))
+  await act(()=>root.render(<HotelLesson userId="test-user" />))
+  expect(host.querySelector('p[lang="en"]')).toBeNull()
+  await act(()=>host.querySelector<HTMLButtonElement>('.hotel-reveal')!.click())
+  expect(host.querySelector('p[lang="en"]')).not.toBeNull()
+  await act(()=>speech.speak.mock.calls[0][2]('ended'))
+  await act(()=>host.querySelector<HTMLButtonElement>('.hotel-answer')!.click())
+  expect(scores.queue).toHaveBeenCalledWith('test-user',expect.any(String),expect.any(Number),true)
 })

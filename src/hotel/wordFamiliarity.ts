@@ -12,13 +12,14 @@ export function loadWordFamiliarity(userId: string, key = wordMemoryKey(userId))
     })) as WordFamiliarity
   } catch { return {} }
 }
-export function recordWordExposure(memory: WordFamiliarity, sentence: string, correct: boolean, assisted: boolean): WordFamiliarity {
+export function recordWordExposure(memory: WordFamiliarity, sentence: string, correct: boolean, assisted: boolean, targets?: readonly string[]): WordFamiliarity {
   const result = { ...memory }
   // One exposure per distinct word per completed question, not per render/replay.
   const words = new Set((sentence.match(/[\p{L}]+(?:[’'][\p{L}]+)*/gu) ?? []).map(normalizeHelpWord))
   for (const word of words) {
     const prior = memory[word] ?? { seen: 0, strength: 0 }
-    result[word] = { seen: prior.seen + 1, strength: !correct ? Math.max(0, prior.strength - 2) : assisted ? prior.strength : Math.min(8, prior.strength + 1) }
+    const tested = targets === undefined || targets.includes(word)
+    result[word] = { seen: prior.seen + 1, strength: !tested ? prior.strength : !correct ? Math.max(0, prior.strength - 2) : assisted ? prior.strength : Math.min(8, prior.strength + 1) }
   }
   return result
 }

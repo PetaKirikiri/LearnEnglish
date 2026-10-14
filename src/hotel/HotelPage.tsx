@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ComponentType } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
-import { isSkillComplete, loadProgress, nextQuestion, recordAnswer, skills, type HotelQuestion } from './course'
+import { isSkillComplete, loadProgress, nextQuestion, recordAnswer, skills, progressKey, grammarWordMemoryKey, type HotelQuestion } from './course'
 import './hotel.css'
 import { ENGLISH_ORIGIN, hotelAccountUrl, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
 import { finishHotelReturn } from './accountHandoff'
@@ -13,7 +13,7 @@ import HotelScoreboard from './HotelScoreboard'
 import { joinHotel, queueHotelAnswer, syncHotelAnswers } from './scoring'
 import Icon from '../ui/Icon'
 import HotelWordHelp from './HotelWordHelp'
-import { loadWordFamiliarity, recordWordExposure, wordMemoryKey, wordOpacity, type WordFamiliarity } from './wordFamiliarity'
+import { loadWordFamiliarity, recordWordExposure, wordOpacity, type WordFamiliarity } from './wordFamiliarity'
 
 // One listening interaction, with explicit course boundaries for content,
 // storage and scoring. Padel must never submit attempts to Hotel's scoreboard.
@@ -30,7 +30,7 @@ export type ListeningCourse = {
 }
 const hotelCourse: ListeningCourse = {
   skills, loadProgress, nextQuestion, isSkillComplete,
-  progressKey: id => `hotel:v1:${id}`, wordMemoryKey, WordHelp: HotelWordHelp,
+  progressKey, wordMemoryKey: grammarWordMemoryKey, WordHelp: HotelWordHelp,
   sync: id => joinHotel().then(() => syncHotelAnswers(id)), queue: queueHotelAnswer,
 }
 
@@ -40,7 +40,8 @@ export default function HotelPage() {
   const [error, setError] = useState(() => new URLSearchParams(window.location.search).get('line_result') === 'new' ? 'No account yet. Tap Sign up to create one.' : '')
   const entryUrl = hotelLineEntryUrl()
   const isAdmin = user ? appDestination(user.id, '/admin') === 'admin' : false
-  const showContent = isAdmin && /^\/hotel\/content\/?$/.test(window.location.pathname)
+  const preview = import.meta.env.DEV && /^\/hotel\/preview(?:\/content)?\/?$/.test(window.location.pathname)
+  const showContent = (isAdmin && /^\/hotel\/content\/?$/.test(window.location.pathname)) || (preview && /\/content\/?$/.test(window.location.pathname))
   const showScores = isAdmin && /^\/hotel\/scoreboard\/?$/.test(window.location.pathname)
   function signIn(create = false) {
     if (busy) return
@@ -60,10 +61,10 @@ export default function HotelPage() {
   return <main className="hotel-shell">
     <header className="hotel-header">
       <a href={isHotelLineEntry(window.location.search) ? hotelAccountUrl() : '/hotel'}>ENGLISH<span>SUCCESS</span></a>
-      {isAdmin ? <nav className="hotel-admin-nav" aria-label="Hotel tools">
-        <a className="hotel-nav-icon" aria-label="Practice" title="Practice" aria-current={!showContent && !showScores ? 'page' : undefined} href="/hotel"><Icon name="play" /></a>
-        <a className="hotel-content-link" aria-current={showContent ? 'page' : undefined} href="/hotel/content">Content</a>
-        <a className="hotel-nav-icon" aria-label="Scoreboard" title="Scoreboard" aria-current={showScores ? 'page' : undefined} href="/hotel/scoreboard"><Icon name="trophy" /></a>
+      {isAdmin || preview ? <nav className="hotel-admin-nav" aria-label="Hotel tools">
+        <a className="hotel-nav-icon" aria-label="Practice" title="Practice" aria-current={!showContent && !showScores ? 'page' : undefined} href={preview ? '/hotel/preview' : '/hotel'}><Icon name="play" /></a>
+        <a className="hotel-content-link" aria-current={showContent ? 'page' : undefined} href={preview ? '/hotel/preview/content' : '/hotel/content'}>Content</a>
+        {isAdmin ? <a className="hotel-nav-icon" aria-label="Scoreboard" title="Scoreboard" aria-current={showScores ? 'page' : undefined} href="/hotel/scoreboard"><Icon name="trophy" /></a> : null}
       </nav> : <span>HOTEL EDITION</span>}
     </header>
     {showScores ? <HotelScoreboard /> : showContent ? <HotelContentPage /> : import.meta.env.DEV && window.location.pathname === '/hotel/preview' ? <><p className="hotel-eyebrow" style={{ textAlign: 'center', marginTop: 16 }}>LOCAL PREVIEW · NOT SIGNED IN</p><HotelLesson userId="local-preview" /></> : user ? <HotelLesson key={user.id} userId={user.id} /> : <section className="hotel-welcome">
@@ -100,7 +101,9 @@ export function HotelLesson({ userId, course = hotelCourse }: { userId: string; 
   const round = useRef(0)
   const answered = useRef(false)
   const play = useCallback((item: HotelQuestion) => {
-    speakEnglish(item.english, import.meta.env.PROD ? `${ENGLISH_ORIGIN}${item.audioUrl}` : item.audioUrl, state => {
+    const text = item.grammar?.prompt ?? item.english
+    const url = item.grammar?.promptAudioUrl ?? item.audioUrl
+    speakEnglish(text, import.meta.env.PROD ? `${ENGLISH_ORIGIN}${url}` : url, state => {
       if (state === 'ended') setHeard(true)
       setAudio(state === 'blocked' ? 'Tap to retry audio' : state === 'playing' ? 'Listening…' : 'Listen again')
     })
@@ -122,13 +125,14 @@ export function HotelLesson({ userId, course = hotelCourse }: { userId: string; 
     setSelected(index)
     const assisted = revealed || helped
     const updated = recordAnswer(progress, question, index === question.correct, assisted)
-    saveWords(recordWordExposure(wordMemory, question.english, index === question.correct, assisted))
+    saveWords(recordWordExposure(wordMemory, question.english, index === question.correct, assisted, question.grammar?.targets))
     setProgress(updated)
     try { localStorage.setItem(course.progressKey(userId), JSON.stringify(updated)) } catch { setStorageError(true) }
     if (userId !== 'local-preview' && course.queue) {
       try { course.queue(userId, question.id, index, assisted); void sync() }
       catch { setStorageError(true) }
     }
+    if (question.grammar?.kind === 'form') speakEnglish(question.english, question.audioUrl)
   }
   function saveWords(memory: WordFamiliarity) {
     setWordMemory(memory)
@@ -146,15 +150,20 @@ export function HotelLesson({ userId, course = hotelCourse }: { userId: string; 
   const order = flipped ? [1, 0] : [0, 1]
   // Freeze fading until the next question: feedback must not move the support.
   const support = selected === null && !revealed
+  const assessment = question.grammar?.kind === 'meaning' && question.grammar.phase === 'transfer'
+  const displayQuestion = selected === null && question.grammar?.prompt ? { ...question, english: question.grammar.prompt, audioUrl: question.grammar.promptAudioUrl! } : question
   return <section className="hotel-lesson">
     <div className="hotel-journey" aria-label="Listening progress">{course.skills.map(skill => <span key={skill} className={course.isSkillComplete(progress, skill) ? 'learned' : ''} />)}</div>
       <button className="hotel-listen" onClick={() => play(question)} aria-label="Play English audio"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 27h10l12-10v30L22 37H12zM43 23q12 9 0 18M49 15q21 17 0 34" /></svg></button>
       <p className="hotel-audio" aria-live="polite">{audio}</p>
-      <p className="hotel-sentence" lang="en"><CourseWordHelp key={question.id} question={question} onListen={() => play(question)} onHelp={helpWord} tokenOpacity={word => support ? wordOpacity(wordMemory, word) : 1} /></p>
+      {question.grammar?.thai ? <p className="hotel-sentence" lang="th">{question.grammar.thai}</p> : null}
+      {!assessment || revealed || selected !== null ? <p className="hotel-sentence" lang="en"><CourseWordHelp key={`${question.id}-${selected === null}`} question={displayQuestion} onListen={() => play(question)} onHelp={helpWord} tokenOpacity={word => support ? wordOpacity(wordMemory, word) : 1} /></p> : null}
       <div className="hotel-answers">{order.map(index => <button key={`${question.id}-${index}`} disabled={selected !== null} className={`hotel-answer ${selected !== null && index === question.correct ? 'right' : selected === index ? 'wrong' : ''}`} onClick={() => choose(index)}>
-        <span lang="th">{question.answers[index].map((segment, i) => <span key={i}>{segment.text}</span>)}</span>
+        <span lang={question.grammar?.kind === 'form' ? 'en' : 'th'}>{question.answers[index].map((segment, i) => <span key={i}>{segment.text}</span>)}</span>
       </button>)}</div>
-      {selected === null ? <button className="hotel-reveal" onClick={() => setRevealed(true)} disabled={revealed}>{revealed ? 'Words visible' : 'Show words'}</button> : <div className="hotel-feedback" aria-live="polite"><button className="hotel-primary" onClick={next}>Next →</button></div>}
+      {selected === null ? <button className="hotel-reveal" onClick={() => setRevealed(true)} disabled={revealed}>{revealed ? 'Words visible' : 'Show words'}</button> : <div className="hotel-feedback" aria-live="polite">
+        {question.grammar ? <details><summary>Why?</summary><p lang="th">{question.grammar.explanation}</p></details> : null}
+        <button className="hotel-primary" onClick={next}>Next →</button></div>}
       {storageError ? <p role="alert">Progress could not be saved on this device.</p> : null}
       {scoreError ? <p role="status">Scores not synced. <button className="hotel-reveal" onClick={() => void sync()}>Retry</button></p> : null}
   </section>

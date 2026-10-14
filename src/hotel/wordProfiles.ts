@@ -3,6 +3,7 @@ import { countNeighbours, rankedNeighbours } from '../learning/wordInfo/corpus'
 import type { NounForms, VerbForms, WordProfile } from '../learning/wordInfo/types'
 import { normalizeHelpWord } from '../learning/helpPoints'
 import { hotelQuestions } from './course'
+import { hotelQuestions as referenceQuestions } from './legacyCourse'
 
 // Explicit lexical families, not suffix-based guesses about a word's role.
 const extraVerbs: VerbForms[] = [
@@ -15,6 +16,7 @@ const extraVerbs: VerbForms[] = [
   ['extend','extends','extended','extended','extending'], ['finish','finishes','finished','finished','finishing'],
   ['follow','follows','followed','followed','following'], ['include','includes','included','included','including'],
   ['let','lets','let','let','letting'], ['meet','meets','met','met','meeting'],
+  ['explain','explains','explained','explained','explaining'],
   ['notify','notifies','notified','notified','notifying'], ['pay','pays','paid','paid','paying'],
   ['plan','plans','planned','planned','planning'], ['return','returns','returned','returned','returning'],
   ['shower','showers','showered','showered','showering'], ['sign','signs','signed','signed','signing'],
@@ -23,6 +25,7 @@ const extraVerbs: VerbForms[] = [
 ].map(([base,third,past,participle,ing]) => ({base,third,past,participle,ing}))
 const extraNouns: NounForms[] = `address adult area bill blanket booking card charge checkout confirmation delay dinner flight floor guest gym hotel key lift lobby manager map passport pillow pool porter rate receipt receptionist recommendation reservation restaurant sauna shower shuttle sign spa toilet towel transfer`.split(' ').map(singular => ({singular, plural: singular === 'address' ? 'addresses' : singular === 'lobby' ? 'lobbies' : `${singular}s`, countability:'countable'}))
 extraNouns.push({singular:'woman',plural:'women',countability:'countable'})
+extraNouns.push({singular:'balcony',plural:'balconies',countability:'countable'})
 for (const singular of ['coffee','noise','housekeeping','reception','sleep']) extraNouns.push({singular,plural:null,countability:'uncountable'})
 
 const notes: Record<string,string> = { ...grammarNotes,
@@ -58,6 +61,10 @@ const notes: Record<string,string> = { ...grammarNotes,
   front:'in front of = อยู่ด้านหน้า; front desk = แผนกต้อนรับ ต้องอ่านเป็นกลุ่มคำ',
   good:'good ใช้บอกลักษณะ เช่น a good flight; รูปเปรียบเทียบคือ better / best ไม่ใช่ gooder',
   he:'he เป็นผู้ชายที่เป็นผู้ทำ เช่น He is waiting; เมื่อเป็นผู้รับใช้ him และเมื่อบอกเจ้าของใช้ his',
+  him:'him ใช้เมื่อเขาเป็นผู้รับ เช่น I called him หรือหลังบุพบท เช่น for him; ผู้ทำใช้ he',
+  them:'them ใช้เมื่อพวกเขาเป็นผู้รับ เช่น I called them; ผู้ทำใช้ they เช่น They called me',
+  these:'these ใช้กับหลายสิ่ง เช่น these rooms / These are your bags; สิ่งเดียวใช้ this',
+  where:'where ถามสถานที่ เช่น Where does she want to go?; หลัง does ใช้ want ไม่ใช่ wants',
   her:'her + สิ่งของ เช่น her bag = กระเป๋าของเธอ; เป็นผู้รับก็ได้ เช่น call her; ผู้ทำใช้ she',
   here:'here = ที่นี่ เช่น is here; there = ที่นั่น ไม่เติม to ใน come here',
   his:'his + สิ่งของ เช่น his passport = หนังสือเดินทางของเขา; ผู้ทำใช้ he ผู้รับใช้ him',
@@ -67,7 +74,13 @@ const notes: Record<string,string> = { ...grammarNotes,
   in:'in = ใน เช่น in the lobby; check in เป็นกลุ่มกริยา หมายถึงเช็กอิน ไม่ใช่แปล in แยกคำ',
   into:'into บอกการเคลื่อนเข้าไป เช่น go into town; in มักบอกตำแหน่งที่อยู่แล้ว',
   late:'late = หลังเวลาปกติ; later = ภายหลังหรือช้ากว่า; late checkout คือเช็กเอาต์ช้ากว่าเวลาปกติ',
-  left:'ในบทเรียนนี้ left บอกด้านซ้าย เช่น on your left ไม่ใช่อดีตของ leave; ตรงข้ามคือ right',
+  left:'on your left บอกด้านซ้าย; left ยังเป็นอดีตและช่อง 3 ของ leave ได้ด้วย ต้องดูบริบท',
+  hers:'hers แทนสิ่งที่เป็นของเธอโดยไม่มีคำนามตามหลัง: This key is hers; her key ต้องใช้ her',
+  mine:'mine แทนสิ่งที่เป็นของฉัน: This bag is mine; my bag ต้องใช้ my หน้าคำนาม',
+  yours:'yours แทนสิ่งที่เป็นของคุณ: Is this room yours?; your room ใช้ your หน้าคำนาม',
+  theirs:'theirs แทนสิ่งที่เป็นของพวกเขา: These bags are theirs; their bags ใช้ their หน้าคำนาม',
+  forward:'look forward to + คำนามหรือกริยา -ing: We look forward to seeing you หมายถึงรอคอยที่จะพบคุณ',
+  yesterday:'yesterday บอกเมื่อวาน ใช้กับอดีตทั่วไป เช่น paid yesterday',
   louder:'louder = ดังกว่าเดิม จาก loud; speak louder ขอให้เพิ่มระดับเสียง ไม่ใช่พูดเร็วขึ้น',
   may:'May I …? ใช้ขออนุญาตอย่างสุภาพ ตามด้วยกริยารูปพื้นฐาน เช่น May I check …?',
   me:'me เป็นผู้พูดที่เป็นผู้รับ เช่น follow me; ถ้าเป็นผู้ทำใช้ I เช่น I will help',
@@ -125,17 +138,19 @@ const notes: Record<string,string> = { ...grammarNotes,
 }
 for (const word of ['one','two','three','six','seven','nine','ten','eleven','thirty']) notes[word] = `${word} บอกจำนวนหรือเวลา; one ใช้กับคำนามเอกพจน์ เช่น one night จำนวนมากกว่าหนึ่งใช้พหูพจน์ เช่น two nights; เวลาใช้ at เช่น at seven`
 
-const corpus = countNeighbours(hotelQuestions.map(q => q.english))
+// Keep the reference vocabulary available to shared Padel word help as well.
+export const hotelReferenceQuestions = [...referenceQuestions, ...hotelQuestions]
+const corpus = countNeighbours(hotelReferenceQuestions.map(q => q.english))
 const lexicalVerbs = [...verbs,...extraVerbs]
 const lexicalNouns = [...nouns,...extraNouns]
 export const hotelWordProfiles: Record<string,WordProfile> = Object.fromEntries([...corpus].map(([word,row]) => [word, {
   nouns: word === 'leaves' ? [] : lexicalNouns.filter(n => nounMatches(n,word)),
-  verbs: word === 'left' ? [] : lexicalVerbs.filter(v => verbMatches(v,word)),
+  verbs: lexicalVerbs.filter(v => verbMatches(v,word)),
   grammar_note_th: notes[word], before: rankedNeighbours(row.before), after: rankedNeighbours(row.after),
-  occurrences: row.occurrences, corpus_version:'hotel-320-v1',
+  occurrences: row.occurrences, corpus_version:'hotel-grammar-v2',
 }]))
 export function hotelWordExamples(word: string, context: string): string[] {
   const normalized = normalizeHelpWord(word)
-  return [...new Set([context,...hotelQuestions.map(q => q.english)])]
+  return [...new Set([context,...hotelReferenceQuestions.map(q => q.english)])]
     .filter(sentence => (sentence.match(/[\p{L}]+(?:[’'][\p{L}]+)*/gu) ?? []).some(w => normalizeHelpWord(w) === normalized)).slice(0,2)
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { hotelQuestions, isSkillComplete, loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type Progress } from './course'
+import { hotelQuestions, isSkillComplete, loadProgress, nextQuestion, recordAnswer, skills, supportOpacity, type Progress } from './legacyCourse'
 describe('hotel listening course', () => {
   it('has 320 real questions, balanced answers and sixteen contexts per focus', () => {
     expect(hotelQuestions).toHaveLength(320)
