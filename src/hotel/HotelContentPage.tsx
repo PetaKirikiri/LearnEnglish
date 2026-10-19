@@ -6,12 +6,13 @@ import HotelWordHelp from './HotelWordHelp'
 import type { ComponentType } from 'react'
 import { getCurriculum } from '../curriculum/database'
 
-type ContentCourse = { questions: readonly HotelQuestion[]; skills: string[]; skillNames: string[]; name: string; WordHelp: ComponentType<Parameters<typeof HotelWordHelp>[0]> }
+type ContentCourse = { questions: readonly HotelQuestion[]; skills: string[]; skillNames: string[]; name: string; curriculum?: boolean; WordHelp: ComponentType<Parameters<typeof HotelWordHelp>[0]> }
 const hotelContent: ContentCourse = { questions: hotelQuestions, skills, skillNames, name: 'Hotel', WordHelp: HotelWordHelp }
 
 export default function HotelContentPage({ course = hotelContent }: { course?: ContentCourse }) {
   const { questions: allQuestions, skills: courseSkills, skillNames: courseSkillNames, WordHelp: CourseWordHelp } = course
-  const data = course.name === 'Hotel' ? getCurriculum() : undefined
+  const hasCurriculum = course.name === 'Hotel' || course.curriculum
+  const data = hasCurriculum ? getCurriculum() : undefined
   const focus = new URLSearchParams(window.location.search).get('focus')
   const mapped = data?.courseSkills.filter(m=>m.nodeId===focus).map(m=>m.skill)
   const [situation,setSituation] = useState('All situations')
@@ -23,7 +24,7 @@ export default function HotelContentPage({ course = hotelContent }: { course?: C
   const questions=scoped.filter(q=>
     (situation==='All situations'||(situation==='Everyday English'?!!q.grammar?.domain:situation==='Original content'?!q.grammar?.domain:q.grammar?.domain===situation))&&
     (!query||`${q.english} ${q.answers.flat().map(s=>s.text).join(' ')}`.toLowerCase().includes(query)))
-  const pageSize=course.name==='Hotel'?100:Math.max(1,allQuestions.length)
+  const pageSize=hasCurriculum?100:Math.max(1,allQuestions.length)
   const currentPage=Math.min(page,Math.max(0,Math.ceil(questions.length/pageSize)-1))
   const visible=questions.slice(currentPage*pageSize,(currentPage+1)*pageSize)
   const [playing, setPlaying] = useState<string | null>(null)
@@ -46,10 +47,10 @@ export default function HotelContentPage({ course = hotelContent }: { course?: C
 
   return <section className="hotel-content">
     <h1>Content <span>{questions.length}</span></h1>
-    {course.name==='Hotel'?<div className="content-filters">
+    {hasCurriculum?<div className="content-filters">
       <input aria-label="Search questions" placeholder="Search" value={search} onChange={e=>{setSearch(e.target.value);setPage(0)}}/>
       {domains.length>0?<select aria-label="Situation" value={situation} onChange={e=>{setSituation(e.target.value);setPage(0)}}>
-        <option>All situations</option><option>Everyday English</option><option>Original content</option>{domains.map(d=><option key={d}>{d}</option>)}
+        <option>All situations</option>{domains.map(d=><option key={d}>{d}</option>)}
       </select>:null}
     </div>:null}
     {error ? <p role="alert">{error}</p> : null}

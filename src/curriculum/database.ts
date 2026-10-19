@@ -1,20 +1,30 @@
 import { curriculumSchema, type Curriculum } from './schema'
 import { installHotelCatalogue } from '../hotel/course'
+import { scopeCurriculum, type LearningCourse } from './courseScope'
 
 type Config = { url: string; anonKey: string }
 type Cache = Pick<Storage, 'getItem' | 'setItem'>
 let current: Curriculum | undefined
+let catalogue: Curriculum | undefined
 export function getCurriculum() { return current }
 export function installCurriculum(value: unknown) {
   const snapshot = curriculumSchema.parse(value)
+  catalogue = snapshot
+  installSnapshot(snapshot)
+  return snapshot
+}
+export function selectLearningCourse(course: LearningCourse) {
+  if (!catalogue) throw new Error('Curriculum unavailable')
+  installSnapshot(scopeCurriculum(catalogue, course), course)
+}
+function installSnapshot(snapshot: Curriculum, course?: LearningCourse) {
   // Validate first; never half-install a failed network/cache snapshot.
   const ordered = [...snapshot.courseSkills].sort((a,b)=>a.order-b.order)
   installHotelCatalogue(snapshot.questions, ordered.map(row=>({
     id:row.skill, name:snapshot.skills.find(s=>s.id===row.nodeId)!.title,
     prerequisites:snapshot.version===2?snapshot.courseSkills.filter(s=>snapshot.skills.find(n=>n.id===row.nodeId)!.prerequisites.includes(s.nodeId)).map(s=>s.skill):[],
-  })))
+  })), course)
   current = snapshot
-  return snapshot
 }
 
 export async function loadCurriculumDatabase(config: Config, storage: Cache, request: typeof fetch = fetch): Promise<'database'|'cache'> {

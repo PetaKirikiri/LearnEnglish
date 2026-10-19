@@ -1,5 +1,7 @@
 {
   "rewrites": [
+    { "source": "/english", "destination": "/index.html" },
+    { "source": "/english/:path*", "destination": "/index.html" },
     { "source": "/padel-coach", "destination": "/index.html" },
     { "source": "/padel-coach/:path*", "destination": "/index.html" },
     { "source": "/padel", "destination": "/index.html" },

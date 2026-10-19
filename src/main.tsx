@@ -9,16 +9,18 @@ import { lazy, Suspense } from 'react'
 import { isHotelLineEntry } from './hotel/lineEntry'
 import { isPadelLineEntry } from './padel/lineEntry'
 import { isCoachLineEntry } from './coach/lineEntry'
+import { isEnglishLineEntry } from './english/lineEntry'
 const CoachPage = lazy(() => import('./coach/CoachPage'))
 const isCoach = /^\/padel-coach(?:\/|$)/.test(window.location.pathname) || isCoachLineEntry(window.location.search)
 const HotelPage = lazy(() => import('./hotel/HotelPage'))
 const PadelPage = lazy(() => import('./padel/PadelPage'))
 const isPadel = /^\/padel(?:\/|$)/.test(window.location.pathname) || isPadelLineEntry(window.location.search)
 const isHotel = /^\/hotel(?:\/|$)/.test(window.location.pathname) || isHotelLineEntry(window.location.search)
+const isEnglish = /^\/english(?:\/|$)/.test(window.location.pathname) || isEnglishLineEntry(window.location.search)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {isCoach ? <Suspense fallback={<main>Ouverture…</main>}><CoachPage /></Suspense> : isPadel ? <Suspense fallback={<main>Opening…</main>}><PadelPage /></Suspense> : isHotel ? <Suspense fallback={<main>Opening…</main>}><HotelPage /></Suspense> : <LanguageGate><AuthProvider>
+    {isCoach ? <Suspense fallback={<main>Ouverture…</main>}><CoachPage /></Suspense> : isPadel ? <Suspense fallback={<main>Opening…</main>}><PadelPage /></Suspense> : isHotel || isEnglish ? <Suspense fallback={<main>Opening…</main>}><HotelPage courseId={isEnglish ? 'english' : 'hotel'} /></Suspense> : <LanguageGate><AuthProvider>
       <App />
     </AuthProvider></LanguageGate>}
   </StrictMode>,

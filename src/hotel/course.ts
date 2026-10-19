@@ -54,7 +54,8 @@ let questionGroups=indexGroups(items)
 // Called by the language-database gate before a lesson mounts. Stable array
 // identities keep the shared practice/content consumers on the same catalogue.
 let prerequisites:Record<string,string[]>={}
-export function installHotelCatalogue(questions: readonly HotelQuestion[], order: {id:string;name:string;prerequisites?:string[]}[]) {
+let learningCourse: 'english' | 'hotel' | undefined
+export function installHotelCatalogue(questions: readonly HotelQuestion[], order: {id:string;name:string;prerequisites?:string[]}[], course?: 'english' | 'hotel') {
   const ordered=order.flatMap(s=>questions.filter(q=>q.skill===s.id))
   if(!ordered.length || ordered.length!==questions.length) throw new Error('Invalid Hotel catalogue')
   items.splice(0,items.length,...ordered)
@@ -62,9 +63,12 @@ export function installHotelCatalogue(questions: readonly HotelQuestion[], order
   skills.splice(0,skills.length,...order.map(s=>s.id))
   skillNames.splice(0,skillNames.length,...order.map(s=>s.name))
   prerequisites=Object.fromEntries(order.map(s=>[s.id,s.prerequisites??[]]))
+  learningCourse=course
 }
-export const progressKey = (id: string) => `hotel:grammar:v2:${id}`
-export const grammarWordMemoryKey = (id: string) => `hotel:grammar-words:v2:${id}`
+export const legacyProgressKey = (id: string) => `hotel:grammar:v2:${id}`
+export const legacyWordMemoryKey = (id: string) => `hotel:grammar-words:v2:${id}`
+export const progressKey = (id: string) => learningCourse === 'english' ? `english:grammar:v1:${id}` : learningCourse === 'hotel' ? `hotel:grammar:v3:${id}` : legacyProgressKey(id)
+export const grammarWordMemoryKey = (id: string) => learningCourse === 'english' ? `english:grammar-words:v1:${id}` : learningCourse === 'hotel' ? `hotel:grammar-words:v3:${id}` : legacyWordMemoryKey(id)
 export const RETENTION_MS = 24 * 60 * 60 * 1000
 export type Evidence = { attempts:number; streak:number; firstCorrect:number; lastCorrect:number; retained:boolean; audioStreak?:number; firstAudioCorrect?:number; audioRetained?:boolean }
 export type Progress = Record<string, LegacyProgress[string] & { items?:Record<string,Evidence>; recent?:boolean[] }>
@@ -133,7 +137,9 @@ export function nextQuestion(progress:Progress,previous?:string,round=0,random=M
 }
 export function loadProgress(userId:string):Progress {
   try {
-    const raw:unknown=JSON.parse(localStorage.getItem(progressKey(userId))??'{}')
+    // Read the old combined evidence only until this course has its own save.
+    // Never overwrite that legacy record: the other course still needs it.
+    const raw:unknown=JSON.parse(localStorage.getItem(progressKey(userId))??localStorage.getItem(legacyProgressKey(userId))??'{}')
     if(!raw||typeof raw!=='object'||Array.isArray(raw)) return {}
     const result:Progress={}
     for(const skill of skills){

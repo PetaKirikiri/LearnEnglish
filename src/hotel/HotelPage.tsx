@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ComponentType } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
-import { isSkillComplete, loadProgress, nextQuestion, recordAnswer, requiresAudioCheck, skills, progressKey, grammarWordMemoryKey, type HotelQuestion } from './course'
+import { isSkillComplete, loadProgress, nextQuestion, recordAnswer, requiresAudioCheck, skills, skillNames, hotelQuestions, progressKey, grammarWordMemoryKey, legacyWordMemoryKey, type HotelQuestion } from './course'
 import './hotel.css'
 import { ENGLISH_ORIGIN, hotelAccountUrl, hotelLineEntryUrl, isHotelLineEntry } from './lineEntry'
 import { finishHotelReturn } from './accountHandoff'
@@ -16,6 +16,9 @@ import HotelWordHelp from './HotelWordHelp'
 import { loadWordFamiliarity, recordWordExposure, wordOpacity, listeningWordOpacity, type WordFamiliarity } from './wordFamiliarity'
 import CurriculumGate from '../curriculum/CurriculumGate'
 import CurriculumPage from '../curriculum/CurriculumPage'
+import { courseNames, type LearningCourse } from '../curriculum/courseScope'
+import { englishLineEntryUrl } from '../english/lineEntry'
+import { englishScoring } from '../english/scoring'
 
 // One listening interaction, with explicit course boundaries for content,
 // storage and scoring. Padel must never submit attempts to Hotel's scoreboard.
@@ -26,32 +29,48 @@ export type ListeningCourse = {
   isSkillComplete: typeof isSkillComplete
   progressKey: (userId: string) => string
   wordMemoryKey: (userId: string) => string
+  legacyWordMemoryKey?: (userId: string) => string
   WordHelp: ComponentType<Parameters<typeof HotelWordHelp>[0]>
   sync?: (userId: string) => Promise<unknown>
   queue?: typeof queueHotelAnswer
 }
 const hotelCourse: ListeningCourse = {
   skills, loadProgress, nextQuestion, isSkillComplete,
-  progressKey, wordMemoryKey: grammarWordMemoryKey, WordHelp: HotelWordHelp,
+  progressKey, wordMemoryKey: grammarWordMemoryKey, legacyWordMemoryKey, WordHelp: HotelWordHelp,
   sync: id => joinHotel().then(() => syncHotelAnswers(id)), queue: queueHotelAnswer,
 }
+const englishCourse: ListeningCourse = {
+  ...hotelCourse,
+  // A learner may have offline general answers in the old combined queue.
+  // The server classifies those by question ID; drain it without enrolling
+  // this learner in Hotel or copying/re-awarding the original events.
+  sync: id => englishScoring.join().then(() => Promise.all([syncHotelAnswers(id), englishScoring.sync(id)])), queue: englishScoring.queue,
+}
+const englishContent = { questions: hotelQuestions, skills, skillNames, name: 'English Success', curriculum: true, WordHelp: HotelWordHelp }
 
-export default function HotelPage() {
+export default function HotelPage({ courseId = 'hotel' }: { courseId?: LearningCourse }) {
   const [user, setUser] = useState<User | null>(null)
   const [busy, setBusy] = useState(true)
   const [error, setError] = useState(() => new URLSearchParams(window.location.search).get('line_result') === 'new' ? 'No account yet. Tap Sign up to create one.' : '')
-  const entryUrl = hotelLineEntryUrl()
+  const entry = courseId === 'english' ? englishLineEntryUrl : hotelLineEntryUrl
+  const entryUrl = entry()
+  const base = `/${courseId}`
+  const name = courseNames[courseId]
+  const lesson = courseId === 'english' ? englishCourse : hotelCourse
   const isAdmin = user ? appDestination(user.id, '/admin') === 'admin' : false
-  const preview = import.meta.env.DEV && /^\/hotel\/preview(?:\/(?:content|curriculum))?\/?$/.test(window.location.pathname)
-  const showContent = (isAdmin && /^\/hotel\/content\/?$/.test(window.location.pathname)) || (preview && /\/content\/?$/.test(window.location.pathname))
-  const showScores = isAdmin && /^\/hotel\/scoreboard\/?$/.test(window.location.pathname)
+  const path = window.location.pathname.replace(/\/$/, '')
+  const preview = import.meta.env.DEV && [base+'/preview',base+'/preview/content',base+'/preview/curriculum'].includes(path)
+  const practicePath = preview ? `${base}/preview` : base
+  const showContent = (isAdmin && path === `${base}/content`) || (preview && /\/content\/?$/.test(path))
+  const showScores = isAdmin && path === `${base}/scoreboard`
   const showCurriculum = (isAdmin || preview) && /\/curriculum\/?$/.test(window.location.pathname)
   function signIn(create = false) {
     if (busy) return
     if (!entryUrl) return
-    window.location.assign(hotelLineEntryUrl(create)!)
+    window.location.assign(entry(create)!)
   }
   useEffect(() => {
+    document.title = courseId === 'english' ? 'English Success' : 'English Success · Hotel'
     let active = true
     const ticket = window.location.origin === ENGLISH_ORIGIN ? new URLSearchParams(window.location.hash.slice(1)).get('ticket') : null
     if (ticket) window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
@@ -60,21 +79,24 @@ export default function HotelPage() {
     void bounded(() => finishHotelReturn(ticket)).then(value => { if (active) setUser(value) }, cause => { if (active) setError(cause.message) })
       .finally(() => { if (active) setBusy(false) })
     return () => { active = false }
-  }, [])
+  }, [courseId])
   return <main className="hotel-shell">
-    <header className="hotel-header">
-      <a href={isHotelLineEntry(window.location.search) ? hotelAccountUrl() : '/hotel'}>ENGLISH<span>SUCCESS</span></a>
-      {isAdmin || preview ? <nav className="hotel-admin-nav" aria-label="Hotel tools">
-        <a className="hotel-nav-icon" aria-label="Practice" title="Practice" aria-current={!showContent && !showScores && !showCurriculum ? 'page' : undefined} href={preview ? '/hotel/preview' : '/hotel'}><Icon name="play" /></a>
-        <a className="hotel-content-link" aria-current={showContent ? 'page' : undefined} href={preview ? '/hotel/preview/content' : '/hotel/content'}>Content</a>
-        <a className="hotel-nav-icon" aria-label="Learning route" title="Learning route" aria-current={showCurriculum ? 'page' : undefined} href={preview ? '/hotel/preview/curriculum' : '/hotel/curriculum'}><Icon name="grid" /></a>
-        {isAdmin ? <a className="hotel-nav-icon" aria-label="Scoreboard" title="Scoreboard" aria-current={showScores ? 'page' : undefined} href="/hotel/scoreboard"><Icon name="trophy" /></a> : null}
-      </nav> : <span>HOTEL EDITION</span>}
+    <header className="hotel-header listening-course-header">
+      <a href={courseId === 'hotel' && isHotelLineEntry(window.location.search) ? hotelAccountUrl() : practicePath}>ENGLISH<span>SUCCESS</span></a>
+      <select className="listening-course-select" aria-label="Course" value={courseId} onChange={event => {
+        const nextBase = `/${event.target.value}${preview ? '/preview' : ''}`
+        window.location.assign(nextBase + (showContent ? '/content' : showCurriculum ? '/curriculum' : showScores ? '/scoreboard' : ''))
+      }}><option value="english">English Success</option><option value="hotel">Hotel</option></select>
+      {isAdmin || preview ? <nav className="hotel-admin-nav" aria-label={`${name} tools`}>
+        <a className="hotel-nav-icon" aria-label="Practice" title="Practice" aria-current={!showContent && !showScores && !showCurriculum ? 'page' : undefined} href={practicePath}><Icon name="play" /></a>
+        <a className="hotel-content-link" aria-current={showContent ? 'page' : undefined} href={`${practicePath}/content`}>Content</a>
+        <a className="hotel-nav-icon" aria-label="Learning route" title="Learning route" aria-current={showCurriculum ? 'page' : undefined} href={`${practicePath}/curriculum`}><Icon name="grid" /></a>
+        {isAdmin ? <a className="hotel-nav-icon" aria-label="Scoreboard" title="Scoreboard" aria-current={showScores ? 'page' : undefined} href={`${base}/scoreboard`}><Icon name="trophy" /></a> : null}
+      </nav> : null}
     </header>
-    {showScores ? <HotelScoreboard /> : showCurriculum ? <CurriculumGate><CurriculumPage /></CurriculumGate> : showContent ? <CurriculumGate><HotelContentPage /></CurriculumGate> : import.meta.env.DEV && window.location.pathname === '/hotel/preview' ? <CurriculumGate><p className="hotel-eyebrow" style={{ textAlign: 'center', marginTop: 16 }}>LOCAL PREVIEW · NOT SIGNED IN</p><HotelLesson userId="local-preview" /></CurriculumGate> : user ? <CurriculumGate><HotelLesson key={user.id} userId={user.id} /></CurriculumGate> : <section className="hotel-welcome">
-      <div className="hotel-monogram" aria-hidden="true">H</div><p className="hotel-eyebrow">MAKE YOURSELF AT HOME</p>
+    {showScores ? <HotelScoreboard name={name} load={courseId === 'english' ? englishScoring.load : undefined} /> : showCurriculum ? <CurriculumGate key={courseId} course={courseId}><CurriculumPage /></CurriculumGate> : showContent ? <CurriculumGate key={courseId} course={courseId}><HotelContentPage course={courseId === 'english' ? englishContent : undefined} /></CurriculumGate> : preview || user ? <CurriculumGate key={courseId} course={courseId}><HotelLesson key={`${courseId}:${user?.id ?? 'local-preview'}`} userId={preview ? 'local-preview' : user!.id} course={lesson} /></CurriculumGate> : <section className="hotel-welcome">
+      <div className="hotel-monogram" aria-hidden="true">{courseId === 'english' ? 'E' : 'H'}</div>
       <h1>English,<br /><em>by ear.</em></h1>
-      <p>Listen. Choose. Get a little more confident.</p>
       <button className="hotel-line" disabled={busy || !entryUrl} onClick={() => void signIn(true)}>{busy ? 'Connecting…' : 'Sign up with LINE'}</button>
       <button className="hotel-reveal" disabled={busy || !entryUrl} onClick={() => void signIn(false)}>Sign in</button>
       {!entryUrl ? <p role="status">English Success LINE sign-in is being configured.</p> : null}
@@ -85,7 +107,7 @@ export default function HotelPage() {
 
 export function HotelLesson({ userId, course = hotelCourse }: { userId: string; course?: ListeningCourse }) {
   const [progress, setProgress] = useState(() => course.loadProgress(userId))
-  const [wordMemory, setWordMemory] = useState(() => loadWordFamiliarity(userId, course.wordMemoryKey(userId)))
+  const [wordMemory, setWordMemory] = useState(() => loadWordFamiliarity(userId, course.wordMemoryKey(userId), course.legacyWordMemoryKey?.(userId)))
   const [question, setQuestion] = useState<HotelQuestion>(() => course.nextQuestion(progress))
   const CourseWordHelp = course.WordHelp
   const firstQuestion = useRef(question)

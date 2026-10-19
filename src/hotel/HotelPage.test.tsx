@@ -5,15 +5,16 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import HotelPage, { HotelLesson } from './HotelPage'
 import { PETA_ACCOUNT_ID } from '../auth/appAccess'
 import { hotelQuestions, progressKey, grammarWordMemoryKey, recordAnswer, type Progress } from './course'
+import { selectLearningCourse } from '../curriculum/database'
 const speech = vi.hoisted(() => ({ speak: vi.fn(), stop: vi.fn() }))
 const account = vi.hoisted(() => ({ finish: vi.fn(async (): Promise<{ id: string } | null> => null) }))
 const scores = vi.hoisted(() => ({ join: vi.fn(async () => {}), queue: vi.fn(), sync: vi.fn(async () => {}), load: vi.fn(async () => []) }))
-vi.mock('./scoring', () => ({ joinHotel: scores.join, queueHotelAnswer: scores.queue, syncHotelAnswers: scores.sync, loadHotelScoreboard: scores.load }))
+vi.mock('./scoring', () => ({ joinHotel: scores.join, queueHotelAnswer: scores.queue, syncHotelAnswers: scores.sync, loadHotelScoreboard: scores.load, createListeningScoring: vi.fn(() => ({ join: scores.join, queue: scores.queue, sync: scores.sync, load: scores.load })) }))
 vi.mock('../learning/speech', () => ({ speakEnglish: speech.speak, stopEnglishSpeech: speech.stop }))
 vi.mock('@line/liff', () => ({ default: { init: vi.fn() } }))
 vi.mock('./accountHandoff', () => ({ finishHotelReturn: account.finish }))
 vi.mock('../lib/languageDatabase', () => ({ initializeLanguageDatabase: vi.fn(async () => 'database') }))
-vi.mock('../curriculum/database', () => ({ initializeCurriculum: vi.fn(async () => 'database'), getCurriculum: vi.fn(() => undefined) }))
+vi.mock('../curriculum/database', () => ({ initializeCurriculum: vi.fn(async () => 'database'), selectLearningCourse: vi.fn(), getCurriculum: vi.fn(() => undefined) }))
 vi.mock('../lib/supabase', () => ({ isSupabaseConfigured: false, supabase: { auth: { getSession: async () => ({ data: { session: null } }) } } }))
 const host = document.createElement('div')
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
@@ -39,6 +40,24 @@ it('does not create signup intent for an ordinary sign-in', async () => {
   await act(() => (host.querySelector('.hotel-reveal') as HTMLButtonElement).click())
   expect(window.location.origin).toBe('https://liff.line.me')
   expect(new URLSearchParams(window.location.search).has('intent')).toBe(false)
+})
+it('uses the English Success entry and keeps its admin links out of Hotel', async () => {
+  window.location.href = 'https://learn-english-coral.vercel.app/english'
+  await act(() => root.render(<HotelPage courseId="english" />))
+  expect(document.title).toBe('English Success')
+  expect((host.querySelector('[aria-label="Course"]') as HTMLSelectElement).value).toBe('english')
+  await act(() => (host.querySelector('.hotel-line') as HTMLButtonElement).click())
+  expect(new URLSearchParams(window.location.search).get('mode')).toBe('english')
+  expect(new URLSearchParams(window.location.search).get('intent')).toBe('signup')
+  await act(() => root.unmount()); root = createRoot(host)
+  window.location.href = 'https://learn-english-coral.vercel.app/english/content'
+  account.finish.mockResolvedValue({ id: PETA_ACCOUNT_ID })
+  await act(() => root.render(<HotelPage courseId="english" />))
+  expect(selectLearningCourse).toHaveBeenCalledWith('english')
+  expect(host.querySelector('a[aria-label="Practice"]')?.getAttribute('href')).toBe('/english')
+  expect(host.querySelector('a[aria-label="Scoreboard"]')?.getAttribute('href')).toBe('/english/scoreboard')
+  expect(host.querySelector('a[aria-label="Learning route"]')?.getAttribute('href')).toBe('/english/curriculum')
+  expect(host.querySelector('[aria-label="English Success question table"]')).not.toBeNull()
 })
 it('enables the existing LINE entry without a dedicated English configuration', async () => {
   vi.stubEnv('VITE_HOTEL_LIFF_ID', '')

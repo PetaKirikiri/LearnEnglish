@@ -29,6 +29,7 @@ begin
   select id into other from public.profiles where id<>uid limit 1;
   if other is not null then
     insert into public.englishsuccess_hotel_members(learner_id) values(other) on conflict do nothing;
+    insert into public.englishsuccess_listening_members(course,learner_id) values('hotel',other) on conflict do nothing;
     if not exists(select 1 from jsonb_array_elements(public.hotel_scoreboard('all')) x where x->>'id'=other::text) then raise exception 'Missing zero-score member'; end if;
     perform set_config('request.jwt.claim.sub',other::text,true);
     begin perform public.hotel_scoreboard('all'); raise exception 'Nonadmin accessed scoreboard'; exception when sqlstate '42501' then null; end;

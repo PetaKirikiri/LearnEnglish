@@ -4,7 +4,18 @@
 
 The language database is SubtitleDisplay (`gbsopnbovsxlstnmaaga`), **not** the SuccessPadel account database. This change adds public educational catalogue tables; it does not move identities, change LINE login, overwrite existing dictionary translations, or reset scores/progress.
 
-`englishsuccess_curriculum_v2()` returns the validated catalogue. Both Hotel practice and its content table install the same snapshot before mounting. The existing language URL and anonymous key are used; account session tokens are never forwarded. A validated, origin-specific cached catalogue works offline. A first-time failed load shows Retry instead of silently substituting a different course.
+`englishsuccess_curriculum_v2()` returns the validated catalogue. English Success and Hotel each install their own filtered scope before mounting practice, content or curriculum. The existing language URL and anonymous key are used; account session tokens are never forwarded. A validated, origin-specific cached catalogue works offline. A first-time failed load shows Retry instead of silently substituting a different course.
+
+## Separate courses
+
+- `/english`: English Success, 2,196 general-English listening questions.
+- `/hotel`: Hotel, its original 294 professional-English questions.
+- Each has `/content`, `/curriculum` and `/scoreboard`; content and score navigation remains admin-only. Development review uses `/english/preview` and `/hotel/preview` (with `/content` or `/curriculum`).
+- The compact course picker changes course without mixing practice queues or scores. FIFA, Padel and Coach keep their existing routes and banks.
+- General questions are selected from authored `grammar.domain` metadata. Legacy `hotel-g3-general-*` IDs and the shared catalogue's old `course: hotel` wire field remain for compatibility, not product ownership. Tests assert the domain/ID classification for every question.
+- Existing combined progress is read as a fallback, filtered by question ID, then saved to separate `english:grammar:v1` and `hotel:grammar:v3` keys. The old `hotel:grammar:v2` save is never overwritten by either new course. Word familiarity has matching independent keys and a legacy fallback. Progress is still device-local; server-side answer/points records remain account-based.
+- The accounts migration `20261019110000_separate_listening_courses.sql` retains all historical answers and point amounts. Course membership and score views are separate; old clients can still submit general answers through the old endpoint, but those points belong to English Success.
+- Shared LINE accounts remain unchanged. The SuccessPadel callback's fixed return allowlist must ship with `mode=english` returning to `/english` before this new entry is released. Hotel/Padel/Coach return destinations are unchanged. Automated callback tests are not a real-phone LINE acceptance test.
 
 ## What is present
 
@@ -16,11 +27,13 @@ The language database is SubtitleDisplay (`gbsopnbovsxlstnmaaga`), **not** the S
 - Matching neural recordings for the additional questions, including separate silent-gap prompts for the existing form questions. Meaning alternatives hold incidental vocabulary stable; form alternatives replace only the blank.
 - Everyday examples in all 34 sections: Home, Family, Food, Work, Study, Shopping, Travel and Leisure. Each new contrast supplies both directions as separate questions. A sentence reused to test a different contrast is not counted as a new unique sentence and cannot serve as unseen transfer if it appears in supported practice.
 - Links from question words to `englishsuccess_words` entries. Missing entries reuse the existing Hotel glosses and word profiles without overwriting existing rows. These are contextual meanings, not universal one-to-one equivalents.
-- Admin-only navigation at `/hotel/curriculum`; development review at `/hotel/preview/curriculum`. Sources and exercise data are public, like the previously bundled question bank. The admin navigation is not a confidentiality boundary for educational answers.
+- Admin-only navigation at `/english/curriculum` and `/hotel/curriculum`; development review at each course's `/preview/curriculum`. Sources and exercise data are public, like the previously bundled question bank. The admin navigation is not a confidentiality boundary for educational answers.
 
-Every node has multiple everyday contexts as well as the retained original content. These are authored compositional contrasts, not 2,490 independent grammatical skills. Advanced route headings include preparatory contrasts and must not be treated as evidence of advanced ability. This is not a complete A1–C1 exercise bank, a placement assessment, or CEFR certification. There is no new learner settings page in this change. Hotel is the first connected course, now using the general-English foundation; Padel and Coach retain their existing catalogues.
+Every node has multiple everyday contexts in English Success, separate from the retained Hotel content. These are authored compositional contrasts, not 2,490 independent grammatical skills. Advanced route headings include preparatory contrasts and must not be treated as evidence of advanced ability. This is not a complete A1–C1 exercise bank, a placement assessment, or CEFR certification. There is no new learner settings page in this change. Padel and Coach retain their existing catalogues.
 
 ## Reference boundaries
+
+Course-separation verification (19 October 2026): the accounts migration passed rollback tests, was applied, and passed again. All 426 historical answer records and all answer definitions retained identical fingerprints; the four existing Hotel members remain. Backups are in the private local `/tmp/english-course-split.tEstgq` directory. The focused 134-test suite, test typecheck, targeted lint and production build passed. Local browser inspection showed English Success 2,196 and Hotel 294 with course-specific tables and no phone-width page overflow. Browser annotation mode intercepted playback clicks, so this pass does not claim an end-to-end audio or real-phone LINE check. The app and shared callback changes are not yet committed or pushed.
 
 British Council / Eaquals Core Inventory (2011), essential guide printed pages 10–11, informs broad teaching bands. Our labels, sequence, Thai bridges and exercises are our own synthesis. Whole sentences can contain language beyond the target feature's provisional band.
 

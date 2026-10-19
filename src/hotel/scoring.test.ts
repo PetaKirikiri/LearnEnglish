@@ -5,7 +5,7 @@ vi.mock('../lib/supabase', () => ({ supabase: {
   auth: { getSession: api.session },
   rpc: (...args: unknown[]) => ({ abortSignal: () => api.request(...args) }),
 } }))
-import { queueHotelAnswer, syncHotelAnswers } from './scoring'
+import { queueHotelAnswer, syncHotelAnswers, createListeningScoring } from './scoring'
 beforeEach(() => { localStorage.clear(); vi.clearAllMocks(); api.request.mockResolvedValue({ error: null }); api.session.mockResolvedValue({ data: { session: { user: { id: 'alice' } } } }) })
 it('sends the selected option, not client-computed points or correctness', async () => {
   queueHotelAnswer('alice','hotel-1',1,true)
@@ -33,4 +33,15 @@ it('serializes sync and includes answers queued during a request', async () => {
   api.request.mockImplementationOnce(async () => { queueHotelAnswer('alice','hotel-2',1,false); return { error: null } })
   await Promise.all([syncHotelAnswers('alice'),syncHotelAnswers('alice')])
   expect(api.request).toHaveBeenCalledTimes(2)
+})
+it('keeps English queues, joining and scoreboard requests separate from Hotel', async () => {
+  const english = createListeningScoring('english')
+  queueHotelAnswer('alice','hotel-g2-roles-1-1',0,false)
+  english.queue('alice','hotel-g3-general-role-1',1,false)
+  await english.join()
+  await english.sync('alice')
+  await english.load('week',new AbortController().signal)
+  expect(api.request.mock.calls.map(c=>c[0])).toEqual(['english_join','english_record_answer','english_scoreboard'])
+  expect(JSON.parse(localStorage.getItem('hotel:answers:v1:alice')!)).toHaveLength(1)
+  expect(JSON.parse(localStorage.getItem('english:answers:v1:alice')!)).toEqual([])
 })
