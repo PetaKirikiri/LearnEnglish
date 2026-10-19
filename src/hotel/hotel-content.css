@@ -29,3 +29,9 @@
 .hotel-score-name img { width: 30px; height: 30px; object-fit: cover; border-radius: 50%; }
 .hotel-scoreboard td { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .hotel-scoreboard td:nth-child(3) { font-weight: 600; }
+.content-filters { display:flex; gap:12px; margin:0 0 18px; flex-wrap:wrap; }
+.content-filters input,.content-filters select { font:inherit; color:inherit; border:1px solid #d7d3c6; border-radius:8px; background:transparent; padding:10px 12px; min-width:0; }
+.content-filters input { flex:1; }
+.content-pages { display:flex; align-items:center; justify-content:center; gap:20px; margin-top:16px; }
+.content-pages button { font:inherit; padding:8px 16px; border:1px solid #d7d3c6; border-radius:8px; background:transparent; color:inherit; cursor:pointer; }
+.content-pages button:disabled { opacity:.3; cursor:default; }

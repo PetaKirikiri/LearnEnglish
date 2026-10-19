@@ -7,6 +7,16 @@ import { hotelQuestions as referenceQuestions } from './legacyCourse'
 
 // Explicit lexical families, not suffix-based guesses about a word's role.
 const extraVerbs: VerbForms[] = [
+  ['wash','washes','washed','washed','washing'], ['clean','cleans','cleaned','cleaned','cleaning'],
+  ['repair','repairs','repaired','repaired','repairing'], ['photograph','photographs','photographed','photographed','photographing'],
+  ['wrap','wraps','wrapped','wrapped','wrapping'], ['bake','bakes','baked','baked','baking'],
+  ['order','orders','ordered','ordered','ordering'], ['cut','cuts','cut','cut','cutting'],
+  ['print','prints','printed','printed','printing'], ['spell','spells','spelled','spelled','spelling'],
+  ['choose','chooses','chose','chosen','choosing'], ['pack','packs','packed','packed','packing'],
+  ['water','waters','watered','watered','watering'], ['record','records','recorded','recorded','recording'],
+  ['encourage','encourages','encouraged','encouraged','encouraging'], ['trust','trusts','trusted','trusted','trusting'],
+  ['remind','reminds','reminded','reminded','reminding'], ['invite','invites','invited','invited','inviting'],
+  ['welcome','welcomes','welcomed','welcomed','welcoming'], ['thank','thanks','thanked','thanked','thanking'],
   ['allow','allows','allowed','allowed','allowing'], ['arrange','arranges','arranged','arranged','arranging'],
   ['arrive','arrives','arrived','arrived','arriving'], ['book','books','booked','booked','booking'],
   ['bring','brings','brought','brought','bringing'], ['cancel','cancels','cancelled','cancelled','cancelling'],
@@ -22,11 +32,18 @@ const extraVerbs: VerbForms[] = [
   ['shower','showers','showered','showered','showering'], ['sign','signs','signed','signed','signing'],
   ['smoke','smokes','smoked','smoked','smoking'], ['speak','speaks','spoke','spoken','speaking'],
   ['store','stores','stored','stored','storing'], ['use','uses','used','used','using'],
+  ['offer','offers','offered','offered','offering'], ['reserve','reserves','reserved','reserved','reserving'],
+  ['notice','notices','noticed','noticed','noticing'], ['discuss','discusses','discussed','discussed','discussing'],
+  ['request','requests','requested','requested','requesting'], ['move','moves','moved','moved','moving'],
+  ['work','works','worked','worked','working'], ['miss','misses','missed','missed','missing'],
 ].map(([base,third,past,participle,ing]) => ({base,third,past,participle,ing}))
 const extraNouns: NounForms[] = `address adult area bill blanket booking card charge checkout confirmation delay dinner flight floor guest gym hotel key lift lobby manager map passport pillow pool porter rate receipt receptionist recommendation reservation restaurant sauna shower shuttle sign spa toilet towel transfer`.split(' ').map(singular => ({singular, plural: singular === 'address' ? 'addresses' : singular === 'lobby' ? 'lobbies' : `${singular}s`, countability:'countable'}))
 extraNouns.push({singular:'woman',plural:'women',countability:'countable'})
 extraNouns.push({singular:'balcony',plural:'balconies',countability:'countable'})
 for (const singular of ['coffee','noise','housekeeping','reception','sleep']) extraNouns.push({singular,plural:null,countability:'uncountable'})
+for (const singular of ['option','meeting','car','number','error','complaint','cancellation','refund','mistake','queue'])
+  extraNouns.push({singular,plural:`${singular}s`,countability:'countable'})
+for (const singular of ['milk','rain','parking','work']) extraNouns.push({singular,plural:null,countability:'uncountable'})
 
 const notes: Record<string,string> = { ...grammarNotes,
   a:'a + สิ่งหนึ่งชิ้นหรือคนหนึ่งคน เช่น a towel; ใช้ an เมื่อเสียงต้นของคำถัดไปเป็นเสียงสระ เช่น an hour',
@@ -140,15 +157,24 @@ for (const word of ['one','two','three','six','seven','nine','ten','eleven','thi
 
 // Keep the reference vocabulary available to shared Padel word help as well.
 export const hotelReferenceQuestions = [...referenceQuestions, ...hotelQuestions]
-const corpus = countNeighbours(hotelReferenceQuestions.map(q => q.english))
-const lexicalVerbs = [...verbs,...extraVerbs]
-const lexicalNouns = [...nouns,...extraNouns]
-export const hotelWordProfiles: Record<string,WordProfile> = Object.fromEntries([...corpus].map(([word,row]) => [word, {
+const lexicalVerbs = [...new Map([...verbs,...extraVerbs].map(v=>[v.base,v])).values()]
+const lexicalNouns = [...new Map([...nouns,...extraNouns].map(n=>[n.singular,n])).values()]
+export function buildHotelWordProfiles(questions:readonly {english:string}[],version='hotel-grammar-v2'):Record<string,WordProfile> {
+ const corpus=countNeighbours(questions.map(q=>q.english))
+ return Object.fromEntries([...corpus].map(([word,row]) => [word, {
   nouns: word === 'leaves' ? [] : lexicalNouns.filter(n => nounMatches(n,word)),
   verbs: lexicalVerbs.filter(v => verbMatches(v,word)),
   grammar_note_th: notes[word], before: rankedNeighbours(row.before), after: rankedNeighbours(row.after),
-  occurrences: row.occurrences, corpus_version:'hotel-grammar-v2',
+  occurrences: row.occurrences, corpus_version:version,
 }]))
+}
+export const hotelWordProfiles=buildHotelWordProfiles(hotelReferenceQuestions)
+const catalogueProfiles=new WeakMap<readonly {english:string}[],Record<string,WordProfile>>()
+export function catalogueWordProfiles(questions:readonly {english:string}[],version:string) {
+  let profiles=catalogueProfiles.get(questions)
+  if(!profiles) { profiles=buildHotelWordProfiles(questions,version);catalogueProfiles.set(questions,profiles) }
+  return profiles
+}
 export function hotelWordExamples(word: string, context: string): string[] {
   const normalized = normalizeHelpWord(word)
   return [...new Set([context,...hotelReferenceQuestions.map(q => q.english)])]

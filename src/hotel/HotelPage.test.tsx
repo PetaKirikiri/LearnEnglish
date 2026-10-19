@@ -13,6 +13,7 @@ vi.mock('../learning/speech', () => ({ speakEnglish: speech.speak, stopEnglishSp
 vi.mock('@line/liff', () => ({ default: { init: vi.fn() } }))
 vi.mock('./accountHandoff', () => ({ finishHotelReturn: account.finish }))
 vi.mock('../lib/languageDatabase', () => ({ initializeLanguageDatabase: vi.fn(async () => 'database') }))
+vi.mock('../curriculum/database', () => ({ initializeCurriculum: vi.fn(async () => 'database'), getCurriculum: vi.fn(() => undefined) }))
 vi.mock('../lib/supabase', () => ({ isSupabaseConfigured: false, supabase: { auth: { getSession: async () => ({ data: { session: null } }) } } }))
 const host = document.createElement('div')
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
@@ -63,7 +64,8 @@ it('shows the content table only to the existing admin account', async () => {
   window.location.href = 'https://learn-english-coral.vercel.app/hotel/content'
   account.finish.mockResolvedValue({ id: PETA_ACCOUNT_ID })
   await act(() => root.render(<HotelPage />))
-  expect(host.querySelectorAll('tbody tr')).toHaveLength(hotelQuestions.length)
+  expect(host.querySelectorAll('tbody tr')).toHaveLength(100)
+  expect(host.querySelector('h1')?.textContent).toContain(String(hotelQuestions.length))
   expect(host.querySelector('a[aria-label="Practice"] svg')).not.toBeNull()
   expect(host.querySelector('a[aria-label="Scoreboard"] svg')).not.toBeNull()
   expect(host.querySelector('nav')?.textContent).toBe('Content')
@@ -147,7 +149,7 @@ it('fades familiar English independently, keeps Thai readable, and restores Engl
   await act(() => root.render(<HotelLesson userId="test-user" />))
   const words = host.querySelectorAll<HTMLElement>('.word-token')
   expect(words[0].textContent).toBe('She')
-  expect(words[0].style.opacity).toBe('0.25')
+  expect(words[0].style.opacity).toBe('0')
   expect(words[1].style.opacity).toBe('1')
   expect(host.querySelector('.hotel-answer [style]')).toBeNull()
   expect(localStorage.getItem(grammarWordMemoryKey('someone-else'))).toBeNull()
@@ -158,7 +160,7 @@ it('fades familiar English independently, keeps Thai readable, and restores Engl
   expect(scores.queue).toHaveBeenCalledWith('test-user', expect.any(String), expect.any(Number), true)
   random.mockRestore()
 })
-it('credits only the tested forms, not incidental vocabulary, through the real lesson flow', async () => {
+it('builds independent familiarity for every heard word without granting listening mastery', async () => {
   const random = vi.spyOn(Math, 'random').mockReturnValue(0)
   try {
     await act(() => root.render(<HotelLesson userId="word-test-user" />))
@@ -166,7 +168,7 @@ it('credits only the tested forms, not incidental vocabulary, through the real l
     for (let round = 0; round < 3; round++) {
       const spoken = speech.speak.mock.calls.at(-1)!
       const question = hotelQuestions.find(q => (q.grammar?.prompt ?? q.english) === spoken[0])!
-      for (const word of new Set(question.english.toLowerCase().match(/[a-z]+/g)!)) expected[word] = (expected[word] ?? 0) + Number(question.grammar!.targets.includes(word))
+      for (const word of new Set(question.english.toLowerCase().match(/[a-z]+/g)!)) expected[word] = (expected[word] ?? 0) + 1
       await act(() => spoken[2]('ended'))
       const meaning = question.answers[question.correct].map(segment => segment.text).join('')
       const choice = [...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].find(button => button.textContent === meaning)!
@@ -176,14 +178,14 @@ it('credits only the tested forms, not incidental vocabulary, through the real l
       expect(scores.queue.mock.calls.at(-1)?.[3]).toBe(false)
       if (round < 2) await act(() => (host.querySelector('.hotel-primary') as HTMLButtonElement).click())
     }
-    expect(expected.called).toBe(0)
+    expect(expected.called).toBeGreaterThan(0)
     expect(expected.her).toBeGreaterThan(0)
   } finally { random.mockRestore() }
 })
 
 it('keeps the completed form out of the prompt audio until after answering', async () => {
   let progress:Progress={}
-  for(const q of hotelQuestions.filter(q=>q.skill==='roles')) for(let i=0;i<2;i++) progress=recordAnswer(progress,q,true,false,1000+i)
+  for(const q of hotelQuestions.filter(q=>q.skill==='roles')) for(let i=0;i<2;i++) progress=recordAnswer(progress,q,true,false,1000+i,true)
   localStorage.setItem(progressKey('test-user'),JSON.stringify(progress))
   const random=vi.spyOn(Math,'random').mockReturnValue(0)
   try {
@@ -203,7 +205,7 @@ it('keeps the completed form out of the prompt audio until after answering', asy
 
 it('holds transfer meanings audio-only and marks text reveal as assisted',async()=>{
   let progress:Progress={}
-  for(const q of hotelQuestions.filter(q=>q.skill==='roles'&&q.grammar!.phase==='practice')) for(let i=0;i<2;i++) progress=recordAnswer(progress,q,true,false,1000+i)
+  for(const q of hotelQuestions.filter(q=>q.skill==='roles'&&q.grammar!.phase==='practice')) for(let i=0;i<2;i++) progress=recordAnswer(progress,q,true,false,1000+i,true)
   localStorage.setItem(progressKey('test-user'),JSON.stringify(progress))
   await act(()=>root.render(<HotelLesson userId="test-user" />))
   expect(host.querySelector('p[lang="en"]')).toBeNull()
@@ -212,4 +214,47 @@ it('holds transfer meanings audio-only and marks text reveal as assisted',async(
   await act(()=>speech.speak.mock.calls[0][2]('ended'))
   await act(()=>host.querySelector<HTMLButtonElement>('.hotel-answer')!.click())
   expect(scores.queue).toHaveBeenCalledWith('test-user',expect.any(String),expect.any(Number),true)
+})
+
+it('rechecks familiar practice sentences audio-only and persists explicit listening evidence',async()=>{
+  const random=vi.spyOn(Math,'random').mockReturnValue(0)
+  try {
+    let p:Progress={}
+    for(const q of hotelQuestions.filter(q=>q.skill==='roles'&&q.grammar!.phase==='practice'))
+      for(let i=0;i<2;i++) p=recordAnswer(p,q,true,false,1000+i)
+    localStorage.setItem(progressKey('listener'),JSON.stringify(p))
+    await act(()=>root.render(<HotelLesson userId="listener" />))
+    const spoken=speech.speak.mock.calls[0]
+    const q=hotelQuestions.find(q=>q.english===spoken[0])!
+    expect(q.grammar!.phase).toBe('practice')
+    expect(host.querySelector('p[lang="en"]')).toBeNull()
+    expect([...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].every(b=>b.disabled)).toBe(true)
+    await act(()=>spoken[2]('ended'))
+    const choice=[...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].find(b=>b.textContent===q.answers[q.correct][0].text)!
+    await act(()=>choice.click())
+    const saved=JSON.parse(localStorage.getItem(progressKey('listener'))!)
+    expect(saved.roles.items[q.id].audioStreak).toBe(1)
+    expect(host.querySelector('p[lang="en"]')?.textContent).toBe(q.english)
+    await act(()=>host.querySelector<HTMLButtonElement>('.hotel-primary')!.click())
+    // A delayed callback from the previous recording cannot unlock this item.
+    await act(()=>spoken[2]('ended'))
+    expect([...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].every(b=>b.disabled)).toBe(true)
+  } finally {random.mockRestore()}
+})
+
+it('does not award listening evidence when a learner reveals a practice check',async()=>{
+  let p:Progress={}
+  for(const q of hotelQuestions.filter(q=>q.skill==='roles'&&q.grammar!.phase==='practice'))
+    for(let i=0;i<2;i++) p=recordAnswer(p,q,true,false,1000+i)
+  localStorage.setItem(progressKey('helped-listener'),JSON.stringify(p))
+  await act(()=>root.render(<HotelLesson userId="helped-listener" />))
+  const spoken=speech.speak.mock.calls[0]
+  const q=hotelQuestions.find(q=>q.english===spoken[0])!
+  await act(()=>host.querySelector<HTMLButtonElement>('.hotel-reveal')!.click())
+  await act(()=>spoken[2]('ended'))
+  const choice=[...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].find(b=>b.textContent===q.answers[q.correct][0].text)!
+  await act(()=>choice.click())
+  const saved=JSON.parse(localStorage.getItem(progressKey('helped-listener'))!)
+  expect(saved.roles.items[q.id].audioStreak).toBe(0)
+  expect(saved.roles.items[q.id].streak).toBe(0)
 })

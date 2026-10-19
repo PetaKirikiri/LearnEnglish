@@ -28,3 +28,11 @@ export function wordOpacity(memory: WordFamiliarity, word: string): number {
   if (!item || item.seen < 3) return 1
   return 1 - Math.max(0, Math.min(6, item.strength - 2)) * 0.125
 }
+
+// Hotel listening support can disappear completely. Other courses retain
+// their existing presentation until explicitly migrated.
+export function listeningWordOpacity(memory: WordFamiliarity, word: string): number {
+  const item = memory[normalizeHelpWord(word)]
+  if (!item || item.seen < 3) return 1
+  return Math.max(0, 1 - Math.max(0, item.strength - 2) / 6)
+}

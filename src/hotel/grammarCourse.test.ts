@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { afterEach, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
-import { hotelQuestions, skills, recordAnswer, nextQuestion, practiceReady, isSkillReady, isSkillComplete, loadProgress, progressKey, RETENTION_MS, type Progress } from './course'
+import { hotelQuestions, skills, recordAnswer, requiresAudioCheck, nextQuestion, practiceReady, isSkillReady, isSkillComplete, loadProgress, progressKey, RETENTION_MS, type Progress } from './course'
 import { meaningPairs, formItems } from './grammarContent'
 import { recordWordExposure } from './wordFamiliarity'
 import { recordAnswer as legacyRecordAnswer, hotelQuestions as legacyQuestions } from './legacyCourse'
@@ -9,8 +9,39 @@ import { hotelScoringSql } from '../../scripts/hotelScoringCatalogue'
 
 afterEach(()=>localStorage.clear())
 const start=1000000
+it('requires listening evidence, preserves old attempts, and returns to support after an audio mistake',()=>{
+  const q=hotelQuestions[0]
+  let p:Progress={}
+  expect(requiresAudioCheck(p,q)).toBe(false)
+  for(let i=0;i<8;i++) p=recordAnswer(p,q,true,false,start+i)
+  expect(requiresAudioCheck(p,q)).toBe(true)
+  expect(p.roles.items![q.id].audioStreak).toBe(0)
+  expect(p.roles.seen).not.toContain(q.id)
+  p=recordAnswer(p,q,true,false,start+9,true)
+  p=recordAnswer(p,q,true,false,start+10,true)
+  expect(p.roles.seen).toContain(q.id)
+  expect(p.roles.items![q.id].audioRetained).toBe(false)
+  p=recordAnswer(p,q,true,false,start+RETENTION_MS+20,true)
+  expect(p.roles.items![q.id].audioRetained).toBe(true)
+  p=recordAnswer(p,q,false,false,start+RETENTION_MS+21,true)
+  expect(requiresAudioCheck(p,q)).toBe(false)
+  expect(p.roles.items![q.id].audioStreak).toBe(0)
+  expect(p.roles.items![q.id].audioRetained).toBe(false)
+  expect(p.roles.attempts).toBe(12)
+})
+it('does not reinterpret older reading-supported progress as listening mastery',()=>{
+  const p:Progress={roles:{attempts:20,correct:20,seen:[],recent:Array(12).fill(true),items:{}}}
+  for(const q of hotelQuestions.filter(q=>q.skill==='roles')) p.roles.items![q.id]={attempts:4,streak:4,firstCorrect:start,lastCorrect:start+RETENTION_MS,retained:true}
+  localStorage.setItem(progressKey('legacy-listener'),JSON.stringify(p))
+  const loaded=loadProgress('legacy-listener')
+  expect(loaded.roles.attempts).toBe(20)
+  expect(isSkillReady(loaded,'roles')).toBe(false)
+  expect(isSkillComplete(loaded,'roles')).toBe(false)
+  expect(loaded.roles.seen).toEqual([])
+  expect(requiresAudioCheck(loaded,hotelQuestions[0])).toBe(true)
+})
 function passSkill(skill:string, progress:Progress={},now=start):Progress {
-  for(const q of hotelQuestions.filter(q=>q.skill===skill)) for(let i=0;i<2;i++) progress=recordAnswer(progress,q,true,false,now+i)
+  for(const q of hotelQuestions.filter(q=>q.skill===skill)) for(let i=0;i<2;i++) progress=recordAnswer(progress,q,true,false,now+i,true)
   return progress
 }
 
@@ -54,9 +85,9 @@ it('starts with two focuses and holds unseen contexts until both passes of pract
   expect(nextQuestion(progress,undefined,0,()=>0).skill).toBe('roles')
   expect(nextQuestion(progress,undefined,1,()=>0).skill).toBe('object_forms')
   for(const q of hotelQuestions.filter(q=>q.skill==='roles'&&q.grammar!.phase==='practice')){
-    progress=recordAnswer(progress,q,true,false,start)
+    progress=recordAnswer(progress,q,true,false,start,true)
     expect(practiceReady(progress,'roles')).toBe(false)
-    progress=recordAnswer(progress,q,true,false,start+1)
+    progress=recordAnswer(progress,q,true,false,start+1,true)
   }
   expect(practiceReady(progress,'roles')).toBe(true)
   expect(nextQuestion(progress,undefined,0,()=>0).grammar!.phase).toBe('transfer')
@@ -67,7 +98,7 @@ it('does not call an immediate perfect run mastery; returns to old skills for de
   expect(isSkillReady(progress,'roles')).toBe(true)
   expect(isSkillComplete(progress,'roles')).toBe(false)
   expect(nextQuestion(progress,undefined,3,()=>0,start+RETENTION_MS+1).skill).toBe('roles')
-  for(const q of hotelQuestions.filter(q=>q.skill==='roles')) progress=recordAnswer(progress,q,true,false,start+RETENTION_MS+1)
+  for(const q of hotelQuestions.filter(q=>q.skill==='roles')) progress=recordAnswer(progress,q,true,false,start+RETENTION_MS+1,true)
   expect(isSkillComplete(progress,'roles')).toBe(true)
   for(const skill of skills.slice(1)) progress=passSkill(skill,progress)
   // Even after all areas are ready, practice continues and rotates through all.
@@ -76,7 +107,7 @@ it('does not call an immediate perfect run mastery; returns to old skills for de
 
 it('requires retained evidence in transfer contexts as well as practised ones',()=>{
   let progress=passSkill('roles')
-  for(const q of hotelQuestions.filter(q=>q.skill==='roles'&&q.grammar!.phase==='practice')) progress=recordAnswer(progress,q,true,false,start+RETENTION_MS+1)
+  for(const q of hotelQuestions.filter(q=>q.skill==='roles'&&q.grammar!.phase==='practice')) progress=recordAnswer(progress,q,true,false,start+RETENTION_MS+1,true)
   expect(isSkillComplete(progress,'roles')).toBe(false)
 })
 
@@ -124,18 +155,18 @@ it('preserves legacy Padel marking and old queued score IDs',()=>{
 
 it('a perfect learner can reach every area without a scheduling dead end',()=>{
   let progress:Progress={}; let previous:string|undefined
-  for(let round=0;round<700;round++){
+  for(let round=0;round<1400;round++){
     const q=nextQuestion(progress,previous,round,()=>0,start)
     expect(q).toBeDefined()
     expect(q.id).not.toBe(previous)
-    progress=recordAnswer(progress,q,true,false,start+round)
+    progress=recordAnswer(progress,q,true,false,start+round,requiresAudioCheck(progress,q))
     previous=q.id
   }
   expect(skills.every(skill=>isSkillReady(progress,skill))).toBe(true)
   expect(skills.some(skill=>isSkillComplete(progress,skill))).toBe(false)
   for(let round=0;round<400;round++){
     const q=nextQuestion(progress,previous,round,()=>0,start+RETENTION_MS+1000)
-    progress=recordAnswer(progress,q,true,false,start+RETENTION_MS+1000+round)
+    progress=recordAnswer(progress,q,true,false,start+RETENTION_MS+1000+round,requiresAudioCheck(progress,q))
     previous=q.id
   }
   expect(skills.every(skill=>isSkillComplete(progress,skill))).toBe(true)

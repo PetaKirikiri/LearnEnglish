@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import shutil
 
 import numpy as np
 import soundfile as sf
@@ -26,12 +27,24 @@ def main():
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
     engine = Kokoro(str(args.model_dir / 'kokoro-v1.0.onnx'), str(args.model_dir / 'voices-v1.0.bin'))
     created = 0
+    recordings = {entry.get('fingerprint'): args.output / name for name, entry in manifest.items()
+                  if (args.output / name).exists()}
     for index, item in enumerate(items):
         name = Path(item['audioUrl']).name
         output = args.output / name
         text = item['spokenText']
         fingerprint = hashlib.sha256(f'{VERSION}|{SPEED}|{GAP_SECONDS}|{text}'.encode()).hexdigest()
         if manifest.get(name, {}).get('fingerprint') == fingerprint and output.exists():
+            continue
+        # Identical sentences can test different contrasts. Reuse their exact
+        # voice recording rather than synthesizing duplicate audio.
+        existing = recordings.get(fingerprint)
+        if existing and existing.exists():
+            shutil.copyfile(existing, output)
+            manifest[name] = dict(manifest[existing.name])
+            temporary_manifest = manifest_path.with_suffix('.tmp.json')
+            temporary_manifest.write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
+            temporary_manifest.replace(manifest_path)
             continue
         # Synthesize only the visible words. Insert actual silence for the blank;
         # never pass underscores or the hidden answer to the speech engine.
@@ -52,6 +65,7 @@ def main():
         sf.write(temporary, audio, sample_rate, subtype='PCM_16')
         temporary.replace(output)
         manifest[name] = {'fingerprint': fingerprint, 'voice': VERSION, 'seconds': round(len(audio) / sample_rate, 3), 'text': text}
+        recordings[fingerprint] = output
         temporary_manifest = manifest_path.with_suffix('.tmp.json')
         temporary_manifest.write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
         temporary_manifest.replace(manifest_path)

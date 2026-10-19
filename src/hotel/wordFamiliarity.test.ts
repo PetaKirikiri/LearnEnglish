@@ -1,7 +1,18 @@
 // @vitest-environment happy-dom
 import { afterEach, expect, it } from 'vitest'
-import { loadWordFamiliarity, recordWordExposure, wordMemoryKey, wordOpacity, type WordFamiliarity } from './wordFamiliarity'
+import { loadWordFamiliarity, recordWordExposure, wordMemoryKey, wordOpacity, listeningWordOpacity, type WordFamiliarity } from './wordFamiliarity'
 afterEach(() => localStorage.clear())
+it('removes familiar Hotel words completely while preserving newer words and restores support after mistakes', () => {
+  let memory:WordFamiliarity={}
+  for(let i=0;i<8;i++) memory=recordWordExposure(memory,'The room.',true,false)
+  memory=recordWordExposure(memory,'The room is ready.',true,false)
+  expect(listeningWordOpacity(memory,'the')).toBe(0)
+  expect(listeningWordOpacity(memory,'room')).toBe(0)
+  expect(listeningWordOpacity(memory,'ready')).toBe(1)
+  memory=recordWordExposure(memory,'The room is ready.',false,false)
+  expect(listeningWordOpacity(memory,'room')).toBeGreaterThan(0)
+  expect(wordOpacity({room:{seen:8,strength:8}},'room')).toBe(0.25)
+})
 it('keeps independent scores for A B C D followed by A C D, including after reload', () => {
   const first = recordWordExposure({}, 'A B C D.', true, false)
   expect(first).toEqual({ a: { seen: 1, strength: 1 }, b: { seen: 1, strength: 1 }, c: { seen: 1, strength: 1 }, d: { seen: 1, strength: 1 } })

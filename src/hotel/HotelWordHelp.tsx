@@ -5,12 +5,20 @@ import { hotelWordGlosses } from './wordGlosses'
 import { speakEnglish } from '../learning/speech'
 import type { HotelQuestion } from './course'
 import './word-help.css'
-import { hotelWordProfiles, hotelWordExamples } from './wordProfiles'
+import { catalogueWordProfiles, hotelWordProfiles, hotelWordExamples } from './wordProfiles'
+import { getCurriculum } from '../curriculum/database'
 
 export default function HotelWordHelp({ question, onListen, tokenOpacity, onHelp }: { question: HotelQuestion; onListen?: () => void; tokenOpacity?: (word: string) => number; onHelp?: (word: string) => void }) {
   const [, refresh] = useState(0)
-  return <WordHelp text={question.english} translations={hotelWordGlosses} theme="hotel"
-    profiles={hotelWordProfiles} examplesForWord={hotelWordExamples}
+  const catalogue=getCurriculum()
+  const profiles=catalogue?.version===2?catalogueWordProfiles(catalogue.questions,catalogue.revision):hotelWordProfiles
+  const translations=catalogue?.version===2?{...hotelWordGlosses,...Object.fromEntries(catalogue.vocabulary.map(w=>[w.word,w.thai]))}:hotelWordGlosses
+  return <WordHelp text={question.english} translations={translations} theme="hotel"
+    profiles={profiles} examplesForWord={(word,context)=>{
+      const needle=word.toLowerCase()
+      const current=catalogue?.questions.filter(q=>Array.from(q.english.toLowerCase().matchAll(/[a-z]+(?:'[a-z]+)*/g),m=>m[0]).includes(needle)).map(q=>q.english)??[]
+      return [...new Set([context,...current,...hotelWordExamples(word,context)])].slice(0,5)
+    }}
     tokenOpacity={tokenOpacity} onHelp={onHelp}
     onListen={onListen ?? (() => speakEnglish(question.english, question.audioUrl))}
     onOpenChange={open => {
