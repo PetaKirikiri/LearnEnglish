@@ -25,7 +25,7 @@ it('links local preview practice to the complete content table and back',async()
   await act(()=>root.unmount());root=createRoot(host)
   window.location.pathname='/padel/preview/content'
   await act(()=>root.render(<PadelPage/>))
-  expect(host.querySelectorAll('tbody tr')).toHaveLength(388)
+  expect(host.querySelectorAll('tbody tr')).toHaveLength(266)
   expect(host.querySelector('[aria-label="Practice"]')?.getAttribute('href')).toBe('/padel/preview')
   expect(host.querySelector('.hotel-content-link')?.getAttribute('aria-current')).toBe('page')
 })
@@ -62,13 +62,23 @@ it('opens the question-word topic directly and keeps its content link scoped',as
 it('shows Padel branding and sends signup to the shared LINE identity flow',async()=>{
   await act(()=>root.render(<PadelPage/>))
   expect(host.querySelector('.padel-brand strong')?.textContent).toBe('SUCCESS')
-  expect(host.querySelector('.padel-brand span')?.textContent).toBe('PADEL & PILATES')
+  expect(host.querySelector('.padel-brand span')?.textContent).toBe('PADEL')
   expect(host.querySelector('.padel-brand img')).toBeNull()
-  expect(document.title).toBe('Success Padel & Pilates · English')
+  expect(document.title).toBe('Success Padel · English')
   expect(host.querySelector('input')).toBeNull()
+  expect(host.querySelector('.hotel-line')?.textContent).toBe('Sign in with LINE')
+  expect(host.querySelector('.hotel-reveal')).toBeNull()
   expect(host.querySelector('a[href="/padel/content"]')).toBeNull()
   await act(()=>host.querySelector<HTMLButtonElement>('.hotel-line')!.click())
   expect(new URLSearchParams(window.location.search).get('mode')).toBe('padel')
+  expect(new URLSearchParams(window.location.search).get('intent')).toBe('signup')
+})
+it('offers LINE again after a failed session check without exposing internal errors',async()=>{
+  account.finish.mockRejectedValueOnce(new Error('internal authentication details'))
+  await act(()=>root.render(<PadelPage/>))
+  expect(host.querySelector('[role="alert"]')?.textContent).toBe('Couldn’t connect. Please try LINE again.')
+  expect(host.querySelector<HTMLButtonElement>('.hotel-line')!.disabled).toBe(false)
+  await act(()=>host.querySelector<HTMLButtonElement>('.hotel-line')!.click())
   expect(new URLSearchParams(window.location.search).get('intent')).toBe('signup')
 })
 it('opens practice immediately, preserves audio gating, manual Next and separate storage',async()=>{
@@ -120,7 +130,7 @@ it('limits the content table to the existing admin and shows all course rows',as
   window.location.pathname='/padel/content'
   account.finish.mockResolvedValue({id:PETA_ACCOUNT_ID})
   await act(()=>root.render(<PadelPage/>))
-  expect(host.querySelectorAll('tbody tr')).toHaveLength(388)
+  expect(host.querySelectorAll('tbody tr')).toHaveLength(266)
   expect(host.querySelector('nav')?.textContent).toBe('Content')
   expect(speech.speak).not.toHaveBeenCalled()
   await act(()=>root.unmount());root=createRoot(host)
@@ -130,17 +140,17 @@ it('limits the content table to the existing admin and shows all course rows',as
   expect(host.querySelector('[aria-label="Practice"]')).not.toBeNull()
   expect(host.querySelector('.hotel-content-link')).toBeNull()
 })
-it('teaches Pilates in the opening practice pool with separate word progress',async()=>{
+it('keeps the opening practice Padel-only with separate word progress',async()=>{
   account.finish.mockResolvedValue({id:'staff'})
   vi.spyOn(Math,'random').mockReturnValue(0.6)
   await act(()=>root.render(<PadelPage/>))
-  expect(speech.speak.mock.calls[0][0]).toBe('The customer.')
+  expect(speech.speak.mock.calls[0][0]).toBe('The player is here.')
   await act(()=>speech.speak.mock.calls[0][2]('ended'))
-  const q=padelQuestions.find(q=>q.english==='The customer.')!
+  const q=padelQuestions.find(q=>q.english==='The player is here.')!
   const answer=[...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].find(b=>b.textContent===q.answers[q.correct][0].text)!
   await act(()=>answer.click())
   expect(JSON.parse(localStorage.getItem('padel:v1:staff')!).people.seen).toContain(q.id)
-  expect(JSON.parse(localStorage.getItem('padel:words:v1:staff')!).customer.strength).toBe(1)
+  expect(JSON.parse(localStorage.getItem('padel:words:v1:staff')!).player.strength).toBe(1)
   expect(hotel.queue).not.toHaveBeenCalled()
 })
 it('redeems the same one-use ticket and removes it from the address',async()=>{

@@ -50,8 +50,17 @@ body:has(.padel-shell) { min-width: 0; }
 .padel-practice-clay .hotel-audio{color:#6e7a70;font-size:11px;min-height:16px;text-align:right;margin:4px 0 6px}
 .padel-practice-clay .hotel-sentence{margin:0 0 22px;font-family:inherit;font-weight:600;line-height:1.4}.padel-practice-clay .word-help-tiles>.word-token:hover{background:transparent}.padel-practice-clay .word-help-tiles>.word-token:focus-visible{outline-color:#547e70}
 .padel-practice-clay .hotel-answers{max-width:620px;margin:0 auto;gap:14px}
-.padel-practice-clay .hotel-answer{display:flex;align-items:center;min-height:84px;padding:20px 26px;text-align:left;background:#fbf9f4;color:#344d43;border:1px solid #d7d1c5;border-radius:18px;font:600 clamp(21px,3.5vw,28px)/1.5 system-ui,sans-serif;box-shadow:0 3px 0 #d8d1c570}
-.padel-practice-clay .hotel-answer:disabled{opacity:1}.padel-practice-clay .hotel-answer:not(:disabled):hover{background:#fffdf8;border-color:#91aa9a}.padel-practice-clay .hotel-answer.right{background:#dcebdd;border-color:#71917c}.padel-practice-clay .hotel-answer.wrong{background:#eee0d8;border-color:#bc8d77}
+.padel-practice-clay .hotel-answer{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:84px;padding:20px 26px;text-align:left;background:#fffdf8;color:#344d43;border:2px solid #8b9b8f;border-radius:18px;font:600 clamp(21px,3.5vw,28px)/1.5 system-ui,sans-serif;box-shadow:0 5px 0 #a4afa2,0 8px 12px #344b4310;transition:transform .12s,box-shadow .12s,background .12s;touch-action:manipulation}
+.padel-practice-clay .hotel-answer::after{content:'';flex:0 0 10px;width:10px;height:10px;border-top:3px solid currentColor;border-right:3px solid currentColor;transform:rotate(45deg);margin-right:5px}
+.padel-practice-clay .hotel-answer:disabled{opacity:1}
+.padel-practice-clay .hotel-answer:disabled:not(.right):not(.wrong){background:#f5f2ec;border-color:#c7c7bb;box-shadow:0 2px 0 #d2d1c6}
+.padel-practice-clay .hotel-answer:disabled::after{visibility:hidden}
+@media(hover:hover){.padel-practice-clay .hotel-answer:not(:disabled):hover{background:#f0f3eb;border-color:#566e5f;transform:translateY(-2px);box-shadow:0 7px 0 #a4afa2,0 10px 16px #344b4318}}
+.padel-practice-clay .hotel-answer:not(:disabled):active{transform:translateY(4px);box-shadow:0 1px 0 #a4afa2}
+.padel-practice-clay .hotel-answer:focus-visible{outline:3px solid #365b49;outline-offset:8px}
+.padel-practice-clay .hotel-answer.right{background:#dcebdd;border-color:#71917c;box-shadow:0 2px 0 #71917c}
+.padel-practice-clay .hotel-answer.wrong{background:#eee0d8;border-color:#bc8d77;box-shadow:0 2px 0 #bc8d77}
+@media(prefers-reduced-motion:reduce){.padel-practice-clay .hotel-answer{transition:none}}
 .padel-practice-clay .hotel-reveal{color:#657569;padding:16px;font-size:12px;text-decoration:none;min-height:44px}
 .padel-practice-clay .hotel-feedback{max-width:620px;margin:18px auto 0;display:flex;align-items:center;justify-content:space-between;gap:16px}.padel-practice-clay .hotel-primary{margin-left:auto;width:auto;min-height:48px;padding:12px 26px;border-radius:12px;background:#3f5f50;color:white;font-size:16px}
 .padel-practice-clay .hotel-feedback details{text-align:left;font-size:13px}.padel-practice-clay .hotel-feedback p{font:16px/1.5 system-ui,sans-serif}

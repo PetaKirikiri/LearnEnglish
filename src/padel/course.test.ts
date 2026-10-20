@@ -3,7 +3,6 @@ import { afterEach, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { padelQuestions, skills, skillNames, loadProgress, nextQuestion, isSkillComplete, recordAnswer, progressKey } from './course'
 import { padelPairs } from './content'
-import { pilatesPairs } from './pilatesContent'
 import { clubPairs } from './clubContent'
 import { padelWordGlosses, padelWordProfiles, padelWordExamples } from './wordData'
 import { wordProfileSchema } from '../learning/wordInfo/types'
@@ -16,8 +15,8 @@ it('serves direct and nested Padel routes from the app on Vercel', () => {
   for (const source of ['/padel','/padel/:path*','/hotel','/hotel/:path*']) expect(config.rewrites).toContainEqual({source,destination:'/index.html'})
 })
 it('has balanced, unique, ordered content with distinct choices', () => {
-  expect(padelQuestions).toHaveLength(388)
-  expect(new Set(padelQuestions.map(q => q.id)).size).toBe(388)
+  expect(padelQuestions).toHaveLength(266)
+  expect(new Set(padelQuestions.map(q => q.id)).size).toBe(266)
   expect(skillNames).toHaveLength(skills.length)
   for (const skill of skills) expect(padelQuestions.filter(q => q.skill === skill)).toHaveLength(padelPairs.filter(p=>p[1]===skill).length*2)
   expect(padelQuestions.every(q=>skills.includes(q.skill))).toBe(true)
@@ -32,18 +31,16 @@ it('has balanced, unique, ordered content with distinct choices', () => {
     }
   }
 })
-it('interleaves both courses from the start and includes every Pilates pair', () => {
-  expect(pilatesPairs).toHaveLength(56)
-  for (const pair of pilatesPairs) expect(padelPairs.filter(p => p[0] === pair[0])).toHaveLength(1)
-  for (const skill of new Set(pilatesPairs.map(p=>p[1]))) {
-    const questions = padelQuestions.filter(q => q.skill === skill)
-    expect(questions.filter(q => q.pairId.startsWith('pilates-'))).toHaveLength(8)
-    expect(questions.slice(0,4).filter(q => q.pairId.startsWith('pilates-'))).toHaveLength(2)
-  }
+it('serves only Padel and begins with familiar people and equipment', () => {
+  expect(JSON.stringify(padelQuestions)).not.toMatch(/pilates|instructor|reformer|grip socks|studio|class_booking/i)
+  expect(skills).not.toContain('class_booking')
+  expect(padelQuestions.filter(q=>q.skill==='people').slice(0,2).map(q=>q.english)).toEqual(['The player.','The coach.'])
+  expect(padelQuestions.filter(q=>q.skill==='gear').slice(0,4).map(q=>q.english)).toEqual(['A racket.','A ball.','The net.','The court.'])
+  for (const skill of skills) expect(padelQuestions.some(q=>q.skill===skill)).toBe(true)
 })
 it('covers daily club operations before advanced grammar with real question forms',()=>{
-  expect(clubPairs).toHaveLength(50)
-  for(const skill of ['court_booking','player_numbers','prices','racket_hire','balls_grips','class_booking','rain','court_rules']) {
+  expect(clubPairs).toHaveLength(44)
+  for(const skill of ['court_booking','player_numbers','prices','racket_hire','balls_grips','rain','court_rules']) {
     expect(clubPairs.filter(p=>p[1]===skill).length).toBeGreaterThanOrEqual(6)
   }
   expect(skills.indexOf('court_booking')).toBeLessThan(skills.indexOf('ongoing'))
@@ -65,7 +62,7 @@ it('uses customer throughout the course and word help', () => {
   expect(padelQuestions.some(q=>/\bclients?\b/i.test(q.english))).toBe(false)
   expect(padelQuestions.some(q=>q.english==='The customer.')).toBe(true)
   expect(padelWordGlosses.customer).toBe('ลูกค้า')
-  expect(padelWordProfiles.customers.nouns).toContainEqual({singular:'customer',plural:'customers',countability:'countable'})
+  expect(padelWordProfiles.customer.nouns).toContainEqual({singular:'customer',plural:'customers',countability:'countable'})
 })
 it('ships real matching recordings for every question', () => {
   const manifest = JSON.parse(readFileSync('public/audio/padel/voice-manifest.json','utf8'))
@@ -82,7 +79,7 @@ it('has Thai help, valid profiles and actual examples for every word', () => {
   for (const word of words) {
     expect(padelWordGlosses[word],word).toMatch(/[\u0e00-\u0e7f]/)
     expect(wordProfileSchema.safeParse(padelWordProfiles[word]).success,word).toBe(true)
-    expect(padelWordProfiles[word].corpus_version).toBe('padel-pilates-staff-v1')
+    expect(padelWordProfiles[word].corpus_version).toBe('padel-staff-v2')
     expect(new Set(padelWordProfiles[word].nouns.map(n => n.singular)).size).toBe(padelWordProfiles[word].nouns.length)
     expect(new Set(padelWordProfiles[word].verbs.map(v => v.base)).size).toBe(padelWordProfiles[word].verbs.length)
     const sentence = padelQuestions.find(q => q.english.toLowerCase().match(/[a-z]+/g)?.includes(word))!.english
@@ -113,6 +110,18 @@ it('mixes two current topics, keeps review, and continues after completion', () 
   expect(nextQuestion(progress,undefined,7,()=>0).skill).toBe('gear')
   for (const q of padelQuestions) progress = recordAnswer(progress,q,true,false)
   for (let n=0;n<56;n++) expect(nextQuestion(progress,undefined,n)).toBeDefined()
+})
+it('drops retired Pilates questions without resetting retained Padel progress', () => {
+  const kept = padelQuestions[0]
+  localStorage.setItem(progressKey('returning'),JSON.stringify({
+    people:{seen:[kept.id,'padel-pilates-people-1-1'],correct:2,attempts:2},
+    class_booking:{seen:['padel-pilates-desk-1-1'],correct:1,attempts:1},
+  }))
+  const progress=loadProgress('returning')
+  expect(progress.people.seen).toEqual([kept.id])
+  expect(progress.class_booking).toBeUndefined()
+  expect(progress.people.correct).toBe(2)
+  for(let round=0;round<100;round++) expect(nextQuestion(progress,undefined,round).id).not.toContain('pilates')
 })
 it('marks assisted answers as practice, not completed questions', () => {
   expect(recordAnswer({},padelQuestions[0],true,true).people.seen).toEqual([])

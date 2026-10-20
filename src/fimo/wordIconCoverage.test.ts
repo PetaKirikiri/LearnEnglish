@@ -19,7 +19,10 @@ it('has an authored icon for every word occurrence in the entire Padel course', 
       expect(icon?.description.trim().length).toBeGreaterThan(0)
     }
   }
-  expect(vocabulary.size).toBeGreaterThan(290)
+  expect(vocabulary.size).toBeGreaterThan(200)
+  expect(vocabulary.has('net')).toBe(true)
+  expect(vocabulary.has('instructor')).toBe(false)
+  expect(vocabulary.has('pilates')).toBe(false)
 })
 
 it('ships every referenced artwork file, including composited secondary images', () => {

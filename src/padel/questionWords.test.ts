@@ -35,7 +35,7 @@ it('does not bring the rejected artificial sentences back into the course',()=>{
 
 it('retains unchanged progress but requires practice and new audio for revised content',()=>{
   const changed=padelQuestions.filter(q=>/-v2-/.test(q.id))
-  expect(changed).toHaveLength(62)
+  expect(changed).toHaveLength(54)
   const unchanged=padelQuestions.find(q=>q.id==='padel-questions-2-1-1')!
   const revised=padelQuestions.find(q=>q.id==='padel-questions-1-1-v2-1')!
   const progress=recordAnswer({},unchanged,true,false)

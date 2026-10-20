@@ -4,8 +4,8 @@ import { padelPairs } from './content'
 import { questionWordSkills, questionWordNames } from './questionWords'
 import { padelQuestionId } from './contentRevisions'
 export { recordAnswer }
-export const skills = ['people','gear','quantity','court_booking','player_numbers','prices','racket_hire','balls_grips','class_booking','facilities','position','possession','permission','ongoing','finished','plans','bookings','times','rain','court_rules','service','teamwork',...questionWordSkills]
-export const skillNames = ['People','Equipment','Amounts','Court booking','How many / how long','Prices & payment','Racket hire','Balls & grips','Pilates bookings & packages','Facilities','Directions','Whose','Can / cannot','Actions','Already done','Plans','Bookings','Times','Rain & changes','Explaining rules','Guest service','Staff & safety',...questionWordNames]
+export const skills = ['people','gear','quantity','court_booking','player_numbers','prices','racket_hire','balls_grips','facilities','position','possession','permission','ongoing','finished','plans','bookings','times','rain','court_rules','service','teamwork',...questionWordSkills]
+export const skillNames = ['People','Equipment','Amounts','Court booking','How many / how long','Prices & payment','Racket hire','Balls & grips','Facilities','Directions','Whose','Can / cannot','Actions','Already done','Plans','Bookings','Times','Rain & changes','Explaining rules','Guest service','Staff & safety',...questionWordNames]
 export type PadelQuestion = HotelQuestion & { pairId: string; contrast: string }
 export const padelQuestions: readonly PadelQuestion[] = [...padelPairs].sort((a,b) => skills.indexOf(a[1])-skills.indexOf(b[1])).flatMap(([id, skill, english, thai]) => english.map((text, index) => ({
   id: padelQuestionId(id,index), pairId: id, skill, english: text,

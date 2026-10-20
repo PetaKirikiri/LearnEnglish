@@ -1,15 +1,15 @@
 // Each pair changes one intended meaning. Both directions are tested, and
 // grammar pairs keep the same people, objects and places to avoid noun shortcuts.
 export type PadelPair = readonly [id: string, skill: string, english: readonly [string, string], thai: readonly [string, string]]
-import { pilatesPairs } from './pilatesContent'
 import { clubPairs } from './clubContent'
 import { questionWordPairs } from './questionWords'
 export const courtPairs: readonly PadelPair[] = [
   ['people-1','people',['The player.','The coach.'],['ผู้เล่น','โค้ช']],
   ['people-2','people',['The player is here.','The coach is here.'],['ผู้เล่นอยู่ที่นี่','โค้ชอยู่ที่นี่']],
-  ['people-3','people',['The guest.','The manager.'],['ลูกค้า','ผู้จัดการ']],
-  ['people-4','people',['Please ask the guest.','Please ask the manager.'],['กรุณาถามลูกค้า','กรุณาถามผู้จัดการ']],
+  ['people-3','people',['The customer.','The manager.'],['ลูกค้า','ผู้จัดการ']],
+  ['people-4','people',['Please ask the customer.','Please ask the manager.'],['กรุณาถามลูกค้า','กรุณาถามผู้จัดการ']],
   ['gear-1','gear',['A racket.','A ball.'],['ไม้พาเดลหนึ่งอัน','ลูกบอลหนึ่งลูก']],
+  ['gear-net','gear',['The net.','The court.'],['ตาข่าย','สนาม']],
   ['gear-2','gear',['Do you need a racket?','Do you need a ball?'],['คุณต้องการไม้พาเดลไหม','คุณต้องการลูกบอลไหม']],
   ['gear-3','gear',['A towel.','A bottle.'],['ผ้าขนหนูหนึ่งผืน','ขวดหนึ่งขวด']],
   ['gear-4','gear',['Would you like a towel?','Would you like a bottle of water?'],['คุณต้องการผ้าขนหนูไหม','คุณต้องการน้ำหนึ่งขวดไหม']],
@@ -63,6 +63,5 @@ export const courtPairs: readonly PadelPair[] = [
   ['teamwork-4','teamwork',['Please return the racket to me.','Please return the racket to her.'],['กรุณาคืนไม้พาเดลให้ฉัน','กรุณาคืนไม้พาเดลให้เธอ']],
 ]
 
-// Teach each language pattern in both workplaces from the beginning, rather
-// than hiding the Pilates course behind completion of all Padel questions.
-export const padelPairs: readonly PadelPair[] = [...courtPairs.flatMap(pair => [pair, ...pilatesPairs.filter(p => p[0] === `pilates-${pair[0]}`)]), ...clubPairs, ...questionWordPairs]
+// Only Padel content feeds practice, the content table, word help and audio.
+export const padelPairs: readonly PadelPair[] = [...courtPairs, ...clubPairs, ...questionWordPairs]

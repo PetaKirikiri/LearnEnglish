@@ -4,7 +4,7 @@ export type IconCue = 'plural' | 'ongoing' | 'complete' | 'past' | 'future' | 'q
 export type IconSymbol = 'number' | 'person' | 'possession' | 'relation' | 'time' | 'position' | 'arrow' | 'choice' | 'cause' | 'condition' | 'amount' | 'question' | 'no' | 'yes' | 'polite' | 'purpose' | 'action' | 'part' | 'name' | 'height' | 'warm' | 'waist' | 'wrist' | 'balance'
 export type WordIcon = {
   asset?: string
-  symbol?: IconSymbol
+  symbol?: IconSymbol | 'net'
   cue?: IconCue
   secondary?: string
   value?: string
@@ -34,6 +34,7 @@ add('lessons', art('coach', 'More than one coaching lesson.', 'plural'))
 add('what', art('what', 'Which thing or information?'))
 add('the', art('the-shared', 'The particular thing speaker and listener both identify.'))
 add('court', art('court', 'A padel court.'))
+add('net', { symbol: 'net', description: 'The net dividing the two sides of a padel court.' })
 add('courts', art('court', 'More than one padel court.', 'plural'))
 add('player', art('player', 'A person playing padel.'))
 add('players', art('player', 'More than one player.', 'plural'))

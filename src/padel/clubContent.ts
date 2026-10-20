@@ -47,10 +47,4 @@ export const clubPairs: readonly PadelPair[] = [
   ['desk-rules-6','court_rules',['Please wait until the point is over before you enter.','Please wait until the point is over before you leave.'],['กรุณารอจนจบแต้มก่อนเข้าสนาม','กรุณารอจนจบแต้มก่อนออกจากสนาม']],
   ['desk-rules-7','court_rules',['The score is fifteen thirty.','The score is thirty fifteen.'],['คะแนนคือสิบห้าต่อสามสิบ','คะแนนคือสามสิบต่อสิบห้า']],
   ['desk-rules-8','court_rules',['Serve at waist height or lower.','Serve into the diagonally opposite service box.'],['เสิร์ฟโดยตีลูกที่ระดับเอวหรือต่ำกว่า','เสิร์ฟลงช่องเสิร์ฟฝั่งตรงข้ามในแนวทแยง']],
-  ['pilates-desk-1','class_booking',['What time would you like to take a class?','What day would you like to take a class?'],['คุณต้องการเรียนคลาสกี่โมง','คุณต้องการเรียนคลาสวันไหน']],
-  ['pilates-desk-2','class_booking',['How many people have booked the class?','How many people will book the class?'],['มีคนจองคลาสไว้แล้วกี่คน','จะมีคนจองคลาสกี่คน']],
-  ['pilates-desk-3','class_booking',['The class costs five hundred baht.','The class costs seven hundred baht.'],['ค่าคลาสคือห้าร้อยบาท','ค่าคลาสคือเจ็ดร้อยบาท']],
-  ['pilates-desk-4','class_booking',['Your package has five classes left.','Your package has ten classes left.'],['แพ็กเกจของคุณเหลืออีกห้าคลาส','แพ็กเกจของคุณเหลืออีกสิบคลาส']],
-  ['pilates-desk-5','class_booking',['Grip socks are included.','Grip socks are sold separately.'],['รวมถุงเท้ากันลื่นแล้ว','ถุงเท้ากันลื่นจำหน่ายแยกต่างหาก']],
-  ['pilates-desk-6','class_booking',['Your package expires this month.','Your package expires next month.'],['แพ็กเกจของคุณหมดอายุเดือนนี้','แพ็กเกจของคุณหมดอายุเดือนหน้า']],
 ]

@@ -38,6 +38,15 @@ function Diagram({ icon }: { icon: WordIcon }) {
   const value = icon.value ?? ''
   const body = (() => {
     switch (icon.symbol) {
+      case 'net': return <>
+        <path d="M15 33Q50 42 85 33V76Q50 83 15 76Z" fill="#e4e7dc"/>
+        <g fill="none" stroke="#6f8c81" strokeWidth="2">
+          {[25,35,45,55,65,75].map(x=><path key={x} d={`M${x} 39V78`}/>)}
+          {[46,56,66,76].map(y=><path key={y} d={`M16 ${y}Q50 ${y+7} 84 ${y}`}/>)}
+        </g>
+        <path d="M15 33Q50 42 85 33" fill="none" stroke="#faf5e8" strokeWidth="8"/>
+        <rect x="10" y="26" width="9" height="62" rx="4"/><rect x="81" y="26" width="9" height="62" rx="4"/>
+      </>
       case 'number': return <><rect x="8" y="16" width="84" height="68" rx="22"/><text x="50" y="65" textAnchor="middle" fill="#fff8eb" fontSize={value.length > 3 ? 30 : 43} fontWeight="800">{value}</text></>
       case 'person': case 'possession': {
         const plural = ['we','us','they','together','separate','opponents'].includes(value)

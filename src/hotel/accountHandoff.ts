@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabase'
 import { hotelAccountUrl } from './lineEntry'
 
-let resume: ReturnType<typeof restore> | undefined
+let resume: { ticket: string | null; promise: ReturnType<typeof restore> } | undefined
 async function restore(ticket: string | null) {
   const { data: current } = await supabase.auth.getSession()
   // Same as Padel: never replace an account already signed in on this origin.
@@ -16,9 +16,12 @@ async function restore(ticket: string | null) {
   return data.user
 }
 export function finishHotelReturn(ticket: string | null) {
-  // StrictMode must not consume a one-use ticket twice.
-  resume ??= restore(ticket).catch(error => { resume = undefined; throw error })
-  return resume
+  // Share only an in-flight restore (including StrictMode's second mount after
+  // the ticket is removed). Never cache a signed-out result or a former user.
+  if (resume && (!ticket || resume.ticket === ticket)) return resume.promise
+  const pending = { ticket, promise: restore(ticket) }
+  resume = pending
+  return pending.promise.finally(() => { if (resume === pending) resume = undefined })
 }
 export async function prepareHotelReturn(idToken: string) {
   const { data, error } = await supabase.functions.invoke('line-liff-recognize', {

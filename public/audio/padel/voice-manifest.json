@@ -743,6 +743,18 @@
     "text": "Would you like a bottle of water?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-gear-net-1.wav": {
+    "fingerprint": "448f5110f0e7f4f32ab5ce6c077d31ab888bdcc3ab1d9de8dee50f1aa1284154",
+    "seconds": 0.916,
+    "text": "The net.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-gear-net-2.wav": {
+    "fingerprint": "cf8d3bd4a77fca157bed4174f745de3c706565c9a9ec73877d6d4fd3df379b81",
+    "seconds": 0.969,
+    "text": "The court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-ongoing-1-1.wav": {
     "fingerprint": "d28fda2a704976c885e41cb3be709aa4bdcf60781f0fd61b2e41669a5f86d238",
     "seconds": 1.359,
@@ -827,6 +839,18 @@
     "text": "The manager.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-people-3-v2-1.wav": {
+    "fingerprint": "0e0f908684b59900f538687694a7a1bad2373a1de5587bf31eb121b2d5738eaa",
+    "seconds": 1.077,
+    "text": "The customer.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-people-3-v2-2.wav": {
+    "fingerprint": "b1e447e507aca6a6c987cf6957137a4e9ca5e9ad2e0a04d036b8ee5de2fdca85",
+    "seconds": 1.034,
+    "text": "The manager.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-people-4-1.wav": {
     "fingerprint": "2c2705aee82b09c80b66661ea46f5dcca96f1aa1e50a44fc6f7aec0f3ded12b1",
     "seconds": 1.465,
@@ -834,6 +858,18 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-people-4-2.wav": {
+    "fingerprint": "a24732f8c7eacb95ee1e89055a56cc5b26ec085fbc100fb9038711eb7b86fd0e",
+    "seconds": 1.615,
+    "text": "Please ask the manager.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-people-4-v2-1.wav": {
+    "fingerprint": "4a884d0d5a1acb725841299e47a6239d06aee2da80313aca94d51b52d7bb9821",
+    "seconds": 1.615,
+    "text": "Please ask the customer.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-people-4-v2-2.wav": {
     "fingerprint": "a24732f8c7eacb95ee1e89055a56cc5b26ec085fbc100fb9038711eb7b86fd0e",
     "seconds": 1.615,
     "text": "Please ask the manager.",

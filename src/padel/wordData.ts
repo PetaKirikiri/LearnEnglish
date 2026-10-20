@@ -8,6 +8,7 @@ import { normalizeHelpWord } from '../learning/helpPoints'
 import { padelQuestions } from './course'
 
 export const padelWordGlosses: Record<string,string> = { ...thaiTranslations, ...hotelWordGlosses,
+  net:'ตาข่ายพาเดล',
   against:'แข่งกับ; เป็นฝ่ายตรงข้าม',should:'ควร',lessons:'บทเรียนหลายครั้ง; การเรียนกับโค้ชหลายครั้ง',
   who:'ใคร',what:'อะไร',where:'ที่ไหน',when:'เมื่อไหร่',why:'ทำไม',how:'อย่างไร; how long = นานเท่าไหร่; how many = กี่',
   courts:'สนามพาเดลหลายสนาม',teach:'สอน',
@@ -80,17 +81,17 @@ const notes: Record<string,string> = {
   places:'two places left = เหลือที่ว่างสองที่; จำนวนมากกว่าหนึ่งใช้ places',
   left:'on your left = ทางซ้ายของคุณ; one place left = เหลือที่ว่างหนึ่งที่ ความหมายเปลี่ยนตามกลุ่มคำ',
   equipment:'equipment นับไม่ได้: the equipment ไม่ใช้ an equipment หรือ equipments; ถ้าต้องการนับ ใช้ a piece of equipment',
-  private:'a private class = คลาสส่วนตัว ต่างจาก a group class ที่เรียนร่วมกับคนอื่น',
+  private:'a private lesson = เรียนกับโค้ชเป็นการส่วนตัว ต่างจาก a group lesson ที่เรียนร่วมกับคนอื่น',
   waiting:'is waiting = กำลังรอ; waiting list เป็นกลุ่มคำนาม หมายถึงรายชื่อรอคิว',
   break:'a break ใน Do you need a break? คือช่วงพัก ไม่ใช่การทำให้สิ่งของแตก',
   leave:'leave your bag = ฝากกระเป๋าไว้; leave the waiting list = ถอนชื่อออกจากรายชื่อรอ; before you leave = ก่อนกลับ',
   springs:'springs ในเครื่องรีฟอร์เมอร์หมายถึงสปริง ไม่ใช่ฤดูใบไม้ผลิ',
-  last:'your last class = คลาสสุดท้ายของคุณ; your first class = คลาสแรกของคุณ',
-  first:'your first class = คลาสแรกของคุณ; first บอกลำดับ ไม่ใช่จำนวนหนึ่ง',
+  last:'your last game = เกมสุดท้ายของคุณ; your first game = เกมแรกของคุณ',
+  first:'your first lesson = การเรียนกับโค้ชครั้งแรกของคุณ; first บอกลำดับ ไม่ใช่จำนวนหนึ่ง',
   hire:'hire a racket = เช่าไม้ ไม่ใช่ซื้อ; buy a racket = ซื้อไม้; racket hire เป็นคำนามหมายถึงการเช่าไม้',
   per:'per court = ต่อสนาม; per person = ต่อคน; per hour = ต่อชั่วโมง ฟังหน่วยหลัง per เพื่อเข้าใจราคา',
   deposit:'deposit คือเงินมัดจำ ไม่ใช่ยอดเต็ม; full amount คือเต็มจำนวน',
-  grip:'grip tape = เทปพันด้ามไม้; grip socks = ถุงเท้ากันลื่น ต้องฟังคำที่ตามหลัง grip',
+  grip:'grip tape = เทปพันด้ามไม้พาเดล ช่วยให้จับไม้ได้ถนัด',
   credit:'a credit ในบริบทการจองคือยอดที่เก็บไว้ใช้บริการครั้งหน้า ต่างจาก refund ที่คืนเงิน',
   return:'return the racket = คืนไม้; return the serve = รับลูกเสิร์ฟ ต้องดูคำที่ตามหลัง',
   serve:'serve ในบทเรียนสนามคือเสิร์ฟลูก ไม่ใช่เสิร์ฟอาหาร; the serve เป็นคำนามหมายถึงลูกเสิร์ฟ',
@@ -108,7 +109,7 @@ export const padelWordProfiles: Record<string,WordProfile> = Object.fromEntries(
   nouns: lexicalNouns.filter(n => nounMatches(n,word)),
   verbs: lexicalVerbs.filter(v => verbMatches(v,word)),
   grammar_note_th: notes[word] ?? hotelWordProfiles[word]?.grammar_note_th,
-  before: rankedNeighbours(row.before), after: rankedNeighbours(row.after), occurrences: row.occurrences, corpus_version:'padel-pilates-staff-v1',
+  before: rankedNeighbours(row.before), after: rankedNeighbours(row.after), occurrences: row.occurrences, corpus_version:'padel-staff-v2',
 }]))
 export function padelWordExamples(word: string, context: string) {
   return [...new Set([context,...padelQuestions.map(q => q.english)])].filter(sentence =>
