@@ -8,6 +8,7 @@ import { normalizeHelpWord } from '../learning/helpPoints'
 import { padelQuestions } from './course'
 
 export const padelWordGlosses: Record<string,string> = { ...thaiTranslations, ...hotelWordGlosses,
+  against:'แข่งกับ; เป็นฝ่ายตรงข้าม',should:'ควร',lessons:'บทเรียนหลายครั้ง; การเรียนกับโค้ชหลายครั้ง',
   who:'ใคร',what:'อะไร',where:'ที่ไหน',when:'เมื่อไหร่',why:'ทำไม',how:'อย่างไร; how long = นานเท่าไหร่; how many = กี่',
   courts:'สนามพาเดลหลายสนาม',teach:'สอน',
   long:'ยาว; how long = นานเท่าไหร่',many:'หลาย; how many = กี่',find:'หาเจอ; พบ',keep:'เก็บไว้; keep the score = นับคะแนน',
@@ -17,7 +18,7 @@ export const padelWordGlosses: Record<string,string> = { ...thaiTranslations, ..
   cafe:'คาเฟ่; ร้านกาแฟ', inside:'ข้างใน', our:'ของเรา', play:'เล่น', playing:'กำลังเล่น', clean:'ทำความสะอาด', cleaning:'กำลังทำความสะอาด', cleaned:'ทำความสะอาดแล้ว',
   lesson:'บทเรียน; ในที่นี้คือการเรียนกับโค้ช', match:'การแข่งขัน', beginner:'ผู้เล่นมือใหม่', experienced:'มีประสบการณ์', session:'รอบเล่น; ช่วงเวลาที่จอง',
   cash:'เงินสด', costs:'มีราคา; ต้องจ่าย', game:'เกม; การเล่น', turn:'หมุน; turn on / off = เปิด / ปิด', lights:'ไฟหลายดวง', off:'ปิด; turn off = ปิด', gate:'ประตูรั้ว', wet:'เปียก', dry:'แห้ง',
-  tell:'บอก; แจ้ง', close:'ปิด', cancel:'ยกเลิก; cancel a court = ยกเลิกการจองสนาม', has:'มี; ใช้กับกริยาช่อง 3 เพื่อบอกสิ่งที่เกิดแล้ว',
+  tell:'บอก; แจ้ง', close:'ปิด', cancel:'ยกเลิก; cancel your booking = ยกเลิกการจองของคุณ', has:'มี; ใช้กับกริยาช่อง 3 เพื่อบอกสิ่งที่เกิดแล้ว',
   have:'มี; ใช้กับกริยาช่อง 3 เพื่อบอกสิ่งที่เกิดแล้ว', will:'จะ; ตามด้วยกริยารูปพื้นฐาน',
   hours:'ชั่วโมง (มากกว่าหนึ่ง)', confirm:'ยืนยัน',
   pilates:'พิลาทิส', customer:'ลูกค้า', customers:'ลูกค้าหลายคน', instructor:'ผู้สอน', mat:'เสื่อออกกำลังกาย', mats:'เสื่อออกกำลังกายหลายผืน',

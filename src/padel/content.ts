@@ -12,7 +12,7 @@ export const courtPairs: readonly PadelPair[] = [
   ['gear-1','gear',['A racket.','A ball.'],['ไม้พาเดลหนึ่งอัน','ลูกบอลหนึ่งลูก']],
   ['gear-2','gear',['Do you need a racket?','Do you need a ball?'],['คุณต้องการไม้พาเดลไหม','คุณต้องการลูกบอลไหม']],
   ['gear-3','gear',['A towel.','A bottle.'],['ผ้าขนหนูหนึ่งผืน','ขวดหนึ่งขวด']],
-  ['gear-4','gear',['Would you like a towel?','Would you like a bottle?'],['คุณต้องการผ้าขนหนูไหม','คุณต้องการขวดไหม']],
+  ['gear-4','gear',['Would you like a towel?','Would you like a bottle of water?'],['คุณต้องการผ้าขนหนูไหม','คุณต้องการน้ำหนึ่งขวดไหม']],
   ['facilities-1','facilities',['The court.','The changing room.'],['สนาม','ห้องเปลี่ยนเสื้อผ้า']],
   ['facilities-2','facilities',['The court is open.','The changing room is open.'],['สนามเปิดอยู่','ห้องเปลี่ยนเสื้อผ้าเปิดอยู่']],
   ['facilities-3','facilities',['The toilets are over there.','The showers are over there.'],['ห้องน้ำอยู่ทางโน้น','ห้องอาบน้ำอยู่ทางโน้น']],
@@ -45,7 +45,7 @@ export const courtPairs: readonly PadelPair[] = [
   ['plans-2','plans',['I will call the coach.','I am calling the coach.'],['ฉันจะโทรหาโค้ช','ฉันกำลังโทรหาโค้ช']],
   ['plans-3','plans',['We will clean the court.','We have cleaned the court.'],['เราจะทำความสะอาดสนาม','เราทำความสะอาดสนามแล้ว']],
   ['plans-4','plans',['I will send the confirmation.','I have sent the confirmation.'],['ฉันจะส่งการยืนยัน','ฉันส่งการยืนยันแล้ว']],
-  ['bookings-1','bookings',['Would you like to book a court?','Would you like to cancel a court?'],['คุณต้องการจองสนามไหม','คุณต้องการยกเลิกการจองสนามไหม']],
+  ['bookings-1','bookings',['Would you like to confirm your booking?','Would you like to cancel your booking?'],['คุณต้องการยืนยันการจองของคุณไหม','คุณต้องการยกเลิกการจองของคุณไหม']],
   ['bookings-2','bookings',['Please confirm your booking.','Please cancel your booking.'],['กรุณายืนยันการจองของคุณ','กรุณายกเลิกการจองของคุณ']],
   ['bookings-3','bookings',['Would you like a lesson?','Would you like a match?'],['คุณต้องการเรียนกับโค้ชไหม','คุณต้องการแข่งไหม']],
   ['bookings-4','bookings',['Are you a beginner?','Are you an experienced player?'],['คุณเป็นผู้เล่นมือใหม่ใช่ไหม','คุณเป็นผู้เล่นที่มีประสบการณ์ใช่ไหม']],
@@ -60,7 +60,7 @@ export const courtPairs: readonly PadelPair[] = [
   ['teamwork-1','teamwork',['Please turn on the lights.','Please turn off the lights.'],['กรุณาเปิดไฟ','กรุณาปิดไฟ']],
   ['teamwork-2','teamwork',['Please open the gate.','Please close the gate.'],['กรุณาเปิดประตูรั้ว','กรุณาปิดประตูรั้ว']],
   ['teamwork-3','teamwork',['The court is wet.','The court is dry.'],['สนามเปียก','สนามแห้ง']],
-  ['teamwork-4','teamwork',['Please return the rackets before you leave.','Please return the rackets when you arrive.'],['กรุณาคืนไม้พาเดลก่อนกลับ','กรุณาคืนไม้พาเดลเมื่อมาถึง']],
+  ['teamwork-4','teamwork',['Please return the racket to me.','Please return the racket to her.'],['กรุณาคืนไม้พาเดลให้ฉัน','กรุณาคืนไม้พาเดลให้เธอ']],
 ]
 
 // Teach each language pattern in both workplaces from the beginning, rather

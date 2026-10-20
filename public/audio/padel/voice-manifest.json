@@ -11,6 +11,18 @@
     "text": "Would you like to cancel a court?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-bookings-1-v2-1.wav": {
+    "fingerprint": "110eb6a322895dfe94cef1026113c8739d58b389c7b40dd0fc43da5ac63e11cc",
+    "seconds": 2.009,
+    "text": "Would you like to confirm your booking?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-bookings-1-v2-2.wav": {
+    "fingerprint": "041dbf06d17e774ccace2096da89eadcd5aba84e573d92ede1bde706ad738760",
+    "seconds": 1.955,
+    "text": "Would you like to cancel your booking?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-bookings-2-1.wav": {
     "fingerprint": "20fddcfcc47cb4c89eee8696899e4ad96bcb399ceb48c444b62c8d213a33ce1b",
     "seconds": 1.626,
@@ -719,6 +731,18 @@
     "text": "Would you like a bottle?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-gear-4-v2-1.wav": {
+    "fingerprint": "d6e9d73d399eb2b1309bb1d6320f495604aa4ff6ab2847a2e8c2a9c05de90061",
+    "seconds": 1.421,
+    "text": "Would you like a towel?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-gear-4-v2-2.wav": {
+    "fingerprint": "37b99ba962cb928187b9ca4d97517b7f59fc5db51652962b9a850decba01a8b1",
+    "seconds": 1.807,
+    "text": "Would you like a bottle of water?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-ongoing-1-1.wav": {
     "fingerprint": "d28fda2a704976c885e41cb3be709aa4bdcf60781f0fd61b2e41669a5f86d238",
     "seconds": 1.359,
@@ -935,6 +959,18 @@
     "text": "How many people would like to cancel the class?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-pilates-desk-2-v2-1.wav": {
+    "fingerprint": "44d188bdead242747cd00f839ebc469cc3c4c58d30b38863e3a25879dd2503a0",
+    "seconds": 2.006,
+    "text": "How many people have booked the class?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-pilates-desk-2-v2-2.wav": {
+    "fingerprint": "37c9fb0414dfe70a5e37896720ab4fd5b3af1973d8a833bb609e2fdbd0f2d003",
+    "seconds": 2.049,
+    "text": "How many people will book the class?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-pilates-desk-3-1.wav": {
     "fingerprint": "ee82d8b1be2499d5c1a76bf69f06eec9577d61d3cd8fc97fce9266208bcb6dc8",
     "seconds": 2.158,
@@ -1007,6 +1043,18 @@
     "text": "The locker is ready.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-pilates-facilities-2-v2-1.wav": {
+    "fingerprint": "36671a1d0d514371ced1629559d56e6b8bc9702335339af0f8b0172692912d55",
+    "seconds": 1.518,
+    "text": "The studio is ready.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-pilates-facilities-2-v2-2.wav": {
+    "fingerprint": "faff3f18e74917418dd0733e08e11bf9689d7a276c7455a8af672085999692fe",
+    "seconds": 1.7,
+    "text": "The studio is not ready.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-pilates-facilities-3-1.wav": {
     "fingerprint": "22532ee0d71c4c07e8b061a2871b7873caf5e60be767991ee369b5d8efae2010",
     "seconds": 1.977,
@@ -1029,6 +1077,18 @@
     "fingerprint": "570df7b4cc0e4ae797f55e3aa2644321390db3323e0336fbf5134e16eb1f76a6",
     "seconds": 1.838,
     "text": "Your class is in the garden.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-pilates-facilities-4-v2-1.wav": {
+    "fingerprint": "1ab3c1b071dfc385fabb6b554ebe692fb1b785f582f129f6c0563d488d626af9",
+    "seconds": 1.861,
+    "text": "Your class is in this studio.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-pilates-facilities-4-v2-2.wav": {
+    "fingerprint": "b03ec1345687fb75e8cab224086fb07e056a3ff7bbb20dd4f96d3af125c954ce",
+    "seconds": 2.222,
+    "text": "Your class is in the other studio.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-pilates-finished-1-1.wav": {
@@ -1101,6 +1161,18 @@
     "fingerprint": "08da0f08aa262fc72742a96e721ebab163b0f4dd5f986e06aa650a4f3406de0a",
     "seconds": 1.477,
     "text": "Do you need a reformer?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-pilates-gear-2-v2-1.wav": {
+    "fingerprint": "1c22f84652b75108f30c19c92a6aa4ba9e624f42444c4a29fe2dffe1c632ef9d",
+    "seconds": 1.273,
+    "text": "Do you need a mat?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-pilates-gear-2-v2-2.wav": {
+    "fingerprint": "7ad901640db6eb53ad44d10b631ed79402aff762f35b67fe4540e3d56b9a64b0",
+    "seconds": 1.296,
+    "text": "Do you have a mat?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-pilates-gear-3-1.wav": {
@@ -1415,6 +1487,18 @@
     "text": "I will check their class.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-pilates-possession-4-v2-1.wav": {
+    "fingerprint": "0fca7572c211e3f6e053a96deecdc213a4bf6c8cafff49c22b8e5844e4dce04b",
+    "seconds": 1.517,
+    "text": "I will check her booking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-pilates-possession-4-v2-2.wav": {
+    "fingerprint": "6b5d6b11e5f3488f5770643a62e06dc7e0df74aca1b20da679daf981173918b3",
+    "seconds": 1.571,
+    "text": "I will check their booking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-pilates-quantity-1-1.wav": {
     "fingerprint": "1f631376a4d3238278d07195b87596d019aa4fe2fdc5d16526273e454defd039",
     "seconds": 1.045,
@@ -1473,6 +1557,18 @@
     "fingerprint": "2604ddfbb46f7400824d1fc199a0b8507270641ee7b65318ae01f81b5b818d2f",
     "seconds": 2.05,
     "text": "Is this your last Pilates class?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-pilates-service-1-v2-1.wav": {
+    "fingerprint": "47eb474278891f71dfc53d9ddcf2e6d6294986e66a847e03531352170a24fcd4",
+    "seconds": 2.071,
+    "text": "Is this your first Pilates class?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-pilates-service-1-v2-2.wav": {
+    "fingerprint": "198c1c8e66cc72c4de7dd56381c86360d6aceaa4b1e63645c1add52deca4be73",
+    "seconds": 2.083,
+    "text": "Is this her first Pilates class?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-pilates-service-2-1.wav": {
@@ -1811,6 +1907,18 @@
     "text": "What is on the court?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-questions-1-1-v2-1.wav": {
+    "fingerprint": "f1f6f4e5c9369e87441edce17d721bea5f5ca69cef141e2b5d7ad3d560a35be0",
+    "seconds": 1.474,
+    "text": "Who are you playing with?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-1-1-v2-2.wav": {
+    "fingerprint": "4771a135e1442ef157d665abfd3584644e9eb3cf5f4fab51b0ef970542088209",
+    "seconds": 1.603,
+    "text": "Who are you playing against?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-questions-1-2-1.wav": {
     "fingerprint": "5c820e0879223864592746431a38b3f63aa23565256405ac10fa32a1f6e948a6",
     "seconds": 1.391,
@@ -1821,6 +1929,18 @@
     "fingerprint": "a1a122486388d16ccf83d52046e80f2a2cb4e33c1541af0f7ebfd734ab662f73",
     "seconds": 1.413,
     "text": "What is at reception?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-1-2-v2-1.wav": {
+    "fingerprint": "90fa7e16ea0aa1acc10838d7ebc54cfff1bfb24cf57bf2c74ba0e34123bb6788",
+    "seconds": 1.359,
+    "text": "Who booked the court?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-1-2-v2-2.wav": {
+    "fingerprint": "8cc3c8f4011d7ae51f5af2634214cb481a884973d5a3053ce5f047a66791166e",
+    "seconds": 1.561,
+    "text": "Who is booking the court?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-questions-1-3-1.wav": {
@@ -1835,6 +1955,18 @@
     "text": "What is by the gate?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-questions-1-3-v2-1.wav": {
+    "fingerprint": "5350424fefae4caa7044c572847f922839c7b29188b0ff41fa632f9eac10d350",
+    "seconds": 1.7,
+    "text": "Who is waiting for the coach?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-1-3-v2-2.wav": {
+    "fingerprint": "d367293ee9d0833e766edb865ca33442d3f0d12ab5ad8ba1a985e518a5b274fd",
+    "seconds": 1.711,
+    "text": "Who is the coach waiting for?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-questions-1-4-1.wav": {
     "fingerprint": "6b5f0640079ae5f111e4399b33dfbd5a4901b7921dbeb6415a0bb9a19e07ecb9",
     "seconds": 1.774,
@@ -1845,6 +1977,18 @@
     "fingerprint": "bfc48a745ecdf540930ea9f2b3c4d97a83c5277d85c9867c57c3b7e7db5ce11b",
     "seconds": 1.731,
     "text": "What is in the changing room?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-1-4-v2-1.wav": {
+    "fingerprint": "3c4e762a7c651d0fb9fc806325767529ed32a90198dfb5b1bf2456239ac417c3",
+    "seconds": 1.201,
+    "text": "Who should I pay?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-1-4-v2-2.wav": {
+    "fingerprint": "85aac4a4e3516d1694a6458decdce49c9f36abec15bc23596c422c37f04caf1b",
+    "seconds": 1.222,
+    "text": "Who should pay me?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-questions-1-5-1.wav": {
@@ -1859,6 +2003,18 @@
     "text": "What can you see?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-questions-1-5-v2-1.wav": {
+    "fingerprint": "b9cf84d9d5026c8897bc7f009f127e9d268053b812e0b3a89d2eae9c794ed0d3",
+    "seconds": 1.561,
+    "text": "What time is your booking?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-1-5-v2-2.wav": {
+    "fingerprint": "2f1420b8c1be6d6f2fe6e9d190beeee531773f01ec650eff43d7ed1e5e85f376",
+    "seconds": 1.559,
+    "text": "What day is your booking?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-questions-1-6-1.wav": {
     "fingerprint": "99433948b103a9a1cb3adc53ee06184683e936fd7fad412b2c0205db6644a5b6",
     "seconds": 1.191,
@@ -1869,6 +2025,18 @@
     "fingerprint": "1ae280b341d4ccff0f964f7db0556d8d7e0ccb857e52286c96b0e17b495d3450",
     "seconds": 1.181,
     "text": "What do you need?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-1-6-v2-1.wav": {
+    "fingerprint": "213457977560bb749e2a6bd9e5e4bc5db63ec1c0034a5ddab5f9d12121779208",
+    "seconds": 1.39,
+    "text": "What do I need to bring?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-1-6-v2-2.wav": {
+    "fingerprint": "5bf653a18ab8c774d049c5017c5a48c69f87d38061b0720a71ad590bec2f5173",
+    "seconds": 1.391,
+    "text": "What do we need to bring?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-questions-1-7-1.wav": {
@@ -1883,6 +2051,18 @@
     "text": "What are you waiting for?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-questions-1-7-v2-1.wav": {
+    "fingerprint": "b765f884be0d5d6856b8acffbd8d5385ae7c7057cbaaf22960c1ca444ed732d3",
+    "seconds": 1.891,
+    "text": "What is included in the price?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-1-7-v2-2.wav": {
+    "fingerprint": "421dcf5699716769487966bc5575efc092d58fb1f7eef29fc1ebb9704c34feed",
+    "seconds": 1.997,
+    "text": "What is not included in the price?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-questions-1-8-1.wav": {
     "fingerprint": "01e18a10cced6c0ad8a894307c4aa1f6ca88dabbec982e61a70bb3206bd5573e",
     "seconds": 1.296,
@@ -1893,6 +2073,18 @@
     "fingerprint": "554ffeedbca65074e392fbfa8794176a9e028f593a501cdeaaeae8c2c95a006d",
     "seconds": 1.316,
     "text": "What did you find?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-1-8-v2-1.wav": {
+    "fingerprint": "11970b861c58a0b366c8d3f2fb1abe859c611b86c015aaa213ed5693fc105cc1",
+    "seconds": 1.541,
+    "text": "What do I need to pay for?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-1-8-v2-2.wav": {
+    "fingerprint": "556a33265d7f2a88c0772daddc61aac6d462aec42fe6763a252f428086781b6a",
+    "seconds": 1.379,
+    "text": "What have I paid for?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-questions-2-1-1.wav": {
@@ -1955,6 +2147,18 @@
     "text": "When can I hire a racket?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-questions-2-5-v2-1.wav": {
+    "fingerprint": "c569cad079888f220700e1fe44c724e14db8f994cada632389a198a49fe9615e",
+    "seconds": 1.356,
+    "text": "Where can we warm up?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-2-5-v2-2.wav": {
+    "fingerprint": "93d3e9cfce9ad74eab69a95ae4089a76b0fd29ff1ad5ef8322d8d4aa01759442",
+    "seconds": 1.399,
+    "text": "When can we warm up?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-questions-2-6-1.wav": {
     "fingerprint": "28fa0b09c0d9442a2218bed2f3b206f805db1b7caa51a4573d274a7719c0c87f",
     "seconds": 1.529,
@@ -2003,6 +2207,18 @@
     "text": "How do I book a court?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-questions-3-1-v2-1.wav": {
+    "fingerprint": "9a38c0bb7bbaed377e10cc5600ecef3d8e750e084bd2cd54fe9e56dc6637bcac",
+    "seconds": 2.009,
+    "text": "Why do I need to pay a deposit?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-3-1-v2-2.wav": {
+    "fingerprint": "5b9612061c46ed9e4863bcf5535e0fa33f24e1b4ce91a9d8f2eb4a5de6a4bb29",
+    "seconds": 2.051,
+    "text": "When do I need to pay a deposit?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-questions-3-2-1.wav": {
     "fingerprint": "1ca25a79eadcf86838abb2b49be129a13f0fc5c8e4d7d8361e54499b20cbd03b",
     "seconds": 1.71,
@@ -2013,6 +2229,18 @@
     "fingerprint": "17d27a6c80bcc87992401890e8a14b4314c4ba44343fc7a35585780b47acb223",
     "seconds": 1.699,
     "text": "How do I hire a racket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-3-2-v2-1.wav": {
+    "fingerprint": "3eeca25dc241641e180359294c1580b45c3319a88236eec6b752c21517dab1bb",
+    "seconds": 1.625,
+    "text": "Why is the court closed?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-3-2-v2-2.wav": {
+    "fingerprint": "48cab18cb027849498c48e830fe0c232e63a5f0d42df444c65716c64cbf72d0e",
+    "seconds": 1.912,
+    "text": "Why is the court still closed?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-questions-3-3-1.wav": {
@@ -2027,6 +2255,18 @@
     "text": "How do I pay a deposit?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-questions-3-3-v2-1.wav": {
+    "fingerprint": "821aa71220a4ebd848631b210d9a4fd7e0f91b2db25a1096c80dd9963377b7d7",
+    "seconds": 1.605,
+    "text": "Why do we need to wait here?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-3-3-v2-2.wav": {
+    "fingerprint": "a64317b24a8e49b6ace163dc78d2a089033e567384d95866020785d412241059",
+    "seconds": 1.925,
+    "text": "How long do we need to wait here?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-questions-3-4-1.wav": {
     "fingerprint": "1c756fa80d5fa0277b9a6c5f4308abfd617e39130a8b4550b7cdc00939dcdb08",
     "seconds": 1.797,
@@ -2037,6 +2277,18 @@
     "fingerprint": "02b92e3c7a6245af90385213af0dc79c262d727b3f0ee5c59e62d2c661ef29a4",
     "seconds": 1.765,
     "text": "How do I change my booking?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-3-4-v2-1.wav": {
+    "fingerprint": "c0ff5cff301d1f0a78839651946dd51a1f9773984861a0e72a4ce1d5e267b590",
+    "seconds": 1.377,
+    "text": "Why do we warm up?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-3-4-v2-2.wav": {
+    "fingerprint": "5923c4182abf9e7862aeb0bd2daa4138ab7a8558f7ee45fa567b0eceb5f1d8e5",
+    "seconds": 1.379,
+    "text": "How do we warm up?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-questions-3-5-1.wav": {
@@ -2051,6 +2303,18 @@
     "text": "How do I cancel my booking?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-questions-3-5-v2-1.wav": {
+    "fingerprint": "02b92e3c7a6245af90385213af0dc79c262d727b3f0ee5c59e62d2c661ef29a4",
+    "seconds": 1.765,
+    "text": "How do I change my booking?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-3-5-v2-2.wav": {
+    "fingerprint": "efeece4b4a59090135448aaf5c0ee7e5c0d232691049d498c64c9f623042b484",
+    "seconds": 1.69,
+    "text": "How do we change our booking?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-questions-3-6-1.wav": {
     "fingerprint": "62e9c64878792f6ce6a9e27900c9cd876448fc0783a8bf4a29b4b55a9489ba02",
     "seconds": 1.976,
@@ -2061,6 +2325,18 @@
     "fingerprint": "5e176e966191621f30d0c659767b773e0451f476981cc8ae3483e09b29c8939b",
     "seconds": 1.933,
     "text": "How do I replace the grip tape?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-3-6-v2-1.wav": {
+    "fingerprint": "fe7e4a0d083b4197a9962b291968e5e55438141f488de6af8c55a51fbfa5edba",
+    "seconds": 1.276,
+    "text": "How can I pay?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-3-6-v2-2.wav": {
+    "fingerprint": "76f74b5a02a8d16757b9b8df0ac9ea8f0dc11c28c6790efd02c8c455c47d6bb7",
+    "seconds": 1.265,
+    "text": "How can she pay?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-questions-3-7-1.wav": {
@@ -2075,6 +2351,18 @@
     "text": "How do we keep the score?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-questions-3-7-v2-1.wav": {
+    "fingerprint": "4b17514e36bce06c3b7f245f62294fb0f448f351b6ee14928c7b0170de78cd12",
+    "seconds": 1.528,
+    "text": "How do I book a court?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-3-7-v2-2.wav": {
+    "fingerprint": "23fbfbf7cfe964f75061743263209716600410328effa44aec14a367fc55ad1a",
+    "seconds": 1.805,
+    "text": "How do I book another court?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-questions-3-8-1.wav": {
     "fingerprint": "c0ff5cff301d1f0a78839651946dd51a1f9773984861a0e72a4ce1d5e267b590",
     "seconds": 1.377,
@@ -2085,6 +2373,18 @@
     "fingerprint": "5923c4182abf9e7862aeb0bd2daa4138ab7a8558f7ee45fa567b0eceb5f1d8e5",
     "seconds": 1.379,
     "text": "How do we warm up?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-3-8-v2-1.wav": {
+    "fingerprint": "55b57092621fd0a33d271a473c8b85290966d1ae126cc49ac80774fa49d2d0e7",
+    "seconds": 1.582,
+    "text": "How do I get a refund?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-3-8-v2-2.wav": {
+    "fingerprint": "b99a53dc445e2f573e3fc6e4c23859465f25342b00a95ffb42dcb3353368a9d2",
+    "seconds": 1.561,
+    "text": "When do I get a refund?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-questions-4-1-1.wav": {
@@ -2123,6 +2423,18 @@
     "text": "How many courts can we book?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-questions-4-3-v2-1.wav": {
+    "fingerprint": "b13f7ce1f070c1624a7f599a30db1a161fa07fdd4717d5723c39c1435a51796d",
+    "seconds": 2.054,
+    "text": "How long can we book the courts for?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-4-3-v2-2.wav": {
+    "fingerprint": "d28f42cfe2f6c4b429171308ba8332a71727ecd035e799a508b21a70d090ad3d",
+    "seconds": 1.7,
+    "text": "How many courts can we book?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-questions-4-4-1.wav": {
     "fingerprint": "2ffbc79cd67321fb61589d5b2c75cfee2368f0efea83487f1f69679748047a5c",
     "seconds": 2.071,
@@ -2130,6 +2442,18 @@
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-questions-4-4-2.wav": {
+    "fingerprint": "647eda801447813b559c0558d1dcd22460950b058dc26ec0461187f8a8ba4c3f",
+    "seconds": 1.859,
+    "text": "How many rackets can I hire?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-4-4-v2-1.wav": {
+    "fingerprint": "707ab51de5b12fef4f3f3d6a560c08e6f422fe90214594825cfc4755f4ca0e50",
+    "seconds": 2.233,
+    "text": "How long can I hire the rackets for?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-4-4-v2-2.wav": {
     "fingerprint": "647eda801447813b559c0558d1dcd22460950b058dc26ec0461187f8a8ba4c3f",
     "seconds": 1.859,
     "text": "How many rackets can I hire?",
@@ -2147,6 +2471,18 @@
     "text": "How many balls can we use?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-questions-4-5-v2-1.wav": {
+    "fingerprint": "9477910a5087c68d59dee3c130179027fb2235e828fb65de46f26e4e1d6e108c",
+    "seconds": 1.839,
+    "text": "How many players are arriving?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-4-5-v2-2.wav": {
+    "fingerprint": "262cdcda2b7430494c90afb77c8fd405ace354d532f53634e079a0486907eb2e",
+    "seconds": 1.764,
+    "text": "How many players have arrived?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-questions-4-6-1.wav": {
     "fingerprint": "b3e93267d77b9f4967f23e6148286f230fc27bc00f416cd3ab5eb1d8d2bc9f8b",
     "seconds": 1.807,
@@ -2159,6 +2495,18 @@
     "text": "How many players can stay?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-questions-4-6-v2-1.wav": {
+    "fingerprint": "c80a07c7626b887de06e44d9c7744a9a02fbc61bf981babac1e36cd3de82e26e",
+    "seconds": 1.485,
+    "text": "How long can we play?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-4-6-v2-2.wav": {
+    "fingerprint": "bd60181b65de9dd474e480cce5c08496dd5d16e5f91d7d0315979f53df7fa497",
+    "seconds": 1.613,
+    "text": "How often can we play?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-questions-4-7-1.wav": {
     "fingerprint": "23cbebce977d3dba808c1e3eec74b1dcdc44e8231442451b2d12008a6e91d4dd",
     "seconds": 1.945,
@@ -2169,6 +2517,18 @@
     "fingerprint": "2f584adcedd7fee9888c6063afc03b3ebc7547419a533c53cde4b7d0802a6c71",
     "seconds": 1.773,
     "text": "How many coaches can teach?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-4-7-v2-1.wav": {
+    "fingerprint": "b4ebb45d764054ead9f8f8be6696245a8687f44d885e736d8ebe71893601d60e",
+    "seconds": 1.881,
+    "text": "How many lessons have you booked?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-questions-4-7-v2-2.wav": {
+    "fingerprint": "78b9f54555bae1100f00f8f847f83cb16bc51848495126e358db4f4dc6fa53bd",
+    "seconds": 1.848,
+    "text": "How many lessons will you book?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-questions-4-8-1.wav": {
@@ -2277,6 +2637,18 @@
     "fingerprint": "a528749401343b80913c66b1866f819a9a3555cb611e7aaae7858449fe87c5b8",
     "seconds": 2.371,
     "text": "Please return the rackets when you arrive.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-teamwork-4-v2-1.wav": {
+    "fingerprint": "e94c273d9bf148454eb40ef86959b7f027e98de8c0bec487426913c8b3f9880a",
+    "seconds": 1.892,
+    "text": "Please return the racket to me.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-teamwork-4-v2-2.wav": {
+    "fingerprint": "43ca41daf540dc141a2f6bc3f1efbd44b6e257f6bdcc2c9caa7665285bdb4cc3",
+    "seconds": 1.912,
+    "text": "Please return the racket to her.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "padel-times-1-1.wav": {

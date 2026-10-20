@@ -2,15 +2,16 @@ import type { HotelQuestion, Progress } from '../hotel/course'
 import { recordAnswer } from '../hotel/course'
 import { padelPairs } from './content'
 import { questionWordSkills, questionWordNames } from './questionWords'
+import { padelQuestionId } from './contentRevisions'
 export { recordAnswer }
 export const skills = ['people','gear','quantity','court_booking','player_numbers','prices','racket_hire','balls_grips','class_booking','facilities','position','possession','permission','ongoing','finished','plans','bookings','times','rain','court_rules','service','teamwork',...questionWordSkills]
 export const skillNames = ['People','Equipment','Amounts','Court booking','How many / how long','Prices & payment','Racket hire','Balls & grips','Pilates bookings & packages','Facilities','Directions','Whose','Can / cannot','Actions','Already done','Plans','Bookings','Times','Rain & changes','Explaining rules','Guest service','Staff & safety',...questionWordNames]
 export type PadelQuestion = HotelQuestion & { pairId: string; contrast: string }
 export const padelQuestions: readonly PadelQuestion[] = [...padelPairs].sort((a,b) => skills.indexOf(a[1])-skills.indexOf(b[1])).flatMap(([id, skill, english, thai]) => english.map((text, index) => ({
-  id: `padel-${id}-${index + 1}`, pairId: id, skill, english: text,
+  id: padelQuestionId(id,index), pairId: id, skill, english: text,
   contrast: english[1 - index], correct: index as 0 | 1,
   answers: thai.map(text => [{ text, skill }]) as HotelQuestion['answers'],
-  audioUrl: `/audio/padel/padel-${id}-${index + 1}.wav`,
+  audioUrl: `/audio/padel/${padelQuestionId(id,index)}.wav`,
 })))
 export const progressKey = (user: string) => `padel:v1:${user}`
 export function isSkillComplete(progress: Progress, skill: string) {

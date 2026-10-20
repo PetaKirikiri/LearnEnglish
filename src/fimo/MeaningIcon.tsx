@@ -40,13 +40,14 @@ function Diagram({ icon }: { icon: WordIcon }) {
     switch (icon.symbol) {
       case 'number': return <><rect x="8" y="16" width="84" height="68" rx="22"/><text x="50" y="65" textAnchor="middle" fill="#fff8eb" fontSize={value.length > 3 ? 30 : 43} fontWeight="800">{value}</text></>
       case 'person': case 'possession': {
-        const plural = ['we','us','they','together','separate'].includes(value)
-        const receive = ['us','speaker-object'].includes(value)
+        const plural = ['we','us','they','together','separate','opponents'].includes(value)
+        const receive = ['us','speaker-object','her-object'].includes(value)
+        if (value === 'opponents') return <><Person x={22} y={36} size={.65}/><Person x={78} y={36} size={.65} color={`url(#${id}-gold)`}/><path d="M50 12V85M8 76H38L29 67M38 76L29 85M92 76H62L71 67M62 76L71 85" {...strokes}/></>
         return <>
           {value !== 'thing' ? <Person x={plural ? 33 : 50} y={43} size={.85}/> : null}{plural ? <Person x={72} y={43} size={.85} color={`url(#${id}-gold)`}/> : null}
           {['speaker','speaker-object','we','us'].includes(value) ? <path d="M12 8H34V24H24L17 32V24H12Z" fill="#d9c8e2"/> : null}
           {value === 'listener' ? <path d="M12 14H36L28 6M36 14L28 22" {...strokes}/> : null}
-          {['him','her'].includes(value) ? <text x="80" y="25" fontSize="25" fill="#846e9c">{value === 'him' ? '♂' : '♀'}</text> : null}
+          {['him','her','she','her-object'].includes(value) ? <text x="80" y="25" fontSize="25" fill="#846e9c">{value === 'him' ? '♂' : '♀'}</text> : null}
           {value === 'thing' ? <rect x="29" y="25" width="42" height="42" rx="9" fill={`url(#${id}-gold)`}/> : null}
           {icon.symbol === 'possession' ? <><path d="M50 68V80" {...strokes}/><rect x="37" y="78" width="26" height="20" rx="6" fill={`url(#${id}-gold)`}/></> : <path d={receive ? 'M14 88H76L64 76M76 88L64 98' : value === 'separate' ? 'M40 88H10L20 78M10 88L20 98M60 88H90L80 78M90 88L80 98' : value === 'together' ? 'M14 88H42L32 78M42 88L32 98M86 88H58L68 78M58 88L68 98' : 'M75 88H22L34 76M22 88L34 98'} {...strokes}/>}
         </>

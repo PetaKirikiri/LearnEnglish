@@ -18,6 +18,8 @@ it('keeps location and surface cues out of different senses', () => {
 })
 
 it('resolves meaning using both sides of the word', () => {
+  expect(wordMeaning('her', '.', 'Please return the racket to ')).toBe('her-object')
+  expect(wordMeaning('her', ' booking.', 'Check ')).toBe('her')
   expect(wordMeaning('left', ' in the class.', 'We have two places ')).toBe('left-remaining')
   expect(wordMeaning('left', '.', 'On your ')).toBe('left')
   expect(wordMeaning('have', ' paid.', 'You ')).toBe('have-completed')

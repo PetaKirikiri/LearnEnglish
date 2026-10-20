@@ -1,6 +1,7 @@
 import { wordIcons, type WordIcon } from './wordIconCatalogue'
 
 export const contextualIcons: Record<string, WordIcon> = {
+  'her-object': { symbol: 'person', value: 'her-object', description: 'Her: the woman receiving the action, not her possession.' },
   'the-shared': wordIcons.the,
   'is-location': { asset: 'is-location', description: 'Link the subject to a location.' },
   'be-ongoing': { symbol: 'time', value: 'now', cue: 'ongoing', description: 'Be + -ing: an action in progress.' },
@@ -33,6 +34,7 @@ const numbers = '(?:one|two|three|four|five|six|seven|eight|nine|ten|fifteen|thi
 const duration = new RegExp(`^\\s+(?:${numbers}|an?|the)\\s+(?:minutes?|hours?|days?|weeks?|months?)\\b`, 'i')
 export function wordMeaning(word: string, followingText: string, precedingText = ''): string | undefined {
   const key = word.toLowerCase()
+  if (key === 'her' && /\bto\s*$/i.test(precedingText)) return 'her-object'
   if (key === 'the') return 'the-shared'
   if (['is','am','are'].includes(key)) {
     if (/^\s+(?:not\s+)?[a-z]+ing\b/i.test(followingText)) return 'be-ongoing'
@@ -49,7 +51,7 @@ export function wordMeaning(word: string, followingText: string, precedingText =
   if (key === 'for' && duration.test(followingText)) return 'for-duration'
   if (key === 'to') {
     if (new RegExp(`^\\s+${numbers}\\b`, 'i').test(followingText)) return 'to-time'
-    if (/^\s+(?:play|pay|join|cancel|book|take|extend|move|find|buy|hire|explain|check|delay|wear|use|prepare|ask|leave)\b/i.test(followingText)) return 'to-action'
+    if (/^\s+(?:play|pay|join|cancel|book|take|extend|move|find|buy|hire|explain|check|delay|wear|use|prepare|ask|leave|bring|wait)\b/i.test(followingText)) return 'to-action'
   }
   if (key === 'left' && /\b(?:places?|classes?)\s*$/i.test(precedingText)) return 'left-remaining'
   if (key === 'over' && /\b(?:is|are)\s*$/i.test(precedingText)) return 'over-finished'
