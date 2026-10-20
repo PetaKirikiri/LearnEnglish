@@ -16,8 +16,8 @@ it('serves direct and nested Padel routes from the app on Vercel', () => {
   for (const source of ['/padel','/padel/:path*','/hotel','/hotel/:path*']) expect(config.rewrites).toContainEqual({source,destination:'/index.html'})
 })
 it('has balanced, unique, ordered content with distinct choices', () => {
-  expect(padelQuestions).toHaveLength(324)
-  expect(new Set(padelQuestions.map(q => q.id)).size).toBe(324)
+  expect(padelQuestions).toHaveLength(388)
+  expect(new Set(padelQuestions.map(q => q.id)).size).toBe(388)
   expect(skillNames).toHaveLength(skills.length)
   for (const skill of skills) expect(padelQuestions.filter(q => q.skill === skill)).toHaveLength(padelPairs.filter(p=>p[1]===skill).length*2)
   expect(padelQuestions.every(q=>skills.includes(q.skill))).toBe(true)

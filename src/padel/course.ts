@@ -1,9 +1,10 @@
 import type { HotelQuestion, Progress } from '../hotel/course'
 import { recordAnswer } from '../hotel/course'
 import { padelPairs } from './content'
+import { questionWordSkills, questionWordNames } from './questionWords'
 export { recordAnswer }
-export const skills = ['people','gear','quantity','court_booking','player_numbers','prices','racket_hire','balls_grips','class_booking','facilities','position','possession','permission','ongoing','finished','plans','bookings','times','rain','court_rules','service','teamwork']
-export const skillNames = ['People','Equipment','Amounts','Court booking','How many / how long','Prices & payment','Racket hire','Balls & grips','Pilates bookings & packages','Facilities','Directions','Whose','Can / cannot','Actions','Already done','Plans','Bookings','Times','Rain & changes','Explaining rules','Guest service','Staff & safety']
+export const skills = ['people','gear','quantity','court_booking','player_numbers','prices','racket_hire','balls_grips','class_booking','facilities','position','possession','permission','ongoing','finished','plans','bookings','times','rain','court_rules','service','teamwork',...questionWordSkills]
+export const skillNames = ['People','Equipment','Amounts','Court booking','How many / how long','Prices & payment','Racket hire','Balls & grips','Pilates bookings & packages','Facilities','Directions','Whose','Can / cannot','Actions','Already done','Plans','Bookings','Times','Rain & changes','Explaining rules','Guest service','Staff & safety',...questionWordNames]
 export type PadelQuestion = HotelQuestion & { pairId: string; contrast: string }
 export const padelQuestions: readonly PadelQuestion[] = [...padelPairs].sort((a,b) => skills.indexOf(a[1])-skills.indexOf(b[1])).flatMap(([id, skill, english, thai]) => english.map((text, index) => ({
   id: `padel-${id}-${index + 1}`, pairId: id, skill, english: text,
@@ -30,11 +31,17 @@ export function loadProgress(user: string): Progress {
   } catch { return {} }
 }
 export function nextQuestion(progress: Progress, previous?: string, round = 0, random = Math.random): PadelQuestion {
-  const unfinished = skills.filter(skill => !isSkillComplete(progress, skill))
+  return nextFromSkills(skills,progress,previous,round,random)
+}
+export function nextQuestionWord(progress: Progress, previous?: string, round = 0, random = Math.random): PadelQuestion {
+  return nextFromSkills(questionWordSkills,progress,previous,round,random)
+}
+function nextFromSkills(activeSkills:string[],progress: Progress, previous: string|undefined, round:number, random:()=>number): PadelQuestion {
+  const unfinished = activeSkills.filter(skill => !isSkillComplete(progress, skill))
   const focus = unfinished.slice(0,2)
-  const review = skills.filter(skill => !unfinished.includes(skill))
+  const review = activeSkills.filter(skill => !unfinished.includes(skill))
   const focusRound = review.length ? round - Math.floor((round + 1) / 4) : round
-  const skill = !focus.length ? skills[round % skills.length] : round % 4 === 3 && review.length
+  const skill = !focus.length ? activeSkills[round % activeSkills.length] : round % 4 === 3 && review.length
     ? review[Math.floor(round / 4) % review.length] : focus[focusRound % focus.length]
   const candidates = padelQuestions.filter(q => q.skill === skill && q.id !== previous)
   const unseen = candidates.filter(q => !progress[skill]?.seen.includes(q.id))

@@ -3,6 +3,7 @@
 export type PadelPair = readonly [id: string, skill: string, english: readonly [string, string], thai: readonly [string, string]]
 import { pilatesPairs } from './pilatesContent'
 import { clubPairs } from './clubContent'
+import { questionWordPairs } from './questionWords'
 export const courtPairs: readonly PadelPair[] = [
   ['people-1','people',['The player.','The coach.'],['ผู้เล่น','โค้ช']],
   ['people-2','people',['The player is here.','The coach is here.'],['ผู้เล่นอยู่ที่นี่','โค้ชอยู่ที่นี่']],
@@ -64,4 +65,4 @@ export const courtPairs: readonly PadelPair[] = [
 
 // Teach each language pattern in both workplaces from the beginning, rather
 // than hiding the Pilates course behind completion of all Padel questions.
-export const padelPairs: readonly PadelPair[] = [...courtPairs.flatMap(pair => [pair, ...pilatesPairs.filter(p => p[0] === `pilates-${pair[0]}`)]), ...clubPairs]
+export const padelPairs: readonly PadelPair[] = [...courtPairs.flatMap(pair => [pair, ...pilatesPairs.filter(p => p[0] === `pilates-${pair[0]}`)]), ...clubPairs, ...questionWordPairs]

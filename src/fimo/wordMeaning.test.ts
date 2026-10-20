@@ -1,0 +1,40 @@
+import { expect, it } from 'vitest'
+import { wordMeaning } from './wordMeaning'
+
+it('uses word meanings rather than generic grammar art', () => {
+  expect(wordMeaning('Who', ' is on the court?')).toBe('who')
+  expect(wordMeaning('What', ' is on the court?')).toBe('what')
+  expect(wordMeaning('the', ' court?')).toBe('the-shared')
+  expect(wordMeaning('court', '?')).toBe('court')
+  expect(wordMeaning('player', '.')).toBe('player')
+  expect(wordMeaning('racket', '.')).toBe('racket')
+})
+it('keeps location and surface cues out of different senses', () => {
+  expect(wordMeaning('is', ' on the court?')).toBe('is-location')
+  expect(wordMeaning('is', ' playing padel.')).toBe('be-ongoing')
+  expect(wordMeaning('is', ' tired.')).toBe('is')
+  expect(wordMeaning('on', ' the court.')).toBe('on')
+  expect(wordMeaning('on', ' Monday.')).toBe('on-time')
+})
+
+it('resolves meaning using both sides of the word', () => {
+  expect(wordMeaning('left', ' in the class.', 'We have two places ')).toBe('left-remaining')
+  expect(wordMeaning('left', '.', 'On your ')).toBe('left')
+  expect(wordMeaning('have', ' paid.', 'You ')).toBe('have-completed')
+  expect(wordMeaning('have', ' your own racket?', 'Do you ')).toBe('have')
+  expect(wordMeaning('have', ' your name?', 'May I ')).toBe('have-request')
+  expect(wordMeaning('grip', ' socks.')).toBe('grip-socks')
+  expect(wordMeaning('grip', ' tape.')).toBe('grip')
+  expect(wordMeaning('take', ' a class.')).toBe('take-class')
+  expect(wordMeaning('in', ' fifteen minutes.')).toBe('in-time')
+  expect(wordMeaning('in', ' the studio.')).toBe('in')
+  expect(wordMeaning('for', ' one hour.')).toBe('for-duration')
+  expect(wordMeaning('to', ' play.')).toBe('to-action')
+  expect(wordMeaning('over', '.', 'The point is ')).toBe('over-finished')
+  expect(wordMeaning('service', ' box.')).toBe('service-box')
+  expect(wordMeaning('box', '.', 'the service ')).toBe('service-box')
+  expect(wordMeaning('there', ' three players?', 'Are ')).toBe('there-exists')
+  expect(wordMeaning('there', '.', 'The player is ')).toBe('there')
+  expect(wordMeaning('credit', '.', 'about a ')).toBe('credit-balance')
+  expect(wordMeaning('unknownword', '')).toBeUndefined()
+})

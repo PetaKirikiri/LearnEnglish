@@ -11,6 +11,8 @@ import { isPadelLineEntry } from './padel/lineEntry'
 import { isCoachLineEntry } from './coach/lineEntry'
 import { isEnglishLineEntry } from './english/lineEntry'
 const CoachPage = lazy(() => import('./coach/CoachPage'))
+const FimoPreviewPage = lazy(() => import('./fimo/FimoPreviewPage'))
+const isFimoPreview = window.location.pathname === '/english/fimo-preview'
 const isCoach = /^\/padel-coach(?:\/|$)/.test(window.location.pathname) || isCoachLineEntry(window.location.search)
 const HotelPage = lazy(() => import('./hotel/HotelPage'))
 const PadelPage = lazy(() => import('./padel/PadelPage'))
@@ -20,7 +22,7 @@ const isEnglish = /^\/english(?:\/|$)/.test(window.location.pathname) || isEngli
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {isCoach ? <Suspense fallback={<main>Ouverture…</main>}><CoachPage /></Suspense> : isPadel ? <Suspense fallback={<main>Opening…</main>}><PadelPage /></Suspense> : isHotel || isEnglish ? <Suspense fallback={<main>Opening…</main>}><HotelPage courseId={isEnglish ? 'english' : 'hotel'} /></Suspense> : <LanguageGate><AuthProvider>
+    {isFimoPreview ? <Suspense fallback={<main>Opening…</main>}><FimoPreviewPage /></Suspense> : isCoach ? <Suspense fallback={<main>Ouverture…</main>}><CoachPage /></Suspense> : isPadel ? <Suspense fallback={<main>Opening…</main>}><PadelPage /></Suspense> : isHotel || isEnglish ? <Suspense fallback={<main>Opening…</main>}><HotelPage courseId={isEnglish ? 'english' : 'hotel'} /></Suspense> : <LanguageGate><AuthProvider>
       <App />
     </AuthProvider></LanguageGate>}
   </StrictMode>,

@@ -24,6 +24,8 @@ import { englishScoring } from '../english/scoring'
 // storage and scoring. Padel must never submit attempts to Hotel's scoreboard.
 export type ListeningCourse = {
   skills: string[]
+  skillNames?: string[]
+  presentation?: 'clay'
   loadProgress: typeof loadProgress
   nextQuestion: typeof nextQuestion
   isSkillComplete: typeof isSkillComplete
@@ -190,8 +192,16 @@ export function HotelLesson({ userId, course = hotelCourse }: { userId: string; 
   // Freeze fading until the next question: feedback must not move the support.
   const support = selected === null && !revealed
   const displayQuestion = selected === null && question.grammar?.prompt ? { ...question, english: question.grammar.prompt, audioUrl: question.grammar.promptAudioUrl! } : question
-  return <section className="hotel-lesson">
-    <div className="hotel-journey" aria-label="Listening progress">{course.skills.map(skill => <span key={skill} className={course.isSkillComplete(progress, skill) ? 'learned' : ''} />)}</div>
+  const clay = course.presentation === 'clay'
+  const completed = course.skills.filter(skill => course.isSkillComplete(progress, skill)).length
+  const taskName = course.skillNames?.[course.skills.indexOf(question.skill)] ?? question.skill
+  return <section className={`hotel-lesson${clay ? ' hotel-lesson-clay' : ''}`}>
+    {clay ? <div className="clay-task-progress">
+      <div className="clay-task-caption"><span>{taskName}</span><span aria-label={`${completed} of ${course.skills.length} topics completed`}>{completed} / {course.skills.length}</span></div>
+      <div className="hotel-journey" role="progressbar" aria-label="Topics completed" aria-valuemin={0} aria-valuemax={course.skills.length} aria-valuenow={completed}>
+        {course.skills.map((skill,i) => <span key={skill} title={course.skillNames?.[i] ?? skill} className={`${course.isSkillComplete(progress, skill) ? 'learned' : ''}${skill === question.skill ? ' current' : ''}`} />)}
+      </div>
+    </div> : <div className="hotel-journey" aria-label="Listening progress">{course.skills.map(skill => <span key={skill} className={course.isSkillComplete(progress, skill) ? 'learned' : ''} />)}</div>}
       <button className="hotel-listen" onClick={() => play(question)} aria-label="Play English audio"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 27h10l12-10v30L22 37H12zM43 23q12 9 0 18M49 15q21 17 0 34" /></svg></button>
       <p className="hotel-audio" aria-live="polite">{audio}</p>
       {question.grammar?.thai ? <p className="hotel-sentence" lang="th">{question.grammar.thai}</p> : null}

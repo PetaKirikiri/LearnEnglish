@@ -8,6 +8,10 @@ import { normalizeHelpWord } from '../learning/helpPoints'
 import { padelQuestions } from './course'
 
 export const padelWordGlosses: Record<string,string> = { ...thaiTranslations, ...hotelWordGlosses,
+  who:'ใคร',what:'อะไร',where:'ที่ไหน',when:'เมื่อไหร่',why:'ทำไม',how:'อย่างไร; how long = นานเท่าไหร่; how many = กี่',
+  courts:'สนามพาเดลหลายสนาม',teach:'สอน',
+  long:'ยาว; how long = นานเท่าไหร่',many:'หลาย; how many = กี่',find:'หาเจอ; พบ',keep:'เก็บไว้; keep the score = นับคะแนน',
+  warm:'อบอุ่น; warm up = อบอุ่นร่างกาย',up:'ขึ้น; warm up = อบอุ่นร่างกาย',lockers:'ตู้ล็อกเกอร์หลายตู้',coaches:'โค้ชหลายคน',stay:'อยู่; พักอยู่',
   player:'ผู้เล่น', players:'ผู้เล่นหลายคน', coach:'โค้ช; ผู้ฝึกสอน', racket:'ไม้พาเดล', rackets:'ไม้พาเดลหลายอัน', ball:'ลูกบอล',
   guest:'ลูกค้า; ผู้มาใช้บริการ', court:'สนามพาเดล', changing:'กำลังเปลี่ยน; changing room = ห้องเปลี่ยนเสื้อผ้า', room:'ห้อง', bottle:'ขวด', showers:'ห้องอาบน้ำ',
   cafe:'คาเฟ่; ร้านกาแฟ', inside:'ข้างใน', our:'ของเรา', play:'เล่น', playing:'กำลังเล่น', clean:'ทำความสะอาด', cleaning:'กำลังทำความสะอาด', cleaned:'ทำความสะอาดแล้ว',

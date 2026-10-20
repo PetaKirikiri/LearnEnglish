@@ -1,0 +1,25 @@
+.word-help-tiles{display:flex;flex-wrap:wrap;justify-content:center;align-items:start;gap:14px 0;padding:8px 12px 12px 0;font-size:18px}
+.word-help-tiles>.word-token{--tile-pigment:#cbd7d7;position:relative;display:block;flex:0 0 94px;width:94px;padding:0;border:0;border-radius:12px;background:transparent;line-height:1.2;text-decoration:none;transition:opacity .2s;cursor:pointer}
+.meaning-tile{position:relative;display:block;width:100%;min-height:118px}
+.meaning-tile-face{position:relative;display:block;width:109.09%;aspect-ratio:144/128}
+.meaning-tile-body{position:absolute;inset:0;width:100%;height:100%;overflow:visible;filter:drop-shadow(1px 3px 1px #4b3e3526) drop-shadow(3px 5px 4px #4b3e351a)}
+.meaning-tile-face img{position:absolute;width:65.28%;height:73.44%;left:15.28%;top:12.5%;object-fit:contain}
+.word-meaning-art{position:absolute;display:block;left:15.28%;top:12.5%;width:65.28%;height:73.44%}
+.word-meaning-art>.meaning-icon-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.word-meaning-art>.meaning-icon-secondary{position:absolute;left:auto;top:auto;right:-9%;bottom:-4%;width:47%;height:47%;object-fit:contain;filter:drop-shadow(0 1px 1px #594c3b30)}
+.meaning-icon-diagram{display:block;width:100%;height:100%;filter:drop-shadow(0 2px 1px #55493635)}
+.meaning-icon-cue{position:absolute;right:-9%;top:-5%;width:37%;height:37%;color:#5a8074;filter:drop-shadow(0 1px 1px #594c3b26)}
+.meaning-tile-word{position:absolute;left:5%;right:0;top:0;height:84px;display:flex;align-items:center;justify-content:center;font-size:clamp(13px,1.8vw,18px);font-weight:650;color:#344b43;overflow-wrap:anywhere;padding:4px}
+.meaning-tile-illustrated .meaning-tile-word{position:relative;left:auto;right:auto;height:auto;min-height:30px;padding-top:10px}
+.word-help-tiles>.word-token:has(.meaning-tile-long){flex-basis:124px;width:124px}
+.meaning-tile-long .meaning-tile-face{height:91px;aspect-ratio:auto}
+.meaning-tile-long .meaning-tile-word{font-size:14px;overflow-wrap:normal}
+.meaning-tile[data-meaning=who],.meaning-tile[data-meaning=what]{--tile-pigment:#d3c5df}
+.meaning-tile[data-meaning=the-shared]{--tile-pigment:#c4d6bd}
+.meaning-tile[data-meaning=on]{--tile-pigment:#e0cba8}
+.meaning-tile[data-meaning=court]{--tile-pigment:#b5cfc7}
+.meaning-tile[data-meaning=is-location]{--tile-pigment:#b2c7d5}
+.word-help-tiles>.word-token:focus-visible{outline:2px solid #547e70;outline-offset:3px}
+@media(max-width:480px){.word-help-tiles>.word-token{flex-basis:68px;width:68px}.meaning-tile{min-height:92px}.meaning-tile-word{height:60px;font-size:13px}.meaning-tile-illustrated .meaning-tile-word{padding-top:7px;min-height:25px}.word-help-tiles{row-gap:10px}}
+@media(max-width:480px){.word-help-tiles>.word-token:has(.meaning-tile-long){flex-basis:96px;width:96px}.meaning-tile-long .meaning-tile-face{height:66px}.meaning-tile-long .meaning-tile-word{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.word-help-tiles>.word-token{transition:none}}
