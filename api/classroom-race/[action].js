@@ -7,7 +7,7 @@ import { performance } from "node:perf_hooks";
 import { randomBytes, randomInt } from "node:crypto";
 
 // src/race/rules.ts
-var WINDOW_MS = 5e3;
+var WINDOW_MS = 1e4;
 var FINISH = 1600;
 var MIN_SPEED = 4;
 var CORRECT_MIN_SPEED = 8;

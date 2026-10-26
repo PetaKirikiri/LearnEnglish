@@ -4,11 +4,11 @@ import { CORRECT_MIN_SPEED, GOLDEN_MIN_SPEED, GOLDEN_SPEED, MAX_SPEED, MIN_SPEED
 describe('exact response-time speed', () => {
   it.each([
     [0, 16, 30],
-    [1000, 14.4, 27.6],
-    [1234.5, 14.0248, 27.0372],
-    [2500, 12, 24],
-    [4999.875, 8.0002, 18.0003],
-    [5000, 8, 18],
+    [2000, 14.4, 27.6],
+    [2469, 14.0248, 27.0372],
+    [5000, 12, 24],
+    [9999.75, 8.0002, 18.0003],
+    [10000, 8, 18],
   ])('maps %sms without fast/slow buckets', (ms, normal, golden) => {
     expect(speedFor(true, ms)).toBeCloseTo(normal, 10)
     expect(speedFor(true, ms, 3)).toBeCloseTo(golden, 10)

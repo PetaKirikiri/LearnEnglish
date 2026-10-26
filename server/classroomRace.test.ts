@@ -12,10 +12,10 @@ function setup(count = 1) {
   return {room, players, start:room.opensAt}
 }
 describe('continuous classroom race', () => {
-  it('uses five-second windows and bounded speed, not distance bonuses', () => {
-    expect(WINDOW_MS).toBe(5000); expect(FINISH).toBe(1600)
-    expect(speedFor(true, 0)).toBe(16); expect(speedFor(true, 2500)).toBe(12)
-    expect(speedFor(true, 5000)).toBe(8); expect(speedFor(false, 0)).toBe(4)
+  it('uses ten-second windows and bounded speed, not distance bonuses', () => {
+    expect(WINDOW_MS).toBe(10000); expect(FINISH).toBe(1600)
+    expect(speedFor(true, 0)).toBe(16); expect(speedFor(true, 5000)).toBe(12)
+    expect(speedFor(true, 10000)).toBe(8); expect(speedFor(false, 0)).toBe(4)
   })
   it('starts once with a single countdown; nobody moves before the start', () => {
     const {room, players, start} = setup()
@@ -27,14 +27,14 @@ describe('continuous classroom race', () => {
   it('changes speed immediately without jumping distance, then integrates distance continuously', () => {
     const {room,players,start} = setup()
     answer(room, players[0].token, 0, room.deck[0].correct, start+1000)
-    expect(players[0].metres).toBe(4); expect(players[0].speed).toBeCloseTo(14.4)
-    advanceRace(room,start+2000); expect(players[0].metres).toBeCloseTo(18.4)
-    advanceRace(room,start+3000); expect(players[0].metres).toBeCloseTo(32.8)
+    expect(players[0].metres).toBe(4); expect(players[0].speed).toBeCloseTo(15.2)
+    advanceRace(room,start+2000); expect(players[0].metres).toBeCloseTo(19.2)
+    advanceRace(room,start+3000); expect(players[0].metres).toBeCloseTo(34.4)
   })
   it.each([
     { streak: 0, minimum: CORRECT_MIN_SPEED },
     { streak: 2, minimum: GOLDEN_MIN_SPEED },
-  ])('accepts a correct answer at exactly five seconds with prior streak $streak', ({ streak, minimum }) => {
+  ])('accepts a correct answer at exactly ten seconds with prior streak $streak', ({ streak, minimum }) => {
     const {room,players,start} = setup()
     players[0].streak = streak
     advanceRace(room, start + WINDOW_MS)
@@ -46,7 +46,7 @@ describe('continuous classroom race', () => {
     advanceRace(room, start + WINDOW_MS + .125)
     expect(room.round).toBe(1)
     expect(players[0].speed).toBe(minimum)
-    expect(players[0].metres).toBeCloseTo(MIN_SPEED * 5 + minimum * .000125, 8)
+    expect(players[0].metres).toBeCloseTo(MIN_SPEED * 10 + minimum * .000125, 8)
   })
   it('rejects an answer even a fraction of a millisecond beyond its deadline', () => {
     const {room,players,start} = setup()
@@ -76,11 +76,11 @@ describe('continuous classroom race', () => {
     const {room,players,start} = setup(2)
     for (const p of players) answer(room,p.token,0,room.deck[0].correct,start+100)
     expect(room.phase).toBe('answering'); expect(room.round).toBe(0)
-    advanceRace(room,start+4999); expect(room.round).toBe(0)
-    advanceRace(room,start+5000); expect(room.round).toBe(0)
+    advanceRace(room,start+9999); expect(room.round).toBe(0)
+    advanceRace(room,start+10000); expect(room.round).toBe(0)
     expect(Object.keys(room.answers)).toHaveLength(2)
-    advanceRace(room,start+5000.125); expect(room.round).toBe(1)
-    expect(room.opensAt).toBe(start+5000); expect(room.closesAt).toBe(start+10000)
+    advanceRace(room,start+10000.125); expect(room.round).toBe(1)
+    expect(room.opensAt).toBe(start+10000); expect(room.closesAt).toBe(start+20000)
     expect(room.answers).toEqual({})
   })
   it('keeps unequal distances across boundaries, never snapping to a checkpoint', () => {
@@ -95,12 +95,12 @@ describe('continuous classroom race', () => {
   it('slows a wrong answer immediately and a missing answer at its deadline', () => {
     const {room,players,start} = setup()
     answer(room,players[0].token,0,room.deck[0].correct,start)
-    advanceRace(room,start+5000.125)
-    answer(room,players[0].token,1,1-room.deck[1].correct,start+5500)
-    expect(players[0].speed).toBe(4); expect(players[0].metres).toBeCloseTo(88, 8)
     advanceRace(room,start+10000.125)
-    answer(room,players[0].token,2,room.deck[2].correct,start+10000.125)
+    answer(room,players[0].token,1,1-room.deck[1].correct,start+10500)
+    expect(players[0].speed).toBe(4); expect(players[0].metres).toBeCloseTo(168, 8)
     advanceRace(room,start+20000.125)
+    answer(room,players[0].token,2,room.deck[2].correct,start+20000.125)
+    advanceRace(room,start+40000.125)
     expect(players[0].speed).toBe(4); expect(room.round).toBe(4)
   })
   it('locks first tap, rejects stale/outside/invalid inputs and keeps authoritative timing', () => {
@@ -110,9 +110,9 @@ describe('continuous classroom race', () => {
     answer(room,players[0].token,0,1-room.deck[0].correct,start+10)
     answer(room,players[0].token,0,room.deck[0].correct,start+20)
     expect(players[0].speed).toBe(4)
-    expect(() => answer(room,players[0].token,0,0,start+5000.125)).toThrow()
+    expect(() => answer(room,players[0].token,0,0,start+10000.125)).toThrow()
     expect(room.round).toBe(1)
-    expect(() => command(room,players[0].token,'finish',1,start+5000.125)).toThrow()
+    expect(() => command(room,players[0].token,'finish',1,start+10000.125)).toThrow()
   })
   it('perfect play crosses at the integrated boosted time without a next/reveal action', () => {
     const {room,players,start} = setup()
@@ -133,8 +133,8 @@ describe('continuous classroom race', () => {
   })
   it('continues beyond 20 questions for slower players; no fixed deck limit', () => {
     const {room,players,start} = setup()
-    advanceRace(room,start+100000.125)
-    expect(room.phase).toBe('answering'); expect(room.round).toBe(20); expect(players[0].metres).toBeCloseTo(400.0005, 8)
+    advanceRace(room,start+200000.125)
+    expect(room.phase).toBe('answering'); expect(room.round).toBe(20); expect(players[0].metres).toBeCloseTo(800.0005, 8)
     advanceRace(room,start+400000)
     expect(room.phase).toBe('finished'); expect(players[0].metres).toBe(FINISH)
   })
@@ -263,7 +263,7 @@ describe('repeated races in one classroom', () => {
     command(room, room.host, 'start', -1, start + 4000, 2)
     expect(room.round).toBe(0)
     answer(room, players[0].token, 0, room.deck[0].correct, room.opensAt + 250, 2)
-    expect(players[0].speed).toBeCloseTo(15.6)
+    expect(players[0].speed).toBeCloseTo(15.8)
     expect(room.deck.every(q => ['complete', 'missing-the'].includes(q.id))).toBe(true)
   })
   it('permits changing content in the lobby and removes the previous judgement mode', () => {

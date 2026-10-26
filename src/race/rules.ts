@@ -1,4 +1,4 @@
-export const WINDOW_MS = 5_000
+export const WINDOW_MS = 10_000
 export const FINISH = 1_600
 export const MIN_SPEED = 4
 export const CORRECT_MIN_SPEED = 8
