@@ -24,7 +24,8 @@ export const contextualIcons: Record<string, WordIcon> = {
   'changing-room': { asset: 'studio', secondary: 'bag', description: 'A room for changing clothes.' },
   'return-serve': { asset: 'racket', secondary: 'ball', cue: 'return', description: 'Hit the incoming serve back.' },
   'there-exists': { symbol: 'relation', value: 'exists', description: 'There are: introduce something that exists, not a distant location.' },
-  'how-many': { symbol: 'amount', value: 'many', cue: 'question', description: 'Ask about the number of items.' },
+  'how-many': { asset: 'question-many-clay', cue: 'question', description: 'A calculator: ask how many items.' },
+  'how-much': { asset: 'question-weight-scale-clay', cue: 'question', description: 'A weighing scale: ask how much.' },
   'how-long': { symbol: 'time', value: 'duration', cue: 'question', description: 'Ask about duration.' },
   'how-often': { symbol: 'time', value: 'often', cue: 'question', description: 'Ask about frequency.' },
   'credit-balance': { asset: 'money', secondary: 'clipboard', description: 'Credit kept on account for a future booking, not a payment card.' },
@@ -34,6 +35,7 @@ const numbers = '(?:one|two|three|four|five|six|seven|eight|nine|ten|fifteen|thi
 const duration = new RegExp(`^\\s+(?:${numbers}|an?|the)\\s+(?:minutes?|hours?|days?|weeks?|months?)\\b`, 'i')
 export function wordMeaning(word: string, followingText: string, precedingText = ''): string | undefined {
   const key = word.toLowerCase()
+  if (key === 'how much' || key === 'how many') return key.replace(' ', '-')
   if (key === 'her' && /\bto\s*$/i.test(precedingText)) return 'her-object'
   if (key === 'the') return 'the-shared'
   if (['is','am','are'].includes(key)) {
@@ -63,8 +65,10 @@ export function wordMeaning(word: string, followingText: string, precedingText =
   if (key === 'return' && /^\s+the\s+serve\b/i.test(followingText)) return 'return-serve'
   if (key === 'there' && (/^\s+(?:is|are)\b/i.test(followingText) || /^\s*(?:is|are)\s*$/i.test(precedingText))) return 'there-exists'
   if (key === 'credit' && !/^\s+card\b/i.test(followingText)) return 'credit-balance'
+  if (key === 'much' && /\bhow\s*$/i.test(precedingText)) return 'how-much'
+  if (key === 'many' && /\bhow\s*$/i.test(precedingText)) return 'how-many'
   if (key === 'how') {
-    const modifier = followingText.match(/^\s+(many|long|often)\b/i)?.[1].toLowerCase()
+    const modifier = followingText.match(/^\s+(much|many|long|often)\b/i)?.[1].toLowerCase()
     if (modifier) return `how-${modifier}`
   }
   return wordIcons[key] ? key : undefined

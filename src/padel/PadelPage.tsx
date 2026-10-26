@@ -14,11 +14,11 @@ import { questionWordSkills, questionWordNames } from './questionWords'
 import './padel.css'
 
 const padelCourse: ListeningCourse = {
-  ...course, wordMemoryKey: id => `padel:words:v1:${id}`, WordHelp: PadelSentenceHelp, presentation: 'clay',
+  ...course, skills:course.learningSkills, skillNames:course.learningNames, wordMemoryKey: id => `padel:words:v1:${id}`, WordHelp: PadelSentenceHelp, presentation: 'clay',
   // Progress is learner-scoped on this device, like Hotel. No Hotel scoring RPCs.
 }
 const padelContent = { ...course, questions: course.padelQuestions, name:'Padel', WordHelp: PadelWordHelp }
-const questionWordCourse: ListeningCourse = { ...padelCourse, skills:questionWordSkills, skillNames:questionWordNames, nextQuestion:course.nextQuestionWord }
+const questionWordCourse: ListeningCourse = { ...padelCourse, nextQuestion:course.nextQuestionWord }
 const questionWordContent = { ...padelContent, skills:questionWordSkills, skillNames:questionWordNames, questions:course.padelQuestions.filter(q=>questionWordSkills.includes(q.skill)) }
 export default function PadelPage() {
   const [user,setUser] = useState<User | null>(null)

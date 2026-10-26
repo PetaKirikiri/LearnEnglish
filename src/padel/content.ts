@@ -3,6 +3,7 @@
 export type PadelPair = readonly [id: string, skill: string, english: readonly [string, string], thai: readonly [string, string]]
 import { clubPairs } from './clubContent'
 import { questionWordPairs } from './questionWords'
+import { foundationPairs } from './foundations'
 export const courtPairs: readonly PadelPair[] = [
   ['people-1','people',['The player.','The coach.'],['ผู้เล่น','โค้ช']],
   ['people-2','people',['The player is here.','The coach is here.'],['ผู้เล่นอยู่ที่นี่','โค้ชอยู่ที่นี่']],
@@ -64,4 +65,4 @@ export const courtPairs: readonly PadelPair[] = [
 ]
 
 // Only Padel content feeds practice, the content table, word help and audio.
-export const padelPairs: readonly PadelPair[] = [...courtPairs, ...clubPairs, ...questionWordPairs]
+export const padelPairs: readonly PadelPair[] = [...courtPairs, ...foundationPairs, ...clubPairs, ...questionWordPairs]

@@ -5807,6 +5807,462 @@
     "text": "Am I at home?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "hotel-g3-general-beginner-basic-future_ongoing-drink-1.wav": {
+    "fingerprint": "56ddb42d304a342f59e1294035164bf9100b57cdcfa99b2ea75be620911442c3",
+    "seconds": 1.161,
+    "text": "She will drink.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-future_ongoing-drink-2.wav": {
+    "fingerprint": "18030a89512cab2f15dce5f476b88a0effa386cfb082fef6a94137404a44e03a",
+    "seconds": 1.215,
+    "text": "She is drinking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-future_ongoing-eat-1.wav": {
+    "fingerprint": "d5b15247a59ec4f6704d5fc9c3f833660875996c144423185909756995020674",
+    "seconds": 1.108,
+    "text": "She will eat.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-future_ongoing-eat-2.wav": {
+    "fingerprint": "7b8f23035939f2d36f0c1ee865a811db8f1317102c913881ee3b81414652d9b7",
+    "seconds": 1.098,
+    "text": "She is eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-future_ongoing-go-1.wav": {
+    "fingerprint": "15bdebb77f5e9554443204ba9f9dd964352e19f5977a453d5d4742987b45e0eb",
+    "seconds": 1.109,
+    "text": "She will go.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-future_ongoing-go-2.wav": {
+    "fingerprint": "523200ec00e2a2cd7a3624ea5587f6a385b6e31ded21578aef96c9df088792d8",
+    "seconds": 1.098,
+    "text": "She is going.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-future_ongoing-talk-1.wav": {
+    "fingerprint": "9998e0e02e7e126de113e75b8a614af0cbeca34ae8fef9bf9cef38d850d728f7",
+    "seconds": 1.173,
+    "text": "She will talk.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-future_ongoing-talk-2.wav": {
+    "fingerprint": "2d4e872e0470e166260666412357db90c8d16c673dbc5f9fbb33d781dd7d8781",
+    "seconds": 1.215,
+    "text": "She is talking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-habit_ongoing-drink-1.wav": {
+    "fingerprint": "2ca57894321c1e2f807b767ca91d055366633c67eba9a4fdef1c3e205b70b1e9",
+    "seconds": 1.024,
+    "text": "She drinks.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-habit_ongoing-drink-2.wav": {
+    "fingerprint": "18030a89512cab2f15dce5f476b88a0effa386cfb082fef6a94137404a44e03a",
+    "seconds": 1.215,
+    "text": "She is drinking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-habit_ongoing-eat-1.wav": {
+    "fingerprint": "fc8e63146d2de0d173e79675117c0d7e3e850f631879461cf202fe84685827f5",
+    "seconds": 1.024,
+    "text": "She eats.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-habit_ongoing-eat-2.wav": {
+    "fingerprint": "7b8f23035939f2d36f0c1ee865a811db8f1317102c913881ee3b81414652d9b7",
+    "seconds": 1.098,
+    "text": "She is eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-habit_ongoing-go-1.wav": {
+    "fingerprint": "6036f89eed9b6b66727a907f9cfd8eb982e55d9841c9d3262db1a9dbf706ad9b",
+    "seconds": 1.045,
+    "text": "She goes.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-habit_ongoing-go-2.wav": {
+    "fingerprint": "523200ec00e2a2cd7a3624ea5587f6a385b6e31ded21578aef96c9df088792d8",
+    "seconds": 1.098,
+    "text": "She is going.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-habit_ongoing-talk-1.wav": {
+    "fingerprint": "d03e4f90c81cebcf3622da0b7c6f47140c929471e135ea9c441bd40ef9a66717",
+    "seconds": 1.067,
+    "text": "She talks.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-habit_ongoing-talk-2.wav": {
+    "fingerprint": "2d4e872e0470e166260666412357db90c8d16c673dbc5f9fbb33d781dd7d8781",
+    "seconds": 1.215,
+    "text": "She is talking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-route_past_events-drink-1.wav": {
+    "fingerprint": "f70963dd069f6181f2cac9126058bbf31bed0dc8738bb35d3fc3d484cad4cc55",
+    "seconds": 1.003,
+    "text": "She drank.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-route_past_events-drink-2.wav": {
+    "fingerprint": "2ca57894321c1e2f807b767ca91d055366633c67eba9a4fdef1c3e205b70b1e9",
+    "seconds": 1.024,
+    "text": "She drinks.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-route_past_events-eat-1.wav": {
+    "fingerprint": "0f767ca8b635dfa90f2a629d880fc54875b3932153409a6219b4dee8d83d765c",
+    "seconds": 0.981,
+    "text": "She ate.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-route_past_events-eat-2.wav": {
+    "fingerprint": "fc8e63146d2de0d173e79675117c0d7e3e850f631879461cf202fe84685827f5",
+    "seconds": 1.024,
+    "text": "She eats.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-route_past_events-go-1.wav": {
+    "fingerprint": "ac9c75d9ab95f79e96f2b2242f7233cd228e7148336af21b6aa1d9ea1b03fdae",
+    "seconds": 0.96,
+    "text": "She went.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-route_past_events-go-2.wav": {
+    "fingerprint": "6036f89eed9b6b66727a907f9cfd8eb982e55d9841c9d3262db1a9dbf706ad9b",
+    "seconds": 1.045,
+    "text": "She goes.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-route_past_events-talk-1.wav": {
+    "fingerprint": "62d93dc5a62d4d20230862585e44e2f7a421496c30bcaf5b1520d4c5c75e2ef1",
+    "seconds": 1.055,
+    "text": "She talked.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-basic-route_past_events-talk-2.wav": {
+    "fingerprint": "d03e4f90c81cebcf3622da0b7c6f47140c929471e135ea9c441bd40ef9a66717",
+    "seconds": 1.067,
+    "text": "She talks.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-1-1.wav": {
+    "fingerprint": "cce222ec8ab10d5fcd61246dc656f8d80afdd7822d8cfa1d3e607d517e9835c4",
+    "seconds": 1.131,
+    "text": "I am eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-1-2.wav": {
+    "fingerprint": "b3c2954b8f00d0b82856cfbedaa6662c04192524069063468aa137342ce68308",
+    "seconds": 1.148,
+    "text": "You are eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-10-1.wav": {
+    "fingerprint": "f32390167e3bf897dffe2dbc2f71da33b682ceb2040fa37605681d6dab87e92e",
+    "seconds": 1.195,
+    "text": "I have water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-10-2.wav": {
+    "fingerprint": "2872a2ee61071be134af8be38d4864779f2ea03ae4ac67f7af7b3fa61616f492",
+    "seconds": 1.172,
+    "text": "You have water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-11-1.wav": {
+    "fingerprint": "6afdaba3019b4bb490a9c2fbcf6375cae317daaa58b7edcbbac4e9d02bffcbcd",
+    "seconds": 1.098,
+    "text": "He is coming.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-11-2.wav": {
+    "fingerprint": "435668f39de87abc761244fd22505402b0eaebdb2920bef298e557095ab6f713",
+    "seconds": 1.131,
+    "text": "She is coming.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-12-1.wav": {
+    "fingerprint": "ff55e04fa7828d52fb4193348af60d5524e6709bbd406a081dec9af12c04d50d",
+    "seconds": 1.253,
+    "text": "We want water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-12-2.wav": {
+    "fingerprint": "5b5f338c95488605ae84c140b36dd50946bf03d79f2c9c623b17e99475d99cc6",
+    "seconds": 1.253,
+    "text": "They want water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-13-1.wav": {
+    "fingerprint": "2eb4121d6624783ad7339b476e6e40825796421a426f01ef607a87e25be64de3",
+    "seconds": 1.162,
+    "text": "He has water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-13-2.wav": {
+    "fingerprint": "6ca4d64956ec8183e9c170e902e13e3d884963c91eca74578c1d22e099ba18bf",
+    "seconds": 1.216,
+    "text": "She has water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-14-1.wav": {
+    "fingerprint": "d917262b57c670c754f99cb0a3a52befce4f9953f2fefffa9b9c02417df34783",
+    "seconds": 1.085,
+    "text": "We are coming.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-14-2.wav": {
+    "fingerprint": "1fea161a97c1d741b80fcf64190ef3cff705b1a2337c5c8f95c05bf38b234069",
+    "seconds": 1.118,
+    "text": "They are coming.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-2-1.wav": {
+    "fingerprint": "38e9066e93cf1dcc1574d3a2650394bf6bb1ebea62cd8478fc7daeb12cb3a269",
+    "seconds": 1.259,
+    "text": "I am drinking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-2-2.wav": {
+    "fingerprint": "7e5e6c15dd3a97a127063829cbbf49e29fbe4f3d3c841b6893bf21b5cc87ec3f",
+    "seconds": 1.243,
+    "text": "You are drinking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-3-1.wav": {
+    "fingerprint": "369d0b786564c6aef4f2f6991e889a9715918ceab24560a6ff7bba1abfc83e08",
+    "seconds": 1.237,
+    "text": "I am talking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-3-2.wav": {
+    "fingerprint": "f0667551fb305d437867a367c983bb9140818c110f7e86c6927baf2cb3596358",
+    "seconds": 1.202,
+    "text": "You are talking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-4-1.wav": {
+    "fingerprint": "e8f480923c9defca24323226d4b06168b43d22de44e2eecda1ebff09c62bbb26",
+    "seconds": 1.173,
+    "text": "I am going.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-4-2.wav": {
+    "fingerprint": "fe826d9c92cc20f210aed7792dc042e3ffbd1f89163ffcfc551f8222e3625ca0",
+    "seconds": 1.097,
+    "text": "You are going.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-5-1.wav": {
+    "fingerprint": "724e24c2d60142f17a97c69138d6152d597ba090ddc2acf4e61ece743b33fe31",
+    "seconds": 1.129,
+    "text": "He is eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-5-2.wav": {
+    "fingerprint": "7b8f23035939f2d36f0c1ee865a811db8f1317102c913881ee3b81414652d9b7",
+    "seconds": 1.098,
+    "text": "She is eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-6-1.wav": {
+    "fingerprint": "925d76ac5ba6bd54e0d76114d1d72a1c5c779c5603c5fc11c8bdf82bee4447b4",
+    "seconds": 1.246,
+    "text": "He is drinking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-6-2.wav": {
+    "fingerprint": "18030a89512cab2f15dce5f476b88a0effa386cfb082fef6a94137404a44e03a",
+    "seconds": 1.215,
+    "text": "She is drinking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-7-1.wav": {
+    "fingerprint": "0eeb48128ec56b11063b472b506cacdd0eb1d0745a301426c228de5a1097964c",
+    "seconds": 1.223,
+    "text": "We are talking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-7-2.wav": {
+    "fingerprint": "44d25a754fbfb2452e3ab6ac9c98e40f15701f6572b4ca96d20dd28d51cb8656",
+    "seconds": 1.266,
+    "text": "They are talking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-8-1.wav": {
+    "fingerprint": "ff99eac90a5efdc339a14f698a4803ef1a0297810f4b9340da8016484832d560",
+    "seconds": 1.107,
+    "text": "We are going.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-8-2.wav": {
+    "fingerprint": "7ab8d8d996c0af060aa7a4601a6708589ae59112a23267cfd54e267c3b1476db",
+    "seconds": 1.128,
+    "text": "They are going.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-9-1.wav": {
+    "fingerprint": "4e4a22f305f6904aa02f0cb368fb1b2caff0f5d705ad08b14b98df2d03dff544",
+    "seconds": 1.223,
+    "text": "I want water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-actions-9-2.wav": {
+    "fingerprint": "56b8d3d74bb4b20e93ce35aea1d53dcd47248a9bfbfd8334fdf5d6a9fb3f678d",
+    "seconds": 1.253,
+    "text": "You want water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-1-1.wav": {
+    "fingerprint": "cce222ec8ab10d5fcd61246dc656f8d80afdd7822d8cfa1d3e607d517e9835c4",
+    "seconds": 1.131,
+    "text": "I am eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-1-2.wav": {
+    "fingerprint": "8e03505f009c76fad4d9988e40594c65b9b4b30d50e529e2a224a48e29bd1de0",
+    "seconds": 1.283,
+    "text": "I am not eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-10-1.wav": {
+    "fingerprint": "a57d9a2a80e5cbe98729f132437ac34da65c7e9b7a217a3979dc429b0a0f1d52",
+    "seconds": 1.193,
+    "text": "He is talking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-10-2.wav": {
+    "fingerprint": "ba12554cbacaefef95f3da5fe3850d9108eeaa4272f901661eb713f4960ff265",
+    "seconds": 1.401,
+    "text": "He is not talking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-11-1.wav": {
+    "fingerprint": "48b41868a93154417f7bc51751211771dc0d40e9cb9d86d2c9a001d9d40ca1da",
+    "seconds": 1.172,
+    "text": "They have water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-11-2.wav": {
+    "fingerprint": "a54a3726fe416ee3d839a0fe75f936ad29aae9a2c918095b24d67d0e70677228",
+    "seconds": 1.485,
+    "text": "They do not have water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-12-1.wav": {
+    "fingerprint": "8650933224d10cef1cd2279ad8e52ebc53d45e1988b569b7192adb837d28f97b",
+    "seconds": 1.286,
+    "text": "She wants water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-12-2.wav": {
+    "fingerprint": "0d16dd989a7caf278e78ac696e09bfcfcb10ab9b98ed1ab721e2288313429d73",
+    "seconds": 1.562,
+    "text": "She does not want water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-2-1.wav": {
+    "fingerprint": "18030a89512cab2f15dce5f476b88a0effa386cfb082fef6a94137404a44e03a",
+    "seconds": 1.215,
+    "text": "She is drinking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-2-2.wav": {
+    "fingerprint": "caaad55bda4e5f2c03047077c8b844f5a4b76fc40769901aea20be7fbcf563a4",
+    "seconds": 1.465,
+    "text": "She is not drinking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-3-1.wav": {
+    "fingerprint": "44d25a754fbfb2452e3ab6ac9c98e40f15701f6572b4ca96d20dd28d51cb8656",
+    "seconds": 1.266,
+    "text": "They are talking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-3-2.wav": {
+    "fingerprint": "28582064154a3747ececadb058bdadb00c9047b7ced0fe885d2ac35d2294f491",
+    "seconds": 1.39,
+    "text": "They are not talking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-4-1.wav": {
+    "fingerprint": "ff99eac90a5efdc339a14f698a4803ef1a0297810f4b9340da8016484832d560",
+    "seconds": 1.107,
+    "text": "We are going.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-4-2.wav": {
+    "fingerprint": "af5ffec7334220223f2bb64c322151e61b819621dc1198cf4968d8fad24f999c",
+    "seconds": 1.272,
+    "text": "We are not going.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-5-1.wav": {
+    "fingerprint": "4e4a22f305f6904aa02f0cb368fb1b2caff0f5d705ad08b14b98df2d03dff544",
+    "seconds": 1.223,
+    "text": "I want water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-5-2.wav": {
+    "fingerprint": "08da377acb5f2ba2044005062287fc413299a7d2a92c6b63d720f4e29c2c3d87",
+    "seconds": 1.474,
+    "text": "I do not want water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-6-1.wav": {
+    "fingerprint": "f32390167e3bf897dffe2dbc2f71da33b682ceb2040fa37605681d6dab87e92e",
+    "seconds": 1.195,
+    "text": "I have water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-6-2.wav": {
+    "fingerprint": "ec16283e4cc89712922749a4bc5163432bcbd959056e1d8511bc2a225796bd70",
+    "seconds": 1.485,
+    "text": "I do not have water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-7-1.wav": {
+    "fingerprint": "787444309334bb0a92cc9d1d3fd1ce508878ba18f8532f7ad6604369d957accb",
+    "seconds": 1.173,
+    "text": "I am coming.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-7-2.wav": {
+    "fingerprint": "9ffefc7cfc4c06836032574ead7249b332a5346878e906281de76b83aa100a39",
+    "seconds": 1.286,
+    "text": "I am not coming.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-8-1.wav": {
+    "fingerprint": "7b8f23035939f2d36f0c1ee865a811db8f1317102c913881ee3b81414652d9b7",
+    "seconds": 1.098,
+    "text": "She is eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-8-2.wav": {
+    "fingerprint": "c9e593729f343b85c4b225a3ecfc429bb650094a6acb7c509fd6c95be2dec7b3",
+    "seconds": 1.36,
+    "text": "She is not eating.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-9-1.wav": {
+    "fingerprint": "4fc10812493711ec7dd81be95fcdb29998529edb6f115418478421dbd3963a2f",
+    "seconds": 1.549,
+    "text": "You are drinking water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-beginner-first-negatives-9-2.wav": {
+    "fingerprint": "2dd78dc62fd6b9c591dee4ce7f38d75d72681a8bd1ce1551a32081539192c88f",
+    "seconds": 1.667,
+    "text": "You are not drinking water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "hotel-g3-general-certainty-answer-1.wav": {
     "fingerprint": "83507834d61556e56c49b33a2e832af14af236c1f531ff284c3663b164480a51",
     "seconds": 1.817,
@@ -9309,6 +9765,390 @@
     "fingerprint": "894f58d0221fb682fa6b56ae27f6c89198edc3fc2c48f46342de9eb2ae64ec78",
     "seconds": 2.795,
     "text": "If I had had time, I would have closed the window.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-1-1.wav": {
+    "fingerprint": "15dc5f935ace6c120922c06a56ddd4427aa0120ee37fbbb6d36d73c249e6a6f6",
+    "seconds": 1.435,
+    "text": "This is my racket.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-1-2.wav": {
+    "fingerprint": "abdbd8f7932ae162a0f87ed2fe57f6ecf9f4bce812e38c24f493ee3ff06d7d15",
+    "seconds": 1.435,
+    "text": "This is your racket.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-2-1.wav": {
+    "fingerprint": "02fa2bdae806e2c01372fa56587e4e33dce3bce88d456e1c4948abb26307ab9f",
+    "seconds": 1.299,
+    "text": "Is this your bag?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-2-2.wav": {
+    "fingerprint": "1f59d686e16804ef70ffa6b7464f1fe588c146b6f50a5650be93fc0155a08a6b",
+    "seconds": 1.299,
+    "text": "Is this my bag?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-3-1.wav": {
+    "fingerprint": "ce8be2b31ba208d6837daadfa7dc3bdc35b76dbc0739de7b7cbf261ab5fe67fc",
+    "seconds": 1.236,
+    "text": "That is her phone.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-3-2.wav": {
+    "fingerprint": "0f5dc694dc39379a42c238a070cb501bb26e8a4f4e7dfba5fdec083afa387cbd",
+    "seconds": 1.236,
+    "text": "That is his phone.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-4-1.wav": {
+    "fingerprint": "d4e26393e9f007dcd4ea9e7c81c099af0a5b6ed32d6bf967c1661caa136717d8",
+    "seconds": 1.223,
+    "text": "This is our ball.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-4-2.wav": {
+    "fingerprint": "3cb8fae85abbaefdef08a489b796855134a3cc707dafaf3efd7266340f032b75",
+    "seconds": 1.255,
+    "text": "This is their ball.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-5-1.wav": {
+    "fingerprint": "ce18e49403c762ba3f74bffff03f30488018a8d47c1add13172d13e6ddae115f",
+    "seconds": 1.371,
+    "text": "Is that your racket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-5-2.wav": {
+    "fingerprint": "59d23aadb47401866e68464972226eedc75dd03f11df1db62de40080f5d2c37c",
+    "seconds": 1.393,
+    "text": "Is this your racket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-6-1.wav": {
+    "fingerprint": "98dee84e111be8e6165c9868aa635a0e35a79733c51ad89f25442fd3d42af14b",
+    "seconds": 1.299,
+    "text": "This is my phone.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-6-2.wav": {
+    "fingerprint": "c57025782b627998ef8ac61cd58f4b6a1b30d248256299d299622094f9cfe1c1",
+    "seconds": 1.235,
+    "text": "This is your phone.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-7-1.wav": {
+    "fingerprint": "715c04e7b7c592d8428643371b05ca0702ec07186d1b976e219493a48269d12b",
+    "seconds": 1.246,
+    "text": "Is this her bag?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-7-2.wav": {
+    "fingerprint": "50d3be303805b5ec5c189becb3b2bfcce7e0c4f50902378303660792b2c51fd7",
+    "seconds": 1.29,
+    "text": "Is this his bag?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-8-1.wav": {
+    "fingerprint": "b3a1fdac465b676002fed27a885c7a5027e3ec748a43dbba5e6f60637967983d",
+    "seconds": 1.36,
+    "text": "That is our racket.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-belongings-8-2.wav": {
+    "fingerprint": "9416f1352dea1c2643668e4d84ef7f11eec7bbcfda18147a3d687ff3a9cbd414",
+    "seconds": 1.424,
+    "text": "That is their racket.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-1-1.wav": {
+    "fingerprint": "cdc4ce37ec50393a00ff97a16c92cd71c002833715cfb4d4c101ab6ed83afad4",
+    "seconds": 1.349,
+    "text": "My name is Nam.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-1-2.wav": {
+    "fingerprint": "a389fd314e9de8af5e2824e234483fc8ac0f2e41d4e74855e4c29da158683fa9",
+    "seconds": 1.349,
+    "text": "Your name is Nam.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-2-1.wav": {
+    "fingerprint": "81f63f7f119a599c406618c6d2f98ec8574a46bf6a4b071f45492d1d9b7dc085",
+    "seconds": 1.077,
+    "text": "I'm David.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-2-2.wav": {
+    "fingerprint": "b43929be9d8c98a58a879fc69a0dd2626d0053ca803e5971878a7d860e7dfaac",
+    "seconds": 1.065,
+    "text": "You're David.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-3-1.wav": {
+    "fingerprint": "4fd7ce7746b1f0e843de3e1cf9dad8e6702f6c1278e0ce24ba6b83e6edde7f0d",
+    "seconds": 1.349,
+    "text": "His name is Sam.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-3-2.wav": {
+    "fingerprint": "af179f477c14ba48e17da01eed9f6b7a6769b683a21382d5a337f0d5df4faa6f",
+    "seconds": 1.296,
+    "text": "Her name is Sam.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-4-1.wav": {
+    "fingerprint": "85f3f35cdc85429f3ed778c77e2755d2419fbf4f45bc1aacf43423a939c45866",
+    "seconds": 1.201,
+    "text": "What is your name?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-4-2.wav": {
+    "fingerprint": "bb8fba9605f6178166ddd60b586ecaf532bb6f1044ff97d96d0a66b41abc9f4a",
+    "seconds": 1.189,
+    "text": "What is her name?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-5-1.wav": {
+    "fingerprint": "124151d81c6a1bf5493aa93136ebbc0dfce5683727b135edf4187e47a1254389",
+    "seconds": 1.243,
+    "text": "What is his name?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-5-2.wav": {
+    "fingerprint": "85f3f35cdc85429f3ed778c77e2755d2419fbf4f45bc1aacf43423a939c45866",
+    "seconds": 1.201,
+    "text": "What is your name?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-6-1.wav": {
+    "fingerprint": "7ad09829378fbf4be8b89982c1e6e02930a1ed05b3aded754819d8bbe2c15b9f",
+    "seconds": 1.465,
+    "text": "My name is David.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-6-2.wav": {
+    "fingerprint": "6e2acf4b6923302c109ee64eda93ffa10bf243b3bccf79d7a3d0d579c38c7dbb",
+    "seconds": 1.551,
+    "text": "Your name is David.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-7-1.wav": {
+    "fingerprint": "b9b7613ce933743dec7fe208ac41f2f6f9dd3fd159dd1d12e96ea404c4c51efe",
+    "seconds": 1.088,
+    "text": "I'm Nam.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-7-2.wav": {
+    "fingerprint": "55fbda9e38ed9c05aff51fcef78e2365064b8948d82942e2f1c96b244221816f",
+    "seconds": 1.003,
+    "text": "You're Nam.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-8-1.wav": {
+    "fingerprint": "771cc1be4bae1fdb0929b2107c685d8a0fa1eee45d8d9ffc454550d044871a2e",
+    "seconds": 1.443,
+    "text": "Her name is Alex.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-names-8-2.wav": {
+    "fingerprint": "660546525dc8364d103f9927d8a9c6d78b249da5e1b5d1cf25c99ce84b47e466",
+    "seconds": 1.497,
+    "text": "His name is Alex.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-1-1.wav": {
+    "fingerprint": "85989fb111ba611608edfe7b7b8cd4835172ee059c32f3344b3deb62c6da6991",
+    "seconds": 1.35,
+    "text": "I'm from Thailand.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-1-2.wav": {
+    "fingerprint": "f057a1850dc31d343800179c044f484a548346399c541dcfdd76fb1a268debf8",
+    "seconds": 1.307,
+    "text": "You're from Thailand.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-2-1.wav": {
+    "fingerprint": "bebd87c3fd728652a1bad7c528e556f475f5aea5be4a84dfb64bf41d4682887e",
+    "seconds": 1.33,
+    "text": "He's from France.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-2-2.wav": {
+    "fingerprint": "2c49991003eafb93926e9bfef2c39c409fc98706dc3e443a6d10e01791e6072b",
+    "seconds": 1.287,
+    "text": "She's from France.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-3-1.wav": {
+    "fingerprint": "f857537c5317cfac05a40db23ab6c81cbf10dd531437e2ce5025e63d94657253",
+    "seconds": 1.201,
+    "text": "Where are you from?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-3-2.wav": {
+    "fingerprint": "089854edd06ddbd33d146b27dfbe38c9600b0995cfb6614ada3929dcbed56638",
+    "seconds": 1.275,
+    "text": "Where is she from?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-4-1.wav": {
+    "fingerprint": "bb04ac9baf528154fc4b44391903b8ceb151428e96f818f3881ff4f9ed7a88bf",
+    "seconds": 1.443,
+    "text": "We are from Bangkok.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-4-2.wav": {
+    "fingerprint": "8f973924942893c9cc66666a3cc07f290cd5075c084245a5f93b9c2427a93a58",
+    "seconds": 1.528,
+    "text": "They are from Bangkok.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-5-1.wav": {
+    "fingerprint": "999257ac13c96ce9a78b5000144ea26b6c03eb84907fb5b1f81afd62b063c1e2",
+    "seconds": 1.253,
+    "text": "Where is he from?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-5-2.wav": {
+    "fingerprint": "f857537c5317cfac05a40db23ab6c81cbf10dd531437e2ce5025e63d94657253",
+    "seconds": 1.201,
+    "text": "Where are you from?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-6-1.wav": {
+    "fingerprint": "4f28f9ccac05b3e1b06f6233c32fe04bd4e23104d0bf870ec770eb52e172c6d9",
+    "seconds": 1.309,
+    "text": "I'm from France.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-6-2.wav": {
+    "fingerprint": "735be12770b969d10a48edf37121ab9a9c025b97fb743c73d0737dc763cd468b",
+    "seconds": 1.307,
+    "text": "You're from France.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-7-1.wav": {
+    "fingerprint": "376235831c80a7195ab59ac74dc19c124367fa5cadbc58840b3d063c06440f7f",
+    "seconds": 1.35,
+    "text": "She's from Thailand.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-7-2.wav": {
+    "fingerprint": "1cc7683d231b8be3a9e805895f4763b46fc1c5a7dd4856a81864d8dbafb5fc69",
+    "seconds": 1.339,
+    "text": "He's from Thailand.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-8-1.wav": {
+    "fingerprint": "6004c333f0502318db5da77a28a6b1636a19bc74b4e74653de20ebc93df0fc7d",
+    "seconds": 1.423,
+    "text": "They are from Samui.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-origins-8-2.wav": {
+    "fingerprint": "e72e477ebd1bb3d4ee3515658cdff4fb3ff7296ca401c9f0eb315df95243d30f",
+    "seconds": 1.38,
+    "text": "We are from Samui.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-1-1.wav": {
+    "fingerprint": "d250ed9cf21e77e4655b88340a6456bc5f8d35c21609dff70fb139a237c8e0f4",
+    "seconds": 1.109,
+    "text": "This is Nam.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-1-2.wav": {
+    "fingerprint": "f5b9d1add4b4af4bd25693c4d3090ceffcc3fc9249c69089d5a14857c01c0577",
+    "seconds": 1.152,
+    "text": "That is Nam.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-2-1.wav": {
+    "fingerprint": "8ee0ddf6d5fbbdcffb1574f7ea24d3c5b5fe777ba28c2776ee3a6eb3b26d943e",
+    "seconds": 1.246,
+    "text": "He's my friend.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-2-2.wav": {
+    "fingerprint": "920d251dd40711cffb993c2c99bef4a58682cd473c713cf0caa2170720f2a1fd",
+    "seconds": 1.193,
+    "text": "She's my friend.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-3-1.wav": {
+    "fingerprint": "2308a48bb84d2908bc29a6e397922ca81556ec5d2343ce98469a0917c794a8d9",
+    "seconds": 1.202,
+    "text": "She's our coach.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-3-2.wav": {
+    "fingerprint": "eee1df0d90515f0bcf3b0ca8c0fe3acac5b92e0e80ffde2857dcc6a1ac1895df",
+    "seconds": 1.287,
+    "text": "She's their coach.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-4-1.wav": {
+    "fingerprint": "c897b19b9f6a65cd5cef7a507e0c1ef4d7251980a0427f52586946b883b1392d",
+    "seconds": 1.329,
+    "text": "This is my friend.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-4-2.wav": {
+    "fingerprint": "139e2ddb2e5856635461b630eb7f21c552f094c80036860fb5e96d49e0f81273",
+    "seconds": 1.307,
+    "text": "This is your friend.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-5-1.wav": {
+    "fingerprint": "194935023de0437db1e027cc1d30997d58e02fd13a9d073a67d21b730fd41b4b",
+    "seconds": 1.191,
+    "text": "He's your coach.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-5-2.wav": {
+    "fingerprint": "754b6a5e003db8e24c7ef3a98c33a5ab14917cfbbb015d0eed921d8645c06a29",
+    "seconds": 1.233,
+    "text": "He's my coach.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-6-1.wav": {
+    "fingerprint": "5085eea1cedfc90727f9603a95ea24fd127cff94de271f308b213f4a15f10d74",
+    "seconds": 1.215,
+    "text": "This is David.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-6-2.wav": {
+    "fingerprint": "9621f9451b61ab14bd26dc34e70c7bf57dad48675e790908d5fabe0ff761725e",
+    "seconds": 1.172,
+    "text": "That is David.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-7-1.wav": {
+    "fingerprint": "6209b33eb4c248ac9407d5842ccd4558cc73cd7e2d815308ddd9a21c33da7305",
+    "seconds": 1.246,
+    "text": "She's their friend.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-7-2.wav": {
+    "fingerprint": "717583cd24abf799205c1cf220e60d84733dd59d5060cc4355ced09da52e8b73",
+    "seconds": 1.246,
+    "text": "He's their friend.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-8-1.wav": {
+    "fingerprint": "937768be2beca00b8b37714ba527c9ebadc69cfde470e31361ad9ac79155d121",
+    "seconds": 1.307,
+    "text": "This is our friend.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-g3-general-introduction-meeting-people-8-2.wav": {
+    "fingerprint": "0e75adca11bb26aea838b1aa09933c778c2ed50a8e659a322be8fd0d9d1b3b48",
+    "seconds": 1.35,
+    "text": "This is their friend.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "hotel-g3-general-link-0-1.wav": {

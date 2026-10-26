@@ -2,7 +2,7 @@
 import { expect, it } from 'vitest'
 import { questionWordPairs, questionWordSkills, questionWordReviews } from './questionWords'
 import { revisedPadelPairs } from './contentRevisions'
-import { padelQuestions, nextQuestionWord, recordAnswer, loadProgress, progressKey, isSkillComplete } from './course'
+import { padelQuestions, nextQuestionWord, recordAnswer, loadProgress, progressKey, isSkillComplete, requiresAudioCheck } from './course'
 import type { Progress } from '../hotel/course'
 
 it('covers all eight forms without forcing equal template counts or noun shortcuts',()=>{
@@ -50,19 +50,18 @@ it('retains unchanged progress but requires practice and new audio for revised c
   localStorage.removeItem(progressKey('revised-test'))
 })
 
-it('starts this topic immediately, reaches every question and reviews earlier pairs',()=>{
+it('requires foundations even on the topic route, then reaches all questions with review',()=>{
   let progress:Progress={},previous:string|undefined,reviews=0
   const seen=new Set<string>()
-  for(let round=0;round<160;round++) {
+  for(let round=0;round<1500;round++) {
     const q=nextQuestionWord(progress,previous,round,()=>0)
-    expect(questionWordSkills).toContain(q.skill)
-    if(round<2) expect(q.skill).toBe(questionWordSkills[round])
+    if(round<2) expect(q.skill).toBe(['people','gear'][round])
     if(isSkillComplete(progress,q.skill)) reviews++
     seen.add(q.id)
-    progress=recordAnswer(progress,q,true,false)
+    progress=recordAnswer(progress,q,true,false,round+1,requiresAudioCheck(progress,q))
     previous=q.id
   }
-  expect(seen.size).toBe(64)
+  expect(seen.size).toBe(padelQuestions.length)
   expect(reviews).toBeGreaterThan(0)
   const old=padelQuestions.find(q=>q.skill==='people')!
   progress=recordAnswer(progress,old,true,false)

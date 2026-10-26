@@ -130,6 +130,22 @@ it('plays on entry, waits for audio, records once, and only advances on Next', a
   await act(() => (host.querySelector('.hotel-primary') as HTMLButtonElement).click())
   expect(speech.speak).toHaveBeenCalledTimes(2)
 })
+it('pauses embedded audio and retains the answered question when returning',async()=>{
+  await act(()=>root.render(<HotelLesson userId="test-user" active/>))
+  const spoken=speech.speak.mock.calls[0][0]
+  await act(()=>speech.speak.mock.calls[0][2]('ended'))
+  await act(()=>(host.querySelector('.hotel-answer') as HTMLButtonElement).click())
+  const stored=localStorage.getItem(progressKey('test-user'))
+  await act(()=>root.render(<HotelLesson userId="test-user" active={false}/>))
+  expect(speech.stop).toHaveBeenCalled()
+  expect(speech.speak).toHaveBeenCalledTimes(1)
+  expect(host.querySelector('.word-token')).toBeNull()
+  await act(()=>root.render(<HotelLesson userId="test-user" active/>))
+  expect(speech.speak.mock.calls.at(-1)?.[0]).toBe(spoken)
+  expect(host.querySelector('.hotel-primary')?.textContent).toContain('Next')
+  expect(localStorage.getItem(progressKey('test-user'))).toBe(stored)
+  expect(scores.queue).toHaveBeenCalledTimes(1)
+})
 it('lets only the admin open the Hotel scoreboard', async () => {
   window.location.href = 'https://learn-english-coral.vercel.app/hotel/scoreboard'
   account.finish.mockResolvedValue({ id: PETA_ACCOUNT_ID })

@@ -3,7 +3,7 @@ import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import PadelPage from './PadelPage'
-import { padelQuestions } from './course'
+import { padelQuestions, learningSkills, recordAnswer, progressKey } from './course'
 import { PETA_ACCOUNT_ID } from '../auth/appAccess'
 const account = vi.hoisted(() => ({ finish: vi.fn(async (): Promise<{id:string} | null> => null) }))
 const speech = vi.hoisted(() => ({ speak: vi.fn(), stop: vi.fn() }))
@@ -25,7 +25,10 @@ it('links local preview practice to the complete content table and back',async()
   await act(()=>root.unmount());root=createRoot(host)
   window.location.pathname='/padel/preview/content'
   await act(()=>root.render(<PadelPage/>))
-  expect(host.querySelectorAll('tbody tr')).toHaveLength(266)
+  expect(host.querySelectorAll('tbody tr')).toHaveLength(292)
+  const rows=[...host.querySelectorAll('tbody tr')]
+  expect(rows.slice(0,6).every(row=>row.textContent?.includes('1. People & court equipment'))).toBe(true)
+  expect(rows.slice(0,6).some(row=>/here|Please/.test(row.textContent??''))).toBe(false)
   expect(host.querySelector('[aria-label="Practice"]')?.getAttribute('href')).toBe('/padel/preview')
   expect(host.querySelector('.hotel-content-link')?.getAttribute('aria-current')).toBe('page')
 })
@@ -37,18 +40,18 @@ it('does not expose development preview content in production',async()=>{
   expect(host.querySelector('nav')).toBeNull()
   expect(host.querySelector('.hotel-line')).not.toBeNull()
 })
-it('opens the question-word topic directly and keeps its content link scoped',async()=>{
+it('keeps topic content scoped but does not let topic selection bypass foundations',async()=>{
   vi.stubEnv('DEV',true)
   vi.spyOn(Math,'random').mockReturnValue(0)
   window.location.href='http://localhost/padel/preview?topic=questions'
   await act(()=>root.render(<PadelPage/>))
-  expect(speech.speak.mock.calls[0][0]).toBe('Who are you playing with?')
+  expect(speech.speak.mock.calls[0][0]).toBe('The player.')
   expect(host.querySelector('.padel-practice-clay')).not.toBeNull()
-  expect(host.querySelectorAll('.meaning-tile')).toHaveLength(5)
-  expect(host.querySelectorAll('.word-meaning-art')).toHaveLength(5)
-  expect(host.querySelector('[role="progressbar"]')?.getAttribute('aria-valuemax')).toBe('4')
+  expect(host.querySelectorAll('.meaning-tile')).toHaveLength(2)
+  expect(host.querySelectorAll('.word-meaning-art')).toHaveLength(2)
+  expect(host.querySelector('[role="progressbar"]')?.getAttribute('aria-valuemax')).toBe(String(learningSkills.length))
   expect(host.querySelector('[role="progressbar"]')?.getAttribute('aria-valuenow')).toBe('0')
-  expect(host.textContent).toContain('People & details')
+  expect(host.textContent).toContain('People & court equipment')
   expect(host.querySelector<HTMLSelectElement>('[aria-label="Padel topic"]')!.value).toBe('questions')
   expect(host.querySelector('.hotel-content-link')?.getAttribute('href')).toBe('/padel/preview/content?topic=questions')
   await act(()=>root.unmount());root=createRoot(host)
@@ -56,7 +59,7 @@ it('opens the question-word topic directly and keeps its content link scoped',as
   await act(()=>root.render(<PadelPage/>))
   expect(host.querySelectorAll('tbody tr')).toHaveLength(64)
   expect(host.querySelector('.meaning-tile')).toBeNull()
-  expect(host.textContent).toContain('Time & amounts')
+  expect(host.textContent).toContain('how long / how many')
   expect(host.querySelector('[aria-label="Practice"]')?.getAttribute('href')).toBe('/padel/preview?topic=questions')
 })
 it('shows Padel branding and sends signup to the shared LINE identity flow',async()=>{
@@ -130,7 +133,7 @@ it('limits the content table to the existing admin and shows all course rows',as
   window.location.pathname='/padel/content'
   account.finish.mockResolvedValue({id:PETA_ACCOUNT_ID})
   await act(()=>root.render(<PadelPage/>))
-  expect(host.querySelectorAll('tbody tr')).toHaveLength(266)
+  expect(host.querySelectorAll('tbody tr')).toHaveLength(292)
   expect(host.querySelector('nav')?.textContent).toBe('Content')
   expect(speech.speak).not.toHaveBeenCalled()
   await act(()=>root.unmount());root=createRoot(host)
@@ -144,14 +147,30 @@ it('keeps the opening practice Padel-only with separate word progress',async()=>
   account.finish.mockResolvedValue({id:'staff'})
   vi.spyOn(Math,'random').mockReturnValue(0.6)
   await act(()=>root.render(<PadelPage/>))
-  expect(speech.speak.mock.calls[0][0]).toBe('The player is here.')
+  expect(speech.speak.mock.calls[0][0]).toBe('The coach.')
   await act(()=>speech.speak.mock.calls[0][2]('ended'))
-  const q=padelQuestions.find(q=>q.english==='The player is here.')!
+  const q=padelQuestions.find(q=>q.english==='The coach.')!
   const answer=[...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].find(b=>b.textContent===q.answers[q.correct][0].text)!
   await act(()=>answer.click())
   expect(JSON.parse(localStorage.getItem('padel:v1:staff')!).people.seen).toContain(q.id)
-  expect(JSON.parse(localStorage.getItem('padel:words:v1:staff')!).player.strength).toBe(1)
+  expect(JSON.parse(localStorage.getItem('padel:words:v1:staff')!).coach.strength).toBe(1)
   expect(hotel.queue).not.toHaveBeenCalled()
+})
+it('requires audio-only recognition after two supported successes, and help does not pass it',async()=>{
+  account.finish.mockResolvedValue({id:'audio-staff'})
+  vi.spyOn(Math,'random').mockReturnValue(0)
+  let progress={}
+  for(const q of padelQuestions.slice(0,6)) for(let i=0;i<2;i++) progress=recordAnswer(progress,q,true,false,i+1)
+  localStorage.setItem(progressKey('audio-staff'),JSON.stringify(progress))
+  await act(()=>root.render(<PadelPage/>))
+  expect(host.querySelector('.hotel-sentence')).toBeNull()
+  expect(host.querySelector('[aria-valuenow="0"]')).not.toBeNull()
+  await act(()=>speech.speak.mock.calls[0][2]('ended'))
+  await act(()=>host.querySelector<HTMLButtonElement>('.hotel-reveal')!.click())
+  expect(host.querySelector('.hotel-sentence')).not.toBeNull()
+  const answer=[...host.querySelectorAll<HTMLButtonElement>('.hotel-answer')].find(b=>b.textContent==='ผู้เล่น')!
+  await act(()=>answer.click())
+  expect(JSON.parse(localStorage.getItem(progressKey('audio-staff'))!).people.items[padelQuestions[0].id].streak).toBe(0)
 })
 it('redeems the same one-use ticket and removes it from the address',async()=>{
   window.location.hash='#ticket=single-use'

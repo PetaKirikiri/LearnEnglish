@@ -1,0 +1,380 @@
+{
+  "ATM-complete.wav": {
+    "fingerprint": "4c76a3410604454f3b6322c04889cc71b5e29bd602b268c0188356b9ab6defde",
+    "seconds": 1.561,
+    "text": "Where is the ATM?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "ATM-missing-is.wav": {
+    "fingerprint": "e86fa817714d5b6246b3deb03e05d0f82edce6479e2451a58a671a2405bcce0d",
+    "seconds": 1.37,
+    "text": "Where the ATM?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "ATM-missing-the.wav": {
+    "fingerprint": "a6aea487cfc60e145a8e9f3ba49d148cc214d100dbd43cf8651b0e8b3f18a0ad",
+    "seconds": 1.36,
+    "text": "Where is ATM?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "airport-complete.wav": {
+    "fingerprint": "5f2993ab0117a5e5bb36cea9aee25f97738b69d1d90fa1d62eadf4d568868ff2",
+    "seconds": 1.411,
+    "text": "Where is the airport?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "airport-missing-is.wav": {
+    "fingerprint": "92b54388d721ab458f0c0d3830c862781c7223f64a9399f3f8a683de15c74354",
+    "seconds": 1.212,
+    "text": "Where the airport?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "airport-missing-the.wav": {
+    "fingerprint": "06fc79bcf2ee4181431de495f7b568e2ef9397c25696688b3b90e329f76a1bab",
+    "seconds": 1.255,
+    "text": "Where is airport?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "bank-complete.wav": {
+    "fingerprint": "3be3e7de0edb015e55b686b606370aeabc80bf53e77efd4d03381179a0c5ad4b",
+    "seconds": 1.255,
+    "text": "Where is the bank?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "bank-missing-is.wav": {
+    "fingerprint": "4e828f3e8965935693752c41b58e73444d15d6f0f911fe03baf74bc8009bb577",
+    "seconds": 1.063,
+    "text": "Where the bank?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "bank-missing-the.wav": {
+    "fingerprint": "57dfdb974fc970412c93f6d8e89e2ebdcfe0e2655697ff99a556ae7c4def455b",
+    "seconds": 1.139,
+    "text": "Where is bank?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "beach-complete.wav": {
+    "fingerprint": "ea35ece626ad4d84cfc1f0f69941b67088c2458b6ec3a6acef11a6d75e606c87",
+    "seconds": 1.297,
+    "text": "Where is the beach?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "beach-missing-is.wav": {
+    "fingerprint": "e4afd84ce92998161c375b0558a8dd7e006a9e76aefa8cdc70ae511d405a6851",
+    "seconds": 1.097,
+    "text": "Where the beach?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "beach-missing-the.wav": {
+    "fingerprint": "e787abcac91508b5bf51472f3977278f131c62be5903a792f99a03e4b21311ff",
+    "seconds": 1.171,
+    "text": "Where is beach?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "bus stop-complete.wav": {
+    "fingerprint": "6432456111e8f0e4698b33f7b8f8fd956827d9f088ee0d91accadfe4237401f2",
+    "seconds": 1.474,
+    "text": "Where is the bus stop?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "bus stop-missing-is.wav": {
+    "fingerprint": "5f3c11ec50f5a83f650b1133488384d5fbd79787fbe26bcb61df81c582864a71",
+    "seconds": 1.295,
+    "text": "Where the bus stop?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "bus stop-missing-the.wav": {
+    "fingerprint": "e450c0e9e99bfb22d795d737a7a6575caa3c02ea4fb992fa0d70a614e308c369",
+    "seconds": 1.326,
+    "text": "Where is bus stop?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "cafe-complete.wav": {
+    "fingerprint": "c04f31f2ea6c2d9c62029215417d1844ed664c6a0766429a6c2a9adefa7ff91a",
+    "seconds": 1.339,
+    "text": "Where is the cafe?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "cafe-missing-is.wav": {
+    "fingerprint": "895cfee59985ba91683b3ed8b41b2717086f40561b4b143e322ca215cb25ddfb",
+    "seconds": 1.169,
+    "text": "Where the cafe?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "cafe-missing-the.wav": {
+    "fingerprint": "7057adacc0db963b8ac1cf1b92c97479893f9ff6171d0254ba0bd8f14145be2d",
+    "seconds": 1.171,
+    "text": "Where is cafe?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "car park-complete.wav": {
+    "fingerprint": "111ed44a41b5dc82718b71ddb904bbd13598a45a6dd1929b943761130f2f5674",
+    "seconds": 1.548,
+    "text": "Where is the car park?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "car park-missing-is.wav": {
+    "fingerprint": "b556226474b60f3e70040cf616681250957d2b524d45c9508ae4849a3ba32781",
+    "seconds": 1.293,
+    "text": "Where the car park?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "car park-missing-the.wav": {
+    "fingerprint": "43eff5d40ed96533c6f72463b169a1749eabc772ec1fde1d9b759381bce9ec8d",
+    "seconds": 1.4,
+    "text": "Where is car park?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "entrance-complete.wav": {
+    "fingerprint": "960c194d535dc0b758e8eb3773a7f3894faed40668750e01224d2818abe14d68",
+    "seconds": 1.518,
+    "text": "Where is the entrance?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "entrance-missing-is.wav": {
+    "fingerprint": "a63c8f96a52220e4f046e2961e1947fb72d7e62192c93f090064c7346c1d9254",
+    "seconds": 1.265,
+    "text": "Where the entrance?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "entrance-missing-the.wav": {
+    "fingerprint": "41468485077178315524e27d2c9762a88797af1639c156167a8f7046613c9e64",
+    "seconds": 1.34,
+    "text": "Where is entrance?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exit-complete.wav": {
+    "fingerprint": "d7b08821a6cd0d9a0719fd5f75f36963be1cd7d8657aa9457740df3ea2d0dab1",
+    "seconds": 1.393,
+    "text": "Where is the exit?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exit-missing-is.wav": {
+    "fingerprint": "ad6070486b343e2708062937ca86a52bbb905fe16a093dc34620427aed429d5e",
+    "seconds": 1.161,
+    "text": "Where the exit?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "exit-missing-the.wav": {
+    "fingerprint": "fc7d00de7666f58b54ecdb389ed229312518ff1741342c4bf671621a81b26ee5",
+    "seconds": 1.215,
+    "text": "Where is exit?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hospital-complete.wav": {
+    "fingerprint": "33205959ff9bf8a5c14302b08f44ccf155d7ee378a69823157a113e28746d5df",
+    "seconds": 1.464,
+    "text": "Where is the hospital?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hospital-missing-is.wav": {
+    "fingerprint": "c32d34aee37eb89cf6bfbb81fdf7d65b9c862c7a3c71bc5c6cd9cdfda5d5a1f2",
+    "seconds": 1.242,
+    "text": "Where the hospital?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hospital-missing-the.wav": {
+    "fingerprint": "ba0f52801b720d5a5fc79fb57de71cde2e6da29c862866fbc176135cf30fe785",
+    "seconds": 1.306,
+    "text": "Where is hospital?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-complete.wav": {
+    "fingerprint": "3bae0b5804406a21df7eaf45e8e8002125e8a153b2d4cd0efd38db6f91ddfdec",
+    "seconds": 1.37,
+    "text": "Where is the hotel?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-missing-is.wav": {
+    "fingerprint": "8839002ba88b1ec578b975d75d10f42e0a0ec0a597db6f17d4eab41083b780de",
+    "seconds": 1.199,
+    "text": "Where the hotel?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "hotel-missing-the.wav": {
+    "fingerprint": "626d30e954bc6377b250bf1c88cb79e7e8eb3d0f0fa1cc758d7bfc1ec994c1ce",
+    "seconds": 1.191,
+    "text": "Where is hotel?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "lift-complete.wav": {
+    "fingerprint": "67565bc5ee37c8d4fc419aad3e8de9dacbadb98b9485b65ffef8c650cf7cac57",
+    "seconds": 1.287,
+    "text": "Where is the lift?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "lift-missing-is.wav": {
+    "fingerprint": "ab80ad66225f840abcd42d8eaaadc11cc9c54c58acd94d37dd12a207c5b4fa4f",
+    "seconds": 1.065,
+    "text": "Where the lift?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "lift-missing-the.wav": {
+    "fingerprint": "5b092a0aed0a618e3ae1da6b304f01bb552b984461e471740c56d40a62004070",
+    "seconds": 1.151,
+    "text": "Where is lift?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "market-complete.wav": {
+    "fingerprint": "049b1e14a86828d09f020dda5e796439320b7c35acd2f8d0c9688a1a1cda2518",
+    "seconds": 1.454,
+    "text": "Where is the market?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "market-missing-is.wav": {
+    "fingerprint": "7c2dfe325d3704401297331b91ce88e1e01917e52ca997dc3230dd1afbcc9ef1",
+    "seconds": 1.233,
+    "text": "Where the market?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "market-missing-the.wav": {
+    "fingerprint": "1e35bdd34fefdca63c1e8d006385f74c43e51a8199e070c2354aa2b6f6265205",
+    "seconds": 1.276,
+    "text": "Where is market?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "pharmacy-complete.wav": {
+    "fingerprint": "c6ad1b5e93863f914349addfb75373e0dde753a57124ad7da5b297055c203017",
+    "seconds": 1.497,
+    "text": "Where is the pharmacy?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "pharmacy-missing-is.wav": {
+    "fingerprint": "7a3d98154daa83e7386c7b179d37ed74b836250d73a8857c731231a1472e38d4",
+    "seconds": 1.285,
+    "text": "Where the pharmacy?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "pharmacy-missing-the.wav": {
+    "fingerprint": "609d432706e9b01ed20ce6b6efabf6d09f9a19b8898d5d39ac7aff5c9f11ea5f",
+    "seconds": 1.317,
+    "text": "Where is pharmacy?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "restaurant-complete.wav": {
+    "fingerprint": "f3bc9fa5c675b89c821add12ae3329c1f10344f5c5fa7ac7182254dfba7e0ad3",
+    "seconds": 1.475,
+    "text": "Where is the restaurant?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "restaurant-missing-is.wav": {
+    "fingerprint": "eb14619d4087556ebf1ebbec89e5efab0cf9bf87567ca1fda5d6dd3038d1fa49",
+    "seconds": 1.243,
+    "text": "Where the restaurant?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "restaurant-missing-the.wav": {
+    "fingerprint": "d60e76abdef79e940f0ddadd4f53aa1cee89195f4701b29cf6aa262a29526dd4",
+    "seconds": 1.349,
+    "text": "Where is restaurant?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "shop-complete.wav": {
+    "fingerprint": "c7dae404c8bfd48355ccc5bebb6aeb84290f586a2799898921898ab5524ee3ff",
+    "seconds": 1.253,
+    "text": "Where is the shop?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "shop-missing-is.wav": {
+    "fingerprint": "6724546b711f0e210083f32224c2e1fd43e409c63014346ca9cdcb991c0255a2",
+    "seconds": 1.084,
+    "text": "Where the shop?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "shop-missing-the.wav": {
+    "fingerprint": "30477c4fe361fe01734e03ddb5d5499b7e9625860aabf87e005fd5929be330ba",
+    "seconds": 1.127,
+    "text": "Where is shop?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "station-complete.wav": {
+    "fingerprint": "f9e39082ef7e93057aa31796f8f00ee0335f3ceb6048742bb31a3c511f0bd566",
+    "seconds": 1.424,
+    "text": "Where is the station?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "station-missing-is.wav": {
+    "fingerprint": "adfbb64f10b58b7771b32d78cb42d2de1d5d94afd4803d4b4310835f12704937",
+    "seconds": 1.191,
+    "text": "Where the station?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "station-missing-the.wav": {
+    "fingerprint": "3cda48a9c87032529193d5beb73d3e9b6a2efe6820572cd560e80e8ba0e359dd",
+    "seconds": 1.212,
+    "text": "Where is station?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "supermarket-complete.wav": {
+    "fingerprint": "d3823b179fb67509febb1636d7b2c75a18941f83fb085c196b7046df2e8bc891",
+    "seconds": 1.677,
+    "text": "Where is the supermarket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "supermarket-missing-is.wav": {
+    "fingerprint": "a50ce5bcb8659cec0cd7d99ec50a42507a46ce8d2a52a21872dfe14dbbd6a319",
+    "seconds": 1.528,
+    "text": "Where the supermarket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "supermarket-missing-the.wav": {
+    "fingerprint": "b97ff65efbc8a63563a76213f6d21245da58a3cb2b5e3560023aa84a0bd6a457",
+    "seconds": 1.561,
+    "text": "Where is supermarket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "swimming pool-complete.wav": {
+    "fingerprint": "10abd08fa341b2540e139c3b3cd6f29c8a72317dfa75a630a2884950f91c6d55",
+    "seconds": 1.572,
+    "text": "Where is the swimming pool?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "swimming pool-missing-is.wav": {
+    "fingerprint": "f9a431ee4cb45a18fff0162cc04699c97dbdba4ec67b7b132afaa54a703a668e",
+    "seconds": 1.379,
+    "text": "Where the swimming pool?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "swimming pool-missing-the.wav": {
+    "fingerprint": "d15abd3cc8b1c437029b86a2abcbd7c76860aaf9628e0fd21cfe34af8a515357",
+    "seconds": 1.379,
+    "text": "Where is swimming pool?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "taxi-complete.wav": {
+    "fingerprint": "b9541e59f4d0358b7a7eca5e0aee7d1fa16ea1f6891ec4d33b9049c8f671f461",
+    "seconds": 1.371,
+    "text": "Where is the taxi?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "taxi-missing-is.wav": {
+    "fingerprint": "a5615cea087226fa4e34d57944f35c36128d59b8a63a02870752b06aebf29918",
+    "seconds": 1.189,
+    "text": "Where the taxi?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "taxi-missing-the.wav": {
+    "fingerprint": "349b511e64cff14933a6f0e67214274136da5f207922574e6aaf848614054ffe",
+    "seconds": 1.222,
+    "text": "Where is taxi?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "toilet-complete.wav": {
+    "fingerprint": "c709fec26d7c47e4716a0e9826bf69a88fd86ab66aa64ce4aeaeb900bcfcc6ad",
+    "seconds": 1.359,
+    "text": "Where is the toilet?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "toilet-missing-is.wav": {
+    "fingerprint": "2ca571dfe413ac99c661728993369e6f10d5da492aee8e1515e8c089760d783a",
+    "seconds": 1.181,
+    "text": "Where the toilet?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "toilet-missing-the.wav": {
+    "fingerprint": "f385566572dfc0c3967e2310862290f823dfd858be04246fa882b4b22d422074",
+    "seconds": 1.202,
+    "text": "Where is toilet?",
+    "voice": "kokoro-1.0-heart-v1"
+  }
+}

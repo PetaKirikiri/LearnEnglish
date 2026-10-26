@@ -8,14 +8,14 @@ export function loadWordFamiliarity(userId: string, key = wordMemoryKey(userId),
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {}
     return Object.fromEntries(Object.entries(raw).filter(([word, value]) => {
       const item = value as WordFamiliarity[string] | null
-      return /^[a-z]+(?:'[a-z]+)*$/.test(word) && item && Number.isInteger(item.seen) && item.seen >= 0 && Number.isInteger(item.strength) && item.strength >= 0 && item.strength <= 8
+      return /^[a-z]+(?:'[a-z]+)*(?: [a-z]+(?:'[a-z]+)*)*$/.test(word) && item && Number.isInteger(item.seen) && item.seen >= 0 && Number.isInteger(item.strength) && item.strength >= 0 && item.strength <= 8
     })) as WordFamiliarity
   } catch { return {} }
 }
-export function recordWordExposure(memory: WordFamiliarity, sentence: string, correct: boolean, assisted: boolean, targets?: readonly string[]): WordFamiliarity {
+export function recordWordExposure(memory: WordFamiliarity, sentence: string, correct: boolean, assisted: boolean, targets?: readonly string[], units?: readonly string[]): WordFamiliarity {
   const result = { ...memory }
   // One exposure per distinct word per completed question, not per render/replay.
-  const words = new Set((sentence.match(/[\p{L}]+(?:[’'][\p{L}]+)*/gu) ?? []).map(normalizeHelpWord))
+  const words = new Set((units ?? sentence.match(/[\p{L}]+(?:[’'][\p{L}]+)*/gu) ?? []).map(normalizeHelpWord))
   for (const word of words) {
     const prior = memory[word] ?? { seen: 0, strength: 0 }
     const tested = targets === undefined || targets.includes(word)

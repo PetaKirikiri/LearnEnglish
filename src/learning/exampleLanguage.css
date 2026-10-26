@@ -1,0 +1,9 @@
+.example-alignment { display:flex; flex-wrap:wrap; align-items:flex-start; gap:10px 8px; }
+.example-unit { display:inline-flex; flex-direction:column; align-items:center; max-width:100%; gap:3px; }
+.example-source { display:block; text-align:center; }
+.example-gloss { display:block; max-width:100%; color:#65786f; font-size:12px; font-weight:450; line-height:1.5; text-align:center; overflow-wrap:anywhere; }
+.example-language .example-translation { margin-top:12px; padding-top:8px; border-top:1px solid #688c7624; }
+@media(max-width:540px) {
+  .example-alignment { gap:9px 7px; }
+  .example-gloss { font-size:11px; }
+}

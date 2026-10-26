@@ -1,0 +1,35 @@
+.classroom-race.race-host.race-session{position:fixed;inset:0;min-height:0;height:100dvh;width:100%;padding:0;overflow:hidden;background:#eedbbb}
+.race-session>.race-error{position:absolute;z-index:5;top:55px;left:12px;right:12px;margin:0 auto}
+.race-joining{height:100%;overflow:auto;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:24px;background:#fbf7ed}
+.race-joining h1{font-size:30px;margin:0}
+.race-joining>img{width:min(320px,55vw,42dvh);aspect-ratio:1;border-radius:16px;background:white;padding:10px}
+.race-joining>a{color:#52765c;font-size:13px;text-decoration:none}
+.race-joining-count{font-size:16px;font-weight:700;margin:0}
+.race-joining-names{list-style:none;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;max-width:640px;margin:0;padding:0}
+.race-joining-names:empty{display:none}
+.race-joining-names li{display:flex;align-items:center;gap:7px;background:#e9efdf;border-radius:18px;padding:6px 12px;font-size:14px}
+.race-joining-names i{height:10px;width:10px;border-radius:50%;flex:none}
+.race-joining>.race-close{position:absolute;top:12px;right:14px}
+.race-fullscreen{height:100%;display:grid;grid-template-rows:56px minmax(0,1fr)}
+.race-host-strip{display:flex;align-items:center;gap:14px;padding:6px 14px;background:#fbf7ed;border-bottom:1px solid #d8d4bf;min-width:0}
+.race-round{font-size:13px;white-space:nowrap;color:#758271}
+.race-live-question{flex:1;min-width:0;text-align:center;font-size:clamp(16px,2vw,26px);line-height:1.1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.race-host-buttons{display:flex;align-items:center;gap:8px;flex:none}
+.race-host-buttons>button{background:#315f46;color:white;border:0;border-radius:10px;padding:9px 16px;font-weight:700;min-height:40px}
+.classroom-race .race-close{border:0;background:transparent;color:#63735d;width:36px;height:36px;font-size:24px;padding:0;flex:none}
+.race-sprint{--name-width:clamp(90px,16vw,200px);height:100%;min-height:0;display:grid;grid-template-rows:28px repeat(10,minmax(0,1fr));overflow:hidden;background:#eedbbb}
+.sprint-distance,.sprint-lane{display:grid;grid-template-columns:var(--name-width) minmax(0,1fr);min-height:0}
+.sprint-distance{background:#e4ebd4;font-size:11px;font-weight:800;color:#496443;align-items:center}
+.sprint-distance>div{display:flex;justify-content:space-between;margin:0 38px 0 34px;white-space:nowrap}
+.sprint-lane{border-bottom:2px solid #fff5e1;background:#eedbbb}
+.sprint-lane:nth-child(odd){background:#e7cfaa}
+.sprint-name{display:flex;align-items:center;gap:8px;padding:0 12px;min-width:0;color:#35513e;font-size:clamp(12px,1.4vw,20px);font-weight:750}
+.sprint-name>b{display:grid;place-items:center;width:24px;height:24px;border-radius:8px;color:white;flex:none;font-size:13px}
+.sprint-name>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sprint-name small{display:block;font-size:11px;font-weight:500;opacity:.7}
+.sprint-runway{position:relative;margin:0 38px 0 34px;border-left:3px solid #fff8e7;min-width:0}
+.sprint-marker{position:absolute;top:0;bottom:0;border-left:1px dashed #fff5df}
+.sprint-finish{position:absolute;left:100%;top:0;bottom:-2px;width:10px;background:conic-gradient(#40523f 25%,#fff8e6 0 50%,#40523f 0 75%,#fff8e6 0) 0 0/10px 10px}
+.sprint-horse{position:absolute;top:50%;transform:translate(-90%,-50%);width:clamp(32px,7dvh,80px);height:90%;z-index:1;display:flex;align-items:center}
+.sprint-horse>svg{width:100%;max-height:100%;filter:drop-shadow(0 3px 1px #75552b44)}
+@media(max-width:600px){.race-host-strip{gap:8px;padding:6px 8px}.race-host-buttons>button{padding:9px 10px;font-size:13px}.sprint-name{padding:0 5px;gap:5px}.sprint-name>b{width:19px;height:19px;font-size:11px}.sprint-name small{font-size:10px}.sprint-runway,.sprint-distance>div{margin-right:24px;margin-left:22px}.sprint-distance{font-size:9px}.race-joining{padding:16px;gap:10px}}

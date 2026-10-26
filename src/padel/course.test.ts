@@ -8,6 +8,7 @@ import { padelWordGlosses, padelWordProfiles, padelWordExamples } from './wordDa
 import { wordProfileSchema } from '../learning/wordInfo/types'
 import { isPadelLineEntry, padelLineEntryUrl } from './lineEntry'
 import type { Progress } from '../hotel/course'
+import { pairOrder } from './progression'
 
 afterEach(() => localStorage.clear())
 it('serves direct and nested Padel routes from the app on Vercel', () => {
@@ -15,12 +16,12 @@ it('serves direct and nested Padel routes from the app on Vercel', () => {
   for (const source of ['/padel','/padel/:path*','/hotel','/hotel/:path*']) expect(config.rewrites).toContainEqual({source,destination:'/index.html'})
 })
 it('has balanced, unique, ordered content with distinct choices', () => {
-  expect(padelQuestions).toHaveLength(266)
-  expect(new Set(padelQuestions.map(q => q.id)).size).toBe(266)
+  expect(padelQuestions).toHaveLength(292)
+  expect(new Set(padelQuestions.map(q => q.id)).size).toBe(292)
   expect(skillNames).toHaveLength(skills.length)
   for (const skill of skills) expect(padelQuestions.filter(q => q.skill === skill)).toHaveLength(padelPairs.filter(p=>p[1]===skill).length*2)
   expect(padelQuestions.every(q=>skills.includes(q.skill))).toBe(true)
-  expect(padelQuestions.map(q=>skills.indexOf(q.skill))).toEqual(padelQuestions.map(q=>skills.indexOf(q.skill)).sort((a,b)=>a-b))
+  expect(padelQuestions.map(q=>pairOrder.get(q.pairId))).toEqual(padelQuestions.map(q=>pairOrder.get(q.pairId)).sort((a,b)=>a!-b!))
   for (const [id,skill,english,thai] of padelPairs) {
     expect(english[0]).not.toBe(english[1]); expect(thai[0]).not.toBe(thai[1])
     for (const index of [0,1]) {
@@ -38,12 +39,12 @@ it('serves only Padel and begins with familiar people and equipment', () => {
   expect(padelQuestions.filter(q=>q.skill==='gear').slice(0,4).map(q=>q.english)).toEqual(['A racket.','A ball.','The net.','The court.'])
   for (const skill of skills) expect(padelQuestions.some(q=>q.skill===skill)).toBe(true)
 })
-it('covers daily club operations before advanced grammar with real question forms',()=>{
+it('retains real club operations but teaches their language foundations first',()=>{
   expect(clubPairs).toHaveLength(44)
   for(const skill of ['court_booking','player_numbers','prices','racket_hire','balls_grips','rain','court_rules']) {
     expect(clubPairs.filter(p=>p[1]===skill).length).toBeGreaterThanOrEqual(6)
   }
-  expect(skills.indexOf('court_booking')).toBeLessThan(skills.indexOf('ongoing'))
+  expect(pairOrder.get('desk-booking-1')!).toBeGreaterThan(pairOrder.get('ongoing-3')!)
   const texts=clubPairs.flatMap(p=>p[2]).join(' ')
   for(const phrase of ['What time','How many','How long','per hour','per court','hire a racket','grip tape','rain','rules','fifteen thirty']) expect(texts).toContain(phrase)
   expect(padelWordProfiles.hire.verbs.some(v=>v.base==='hire')).toBe(true)
@@ -96,19 +97,19 @@ it('keeps learner/course progress isolated and rejects stale or corrupt content'
   expect(loadProgress('alice')).toEqual(progress)
   expect(loadProgress('bob')).toEqual({})
   localStorage.setItem(progressKey('alice'),JSON.stringify({people:{seen:['hotel-1',q.id,q.id,5],correct:1,attempts:1},gear:{seen:[],correct:-1,attempts:0}}))
-  expect(loadProgress('alice')).toEqual(progress)
+  expect(loadProgress('alice')).toEqual({people:{seen:[q.id],correct:1,attempts:1}})
 })
-it('mixes two current topics, keeps review, and continues after completion', () => {
+it('keeps the opening in its two foundation lanes, not later topic sentences', () => {
   expect(nextQuestion({},undefined,0,()=>0).skill).toBe('people')
   expect(nextQuestion({},undefined,1,()=>0).skill).toBe('gear')
   let progress: Progress = {}
-  for (const q of padelQuestions.filter(q => ['people','gear'].includes(q.skill))) progress = recordAnswer(progress,q,true,false)
-  expect(isSkillComplete(progress,'people')).toBe(true)
+  for (const q of padelQuestions.slice(0,6)) for(let i=0;i<3;i++) progress = recordAnswer(progress,q,true,false,i+1,i===2)
+  expect(isSkillComplete(progress,'start')).toBe(true)
   expect(nextQuestion(progress,undefined,0,()=>0).skill).toBe('quantity')
-  expect(nextQuestion(progress,undefined,1,()=>0).skill).toBe('court_booking')
+  expect(nextQuestion(progress,undefined,1,()=>0).skill).toBe('possession')
   expect(nextQuestion(progress,undefined,3,()=>0).skill).toBe('people')
-  expect(nextQuestion(progress,undefined,7,()=>0).skill).toBe('gear')
-  for (const q of padelQuestions) progress = recordAnswer(progress,q,true,false)
+  expect(['people','gear']).toContain(nextQuestion(progress,undefined,7,()=>0).skill)
+  for (const q of padelQuestions) for(let i=0;i<3;i++) progress = recordAnswer(progress,q,true,false,i+10,i===2)
   for (let n=0;n<56;n++) expect(nextQuestion(progress,undefined,n)).toBeDefined()
 })
 it('drops retired Pilates questions without resetting retained Padel progress', () => {

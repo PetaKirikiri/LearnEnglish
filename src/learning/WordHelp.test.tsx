@@ -4,6 +4,20 @@ import { expect, it, vi } from 'vitest'
 import WordHelp from './WordHelp'
 import { wordProfiles } from '../content/languageData'
 
+it('opens a whole phrase as one help unit with one charge', () => {
+  Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
+  const container = document.createElement('div'); document.body.append(container)
+  const root = createRoot(container), onHelp = vi.fn()
+  act(() => root.render(<WordHelp text="How much" singleUnit translations={{'how much':'เท่าไหร่'}} onHelp={onHelp}/>))
+  expect(container.querySelectorAll('[role="button"]')).toHaveLength(1)
+  const token=container.querySelector<HTMLElement>('[aria-label="Help with How much"]')!
+  act(()=>token.dispatchEvent(new KeyboardEvent('keydown',{bubbles:true,key:'Enter'})))
+  expect(document.querySelector('dialog h2')?.textContent).toBe('How much')
+  expect(document.querySelector('.word-help-translation')?.textContent).toBe('เท่าไหร่')
+  expect(onHelp).toHaveBeenCalledExactlyOnceWith('how much')
+  act(()=>root.unmount());container.remove()
+})
+
 it('tokenizes all words, leaves gaps alone, and only opens help on deliberate activation', () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
   const container = document.createElement('div'); document.body.append(container)

@@ -1,5 +1,29 @@
 import { expect, it } from 'vitest'
-import { wordMeaning } from './wordMeaning'
+import { iconForMeaning, wordMeaning } from './wordMeaning'
+
+it('uses the approved clay question-word icons, including amount phrases', () => {
+  for (const word of ['where', 'when', 'why']) {
+    expect(iconForMeaning(word)?.asset).toBe(`question-${word}-clay`)
+  }
+  for (const modifier of ['much', 'many']) {
+    expect(wordMeaning('How', ` ${modifier}`)).toBe(`how-${modifier}`)
+    expect(wordMeaning(modifier, '', 'How ')).toBe(`how-${modifier}`)
+    expect(wordMeaning(`How ${modifier}`, '')).toBe(`how-${modifier}`)
+    expect(iconForMeaning(`how-${modifier}`)?.asset).toBe(modifier === 'much' ? 'question-weight-scale-clay' : 'question-many-clay')
+  }
+  expect(iconForMeaning('who')?.asset).toBe('who')
+  expect(iconForMeaning('what')?.asset).toBe('what')
+})
+
+it('marks question artwork without adding question marks to ordinary object icons',()=>{
+  // Who and what already contain sculpted question marks in their artwork.
+  for(const word of ['where','when','why','how-many','how-much']) {
+    expect(iconForMeaning(word)?.cue).toBe('question')
+  }
+  for(const word of ['ball','racket','court','time','many']) {
+    expect(iconForMeaning(word)?.cue).not.toBe('question')
+  }
+})
 
 it('uses word meanings rather than generic grammar art', () => {
   expect(wordMeaning('Who', ' is on the court?')).toBe('who')

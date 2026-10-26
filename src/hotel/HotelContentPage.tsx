@@ -6,7 +6,7 @@ import HotelWordHelp from './HotelWordHelp'
 import type { ComponentType } from 'react'
 import { getCurriculum } from '../curriculum/database'
 
-type ContentCourse = { questions: readonly HotelQuestion[]; skills: string[]; skillNames: string[]; name: string; curriculum?: boolean; WordHelp: ComponentType<Parameters<typeof HotelWordHelp>[0]> }
+type ContentCourse = { questions: readonly HotelQuestion[]; skills: string[]; skillNames: string[]; name: string; curriculum?: boolean; contentStage?: (question:HotelQuestion)=>string; WordHelp: ComponentType<Parameters<typeof HotelWordHelp>[0]> }
 const hotelContent: ContentCourse = { questions: hotelQuestions, skills, skillNames, name: 'Hotel', WordHelp: HotelWordHelp }
 
 export default function HotelContentPage({ course = hotelContent }: { course?: ContentCourse }) {
@@ -60,7 +60,7 @@ export default function HotelContentPage({ course = hotelContent }: { course?: C
         <thead><tr><th scope="col">#</th><th scope="col">Focus</th><th scope="col">English</th><th scope="col">Answer</th><th scope="col">Other option</th></tr></thead>
         <tbody>{visible.map((question, index) => <tr key={question.id}>
           <td>{currentPage*pageSize+index + 1}</td>
-          <td>{courseSkillNames[courseSkills.indexOf(question.skill)]}{question.grammar ? <small> · {question.grammar.phase === 'transfer' ? 'Transfer' : 'Practice'} · {question.grammar.kind === 'form' ? 'Form' : 'Meaning'}{question.grammar.domain?` · ${question.grammar.domain}`:''}</small> : null}{data ? <small> · {data.skills.find(s=>s.id===data.courseSkills.find(m=>m.skill===question.skill)?.nodeId)?.level}</small> : null}</td>
+          <td>{course.contentStage?.(question) ?? courseSkillNames[courseSkills.indexOf(question.skill)]}{question.grammar ? <small> · {question.grammar.phase === 'transfer' ? 'Transfer' : 'Practice'} · {question.grammar.kind === 'form' ? 'Form' : 'Meaning'}{question.grammar.domain?` · ${question.grammar.domain}`:''}</small> : null}{data ? <small> · {data.skills.find(s=>s.id===data.courseSkills.find(m=>m.skill===question.skill)?.nodeId)?.level}</small> : null}</td>
           <td><div className="hotel-content-english"><button type="button" onClick={() => play(question)} aria-label={`${playing === question.id ? 'Stop' : 'Play'} ${question.english}`} aria-pressed={playing === question.id}>
             <svg viewBox="0 0 24 24" aria-hidden="true">{playing === question.id ? <path d="M7 5h3v14H7zM14 5h3v14h-3z" /> : <path d="m8 5 11 7-11 7z" />}</svg>
           </button><CourseWordHelp question={question.grammar?.prompt ? {...question,english:question.grammar.prompt} : question} /></div>{question.grammar?.thai ? <small lang="th">{question.grammar.thai}</small> : null}</td>

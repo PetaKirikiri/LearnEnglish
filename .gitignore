@@ -26,3 +26,6 @@ dist-ssr
 *.sw?
 .vercel
 .env*
+.classroom-races/
+
+supabase/.temp/

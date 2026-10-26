@@ -8,6 +8,7 @@ export type GrammarTarget = {
   targets: string[]; explanation: string; contrast: string; thai?: string
   prompt?: string; promptAudioUrl?: string
   domain?: 'Home'|'Family'|'Food'|'Work'|'Study'|'Shopping'|'Travel'|'Leisure'
+  sequenceTier?: number
 }
 export type HotelQuestion = LegacyQuestion & { grammar?: GrammarTarget }
 export const skills: string[] = grammarSkills.map(([id]) => id)
@@ -123,6 +124,12 @@ export function nextQuestion(progress:Progress,previous?:string,round=0,random=M
   const due=pool.filter(q=>{const e=progress[skill]?.items?.[q.id];return e&&(q.grammar?.kind==='meaning' ? !e.audioRetained&&!!e.firstAudioCorrect&&now-e.firstAudioCorrect>=RETENTION_MS : !e.retained&&!!e.firstCorrect&&now-e.firstCorrect>=RETENTION_MS)})
   const unfinished=pool.filter(q=>!successful(progress,q))
   let available=reviewing&&due.length?due:unfinished.length?unfinished:pool
+  // English's authored lexical tier comes before sentence length. A short
+  // unfamiliar verb must not displace an unfinished familiar-action exercise.
+  if (learningCourse==='english' && !reviewing && unfinished.length) {
+    const first=Math.min(...available.map(q=>q.grammar?.sequenceTier??1))
+    available=available.filter(q=>(q.grammar?.sequenceTier??1)===first)
+  }
   // Work from short chunks to longer clauses within a focus. Review remains
   // mixed; length is a sequencing aid, not a claimed proficiency level.
   if(!reviewing && unfinished.length) {

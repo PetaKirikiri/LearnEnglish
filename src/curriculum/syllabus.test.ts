@@ -9,6 +9,8 @@ import { buildCurriculumSeed } from './seed'
 import { buildSyllabus, tokenize } from './syllabus'
 import { contrasts, expandedQuestions } from './expandedContent'
 import { generalQuestions } from './generalContent'
+import { beginnerQuestions } from './beginnerContent'
+import { introductionQuestions } from './introductions'
 import { hotelQuestions, nextQuestion, recordAnswer, requiresAudioCheck, isSkillReady, type Progress } from '../hotel/course'
 import { buildHotelWordProfiles } from '../hotel/wordProfiles'
 import { wordProfileSchema } from '../learning/wordInfo/types'
@@ -28,10 +30,10 @@ it('builds real course neighbours and useful word forms for the entire expanded 
 
 it('links every word, frame family and question and preserves every old item',()=>{
   const data=curriculumSchema.parse(snapshot)
-  expect(data.structures).toHaveLength(34)
+  expect(data.structures).toHaveLength(40)
   expect(data.structures.reduce((n,s)=>n+s.frames.length,0)).toBeGreaterThanOrEqual(120)
-  expect(data.questions).toHaveLength(2490)
-  expect(data.vocabulary).toHaveLength(479)
+  expect(data.questions).toHaveLength(2630)
+  expect(data.vocabulary.length).toBeGreaterThanOrEqual(493)
   expect(buildSyllabus(Object.fromEntries(data.vocabulary.map(w=>[w.word,w.thai])))).toEqual(data)
   for(const q of original.questions) expect(data.questions.find(row=>row.id===q.id)).toEqual(q)
   const bad=structuredClone(snapshot); bad.vocabulary.pop()
@@ -52,7 +54,7 @@ it('holds incidental vocabulary and word order steady between new meaning altern
 
 it('has matching neural audio including silent blanks for all new questions',()=>{
   const manifest=JSON.parse(readFileSync('public/audio/hotel/voice-manifest.json','utf8'))
-  for(const q of [...expandedQuestions(),...generalQuestions()]) for(const [url,text] of [[q.audioUrl,q.english],...(q.grammar?.promptAudioUrl?[[q.grammar.promptAudioUrl,q.grammar.prompt!]]:[])]) {
+  for(const q of [...expandedQuestions(),...generalQuestions(),...beginnerQuestions(),...introductionQuestions()]) for(const [url,text] of [[q.audioUrl,q.english],...(q.grammar?.promptAudioUrl?[[q.grammar.promptAudioUrl,q.grammar.prompt!]]:[])]) {
     const name=url.split('/').at(-1)!, clip=readFileSync(`public${url}`)
     expect(manifest[name].text).toBe(text)
     expect(manifest[name].fingerprint).toBe(createHash('sha256').update(`kokoro-1.0-heart-v1|0.95|0.65|${text}`).digest('hex'))

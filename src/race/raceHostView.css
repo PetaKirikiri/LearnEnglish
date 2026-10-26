@@ -1,0 +1,5 @@
+.race-classroom-track.race-fullscreen{grid-template-rows:clamp(130px,24dvh,220px) minmax(0,1fr)}
+.race-classroom-track .race-host-strip{position:relative}
+.race-host-admin{font-size:12px;color:#bdd6c8;text-decoration:none;white-space:nowrap}
+.race-host-buttons>.race-next-race{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 16px;font-size:14px;white-space:nowrap;text-decoration:none}
+@media(max-width:600px){.race-classroom-track .race-host-buttons{gap:6px;flex-wrap:wrap;justify-content:flex-end}.race-host-buttons>.race-next-race{padding:8px 10px;font-size:12px}.race-classroom-track .race-answer-count{font-size:10px}}

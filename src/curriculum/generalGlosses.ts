@@ -19,6 +19,9 @@ const verbs:Record<string,string>={
 // Inflected forms share a contextual lexical meaning here. The sentence and
 // contrast, not a misleading one-word Thai tense marker, teach time/aspect.
 export const generalGlosses:Record<string,string>={
+  eat:'กิน',eats:'กิน',eating:'กิน',drink:'ดื่ม',drinks:'ดื่ม',drank:'ดื่ม (อดีตของ drink)',drinking:'ดื่ม',
+  talk:'พูด',talks:'พูด',talked:'พูด (อดีตของ talk)',talking:'พูด',
+  go:'ไป',goes:'ไป',went:'ไป (อดีตของ go)',going:'ไป',come:'มา',coming:'มา',want:'ต้องการ',wants:'ต้องการ',
   ...Object.fromEntries(everydayActions.flatMap(a=>[a.base,a.third,a.past,a.participle,a.ing].map(w=>[w,verbs[a.base]]))),
   alone:'คนเดียว',ate:'กิน (อดีตของ eat)',baby:'ทารก',bigger:'ใหญ่กว่า',broken:'เสีย / แตก',cake:'เค้ก',camera:'กล้องถ่ายรูป',
   computer:'คอมพิวเตอร์',cups:'ถ้วยหลายใบ',difficult:'ยาก',documents:'เอกสาร',easier:'ง่ายกว่า',email:'อีเมล',

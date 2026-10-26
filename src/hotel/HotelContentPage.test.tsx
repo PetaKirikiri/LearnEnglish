@@ -50,7 +50,8 @@ it('shows only general English when selected and only Hotel on the Hotel route',
   selectLearningCourse('english')
   window.location.href='http://localhost/english/preview/content'
   await act(()=>root.render(<HotelContentPage/>))
-  expect(host.querySelector('h1')?.textContent).toBe('Content 2196')
+  expect(host.querySelector('h1')?.textContent).toBe('Content 2272')
+  expect(host.querySelector('tbody tr')?.textContent).toContain('I am eating.')
   expect(host.querySelectorAll('tbody tr')).toHaveLength(100)
   const situation=host.querySelector<HTMLSelectElement>('[aria-label="Situation"]')!
   const select=async(value:string)=>act(()=>{situation.value=value;situation.dispatchEvent(new Event('change',{bubbles:true}))})

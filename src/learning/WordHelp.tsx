@@ -9,8 +9,10 @@ import WordDetails from './wordInfo/WordDetails'
 import WordConfidence from './wordInfo/WordConfidence'
 import type { WordProfile } from './wordInfo/types'
 
-export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, translations = {}, theme, onListen, tokenOpacity, profiles, examplesForWord, renderToken }: {
+export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, translations = {}, theme, onListen, tokenOpacity, profiles, examplesForWord, renderToken, singleUnit = false, tokenPattern }: {
   text: string
+  singleUnit?: boolean
+  tokenPattern?: RegExp
   onHelp?: (word: string) => void
   onOpenChange?: (open: boolean) => void
   pointsRemaining?: number
@@ -43,7 +45,7 @@ export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, 
     onOpenChange?.(true)
     dialog.current?.showModal()
   }
-  const parts = text.split(/([\p{L}]+(?:[’'][\p{L}]+)*)/gu)
+  const parts = singleUnit ? ['', text, ''] : text.split(tokenPattern ?? /([\p{L}]+(?:[’'][\p{L}]+)*)/gu)
   return <span className={renderToken ? 'word-help-tiles' : undefined}>{parts.map((token, index) => {
     if (!/^\p{L}/u.test(token)) {
       // Tile punctuation stays with its word; do not create stray flex items.

@@ -2,6 +2,7 @@
 import { expect, it } from 'vitest'
 import { generalPairs, generalQuestions, everydayActions } from './generalContent'
 import snapshot from './syllabus.snapshot.json'
+import { curriculumSchema } from './schema'
 import { buildHotelWordProfiles } from '../hotel/wordProfiles'
 
 const words=(s:string)=>s.toLowerCase().match(/[a-z]+(?:'[a-z]+)*/g)??[]
@@ -10,7 +11,7 @@ it('adds 2,196 real listening questions across everyday situations and every sec
   const questions=generalQuestions()
   expect(questions).toHaveLength(2196)
   expect(new Set(questions.map(q=>q.id)).size).toBe(2196)
-  expect(new Set(generalPairs.map(p=>p.node))).toEqual(new Set(snapshot.skills.map(s=>s.id)))
+  expect(new Set(generalPairs.map(p=>p.node))).toEqual(new Set(snapshot.skills.filter(s=>!s.id.startsWith('first-')).map(s=>s.id)))
   const domains=['Home','Family','Food','Work','Study','Shopping','Travel','Leisure']
   for(const domain of domains) expect(questions.filter(q=>q.grammar?.domain===domain).length,domain).toBeGreaterThan(100)
   expect(questions.filter(q=>q.correct===0)).toHaveLength(1098)
@@ -40,7 +41,7 @@ it('does not label already practised general sentences as unseen transfer',()=>{
 })
 
 it('does not inflate the bank with identical question and answer pairs',()=>{
-  const signatures=snapshot.questions.map(q=>JSON.stringify([q.english.toLowerCase(),q.grammar.kind,q.answers.map(a=>a.map(s=>s.text).join('')).sort()]))
+  const signatures=curriculumSchema.parse(snapshot).questions.map(q=>JSON.stringify([q.english.toLowerCase(),q.grammar.kind,q.answers.map(a=>a.map(s=>s.text).join('')).sort()]))
   expect(new Set(signatures).size).toBe(signatures.length)
 })
 

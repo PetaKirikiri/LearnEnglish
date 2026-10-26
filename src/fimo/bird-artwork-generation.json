@@ -1,0 +1,323 @@
+{
+  "generator": "Built-in image_gen; no API fallback or paid speed tier requested",
+  "transparent_background": true,
+  "assetDirectory": "public/images/fimo/bird-scenes",
+  "packaging": "512px WebP, alpha preserved; originals retained at source paths",
+  "assets": [
+    {
+      "id": "speaking",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-86568083-ea99-4ad2-aea8-1b951bfb0ad0.png",
+      "file": "speaking.webp",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/bird-scenes/neutral.webp",
+      "prompt": "Create a SMALL ISOLATED FIMO CLAY FIGURINE ICON on a completely transparent canvas: two FULL BODY toy people standing, a woman in a sage green shirt talking to a man in blue who listens. An empty cream speech bubble floats above woman's head. Both figurines visible head to feet with clear outer margins on ALL FOUR sides. No bird, no food. Same matte clay sculpting as supplied Pip style reference. Every gap between objects must be fully transparent. NO fog, NO bloom, NO colored aura, NO blur, NO ground, NO background, NO backdrop, NO gradient. NOT a portrait or closeup. A clean product cutout icon with hard clean silhouette edges. Objects occupy 75% canvas."
+    },
+    {
+      "id": "ownership-question",
+      "prompt": "Use case: scientific-educational. Make one compact transparent-background FIMO clay learning illustration. Reference image is Pip's exact character/style identity, not a layout to copy. Same friendly brown cream sparrow, gold beak, matte sculpted forms, gentle soft shadows. Must communicate through visible actions/relationships not written English. Large simple shapes readable at 150px. No background, no floor rectangle, no decorative text. A large sunflower seed lies bottom center. A fine teal ownership string from the seed's attached blank tag leads upward to an unknown owner's simple cream silhouette. A large purple question mark is INSIDE this owner silhouette. No visible Pip. Meaning: WHO OWNS THIS SEED, not what is the seed. Seed is fully visible, owner is the missing part.",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/bird-scenes/neutral.webp",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-2a6e8147-973b-450d-a943-aec6d920c6cd.png",
+      "file": "ownership-question.webp"
+    },
+    {
+      "id": "location-question",
+      "prompt": "Use case: scientific-educational. Make one compact transparent-background FIMO clay learning illustration. Reference image is Pip's exact character/style identity, not a layout to copy. Same friendly brown cream sparrow, gold beak, matte sculpted forms, gentle soft shadows. Must communicate through visible actions/relationships not written English. Large simple shapes readable at 150px. No background, no floor rectangle, no decorative text. A large visible sunflower seed as spatial anchor in center; two small pale clay outlines of Pip at different possible positions, one directly ABOVE the seed and one BESIDE the seed. A purple question-mark location pin sits between possible positions. Meaning WHERE IS THE BIRD relative to the seed, not where did it come from. No globe, suitcase or flag.",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/bird-scenes/neutral.webp",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-5e31973c-9fea-4e7b-a356-d4adf382e3c2.png",
+      "file": "location-question.webp"
+    },
+    {
+      "id": "able",
+      "prompt": "Use case: scientific-educational. Make one compact transparent-background FIMO clay learning illustration. Reference image is Pip's exact character/style identity, not a layout to copy. Same friendly brown cream sparrow, gold beak, matte sculpted forms, gentle soft shadows. Must communicate through visible actions/relationships not written English. Large simple shapes readable at 150px. No background, no floor rectangle, no decorative text. Pip looks ready to eat an intact sunflower seed placed within easy reach of his beak. A glass bell cover has been lifted well away to one side, leaving a clear open path from Pip to the seed. Do not show the bird already eating. Communicate CAN REACH / CAN EAT, physical opportunity. No question mark.",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/bird-scenes/neutral.webp",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-3fddc876-924a-4e53-bec6-4160946fa2f9.png",
+      "file": "able.webp"
+    },
+    {
+      "id": "need-food",
+      "prompt": "Use case: scientific-educational. Make one compact transparent-background FIMO clay learning illustration. Reference image is Pip's exact character/style identity, not a layout to copy. Same friendly brown cream sparrow, gold beak, matte sculpted forms, gentle soft shadows. Must communicate through visible actions/relationships not written English. Large simple shapes readable at 150px. No background, no floor rectangle, no decorative text. Pip looks weak and very hungry, gently drooping, empty belly with a small clay empty-battery symbol beside it. An intact sunflower seed within reach, a clear short arrow from seed toward his belly, and a small urgent exclamation mark. Communicate MUST EAT to regain strength, not merely wanting. Friendly not disturbing. No text.",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/bird-scenes/neutral.webp",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-80d0807f-bf25-4ab4-b77a-2d6ed316a190.png",
+      "file": "need-food.webp"
+    },
+    {
+      "id": "want-eat",
+      "prompt": "Use case: scientific-educational. One compact transparent-background educational FIMO clay illustration matching reference Pip brown cream sparrow, gold beak, matte sculpted forms. Simple large shapes readable at 150px. Show meaning through relationship, not text. No scenery/background, no labels. Pip in lower left looks eagerly at a sunflower seed on ground. Above him a large round thought bubble joined clearly to his head by two small bubbles shows a smaller version of HIMSELF eating the seed. Real Pip is NOT yet eating; the eating occurs ONLY inside his thought. Clearly communicates HE WANTS TO EAT.",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/bird-scenes/neutral.webp",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-3dd7a167-f7ca-423f-8d4d-dfb0fbd2d52e.png",
+      "file": "want-eat.webp"
+    },
+    {
+      "id": "arriving",
+      "prompt": "Use case: scientific-educational. Isolated FIMO clay event icon, transparent background. A friendly full-body short-haired adult man in a green shirt is stepping IN through a simple open wooden doorway. One foot over the threshold; a small teal arrow shows inward motion. NO BIRD, NO SEED, NO OTHER OBJECTS: the man arriving will be placed alongside separate bird-state pictures, so it must not imply any bird state. Matte rounded sculpted clay toy style matching reference, clean silhouette, all objects within margins. No background, no fog, no glow, no scenery, true alpha outside the man and door.",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/bird-scenes/neutral.webp",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-5faf13a6-649a-46c7-ba01-5626ae631336.png",
+      "file": "arriving.webp"
+    },
+    {
+      "id": "leave-seed",
+      "prompt": "Use case: scientific-educational. One compact transparent-background educational FIMO clay illustration matching reference Pip brown cream sparrow, gold beak, matte sculpted forms. Simple large shapes readable at 150px. Show meaning through relationship, not text. No scenery/background, no labels. A hand is visibly setting a sunflower seed DOWN on the ground next to Pip, with short downward motion arrow. Pip watching, not eating yet. Shows SOMEONE LEFT/PUT THE SEED THERE, not hand-feeding him.",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/bird-scenes/neutral.webp",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-b8aa180b-f961-4dea-901e-f72caed2c32b.png",
+      "file": "leave-seed.webp"
+    },
+    {
+      "id": "advice-eat",
+      "prompt": "Use case: scientific-educational. One compact transparent-background educational FIMO clay illustration matching reference Pip brown cream sparrow, gold beak, matte sculpted forms. Simple large shapes readable at 150px. Show meaning through relationship, not text. No scenery/background, no labels. Pip is hungry and pauses beside a sunflower seed. A friendly adult human at left suggests the seed with open palm; a small thumbs-up sign above the seed. Pip is not eating yet. Communicates it would be a GOOD IDEA for the bird to EAT, a gentle recommendation not a command. No text.",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/bird-scenes/neutral.webp",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-80a75ae2-caf7-49e1-8ffb-e7324be8398b.png",
+      "file": "advice-eat.webp"
+    },
+    {
+      "id": "permission-self",
+      "prompt": "Use case: scientific-educational. One compact transparent-background educational FIMO clay illustration matching reference Pip brown cream sparrow, gold beak, matte sculpted forms. Simple large shapes readable at 150px. Show meaning through relationship, not text. No scenery/background, no labels. Two friendly humans and Pip. Human on LEFT holds seed in own hand near Pip, looks toward human on RIGHT seeking permission; left human points to own chest with other hand. Between them a small speech bubble belonging to LEFT human contains a clear question mark. Pip waits at bottom near seed. Clearly depicts MAY I FEED THE BIRD, asking permission to do it myself. No text.",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/bird-scenes/neutral.webp",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-326843ee-9ae5-405f-992a-0122b7e01e17.png",
+      "file": "permission-self.webp"
+    },
+    {
+      "id": "request-help",
+      "prompt": "Use case: scientific-educational. One compact transparent-background educational FIMO clay illustration matching reference Pip brown cream sparrow, gold beak, matte sculpted forms. Simple large shapes readable at 150px. Show meaning through relationship, not text. No scenery/background, no labels. Two friendly humans and Pip. Human on LEFT asks human on RIGHT for help, pointing toward RIGHT human's hand holding sunflower seed and then toward Pip. Small speech bubble containing question mark belongs to LEFT human. Right human's hand offers seed to Pip. Clearly shows CAN YOU FEED THE BIRD, asking the OTHER person to perform action. No text.",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/bird-scenes/neutral.webp",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-750bda31-7014-44d4-81d0-3fa650a6a516.png",
+      "file": "request-help.webp"
+    },
+    {
+      "id": "origin-question",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-33eecc90-7f86-427f-b26d-d4ae8e0ab0a1.png",
+      "file": "origin-question.webp",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/bird-scenes/origin.webp",
+      "prompt": "Create a meaning-first educational illustration in exactly the same matte FIMO clay style and same brown/cream Pip sparrow identity as the reference. Transparent background. Square compact composition readable at 150px. Illustrate the question WHERE IS THE BIRD FROM, specifically ORIGIN, not destination or current location. On left a small clay blue-green globe with an oversized cream location marker displaying a purple question mark attached to its surface: the unknown home country. From that marker a thick curved teal clay arrow travels LEFT TO RIGHT, ending beside Pip on the right, who has just arrived with a small cream suitcase at his feet. Arrow head unmistakably points TOWARDS Pip away from the unknown source. Bird occupies right half, globe left half. No flag yet, no badge on bird, no text apart from question mark. No extra decorative items. Soft sculpted rounded forms, clean high contrast silhouettes, gentle contact shading only, actual transparent alpha everywhere outside objects. Keep entire composition within canvas."
+    },
+    {
+      "id": "origin-answer",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-45e761ec-3ef1-434f-a359-c3b11fef8e4b.png",
+      "file": "origin-answer.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-33eecc90-7f86-427f-b26d-d4ae8e0ab0a1.png",
+      "prompt": "Edit this educational origin illustration to reveal the answer 'The bird is from Thailand'. Replace ONLY the purple question mark inside the cream location marker with a clearly visible rectangular Thai flag: five horizontal stripes red, white, wide dark blue (double height), white, red. Preserve the same source-marker → bird arrow, globe, luggage, exact Pip character, composition, lighting and true transparent alpha. The source flag must be large and legible at thumbnail size. No text, no additional marker or question mark. The globe can be abstract rather than implying the flag is in Europe; retain the layout."
+    },
+    {
+      "id": "name-blank",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "file": "name-blank.webp",
+      "reference": "/Users/petakirikiri/Coding/fifa-english/public/images/fimo/success-wolf-grey-clay.png",
+      "prompt": "Create ONE transparent-background educational clay illustration for a language-learning app. Use the supplied wolf ONLY as the visual style reference: hand-sculpted matte FIMO clay, rounded dimensional shapes, subtle fingerprints, warm soft upper-left lighting, premium friendly character. Do NOT draw a wolf. Draw a consistent appealing little sparrow called Pip, warm taupe/brown wings, ivory cream round belly and cheeks, small gold ochre beak and feet, large expressive dark eyes, tiny swept feather tuft. Full body three-quarter facing right, centered, generous clear margins. Pip wears a clearly visible cream rectangular name badge edged in muted teal on its chest; the name badge is completely BLANK, no letters, no question mark, no symbols. The educational question is 'What is the bird’s name?' and this image must make the missing name visible. No other objects, no text, no pedestal, no background. Bird occupies 75% canvas. Genuine transparent alpha. Match the quality and sculpted dimension of reference, not vector, not flat cartoon."
+    },
+    {
+      "id": "name-filled",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-dbfddfd5-1331-4824-858f-923b5febdec5.png",
+      "file": "name-filled.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Edit only the cream name badge: put the name 'Pip' on it in large clearly legible dark teal rounded lettering. Preserve every other detail, composition, colors, pose and transparent background exactly."
+    },
+    {
+      "id": "neutral",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-80c32db1-6a93-41ae-ba10-1445dcb198ff.png",
+      "file": "neutral.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Same exact Pip bird identity and matte sculpted FIMO style. Remove the name badge entirely. Full body standing quietly facing slightly right, both feet visible, wings relaxed. Transparent background, generous margins, no text or symbols."
+    },
+    {
+      "id": "eating",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-6b3f876b-a88f-45ac-b649-10e491c638b7.png",
+      "file": "eating.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Same exact Pip bird identity and matte FIMO style. No badge. Full body bird bending head to nibble ONE large golden sunflower seed held between beak tips: visibly in mid-action, small pieces of seed shell below. Genuine transparent background, generous margins. No text, no extra food."
+    },
+    {
+      "id": "hungry",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-50cdc66a-77b2-4340-acab-c51b06a2a592.png",
+      "file": "hungry.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Same exact Pip bird identity and matte FIMO style. No badge. Full body looking hungry with worried eyebrows, one wing rubbing its tummy, looking at ONE intact golden sunflower seed on ground, open wanting beak. Not eating, seed untouched. Transparent background, generous margins. No text."
+    },
+    {
+      "id": "finished",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-ba864b10-e637-45d0-b14d-6de200209797.png",
+      "file": "finished.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Same exact Pip bird identity and matte FIMO style. No badge. Full body happy satisfied bird rubbing full tummy next to ONE empty split sunflower seed shell, all edible seed gone. Clearly finished eating, not chewing or holding food. Transparent background, generous margins. No text."
+    },
+    {
+      "id": "waiting",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-784305eb-f224-4321-8b98-c202989e41b4.png",
+      "file": "waiting.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Same exact Pip bird identity and matte FIMO style. No badge. Full body bird standing calmly with CLOSED beak next to ONE intact sunflower seed on ground, not touching it and not eating. Neutral expression, no hunger cue. Transparent background, generous margins. No text."
+    },
+    {
+      "id": "origin",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-3185333c-396c-4c8c-94bd-9d6c3028d84e.png",
+      "file": "origin.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Create one transparent cutout scene. Preserve exactly the referenced bird's character identity: warm taupe/brown wings, ivory cheeks and belly, ochre beak/feet, big dark eyes and feather tuft. Handmade matte FIMO clay style, upper-left soft light, rounded sculpted forms. No name badge. Full subjects with generous margins. No words, letters, question marks or border. Pip perched on a small cream suitcase beside a little Thai national flag on a pole: five horizontal stripes red, white, blue double-width, white, red. Friendly travel-origin illustration. No map."
+    },
+    {
+      "id": "owner",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-2a62bf6c-4992-4db3-860d-a6fa43b44b87.png",
+      "file": "owner.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Create one transparent cutout scene. Preserve exactly the referenced bird's character identity: warm taupe/brown wings, ivory cheeks and belly, ochre beak/feet, big dark eyes and feather tuft. Handmade matte FIMO clay style, upper-left soft light, rounded sculpted forms. No name badge. Full subjects with generous margins. No words, letters, question marks or border. Pip proudly cradles ONE large golden sunflower seed close to his chest in his wings, clearly his belonging, happy expression."
+    },
+    {
+      "id": "plural-eating",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-3647ccfe-505c-43c0-8886-e863719d17cb.png",
+      "file": "plural-eating.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Create one transparent cutout scene. Preserve exactly the referenced bird's character identity: warm taupe/brown wings, ivory cheeks and belly, ochre beak/feet, big dark eyes and feather tuft. Handmade matte FIMO clay style, upper-left soft light, rounded sculpted forms. No name badge. Full subjects with generous margins. No words, letters, question marks or border. THREE similar sparrows sitting side by side, each actively nibbling a sunflower seed held at its beak, clearly plural birds eating, all three fully visible."
+    },
+    {
+      "id": "above",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-44ef033a-8274-4fdb-ad41-69dbb8161cfb.png",
+      "file": "above.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Create one transparent cutout scene. Preserve exactly the referenced bird's character identity: warm taupe/brown wings, ivory cheeks and belly, ochre beak/feet, big dark eyes and feather tuft. Handmade matte FIMO clay style, upper-left soft light, rounded sculpted forms. No name badge. Full subjects with generous margins. No words, letters, question marks or border. Pip flying stationary directly ABOVE ONE large intact golden sunflower seed on the ground, obvious empty vertical space separates bird and seed. Wings extended. No arrow."
+    },
+    {
+      "id": "unable",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-9d304eb9-5446-4399-aea4-d6f2946a1577.png",
+      "file": "unable.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Create one transparent cutout scene. Preserve exactly the referenced bird's character identity: warm taupe/brown wings, ivory cheeks and belly, ochre beak/feet, big dark eyes and feather tuft. Handmade matte FIMO clay style, upper-left soft light, rounded sculpted forms. No name badge. Full subjects with generous margins. No words, letters, question marks or border. Pip outside a small clear glass cloche, reaching unsuccessfully toward a single intact sunflower seed trapped INSIDE the cloche. Obvious barrier between beak and seed. Bird cannot reach food, do not draw bird inside glass."
+    },
+    {
+      "id": "flying",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-0e956959-a74c-46ff-94e0-9caec8a1da57.png",
+      "file": "flying.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Create one transparent cutout scene. Preserve exactly the referenced bird's character identity: warm taupe/brown wings, ivory cheeks and belly, ochre beak/feet, big dark eyes and feather tuft. Handmade matte FIMO clay style, upper-left soft light, rounded sculpted forms. No name badge. Full subjects with generous margins. No words, letters, question marks or border. Pip flying to the right, wings open, feet tucked, looking ahead happily. No food or other object. Same exact character with no badge."
+    },
+    {
+      "id": "he-sees-her",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-cdfcd4ab-b60a-4d4e-bbc0-7c2e72f6c8c5.png",
+      "file": "he-sees-her.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Single transparent-background scene, premium hand-sculpted matte FIMO clay style like reference. Pip is exactly the reference bird, warm taupe brown/cream, gold beak/feet, tuft, expressive dark eyes; remove badge. Keep complete figures well inside image. Upper-left soft light. No text, symbols, borders or extra scenery. Two birds. On LEFT Pip, a male sparrow with a tiny muted teal scarf, gazes clearly toward the female sparrow on RIGHT. Female has slightly lighter warm grey feathers and a small pale lavender headband, turned away from him looking toward right edge. His gaze direction is the focus. Both have open eyes. Both full body."
+    },
+    {
+      "id": "she-sees-him",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-b148a41c-3716-4081-b1cb-329963028ee6.png",
+      "file": "she-sees-him.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Single transparent-background scene, premium hand-sculpted matte FIMO clay style like reference. Pip is exactly the reference bird, warm taupe brown/cream, gold beak/feet, tuft, expressive dark eyes; remove badge. Keep complete figures well inside image. Upper-left soft light. No text, symbols, borders or extra scenery. Two birds. On LEFT Pip, a male sparrow with a tiny muted teal scarf, faces left away from the other bird. On RIGHT female sparrow with slightly lighter warm grey feathers and a small pale lavender headband gazes clearly toward him on left. Her gaze direction is the focus. Both full body."
+    },
+    {
+      "id": "feeding",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-1bdb81b3-e178-44cf-9bbe-dc1eb98e2593.png",
+      "file": "feeding.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Single transparent-background scene, premium hand-sculpted matte FIMO clay style like reference. Pip is exactly the reference bird, warm taupe brown/cream, gold beak/feet, tuft, expressive dark eyes; remove badge. Keep complete figures well inside image. Upper-left soft light. No text, symbols, borders or extra scenery. Pip standing on floor accepting a golden sunflower seed gently offered in a human's open palm entering from left. Hand safely far below head and clearly feeding not grabbing. Bird in foreground, hand visible with wrist but no whole human."
+    },
+    {
+      "id": "no-feeding",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-11c16988-1c2a-4f98-b56c-5cfefdcb769e.png",
+      "file": "no-feeding.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Single transparent-background scene, premium hand-sculpted matte FIMO clay style like reference. Pip is exactly the reference bird, warm taupe brown/cream, gold beak/feet, tuft, expressive dark eyes; remove badge. Keep complete figures well inside image. Upper-left soft light. No text, symbols, borders or extra scenery. Pip on floor beside an intact golden sunflower seed. A friendly human open palm faces viewer in stop gesture BETWEEN food and bird, clearly signalling do not feed. Bird not eating. No red signs or crossed out symbols."
+    },
+    {
+      "id": "three-seeds",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-db94c771-5613-4cbb-a2f4-6be45b7c9abf.png",
+      "file": "three-seeds.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Single transparent-background scene, premium hand-sculpted matte FIMO clay style like reference. Pip is exactly the reference bird, warm taupe brown/cream, gold beak/feet, tuft, expressive dark eyes; remove badge. Keep complete figures well inside image. Upper-left soft light. No text, symbols, borders or extra scenery. Pip standing behind EXACTLY THREE separate golden sunflower seeds arranged in an easily countable neat row on floor. Bird's beak closed, all seeds intact. No more seeds anywhere."
+    },
+    {
+      "id": "little-food",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-6a5943f8-c3e1-43b4-80f0-3e0cdf626fd5.png",
+      "file": "little-food.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Single transparent-background scene, premium hand-sculpted matte FIMO clay style like reference. Pip is exactly the reference bird, warm taupe brown/cream, gold beak/feet, tuft, expressive dark eyes; remove badge. Keep complete figures well inside image. Upper-left soft light. No text, symbols, borders or extra scenery. Pip beside a shallow large ivory food bowl which contains just a tiny pinch of crushed bird food in the middle; most bowl visibly empty. Not eating."
+    },
+    {
+      "id": "big-small",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-497aa548-f7b7-4556-97cd-245cccb51999.png",
+      "file": "big-small.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Single transparent-background scene, premium hand-sculpted matte FIMO clay style like reference. Pip is exactly the reference bird, warm taupe brown/cream, gold beak/feet, tuft, expressive dark eyes; remove badge. Keep complete figures well inside image. Upper-left soft light. No text, symbols, borders or extra scenery. Two otherwise identical Pip sparrows stand next to each other at same ground level. LEFT bird twice height of RIGHT bird, obvious size comparison. Both entire bodies visible, no badges or other differences."
+    },
+    {
+      "id": "equal",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-4774b0ba-aa5a-4105-a6de-676d353cb7ed.png",
+      "file": "equal.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Single transparent-background scene, premium hand-sculpted matte FIMO clay style like reference. Pip is exactly the reference bird, warm taupe brown/cream, gold beak/feet, tuft, expressive dark eyes; remove badge. Keep complete figures well inside image. Upper-left soft light. No text, symbols, borders or extra scenery. Two otherwise identical Pip sparrows stand next to each other at same ground level and EXACTLY THE SAME SIZE. Both entire bodies visible, no badges or other differences."
+    },
+    {
+      "id": "seed",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-4f25654c-e99c-4581-b4c5-a8b2a3e7d0ff.png",
+      "file": "seed.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "One compact transparent cutout illustration in exact same premium matte hand-sculpted FIMO clay style and Pip bird identity as reference. Pip warm taupe/brown and ivory, gold beak and feet, large dark eyes, feather tuft; no name badge. Full objects not cut off. Soft upper-left studio light. No text, letters or border. One large intact golden sunflower seed, upright slight three-quarter angle, subtle shell ridge. Only seed, no bird. Rounded dimensional clay."
+    },
+    {
+      "id": "near",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-7ca13fd0-37d0-4199-8a19-4fd1e89a8b55.png",
+      "file": "near.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "One compact transparent cutout illustration in exact same premium matte hand-sculpted FIMO clay style and Pip bird identity as reference. Pip warm taupe/brown and ivory, gold beak and feet, large dark eyes, feather tuft; no name badge. Full objects not cut off. Soft upper-left studio light. No text, letters or border. Human pointing hand in lower left foreground pointing to ONE Pip bird actively nibbling a seed right next to hand, clearly within touch distance. Bird and hand similar visual size. Small short grass patch gives depth, otherwise transparent."
+    },
+    {
+      "id": "far",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-485b9843-0d68-4331-b840-d9312b02a052.png",
+      "file": "far.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "One compact transparent cutout illustration in exact same premium matte hand-sculpted FIMO clay style and Pip bird identity as reference. Pip warm taupe/brown and ivory, gold beak and feet, large dark eyes, feather tuft; no name badge. Full objects not cut off. Soft upper-left studio light. No text, letters or border. Human pointing hand LARGE in lower left foreground points to ONE SMALL distant Pip bird actively nibbling a seed at far upper right on tiny grass patch. Strong depth separation, distant bird noticeably much smaller than hand. Otherwise transparent."
+    },
+    {
+      "id": "near-plural",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-9a90db31-b081-4db0-a3f7-127c0b22107a.png",
+      "file": "near-plural.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "One compact transparent cutout illustration in exact same premium matte hand-sculpted FIMO clay style and Pip bird identity as reference. Pip warm taupe/brown and ivory, gold beak and feet, large dark eyes, feather tuft; no name badge. Full objects not cut off. Soft upper-left studio light. No text, letters or border. Human pointing hand in lower left foreground pointing to THREE Pip birds actively nibbling seeds very near the hand. All birds easily countable and complete. Short grass patch, otherwise transparent."
+    },
+    {
+      "id": "far-plural",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-7374e8b7-9244-4f0a-8607-6bfef40d0eec.png",
+      "file": "far-plural.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "One compact transparent cutout illustration in exact same premium matte hand-sculpted FIMO clay style and Pip bird identity as reference. Pip warm taupe/brown and ivory, gold beak and feet, large dark eyes, feather tuft; no name badge. Full objects not cut off. Soft upper-left studio light. No text, letters or border. LARGE human pointing hand at lower left foreground points toward THREE SMALL distant Pip birds eating seeds at far upper right on a tiny grass patch. Strong depth separation, far birds much smaller than hand. All three visible, otherwise transparent."
+    },
+    {
+      "id": "wants-person",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-32c3fbbb-1554-4851-b6ce-3d714b7740ff.png",
+      "file": "wants-person.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "Create a small square transparent-background FIMO clay app illustration, same cute Pip bird identity as supplied. Two complete miniature clay characters side-by-side: on the LEFT the little brown/cream sparrow Pip, beak CLOSED, no badge. On the RIGHT a small clay toy human boy with a green sweater and round friendly face. Pip stretches one wing to OFFER ONE golden sunflower seed DIRECTLY TOWARD THE BOY'S MOUTH. Boy has open mouth ready to eat and looks at the seed. This means 'The bird wants me to eat the seed.' Pip is NOT eating. Seed is far from Pip's beak, between wing-tip and boy's mouth. Full figures, same height, well inside square with 15 percent empty transparent margins. Handmade matte polymer clay, rounded simple shapes, no realistic skin. Only the two clay figures and single seed. Background MUST be completely transparent with NO glow, NO colored haze, NO scene, NO floor, NO spotlight, NO vignette, NO backdrop, NO shadows beyond the silhouettes. No text."
+    },
+    {
+      "id": "shell",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-9bd09ede-37e9-4208-9f19-299d0e2f2762.png",
+      "file": "shell.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "One transparent-background educational illustration. Same exact Pip sparrow character and premium hand-sculpted FIMO clay style as reference: taupe brown/cream, ochre beak/feet, big expressive eyes. NO name badge. Soft upper-left light, full figures with generous clear margin, no text, no borders. One EMPTY split sunflower seed shell in two halves. Hollow interiors clearly visible, all edible seed gone. Only the clay shell, no bird, no crumbs."
+    },
+    {
+      "id": "reporter",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-eb593c1f-9cae-4204-9a1d-c6e292f40e43.png",
+      "file": "reporter.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "One transparent-background educational illustration. Same exact Pip sparrow character and premium hand-sculpted FIMO clay style as reference: taupe brown/cream, ochre beak/feet, big expressive eyes. NO name badge. Soft upper-left light, full figures with generous clear margin, no text, no borders. A friendly young adult woman with dark hair, muted sage top, shown waist-up talking to a young adult man on right. She gestures toward a single friendly Pip bird standing between them below, with one intact sunflower seed next to it. An EMPTY cream speech bubble above woman shows that she is speaking; do not write anything in it. No other bubbles."
+    },
+    {
+      "id": "only-bird",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-e68ef6b9-d187-461a-a40a-92142bf417d7.png",
+      "file": "only-bird.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "One transparent-background educational illustration. Same exact Pip sparrow character and premium hand-sculpted FIMO clay style as reference: taupe brown/cream, ochre beak/feet, big expressive eyes. NO name badge. Soft upper-left light, full figures with generous clear margin, no text, no borders. Pip actively eating ONE golden sunflower seed on left. On right a friendly small grey rabbit watches with CLOSED mouth and does not eat anything. Clearly only the bird is eating, rabbit not eating. Both on same ground line."
+    },
+    {
+      "id": "only-seed",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-376b73d9-6fc7-4853-9ede-1ebe39edcd03.png",
+      "file": "only-seed.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "One transparent-background educational illustration. Same exact Pip sparrow character and premium hand-sculpted FIMO clay style as reference: taupe brown/cream, ochre beak/feet, big expressive eyes. NO name badge. Soft upper-left light, full figures with generous clear margin, no text, no borders. Pip actively eating ONE golden sunflower seed. On floor beside him an untouched bright red berry and an untouched green leaf remain. Clearly eats seed only, not other foods."
+    },
+    {
+      "id": "scarce",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-8e922e46-9c94-49ed-865d-0c13aa08834c.png",
+      "file": "scarce.webp",
+      "reference": "/Users/petakirikiri/.codex/generated_images/01a028f4-6a1c-7f93-b296-88c287eb69ae/exec-556946d7-5113-413f-8aa1-6d88f9b95359.png",
+      "prompt": "One transparent-background educational illustration. Same exact Pip sparrow character and premium hand-sculpted FIMO clay style as reference: taupe brown/cream, ochre beak/feet, big expressive eyes. NO name badge. Soft upper-left light, full figures with generous clear margin, no text, no borders. Pip looks worried at EXACTLY ONE tiny intact sunflower seed in an otherwise EMPTY large shallow cream bowl. Closed mouth. Obviously hardly any food, unlike three separate seeds."
+    }
+  ]
+}

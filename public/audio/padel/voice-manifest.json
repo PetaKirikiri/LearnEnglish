@@ -683,6 +683,162 @@
     "text": "The coach has not arrived.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "padel-foundation-balls-1.wav": {
+    "fingerprint": "f175bb1d97827994871dfed4e2efb4ef60b13c510069c8883d846f6e0718a86f",
+    "seconds": 1.045,
+    "text": "One ball.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-balls-2.wav": {
+    "fingerprint": "065bb823cedb31730753f6318ba214a92efcb4be8dfbd6270e1e381e7bb520e3",
+    "seconds": 1.045,
+    "text": "Two balls.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-coach-location-1.wav": {
+    "fingerprint": "26b6dfffde5bea45f2226754c49bd9c0bcbfcec9d18656194a1992b528f50231",
+    "seconds": 1.286,
+    "text": "The coach is here.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-coach-location-2.wav": {
+    "fingerprint": "9c5c503e9b132f9e3938c2dca73961ec25f7ef4b67ab9ce21ce38761967f4da7",
+    "seconds": 1.275,
+    "text": "The coach is there.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-court-location-1.wav": {
+    "fingerprint": "e57a178157d1aaf184249cb5d508407498e7205ae6de0529e1bdf53257066f11",
+    "seconds": 1.615,
+    "text": "The court is on your left.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-court-location-2.wav": {
+    "fingerprint": "84c6f2d8d5f9e5d0f922aa76094152f284b8acdc96b91eb84aca38b95a8dbbe7",
+    "seconds": 1.667,
+    "text": "The court is on your right.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-not-playing-1.wav": {
+    "fingerprint": "21315c10b1f1c8222497ea12e8242590dd19f38b4ff263ca96838e269105e905",
+    "seconds": 1.237,
+    "text": "I am playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-not-playing-2.wav": {
+    "fingerprint": "5f69a5683b4aabc0b8312e088f6f6362c0d073468525f4dd46b8897c96e76719",
+    "seconds": 1.349,
+    "text": "I am not playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-not-waiting-1.wav": {
+    "fingerprint": "e10b16a6592cf3b665a45ca727c06bfe33dfcaacd7e2c592456d3c3b378c9246",
+    "seconds": 1.216,
+    "text": "I am waiting.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-not-waiting-2.wav": {
+    "fingerprint": "41f619a77b0aa169f3050a379aef15bbdf18c33e7b03e1dc4e05e7ee9072f2e4",
+    "seconds": 1.369,
+    "text": "I am not waiting.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-owner-ball-1.wav": {
+    "fingerprint": "6a724c11a880dcc096d00bad8e15261aff3329b8c5578f0101ddfb10de81cc69",
+    "seconds": 0.981,
+    "text": "My ball.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-owner-ball-2.wav": {
+    "fingerprint": "d224876e52b818be7c6c659ba83b69ab1b2ac073d5ceb7ebfaaf461e7ca1b63d",
+    "seconds": 1.003,
+    "text": "Your ball.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-owner-court-1.wav": {
+    "fingerprint": "2c021485bc33bdc2f0b70d4a31a9b85aa982510822017586e631a2ad74162d4a",
+    "seconds": 1.013,
+    "text": "My court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-owner-court-2.wav": {
+    "fingerprint": "d86712141c1e45cff85023987f4c87e2be4049496f88c1d9f12638de3fb59676",
+    "seconds": 1.013,
+    "text": "Your court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-owner-racket-1.wav": {
+    "fingerprint": "4f2ab9064ab0cd816d723aac6dfa6862d538253616fdc49bcf0d2c75cd2601d3",
+    "seconds": 1.087,
+    "text": "My racket.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-owner-racket-2.wav": {
+    "fingerprint": "21a7c953f4f94777a40f70d0356c93c2f4e2036501519815217ab570f6a08498",
+    "seconds": 1.087,
+    "text": "Your racket.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-player-location-1.wav": {
+    "fingerprint": "ea99204573fe7b02cf67e922ef8361ffb05d79fbef1a1f459a896c0af7d2cd07",
+    "seconds": 1.319,
+    "text": "The player is here.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-player-location-2.wav": {
+    "fingerprint": "5881452771ceacc4f984ccc40ca4d08a99e9c0934923c28a086a157dcd87f0d0",
+    "seconds": 1.317,
+    "text": "The player is there.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-players-1.wav": {
+    "fingerprint": "d314108fb3bb19743251b0fb1dc1ace47860d1e90287bb4ed315516af2ce7317",
+    "seconds": 1.067,
+    "text": "One player.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-players-2.wav": {
+    "fingerprint": "aab843f3334fda7fa6d6a73cb1b3a9ad89ce0dc1d762ab977085681ff6cfa4b9",
+    "seconds": 1.109,
+    "text": "Two players.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-playing-1.wav": {
+    "fingerprint": "21315c10b1f1c8222497ea12e8242590dd19f38b4ff263ca96838e269105e905",
+    "seconds": 1.237,
+    "text": "I am playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-playing-2.wav": {
+    "fingerprint": "600177b3c4b57e9be96bbd49a1f97ee0957c83d0f890ff25237cc497433d2395",
+    "seconds": 1.148,
+    "text": "You are playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-waiting-1.wav": {
+    "fingerprint": "e10b16a6592cf3b665a45ca727c06bfe33dfcaacd7e2c592456d3c3b378c9246",
+    "seconds": 1.216,
+    "text": "I am waiting.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-waiting-2.wav": {
+    "fingerprint": "439b9c4ed3e060452249bf6c19cdd0a7057e7cd4ba14253a6c2cff0628218e8a",
+    "seconds": 1.158,
+    "text": "You are waiting.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-we-playing-1.wav": {
+    "fingerprint": "21315c10b1f1c8222497ea12e8242590dd19f38b4ff263ca96838e269105e905",
+    "seconds": 1.237,
+    "text": "I am playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "padel-foundation-we-playing-2.wav": {
+    "fingerprint": "4a48d8e761eadeedf71c2f72ad2e0dc38854eb1e055fa3c28e522644b8509ed4",
+    "seconds": 1.149,
+    "text": "We are playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "padel-gear-1-1.wav": {
     "fingerprint": "f180d55de87aa78f4ad6b2876cdbea9ad7264a4b76bec38b17416e4895d1d639",
     "seconds": 1.024,

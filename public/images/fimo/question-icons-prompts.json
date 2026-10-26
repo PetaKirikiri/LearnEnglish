@@ -1,0 +1,28 @@
+{
+  "tool": "Built-in image generation",
+  "reference": "thumbs/word-who.png",
+  "preserved": ["thumbs/word-who.png", "thumbs/word-what.png"],
+  "style": "Handmade FIMO polymer clay, matte tactile fine texture, chunky rounded sculpted forms, soft dimensional self shadows and highlights. Muted teal, sage, warm cream, ochre palette. Centered, fills 80% of a square, legible at 48px. Genuine transparent cutout. No text, letters, backdrop, tile, border, question marks or unrelated decorations.",
+  "assets": [
+    {
+      "path": "thumbs/word-question-where-clay.png",
+      "prompt": "Single instantly recognizable upright teardrop location pin with a round hole, chunky physical clay, slight three-quarter view."
+    },
+    {
+      "path": "thumbs/word-question-when-clay.png",
+      "prompt": "A clear round analog clock, thick teal clay rim, cream face, twelve simple raised tick marks, two bold dark hands at 10:10, face almost frontal with subtle 3D depth. Readable as a clock immediately."
+    },
+    {
+      "path": "thumbs/word-question-weight-scale-clay.png",
+      "prompt": "An unmistakable classic mechanical kitchen WEIGHT SCALE: flat shallow weighing platform on top, sturdy teal base, LARGE circular cream dial on front with bold dark needle and simple raised tick marks. One small clay weight sits on the top platform. Almost frontal slight three-quarter view. It measures weight, NOT liquid volume. NO cup, NO jug, NO pitcher, NO handle, NO measuring vessel."
+    },
+    {
+      "path": "thumbs/word-question-many-clay.png",
+      "prompt": "A chunky handheld calculator, muted teal clay body, recessed dark display and a simple grid of raised cream and ochre buttons. Almost frontal with small three-quarter depth. Calculator must be recognizable, not a phone. No text or numerals."
+    },
+    {
+      "path": "thumbs/word-question-why-clay.png",
+      "prompt": "A friendly human clay character from waist up, natural warm skin tone, short brown clay hair, sage shirt, BOTH shoulders raised and BOTH palms up in a shrug, eyebrows knitted and raised, mouth slightly open, expression mildly frustrated and baffled as if saying why did you do that. Clear expressive face, not angry or aggressive. Hands clearly visible either side."
+    }
+  ]
+}

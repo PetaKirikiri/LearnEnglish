@@ -4,16 +4,16 @@ import { scopeCurriculum } from './courseScope'
 import { curriculumSchema } from './schema'
 import snapshot from './syllabus.snapshot.json'
 import { installCurriculum, selectLearningCourse, getCurriculum } from './database'
-import { hotelQuestions, nextQuestion, recordAnswer, loadProgress, progressKey, grammarWordMemoryKey, legacyProgressKey, legacyWordMemoryKey, type Progress, requiresAudioCheck } from '../hotel/course'
+import { hotelQuestions, nextQuestion, recordAnswer, loadProgress, progressKey, grammarWordMemoryKey, legacyProgressKey, legacyWordMemoryKey, type Progress, requiresAudioCheck, isSkillReady } from '../hotel/course'
 import { loadWordFamiliarity } from '../hotel/wordFamiliarity'
 const data = curriculumSchema.parse(snapshot)
 afterEach(() => { installCurriculum(data); localStorage.clear() })
 
 it('partitions every question exactly once and scopes content, structures and vocabulary together', () => {
   const english = scopeCurriculum(data, 'english'), hotel = scopeCurriculum(data, 'hotel')
-  expect(english.questions).toHaveLength(2196)
+  expect(english.questions).toHaveLength(2336)
   expect(hotel.questions).toHaveLength(294)
-  expect(new Set([...english.questions,...hotel.questions].map(q=>q.id)).size).toBe(2490)
+  expect(new Set([...english.questions,...hotel.questions].map(q=>q.id)).size).toBe(data.questions.length)
   for (const course of [english,hotel]) {
     const ids = new Set(course.questions.map(q=>q.id))
     expect(course.structures.flatMap(s=>s.questionIds).every(id=>ids.has(id))).toBe(true)
@@ -56,6 +56,10 @@ it('only practices the chosen course and can reach all its questions with recurr
       const q = nextQuestion(progress,previous,round,()=>0,1000)
       expect(q).toBeDefined()
       expect(allowed.has(q.id)).toBe(true)
+      const catalogue=getCurriculum()!
+      const node=catalogue.skills.find(n=>n.id===catalogue.courseSkills.find(s=>s.skill===q.skill)!.nodeId)!
+      for(const parent of catalogue.courseSkills.filter(s=>node.prerequisites.includes(s.nodeId)))
+        expect(isSkillReady(progress,parent.skill),`${course}: ${q.skill} before ${parent.skill}`).toBe(true)
       seen.add(q.id); previous=q.id
       progress=recordAnswer(progress,q,true,false,1000,requiresAudioCheck(progress,q))
     }

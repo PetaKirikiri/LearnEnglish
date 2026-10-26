@@ -1,0 +1,296 @@
+{
+  "class-one-question-1-1.wav": {
+    "fingerprint": "b38b086d059e615504029c7715b8b4bdb54fac0260bec24ba5e18ccbb81bf43c",
+    "seconds": 1.381,
+    "text": "Who is in the house?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-1-2.wav": {
+    "fingerprint": "89a322e0904fcd9b48b196364e202d783ee5c4da75c59cf016a14567c64b54f0",
+    "seconds": 1.369,
+    "text": "What is in the house?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-10-1.wav": {
+    "fingerprint": "660cc778da21e9a35785bf6128f14a5a8a03ac9c8d52c8649668f3ff8c4305f5",
+    "seconds": 1.592,
+    "text": "When is the woman leaving?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-10-2.wav": {
+    "fingerprint": "cee2ee80d34cc09b00368d634d4884d54384866bc884b89b2db330b344083afd",
+    "seconds": 1.615,
+    "text": "Why is the woman leaving?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-11-1.wav": {
+    "fingerprint": "89eb09cb99afabecc136c873af256940ce358be77fbbdd1725fc7dad0057a608",
+    "seconds": 1.474,
+    "text": "Why do we need water?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-11-2.wav": {
+    "fingerprint": "03cb7788c462a99395bcf9d082b8b86935d1539ced29ec9af78329601b54c291",
+    "seconds": 1.657,
+    "text": "How much water do we need?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-12-1.wav": {
+    "fingerprint": "0a99ea518e5c60ddeaae3a2b3bfe42d105f4956caaadb28bb308fbdc12f679be",
+    "seconds": 1.71,
+    "text": "Why do you need these bags?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-12-2.wav": {
+    "fingerprint": "6e004829634e4cbb8306f3f4293d421f50e30646009860fb077274305d4975e9",
+    "seconds": 1.68,
+    "text": "How many bags do you need?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-13-1.wav": {
+    "fingerprint": "fd183333322cf1a859c7e6fed52b161b46cd60d667fa5d73a82f539fe6dbfe4d",
+    "seconds": 1.549,
+    "text": "How many bags are there?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-13-2.wav": {
+    "fingerprint": "bd05af2e604f54fc7794280e087da1e750ad036f973e0d2dfe091c190ea6d3ec",
+    "seconds": 1.527,
+    "text": "How much are the bags?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-14-1.wav": {
+    "fingerprint": "5cf240f5937d4993215618c82765225eef39221ab7c82d1dfb5219637bd3ca00",
+    "seconds": 1.485,
+    "text": "How many books are there?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-14-2.wav": {
+    "fingerprint": "f220153b6568593f822538f14f7c20fbbcd3fbbe54079e28cfedc1dd8bb5ef8d",
+    "seconds": 1.495,
+    "text": "How much are the books?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-2-1.wav": {
+    "fingerprint": "788b6cc4394a1a60452576916948c3e46b0b6b2ade0c15a46ac26c9157e10160",
+    "seconds": 1.263,
+    "text": "Who is at the door?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-2-2.wav": {
+    "fingerprint": "b747a5ab15eff1fdbc90eced6fe7b28df63da5dd6cac4fcbb8354138dc03463e",
+    "seconds": 1.263,
+    "text": "What is at the door?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-3-1.wav": {
+    "fingerprint": "fbb6a25eca2f4a1fa3674ec714d4784c7a80758e3e2f118b6b9c5121d8c13e0a",
+    "seconds": 1.413,
+    "text": "Who is that person?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-3-2.wav": {
+    "fingerprint": "9a0d94479a67fc681c56e4d9234e4f9cf0a7836faed078c4e5a7c4fee00c4f69",
+    "seconds": 1.403,
+    "text": "Where is that person?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-4-1.wav": {
+    "fingerprint": "5196ce5acfc85251545f53126bda09e52ccd82f014ba0731ce8bc7e2637f83b7",
+    "seconds": 1.337,
+    "text": "Who is that woman?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-4-2.wav": {
+    "fingerprint": "3a2e3bee78d5503711b70c6d0de44955b78bc76f67723c399359840dc7f72dd0",
+    "seconds": 1.359,
+    "text": "Where is that woman?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-5-1.wav": {
+    "fingerprint": "cd292476c8df6cdc22774fa4e57730bc006deadb8e876e2d85a89b2b4d9dbc0e",
+    "seconds": 1.495,
+    "text": "What books do you have?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-5-2.wav": {
+    "fingerprint": "73ecd52d1c81d2b90f2e9efaa37b7171951282f4a9aefcff5d3de2d5420d805a",
+    "seconds": 1.645,
+    "text": "How many books do you have?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-6-1.wav": {
+    "fingerprint": "9af0e1f59bbbcbfc3267aa77c0965537a5411fb52e1cff82dbc33246aba9992a",
+    "seconds": 1.528,
+    "text": "What food do you want?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-6-2.wav": {
+    "fingerprint": "607270cd063234b602aa7c62b524fd8a66645da6cd5ad50d20f39f30e130ce17",
+    "seconds": 1.572,
+    "text": "How much food do you want?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-7-1.wav": {
+    "fingerprint": "6df3b12802949229e1b0f323bfd4cb3757d1b0441b13f6fcc8144022cb98f29f",
+    "seconds": 1.211,
+    "text": "Where do we eat?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-7-2.wav": {
+    "fingerprint": "bf551a126498f60a04051e8a75e890879223d95fb506c272b20b2ddf29243507",
+    "seconds": 1.211,
+    "text": "When do we eat?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-8-1.wav": {
+    "fingerprint": "1d93ae5f752ed1f261046ba6035e31851316fb1d8b58d652ef55012cc8f5a4cd",
+    "seconds": 1.603,
+    "text": "Where do the children play?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-8-2.wav": {
+    "fingerprint": "72bfbc0314888f70beb624ddac53891fc2f539dc9f91f50912c4ebf5b45898bf",
+    "seconds": 1.593,
+    "text": "When do the children play?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-9-1.wav": {
+    "fingerprint": "97b26e3692e8b491c4c02b42ebc3b93b7b4b193f022187ed23c52e33b17a0cbd",
+    "seconds": 1.168,
+    "text": "When do you eat?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "class-one-question-9-2.wav": {
+    "fingerprint": "2572ad00c77f622d47acd48c5059b0df62204c3ed9288054a9092efd143ab64c",
+    "seconds": 1.199,
+    "text": "Why do you eat?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "identity-1.wav": {
+    "fingerprint": "84fdaf47325e893d63c55d2e2252a7b1f76aa9a752b3a65649474e85c10e53a1",
+    "seconds": 1.119,
+    "text": "Who is this?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "identity-2.wav": {
+    "fingerprint": "771fc400bd0508df67489c0a7e4c9a0b9f5082470dea8ba0079a78fe1dd4e35f",
+    "seconds": 1.119,
+    "text": "What is this?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "question-word-1.wav": {
+    "fingerprint": "a826fe27f80a1629b26badd0f066e43993e927c09e7752f53a868eda37d5374b",
+    "seconds": 0.799,
+    "text": "Who?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "question-word-2.wav": {
+    "fingerprint": "2624f6f635f29b20230cbde59e39676d6dffd43b9ec2f94b32ea97480140c6ea",
+    "seconds": 0.778,
+    "text": "What?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "question-word-3.wav": {
+    "fingerprint": "85a3303789cfbc73fb78664c6e0094f9ccbcde91d75ecb4ed9fd3814d6a78ba1",
+    "seconds": 0.789,
+    "text": "Where?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "question-word-4.wav": {
+    "fingerprint": "20472ce5701d5122fa968d5cd24355d861364af89c80b670f3360a4c9cd7cbaf",
+    "seconds": 0.789,
+    "text": "When?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "question-word-5.wav": {
+    "fingerprint": "d046a11ca989658a4a536d488de49ac2553e2dab878b8e1d7aed7bf4e1bf2fa8",
+    "seconds": 0.789,
+    "text": "Why?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "question-word-6.wav": {
+    "fingerprint": "3a4f625c7e641108b670d33241f68e0199f4e613f72d0fe5ec5870274905f5dd",
+    "seconds": 1.077,
+    "text": "How much?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "question-word-7.wav": {
+    "fingerprint": "90bcec0ee58d4d4c7fd4de31bb10776217a9ca0673d4973e7d43ba3894ee0a05",
+    "seconds": 1.053,
+    "text": "How many?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "word-1.wav": {
+    "fingerprint": "d04b323b855b76d15a2210fa01ecfb853466364116585ffd1be1eb5d742f1c40",
+    "seconds": 1.045,
+    "text": "A person",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "word-10.wav": {
+    "fingerprint": "5aab9ed3a1f2d08cc2ce63d8e6b492100a4d91f70adc65ef27ccc5f00f7a473c",
+    "seconds": 1.003,
+    "text": "A phone",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "word-11.wav": {
+    "fingerprint": "d47dee223073bd9f6b339ffb4e86ab9eae787e007527ab6068f0af4120f9adc7",
+    "seconds": 0.875,
+    "text": "A book",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "word-12.wav": {
+    "fingerprint": "b04961d11678f12b9793befbb8f5c86704612390cb5e63441a37dc612924e75d",
+    "seconds": 1.003,
+    "text": "A house",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "word-2.wav": {
+    "fingerprint": "9aa204dbe328996ec42d9094f3b58fc81f39a136b75f623637d9fc0881f40258",
+    "seconds": 0.917,
+    "text": "People",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "word-3.wav": {
+    "fingerprint": "b0f273592eec7527d54b2153e4b2d7dc636b7bdc90f3409916b4b7cfef3dde3b",
+    "seconds": 0.939,
+    "text": "A man",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "word-4.wav": {
+    "fingerprint": "5abf3fc9fb2256bb3e00779a5a64d45c93f2e1c8b7d6aeba541fd62be51d1349",
+    "seconds": 0.981,
+    "text": "A woman",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "word-5.wav": {
+    "fingerprint": "0cbb1966cf6cd5958ef529cbd6fe4bbe1ce863819cba7cef7de6eb650ea0d57d",
+    "seconds": 1.067,
+    "text": "A child",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "word-6.wav": {
+    "fingerprint": "72fe05faab8f5cf229e840ca04df6e449843bf7ab21a692e1ed51cf7e918f18e",
+    "seconds": 0.96,
+    "text": "Children",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "word-7.wav": {
+    "fingerprint": "8d614d105e15ec4da64c58d5bfa01b8d6fac2b64eea4db57765039a0c6d819c4",
+    "seconds": 0.853,
+    "text": "Water",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "word-8.wav": {
+    "fingerprint": "d8225db8eaede9c28ccd27cb4e9415b26c7aa40dc95cb03e4594aaa9d88639f7",
+    "seconds": 0.853,
+    "text": "Food",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "word-9.wav": {
+    "fingerprint": "82908fe5d90f30c8d50a0d7cf35339621b701e47b0639908729f4bfa377f5c52",
+    "seconds": 0.896,
+    "text": "A bag",
+    "voice": "kokoro-1.0-heart-v1"
+  }
+}

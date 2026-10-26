@@ -5,6 +5,9 @@ import { hotelWordGlosses } from '../hotel/wordGlosses'
 import { newGlosses } from './newGlosses'
 import { generalQuestions, generalPairs } from './generalContent'
 import { generalGlosses, courseMeaningOverrides } from './generalGlosses'
+import { beginnerNodes, beginnerQuestions } from './beginnerContent'
+import { alignEnglish } from './englishAlignment'
+import { introductionNodes, introductionQuestions, introductionGlosses } from './introductions'
 
 // Frames are teaching templates, not a copied external word/grammar inventory.
 const existing:Record<string,{frames:string[];focus:string[]}>={
@@ -27,26 +30,29 @@ const existing:Record<string,{frames:string[];focus:string[]}>={
 export const tokenize=(text:string)=>text.toLowerCase().match(/[a-z]+(?:'[a-z]+)*/g)??[]
 export function buildSyllabus(dictionary:Record<string,string>={}):Curriculum {
   const base=buildCurriculumSeed()
-  const questions=[...base.questions,...expandedQuestions().map(q=>({...q,grammar:q.grammar!})),...generalQuestions().map(q=>({...q,grammar:q.grammar!}))]
-  const courseSkills=[...base.courseSkills,...contrasts.map(c=>({course:'hotel' as const,skill:`route_${c.node.replaceAll('-','_')}`,nodeId:c.node,order:0}))]
-    .sort((a,b)=>base.skills.find(s=>s.id===a.nodeId)!.order-base.skills.find(s=>s.id===b.nodeId)!.order)
+  const openingNodes=[...beginnerNodes,...introductionNodes]
+  const skills=alignEnglish([...base.skills,...openingNodes.map((node,i)=>({id:node.id,level:'A1' as const,order:base.skills.length+i,title:node.title,family:introductionNodes.some(n=>n.id===node.id)?'interaction' as const:'verbs' as const,thaiBridge:node.bridge,prerequisites:[],references:base.skills[0].references}))])
+  const questions=[...base.questions,...expandedQuestions(),...generalQuestions(),...beginnerQuestions(),...introductionQuestions()].map(q=>({...q,grammar:q.grammar!}))
+  const courseSkills=[...base.courseSkills,...contrasts.map(c=>({course:'hotel' as const,skill:`route_${c.node.replaceAll('-','_')}`,nodeId:c.node,order:0})),...openingNodes.map(n=>({course:'hotel' as const,skill:n.skill,nodeId:n.id,order:0}))]
+    .sort((a,b)=>skills.find(s=>s.id===a.nodeId)!.order-skills.find(s=>s.id===b.nodeId)!.order)
     .map((s,order)=>({...s,order}))
-  const structures=base.skills.map(node=>{
-    const spec=existing[node.id]??contrasts.find(c=>c.node===node.id)!
+  const structures=skills.map(node=>{
+    const spec=existing[node.id]??contrasts.find(c=>c.node===node.id)??openingNodes.find(n=>n.id===node.id)!
     const groups=courseSkills.filter(s=>s.nodeId===node.id).map(s=>s.skill)
     const items=questions.filter(q=>groups.includes(q.skill))
     const extra=generalPairs.filter(p=>p.node===node.id)
     return {id:`structure-${node.id}`,nodeId:node.id,frames:[...new Set([...spec.frames,...extra.flatMap(p=>p.frames)])],focusWords:[...new Set([...spec.focus,...extra.flatMap(p=>p.focus)])],
+      englishFrames: openingNodes.find(n=>n.id===node.id)?.frames ?? [...new Set(extra.flatMap(p=>p.frames))],
       questionIds:items.map(q=>q.id),vocabulary:[...new Set(items.flatMap(q=>tokenize(q.english)))].sort(),coverage:'introductory' as const}
   })
   const grammarWords=new Set(structures.flatMap(s=>s.focusWords))
   const words=[...new Set(structures.flatMap(s=>s.vocabulary))]
   const vocabulary=words.map(word=>{
     const used=structures.filter(s=>s.vocabulary.includes(word))
-    const thai=courseMeaningOverrides[word]??hotelWordGlosses[word]??newGlosses[word]??dictionary[word]??generalGlosses[word]
+    const thai=courseMeaningOverrides[word]??introductionGlosses[word]??hotelWordGlosses[word]??newGlosses[word]??dictionary[word]??generalGlosses[word]
     if(!thai) throw new Error(`Missing reviewed Thai meaning: ${word}`)
     return {word,thai,firstNodeId:used[0].nodeId,structureIds:used.map(s=>s.id),role:grammarWords.has(word)?'grammar' as const:'support' as const}
   })
   const wordLinks=questions.flatMap(q=>[...new Set(tokenize(q.english))].map(word=>({questionId:q.id,word,role:q.grammar.targets.includes(word)?'target' as const:'context' as const})))
-  return curriculumSchema.parse({...base,version:2,revision:'2026-10-19.3',courseSkills,questions,structures,vocabulary,wordLinks})
+  return curriculumSchema.parse({...base,version:2,revision:'2026-10-25.2',skills,courseSkills,questions,structures,vocabulary,wordLinks})
 }

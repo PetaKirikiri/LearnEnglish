@@ -19,6 +19,7 @@ import CurriculumPage from '../curriculum/CurriculumPage'
 import { courseNames, type LearningCourse } from '../curriculum/courseScope'
 import { englishLineEntryUrl } from '../english/lineEntry'
 import { englishScoring } from '../english/scoring'
+import MyLearning from '../portal/MyLearning'
 
 // One listening interaction, with explicit course boundaries for content,
 // storage and scoring. Padel must never submit attempts to Hotel's scoreboard.
@@ -29,8 +30,15 @@ export type ListeningCourse = {
   loadProgress: typeof loadProgress
   nextQuestion: typeof nextQuestion
   isSkillComplete: typeof isSkillComplete
+  recordAnswer?: typeof recordAnswer
+  requiresAudioCheck?: typeof requiresAudioCheck
+  progressSkill?: (question: HotelQuestion) => string
   progressKey: (userId: string) => string
   wordMemoryKey: (userId: string) => string
+  wordUnits?: (text: string) => string[]
+  wordOpacity?: typeof wordOpacity
+  recordExposure?: typeof recordWordExposure
+  gradualSupport?: boolean
   legacyWordMemoryKey?: (userId: string) => string
   WordHelp: ComponentType<Parameters<typeof HotelWordHelp>[0]>
   sync?: (userId: string) => Promise<unknown>
@@ -61,7 +69,8 @@ export default function HotelPage({ courseId = 'hotel' }: { courseId?: LearningC
   const lesson = courseId === 'english' ? englishCourse : hotelCourse
   const isAdmin = user ? appDestination(user.id, '/admin') === 'admin' : false
   const path = window.location.pathname.replace(/\/$/, '')
-  const preview = import.meta.env.DEV && [base+'/preview',base+'/preview/content',base+'/preview/curriculum'].includes(path)
+  const preview = import.meta.env.DEV && [base+'/preview',base+'/preview/content',base+'/preview/curriculum',...(courseId==='english'?[base+'/preview/learning']:[])].includes(path)
+  const showLearning = courseId==='english' && (path===base+'/learning' || (preview && path===base+'/preview/learning'))
   const practicePath = preview ? `${base}/preview` : base
   const showContent = (isAdmin && path === `${base}/content`) || (preview && /\/content\/?$/.test(path))
   const showScores = isAdmin && path === `${base}/scoreboard`
@@ -82,6 +91,9 @@ export default function HotelPage({ courseId = 'hotel' }: { courseId?: LearningC
       .finally(() => { if (active) setBusy(false) })
     return () => { active = false }
   }, [courseId])
+  if(showLearning && (preview || user)) return <main className="english-learning-shell">
+    <CurriculumGate course="english" preview={preview}><MyLearning key={user?.id??'preview'} userId={preview?'local-preview':user!.id} teacher={preview||isAdmin} preview={preview} course={englishCourse}/></CurriculumGate>
+  </main>
   return <main className="hotel-shell">
     <header className="hotel-header listening-course-header">
       <a href={courseId === 'hotel' && isHotelLineEntry(window.location.search) ? hotelAccountUrl() : practicePath}>ENGLISH<span>SUCCESS</span></a>
@@ -95,8 +107,9 @@ export default function HotelPage({ courseId = 'hotel' }: { courseId?: LearningC
         <a className="hotel-nav-icon" aria-label="Learning route" title="Learning route" aria-current={showCurriculum ? 'page' : undefined} href={`${practicePath}/curriculum`}><Icon name="grid" /></a>
         {isAdmin ? <a className="hotel-nav-icon" aria-label="Scoreboard" title="Scoreboard" aria-current={showScores ? 'page' : undefined} href={`${base}/scoreboard`}><Icon name="trophy" /></a> : null}
       </nav> : null}
+      {courseId==='english' && <a href={`${practicePath}/learning`}>My learning</a>}
     </header>
-    {showScores ? <HotelScoreboard name={name} load={courseId === 'english' ? englishScoring.load : undefined} /> : showCurriculum ? <CurriculumGate key={courseId} course={courseId}><CurriculumPage /></CurriculumGate> : showContent ? <CurriculumGate key={courseId} course={courseId}><HotelContentPage course={courseId === 'english' ? englishContent : undefined} /></CurriculumGate> : preview || user ? <CurriculumGate key={courseId} course={courseId}><HotelLesson key={`${courseId}:${user?.id ?? 'local-preview'}`} userId={preview ? 'local-preview' : user!.id} course={lesson} /></CurriculumGate> : <section className="hotel-welcome">
+    {showScores ? <HotelScoreboard name={name} load={courseId === 'english' ? englishScoring.load : undefined} /> : showCurriculum ? <CurriculumGate key={courseId} course={courseId} preview={preview}><CurriculumPage /></CurriculumGate> : showContent ? <CurriculumGate key={courseId} course={courseId} preview={preview}><HotelContentPage course={courseId === 'english' ? englishContent : undefined} /></CurriculumGate> : preview || user ? <CurriculumGate key={courseId} course={courseId} preview={preview}><HotelLesson key={`${courseId}:${user?.id ?? 'local-preview'}`} userId={preview ? 'local-preview' : user!.id} course={lesson} /></CurriculumGate> : <section className="hotel-welcome">
       <div className="hotel-monogram" aria-hidden="true">{courseId === 'english' ? 'E' : 'H'}</div>
       <h1>English,<br /><em>by ear.</em></h1>
       <button className="hotel-line" disabled={busy || !entryUrl} onClick={() => void signIn(true)}>{busy ? 'Connecting…' : 'Sign up with LINE'}</button>
@@ -107,12 +120,13 @@ export default function HotelPage({ courseId = 'hotel' }: { courseId?: LearningC
   </main>
 }
 
-export function HotelLesson({ userId, course = hotelCourse }: { userId: string; course?: ListeningCourse }) {
+export function HotelLesson({ userId, course = hotelCourse, active = true }: { userId: string; course?: ListeningCourse; active?: boolean }) {
   const [progress, setProgress] = useState(() => course.loadProgress(userId))
   const [wordMemory, setWordMemory] = useState(() => loadWordFamiliarity(userId, course.wordMemoryKey(userId), course.legacyWordMemoryKey?.(userId)))
   const [question, setQuestion] = useState<HotelQuestion>(() => course.nextQuestion(progress))
   const CourseWordHelp = course.WordHelp
-  const firstQuestion = useRef(question)
+  const currentQuestion = useRef(question)
+  useEffect(()=>{currentQuestion.current=question},[question])
   const [flipped, setFlipped] = useState(() => Math.random() < 0.5)
   const [selected, setSelected] = useState<number | null>(null)
   const [revealed, setRevealed] = useState(false)
@@ -131,7 +145,12 @@ export function HotelLesson({ userId, course = hotelCourse }: { userId: string; 
   const playback = useRef(0)
   // This is fixed for the attempt; recording an answer must not change which
   // support was available when the learner chose.
-  const [assessment, setAssessment] = useState(() => requiresAudioCheck(progress, question))
+  function isAudioOnly(item:HotelQuestion) {
+    if (!course.gradualSupport) return (course.requiresAudioCheck ?? requiresAudioCheck)(progress,item)
+    const units=course.wordUnits?.(item.english)??[]
+    return units.length>0&&units.every(unit=>(course.wordOpacity??wordOpacity)(wordMemory,unit)===0)
+  }
+  const [assessment, setAssessment] = useState(() => isAudioOnly(question))
   const play = useCallback((item: HotelQuestion) => {
     const request = ++playback.current
     const text = item.grammar?.prompt ?? item.english
@@ -147,9 +166,9 @@ export function HotelLesson({ userId, course = hotelCourse }: { userId: string; 
     stopEnglishSpeech()
   }, [])
   useEffect(() => {
-    play(firstQuestion.current)
+    if(active) play(currentQuestion.current)
     return cancelPlayback
-  }, [play, cancelPlayback])
+  }, [active, play, cancelPlayback])
   useEffect(() => {
     void sync()
     const retry = () => { if (document.visibilityState === 'visible') void sync() }
@@ -158,14 +177,14 @@ export function HotelLesson({ userId, course = hotelCourse }: { userId: string; 
     return () => { window.removeEventListener('online', retry); document.removeEventListener('visibilitychange', retry) }
   }, [sync])
   function choose(index: number) {
-    if (answered.current || !heard) return
+    if (!active || answered.current || !heard) return
     answered.current = true
     setSelected(index)
     const assisted = revealed || helped
-    const updated = recordAnswer(progress, question, index === question.correct, assisted, undefined, assessment)
+    const updated = (course.recordAnswer ?? recordAnswer)(progress, question, index === question.correct, assisted, undefined, assessment)
     // Every encountered word earns familiarity, not grammar mastery. Actual
     // listening evidence is recorded separately above.
-    saveWords(recordWordExposure(wordMemory, question.english, index === question.correct, assisted))
+    saveWords((course.recordExposure??recordWordExposure)(wordMemory, question.english, index === question.correct, assisted, undefined, course.wordUnits?.(question.english)))
     setProgress(updated)
     try { localStorage.setItem(course.progressKey(userId), JSON.stringify(updated)) } catch { setStorageError(true) }
     if (userId !== 'local-preview' && course.queue) {
@@ -185,27 +204,28 @@ export function HotelLesson({ userId, course = hotelCourse }: { userId: string; 
   }
   function next() {
     const item = course.nextQuestion(progress, question.id, ++round.current)
-    setAssessment(requiresAudioCheck(progress, item))
+    setAssessment(isAudioOnly(item))
     setQuestion(item); setSelected(null); setRevealed(false); setHelped(false); setHeard(false); setFlipped(Math.random() < 0.5); answered.current = false; play(item)
   }
   const order = flipped ? [1, 0] : [0, 1]
-  // Freeze fading until the next question: feedback must not move the support.
-  const support = selected === null && !revealed
+  // Existing courses reveal feedback; Success gradually adjusts the same tiles.
+  const support = !revealed && (course.gradualSupport || selected === null)
   const displayQuestion = selected === null && question.grammar?.prompt ? { ...question, english: question.grammar.prompt, audioUrl: question.grammar.promptAudioUrl! } : question
   const clay = course.presentation === 'clay'
   const completed = course.skills.filter(skill => course.isSkillComplete(progress, skill)).length
-  const taskName = course.skillNames?.[course.skills.indexOf(question.skill)] ?? question.skill
+  const currentSkill = course.progressSkill?.(question) ?? question.skill
+  const taskName = course.skillNames?.[course.skills.indexOf(currentSkill)] ?? currentSkill
   return <section className={`hotel-lesson${clay ? ' hotel-lesson-clay' : ''}`}>
     {clay ? <div className="clay-task-progress">
       <div className="clay-task-caption"><span>{taskName}</span><span aria-label={`${completed} of ${course.skills.length} topics completed`}>{completed} / {course.skills.length}</span></div>
       <div className="hotel-journey" role="progressbar" aria-label="Topics completed" aria-valuemin={0} aria-valuemax={course.skills.length} aria-valuenow={completed}>
-        {course.skills.map((skill,i) => <span key={skill} title={course.skillNames?.[i] ?? skill} className={`${course.isSkillComplete(progress, skill) ? 'learned' : ''}${skill === question.skill ? ' current' : ''}`} />)}
+        {course.skills.map((skill,i) => <span key={skill} title={course.skillNames?.[i] ?? skill} className={`${course.isSkillComplete(progress, skill) ? 'learned' : ''}${skill === currentSkill ? ' current' : ''}`} />)}
       </div>
     </div> : <div className="hotel-journey" aria-label="Listening progress">{course.skills.map(skill => <span key={skill} className={course.isSkillComplete(progress, skill) ? 'learned' : ''} />)}</div>}
       <button className="hotel-listen" onClick={() => play(question)} aria-label="Play English audio"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 27h10l12-10v30L22 37H12zM43 23q12 9 0 18M49 15q21 17 0 34" /></svg></button>
       <p className="hotel-audio" aria-live="polite">{audio}</p>
       {question.grammar?.thai ? <p className="hotel-sentence" lang="th">{question.grammar.thai}</p> : null}
-      {!assessment || revealed || selected !== null ? <p className="hotel-sentence" lang="en"><CourseWordHelp key={`${question.id}-${selected === null}`} question={displayQuestion} onListen={() => play(question)} onHelp={helpWord} tokenOpacity={word => support ? (question.grammar ? listeningWordOpacity : wordOpacity)(wordMemory, word) : 1} /></p> : null}
+      {active && (course.gradualSupport || !assessment || revealed || selected !== null) ? <p className="hotel-sentence" lang="en"><CourseWordHelp key={course.gradualSupport ? question.id : `${question.id}-${selected === null}`} question={displayQuestion} onListen={() => play(question)} onHelp={helpWord} tokenOpacity={word => support ? (course.wordOpacity ?? (question.grammar ? listeningWordOpacity : wordOpacity))(wordMemory, word) : 1} /></p> : null}
       <div className="hotel-answers">{order.map(index => <button key={`${question.id}-${index}`} disabled={selected !== null || !heard} className={`hotel-answer ${selected !== null && index === question.correct ? 'right' : selected === index ? 'wrong' : ''}`} onClick={() => choose(index)}>
         <span lang={question.grammar?.kind === 'form' ? 'en' : 'th'}>{question.answers[index].map((segment, i) => <span key={i}>{segment.text}</span>)}</span>
       </button>)}</div>

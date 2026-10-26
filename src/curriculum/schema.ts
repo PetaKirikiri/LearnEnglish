@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const levels = ['A1', 'A2', 'B1', 'B2', 'C1'] as const
+export const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const
 export type Level = typeof levels[number]
 const id = z.string().regex(/^[a-z][a-z0-9_-]*$/)
 const reference = z.object({ sourceId: id, locator: z.string().min(1), status: z.enum(['adapted', 'reference-only']) })
@@ -14,6 +14,7 @@ export const curriculumQuestionSchema = z.object({
     targets: z.array(z.string().min(1)), explanation: z.string().min(1), contrast: z.string().min(1),
     thai: z.string().optional(), prompt: z.string().optional(),
     domain: z.enum(['Home','Family','Food','Work','Study','Shopping','Travel','Leisure']).optional(),
+    sequenceTier: z.number().int().nonnegative().optional(),
     promptAudioUrl: z.string().regex(/^\/audio\/hotel\/hotel-g[23]-[a-z0-9_-]+-prompt\.wav$/).optional(),
   }),
 }).superRefine((q, ctx) => {
@@ -32,6 +33,7 @@ export const curriculumSchema = z.object({
     id, nodeId:id, frames:z.array(z.string().min(1)).min(1), focusWords:z.array(z.string().min(1)).min(1),
     questionIds:z.array(id).min(1), vocabulary:z.array(z.string().min(1)).min(1),
     coverage:z.literal('introductory'),
+    englishFrames: z.array(z.string().min(1)).min(1).optional(),
   })).default([]),
   vocabulary: z.array(z.object({
     word:z.string().min(1),thai:z.string().min(1),firstNodeId:id,structureIds:z.array(id).min(1),
@@ -42,6 +44,8 @@ export const curriculumSchema = z.object({
     id, level: z.enum(levels), order: z.number().int().nonnegative(), title: z.string().min(1),
     family: z.enum(['pronouns', 'verbs', 'determiners', 'relationships', 'interaction']),
     thaiBridge: z.string().min(1), prerequisites: z.array(id), references: z.array(reference).min(1),
+    englishOrder: z.number().int().nonnegative().optional(), englishPrerequisites: z.array(id).optional(),
+    englishLevel: z.enum(levels).optional(), englishReferences: z.array(reference).min(1).optional(),
   })).min(1),
   courseSkills: z.array(z.object({ course: z.literal('hotel'), skill: id, nodeId: id, order: z.number().int().nonnegative() })).min(1),
   questions: z.array(curriculumQuestionSchema).min(1),
@@ -55,7 +59,10 @@ export const curriculumSchema = z.object({
   const sourceIds = new Set(data.sources.map(s => s.id))
   for (const s of data.skills) {
     if (s.references.some(r => !sourceIds.has(r.sourceId))) fail(`Unknown reference: ${s.id}`)
+    if (s.englishReferences?.some(r => !sourceIds.has(r.sourceId))) fail(`Unknown English reference: ${s.id}`)
+    if (s.englishPrerequisites?.some(p => nodes.has(p) && levels.indexOf(nodes.get(p)!.englishLevel ?? nodes.get(p)!.level) > levels.indexOf(s.englishLevel ?? s.level))) fail(`English prerequisite level exceeds ${s.id}`)
     if (s.prerequisites.some(p => !nodes.has(p) || nodes.get(p)!.order >= s.order)) fail(`Prerequisites must precede ${s.id}`)
+    if (s.englishPrerequisites?.some(p => !nodes.has(p) || (nodes.get(p)!.englishOrder??nodes.get(p)!.order) >= (s.englishOrder??s.order))) fail(`English prerequisites must precede ${s.id}`)
   }
   const keys = data.courseSkills.map(s => `${s.course}:${s.skill}`)
   if (new Set(keys).size !== keys.length) fail('Duplicate course skill')

@@ -1,0 +1,212 @@
+{
+  "success-lesson-1-1.wav": {
+    "fingerprint": "79d3df74952610e7a3aab7dcaa9bc0e7bcf95cd36a26223c0f546be754a599e5",
+    "seconds": 0.789,
+    "text": "Who",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-lesson-1-2.wav": {
+    "fingerprint": "1a5b668bcbd37bf6216b042b473559760279b13293b77312415819445d0a0129",
+    "seconds": 0.683,
+    "text": "What",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-lesson-1-3.wav": {
+    "fingerprint": "6cdf5886706a3bb4bb4ff53798ac46cee5daaa9464c3f7a6a5236782d007657b",
+    "seconds": 0.747,
+    "text": "Where",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-lesson-1-4.wav": {
+    "fingerprint": "43aa22438a318f918a2fd35cee8fff78ceb2015b6ca134df6f20f23805f37ef9",
+    "seconds": 0.725,
+    "text": "When",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-lesson-1-5.wav": {
+    "fingerprint": "53cb7a396dc8b83c141534d549fa6b713c96718b89d014cd1dce6fb3b84d66c2",
+    "seconds": 0.981,
+    "text": "How much",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-lesson-1-6.wav": {
+    "fingerprint": "8ae0366bf9c4068a53aca25585d5a68ad04762e0eca88ec68ea665afd4a0a87f",
+    "seconds": 0.96,
+    "text": "How many",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-lesson-1-7.wav": {
+    "fingerprint": "3347524cfb326e8c9f3e3be4f291e87673718a929a0301671d4ce844810a0111",
+    "seconds": 0.811,
+    "text": "Why",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-1.wav": {
+    "fingerprint": "ece45054d76a8bbe848400d065bce658ede1dd1f8a2880bb6cf48acdb8acd475",
+    "seconds": 1.255,
+    "text": "Who is your coach?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-10.wav": {
+    "fingerprint": "713a0cc9c680e33b5c9e910c6c1e27502ab79dd317c6645da7650557633c04bb",
+    "seconds": 1.401,
+    "text": "Where is your racket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-11.wav": {
+    "fingerprint": "6972071421bd4e8fdf339a5f70859670e4e0d18b8bb3f5059bf3b5e7a94d5740",
+    "seconds": 1.592,
+    "text": "When does the game start?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-12.wav": {
+    "fingerprint": "9ffb703fb747911000437861c708baf0e7da65672e21ee7c836318352c46b1ea",
+    "seconds": 2.127,
+    "text": "How much is the court for one hour?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-13.wav": {
+    "fingerprint": "9b18b87439036db7f5f2d77b970183fc8b1197774b84d0b652164b5df8041b22",
+    "seconds": 1.667,
+    "text": "How many players are coming?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-14.wav": {
+    "fingerprint": "eb6f41a3197d1749e3dfedda86b6070f442883ef9dcc35776091f851f608193b",
+    "seconds": 1.613,
+    "text": "Why did you stop playing?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-15.wav": {
+    "fingerprint": "05567a72241af67c483ca449f26d3944766f5c8c5cc635b706276239f1d78a7e",
+    "seconds": 1.507,
+    "text": "Who is serving next?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-16.wav": {
+    "fingerprint": "b9cf84d9d5026c8897bc7f009f127e9d268053b812e0b3a89d2eae9c794ed0d3",
+    "seconds": 1.561,
+    "text": "What time is your booking?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-17.wav": {
+    "fingerprint": "506985ce992e65afe0f5ec0a8a382a696a82f6fb29bec23722cccfefe6731127",
+    "seconds": 1.316,
+    "text": "Where are you playing?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-18.wav": {
+    "fingerprint": "687c1fbca351f4a148b514c08fb1ba68710682545a09de80820fe3b0d3e0db8e",
+    "seconds": 1.646,
+    "text": "When does our booking finish?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-19.wav": {
+    "fingerprint": "2a584c5745225fe85ffd6ec767075c39c6ab7c424a04319bf1cde9c8d3367a44",
+    "seconds": 1.7,
+    "text": "How much is racket hire?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-2.wav": {
+    "fingerprint": "78870752929137f88044325bd1d160d26d84c0830179a5926654177761534b38",
+    "seconds": 1.243,
+    "text": "What is the score?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-20.wav": {
+    "fingerprint": "d1c7f564e5cf4a51bbb781e57f0591a09e06de4d1b27e1bc1d1738fa8394b42a",
+    "seconds": 1.733,
+    "text": "How many balls do we need?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-21.wav": {
+    "fingerprint": "c894855385f808871d3337c7f2da75af8530913c4a7bcdd0caa4e891211255b1",
+    "seconds": 1.538,
+    "text": "Why is the court wet?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-22.wav": {
+    "fingerprint": "90fa7e16ea0aa1acc10838d7ebc54cfff1bfb24cf57bf2c74ba0e34123bb6788",
+    "seconds": 1.359,
+    "text": "Who booked the court?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-23.wav": {
+    "fingerprint": "1aeaefc6b01a33f27516b5188384c9fc9f16d9cab0b774cf076c63469a7b386e",
+    "seconds": 1.764,
+    "text": "What side are you playing on?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-24.wav": {
+    "fingerprint": "123026e9b0a5ac89d5fcbbd266eae5fd6bc17e0aa9b208e97a1c16d7a3175d2e",
+    "seconds": 1.784,
+    "text": "Where can I hire a racket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-25.wav": {
+    "fingerprint": "6c2aff535f10d7fda45d263164569499a7132bb5ee4cd1de923e01894ec3c673",
+    "seconds": 1.475,
+    "text": "When is our next game?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-26.wav": {
+    "fingerprint": "ad90dd907d6832da5d50acdbd9cbc9a29c45248d49c8f46e397f2ccfa40fe962",
+    "seconds": 1.645,
+    "text": "How much are these balls?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-27.wav": {
+    "fingerprint": "5a7f484e5d46749aa5cb9b1a5a42fec9d778eead390899d26b389cb6bf4d45b9",
+    "seconds": 1.784,
+    "text": "How many rackets do you have?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-28.wav": {
+    "fingerprint": "94c6ff650f0c58710f17122bf055e7e738f9d119a7e7bca2a86f80009728a62c",
+    "seconds": 1.815,
+    "text": "Why are we changing sides?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-3.wav": {
+    "fingerprint": "dcd369f2349852e71c63fcddbd17d40533ade0d96c8d63dec17a095d81724cbe",
+    "seconds": 1.191,
+    "text": "Where is the ball?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-4.wav": {
+    "fingerprint": "9f1e83964d3093184cd6319c85ea43efb1e2f78947aae2bbe9d989b890d29b48",
+    "seconds": 1.295,
+    "text": "When are you playing?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-5.wav": {
+    "fingerprint": "8f41f0d3e90a0adce3f16c57ce5793ac19a09c1536b0ed513b5c808bb7171f7b",
+    "seconds": 1.912,
+    "text": "How much did your racket cost?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-6.wav": {
+    "fingerprint": "5343069f9f0d8718abd0f0edb5ce9387ef4106efd3e54376099e09990c61e51a",
+    "seconds": 1.795,
+    "text": "How many hours are you playing?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-7.wav": {
+    "fingerprint": "32cfec3400470464f41faa2d28aa1ed7438410975ff55b7e17f8c8b335478635",
+    "seconds": 1.953,
+    "text": "Why do you have so many rackets?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-8.wav": {
+    "fingerprint": "f1f6f4e5c9369e87441edce17d721bea5f5ca69cef141e2b5d7ad3d560a35be0",
+    "seconds": 1.474,
+    "text": "Who are you playing with?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "success-scenario-9.wav": {
+    "fingerprint": "0b8f4f843a96685df845db639b649bc8aea1cc38ea0fa65017f5252ea0f35553",
+    "seconds": 1.858,
+    "text": "What kind of racket do you have?",
+    "voice": "kokoro-1.0-heart-v1"
+  }
+}
