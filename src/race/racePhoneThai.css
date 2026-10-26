@@ -6,3 +6,12 @@
 .race-phone-preview{max-width:480px!important;margin:auto;min-height:100dvh}
 .race-preview-reset{text-align:center;color:#fff4cf}.race-preview-reset button{color:inherit;background:transparent;border:1px solid #fff4cf;border-radius:16px;padding:12px 24px}
 @media(max-height:700px){.race-phone .race-player-status{margin:12px auto;padding:6px 16px}.race-phone .race-phone-question{min-height:60px}.race-phone .race-answers .race-judgement{min-height:112px;padding:16px 24px}.race-phone .race-answers{gap:16px}.race-phone .race-header img{height:44px;width:44px}}
+.race-phone .race-answers .race-meaning{position:relative;display:flex;align-items:center;justify-content:flex-start;gap:18px;min-height:144px;padding:22px;border:2px solid #88b9d0;background:#e6f4fa;color:#194b65;box-shadow:0 5px 0 #588ba3;font-size:clamp(23px,6vw,34px);line-height:1.5;text-align:left}
+.race-phone .race-answers .race-meaning.answer-2{background:#f3edfc;border-color:#b9a1d3;color:#63427b;box-shadow:0 5px 0 #89709f}
+.race-phone .race-meaning .race-choice-badge{order:-1;position:relative;inset:auto;display:grid;place-items:center;flex:none;width:48px;height:52px;background:transparent;color:inherit;font-size:20px;border:0;border-radius:0}
+.race-choice-badge svg{position:absolute;inset:0;width:100%;height:100%;opacity:.6}
+.race-phone .race-answers .race-meaning.is-picked{outline:3px solid #f1cc6e;outline-offset:4px;opacity:1;transform:translateY(3px)}
+
+.race-swipe-answers{touch-action:pan-y;user-select:none;will-change:transform}
+.race-swipe-directions{display:flex;justify-content:space-between;color:#fff4d8;font-size:15px;font-weight:700;gap:16px}
+.race-swipe-answers button{touch-action:pan-y}
