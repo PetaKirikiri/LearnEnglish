@@ -1,7 +1,7 @@
 import { t, getLanguage } from './language'
 import { useEffect, useRef, type CSSProperties } from 'react'
-import { wordChoices } from './lessonOne'
-import type { HolidayWord } from '../race/holidayVocabulary'
+import { lessonOneCatalogue, type ClassroomWord } from './wordCatalogue'
+import VocabularyPicture from '../learning/VocabularyPicture'
 import { slotReferences, fixedWordReferences, type ReferenceRow } from './wordReference'
 import WordSlotIcon from './WordSlotIcon'
 import './wordExplanation.css'
@@ -19,17 +19,19 @@ const types = [
   {name:'คำนาม',english:'Noun',role:'ชื่อของคน สถานที่ หรือสิ่งของ',explanation:'ในช่องนี้ เราใส่ชื่อสิ่งที่ต้องการถามหา เปลี่ยนคำนามได้โดยใช้รูปประโยคเดิม',colour:'#ffd43b',ink:'#18385e'},
 ] as const
 
-export default function WordExplanation({slot,value,onChange,onBack,word,thai,onWord}: {slot:number;value:Determiner;onChange:(word:Determiner)=>void;onBack:()=>void;word:HolidayWord;thai:string;onWord:(word:HolidayWord)=>void}) {
+export default function WordExplanation({slot,value,onChange,onBack,word,thai,onWord,catalogue=lessonOneCatalogue,verb='is',onVerb}: {slot:number;value:Determiner;onChange:(word:Determiner)=>void;onBack:()=>void;word:string;thai:string;onWord:(word:string)=>void;catalogue?:readonly ClassroomWord[];verb?:'is'|'are';onVerb?:(verb:'is'|'are')=>void}) {
   const back = useRef<HTMLButtonElement>(null)
   useEffect(()=>{back.current?.focus({preventScroll:true})},[])
   const type = types[slot]
-  const selected = ['Where','is',value,word][slot]
+  const selected = ['Where',verb,value,word][slot]
   const owner = meanings[value]
   const category = slotReferences[slot]
+  const item = catalogue.find(item=>item.word===word)!
+  const numberRows: readonly ReferenceRow[] = item.pairOnly ? [['จำนวน','คำนี้ใช้เป็นพหูพจน์ แม้หมายถึงหนึ่งคู่ จึงใช้ are'],['รูปคำ','ไม่ตัด s ออกเพื่อบอกว่ามีหนึ่งคู่']] : item.number ? [['จำนวน',item.number==='plural'?'หลายสิ่ง ใช้ are ในคำถามนี้':'หนึ่งสิ่ง ใช้ is ในคำถามนี้'],['รูปคำ',`${item.singular} → ${item.plural}`],['ความสัมพันธ์','my และ your ไม่ได้บอกจำนวน ให้ดูคำนามเพื่อเลือก is หรือ are']] : [['จำนวน','รูปที่แสดงเป็นเอกพจน์ หมายถึงหนึ่งหน่วย'],['การใช้','เมื่อใช้คำนามนับได้เอกพจน์ในประโยค โดยทั่วไปต้องมีคำกำหนดนามอยู่ข้างหน้า']]
   const detail = fixedWordReferences[selected] ?? {
     meaning:thai,
     function:'คำนามนับได้ ใช้เรียกสถานที่หรือสิ่งของ',
-    usage:[['จำนวน','รูปที่แสดงเป็นเอกพจน์ หมายถึงหนึ่งหน่วย'],['การใช้','เมื่อใช้คำนามนับได้เอกพจน์ในประโยค โดยทั่วไปต้องมีคำกำหนดนามอยู่ข้างหน้า']] as readonly ReferenceRow[],
+    usage:numberRows,
   }
   return <section id="word-explanation" className="cw-word-explanation" style={{'--word-colour':type.colour,'--word-ink':type.ink} as CSSProperties} onKeyDown={event=>{if(event.key==='Escape'){event.stopPropagation();onBack()}}}>
     <header className="cw-word-heading">
@@ -55,8 +57,8 @@ export default function WordExplanation({slot,value,onChange,onBack,word,thai,on
         <p className="cw-reference-function">{t(detail.function)}</p>
         <h3><span className="cw-reference-art cw-reference-art-guide" aria-hidden="true"/>{t('ข้อควรรู้ในการใช้')}</h3>
         <ReferenceRows rows={detail.usage}/>
-      {(slot===2 || slot===3) && <div className="cw-word-options" role="group" aria-label={t('เลือกคำ')}>
-        {(slot===2 ? Object.entries(meanings).map(([word,item])=>({word,thai:item.gloss})) : wordChoices).map(option=><button key={option.word} aria-pressed={selected===option.word} onClick={()=>slot===2?onChange(option.word as Determiner):onWord(option.word as HolidayWord)}><strong>{option.word}</strong><span lang={getLanguage()}>{option.thai}</span></button>)}
+      {(slot===2 || slot===3 || (slot===1 && onVerb)) && <div className="cw-word-options" role="group" aria-label={t('เลือกคำ')}>
+        {(slot===1 ? [{word:'is',thai:'หนึ่งสิ่ง'},{word:'are',thai:'หลายสิ่ง'}] : slot===2 ? Object.entries(meanings).map(([word,item])=>({word,thai:item.gloss})) : catalogue).map(option=><button key={option.word} aria-pressed={selected===option.word} disabled={slot===1 && option.word==='is' && item.pairOnly} onClick={()=>slot===1?onVerb?.(option.word as 'is'|'are'):slot===2?onChange(option.word as Determiner):onWord(option.word)}>{slot===3 && onVerb && <VocabularyPicture word={option.word}/>}<strong>{option.word}</strong><span lang={getLanguage()}>{option.thai}</span></button>)}
       </div>}
       </section>
       </article>

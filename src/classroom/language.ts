@@ -6,6 +6,15 @@ const subscribe = (listener: () => void) => { listeners.add(listener); return ()
 export const getLanguage = () => language
 export function useLanguage() { return useSyncExternalStore(subscribe, getLanguage) }
 const english: Record<string,string> = {
+'รูปปัจจุบันของ be ใช้กับคำนามพหูพจน์ในรูปแบบนี้':'The present form of be used with plural nouns in this pattern.',
+'หลายสิ่ง เช่น shoes หรือ keys จึงใช้ are':'Use are for several things, such as shoes or keys.',
+'my และ your ไม่ได้บอกจำนวน ให้ดูคำนามเพื่อเลือก is หรือ are':'my and your do not tell us the number. Look at the noun to choose is or are.',
+'แว่นตา glasses และกางเกง trousers ใช้ are แม้มีหนึ่งคู่':'glasses and trousers take are, even for one pair.',
+'คำนี้ใช้เป็นพหูพจน์ แม้หมายถึงหนึ่งคู่ จึงใช้ are':'This word is plural, even for one pair, so it takes are.',
+'ไม่ตัด s ออกเพื่อบอกว่ามีหนึ่งคู่':'Do not remove s to mean one pair.',
+'หลายสิ่ง ใช้ are ในคำถามนี้':'Several things: use are in this question.',
+'หนึ่งสิ่ง ใช้ is ในคำถามนี้':'One thing: use is in this question.',
+
 'ทบทวน':'Recall','เรียนรู้':'Learn','ฝึกฝน':'Practise','สรุป':'Review','หลักการ':'The idea','ตัวอย่าง':'Worked example','ข้อผิดพลาดที่พบบ่อย':'Common mistakes',
 'ทบทวนรูปประโยค':'Recall the pattern','ถามหาสถานที่':'Ask about a place','เปลี่ยนคำ รูปแบบเดิม':'New words, same pattern','คำเล็ก ๆ ก็สำคัญ':'Small words matter','แข่งม้า':'Horse race','หนึ่งรูปแบบ ใช้ได้หลายที่':'One pattern, many places',
 'บทเรียนที่ 1':'Lesson 1','ขั้นตอนการเรียน':'Class stages','Lesson 01':'Lesson 01','กลับไปที่ประโยค':'Back to the sentence','ฟังประโยค':'Play sentence','เล่นเสียงไม่ได้ ลองกดอีกครั้ง':'Could not play audio. Try again.',

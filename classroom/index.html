@@ -41,7 +41,7 @@ import { lessonTitles } from "/src/classroom/lessonOne.ts";
  const sectionFor=key=>Object.keys(sectionMenus).find(section=>sectionMenus[section].some(item=>item.id===key))||key;
  const lessonTwo=new URLSearchParams(location.search).get('lesson')==='2';
  document.querySelector('.lesson-switch a[href="?lesson='+ (lessonTwo?'2':'1') +'"]').setAttribute('aria-current','page');
- let current=location.hash==='#race-guide'?'practice':lessonTwo?'recall':'example',openSection='learn';
+ let current=location.hash==='#race-guide'?'practice':'example',openSection='learn';
  const lastNote={learn:'example'};
  for(const [section,items] of Object.entries(sectionMenus)){
   const phase=document.querySelector('[data-phase="'+section+'"]');

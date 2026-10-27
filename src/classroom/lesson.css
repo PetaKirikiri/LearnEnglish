@@ -200,3 +200,5 @@
 }
 @media(max-width:370px){.cw-recall-panel .cw-panel-header{padding-left:18px;padding-right:18px}.classroom .cw-recall-panel .cw-panel-header h1{font-size:23px}.cw-translation-toggle{font-size:11px;padding:8px;gap:5px}}
 @media(prefers-reduced-motion:reduce){.cw-translation-toggle,.cw-recall-surface .cw-recall-word{transition:none}}
+.lesson-switch{display:flex;justify-content:center;gap:8px;padding:12px}.lesson-switch a{color:inherit;text-decoration:none;border:1px solid currentColor;border-radius:8px;padding:6px 12px;font:600 16px 'Fredoka',sans-serif}.lesson-switch a[aria-current]{background:white;color:#1877ef}
+@media(max-width:700px){.lesson-switch{padding:4px;gap:4px}.lesson-switch a{padding:3px 8px;font-size:13px}}

@@ -4,16 +4,17 @@ Canonical teaching page: `/classroom/index.html?lesson=2`.
 The older `?lesson=where-are-my` notes URL redirects here.
 Use the existing classroom shell, four aligned sentence slots, Thai meanings and pictures. The flag switch changes teaching instructions; English examples and their Thai meanings remain together.
 
-## Teaching sequence
+## Teaching through the existing learning windows
 
-1. Recall: Where / is / the / shop? Familiar location question, one shop.
-2. Name six pictured objects: shoe, key, sock, bag, book, pen. Teach their meanings before testing their grammar.
-3. Keep `the` fixed. Compare one shoe with several shoes: `is` becomes `are`; these regular nouns add `s`. Repeat with key and sock.
-4. Substitute `my` for `the`. Point to the speaker's objects. Both singular and plural are possible.
-5. Substitute `your`. Point to the listener's objects. Ownership does not determine is/are; noun number does.
-6. Expand vocabulary one item at a time: ticket, sandal, boot, shirt, hat, pencil, phone, charger, towel, bottle, cup, plate. Use the same comparison. `the` is available alongside my/your; personal ownership is not required for tickets or other objects.
-7. Teach glasses and trousers separately. One pair still takes are. Do not present glass or trouser as their singular forms.
-8. Review: students point to one/several objects, ask a partner, then change owner. The mistakes screen explicitly checks the misconception that my requires is.
+Lesson 2 renders the same SentenceLine and WordExplanation components as Lesson 1. It adds vocabulary and the are reference, not a separate teaching interface. There are no extra step tabs, vocabulary screen, or comparison layout.
+
+1. Open the noun box. Use its existing word chooser to introduce shoe, key, sock, bag, book and pen. Every noun has its Thai meaning and picture in that window.
+2. Keep the determiner as the. Choose shoe, then shoes. Returning to the sentence shows the same four boxes, with is or are matched to the noun.
+3. Open the verb box. Its existing reference window explains are and offers is/are. Changing it also changes the selected noun's form, so the sentence stays grammatical.
+4. Open the determiner box and choose my, then your. The existing window explains speaker/listener ownership. Noun number still controls is/are.
+5. Add ticket, sandal, boot, shirt, hat, pencil, phone, charger, towel, bottle, cup and plate through that same noun chooser.
+6. Teach glasses and trousers in the noun window. One pair still takes are; the is choice is disabled for these nouns. Never teach glass or trouser as their singular forms here.
+7. Use the existing Practice navigation for the race. Teach a round's words before selecting it.
 
 ## Race sequence
 

@@ -1,3 +1,5 @@
+import { lessonTwoCatalogue } from './wordCatalogue'
+import { lessonTwoStages } from './lessonTwoContent'
 import { LanguageSwitch } from './LanguageSwitch'
 import { useLanguage, t } from './language'
 import { useEffect, useRef, useState } from 'react'
@@ -19,8 +21,8 @@ function Heading({ page, children }: { page: LessonPage; children?: ReactNode })
   return <header className="lesson-heading cw-heading"><p className="cw-lesson-label">01 <span/> Where is the…?</p><h1 id="note-title">{t(lessonTitles[page])}</h1>{children && <p className="lead">{children}</p>}</header>
 }
 
-function PanelHeader({ page, action }: { page: LessonPage; action?: ReactNode }) {
-  return <header className="cw-panel-header"><span className="cw-panel-lesson">{t('Lesson 01')}</span><div className="cw-panel-header-main"><h1 id="note-title">{t(lessonTitles[page])}</h1>{action}</div></header>
+function PanelHeader({ page, action, lessonTwo = false }: { page: LessonPage; action?: ReactNode; lessonTwo?:boolean }) {
+  return <header className="cw-panel-header"><span className="cw-panel-lesson">{t(lessonTwo ? 'Lesson 02' : 'Lesson 01')}</span><div className="cw-panel-header-main"><h1 id="note-title">{t(lessonTitles[page])}</h1>{action}</div></header>
 }
 
 function Sound({ src, label = 'ฟังประโยค', onPlayed }: { src: string; label?: string; onPlayed?: () => void }) {
@@ -38,15 +40,15 @@ function Sound({ src, label = 'ฟังประโยค', onPlayed }: { src: 
 }
 
 function Recall({ word, onWord }: { word: HolidayWord; onWord: (word: HolidayWord) => void }) {
-  return <div className="cw-sentence-panel"><PanelHeader page="recall"/><div className="cw-sentence-workspace"><SentenceLine word={word} onWord={onWord} audio={<Sound key={word} src={`/audio/race-holiday/${word}-complete.wav`}/>}/></div></div>
+  return <div className="cw-sentence-panel"><PanelHeader page="recall"/><div className="cw-sentence-workspace"><SentenceLine word={word} onWord={value=>onWord(value as HolidayWord)} audio={<Sound key={word} src={`/audio/race-holiday/${word}-complete.wav`}/>}/></div></div>
 }
 
 function Meaning({ word, onWord }: { word: HolidayWord; onWord: (word: HolidayWord) => void }) {
-  return <div className="cw-sentence-panel"><PanelHeader page="idea"/><div className="cw-sentence-workspace"><SentenceLine word={word} onWord={onWord} audio={<Sound key={word} src={`/audio/race-holiday/${word}-complete.wav`}/>}/></div></div>
+  return <div className="cw-sentence-panel"><PanelHeader page="idea"/><div className="cw-sentence-workspace"><SentenceLine word={word} onWord={value=>onWord(value as HolidayWord)} audio={<Sound key={word} src={`/audio/race-holiday/${word}-complete.wav`}/>}/></div></div>
 }
 
 function WorkedExample({ word, onWord }: { word: HolidayWord; onWord: (word: HolidayWord) => void }) {
-  return <div className="cw-sentence-panel"><PanelHeader page="example"/><div className="cw-sentence-workspace"><SentenceLine word={word} onWord={onWord} audio={<Sound key={word} src={`/audio/race-holiday/${word}-complete.wav`}/>}/></div></div>
+  return <div className="cw-sentence-panel"><PanelHeader page="example"/><div className="cw-sentence-workspace"><SentenceLine word={word} onWord={value=>onWord(value as HolidayWord)} audio={<Sound key={word} src={`/audio/race-holiday/${word}-complete.wav`}/>}/></div></div>
 }
 
 function Mistake({ word }: { word: HolidayWord }) {
@@ -60,8 +62,10 @@ function Review({ word }: { word: HolidayWord }) {
   return <><Heading page="review">{t('จำรูปแบบ แล้วเปลี่ยนแค่คำท้าย')}</Heading><div className="cw-centre"><QuestionExample word={word}/><div className="cw-takeaways"><p><strong lang="en">Where</strong><span>{t('ถามว่าที่ไหน')}</span></p><p><strong lang="en">is the</strong><span>{t('เก็บสองคำนี้ไว้')}</span></p><p><strong lang="en">{word}</strong><span>{t('เปลี่ยนสิ่งที่ถามหา')}</span></p></div></div><a className="cw-race-entry" href="/english/race"><Icon name="flag"/><span>{t('เข้าห้องแข่ง')}</span><Icon name="arrow"/></a></>
 }
 
-export default function Lesson({ page }: { page: LessonPage }) {
+export default function Lesson({ page, lessonId = 'lesson-1' }: { page: LessonPage; lessonId?:string }) {
   const language = useLanguage()
   const [word, setWord] = useState<HolidayWord>('hotel')
+  const [lessonTwoWord, setLessonTwoWord] = useState('shoes')
+  if(lessonId==='lesson-2') return <div lang={language} style={{display:'contents'}}><LanguageSwitch/>{page==='practice'?<ClassroomRace lessonId="lesson-2" stages={lessonTwoStages}/>:<div className="cw-sentence-panel"><PanelHeader page={page} lessonTwo/><div className="cw-sentence-workspace"><SentenceLine word={lessonTwoWord} onWord={setLessonTwoWord} catalogue={lessonTwoCatalogue} pluralLesson audio={null}/></div></div>}</div>
   return <div lang={language} style={{display:'contents'}}><LanguageSwitch/>{page === 'recall' ? <Recall word={word} onWord={setWord}/> : page === 'idea' ? <Meaning word={word} onWord={setWord}/> : page === 'example' ? <WorkedExample word={word} onWord={setWord}/> : page === 'mistake' ? <Mistake word={word}/> : page === 'practice' ? <ClassroomRace/> : <Review word={word}/>}</div>
 }
