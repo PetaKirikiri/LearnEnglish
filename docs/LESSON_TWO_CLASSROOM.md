@@ -22,11 +22,11 @@ The teacher chooses the next round after teaching its prerequisites. Round chang
 
 | Round | Skill | Scope | Pool |
 |---|---|---|---|
-| 1 | Correct / incorrect is–are agreement | all 18 regular noun pairs plus glasses/trousers; the only | 76 |
+| 1 | Correct / incorrect is–are agreement | all 18 regular noun pairs plus glasses/trousers; the/my/your; complete sentences | 228 |
 | 2 | Understand my vs your | six core nouns, both numbers; same noun and number in both Thai choices | 24 |
 | 3 | Mixed agreement review | all 18 regular noun pairs plus glasses/trousers; the/my/your | 228 |
 
-Pool counts are available question variants, not a required 328-question session. Review includes the first-round agreement items; do not describe those as all unique questions. Each grammatical variant has an explicitly authored correct answer. Correct and incorrect examples are balanced for every noun and owner. No wrong examples rely on omitting an article from a plural noun, which can be grammatical.
+Pool counts are available question variants, not a required 480-question session. Review includes the first-round agreement items; do not describe those as all unique questions. Each grammatical variant has an explicitly authored correct answer. Correct and incorrect examples are balanced for every noun and owner. No wrong examples rely on omitting an article from a plural noun, which can be grammatical.
 
 Every race question has locally generated recorded speech (228 distinct sentences). The current classroom briefing shows the selected round’s answer controls and timing; joining stays in its compact QR control. QR targets are public production URLs, including when teaching from localhost.
 

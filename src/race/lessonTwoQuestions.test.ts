@@ -7,21 +7,21 @@ import { racePools } from './pools'
 import { selectQuestions } from '../../server/classroomRace'
 
 it('covers every lesson two noun in round one with both correct and incorrect agreement',()=>{
-  expect(lessonTwoNumberQuestions).toHaveLength(76)
+  expect(lessonTwoNumberQuestions).toHaveLength(228)
   const expectedNouns = [...lessonTwoWords.flatMap(item=>[item.singular,item.plural]),...lessonTwoPairs.map(item=>item.plural)]
   expect(new Set(lessonTwoNumberQuestions.map(q=>q.english.split(' ').at(-1)))).toEqual(new Set(expectedNouns.map(noun=>`${noun}?`)))
-  expect(lessonTwoNumberQuestions.every(q=>q.english.includes(' the '))).toBe(true)
-  for(const noun of expectedNouns) {
-    const variants=lessonTwoNumberQuestions.filter(q=>q.english.endsWith(`the ${noun}?`))
+  expect(lessonTwoNumberQuestions.every(q=>/^Where (is|are) (the|my|your) [a-z]+\?$/.test(q.english))).toBe(true)
+  for(const noun of expectedNouns) for(const owner of ['the','my','your']) {
+    const variants=lessonTwoNumberQuestions.filter(q=>q.english.endsWith(`${owner} ${noun}?`))
     expect(variants).toHaveLength(2)
     expect(variants.map(q=>q.correct).sort()).toEqual([0,1])
     const plural=[...lessonTwoWords,...lessonTwoPairs].some(item=>item.plural===noun)
-    expect(variants.find(q=>q.correct===0)!.english).toBe(`Where ${plural?'are':'is'} the ${noun}?`)
+    expect(variants.find(q=>q.correct===0)!.english).toBe(`Where ${plural?'are':'is'} ${owner} ${noun}?`)
   }
   const pool=racePools.find(p=>p.id==='lesson-two-number')!
   expect(pool.kind).toBe('judgement')
   const selected=selectQuestions({...pool,questions:pool.questions.map(q=>({...q,audioUrl:q.audioUrl??'',choices:q.answers.map(a=>a.map(p=>p.text).join(''))}))})
-  expect(selected.questions).toHaveLength(76)
+  expect(selected.questions).toHaveLength(228)
   expect(selected.questions.every(q=>q.choices.join('|')==='Correct|Wrong')).toBe(true)
 })
 it('tests agreement fairly for every noun and owner, including pair nouns',()=>{

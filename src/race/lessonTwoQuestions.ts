@@ -15,9 +15,9 @@ function judgement(items: readonly LessonTwoWord[], determiners: Owner[]) {
     })
   })))
 }
-// Round one changes only number and verb. Every noun occurs with both correct
-// and incorrect agreement, so the noun or an -s ending cannot give away a choice.
-export const lessonTwoNumberQuestions = judgement([...lessonTwoWords,...lessonTwoPairs], ['the'])
+// Round one tests only is/are agreement in complete sentences. Every noun
+// and determiner occurs with correct and incorrect agreement; no words are omitted.
+export const lessonTwoNumberQuestions = judgement([...lessonTwoWords,...lessonTwoPairs], owners)
 export const lessonTwoOwnerQuestions = lessonTwoWords.filter(item => (lessonTwoCore as readonly string[]).includes(item.singular)).flatMap(item => [false,true].flatMap(plural => (['my','your'] as const).map(owner => {
   const sentence = numberSentence(item,plural,owner)
   const other = numberSentence(item,plural,owner === 'my' ? 'your' : 'my')
