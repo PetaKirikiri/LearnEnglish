@@ -37,14 +37,14 @@ export default function WordExplanation({slot,value,onChange,onBack,word,thai,on
     <header className="cw-word-heading">
       <button ref={back} className="cw-word-return" onClick={onBack} aria-label={t('กลับไปที่ประโยค')} title={t('กลับไปที่ประโยค')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m14 6-6 6 6 6"/><path d="M8 12h12"/></svg></button>
       <div className="cw-simple-word-title">
-        <WordSlotIcon slot={slot}/>
+        <WordSlotIcon slot={slot} plural={item.number==='plural'}/>
         <div><h1>{selected}</h1><p lang={getLanguage()}>{slot===0?'ที่ไหน':slot===1?'อยู่ · ปัจจุบัน':slot===2?owner.gloss:thai}</p></div>
       </div>
     </header>
     <div className="cw-word-body">
       <article className="cw-reference-sheet">
       <section className="cw-reference-intro" lang={getLanguage()}>
-        <WordSlotIcon slot={slot}/>
+        <WordSlotIcon slot={slot} plural={item.number==='plural'}/>
         <div><h2>{t(category.name)} {getLanguage()==='th' && <span lang="en">{category.english}</span>}</h2>
         <p>{t(category.responsibility)}</p></div>
       </section>

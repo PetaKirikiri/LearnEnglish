@@ -80,7 +80,7 @@ export default function SentenceLine({ word, onWord, audio, catalogue = lessonOn
         { english: verb, thai: 'อยู่' },
         { english: owner, thai: ownerThai },
         { english: `${word}?`, thai: item.thai },
-      ]} slotDetails={[{label:'Question',count:1,icon:<WordSlotIcon slot={0}/>},{label:'Tense · now',count:pluralLesson ? 2 : 1,icon:<WordSlotIcon slot={1}/>},{label:'Which / whose',count:3,icon:<WordSlotIcon slot={2}/>},{label:'Person / thing',count:catalogue.length,icon:<WordSlotIcon slot={3}/>}]}
+      ]} slotDetails={[{label:'Question',count:1,icon:<WordSlotIcon slot={0}/>},{label:'Tense · now',count:pluralLesson ? 2 : 1,icon:<WordSlotIcon slot={1}/>},{label:'Which / whose',count:3,icon:<WordSlotIcon slot={2}/>},{label:'Person / thing',count:catalogue.length,icon:<WordSlotIcon slot={3} plural={item.number==='plural'}/>}]}
       translationControl={pluralLesson ? <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={async()=>{if(recording.current){recording.current.src=lessonTwoAudio(word,owner,verb);setAudioError(false);try{await recording.current.play()}catch{setAudioError(true)}}}}><Icon name="sound"/></button> : owner === 'the' ? audio : <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={() => {
         window.speechSynthesis.cancel()
         const speech = new SpeechSynthesisUtterance(`Where ${verb} ${owner} ${word}?`)

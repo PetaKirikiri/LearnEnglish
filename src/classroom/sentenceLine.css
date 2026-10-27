@@ -132,3 +132,9 @@
 .cw-game-icon-mystery-apple,.cw-game-icon-apple{background-image:url('/classroom/icons/determiner-noun-apples.png');background-size:200% 100%}
 .cw-game-icon-mystery-apple{background-position:left center}
 .cw-game-icon-apple{background-position:right center}
+
+/* The same noun artwork, doubled so number is visible without a label. */
+.cw-game-icon-apples{position:relative;background-image:none}
+.cw-game-icon-apples::before,.cw-game-icon-apples::after{content:"";position:absolute;background:url('/classroom/icons/determiner-noun-apples.png') right center / 200% 100% no-repeat}
+.cw-game-icon-apples::before{width:72%;height:72%;top:0;right:0}
+.cw-game-icon-apples::after{width:76%;height:76%;bottom:0;left:0}
