@@ -1,7 +1,9 @@
+import { t, getLanguage } from './language'
 import { useEffect, useRef, type CSSProperties } from 'react'
 import { wordChoices } from './lessonOne'
 import type { HolidayWord } from '../race/holidayVocabulary'
 import { slotReferences, fixedWordReferences, type ReferenceRow } from './wordReference'
+import WordSlotIcon from './WordSlotIcon'
 import './wordExplanation.css'
 
 export type Determiner = 'the' | 'my' | 'your'
@@ -31,36 +33,37 @@ export default function WordExplanation({slot,value,onChange,onBack,word,thai,on
   }
   return <section id="word-explanation" className="cw-word-explanation" style={{'--word-colour':type.colour,'--word-ink':type.ink} as CSSProperties} onKeyDown={event=>{if(event.key==='Escape'){event.stopPropagation();onBack()}}}>
     <header className="cw-word-heading">
-      <button ref={back} className="cw-word-return" onClick={onBack} aria-label="กลับไปที่ประโยค" title="กลับไปที่ประโยค"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m14 6-6 6 6 6"/><path d="M8 12h12"/></svg></button>
+      <button ref={back} className="cw-word-return" onClick={onBack} aria-label={t('กลับไปที่ประโยค')} title={t('กลับไปที่ประโยค')}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m14 6-6 6 6 6"/><path d="M8 12h12"/></svg></button>
       <div className="cw-simple-word-title">
-        {slot < 2 && <span className={`cw-game-icon ${slot===0?'cw-game-icon-pin':'cw-game-icon-clock'}`} aria-hidden="true"/>}
-        <div><h1>{selected}</h1><p lang="th">{slot===0?'ที่ไหน':slot===1?'อยู่ · ปัจจุบัน':slot===2?owner.gloss:thai}</p></div>
+        <WordSlotIcon slot={slot}/>
+        <div><h1>{selected}</h1><p lang={getLanguage()}>{slot===0?'ที่ไหน':slot===1?'อยู่ · ปัจจุบัน':slot===2?owner.gloss:thai}</p></div>
       </div>
     </header>
     <div className="cw-word-body">
-      <section className="cw-reference-section" lang="th">
-        <h2>{category.name} <span lang="en">{category.english}</span></h2>
-        <p>{category.responsibility}</p>
+      <article className="cw-reference-sheet">
+      <section className="cw-reference-intro" lang={getLanguage()}>
+        <WordSlotIcon slot={slot}/>
+        <div><h2>{t(category.name)} {getLanguage()==='th' && <span lang="en">{category.english}</span>}</h2>
+        <p>{t(category.responsibility)}</p></div>
       </section>
-      <section className="cw-reference-section" lang="th">
-        <h2>การทำงานของช่องนี้</h2>
+      <section className="cw-reference-mechanics" lang={getLanguage()}>
+        <h2><span className="cw-reference-art cw-reference-art-join" aria-hidden="true"/>{t('การทำงานของช่องนี้')}</h2>
         <ReferenceRows rows={category.mechanics}/>
       </section>
-      <section className="cw-reference-section">
-        <h2 lang="en">{selected}</h2>
-        <ReferenceRows rows={[["ความหมาย",detail.meaning],["หน้าที่",detail.function]]}/>
-      </section>
-      <section className="cw-reference-section" lang="th">
-        <h2>ข้อควรรู้ในการใช้</h2>
+      <section className="cw-reference-word" lang={getLanguage()}>
+        <div className="cw-reference-word-title"><h2 lang="en">{selected}</h2><p>{slot < 2 || slot === 3 ? detail.meaning : t(detail.meaning)}</p></div>
+        <p className="cw-reference-function">{t(detail.function)}</p>
+        <h3><span className="cw-reference-art cw-reference-art-guide" aria-hidden="true"/>{t('ข้อควรรู้ในการใช้')}</h3>
         <ReferenceRows rows={detail.usage}/>
-      </section>
-      {(slot===2 || slot===3) && <div className="cw-word-options" role="group" aria-label="เลือกคำ">
-        {(slot===2 ? Object.entries(meanings).map(([word,item])=>({word,thai:item.gloss})) : wordChoices).map(option=><button key={option.word} aria-pressed={selected===option.word} onClick={()=>slot===2?onChange(option.word as Determiner):onWord(option.word as HolidayWord)}><strong>{option.word}</strong><span lang="th">{option.thai}</span></button>)}
+      {(slot===2 || slot===3) && <div className="cw-word-options" role="group" aria-label={t('เลือกคำ')}>
+        {(slot===2 ? Object.entries(meanings).map(([word,item])=>({word,thai:item.gloss})) : wordChoices).map(option=><button key={option.word} aria-pressed={selected===option.word} onClick={()=>slot===2?onChange(option.word as Determiner):onWord(option.word as HolidayWord)}><strong>{option.word}</strong><span lang={getLanguage()}>{option.thai}</span></button>)}
       </div>}
+      </section>
+      </article>
     </div>
   </section>
 }
 
 function ReferenceRows({rows}:{rows:readonly ReferenceRow[]}) {
-  return <dl className="cw-reference-rows" lang="th">{rows.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+  return <dl className="cw-reference-rows" lang={getLanguage()}>{rows.map(([label,value])=><div key={label}><dt>{t(label)}</dt><dd>{t(value)}</dd></div>)}</dl>
 }

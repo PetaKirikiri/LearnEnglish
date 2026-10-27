@@ -11,6 +11,9 @@ import { isPadelLineEntry } from './padel/lineEntry'
 import { isCoachLineEntry } from './coach/lineEntry'
 import { isEnglishLineEntry } from './english/lineEntry'
 import { isSuccessRoute } from './success/course'
+import { classroomNotesDestination } from './classroom/notesRoute'
+const classroomDestination = classroomNotesDestination(location.pathname, location.search, location.hash)
+if (classroomDestination) location.replace(classroomDestination)
 const SuccessPage = lazy(() => import('./success/SuccessPage'))
 const RaceLessonPage = lazy(() => import('./race/RaceLessonPage'))
 const isRaceLesson = window.location.pathname.replace(/\/$/, '') === '/english/race/lesson'
@@ -36,7 +39,7 @@ const isEnglish = /^\/english(?:\/|$)/.test(window.location.pathname) || isEngli
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {isPhonePractice ? <Suspense fallback={<main>Opening…</main>}><PhonePractice /></Suspense> : isRaceLesson ? <Suspense fallback={<main>Opening…</main>}><RaceLessonPage /></Suspense> : isRaceAdmin ? <Suspense fallback={<main>Opening…</main>}><RaceAdminPage /></Suspense> : isRaceDemo ? <Suspense fallback={<main>Opening…</main>}><RaceDemoPage /></Suspense> : isHorsePreview ? <Suspense fallback={<main>Opening…</main>}><HorsePreviewPage /></Suspense> : isRace ? <Suspense fallback={<main>Opening…</main>}><RacePage /></Suspense> : <>
+    {classroomDestination ? null : isPhonePractice ? <Suspense fallback={<main>Opening…</main>}><PhonePractice /></Suspense> : isRaceLesson ? <Suspense fallback={<main>Opening…</main>}><RaceLessonPage /></Suspense> : isRaceAdmin ? <Suspense fallback={<main>Opening…</main>}><RaceAdminPage /></Suspense> : isRaceDemo ? <Suspense fallback={<main>Opening…</main>}><RaceDemoPage /></Suspense> : isHorsePreview ? <Suspense fallback={<main>Opening…</main>}><HorsePreviewPage /></Suspense> : isRace ? <Suspense fallback={<main>Opening…</main>}><RacePage /></Suspense> : <>
     {isSuccessRoute(window.location.pathname) ? <Suspense fallback={<main>Opening…</main>}><SuccessPage /></Suspense> : isFimoPreview ? <Suspense fallback={<main>Opening…</main>}><FimoPreviewPage /></Suspense> : isCoach ? <Suspense fallback={<main>Ouverture…</main>}><CoachPage /></Suspense> : isPadel ? <Suspense fallback={<main>Opening…</main>}><PadelPage /></Suspense> : isHotel || isEnglish ? <Suspense fallback={<main>Opening…</main>}><HotelPage courseId={isEnglish ? 'english' : 'hotel'} /></Suspense> : <LanguageGate><AuthProvider>
       <App />
     </AuthProvider></LanguageGate>}

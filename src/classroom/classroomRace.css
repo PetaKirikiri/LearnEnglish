@@ -8,3 +8,15 @@
 .cw-race-go,.cw-race-again{border:0;border-radius:16px;background:#ffd43b;box-shadow:0 5px 0 #bc8b0c;color:#18385e;font:500 28px 'Fredoka',sans-serif;padding:18px 44px;cursor:pointer}.cw-race-go:disabled{opacity:.4;cursor:default}.cw-race-go:active{transform:translateY(3px);box-shadow:0 2px 0 #bc8b0c}
 .cw-live-race{position:fixed!important;inset:0;z-index:1000;overflow:auto;background:#183e32}.cw-live-race .race-next-race,.cw-live-race .race-host-admin{display:none}.cw-race-again{position:fixed;top:12px;right:20px;z-index:1002;font-size:18px;padding:12px 22px}.cw-race-error{padding:14px;background:#fff0ed;color:#962a30;position:relative;z-index:1003}.cw-race-error button{margin-left:12px;padding:8px}
 @media(max-width:700px){.cw-race-lobby>header{padding:20px}.cw-race-welcome{grid-template-columns:1fr;gap:22px;padding:24px}.cw-race-brief h2{font-size:28px;margin:10px 0}.cw-race-brief p{font-size:16px}.cw-race-join img{max-width:200px}.cw-race-lobby footer{padding:20px}.cw-race-go{font-size:24px;padding:16px 24px}}
+
+/* One ordered set of races belongs to each lesson. */
+.cw-rounds{display:flex;align-items:center;gap:12px;padding:24px clamp(20px,4vw,64px);background:#f2f6fc;border-bottom:1px solid #dfE8f4}
+.cw-round-rail{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin;padding:4px 4px 10px;flex:1;min-width:0}
+.cw-round-card{flex:0 0 180px;scroll-snap-align:center;min-height:108px;display:flex;align-items:center;justify-content:center;gap:14px;border:2px solid transparent;border-radius:18px;background:#fff;color:#526d8c;box-shadow:0 3px 0 #dae3ef;cursor:pointer;transition:background .24s,color .24s,transform .24s,box-shadow .24s;font:500 19px 'Fredoka',sans-serif}
+.cw-round-card svg{width:34px;height:34px}.cw-round-card strong{display:block;font-size:32px;line-height:1.2}.cw-round-card[aria-pressed=true]{background:#1877ef;color:white;box-shadow:0 4px 0 #1154ad}.cw-round-card:hover{transform:translateY(-2px)}
+.cw-round-arrow{background:transparent;border:0;color:#1877ef;font-size:36px;width:36px;flex-shrink:0;cursor:pointer}.cw-round-arrow:disabled{opacity:.25;cursor:default}
+.cw-round-add{flex:0 0 100px;border:0;background:transparent;color:#526d8c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;font:500 15px 'Fredoka',sans-serif}.cw-round-add>span{font-size:32px}
+.cw-rounds button:focus-visible{outline:3px solid #edb600;outline-offset:3px}
+.cw-race-welcome{animation:cw-round-enter .3s ease-out}@keyframes cw-round-enter{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:700px){.cw-rounds{padding:16px 8px;gap:2px}.cw-round-card{flex-basis:144px;min-height:96px}.cw-round-arrow{width:28px}}
+@media(prefers-reduced-motion:reduce){.cw-round-card{transition:none}.cw-race-welcome{animation:none}.cw-round-rail{scroll-behavior:auto}}

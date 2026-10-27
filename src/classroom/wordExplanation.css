@@ -1,162 +1,76 @@
+/* Shared word reference: one reading surface, general to specific. */
 .cw-sentence-panel:has(.cw-word-explanation)>.cw-panel-header{display:none}
-.cw-word-explanation{width:100%;min-height:100%;display:flex;flex-direction:column;color:#18385e;background:#fff}
-.cw-word-header{position:relative;flex:none;background:#ffd43b;padding:30px 40px 32px;display:flex;align-items:center;gap:30px;view-transition-name:determiner-surface}
-.cw-word-header h1{font:500 clamp(48px,6vw,76px)/1.1 'Fredoka',sans-serif;margin:0;color:#18385e}
-.cw-word-header p{font-size:18px;margin:8px 0 0}
-.cw-word-back{align-self:flex-start;display:flex;align-items:center;gap:8px;border:0;background:#fff8;color:#18385e;border-radius:50px;padding:7px 18px;font-size:16px;cursor:pointer;min-height:44px}
-.cw-word-back span{font-size:32px;line-height:1}
-.classroom .cw-sentence-board .slot-2.example-unit-trigger{view-transition-name:determiner-surface}
-.cw-word-body{width:min(100%,960px);box-sizing:border-box;margin:auto;padding:30px 40px;display:flex;flex-direction:column;gap:24px;animation:word-content-in 420ms ease-out}
-.cw-determiner-choices{display:flex;gap:10px;border-bottom:1px solid #e2e8ef;padding-bottom:20px}
-.cw-determiner-choices button{flex:1;display:flex;align-items:center;justify-content:center;gap:12px;background:none;border:0;border-bottom:4px solid transparent;padding:14px 8px;color:#526d8c;cursor:pointer}
-.cw-determiner-choices button[aria-pressed=true]{border-color:#efbe13;color:#18385e;background:#fff8d8}
-.cw-determiner-choices strong{font:500 28px 'Fredoka',sans-serif}.cw-determiner-choices span{font-size:14px}
-.cw-word-meaning h2{font-size:26px;margin:0 0 8px}.cw-word-meaning p{font-size:18px;line-height:1.7;margin:0;color:#526d8c}
-.cw-word-example{padding:20px 0}.classroom .cw-word-example .example-alignment{justify-content:center;gap:24px}.classroom .cw-word-example .example-source{font-size:clamp(28px,3.7vw,48px);color:#18385e}.classroom .cw-word-example .example-source strong{background:#fff0aa;border-radius:8px;padding:0 6px}.classroom .cw-word-example .example-gloss{font-size:16px;max-width:150px}.cw-word-takeaway{margin:0;padding-top:18px;border-top:1px solid #e2e8ef;font-size:16px;line-height:1.7;color:#526d8c}
-.cw-word-explanation button:focus-visible{outline:3px solid #1877ef;outline-offset:4px}
-::view-transition-group(determiner-surface){animation-duration:560ms;animation-timing-function:cubic-bezier(.22,1,.36,1)}
-@keyframes word-content-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@media(max-width:700px){.cw-word-header{padding:20px;gap:20px}.cw-word-header h1{font-size:44px}.cw-word-header p{font-size:14px}.cw-word-back{padding:6px 12px}.cw-word-body{padding:24px 18px;gap:18px}.cw-determiner-choices button{flex-direction:column;gap:4px}.cw-determiner-choices span{font-size:12px}.cw-word-meaning h2{font-size:22px}.cw-word-meaning p{font-size:16px}.classroom .cw-word-example .example-alignment{gap:12px}.classroom .cw-word-example .example-gloss{font-size:12px;max-width:85px}}
-@media(prefers-reduced-motion:reduce){.cw-word-body{animation:none}::view-transition-group(determiner-surface){animation-duration:0s}}
-/* Each word opens the same type → specific-word reading path. */
-.cw-word-header{background:var(--word-colour);color:var(--word-ink);view-transition-name:word-surface}
-.cw-word-header h1{color:inherit;font-family:'Fredoka','Noto Sans Thai',sans-serif;font-size:clamp(30px,4vw,54px)}
-.classroom .cw-sentence-board .slot-2.example-unit-trigger{view-transition-name:none}
-.cw-explanation-segments{display:flex;gap:24px;border-bottom:1px solid #e2e8ef}
-.cw-explanation-segments button{background:none;border:0;border-bottom:4px solid transparent;padding:12px 4px;color:#526d8c;font:inherit;cursor:pointer}
-.cw-explanation-segments button[aria-current]{color:#18385e;border-bottom-color:var(--word-colour);font-weight:700}
-.cw-word-options{display:flex;flex-wrap:wrap;gap:12px}
-.cw-word-options button{display:flex;flex-direction:column;gap:6px;padding:12px 18px;border:1px solid #dde6ef;background:white;color:#18385e;font:inherit;cursor:pointer}
-.cw-word-options button[aria-pressed=true]{border-color:#18385e;background:#fff6cb}
-.cw-word-options span{font-size:14px}
-::view-transition-group(word-surface){animation-duration:560ms;animation-timing-function:cubic-bezier(.22,1,.36,1)}
-@media(prefers-reduced-motion:reduce){::view-transition-group(word-surface){animation-duration:0s}}
-.classroom .cw-word-example .slot-0 .example-source,.classroom .cw-word-example .slot-1 .example-source{color:#fff}
-.classroom .cw-word-example .example-translation{text-align:center;margin-top:20px}
-/* Explanation pages teach a concept; the builder stays on the parent page. */
-.cw-word-body{width:100%;max-width:1250px;margin:0 auto;padding:28px clamp(24px,4vw,64px) 48px;gap:34px}
-.cw-word-header{padding:24px 40px;min-height:112px;box-sizing:border-box}
-.cw-explanation-spread{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,5vw,80px);align-items:start;padding:20px 0;animation:word-content-in 420ms ease-out}
-.cw-explanation-concept{padding-top:12px}
-.cw-explanation-kicker{display:block;font-size:15px;color:#64768a;margin-bottom:18px}
-.cw-explanation-concept h2{font-size:clamp(26px,2.7vw,38px);line-height:1.5;margin:0 0 18px;font-weight:700;max-width:500px}
-.cw-explanation-concept p{font-size:18px;line-height:1.9;color:#526d8c;margin:0;max-width:470px}
-.cw-explanation-word{display:block;font:500 clamp(44px,5vw,72px)/1.1 'Fredoka',sans-serif;margin-bottom:18px}
-.cw-explanation-open{margin-top:32px;padding:12px 0;background:none;border:0;border-bottom:3px solid var(--word-colour);color:#18385e;font:inherit;cursor:pointer}
-.cw-explanation-open strong{font:500 24px 'Fredoka',sans-serif;margin-left:8px}
-.cw-explanation-evidence{border-left:1px solid #e1e7ee;padding-left:32px;min-width:0}
-.cw-explanation-evidence>h2{font-size:16px;color:#64768a;font-weight:500;margin:12px 0 18px}
-.cw-family-row{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0;border-bottom:1px solid #e1e7ee}
-.cw-family-row>div{display:flex;flex-direction:column;gap:5px}
-.cw-family-row strong{font:500 36px 'Fredoka',sans-serif}
-.cw-family-row span{font-size:17px;color:#526d8c}
-.cw-family-row[data-selected]{border-bottom:3px solid var(--word-colour)}
-.cw-family-hint{text-align:right}
-.classroom .cw-word-example .example-matrix .tonight-slots{grid-template-columns:1fr .65fr 1.8fr;gap:8px}
-.classroom .cw-word-example .example-matrix .tonight-slot{display:flex;flex-direction:column;justify-content:center;gap:12px;min-height:140px;padding:16px 8px;border-radius:14px;color:#fff;background:#df2944}
-.classroom .cw-word-example .example-matrix .slot-1{background:#128247}
-.classroom .cw-word-example .example-matrix .slot-2,.classroom .cw-word-example .example-matrix .slot-3{background:#ffd43b;color:#18385e;border-radius:0}
-.classroom .cw-word-example .cw-noun-group{overflow:hidden;border-radius:14px;display:grid;grid-template-columns:.8fr 1.2fr}
-.classroom .cw-word-example .example-source{font-size:clamp(22px,2.4vw,34px);padding:0;border:0;color:inherit}
-.classroom .cw-word-example .example-gloss{font-size:13px;color:inherit}
-.classroom .cw-word-example .example-translation{font-size:20px;margin-top:18px}
-@media(max-width:800px){.cw-explanation-spread{grid-template-columns:1fr;gap:28px;padding:0}.cw-explanation-evidence{border-left:0;border-top:1px solid #e1e7ee;padding:20px 0 0}.cw-word-body{padding:24px 20px}.cw-explanation-concept h2{font-size:28px}.cw-explanation-concept p{font-size:16px}}
-@media(prefers-reduced-motion:reduce){.cw-explanation-spread{animation:none}}
-.cw-word-body:has(.cw-word-focus-matrix){flex:1;max-width:1400px;gap:24px}
-.cw-word-focus-matrix{justify-content:center;padding:24px 0 48px}
-.classroom .cw-word-focus-matrix .example-matrix .tonight-slot{min-height:240px;gap:18px;padding:20px 14px;transition:opacity .35s,filter .35s}
-.classroom .cw-word-focus-matrix .example-source{font-size:clamp(32px,4.5vw,68px);color:inherit}
-.classroom .cw-word-focus-matrix .example-gloss{font-size:clamp(14px,1.5vw,21px)}
-.classroom .cw-word-focus-matrix .cw-slot-count{display:none}
-.classroom .cw-word-focus-matrix .cw-noun-group{background:transparent;box-shadow:none;border:0}
-.classroom .cw-word-focus-matrix[data-focus-slot="0"] .tonight-slot:not(.slot-0),
-.classroom .cw-word-focus-matrix[data-focus-slot="1"] .tonight-slot:not(.slot-1),
-.classroom .cw-word-focus-matrix[data-focus-slot="2"] .tonight-slot:not(.slot-2),
-.classroom .cw-word-focus-matrix[data-focus-slot="3"] .tonight-slot:not(.slot-3){background:#eef1f5;color:#7b899a;box-shadow:none;border-color:transparent}
-.classroom .cw-word-focus-matrix .tonight-slot .example-source,.classroom .cw-word-focus-matrix .tonight-slot .example-gloss{color:inherit}
-.classroom .cw-word-focus-matrix[data-focus-slot="0"] .slot-1 .cw-game-icon,
-.classroom .cw-word-focus-matrix:not([data-focus-slot="0"]) .slot-0 .cw-game-icon{filter:grayscale(1);opacity:.35}
-.classroom .cw-word-focus-matrix .example-translation{color:#738399;font-size:24px;margin-top:30px}
-@media(max-width:700px){.classroom .cw-word-focus-matrix .example-matrix .tonight-slot{min-height:160px;padding:12px 6px}.classroom .cw-word-focus-matrix .example-source{font-size:28px}.classroom .cw-word-focus-matrix .example-gloss{font-size:12px}}
-.classroom .cw-word-focus-matrix .example-language>p.example-translation{display:block;width:100%;text-align:center!important;margin:28px 0 0!important;color:#738399!important;font-size:24px!important}
-/* The familiar sentence itself is the heading. */
-.cw-word-heading{position:relative;padding:48px clamp(24px,5vw,80px) 20px;background:#fff;flex:none}
-.cw-word-heading .cw-word-focus-matrix{padding:0;max-width:1100px;margin:0 auto}
-.cw-word-return{position:absolute;left:14px;top:14px;width:44px;height:44px;display:grid;place-items:center;border:0;background:transparent;color:#526d8c;cursor:pointer}
-.cw-word-return svg{width:24px;height:24px}
-.cw-word-return:hover{color:#1877ef;background:#f0f5fb;border-radius:50%}
-.cw-word-heading+.cw-word-body{flex:none;width:100%;max-width:1228px;margin:0 auto;padding:12px 64px 36px;gap:18px}
-.cw-word-caption{margin:0;color:#526d8c;font-size:18px;line-height:1.7}
-.cw-word-focus-matrix[data-focus-slot="0"] .slot-0,
-.cw-word-focus-matrix[data-focus-slot="1"] .slot-1,
-.cw-word-focus-matrix[data-focus-slot="2"] .slot-2,
-.cw-word-focus-matrix[data-focus-slot="3"] .slot-3{view-transition-name:word-surface}
-@media(max-width:700px){.cw-word-heading{padding:62px 16px 16px}.cw-word-heading+.cw-word-body{padding:12px 20px 24px}}
-/* A continuous reference article: type first, then the particular word. */
-.cw-word-heading+.cw-word-body{display:block;padding-top:12px;padding-bottom:56px}
-.cw-reference-section{padding:26px 0 28px;border-top:1px solid #e1e7ee}
-.cw-reference-section h2{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin:0 0 12px;font-size:26px;line-height:1.4;color:#18385e}
-.cw-reference-section h2 span{font-size:16px;font-weight:400;color:#738399}
-.cw-reference-section h2[lang=en]{font-family:'Fredoka',sans-serif;font-size:32px;font-weight:500}
-.cw-reference-section p{margin:0;font-size:18px;line-height:1.85;color:#526d8c;max-width:780px}
-.cw-reference-section p.cw-reference-detail{margin-top:8px;font-size:16px}
-.cw-word-body>.cw-word-options{padding-top:6px}
-@media(max-width:700px){.cw-reference-section{padding:22px 0}.cw-reference-section h2{font-size:23px}.cw-reference-section p{font-size:16px}}
-/* Compact sentence header on a distinct, quiet surface. */
-.cw-word-heading{background:#edf2f9;border-bottom:1px solid #dce5f0;padding:28px 64px 22px}
-.cw-word-heading .cw-word-focus-matrix{max-width:900px;background:transparent}
-.classroom .cw-word-heading .cw-word-focus-matrix .example-matrix .tonight-slot{min-height:168px;padding:14px 12px;gap:10px}
-.classroom .cw-word-heading .cw-word-focus-matrix .example-source{font-size:clamp(28px,3.1vw,46px)}
-.classroom .cw-word-heading .cw-word-focus-matrix .example-gloss{font-size:16px}
-.classroom .cw-word-heading .cw-slot-role{height:46px;min-height:46px}
-.classroom .cw-word-heading .cw-game-icon{width:54px;height:54px}
-.classroom .cw-word-heading .cw-word-focus-matrix .example-language>p.example-translation{font-size:19px!important;margin-top:18px!important}
-.classroom .cw-word-heading .cw-word-focus-matrix[data-focus-slot="0"] .tonight-slot:not(.slot-0),
-.classroom .cw-word-heading .cw-word-focus-matrix[data-focus-slot="1"] .tonight-slot:not(.slot-1),
-.classroom .cw-word-heading .cw-word-focus-matrix[data-focus-slot="2"] .tonight-slot:not(.slot-2),
-.classroom .cw-word-heading .cw-word-focus-matrix[data-focus-slot="3"] .tonight-slot:not(.slot-3){background:#f9fbfd}
-.cw-word-heading+.cw-word-body{max-width:1028px;padding-top:10px}
-.cw-reference-section{padding:22px 0}
-.cw-word-body>.cw-reference-section:first-child{border-top:0}
-@media(max-width:700px){.cw-word-heading{padding:58px 16px 20px}.classroom .cw-word-heading .cw-word-focus-matrix .example-matrix .tonight-slot{min-height:138px;padding:10px 6px}.classroom .cw-word-heading .cw-word-focus-matrix .example-source{font-size:26px}.classroom .cw-word-heading .cw-word-focus-matrix .example-gloss{font-size:12px}.classroom .cw-word-heading .cw-game-icon{width:42px;height:42px}.classroom .cw-word-heading .cw-slot-role{height:38px;min-height:38px}}
-/* A small contextual heading, tinted by the selected word. */
-.cw-word-heading{background:color-mix(in srgb,var(--word-colour) 13%,white);border-bottom-color:color-mix(in srgb,var(--word-colour) 20%,white);padding:22px 64px 16px}
-.cw-word-heading .cw-word-focus-matrix{max-width:620px}
-.classroom .cw-word-heading .cw-word-focus-matrix .example-matrix .tonight-slot{min-height:108px;padding:9px 8px;gap:5px;border-radius:12px}
-.classroom .cw-word-heading .cw-word-focus-matrix .example-source{font-size:30px}
-.classroom .cw-word-heading .cw-word-focus-matrix .example-gloss{font-size:12px}
-.classroom .cw-word-heading .cw-slot-role{height:30px;min-height:30px}
-.classroom .cw-word-heading .cw-game-icon{width:34px;height:34px}
-.classroom .cw-word-heading .cw-word-focus-matrix .example-language>p.example-translation{font-size:15px!important;margin-top:12px!important;opacity:.65}
-.classroom .cw-word-heading .cw-word-focus-matrix[data-focus-slot="0"] .tonight-slot:not(.slot-0),
-.classroom .cw-word-heading .cw-word-focus-matrix[data-focus-slot="1"] .tonight-slot:not(.slot-1),
-.classroom .cw-word-heading .cw-word-focus-matrix[data-focus-slot="2"] .tonight-slot:not(.slot-2),
-.classroom .cw-word-heading .cw-word-focus-matrix[data-focus-slot="3"] .tonight-slot:not(.slot-3){opacity:.25;background:#fff;filter:grayscale(1)}
-@media(max-width:700px){.cw-word-heading{padding:54px 14px 16px}.classroom .cw-word-heading .cw-word-focus-matrix .example-source{font-size:24px}.classroom .cw-word-heading .cw-word-focus-matrix .example-gloss{font-size:11px}.classroom .cw-word-heading .cw-word-focus-matrix .example-matrix .tonight-slot{min-height:100px;padding:8px 5px}}
-/* Simple word header, matching the classroom's normal header treatment. */
-.cw-word-explanation>.cw-word-heading{background:var(--word-colour);color:var(--word-ink);padding:24px 64px;min-height:124px;border:0;display:flex;align-items:center;view-transition-name:word-surface}
-.cw-simple-word-title{display:flex;align-items:center;gap:20px;width:100%;max-width:900px;margin:0 auto}
+.cw-word-explanation{width:100%;min-height:100%;display:flex;flex-direction:column;color:#18385e;background:#f3f6fb}
+.cw-word-heading{position:relative;flex:none;background:var(--word-colour);color:var(--word-ink);padding:24px 64px;min-height:124px;box-sizing:border-box;display:flex;align-items:center}
+.cw-simple-word-title{display:flex;align-items:center;gap:20px;width:100%}
 .cw-simple-word-title h1{font:500 44px/1.1 'Fredoka',sans-serif;margin:0;color:inherit}
 .cw-simple-word-title p{font-size:16px;margin:8px 0 0;color:inherit;opacity:.85}
 .classroom .cw-simple-word-title .cw-game-icon{width:64px;height:64px;flex:none}
-.cw-word-heading .cw-word-return{color:inherit;top:40px;left:12px}
-.cw-word-heading .cw-word-return:hover{background:#ffffff20;color:inherit}
-@media(max-width:700px){.cw-word-explanation>.cw-word-heading{padding:24px 20px 24px 56px;min-height:116px}.cw-simple-word-title{gap:12px}.cw-simple-word-title h1{font-size:36px}.classroom .cw-simple-word-title .cw-game-icon{width:50px;height:50px}}
-.cw-reference-rows{margin:0;display:grid;gap:0}
-.cw-reference-rows>div{display:grid;grid-template-columns:140px minmax(0,1fr);gap:24px;padding:12px 0;border-bottom:1px solid #edf0f4}
-.cw-reference-rows>div:last-child{border-bottom:0}
-.cw-reference-rows dt{font-size:15px;font-weight:600;color:#526d8c;line-height:1.8}
-.cw-reference-rows dd{margin:0;font-size:16px;line-height:1.8;color:#18385e;max-width:700px}
-@media(max-width:700px){.cw-reference-rows>div{grid-template-columns:95px minmax(0,1fr);gap:14px}.cw-reference-rows dd{font-size:15px}}
-/* Full-width reference sections, with a consistent category accent. */
-.cw-word-explanation>.cw-word-body{width:100%;max-width:none;padding:24px clamp(24px,4vw,64px) 48px;background:#f5f7fb;display:flex;flex-direction:column;gap:18px;box-sizing:border-box}
-.cw-word-body>.cw-reference-section{padding:0;background:#fff;border:1px solid #e1e7ef;border-left:4px solid var(--word-colour);border-radius:10px;overflow:hidden}
-.cw-word-body>.cw-reference-section:first-child{border-top:1px solid #e1e7ef}
-.cw-reference-section>h2{padding:16px 24px;margin:0;font-size:23px;background:color-mix(in srgb,var(--word-colour) 7%,white);border-bottom:1px solid color-mix(in srgb,var(--word-colour) 13%,white)}
-.cw-reference-section>p{padding:18px 24px;max-width:none}
-.cw-reference-section>.cw-reference-rows{padding:4px 24px}
-.cw-reference-rows>div{grid-template-columns:clamp(130px,15vw,210px) minmax(0,1fr);gap:24px;padding:14px 0}
-.cw-reference-rows dd{max-width:none}
-.cw-reference-rows dt{color:color-mix(in srgb,var(--word-colour) 45%,#18385e)}
-.cw-simple-word-title{max-width:none}
-@media(max-width:700px){.cw-word-explanation>.cw-word-body{padding:18px 14px 32px;gap:14px}.cw-reference-section>h2{padding:14px 16px;font-size:21px}.cw-reference-section>p{padding:16px}.cw-reference-section>.cw-reference-rows{padding:2px 16px}.cw-reference-rows>div{grid-template-columns:90px minmax(0,1fr);gap:12px}}
+.cw-word-return{position:absolute;left:12px;top:40px;display:grid;place-items:center;width:36px;height:44px;padding:8px;background:none;border:0;color:inherit;cursor:pointer}
+.cw-word-return svg{width:24px;height:24px}
+.cw-word-return:hover{transform:translateX(-3px)}
+.cw-word-explanation button:focus-visible{outline:3px solid #1877ef;outline-offset:4px}
+.cw-word-body{width:100%;box-sizing:border-box;padding:28px clamp(20px,3vw,48px) 48px}
+.cw-reference-sheet{background:#fff;border-radius:20px;padding:0 clamp(24px,3vw,48px);box-shadow:0 3px 0 #dce5ef;overflow:hidden}
+.cw-reference-sheet>section{padding:28px 0}
+.cw-reference-sheet>section+section{border-top:1px solid #e2e9f2}
+.cw-reference-intro{display:flex;align-items:center;gap:24px}
+.classroom .cw-reference-intro>.cw-game-icon{width:86px;height:86px;flex:0 0 86px}
+.cw-reference-intro h2{font-size:18px;margin:0 0 10px;font-weight:700}
+.cw-reference-intro h2 span{font-size:15px;font-weight:400;color:#70839a;margin-left:10px}
+.cw-reference-intro p{font-size:clamp(22px,2vw,30px);line-height:1.5;font-weight:600;margin:0;color:#18385e;max-width:1000px}
+.cw-reference-mechanics>h2,.cw-reference-word>h3{display:flex;align-items:center;gap:12px;font-size:18px;font-weight:650;margin:0 0 18px}
+.cw-reference-art{display:block;flex:0 0 38px;width:38px;height:38px;background-image:url('/classroom/icons/reference-sections.png');background-repeat:no-repeat;background-size:300% 100%}
+.cw-reference-art-join{background-position:center center}.cw-reference-art-guide{background-position:right center}
+.cw-reference-rows{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 36px}
+.cw-reference-rows>div{padding:0;min-width:0}
+.cw-reference-rows dt{font-size:14px;color:#718299;font-weight:600;margin:0 0 6px}
+.cw-reference-rows dd{font-size:17px;line-height:1.7;color:#294865;margin:0;max-width:54ch}
+.cw-reference-word-title{display:flex;align-items:baseline;gap:20px;margin:0 0 8px;flex-wrap:wrap}
+.cw-reference-word-title h2{font:500 38px/1.2 'Fredoka',sans-serif;margin:0;color:#18385e}
+.cw-reference-word-title p{font-size:23px;line-height:1.5;margin:0;color:#506d88}
+.cw-reference-function{font-size:17px;line-height:1.7;margin:0 0 24px;color:#294865}
+.cw-word-options{display:flex;gap:10px;overflow-x:auto;padding:20px 3px 12px;margin-top:22px;border-top:1px solid #e2e9f2;scrollbar-width:thin;scroll-snap-type:x proximity}
+.cw-word-options button{flex:0 0 auto;min-width:104px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 18px;border:2px solid transparent;border-radius:12px;background:#f1f5fa;color:#294865;font:inherit;cursor:pointer;scroll-snap-align:start;transition:background 180ms,transform 180ms}
+.cw-word-options button:hover{background:#e4edfa;transform:translateY(-2px)}
+.cw-word-options button[aria-pressed=true]{background:var(--word-colour);color:var(--word-ink);border-color:var(--word-colour)}
+.cw-word-options strong{font:500 20px 'Fredoka',sans-serif}
+.cw-word-options span{font-size:13px}
+@media(max-width:700px){
+.cw-word-heading{padding:22px 18px 22px 54px;min-height:112px}
+.cw-simple-word-title{gap:12px}.cw-simple-word-title h1{font-size:36px}
+.classroom .cw-simple-word-title .cw-game-icon{width:50px;height:50px}
+.cw-word-body{padding:16px 12px 28px}.cw-reference-sheet{padding:0 20px;border-radius:16px}
+.cw-reference-sheet>section{padding:22px 0}.cw-reference-intro{gap:14px}
+.classroom .cw-reference-intro>.cw-game-icon{width:58px;height:58px;flex-basis:58px}
+.cw-reference-intro h2 span{display:block;margin:4px 0 0}.cw-reference-intro p{font-size:21px}
+.cw-reference-rows{grid-template-columns:1fr;gap:16px}.cw-reference-rows dd{font-size:16px}
+.cw-reference-word-title h2{font-size:32px}.cw-reference-word-title p{font-size:20px}
+}
+/* Carry the actual icon and word between layouts, never stretch the card. */
+.cw-word-explanation>.cw-word-heading{view-transition-name:none}
+.cw-word-explanation>.cw-word-body{animation:none}
+html[data-word-motion="open"] .cw-word-explanation>.cw-word-body{animation:word-reference-arrive 280ms 360ms both cubic-bezier(.2,0,.2,1)}
+@keyframes word-reference-arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+html[data-word-motion]::view-transition-group(classroom-word-icon),
+html[data-word-motion]::view-transition-group(classroom-word-label){animation-duration:640ms;animation-timing-function:cubic-bezier(.4,0,.2,1)}
+html[data-word-motion]::view-transition-old(classroom-word-icon),
+html[data-word-motion]::view-transition-new(classroom-word-icon),
+html[data-word-motion]::view-transition-old(classroom-word-label),
+html[data-word-motion]::view-transition-new(classroom-word-label){height:100%;width:100%;object-fit:fill;animation-duration:640ms;animation-timing-function:cubic-bezier(.4,0,.2,1);mix-blend-mode:normal}
+html[data-word-motion]::view-transition-old(root){animation:word-page-out 160ms both ease-out}
+html[data-word-motion]::view-transition-new(root){animation:word-page-in 260ms 160ms both ease-out}
+@keyframes word-page-out{to{opacity:0}}
+@keyframes word-page-in{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){html[data-word-motion="open"] .cw-word-explanation>.cw-word-body{animation:none}}
+/* Keep the navigation anchored and avoid a white flash between pages. */
+html[data-word-motion] .classroom .index{view-transition-name:classroom-navigation}
+html[data-word-motion]::view-transition-group(classroom-navigation){animation:none}
+html[data-word-motion]::view-transition-old(classroom-navigation){display:none}
+html[data-word-motion]::view-transition-new(classroom-navigation){animation:none}
+html[data-word-motion]::view-transition-new(root){animation:word-page-in 300ms both ease-out}
+html[data-word-motion]::view-transition-old(classroom-word-icon),
+html[data-word-motion]::view-transition-old(classroom-word-label){display:none}
+html[data-word-motion]::view-transition-new(classroom-word-icon),
+html[data-word-motion]::view-transition-new(classroom-word-label){animation:none}
+html[data-word-motion]::view-transition-new(classroom-word-label){filter:drop-shadow(0 1px 2px #18385e55)}

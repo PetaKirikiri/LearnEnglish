@@ -1,9 +1,11 @@
+import { t } from './language'
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { flushSync } from 'react-dom'
 import WordExplanation, { type Determiner } from './WordExplanation'
 import ExampleLanguage from '../learning/ExampleLanguage'
 import type { HolidayWord } from '../race/holidayVocabulary'
 import Icon from '../ui/Icon'
+import WordSlotIcon from './WordSlotIcon'
 import { wordChoices } from './lessonOne'
 import './sentenceLine.css'
 
@@ -20,12 +22,37 @@ export default function SentenceLine({ word, onWord, audio }: { word: HolidayWor
   const choicesId = useId()
   const board = useRef<HTMLElement>(null)
   const item = wordChoices.find(item => item.word === word)!
+  const motion = useRef<ViewTransition | null>(null)
   function explain(slot: number | null) {
+    motion.current?.skipTransition()
+    const selectedSlot = slot ?? explaining
     if (slot === null) restoreSlot.current = explaining
-    board.current?.querySelectorAll<HTMLElement>('.example-unit-trigger').forEach(el => { el.style.viewTransitionName = el.classList.contains(`slot-${slot}`) ? 'word-surface' : 'none' })
-    const update = () => flushSync(() => { setActive(null); setExplaining(slot) })
-    if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.startViewTransition(update)
-    else update()
+    const mark = () => {
+      const source = board.current?.querySelector<HTMLElement>(`.slot-${selectedSlot}.example-unit-trigger`)
+      const target = document.querySelector<HTMLElement>('#word-explanation .cw-simple-word-title')
+      const icon = (source ?? target)?.querySelector<HTMLElement>('.cw-game-icon')
+      const word = (source ?? target)?.querySelector<HTMLElement>(source ? '.example-source' : 'h1')
+      if (icon) icon.style.viewTransitionName = 'classroom-word-icon'
+      if (word) word.style.viewTransitionName = 'classroom-word-label'
+    }
+    const update = () => {
+      flushSync(() => { setActive(null); setExplaining(slot) })
+      mark()
+    }
+    if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      mark()
+      document.documentElement.dataset.wordMotion = slot === null ? 'back' : 'open'
+      const transition = document.startViewTransition(update)
+      motion.current = transition
+      void transition.finished.finally(() => {
+        if (motion.current !== transition) return
+        motion.current = null
+        delete document.documentElement.dataset.wordMotion
+        document.querySelectorAll<HTMLElement>('[style*="view-transition-name"]').forEach(element => {
+          if (element.style.viewTransitionName.startsWith('classroom-word-')) element.style.removeProperty('view-transition-name')
+        })
+      })
+    } else update()
   }
   useEffect(() => {
     if (explaining === null && restoreSlot.current !== null) {
@@ -47,8 +74,8 @@ export default function SentenceLine({ word, onWord, audio }: { word: HolidayWor
         { english: 'is', thai: 'อยู่' },
         { english: owner, thai: ownerThai },
         { english: `${word}?`, thai: item.thai },
-      ]} slotDetails={[{label:'Question',count:1,icon:<span className="cw-game-icon cw-game-icon-pin" role="img" aria-label="Location"/>},{label:'Tense · now',count:1,icon:<span className="cw-game-icon cw-game-icon-clock" role="img" aria-label="Time"/>},{label:'Which / whose',count:3,icon:null},{label:'Person / thing',count:wordChoices.length,icon:null}]}
-      translationControl={owner === 'the' ? audio : <button className="cw-sound" aria-label="ฟังประโยค" onClick={() => {
+      ]} slotDetails={[{label:'Question',count:1,icon:<WordSlotIcon slot={0}/>},{label:'Tense · now',count:1,icon:<WordSlotIcon slot={1}/>},{label:'Which / whose',count:3,icon:<WordSlotIcon slot={2}/>},{label:'Person / thing',count:wordChoices.length,icon:<WordSlotIcon slot={3}/>}]}
+      translationControl={owner === 'the' ? audio : <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={() => {
         window.speechSynthesis.cancel()
         const speech = new SpeechSynthesisUtterance(`Where is ${owner} ${word}?`)
         speech.lang = 'en-US'; speech.rate = .85

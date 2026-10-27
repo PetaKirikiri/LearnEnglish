@@ -128,3 +128,7 @@
  .cw-game-icon{width:48px;height:48px}
  .classroom .cw-sentence-board .example-matrix .tonight-slot{gap:8px;padding-top:12px}
 }
+/* Matched silhouette and revealed noun: one shared visual relationship. */
+.cw-game-icon-mystery-apple,.cw-game-icon-apple{background-image:url('/classroom/icons/determiner-noun-apples.png');background-size:200% 100%}
+.cw-game-icon-mystery-apple{background-position:left center}
+.cw-game-icon-apple{background-position:right center}
