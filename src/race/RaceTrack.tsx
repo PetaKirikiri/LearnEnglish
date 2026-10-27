@@ -1,6 +1,7 @@
 import { memo, type ReactNode } from 'react'
 import type { RacePlayer } from './types'
 import { laneColours } from './colours'
+import { MAX_SPEED } from './rules'
 import { coursePercent } from './trackGeometry'
 import HorseMotion from './HorseMotion'
 
@@ -39,11 +40,11 @@ function RaceTrack({ players, finish, running = false, laneCount = 10, minimal =
           <i className="sprint-finish"/>
           {player && <>
             {!minimal && <div className="sprint-trail" style={{ width: `${percent}%`, backgroundColor: laneColours[lane] }}/>}
-            <div className={`sprint-horse${running ? ' is-running' : ''}${(player.streak ?? 0) >= 3 ? ' is-on-fire' : ''}`} style={{ left: `${percent}%`, animationDuration: `${3 / (player.speed || 8)}s` }} title={minimal ? player.name : `${player.name}: ${Math.floor(player.metres)} metres`}>
+            <div className={`sprint-horse${running ? ' is-running' : ''}${(player.streak ?? 0) >= 5 ? ' is-on-fire' : ''}`} style={{ left: `${percent}%`, animationDuration: `${3 / (player.speed || 8)}s` }} title={minimal ? player.name : `${player.name}: ${Math.floor(player.metres)} metres`}>
               {minimal && <span className="sprint-rider-label"><i style={{ background: laneColours[lane] }}/>{player.name}{leading && <svg className="sprint-leader-crown" viewBox="0 0 24 20" role="img" aria-label="Leading"><path d="M2 4 7 9 12 1 17 9 22 4 19 17H5Z" fill="currentColor"/><path d="M6 19h12" stroke="currentColor" strokeWidth="2"/></svg>}</span>}
-              {running && player.speed >= 14 && <span className="sprint-wind" aria-hidden="true" style={{ animationDuration: `${6 / player.speed}s` }}><i/><i/><i/><i/></span>}
-              {(player.streak ?? 0) >= 3 && <span className="sprint-fire-aura" aria-hidden="true"><i/><i/><i/></span>}
-              <i className="sprint-dust"/><span className="sprint-horse-body">{renderHorse ? renderHorse(player) : (player.streak ?? 0) >= 3 ? <HorseMotion mood={player.speed >= 14 ? 'confident' : 'steady'} speed={player.speed} onFire paused={!running}/> : <Horse colour={laneColours[lane]} running={running} speed={player.speed}/>}</span>
+              {running && player.speed >= MAX_SPEED - .25 && <span className="sprint-wind" aria-hidden="true" style={{ animationDuration: `${6 / player.speed}s` }}><i/><i/><i/><i/></span>}
+              {(player.streak ?? 0) >= 5 && <span className="sprint-fire-aura" aria-hidden="true"><i/><i/><i/></span>}
+              <i className="sprint-dust"/><span className="sprint-horse-body">{renderHorse ? renderHorse(player) : (player.streak ?? 0) >= 5 ? <HorseMotion mood={player.speed >= MAX_SPEED - .25 ? 'confident' : 'steady'} speed={player.speed} onFire power={Math.max(1, (player.streak ?? 0) - 4)} paused={!running}/> : <Horse colour={laneColours[lane]} running={running} speed={player.speed}/>}</span>
             </div>
           </>}
         </div>

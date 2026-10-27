@@ -6,7 +6,7 @@ export function makeFireHair(model: THREE.Object3D, scene: THREE.Scene) {
   const group = new THREE.Group()
   group.visible = false
   scene.add(group)
-  const material = new THREE.MeshStandardMaterial({ color: '#ffe580', emissive: '#ffb619', emissiveIntensity: .75, roughness: .65, side: THREE.DoubleSide })
+  const material = new THREE.MeshStandardMaterial({ color: '#ffe580', emissive: '#ffb619', emissiveIntensity: 1.1, roughness: .65, side: THREE.DoubleSide })
   const locks: { bone: THREE.Object3D; mesh: THREE.Mesh; length: number; width: number; lift: number; phase: number; offset: number }[] = []
   const segments = 18
   for (let i = 0; i < 10; i++) {
@@ -21,11 +21,11 @@ export function makeFireHair(model: THREE.Object3D, scene: THREE.Scene) {
     const mesh = new THREE.Mesh(geometry, material)
     mesh.frustumCulled = false
     group.add(mesh)
-    locks.push({ bone, mesh, length: tail ? 3 + (i % 3) * .16 : 2.35 + i * .13, width: tail ? .24 : .3, lift: tail ? .15 + (i - 5) * .1 : .4 + i * .06, phase: i * 1.7, offset: (i % 5 - 2) * .09 })
+    locks.push({ bone, mesh, length: tail ? 4.6 + (i % 3) * .3 : 3.4 + i * .2, width: tail ? .16 : .19, lift: tail ? .15 + (i - 5) * .1 : .4 + i * .06, phase: i * 1.7, offset: (i % 5 - 2) * .09 })
   }
   const root = new THREE.Vector3()
   return {
-    update(active: boolean, time: number) {
+    update(active: boolean, time: number, power = 1) {
       group.visible = active
       if (!active) return
       model.updateMatrixWorld(true)
@@ -34,9 +34,9 @@ export function makeFireHair(model: THREE.Object3D, scene: THREE.Scene) {
         const position = lock.mesh.geometry.getAttribute('position') as THREE.BufferAttribute
         for (let j = 0; j <= segments; j++) {
           const t = j / segments
-          const wave = Math.sin(time * 9 - t * 7 + lock.phase) * t * .18
+          const wave = Math.sin(time * 9 - t * 7 + lock.phase) * t * .3
           const y = root.y + Math.sin(t * Math.PI * .7) * lock.lift + wave
-          const z = root.z - lock.length * t
+          const z = root.z - lock.length * (1 + Math.log2(Math.max(1, power)) * .12) * t
           const half = lock.width * Math.sin(Math.PI * (.12 + .88 * t)) * (1 - t * .6)
           for (let side = 0; side < 2; side++) position.setXYZ(j * 2 + side, root.x + lock.offset + Math.sin(t * 5 + time * 5 + lock.phase) * t * .12, y + (side ? half : -half), z)
         }

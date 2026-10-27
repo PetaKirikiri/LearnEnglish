@@ -7,5 +7,5 @@ import type { LessonPage } from './lessonOne'
 const root: Root = import.meta.hot?.data.root ?? createRoot(document.getElementById('note')!)
 if (import.meta.hot) import.meta.hot.dispose(data => { data.root = root })
 export function renderLesson(page: LessonPage) {
-  root.render(createElement(Lesson, { page }))
+  root.render(createElement(Lesson, { page, lessonId:new URLSearchParams(location.search).get('lesson') === '2' ? 'lesson-2' : 'lesson-1' }))
 }

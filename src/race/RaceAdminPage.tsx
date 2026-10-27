@@ -31,7 +31,7 @@ export default function RaceAdminPage() {
   const audio = useRef<HTMLAudioElement>(null)
   const pool = racePools.find(p => p.id === selection.stage)!
   const judgement = pool.kind === 'judgement'
-  const holidayWords = pool.kind === 'judgement' || pool.kind === 'meaning'
+  const holidayWords = pool.id === 'where-is-the' || pool.id === 'holiday-meaning'
   const questions = pool.questions.filter(q => selection.questionIds.includes(q.id))
   const valid = judgement ? questions.some(q => q.correct === 0) && questions.some(q => q.correct === 1) : pool.kind === 'meaning' ? questions.length >= 2 : questions.length === 2
   const previews = valid ? meaningChoices(questions.map(q => ({ id: q.id, choices: q.answers.map(a => a.map(s => s.text).join('')), correct: q.correct }))) : []
@@ -55,7 +55,7 @@ export default function RaceAdminPage() {
   function selectPool(id: string) {
     const next = racePools.find(p => p.id === id)!
     const words = new Set(questions.map(q => holidayWordFor(q.id)).filter(Boolean))
-    const sameWords = holidayWords && (next.kind === 'meaning' || next.kind === 'judgement')
+    const sameWords = holidayWords && (next.id === 'holiday-meaning' || next.id === 'where-is-the')
     select({ stage: id, questionIds: next.questions.filter(q => !sameWords || words.has(holidayWordFor(q.id))).map(q => q.id) })
   }
   function toggle(ids: string[]) {
@@ -101,7 +101,7 @@ export default function RaceAdminPage() {
         <details className="race-admin-questions" open={!holidayWords}>
           <summary>Questions <span>{questions.length}</span></summary>
           <div>{pool.questions.map(q => <article key={q.id}>
-            {holidayWords && <input type="checkbox" aria-label={`Include ${q.english}`} checked={selection.questionIds.includes(q.id)} onChange={() => toggle([q.id])}/>}
+            {(holidayWords || pool.id === 'tonight-slots') && <input type="checkbox" aria-label={`Include ${q.english}`} checked={selection.questionIds.includes(q.id)} onChange={() => toggle([q.id])}/>}
             <div><strong>{q.english}</strong><span>{pool.kind === 'meaning' ? previews.find(p => p.id === q.id)?.choices.join(' · ') ?? q.answers[q.correct].map(s => s.text).join('') : q.answers[q.correct].map(s => s.text).join('')}</span>
               {pool.kind === 'meaning' && valid && selection.questionIds.includes(q.id) && q.meaningDistractor && <span className="race-admin-curveball">{q.answers[q.correct].map(s => s.text).join('')} · {q.meaningDistractor}</span>}
             </div>

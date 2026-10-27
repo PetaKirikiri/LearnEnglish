@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import HorseMotion from './HorseMotion'
+import CartoonHorse from './CartoonHorse'
 import RaceWorldTrack from './RaceWorldTrack'
 import { demoAt, demoRoster } from './demoRace'
 import { FINISH } from './rules'
@@ -8,6 +8,8 @@ import './race.css'
 import './raceHost.css'
 import './racePremium.css'
 import './raceDemo.css'
+import './raceGameTheme.css'
+import './raceVenue.css'
 
 export default function RaceDemoPage() {
   const [started, setStarted] = useState(false)
@@ -39,14 +41,14 @@ export default function RaceDemoPage() {
   }, [snapshot.round, snapshot.question.audioUrl, running, sound])
   function restart() { clock.current = 0; setElapsed(0); setPaused(false); setStarted(true); setAudioError(false) }
   const winner = snapshot.players.find(p => p.metres === FINISH)
-  return <main className="classroom-race race-host race-session race-demo">
+  return <main className="classroom-race race-game-surface race-host race-session race-demo">
     <audio ref={audio} preload="auto"/>
     {!started ? <section className="demo-ready">
       <a href="/english/race/horses">← Horses</a><h1>Four horses. One race.</h1>
       <p>Where is the…? · Correct or wrong</p>
-      <div className="demo-roster">{demoRoster.map((p, lane) => <article key={p.id}><i style={{ background: laneColours[lane] }}>{lane + 1}</i><h2>{p.name}</h2><p>{p.description}</p><HorseMotion mood={lane === 0 || lane === 2 ? 'confident' : lane === 1 ? 'steady' : 'struggling'} paused/></article>)}</div>
+      <div className="demo-roster">{demoRoster.map((p, lane) => <article key={p.id}><i style={{ background: laneColours[lane] }}>{lane + 1}</i><h2>{p.name}</h2><p>{p.description}</p><CartoonHorse powered={lane === 0} paused/></article>)}</div>
       <button className="race-primary" onClick={restart}>Start test race →</button>
-    </section> : <section className="race-fullscreen">
+    </section> : <section className="race-fullscreen" data-finished={snapshot.finished}>
       <header className="race-host-strip">
         <span className="race-round">{snapshot.round + 1}</span>
         <span className="race-host-timer">{snapshot.finished ? '' : snapshot.countdown || `${snapshot.remaining.toFixed(1)}s`}</span>
@@ -59,7 +61,7 @@ export default function RaceDemoPage() {
         {audioError && <button className="demo-audio-error" onClick={() => { setAudioError(false); void audio.current?.play().catch(() => setAudioError(true)) }}>Audio unavailable · Retry</button>}
       </header>
       <RaceWorldTrack players={snapshot.players} finish={FINISH} running={running}
-        renderHorse={player => <HorseMotion mood={snapshot.players[player.lane].mood} speed={player.speed} onFire={(player.streak ?? 0) >= 3} paused={!running}/>}/>
+        renderHorse={player => <CartoonHorse lane={player.lane} speed={player.speed} streak={player.streak ?? 0} paused={!running || player.speed <= 0}/>}/>
     </section>}
   </main>
 }

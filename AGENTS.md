@@ -15,6 +15,8 @@
 - Author meanings for the actual sentence, not dictionary replacements or a positional split of the Thai translation. Keep genuine multiword constructions together when there is no honest one-word equivalent.
 - This is an example-reading convention, not permission to expose translations that reveal the answer in an unanswered listening test.
 
+- In race teaching notes, always present English examples in the established four-box sentence matrix (question / is-or-are / the-my-your / vocabulary), with the same colours and icons as the sentence builder. Use `ExampleLanguage matrix` and the shared `SentenceSlot`; keep Thai meanings inside each box and the natural Thai sentence underneath. Singular words keep their grammatical slot colour. Do not replace this with loose sentence text or a new card design.
+
 # Sentence-structure illustrations
 
 - A new meaning, modifier, vocabulary item or curriculum topic is not automatically a new sentence structure. Organize examples into reusable construction families, with variations and recap/composition examples inside them. Judge changes to clause arrangement, auxiliary/verb construction, complements and participant relationships; do not count this/that, a few/few, bigger/smaller or ordinary uses of only as independent whole-sentence structures.

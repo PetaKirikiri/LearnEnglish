@@ -9,23 +9,25 @@ export default function HorsePreviewPage() {
   const [paused, setPaused] = useState(false)
   const [slow, setSlow] = useState(false)
   const [onFire, setOnFire] = useState(true)
+  const [streak, setStreak] = useState(5)
   const showComparison = compare && !onFire
   return <main className="horse-preview">
-    <header><a href="/english/race">← Race</a><h1>Find your stride.</h1><p>Three correct in a row. On fire.</p></header>
+    <header><a href="/english/race">← Race</a><h1>Find your stride.</h1><p>Build the streak. Transform. Keep levelling up.</p></header>
     <div className="horse-toolbar" aria-label="Animation controls">
       {!onFire && <button aria-pressed={compare} onClick={() => setCompare(!compare)}>{compare ? 'Side by side' : 'One horse'}</button>}
       <button aria-pressed={paused} onClick={() => setPaused(!paused)}>{paused ? 'Play' : 'Pause'}</button>
       <button aria-pressed={slow} onClick={() => setSlow(!slow)}>Slow motion</button>
       <button aria-pressed={onFire} onClick={() => setOnFire(!onFire)}>Golden form</button>
     </div>
+    {onFire && <div className="horse-toolbar" aria-label="Correct answer streak">{[3,4,5,6,10].map(n => <button key={n} aria-pressed={streak === n} onClick={() => setStreak(n)}>{n} correct</button>)}</div>}
     {!compare && !onFire && <div className="horse-state-picker" aria-label="Horse state">{horseMoods.map(state => <button key={state} aria-pressed={state === mood} onClick={() => setMood(state)}>{horseStyles[state].label}</button>)}</div>}
     <div className={`horse-lineup ${showComparison ? '' : 'single'}`}>
       {(onFire ? ['confident'] as const : compare ? horseMoods : [mood]).map((state, index) => <section className={`horse-state horse-state-${state}`} key={showComparison ? state : 'single'}>
-        <div className="horse-state-heading">{!onFire && <span>0{showComparison ? index + 1 : horseMoods.indexOf(state) + 1}</span>}<h2>{onFire ? 'Super fast' : horseStyles[state].label}</h2>{!onFire && <b>{Math.round(horseStyles[state].speed * 3.6)}<small> km/h</small></b>}</div>
+        <div className="horse-state-heading">{!onFire && <span>0{showComparison ? index + 1 : horseMoods.indexOf(state) + 1}</span>}<h2>{onFire ? streak < 5 ? 'Charging' : `Power ${streak - 4}` : horseStyles[state].label}</h2>{!onFire && <b>{Math.round(horseStyles[state].speed * 3.6)}<small> km/h</small></b>}</div>
         <div className={`horse-stage ${paused ? 'paused' : ''}`} style={{ '--track-duration': `${(slow ? 4 : 1) * 18 / (onFire ? 23 : horseStyles[state].speed)}s` } as React.CSSProperties}>
-          <HorseMotion mood={state} paused={paused} slow={slow} onFire={onFire}/><div className="horse-ground"/>
+          <HorseMotion mood={state} paused={paused} slow={slow} onFire={onFire && streak >= 5} charge={onFire ? streak : 0} power={Math.max(1, streak - 4)}/><div className="horse-ground"/>
         </div>
-        <div className="horse-small-view"><span>Race size</span><div><HorseMotion mood={state} paused={paused} slow={slow} onFire={onFire}/></div></div>
+        <div className="horse-small-view"><span>Race size</span><div><HorseMotion mood={state} paused={paused} slow={slow} onFire={onFire && streak >= 5} charge={onFire ? streak : 0} power={Math.max(1, streak - 4)}/></div></div>
       </section>)}
     </div>
   </main>

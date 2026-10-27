@@ -201,3 +201,15 @@ main{display:flex;flex-direction:column}
 /* The brand is a single white initial integrated into the blue rail. */
 .brand-mark{display:block;flex:none;color:#fff;font-family:'Fredoka','Nunito',sans-serif;font-size:clamp(84px,7vw,132px);font-weight:600;line-height:.85;letter-spacing:-.035em;text-indent:-.035em;user-select:none}
 @media(max-width:700px){.brand-mark{font-size:40px;line-height:1}}
+
+/* Thai classroom navigation keeps Thai glyphs and tone marks legible. */
+.phases[lang=th] .phase-button,.phases[lang=th] .submenu-items button{font-family:"Noto Sans Thai",sans-serif;line-height:1.55;letter-spacing:0}
+.phases[lang=th] .submenu-items button{white-space:normal}
+
+/* Lesson selection belongs in the top-left brand area, outside the class stages. */
+.rail-brand{position:relative}
+.rail-brand .lesson-switch{position:absolute;top:14px;left:12px;display:flex;gap:6px;padding:0;margin:0;z-index:2}
+.rail-brand .lesson-switch a{display:grid;place-items:center;min-width:36px;height:32px;padding:0 6px;color:#fff;border:1px solid #ffffff65;border-radius:8px;text-decoration:none;font:500 15px 'Fredoka',sans-serif;box-sizing:border-box}
+.rail-brand .lesson-switch a[aria-current]{background:#fff;color:#1877ef;border-color:#fff}
+.rail-brand .lesson-switch a:focus-visible{outline:3px solid #ffdb3b;outline-offset:3px}
+@media(max-width:700px){.rail-brand .lesson-switch{top:14px;left:12px}.rail-brand .lesson-switch a{min-width:32px;height:30px;font-size:14px}}

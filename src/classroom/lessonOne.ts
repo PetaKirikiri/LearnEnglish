@@ -7,9 +7,9 @@ export const wordChoices = [
   ...holidayVocabulary.filter(item => !firstWords.includes(item.word)),
 ]
 export const lessonTitles = {
-  recall: 'ทบทวนคำศัพท์', idea: 'ถามหาสถานที่',
+  recall: 'ทบทวนรูปประโยค', idea: 'ถามหาสถานที่',
   example: 'เปลี่ยนคำ รูปแบบเดิม', mistake: 'คำเล็ก ๆ ก็สำคัญ',
-  practice: 'ลองฟัง', review: 'หนึ่งรูปแบบ ใช้ได้หลายที่',
+  practice: 'แข่งม้า', review: 'หนึ่งรูปแบบ ใช้ได้หลายที่',
 } as const
 export type LessonPage = keyof typeof lessonTitles
 export type PracticeMode = 'judgement' | 'meaning'

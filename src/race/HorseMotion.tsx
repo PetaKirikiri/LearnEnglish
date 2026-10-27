@@ -5,6 +5,9 @@ import { clone } from 'three/addons/utils/SkeletonUtils.js'
 import { horseStyles, type HorseMood } from './horseGait'
 import { makePostureClip, type HorsePose } from './horseRig'
 import { makeFireHair } from './horseFire'
+import { makeHorseCharacter } from './horseCharacter'
+import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js'
+import './horsePower.css'
 import { GOLDEN_MIN_SPEED, GOLDEN_SPEED, MIN_SPEED, MAX_SPEED } from './rules'
 
 let rigRequest: ReturnType<GLTFLoader['loadAsync']> | undefined
@@ -16,11 +19,11 @@ function loadRig() {
   return rigRequest
 }
 
-export default function HorseMotion({ mood, paused = false, slow = false, speed, onFire = false }: { mood: HorseMood; paused?: boolean; slow?: boolean; speed?: number; onFire?: boolean }) {
+export default function HorseMotion({ mood, paused = false, slow = false, speed, onFire = false, power = 1, charge = 0 }: { mood: HorseMood; paused?: boolean; slow?: boolean; speed?: number; onFire?: boolean; power?: number; charge?: number }) {
   const container = useRef<HTMLDivElement>(null)
-  const controls = useRef({ mood, paused, slow, speed, onFire })
+  const controls = useRef({ mood, paused, slow, speed, onFire, power, charge })
   const [error, setError] = useState(false)
-  useEffect(() => { controls.current = { mood, paused, slow, speed, onFire } }, [mood, paused, slow, speed, onFire])
+  useEffect(() => { controls.current = { mood, paused, slow, speed, onFire, power, charge } }, [mood, paused, slow, speed, onFire, power, charge])
   useEffect(() => {
     const element = container.current
     if (!element) return
@@ -39,8 +42,8 @@ export default function HorseMotion({ mood, paused = false, slow = false, speed,
     const camera = new THREE.OrthographicCamera(-5, 5, 5, -1, .1, 100)
     camera.position.set(-15, 4.8, 0)
     camera.lookAt(0, 2.2, 0)
-    scene.add(new THREE.HemisphereLight(0xfff5e5, 0x6d9989, 2.5))
-    const key = new THREE.DirectionalLight(0xffe1b1, 3.4)
+    scene.add(new THREE.HemisphereLight(0xfff5e5, 0x6d9989, 1.8))
+    const key = new THREE.DirectionalLight(0xffe1b1, 2.4)
     key.position.set(-5, 9, 5)
     key.castShadow = true
     key.shadow.mapSize.set(512, 512)
@@ -53,19 +56,21 @@ export default function HorseMotion({ mood, paused = false, slow = false, speed,
     const ground = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.ShadowMaterial({ opacity: .25 }))
     ground.rotation.x = -Math.PI / 2
     ground.receiveShadow = true
-    scene.add(ground)
+    // Keep the transparent sprite free of a rectangular shadow receiver.
+    ground.visible = false
     const resize = () => {
       // Layout size excludes the shared race-camera transform. Keep enough
       // texture resolution for a horse that may zoom back in after a replay.
       const width = element.clientWidth, height = element.clientHeight
       if (!width || !height) return
       const resolution = Math.max(1, 180 / width)
-      renderer.setSize(width * resolution, height * resolution, false)
+      renderer.setSize(width * 1.5 * resolution, height * resolution, false)
+      Object.assign(renderer.domElement.style, { width: '150%', height: '100%', position: 'absolute', left: '-50%', top: '0' })
       const aspect = width / height
-      camera.left = -3.3 * aspect
-      camera.right = 3.3 * aspect
-      camera.top = 3.3
-      camera.bottom = -3.3
+      camera.left = -5.4 * aspect
+      camera.right = 2.7 * aspect
+      camera.top = 2.7
+      camera.bottom = -2.7
       camera.updateProjectionMatrix()
     }
     const observer = new ResizeObserver(resize)
@@ -76,8 +81,11 @@ export default function HorseMotion({ mood, paused = false, slow = false, speed,
     let model: THREE.Object3D | undefined
     const materials: THREE.Material[] = []
     const coats: { material: THREE.MeshStandardMaterial; colour: THREE.Color; emissive: THREE.Color; intensity: number }[] = []
+    let character: ReturnType<typeof makeHorseCharacter> | undefined
+    const smoothGeometry: THREE.BufferGeometry[] = []
     let fireHair: ReturnType<typeof makeFireHair> | undefined
     let fiery = false
+    let lastPower = 0
     let hairTime = 0
     const actions = new Map<HorsePose, THREE.AnimationAction>()
     let activeMood: HorsePose = controls.current.onFire ? 'super' : controls.current.mood
@@ -88,6 +96,12 @@ export default function HorseMotion({ mood, paused = false, slow = false, speed,
       model.traverse(object => {
         if (!(object instanceof THREE.Mesh)) return
         object.castShadow = true
+        const geometry = object.geometry.clone()
+        geometry.deleteAttribute('normal')
+        object.geometry = mergeVertices(geometry, .00001)
+        geometry.dispose()
+        object.geometry.computeVertexNormals()
+        smoothGeometry.push(object.geometry)
         const paint = (original: THREE.Material) => {
           const material = original.clone()
           if (material instanceof THREE.MeshStandardMaterial) {
@@ -102,6 +116,7 @@ export default function HorseMotion({ mood, paused = false, slow = false, speed,
       })
       scene.add(model)
       fireHair = makeFireHair(model, scene)
+      character = makeHorseCharacter(model)
       mixer = new THREE.AnimationMixer(model)
       const gallop = gltf.animations.find(clip => clip.name === 'Gallop')
       if (!gallop) throw new Error('Horse model has no gallop animation')
@@ -117,13 +132,16 @@ export default function HorseMotion({ mood, paused = false, slow = false, speed,
       const delta = Math.min((now - last) / 1000, .05)
       last = now
       const settings = controls.current
-      if (model && settings.onFire !== fiery) {
-        fiery = settings.onFire
+      const pulse = settings.charge === 3 ? (now % 2800 < 110) : settings.charge === 4 ? (now % 600 < 180) : false
+      const glowing = settings.onFire || (!settings.paused && pulse)
+      if (model && (glowing !== fiery || settings.power !== lastPower)) {
+        fiery = glowing
+        lastPower = settings.power
         model.scale.z = fiery ? 1.08 : 1
         for (const coat of coats) {
-          coat.material.color.copy(fiery ? new THREE.Color(coat.material.name === 'Hair' ? '#fff2a6' : '#f6bc40') : coat.colour)
+          coat.material.color.copy(fiery ? new THREE.Color(coat.material.name === 'Hair' ? '#fff4ad' : '#eab247') : coat.colour)
           coat.material.emissive.copy(fiery ? new THREE.Color('#ffb326') : coat.emissive)
-          coat.material.emissiveIntensity = fiery ? .35 : coat.intensity
+          coat.material.emissiveIntensity = fiery ? .12 + Math.min(.15, Math.log2(settings.power + 1) * .04) : coat.intensity
         }
       }
       if (mixer) {
@@ -139,10 +157,11 @@ export default function HorseMotion({ mood, paused = false, slow = false, speed,
         const cadence = settings.onFire
           ? settings.speed === undefined ? 1.85 : 1.3 + .55 * Math.max(0, Math.min(1, (settings.speed - GOLDEN_MIN_SPEED) / (GOLDEN_SPEED - GOLDEN_MIN_SPEED)))
           : settings.speed === undefined ? horseStyles[settings.mood].cadence : .45 + .7 * Math.max(0, Math.min(1, (settings.speed - MIN_SPEED) / (MAX_SPEED - MIN_SPEED)))
-        const rate = cadence * (settings.slow ? .25 : 1)
+        const rate = (cadence + (settings.onFire ? Math.min(.65, Math.log2(settings.power) * .15) : 0)) * (settings.slow ? .25 : 1)
         mixer.update(settings.paused || motionPreference.matches ? 0 : delta * rate)
         if (!settings.paused && !motionPreference.matches) hairTime += delta * rate
-        fireHair?.update(settings.onFire, hairTime)
+        fireHair?.update(settings.onFire, hairTime, settings.power)
+        character?.update(settings.mood === 'struggling' && !settings.onFire, hairTime)
       }
       renderer.render(scene, camera)
       frame = requestAnimationFrame(animate)
@@ -157,6 +176,8 @@ export default function HorseMotion({ mood, paused = false, slow = false, speed,
       model?.traverse(object => { if (object instanceof THREE.SkinnedMesh) object.skeleton.dispose() })
       materials.forEach(material => material.dispose())
       fireHair?.dispose()
+      character?.dispose()
+      smoothGeometry.forEach(g => g.dispose())
       ground.geometry.dispose()
       ground.material.dispose()
       renderer.dispose()
@@ -164,7 +185,8 @@ export default function HorseMotion({ mood, paused = false, slow = false, speed,
       renderer.domElement.remove()
     }
   }, [])
-  return <div className={`horse-motion${onFire ? ' horse-motion-fire' : ''}`} ref={container} role="img" aria-label={onFire ? 'Super-fast golden horse with flowing mane and tail' : `${horseStyles[mood].label}: full-body galloping horse`}>
+  return <div className={`horse-motion${onFire ? ' horse-motion-fire' : charge === 3 ? ' horse-charge-3' : charge === 4 ? ' horse-charge-4' : ''}`} style={{ animationPlayState: paused ? 'paused' : 'running', overflow: 'visible', '--power-strength': 1 + Math.log2(Math.max(1, power)) * .15 } as React.CSSProperties} ref={container} role="img" aria-label={onFire ? 'Super-fast golden horse with flowing mane and tail' : `${horseStyles[mood].label}: full-body galloping horse`}>
+    {onFire && <span className="horse-power-burst" aria-hidden="true"/>}
     {error && <span role="alert">The horse could not load. Please reload this page.</span>}
   </div>
 }

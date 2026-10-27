@@ -2,6 +2,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
 import { performance } from 'node:perf_hooks'
 import { advanceRace, answer, command, createRoom, joinRoom, prepareRace, RaceError, selectQuestions, viewRoom, type Room, type RaceStage } from './classroomRace'
 import { racePools } from '../src/race/pools'
+import { publicRaceOrigin, publicRaceJoinUrl } from '../src/race/publicLinks'
 
 type RecordState = { id: string; revision: number; state: Room }
 export type RaceStore = {
@@ -62,7 +63,7 @@ export async function cloudAction(store: RaceStore, action: string, method: stri
     const changed = method === 'POST' || room.round !== previousRound || room.phase !== previousPhase
     if (changed && !await store.save(id, stored.revision, room)) continue
     const view = viewRoom(room, secret, now())
-    if (secret === room.host) view.joinUrl = `${origin}/english/race/join/${room.id}`
+    if (secret === room.host) view.joinUrl = publicRaceJoinUrl(room.id)
     return view
   }
   fail('The classroom is busy. Try again.', 409)
@@ -90,7 +91,7 @@ export default async function handler(req: IncomingMessage & { body?: unknown },
       if (!body || typeof body !== 'object' || Array.isArray(body)) fail('Send a valid race request.')
     }
     const secret = req.headers.authorization?.replace(/^Bearer /, '') ?? ''
-    const result = await cloudAction(cloudStore(), action, method, url.searchParams.get('room') ?? '', secret, body, origin, receivedAt)
+    const result = await cloudAction(cloudStore(), action, method, url.searchParams.get('room') ?? '', secret, body, publicRaceOrigin, receivedAt)
     res.statusCode = 200
     res.end(JSON.stringify(result))
   } catch (error) {

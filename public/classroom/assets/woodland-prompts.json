@@ -1,0 +1,13 @@
+{
+  "tool": "Built-in image generation",
+  "assets": [
+    {
+      "file": "assets/woodland-tree.png",
+      "prompt": "Use case: stylized-concept\nAsset type: ONE transparent environment prop for a browser classroom, placed individually in a composed scene, NOT a background image.\nPrimary request: A beautiful old deciduous woodland tree with an asymmetrical broad canopy, inspired by the natural art direction of The Legend of Zelda Breath of the Wild. Painterly cel-shaded game environment asset, elegant natural proportions and confident simple shapes. Warm sunlit yellow-green and moss-green leaves, bark warm muted brown, soft blue-green shade. Broad layered clusters of delicate leaves, not round lollipop blobs. Tree trunk begins at the lower LEFT and gently bends up, with branches reaching across to the RIGHT to shelter the space underneath. Visible handsome root flare with a tiny patch of grass at its foot, no island or pedestal. Side/front eye-level view, full tree and canopy included, fill the canvas generously. Sunlight from upper right. Spacious natural canopy silhouette with transparent gaps between branches. Polished console adventure game art, calm and welcoming. All surroundings transparent, including sky and space beneath the canopy. No sky, scenery, background, frame, text, characters, buildings, interface, coins or logos. Actual alpha transparency."
+    },
+    {
+      "file": "assets/woodland-ferns.png",
+      "prompt": "Use case: stylized-concept\nAsset type: ONE transparent foreground woodland prop for a browser classroom, NOT a landscape or background.\nPrimary request: A naturally grouped cluster of forest floor plants around a single small mossy grey rock: graceful fern fronds, long meadow grass and three tiny warm ivory wildflowers. Breath of the Wild inspired painterly cel shaded console game art. Delicate purposeful shapes, soft warm sunlight from upper right, fresh light green leaf tips with deep moss and muted teal shaded leaves. Grounded asymmetrical silhouette, plants rise higher on RIGHT and taper low to LEFT, like plants growing next to a footpath. Eye-level three-quarter view, not top-down. Include full plant cluster and a narrow soft rooted soil edge only, no island or pedestal. Fill canvas. Actual alpha-transparent surroundings. No sky, scene, backdrop, character, text, interface, game logos, or frame."
+    }
+  ]
+}

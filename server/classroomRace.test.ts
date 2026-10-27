@@ -1,187 +1,199 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
-import { advanceRace, answer, command, createRoom, FINISH, joinRoom, prepareRace, selectQuestions, speedFor, token, viewRoom, WINDOW_MS } from './classroomRace'
+import { advanceRace, answer, command, createRoom, FINISH, joinRoom, prepareRace, selectQuestions, token, viewRoom, WINDOW_MS } from './classroomRace'
 import type { RaceStage } from './classroomRace'
 import { racePools } from '../src/race/pools'
-import { CORRECT_MIN_SPEED, GOLDEN_MIN_SPEED, GOLDEN_SPEED, MAX_SPEED, MIN_SPEED } from '../src/race/rules'
+import { MIN_SPEED } from '../src/race/rules'
 const stage = { ...racePools[0], questions: racePools[0].questions.map(q => ({ id: q.id, english: q.english, audioUrl: q.audioUrl!, choices: q.answers.map(a => a.map(t => t.text).join('')), correct: q.correct })) }
-function setup(count = 1) {
+function setup(count = 2) {
   const room = createRoom(stage, 100)
   const players = Array.from({length:count}, (_, i) => joinRoom(room, `Rider ${i}`, token()))
   command(room, room.host, 'start', -1, 1000)
   return {room, players, start:room.opensAt}
 }
-describe('continuous classroom race', () => {
-  it('uses ten-second windows and bounded speed, not distance bonuses', () => {
-    expect(WINDOW_MS).toBe(10000); expect(FINISH).toBe(1600)
-    expect(speedFor(true, 0)).toBe(16); expect(speedFor(true, 5000)).toBe(12)
-    expect(speedFor(true, 10000)).toBe(8); expect(speedFor(false, 0)).toBe(4)
-  })
-  it('starts once with a single countdown; nobody moves before the start', () => {
-    const {room, players, start} = setup()
-    advanceRace(room, start - 1); expect(players[0].metres).toBe(0)
-    expect(() => command(room, room.host, 'start', 0, start)).toThrow()
-    expect(() => answer(room, players[0].token, 0, 0, start - 1)).toThrow()
-    expect(viewRoom(room, room.host).question?.english).toBe(room.deck[0].english)
-  })
-  it('changes speed immediately without jumping distance, then integrates distance continuously', () => {
-    const {room,players,start} = setup()
-    answer(room, players[0].token, 0, room.deck[0].correct, start+1000)
-    expect(players[0].metres).toBe(4); expect(players[0].speed).toBeCloseTo(15.2)
-    advanceRace(room,start+2000); expect(players[0].metres).toBeCloseTo(19.2)
-    advanceRace(room,start+3000); expect(players[0].metres).toBeCloseTo(34.4)
-  })
-  it.each([
-    { streak: 0, minimum: CORRECT_MIN_SPEED },
-    { streak: 2, minimum: GOLDEN_MIN_SPEED },
-  ])('accepts a correct answer at exactly ten seconds with prior streak $streak', ({ streak, minimum }) => {
-    const {room,players,start} = setup()
-    players[0].streak = streak
-    advanceRace(room, start + WINDOW_MS)
-    expect(room.round).toBe(0)
-    answer(room, players[0].token, 0, room.deck[0].correct, start + WINDOW_MS)
-    expect(players[0].speed).toBe(minimum)
-    expect(players[0].streak).toBe(streak + 1)
-    expect(room.answers[players[0].id].at).toBe(start + WINDOW_MS)
-    advanceRace(room, start + WINDOW_MS + .125)
+describe('simultaneous classroom race', () => {
+  it('holds every horse still until the opening round closes, then ramps together',()=>{
+    const {room,players,start}=setup(4)
+    const correct=room.deck[0].correct
+    answer(room,players[0].token,0,correct,start+500)
+    answer(room,players[1].token,0,correct,start+1500)
+    answer(room,players[2].token,0,1-correct,start+2000)
+    advanceRace(room,start+3500)
+    players.forEach(p=>expect(p).toMatchObject({metres:0,speed:0,targetSpeed:0}))
+    answer(room,players[3].token,0,correct,start+4000)
     expect(room.round).toBe(1)
-    expect(players[0].speed).toBe(minimum)
-    expect(players[0].metres).toBeCloseTo(MIN_SPEED * 10 + minimum * .000125, 8)
-  })
-  it('rejects an answer even a fraction of a millisecond beyond its deadline', () => {
-    const {room,players,start} = setup()
-    const correct = room.deck[0].correct
-    expect(() => answer(room, players[0].token, 0, correct, start + WINDOW_MS + .125)).toThrow('That question has finished.')
-    expect(room.round).toBe(1)
-    expect(room.answers[players[0].id]).toBeUndefined()
-    expect(players[0].speed).toBe(MIN_SPEED)
-  })
-  it.each([
-    { streak: 0, maximum: MAX_SPEED, minimum: CORRECT_MIN_SPEED },
-    { streak: 2, maximum: GOLDEN_SPEED, minimum: GOLDEN_MIN_SPEED },
-  ])('preserves fractional-millisecond response timing with prior streak $streak', ({ streak, maximum, minimum }) => {
-    const {room,players,start} = setup()
-    const responseMs = 1234.125
-    const expectedSpeed = maximum - (maximum - minimum) * responseMs / WINDOW_MS
-    players[0].streak = streak
-    answer(room, players[0].token, 0, room.deck[0].correct, start + responseMs)
-    expect(room.answers[players[0].id].at).toBe(start + responseMs)
-    expect(players[0].speed).toBeCloseTo(expectedSpeed, 10)
-    expect(players[0].speed).not.toBe(speedFor(true, Math.round(responseMs), streak + 1))
-    expect(players[0].metres).toBeCloseTo(MIN_SPEED * responseMs / 1000, 10)
-    advanceRace(room, start + responseMs + 1000)
-    expect(players[0].metres).toBeCloseTo(MIN_SPEED * responseMs / 1000 + expectedSpeed, 10)
-  })
-  it('does not end the time window early when everyone answers', () => {
-    const {room,players,start} = setup(2)
-    for (const p of players) answer(room,p.token,0,room.deck[0].correct,start+100)
-    expect(room.phase).toBe('answering'); expect(room.round).toBe(0)
-    advanceRace(room,start+9999); expect(room.round).toBe(0)
-    advanceRace(room,start+10000); expect(room.round).toBe(0)
-    expect(Object.keys(room.answers)).toHaveLength(2)
-    advanceRace(room,start+10000.125); expect(room.round).toBe(1)
-    expect(room.opensAt).toBe(start+10000); expect(room.closesAt).toBe(start+20000)
-    expect(room.answers).toEqual({})
-  })
-  it('keeps unequal distances across boundaries, never snapping to a checkpoint', () => {
-    const {room,players,start} = setup(2)
-    answer(room,players[0].token,0,room.deck[0].correct,start)
-    answer(room,players[1].token,0,1-room.deck[0].correct,start)
+    expect(room.opensAt).toBe(start+4000)
+    expect(room.closesAt).toBe(start+14000)
+    players.forEach(p=>expect(p).toMatchObject({metres:0,speed:0,accelerationRemainingMs:1000}))
+    expect(players[0].targetSpeed!*3.6).toBeCloseTo(9.75)
+    expect(players[1].targetSpeed!*3.6).toBeCloseTo(9.25)
+    expect(players[2].targetSpeed!*3.6).toBeCloseTo(5)
+    advanceRace(room,start+4500)
+    players.forEach(p=>expect(p.speed).toBeCloseTo(p.targetSpeed!/2))
     advanceRace(room,start+5000)
-    expect(players.map(p=>p.metres)).toEqual([80,20])
-    advanceRace(room,start+7500)
-    expect(players.map(p=>p.metres)).toEqual([120,30])
+    players.forEach(p=>expect(p.speed).toBeCloseTo(p.targetSpeed!))
   })
-  it('slows a wrong answer immediately and a missing answer at its deadline', () => {
-    const {room,players,start} = setup()
-    answer(room,players[0].token,0,room.deck[0].correct,start)
+  it('does not give an early answer any extra movement at the new speed',()=>{
+    const {room,players,start}=setup()
+    players.forEach(p=>{p.speed=20;p.targetSpeed=20;p.streak=3})
+    answer(room,players[0].token,0,room.deck[0].correct,start+100)
+    advanceRace(room,start+7000)
+    expect(players.map(p=>p.metres)).toEqual([140,140])
+    expect(players.map(p=>p.speed)).toEqual([20,20])
+    expect(players.map(p=>p.streak)).toEqual([3,3])
+    answer(room,players[1].token,0,room.deck[0].correct,start+8000)
+    expect(players.map(p=>p.metres)).toEqual([160,160])
+    expect(players[0].targetSpeed).toBeGreaterThan(players[1].targetSpeed!)
+    expect(players.every(p=>p.speed===20&&p.accelerationRemainingMs===1000)).toBe(true)
+  })
+  it('applies recorded boosts and missing-answer penalties at the common deadline',()=>{
+    const {room,players,start}=setup()
+    players.forEach(p=>{p.speed=100/3.6;p.targetSpeed=p.speed})
+    answer(room,players[0].token,0,room.deck[0].correct,start+2000)
+    advanceRace(room,start+10000)
+    expect(room.round).toBe(0)
+    expect(players.every(p=>p.speed===100/3.6)).toBe(true)
     advanceRace(room,start+10000.125)
-    answer(room,players[0].token,1,1-room.deck[1].correct,start+10500)
-    expect(players[0].speed).toBe(4); expect(players[0].metres).toBeCloseTo(168, 8)
-    advanceRace(room,start+20000.125)
-    answer(room,players[0].token,2,room.deck[2].correct,start+20000.125)
-    advanceRace(room,start+40000.125)
-    expect(players[0].speed).toBe(4); expect(room.round).toBe(4)
-  })
-  it('locks first tap, rejects stale/outside/invalid inputs and keeps authoritative timing', () => {
-    const {room,players,start} = setup()
-    expect(() => answer(room,'outsider',0,0,start)).toThrow()
-    expect(() => answer(room,players[0].token,0,2,start)).toThrow()
-    answer(room,players[0].token,0,1-room.deck[0].correct,start+10)
-    answer(room,players[0].token,0,room.deck[0].correct,start+20)
-    expect(players[0].speed).toBe(4)
-    expect(() => answer(room,players[0].token,0,0,start+10000.125)).toThrow()
     expect(room.round).toBe(1)
-    expect(() => command(room,players[0].token,'finish',1,start+10000.125)).toThrow()
+    expect(players[0].targetSpeed!*3.6).toBeCloseTo(104)
+    expect(players[1].targetSpeed!*3.6).toBeCloseTo(40)
+    expect(players[0].metres-players[1].metres).toBeLessThan(.000001)
   })
-  it('perfect play crosses at the integrated boosted time without a next/reveal action', () => {
-    const {room,players,start} = setup()
-    const responseMs = .25
-    const normalSpeed = MAX_SPEED - (MAX_SPEED - CORRECT_MIN_SPEED) * responseMs / WINDOW_MS
-    const goldenSpeed = GOLDEN_SPEED - (GOLDEN_SPEED - GOLDEN_MIN_SPEED) * responseMs / WINDOW_MS
-    const warmup = 2 * WINDOW_MS
-    const distanceBeforeGolden = MIN_SPEED * responseMs / 1000 + normalSpeed * warmup / 1000
-    const finishMs = warmup + responseMs + (FINISH - distanceBeforeGolden) / goldenSpeed * 1000
-    for(let i=0;i<=Math.floor(finishMs / WINDOW_MS);i++) {
-      const at = start + i * WINDOW_MS + responseMs
-      advanceRace(room,at)
-      answer(room,players[0].token,i,room.deck[i].correct,at)
+  it('accepts exactly ten seconds with zero boost and rejects late answers',()=>{
+    const {room,players,start}=setup()
+    answer(room,players[0].token,0,room.deck[0].correct,start+10000)
+    expect(players[0].speed).toBe(0)
+    expect(()=>answer(room,players[1].token,0,room.deck[0].correct,start+10000.125)).toThrow('That question has finished.')
+    expect(players[0].targetSpeed).toBe(MIN_SPEED)
+    expect(players[0].streak).toBe(1)
+    expect(players[1].streak).toBe(0)
+  })
+  it('applies position penalties together and integrates the full braking second',()=>{
+    const {room,players,start}=setup()
+    players.forEach((p,i)=>{p.speed=(i?80:100)/3.6;p.targetSpeed=p.speed;p.streak=9})
+    answer(room,players[0].token,0,1-room.deck[0].correct,start+100)
+    expect(players[0].speed*3.6).toBeCloseTo(100)
+    answer(room,players[1].token,0,1-room.deck[0].correct,start+900)
+    expect(players.map(p=>p.streak)).toEqual([0,0])
+    advanceRace(room,start+1400)
+    expect(players[0].speed*3.6).toBeCloseTo(70)
+    expect(players[1].speed*3.6).toBeCloseTo(72)
+    advanceRace(room,start+1900)
+    expect(players[0].speed*3.6).toBeCloseTo(40)
+    expect(players[1].speed*3.6).toBeCloseTo(64)
+  })
+  it.each(['answers', 'timeout'])('uses all four distance ranks at the shared %s boundary', mode=>{
+    const {room,players,start}=setup(4)
+    // Join/lane order deliberately differs from race position.
+    const metres=[200,400,100,300]
+    players.forEach((p,i)=>Object.assign(p,{metres:metres[i],speed:100/3.6,targetSpeed:100/3.6}))
+    if(mode==='answers') {
+      players.forEach((p,i)=>answer(room,p.token,0,1-room.deck[0].correct,start+(i+1)*100))
+    } else {
+      advanceRace(room,start+WINDOW_MS+.125)
     }
-    advanceRace(room,start+finishMs-1); expect(room.phase).toBe('answering')
-    advanceRace(room,start+finishMs+1); expect(room.phase).toBe('finished'); expect(players[0].metres).toBe(FINISH)
-    expect(room.updatedAt).toBeCloseTo(start + finishMs, 6)
+    ;[70,40,80,60].forEach((speed,i)=>expect(players[i].targetSpeed!*3.6).toBeCloseTo(speed))
   })
-  it('continues beyond 20 questions for slower players; no fixed deck limit', () => {
-    const {room,players,start} = setup()
-    advanceRace(room,start+200000.125)
-    expect(room.phase).toBe('answering'); expect(room.round).toBe(20); expect(players[0].metres).toBeCloseTo(800.0005, 8)
-    advanceRace(room,start+400000)
-    expect(room.phase).toBe('finished'); expect(players[0].metres).toBe(FINISH)
+  it('uses position after an overtake, not position when the early answer arrived',()=>{
+    const {room,players,start}=setup(4)
+    players.forEach((p,i)=>Object.assign(p,{metres:[10,0,-100,-200][i],speed:[100,200,50,50][i]/3.6,targetSpeed:[100,200,50,50][i]/3.6}))
+    const wrong=1-room.deck[0].correct
+    answer(room,players[0].token,0,wrong,start+100)
+    expect(players[0].metres).toBeGreaterThan(players[1].metres)
+    expect(players[0].targetSpeed!*3.6).toBeCloseTo(100)
+    players.slice(1).forEach(p=>answer(room,p.token,0,wrong,start+1000))
+    expect(players[1].metres).toBeGreaterThan(players[0].metres)
+    expect(players[0].targetSpeed!*3.6).toBeCloseTo(60)
+    expect(players[1].targetSpeed!*3.6).toBeCloseTo(80)
   })
-  it('stops all horses at the first crossing, even halfway through a question', () => {
-    const {room,players,start} = setup(2)
-    players[0].metres=1590; players[0].speed=16; players[1].metres=1000
+  it('locks first answers and retries the last answer without applying the round twice',()=>{
+    const {room,players,start}=setup()
+    const correct=room.deck[0].correct
+    answer(room,players[0].token,0,correct,start+500)
+    answer(room,players[0].token,0,1-correct,start+600)
+    answer(room,players[1].token,0,correct,start+1000)
+    const targets=players.map(p=>p.targetSpeed)
+    answer(room,players[1].token,0,correct,start+1001)
+    expect(room.round).toBe(1)
+    expect(players.map(p=>p.targetSpeed)).toEqual(targets)
+    expect(players.map(p=>p.streak)).toEqual([1,1])
+  })
+  it('waits for all ten players rather than settling after four',()=>{
+    const {room,players,start}=setup(10)
+    players.slice(0,4).forEach(p=>answer(room,p.token,0,room.deck[0].correct,start+100))
+    expect(room.round).toBe(0)
+    expect(players.every(p=>p.speed===0)).toBe(true)
+    players.slice(4).forEach(p=>answer(room,p.token,0,room.deck[0].correct,start+200))
+    expect(room.round).toBe(1)
+    expect(players.every(p=>p.accelerationRemainingMs===1000)).toBe(true)
+  })
+  it('settles solo rounds immediately but still accelerates smoothly',()=>{
+    const {room,players,start}=setup(1)
+    answer(room,players[0].token,0,room.deck[0].correct,start+100)
+    expect(room.round).toBe(1)
+    expect(players[0].speed).toBe(0)
+    advanceRace(room,start+600)
+    const priorTarget=players[0].targetSpeed!
+    answer(room,players[0].token,1,room.deck[1].correct,start+600)
+    expect(players[0].speed).toBeCloseTo(priorTarget/2)
+    expect(players[0].targetSpeed).toBeGreaterThan(priorTarget)
+  })
+  it('rejects outside, invalid, premature and unauthorized actions',()=>{
+    const {room,players,start}=setup()
+    expect(()=>answer(room,players[0].token,0,0,start-1)).toThrow()
+    expect(()=>answer(room,'outsider',0,0,start)).toThrow()
+    expect(()=>answer(room,players[0].token,0,2,start)).toThrow()
+    expect(()=>command(room,players[0].token,'finish',0,start)).toThrow()
+    expect(()=>command(room,room.host,'start',0,start)).toThrow()
+  })
+  it('stops everyone at the exact crossing during an acceleration ramp',()=>{
+    const {room,players,start}=setup()
+    Object.assign(players[0],{metres:FINISH-5,speed:10,targetSpeed:20,accelerationRemainingMs:1000})
+    Object.assign(players[1],{metres:100,speed:10,targetSpeed:10})
+    const crossing=Math.sqrt(2)-1
     advanceRace(room,start+3000)
-    expect(room.phase).toBe('finished'); expect(room.updatedAt).toBe(start+625)
-    expect(players[0].metres).toBe(1600); expect(players[1].metres).toBe(1002.5)
-    advanceRace(room,start+30000); expect(players[1].metres).toBe(1002.5)
+    expect(room.phase).toBe('finished')
+    expect(room.updatedAt).toBeCloseTo(start+crossing*1000,8)
+    expect(players[0].metres).toBe(FINISH)
+    expect(players[1].metres).toBeCloseTo(100+crossing*10)
+    const stopped=players[1].metres
+    advanceRace(room,start+30000)
+    expect(players[1].metres).toBe(stopped)
   })
-  it('catch-up/restart and frequent polls integrate to the same result', () => {
-    const {room,start} = setup(); const restored = JSON.parse(JSON.stringify(room))
-    for(let t=start+100;t<=start+12000;t+=100) advanceRace(room,t)
-    advanceRace(restored,start+12000)
+  it('replays persisted ramps identically with frequent polls or after an outage',()=>{
+    const {room,players,start}=setup(1)
+    answer(room,players[0].token,0,room.deck[0].correct,start+500)
+    const restored=JSON.parse(JSON.stringify(room))
+    for(let t=start+600;t<=start+30500;t+=100)advanceRace(room,t)
+    advanceRace(restored,start+30500)
     expect(room.players[0].metres).toBeCloseTo(restored.players[0].metres,8)
-    expect(room.round).toBe(restored.round); expect(room.opensAt).toBe(restored.opensAt)
+    expect(room.players[0].speed).toBeCloseTo(restored.players[0].speed,8)
+    expect(room.round).toBe(restored.round)
   })
-  it('rejoins without losing speed or distance and enforces 10 unique players', () => {
-    const room = createRoom(stage); const key = token(); const player=joinRoom(room,'Peta',key)
-    expect(() => joinRoom(room,'peta',token())).toThrow()
-    for(let i=1;i<10;i++) joinRoom(room,`P${i}`,token())
-    expect(() => joinRoom(room,'Eleven',token())).toThrow()
-    command(room,room.host,'start',-1,1000)
-    answer(room,key,0,room.deck[0].correct,3500); advanceRace(room,4000)
-    expect(joinRoom(room,'Peta',key)).toBe(player); expect(player.speed).toBe(16); expect(player.metres).toBe(8)
-    expect(() => joinRoom(room,'Late',token())).toThrow()
+  it('has no fixed deck limit and allows minimum-speed riders to finish',()=>{
+    const {room,players,start}=setup()
+    advanceRace(room,start+200000)
+    expect(room.phase).toBe('answering')
+    expect(room.round).toBeGreaterThanOrEqual(19)
+    advanceRace(room,start+5000000)
+    expect(room.phase).toBe('finished')
+    expect(players[0].metres).toBe(FINISH)
   })
-  it('does not send phones the English prompt, correct side, audio path or secrets', () => {
-    const {room,players,start}=setup(); const view=viewRoom(room,players[0].token,start)
-    expect(view.question?.english).toBeUndefined(); expect(view.question?.correct).toBeUndefined(); expect(view.question?.audioUrl).toBeUndefined()
-    expect(JSON.stringify(view)).not.toContain(room.host); expect(JSON.stringify(view)).not.toContain(players[0].token)
+  it('preserves identity on rejoin and enforces ten unique players',()=>{
+    const {room,players,start}=setup(10)
+    expect(joinRoom(room,players[0].name,players[0].token)).toBe(players[0])
+    expect(()=>joinRoom(room,'Late',token())).toThrow()
+    advanceRace(room,start+1000)
+    expect(players.every(p=>p.metres===0)).toBe(true)
   })
-  it('keeps every race inside its selected pool with binary answers', () => {
-    for(const pool of racePools) {
-      if (pool.kind) expect(pool.questions.length).toBeGreaterThanOrEqual(2)
-      else expect(pool.questions).toHaveLength(2)
-      const choices=pool.questions.map(q=>q.answers.map(a=>a.map(t=>t.text).join('')).sort())
-      choices.forEach(pair => expect(pair).toHaveLength(2))
-      if (pool.kind !== 'meaning') expect(choices[0]).toEqual(choices[1])
-    }
-    expect(stage.questions.map(q=>q.english)).toEqual(['A man','A woman'])
-    const {room,start}=setup(); advanceRace(room,start+150000)
-    for(const q of room.deck) {
-      const source=stage.questions.find(s=>s.id===q.id)!
-      expect(source).toBeDefined(); expect(q.choices[q.correct]).toBe(source.choices[source.correct])
-    }
+  it('does not expose answers or credentials to phones',()=>{
+    const {room,players,start}=setup()
+    const view=viewRoom(room,players[0].token,start)
+    expect(view.question?.english).toBeUndefined()
+    expect(view.question?.correct).toBeUndefined()
+    expect(view.question?.audioUrl).toBeUndefined()
+    expect(JSON.stringify(view)).not.toContain(room.host)
+    expect(JSON.stringify(view)).not.toContain(players[0].token)
   })
 })
 
@@ -258,12 +270,12 @@ describe('repeated races in one classroom', () => {
     expect(room.players.map(({ id, token, name, lane }) => ({ id, token, name, lane }))).toEqual(roster)
     expect(room).toMatchObject({ run: 2, stageId: 'questions', title: 'Correct or wrong', kind: 'judgement', phase: 'lobby', round: -1, deck: [], answers: {}, opensAt: 0, closesAt: 0, updatedAt: start + 3000 })
     expect(room.pool.map(q => q.id)).toEqual(['complete', 'missing-the'])
-    room.players.forEach(player => expect(player).toMatchObject({ metres: 0, speed: MIN_SPEED, streak: 0 }))
+    room.players.forEach(player => expect(player).toMatchObject({ metres: 0, speed: 0, streak: 0 }))
     expect(joinRoom(room, players[0].name, players[0].token)).toBe(players[0])
     command(room, room.host, 'start', -1, start + 4000, 2)
     expect(room.round).toBe(0)
     answer(room, players[0].token, 0, room.deck[0].correct, room.opensAt + 250, 2)
-    expect(players[0].speed).toBeCloseTo(15.8)
+    expect(players[0].speed).toBe(0)
     expect(room.deck.every(q => ['complete', 'missing-the'].includes(q.id))).toBe(true)
   })
   it('permits changing content in the lobby and removes the previous judgement mode', () => {

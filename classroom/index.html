@@ -10,13 +10,13 @@
 </head>
 <body>
 <div class="classroom">
-<aside class="index" aria-label="Class 01">
-<div class="rail-brand"><span class="brand-mark" role="img" aria-label="English Success">S</span></div>
-<nav class="phases" aria-label="Class sequence">
- <div class="phase" data-phase="recall"><button class="phase-button" data-open="recall"><span class="phase-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a9 9 0 1 1 1.5 7M3 10V4m0 6h6"/><path d="M12 7v5l3 2"/></svg></span><span>Recall</span></button></div>
- <div class="phase active" data-phase="learn"><button class="phase-button" data-open="learn"><span class="phase-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C9 4 5 4 2 5v14c3-1 7-1 10 1 3-2 7-2 10-1V5c-3-1-7-1-10 1Z"/><path d="M12 6v14"/></svg></span><span>Learn</span></button></div>
- <div class="phase" data-phase="practice"><button class="phase-button" data-open="practice"><span class="phase-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m15 4 5 5M4 20l4-1L21 6a2.1 2.1 0 0 0-3-3L5 16l-1 4Z"/><path d="M13 20h8"/></svg></span><span>Practise</span></button></div>
- <div class="phase" data-phase="review"><button class="phase-button" data-open="review"><span class="phase-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 12 3 3 6-6"/><circle cx="12" cy="12" r="9"/></svg></span><span>Review</span></button></div>
+<aside class="index" aria-label="บทเรียนที่ 1">
+<div class="rail-brand"><nav class="lesson-switch" aria-label="Lesson"><a href="?lesson=1">01</a><a href="?lesson=2">02</a></nav><span class="brand-mark" role="img" aria-label="English Success">S</span></div>
+<nav class="phases" lang="th" aria-label="ขั้นตอนการเรียน">
+ <div class="phase" data-phase="recall"><button class="phase-button" data-open="recall"><span class="phase-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a9 9 0 1 1 1.5 7M3 10V4m0 6h6"/><path d="M12 7v5l3 2"/></svg></span><span><span data-ui-label="ทบทวน">ทบทวน</span></span></button></div>
+ <div class="phase active" data-phase="learn"><button class="phase-button" data-open="learn"><span class="phase-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C9 4 5 4 2 5v14c3-1 7-1 10 1 3-2 7-2 10-1V5c-3-1-7-1-10 1Z"/><path d="M12 6v14"/></svg></span><span><span data-ui-label="เรียนรู้">เรียนรู้</span></span></button></div>
+ <div class="phase" data-phase="practice"><button class="phase-button" data-open="practice"><span class="phase-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 6.5h9a4 4 0 0 1 3.9 3.1l1.3 6a3 3 0 0 1-5 2.8L14 16h-4l-2.7 2.4a3 3 0 0 1-5-2.8l1.3-6a4 4 0 0 1 3.9-3.1Z"/><path d="M6 11h4m-2-2v4"/><circle cx="16" cy="10" r=".9" fill="currentColor" stroke="none"/><circle cx="18" cy="12.5" r=".9" fill="currentColor" stroke="none"/></svg></span><span><span data-ui-label="ฝึกฝน">ฝึกฝน</span></span></button></div>
+ <div class="phase" data-phase="review"><button class="phase-button" data-open="review"><span class="phase-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 12 3 3 6-6"/><circle cx="12" cy="12" r="9"/></svg></span><span><span data-ui-label="สรุป">สรุป</span></span></button></div>
 </nav>
 </aside>
 <main><div class="content"><article class="note" id="note" aria-labelledby="note-title"></article></div></main>
@@ -24,6 +24,7 @@
 <p class="sr-only" id="announcement" role="status" aria-live="polite"></p>
 <script type="module">
 import { renderLesson } from "/src/classroom/mountLesson.ts";
+import { syncClassroomLanguage, t } from "/src/classroom/language.ts";
 import { lessonTitles } from "/src/classroom/lessonOne.ts";
 (() => {
  const note=document.getElementById('note');
@@ -32,19 +33,20 @@ import { lessonTitles } from "/src/classroom/lessonOne.ts";
  const menuMotion=new Map();
  let motionFrame=0,lastMotionTime=0;
  const sectionMenus={learn:[
-  {id:'idea',label:'The idea'},
-  {id:'example',label:'Worked example'},
-  {id:'mistake',label:'Common mistake'}
+  {id:'idea',label:'หลักการ'},
+  {id:'example',label:'ตัวอย่าง'}
  ]};
  const sectionFor=key=>Object.keys(sectionMenus).find(section=>sectionMenus[section].some(item=>item.id===key))||key;
- let current='example',openSection='learn';
+ const lessonTwo=new URLSearchParams(location.search).get('lesson')==='2';
+ document.querySelector('.lesson-switch a[href="?lesson='+ (lessonTwo?'2':'1') +'"]').setAttribute('aria-current','page');
+ let current=location.hash==='#race-guide'?'practice':'example',openSection='learn';
  const lastNote={learn:'example'};
  for(const [section,items] of Object.entries(sectionMenus)){
   const phase=document.querySelector('[data-phase="'+section+'"]');
   const trigger=phase.querySelector('.phase-button');
   const menu=document.createElement('div');
   menu.className='phase-submenu';menu.id=section+'-submenu';
-  menu.innerHTML='<div class="submenu-clip"><div class="submenu-items">'+items.map(item=>'<button data-open="'+item.id+'">'+item.label+'</button>').join('')+'</div></div>';
+  menu.innerHTML='<div class="submenu-clip"><div class="submenu-items">'+items.map(item=>'<button data-open="'+item.id+'">'+'<span data-ui-label="'+item.label+'">'+t(item.label)+'</span></button>').join('')+'</div></div>';
   phase.style.setProperty('--submenu-count',items.length);
   phase.append(menu);trigger.setAttribute('aria-controls',menu.id);
   trigger.lastElementChild.insertAdjacentHTML('beforeend','<svg class="menu-chevron" aria-hidden="true" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4"/></svg>');
@@ -106,7 +108,7 @@ import { lessonTitles } from "/src/classroom/lessonOne.ts";
   if(announce&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)note.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:240,easing:'ease-out'});
   document.querySelectorAll('[data-phase]').forEach(el=>el.classList.toggle('active',el.dataset.phase===phase));
   document.querySelectorAll('[data-open]').forEach(button=>{if(button.dataset.open===key||(button.classList.contains('phase-button')&&button.dataset.open===phase))button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');});
-  if(announce)document.getElementById('announcement').textContent=lessonTitles[key];
+  if(announce){const announcement=document.getElementById('announcement');announcement.dataset.uiLabel=lessonTitles[key];announcement.textContent=t(lessonTitles[key]);}
  }
  document.addEventListener('click',event=>{
   const control=event.target.closest('[data-open]');if(!control)return;
@@ -119,6 +121,7 @@ import { lessonTitles } from "/src/classroom/lessonOne.ts";
   const trigger=document.querySelector('[data-phase="'+openSection+'"] .phase-button');
   setOpenSection(null);trigger.focus();event.preventDefault();
  });
+ syncClassroomLanguage();
  show(current,false);
 })();
 </script>

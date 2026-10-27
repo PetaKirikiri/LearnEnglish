@@ -3,8 +3,8 @@ import { encodeDocument, mergeDocument, remoteOrigin } from '../portal/documentS
 
 export type LessonSyncState = { ready: boolean; canEdit: boolean; saving: boolean; error: string }
 const published = import.meta.env.PROD
-const recoveryKey = 'english-race:where-lesson:recovery:v1'
-export function connectRaceLesson(doc: Y.Doc, status: (state: LessonSyncState) => void) {
+export function connectRaceLesson(doc: Y.Doc, status: (state: LessonSyncState) => void, lesson: 'where-is-the' | 'where-are-my' = 'where-is-the') {
+  const recoveryKey = lesson === 'where-is-the' ? 'english-race:where-lesson:recovery:v1' : 'english-race:where-are-my:recovery:v1'
   let stopped = false, running = false, ready = false, canEdit = false, dirty = false
   let timer: ReturnType<typeof setTimeout> | undefined
   const report = (error = '') => { if (!stopped) status({ ready, canEdit, saving: dirty, error }) }
@@ -16,7 +16,7 @@ export function connectRaceLesson(doc: Y.Doc, status: (state: LessonSyncState) =
     try {
       const uploading = ready && canEdit && dirty
       const sent = uploading ? encodeDocument(doc) : undefined
-      const response = await fetch(published ? '/lessons/where-is-the.json' : '/api/race-lesson-document', {
+      const response = await fetch(published ? `/lessons/${lesson}.json` : `/api/race-lesson-document${lesson === 'where-is-the' ? '' : '?lesson=' + lesson}`, {
         method: uploading ? 'POST' : 'GET', cache: 'no-store', signal: AbortSignal.timeout(8000),
         ...(uploading ? { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ snapshot: sent }) } : {}),
       })

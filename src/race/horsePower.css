@@ -1,0 +1,20 @@
+/* The luminous wake sits behind the rig; the animated silhouette stays visible. */
+.horse-motion{isolation:isolate;position:relative}
+.horse-motion-fire::before,.horse-motion-fire::after{content:"";position:absolute;pointer-events:none;z-index:-1}
+.horse-motion-fire::before{inset:9% -5% 7% -15%;border-radius:50%;background:radial-gradient(ellipse,#fff7b344 0%,#fff45b55 28%,#ffc51b33 48%,#ffb01211 62%,transparent 72%);filter:blur(2px);transform:scale(var(--power-strength,1));animation:power-halo .28s ease-in-out infinite alternate}
+.horse-motion-fire::after{right:42%;top:23%;width:125%;height:36%;background:linear-gradient(90deg,transparent 0%,#ffd53519 12%,#ffdc4d44 50%,#fff69d88 82%,#fffcbba6 100%);clip-path:polygon(100% 8%,72% 0%,48% 27%,8% 12%,34% 42%,0% 60%,52% 69%,24% 100%,79% 81%,100% 95%);filter:drop-shadow(0 0 5px #ffd93b);transform-origin:right center;animation:power-wake .19s ease-in-out infinite alternate}
+.classroom-race .race-world-horse .horse-motion{overflow:visible}
+.classroom-race .race-world-horse.is-on-fire .horse-motion canvas,.horse-motion-fire canvas{filter:drop-shadow(0 0 1px #fffcc7) drop-shadow(0 0 3px #ffdf5199)}
+.race-power-level{color:#ffe877!important;font-weight:900!important}
+@keyframes power-halo{from{opacity:.75}to{opacity:1}}
+@keyframes power-wake{from{transform:scaleX(1) scaleY(.86);opacity:.8}to{transform:scaleX(1.12) scaleY(1.06);opacity:1}}
+@media(prefers-reduced-motion:reduce){.horse-motion-fire::before,.horse-motion-fire::after{animation:none}}
+
+.horse-charge-3 canvas{animation:power-charge-sparse 2.8s linear infinite}.horse-charge-4 canvas{animation:power-charge-frequent .6s linear infinite}
+@keyframes power-charge-sparse{0%,4%{filter:brightness(1.8) drop-shadow(0 0 7px #ffe635)}5%,100%{filter:none}}
+@keyframes power-charge-frequent{0%,30%{filter:brightness(1.8) drop-shadow(0 0 9px #ffe635)}31%,100%{filter:none}}
+.horse-power-burst{position:absolute;inset:-15%;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse,#fff 0%,#fffca8 20%,#ffde3d99 45%,transparent 68%);box-shadow:0 0 24px #ffdf53;animation:power-transform .75s ease-out forwards;z-index:3}
+@keyframes power-transform{0%{transform:scale(.2);opacity:0}15%{opacity:1}50%{opacity:.9}100%{transform:scale(2.2);opacity:0}}
+@media(prefers-reduced-motion:reduce){.horse-charge-3 canvas,.horse-charge-4 canvas{animation:none;filter:drop-shadow(0 0 3px #ffe635)}.horse-power-burst{display:none}}
+
+.horse-motion canvas{mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 98%,transparent 100%)}

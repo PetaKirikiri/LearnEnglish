@@ -28,7 +28,7 @@ it('keeps the minimal race focused on named horses without side statistics or st
   expect(html).toContain('sprint-rider-label')
   expect(html).toContain('Peta')
   expect(html.match(/class="sprint-lane"/g)).toHaveLength(4)
-  for(const hidden of ['sprint-name','km/h','metres','START','sprint-distance','sprint-marker','sprint-trail']) expect(html).not.toContain(hidden)
+  for(const hidden of ['sprint-name','metres','START','sprint-distance','sprint-marker','sprint-trail']) expect(html).not.toContain(hidden)
   expect(html).toContain('sprint-finish')
 })
 
@@ -48,10 +48,11 @@ it('uses the approved world track and animated horses for the classroom race',()
   expect(html).toContain('race-fullscreen')
   expect(html).toContain('race-world-track')
   expect(dom.querySelectorAll('.race-world-lane')).toHaveLength(10)
-  expect(dom.querySelectorAll('.race-world-horse .horse-motion')).toHaveLength(10)
+  expect(dom.querySelectorAll('.race-horse-speed')).toHaveLength(10)
+  expect(dom.querySelectorAll('.race-world-horse .cartoon-horse')).toHaveLength(10)
   expect(html).toContain('is-running')
   expect(dom.querySelector('.race-live-question')?.textContent).toBe('How many?')
-  for(const hidden of ['race-horse-sprite','sprint-lane','sprint-trail','sprint-course-overview','sprint-name','km/h','/english/race/admin','Scan to join','race-roster','race-header','metres per correct answer']) expect(html).not.toContain(hidden)
+  for(const hidden of ['race-horse-sprite','sprint-lane','sprint-trail','sprint-course-overview','sprint-name','/english/race/admin','Scan to join','race-roster','race-header','metres per correct answer']) expect(html).not.toContain(hidden)
 })
 
 it('keeps a returning rider at their earned distance instead of animating from the start',()=>{
@@ -59,6 +60,16 @@ it('keeps a returning rider at their earned distance instead of animating from t
   expect(html).toContain('data-metres="800"')
   expect(html).toContain('left:800px')
   expect(html).not.toContain('is-running')
+})
+
+it('uses the same golden streak threshold as the phone and freezes horses when disconnected',()=>{
+  const players=[4,5].map((streak,lane)=>({...view.players[0],id:String(lane),lane,streak}))
+  const html=renderToStaticMarkup(<RaceHostView {...props} ready disconnected view={{...view,players,phase:'answering',round:0}}/>)
+  const dom=new DOMParser().parseFromString(html,'text/html')
+  const horses=dom.querySelectorAll('.cartoon-horse')
+  expect(horses[0].classList.contains('is-powered')).toBe(false)
+  expect(horses[1].classList.contains('is-powered')).toBe(true)
+  expect([...horses].every(horse=>horse.classList.contains('is-paused'))).toBe(true)
 })
 
 it('shows answer progress without any Reveal control',()=>{
@@ -105,4 +116,12 @@ it('offers a working audio retry after autoplay is blocked and stops audio on fi
     vi.restoreAllMocks()
     vi.unstubAllGlobals()
   }
+})
+
+it('passes full streaks into the shared cartoon renderer for charge and growing power',()=>{
+  const players=[3,4,5,12].map((streak,lane)=>({...view.players[0],id:String(lane),lane,streak,speed:20+lane*5}))
+  const dom=new DOMParser().parseFromString(renderToStaticMarkup(<RaceHostView {...props} ready view={{...view,players,phase:'answering',round:12}}/>),'text/html')
+  const horses=[...dom.querySelectorAll('.cartoon-horse')]
+  expect(horses.map(h=>h.getAttribute('data-charge'))).toEqual(['3','4','0','0'])
+  expect(horses.map(h=>h.getAttribute('data-power-level'))).toEqual(['0','0','1','8'])
 })

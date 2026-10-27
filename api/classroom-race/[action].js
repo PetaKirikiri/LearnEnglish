@@ -8,23 +8,68 @@ import { randomBytes, randomInt } from "node:crypto";
 
 // src/race/rules.ts
 var WINDOW_MS = 1e4;
-var FINISH = 1600;
-var MIN_SPEED = 4;
-var CORRECT_MIN_SPEED = 8;
-var MAX_SPEED = 16;
-var GOLDEN_MIN_SPEED = 18;
-var GOLDEN_SPEED = 30;
+var FINISH = 6e3;
+var MIN_SPEED = 5 / 3.6;
+var MAX_BOOST = 5 / 3.6;
+var SPEED_TRANSITION_MS = 1e3;
+var MAX_SPEED = MIN_SPEED + MAX_BOOST;
 var START_DELAY_MS = 2500;
-function speedFor(correct, elapsedMs, streak = 0) {
-  if (!correct) return MIN_SPEED;
+function racePositions(players) {
+  return players.map((player) => 1 + players.filter((other) => other.metres > player.metres + 1e-8).length);
+}
+function wrongAnswerPenalty(position, fieldSize = 4) {
+  if (position <= 1) return 0.6;
+  if (position >= fieldSize) return 0.2;
+  return position === 2 ? 0.4 : position === 3 ? 0.3 : 0.2;
+}
+function speedFor(correct, elapsedMs, _streak = 0, previousSpeed = MIN_SPEED, position = 1, fieldSize = 4) {
+  void _streak;
+  const previous = Math.max(MIN_SPEED, previousSpeed);
+  if (!correct) return Math.max(MIN_SPEED, previous * (1 - wrongAnswerPenalty(position, fieldSize)));
   const quickness = Math.max(0, 1 - Math.max(0, elapsedMs) / WINDOW_MS);
-  if (streak >= 3) return GOLDEN_MIN_SPEED + (GOLDEN_SPEED - GOLDEN_MIN_SPEED) * quickness;
-  return CORRECT_MIN_SPEED + (MAX_SPEED - CORRECT_MIN_SPEED) * quickness;
+  return previous + MAX_BOOST * quickness;
+}
+function roundResult(player, correct, elapsedMs, position = 1, fieldSize = 4) {
+  const streak = correct ? (player.streak ?? 0) + 1 : 0;
+  return {
+    streak,
+    targetSpeed: speedFor(correct, elapsedMs, streak, player.targetSpeed ?? player.speed, position, fieldSize),
+    accelerationRemainingMs: SPEED_TRANSITION_MS
+  };
+}
+
+// src/race/kinematics.ts
+function motionAfter(player, elapsedSeconds) {
+  const seconds = Math.max(0, elapsedSeconds);
+  const target = player.targetSpeed ?? player.speed;
+  const remaining = Math.max(0, player.accelerationRemainingMs ?? 0) / 1e3;
+  const ramp = Math.min(seconds, remaining);
+  const acceleration = remaining > 0 ? (target - player.speed) / remaining : 0;
+  const distance = player.speed * ramp + 0.5 * acceleration * ramp * ramp + target * (seconds - ramp);
+  return {
+    metres: player.metres + distance,
+    speed: seconds >= remaining ? target : player.speed + acceleration * ramp,
+    targetSpeed: target,
+    accelerationRemainingMs: Math.max(0, remaining - seconds) * 1e3
+  };
+}
+function secondsToFinish(player, finish) {
+  const distance = Math.max(0, finish - player.metres);
+  if (distance === 0) return 0;
+  const target = player.targetSpeed ?? player.speed;
+  const remaining = Math.max(0, player.accelerationRemainingMs ?? 0) / 1e3;
+  const rampDistance = (player.speed + target) / 2 * remaining;
+  if (remaining > 0 && distance <= rampDistance) {
+    const acceleration = (target - player.speed) / remaining;
+    return 2 * distance / (player.speed + Math.sqrt(Math.max(0, player.speed ** 2 + 2 * acceleration * distance)));
+  }
+  return target > 0 ? remaining + (distance - rampDistance) / target : Infinity;
 }
 
 // src/race/meaningChoices.ts
 function meaningChoices(questions) {
   return questions.map((question2, index) => {
+    if (question2.meaningDistractor && question2.choices.includes(question2.meaningDistractor)) return question2;
     const meaning = question2.choices[question2.correct];
     const other = [...questions.slice(index + 1), ...questions.slice(0, index)].find((q) => q.choices[q.correct] !== meaning);
     if (!other) return question2;
@@ -127,6 +172,7 @@ function prepareRace(room, secret, stage, run, now = Date.now()) {
   room.kind = stage.kind;
   room.pool = stage.questions.map((q) => ({ ...q, choices: [...q.choices] }));
   room.deck = [];
+  delete room.completedRound;
   room.round = -1;
   room.phase = "lobby";
   room.answers = {};
@@ -135,7 +181,9 @@ function prepareRace(room, secret, stage, run, now = Date.now()) {
   room.updatedAt = now;
   for (const player of room.players) {
     player.metres = 0;
-    player.speed = MIN_SPEED;
+    player.speed = 0;
+    player.targetSpeed = 0;
+    player.accelerationRemainingMs = 0;
     player.streak = 0;
   }
 }
@@ -148,9 +196,20 @@ function joinRoom(room, name, playerToken) {
   requireThat(clean.length > 0 && clean.length <= 24 && !/[\p{Cc}\p{Cf}]/u.test(clean), "Enter a name of 1\u201324 characters.");
   requireThat(!room.players.some((p) => p.name.toLocaleLowerCase() === clean.toLocaleLowerCase()), "That name is taken. Add your initial.");
   requireThat(/^[a-f0-9]{48}$/.test(playerToken), "Please reload and join again.");
-  const player = { id: randomBytes(8).toString("hex"), token: playerToken, name: clean, lane: room.players.length, metres: 0, speed: MIN_SPEED };
+  const player = { id: randomBytes(8).toString("hex"), token: playerToken, name: clean, lane: room.players.length, metres: 0, speed: 0, targetSpeed: 0, accelerationRemainingMs: 0 };
   room.players.push(player);
   return player;
+}
+function settleRound(room, at) {
+  const positions = racePositions(room.players);
+  for (const [index, player] of room.players.entries()) {
+    const answer2 = room.answers[player.id];
+    const correct = !!answer2 && answer2.choice === room.deck[room.round].correct;
+    Object.assign(player, roundResult(player, correct, answer2 ? answer2.at - room.opensAt : WINDOW_MS, positions[index], room.players.length));
+  }
+  room.opensAt = at;
+  room.closesAt = at + WINDOW_MS;
+  nextQuestion(room);
 }
 function advanceRace(room, now = Date.now()) {
   if (room.phase !== "answering" || now <= room.updatedAt) return false;
@@ -158,9 +217,9 @@ function advanceRace(room, now = Date.now()) {
   while (room.phase === "answering" && now > room.updatedAt) {
     const until = Math.min(now, room.closesAt);
     const duration = (until - room.updatedAt) / 1e3;
-    const toFinish = Math.min(...room.players.map((p) => Math.max(0, FINISH - p.metres) / p.speed));
+    const toFinish = Math.min(...room.players.map((p) => secondsToFinish(p, FINISH)));
     const elapsed = Math.min(duration, toFinish);
-    for (const p of room.players) p.metres = Math.min(FINISH, p.metres + p.speed * elapsed);
+    for (const p of room.players) Object.assign(p, motionAfter(p, elapsed));
     room.updatedAt += elapsed * 1e3;
     changed = true;
     if (toFinish <= duration + 1e-9) {
@@ -169,13 +228,7 @@ function advanceRace(room, now = Date.now()) {
       break;
     }
     if (until >= room.closesAt && now > room.closesAt) {
-      for (const p of room.players) if (!room.answers[p.id]) {
-        p.speed = MIN_SPEED;
-        p.streak = 0;
-      }
-      room.opensAt = room.closesAt;
-      room.closesAt += WINDOW_MS;
-      nextQuestion(room);
+      settleRound(room, room.closesAt);
     }
   }
   return changed;
@@ -202,13 +255,17 @@ function answer(room, secret, round, choice, now = Date.now(), run = room.run ??
   requireThat(player, "Join the race first.");
   requireRun(room, run);
   advanceRace(room, now);
+  if (round === room.completedRound && round === room.round - 1) return;
   requireThat(round === room.round, "That question has finished.");
   if (room.answers[player.id]) return;
   requireThat(room.phase === "answering" && now >= room.opensAt && now <= room.closesAt, "The answer window is closed.");
   requireThat(choice === 0 || choice === 1, "Choose one answer.");
   room.answers[player.id] = { choice, at: now };
-  player.streak = choice === room.deck[room.round].correct ? (player.streak ?? 0) + 1 : 0;
-  player.speed = speedFor(choice === room.deck[room.round].correct, now - room.opensAt, player.streak);
+  if (room.players.every((p) => room.answers[p.id])) {
+    room.completedRound = room.round;
+    const nextAt = Math.max(now, room.updatedAt);
+    settleRound(room, nextAt);
+  }
 }
 function viewRoom(room, secret, now = Date.now()) {
   const host = secret === room.host, me = room.players.find((p) => p.token === secret);
@@ -225,12 +282,225 @@ function viewRoom(room, secret, now = Date.now()) {
     opensAt: room.opensAt,
     closesAt: room.closesAt,
     motionAt: room.updatedAt,
-    players: room.players.map((p) => ({ id: p.id, name: p.name, lane: p.lane, metres: p.metres, speed: p.speed, answered: !!room.answers[p.id], streak: p.streak ?? 0 })),
+    players: room.players.map((p) => ({ id: p.id, name: p.name, lane: p.lane, metres: p.metres, speed: p.speed, targetSpeed: p.targetSpeed ?? p.speed, accelerationRemainingMs: p.accelerationRemainingMs ?? 0, answered: !!room.answers[p.id], streak: p.streak ?? 0 })),
     ...q ? { question: { id: `${room.round}`, choices: q.choices, ...host ? { english: q.english, audioUrl: q.audioUrl } : {} } } : {},
     ...host ? { questionIds: room.pool.map((question2) => question2.id) } : {},
     ...me ? { me: { id: me.id, choice: room.answers[me.id]?.choice } } : {}
   };
 }
+
+// src/race/holidayVocabulary.ts
+var holidayVocabulary = [
+  { word: "taxi", thai: "\u0E23\u0E16\u0E41\u0E17\u0E47\u0E01\u0E0B\u0E35\u0E48", meaningDistractor: "\u0E23\u0E16\u0E41\u0E17\u0E47\u0E01\u0E0B\u0E35\u0E48\u0E23\u0E32\u0E04\u0E32\u0E40\u0E17\u0E48\u0E32\u0E44\u0E2B\u0E23\u0E48" },
+  { word: "hotel", thai: "\u0E42\u0E23\u0E07\u0E41\u0E23\u0E21", meaningDistractor: "\u0E42\u0E23\u0E07\u0E41\u0E23\u0E21\u0E23\u0E32\u0E04\u0E32\u0E40\u0E17\u0E48\u0E32\u0E44\u0E2B\u0E23\u0E48" },
+  { word: "toilet", thai: "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E49\u0E33", meaningDistractor: "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E49\u0E33\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "restaurant", thai: "\u0E23\u0E49\u0E32\u0E19\u0E2D\u0E32\u0E2B\u0E32\u0E23", meaningDistractor: "\u0E23\u0E49\u0E32\u0E19\u0E2D\u0E32\u0E2B\u0E32\u0E23\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "beach", thai: "\u0E0A\u0E32\u0E22\u0E2B\u0E32\u0E14", meaningDistractor: "\u0E0A\u0E32\u0E22\u0E2B\u0E32\u0E14\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
+  { word: "airport", thai: "\u0E2A\u0E19\u0E32\u0E21\u0E1A\u0E34\u0E19", meaningDistractor: "\u0E2A\u0E19\u0E32\u0E21\u0E1A\u0E34\u0E19\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
+  { word: "shop", thai: "\u0E23\u0E49\u0E32\u0E19\u0E04\u0E49\u0E32", meaningDistractor: "\u0E23\u0E49\u0E32\u0E19\u0E04\u0E49\u0E32\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "ATM", thai: "\u0E15\u0E39\u0E49\u0E40\u0E2D\u0E17\u0E35\u0E40\u0E2D\u0E47\u0E21", meaningDistractor: "\u0E43\u0E0A\u0E49\u0E15\u0E39\u0E49\u0E40\u0E2D\u0E17\u0E35\u0E40\u0E2D\u0E47\u0E21\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E44\u0E23" },
+  { word: "bank", thai: "\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23", meaningDistractor: "\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "pharmacy", thai: "\u0E23\u0E49\u0E32\u0E19\u0E02\u0E32\u0E22\u0E22\u0E32", meaningDistractor: "\u0E23\u0E49\u0E32\u0E19\u0E02\u0E32\u0E22\u0E22\u0E32\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "hospital", thai: "\u0E42\u0E23\u0E07\u0E1E\u0E22\u0E32\u0E1A\u0E32\u0E25", meaningDistractor: "\u0E42\u0E23\u0E07\u0E1E\u0E22\u0E32\u0E1A\u0E32\u0E25\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
+  { word: "supermarket", thai: "\u0E0B\u0E39\u0E40\u0E1B\u0E2D\u0E23\u0E4C\u0E21\u0E32\u0E23\u0E4C\u0E40\u0E01\u0E47\u0E15", meaningDistractor: "\u0E0B\u0E39\u0E40\u0E1B\u0E2D\u0E23\u0E4C\u0E21\u0E32\u0E23\u0E4C\u0E40\u0E01\u0E47\u0E15\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "market", thai: "\u0E15\u0E25\u0E32\u0E14", meaningDistractor: "\u0E15\u0E25\u0E32\u0E14\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "cafe", thai: "\u0E04\u0E32\u0E40\u0E1F\u0E48", meaningDistractor: "\u0E04\u0E32\u0E40\u0E1F\u0E48\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
+  { word: "bus stop", thai: "\u0E1B\u0E49\u0E32\u0E22\u0E23\u0E16\u0E40\u0E21\u0E25\u0E4C", meaningDistractor: "\u0E1B\u0E49\u0E32\u0E22\u0E23\u0E16\u0E40\u0E21\u0E25\u0E4C\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
+  { word: "car park", thai: "\u0E17\u0E35\u0E48\u0E08\u0E2D\u0E14\u0E23\u0E16", meaningDistractor: "\u0E17\u0E35\u0E48\u0E08\u0E2D\u0E14\u0E23\u0E16\u0E23\u0E32\u0E04\u0E32\u0E40\u0E17\u0E48\u0E32\u0E44\u0E2B\u0E23\u0E48" },
+  { word: "entrance", thai: "\u0E17\u0E32\u0E07\u0E40\u0E02\u0E49\u0E32", meaningDistractor: "\u0E17\u0E32\u0E07\u0E40\u0E02\u0E49\u0E32\u0E21\u0E35\u0E01\u0E35\u0E48\u0E17\u0E32\u0E07" },
+  { word: "exit", thai: "\u0E17\u0E32\u0E07\u0E2D\u0E2D\u0E01", meaningDistractor: "\u0E17\u0E32\u0E07\u0E2D\u0E2D\u0E01\u0E21\u0E35\u0E01\u0E35\u0E48\u0E17\u0E32\u0E07" },
+  { word: "lift", thai: "\u0E25\u0E34\u0E1F\u0E15\u0E4C", meaningDistractor: "\u0E25\u0E34\u0E1F\u0E15\u0E4C\u0E23\u0E31\u0E1A\u0E44\u0E14\u0E49\u0E01\u0E35\u0E48\u0E04\u0E19" },
+  { word: "swimming pool", thai: "\u0E2A\u0E23\u0E30\u0E27\u0E48\u0E32\u0E22\u0E19\u0E49\u0E33", meaningDistractor: "\u0E2A\u0E23\u0E30\u0E27\u0E48\u0E32\u0E22\u0E19\u0E49\u0E33\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" }
+];
+
+// src/race/holidayQuestions.ts
+var holidayNouns = holidayVocabulary.map((item) => item.word);
+var holidaySkill = "race-where-is-the";
+var holidayMeanings = holidayVocabulary.map((item) => `${item.thai}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`);
+var holidayMeaningQuestions = holidayNouns.map((noun, i) => ({
+  id: `race-meaning-${noun}`,
+  english: `Where is the ${noun}?`,
+  skill: holidaySkill,
+  correct: 0,
+  answers: [[{ text: holidayMeanings[i], skill: holidaySkill }], [{ text: holidayMeanings[(i + 1) % holidayMeanings.length], skill: holidaySkill }]],
+  audioUrl: `/audio/race-holiday/${noun}-complete.wav`,
+  meaningDistractor: holidayVocabulary[i].meaningDistractor
+}));
+var holidayQuestions = holidayNouns.flatMap((noun) => [
+  { variant: "complete", english: `Where is the ${noun}?`, correct: 0 },
+  { variant: "missing-is", english: `Where the ${noun}?`, correct: 1 },
+  { variant: "missing-the", english: `Where is ${noun}?`, correct: 1 }
+].map((item) => ({
+  id: `race-where-${noun}-${item.variant}`,
+  english: item.english,
+  skill: holidaySkill,
+  correct: item.correct,
+  answers: [[{ text: "Correct", skill: holidaySkill }], [{ text: "Wrong", skill: holidaySkill }]],
+  audioUrl: `/audio/race-holiday/${noun}-${item.variant}.wav`,
+  grammar: { kind: "meaning", context: "Ask where a particular holiday place or thing is.", phase: "practice", targets: ["where is the"], contrast: item.variant, explanation: `Where + is + the + ${noun}?` }
+})));
+
+// src/race/pluralVocabulary.ts
+var pluralVocabulary = [
+  { singular: "shoe", group: "wear", classifier: "\u0E02\u0E49\u0E32\u0E07", plural: "shoes", thai: "\u0E23\u0E2D\u0E07\u0E40\u0E17\u0E49\u0E32" },
+  { singular: "key", group: "carry", classifier: "\u0E14\u0E2D\u0E01", plural: "keys", thai: "\u0E01\u0E38\u0E0D\u0E41\u0E08" },
+  { singular: "sock", group: "wear", classifier: "\u0E02\u0E49\u0E32\u0E07", plural: "socks", thai: "\u0E16\u0E38\u0E07\u0E40\u0E17\u0E49\u0E32" },
+  { singular: "bag", group: "carry", classifier: "\u0E43\u0E1A", plural: "bags", thai: "\u0E01\u0E23\u0E30\u0E40\u0E1B\u0E4B\u0E32" },
+  { singular: "ticket", group: "carry", classifier: "\u0E43\u0E1A", plural: "tickets", thai: "\u0E15\u0E31\u0E4B\u0E27" },
+  { singular: "book", group: "carry", classifier: "\u0E40\u0E25\u0E48\u0E21", plural: "books", thai: "\u0E2B\u0E19\u0E31\u0E07\u0E2A\u0E37\u0E2D" },
+  { singular: "sandal", group: "wear", classifier: "\u0E02\u0E49\u0E32\u0E07", plural: "sandals", thai: "\u0E23\u0E2D\u0E07\u0E40\u0E17\u0E49\u0E32\u0E41\u0E15\u0E30" },
+  { singular: "boot", group: "wear", classifier: "\u0E02\u0E49\u0E32\u0E07", plural: "boots", thai: "\u0E23\u0E2D\u0E07\u0E40\u0E17\u0E49\u0E32\u0E1A\u0E39\u0E15" },
+  { singular: "shirt", group: "wear", classifier: "\u0E15\u0E31\u0E27", plural: "shirts", thai: "\u0E40\u0E2A\u0E37\u0E49\u0E2D\u0E40\u0E0A\u0E34\u0E49\u0E15" },
+  { singular: "hat", group: "wear", classifier: "\u0E43\u0E1A", plural: "hats", thai: "\u0E2B\u0E21\u0E27\u0E01" },
+  { singular: "pen", group: "carry", classifier: "\u0E14\u0E49\u0E32\u0E21", plural: "pens", thai: "\u0E1B\u0E32\u0E01\u0E01\u0E32" },
+  { singular: "pencil", group: "carry", classifier: "\u0E41\u0E17\u0E48\u0E07", plural: "pencils", thai: "\u0E14\u0E34\u0E19\u0E2A\u0E2D" },
+  { singular: "phone", group: "around", classifier: "\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07", plural: "phones", thai: "\u0E42\u0E17\u0E23\u0E28\u0E31\u0E1E\u0E17\u0E4C" },
+  { singular: "charger", group: "around", classifier: "\u0E2D\u0E31\u0E19", plural: "chargers", thai: "\u0E17\u0E35\u0E48\u0E0A\u0E32\u0E23\u0E4C\u0E08" },
+  { singular: "towel", group: "around", classifier: "\u0E1C\u0E37\u0E19", plural: "towels", thai: "\u0E1C\u0E49\u0E32\u0E02\u0E19\u0E2B\u0E19\u0E39" },
+  { singular: "bottle", group: "around", classifier: "\u0E02\u0E27\u0E14", plural: "bottles", thai: "\u0E02\u0E27\u0E14" },
+  { singular: "cup", group: "around", classifier: "\u0E43\u0E1A", plural: "cups", thai: "\u0E16\u0E49\u0E27\u0E22" },
+  { singular: "plate", group: "around", classifier: "\u0E43\u0E1A", plural: "plates", thai: "\u0E08\u0E32\u0E19" }
+];
+var pairVocabulary = [
+  { plural: "glasses", thai: "\u0E41\u0E27\u0E48\u0E19\u0E15\u0E32" },
+  { plural: "trousers", thai: "\u0E01\u0E32\u0E07\u0E40\u0E01\u0E07\u0E02\u0E32\u0E22\u0E32\u0E27" }
+];
+
+// src/classroom/lessonTwoContent.ts
+var lessonTwoCore = ["shoe", "key", "sock", "bag", "book", "pen"];
+var lessonTwoWords = [...pluralVocabulary].sort((a, b) => {
+  const rank = (word) => {
+    const index = lessonTwoCore.indexOf(word);
+    return index < 0 ? 100 : index;
+  };
+  return rank(a.singular) - rank(b.singular);
+});
+var owners = ["the", "my", "your"];
+var ownerThai = (owner) => owner === "my" ? "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19" : owner === "your" ? "\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13" : "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07";
+var lessonTwoPairs = pairVocabulary;
+function numberSentence(item, plural, owner) {
+  const noun = plural || !item.singular ? item.plural : item.singular;
+  const verb = plural || !item.singular ? "are" : "is";
+  const count = item.classifier ? `${plural ? "\u0E2B\u0E25\u0E32\u0E22" : "\u0E2B\u0E19\u0E36\u0E48\u0E07"}${item.classifier}` : "";
+  return { english: `Where ${verb} ${owner} ${noun}?`, thai: `${item.thai}${count}${owner === "the" ? "" : ownerThai(owner)}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`, units: [
+    { english: "Where", thai: "\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19" },
+    { english: verb, thai: "\u0E2D\u0E22\u0E39\u0E48" },
+    { english: owner, thai: ownerThai(owner) },
+    { english: `${noun}?`, thai: item.thai }
+  ], noun, verb };
+}
+
+// src/race/lessonTwoQuestions.ts
+var skill = "race-lesson-two";
+var lessonTwoAudio = (noun, owner, verb) => `/audio/race-lesson-two/${noun}-${owner}-${verb}.wav`;
+function judgement(items, determiners) {
+  return items.flatMap((item) => (item.singular ? [false, true] : [true]).flatMap((plural) => determiners.flatMap((owner) => {
+    const sentence = numberSentence(item, plural, owner);
+    return [true, false].map((correct) => {
+      const verb = correct ? sentence.verb : sentence.verb === "is" ? "are" : "is";
+      return {
+        id: `l2-${sentence.noun}-${owner}-${verb}`,
+        english: `Where ${verb} ${owner} ${sentence.noun}?`,
+        skill,
+        correct: correct ? 0 : 1,
+        answers: [[{ text: "Correct", skill }], [{ text: "Wrong", skill }]],
+        audioUrl: lessonTwoAudio(sentence.noun, owner, verb),
+        grammar: { kind: "meaning", context: "Match is or are to the noun.", phase: "practice", targets: ["is", "are"], contrast: correct ? "number-correct" : "number-wrong", explanation: sentence.english }
+      };
+    });
+  })));
+}
+var lessonTwoNumberQuestions = judgement([...lessonTwoWords, ...lessonTwoPairs], owners);
+var lessonTwoOwnerQuestions = lessonTwoWords.filter((item) => lessonTwoCore.includes(item.singular)).flatMap((item) => [false, true].flatMap((plural) => ["my", "your"].map((owner) => {
+  const sentence = numberSentence(item, plural, owner);
+  const other = numberSentence(item, plural, owner === "my" ? "your" : "my");
+  return {
+    id: `l2-owner-${sentence.noun}-${owner}`,
+    english: sentence.english,
+    skill,
+    correct: 0,
+    audioUrl: lessonTwoAudio(sentence.noun, owner, sentence.verb),
+    answers: [[{ text: sentence.thai, skill }], [{ text: other.thai, skill }]],
+    meaningDistractor: other.thai
+  };
+})));
+var translationWords = [...lessonTwoWords, ...lessonTwoPairs];
+var lessonTwoReviewQuestions = [
+  ...translationWords.flatMap((item, index) => (item.singular ? [false, true] : [true]).flatMap((plural) => owners.map((owner) => {
+    const sentence = numberSentence(item, plural, owner);
+    const otherItem = item.singular ? lessonTwoWords[(index + 1) % lessonTwoWords.length] : lessonTwoPairs[(index - lessonTwoWords.length + 1) % lessonTwoPairs.length];
+    const distractor = owner === "my" ? numberSentence(item, plural, "your").thai : owner === "the" && item.singular ? numberSentence(item, !plural, owner).thai : numberSentence(otherItem, plural, owner).thai;
+    return {
+      id: `l2-translation-${sentence.noun}-${owner}`,
+      english: sentence.english,
+      skill,
+      correct: 0,
+      audioUrl: lessonTwoAudio(sentence.noun, owner, sentence.verb),
+      answers: [[{ text: sentence.thai, skill }], [{ text: distractor, skill }]],
+      meaningDistractor: distractor
+    };
+  }))),
+  // Earlier lesson nouns return in their taught singular Where is the... frame.
+  ...holidayMeaningQuestions.map((question2) => ({
+    ...question2,
+    id: `l2-translation-${question2.id}`,
+    meaningDistractor: question2.answers[1 - question2.correct].map((part) => part.text).join("")
+  }))
+];
+var lessonTwoRecordings = [...new Map([...lessonTwoNumberQuestions, ...lessonTwoOwnerQuestions, ...lessonTwoReviewQuestions].filter((q) => q.audioUrl?.startsWith("/audio/race-lesson-two/")).map((q) => [q.audioUrl, { audioUrl: q.audioUrl, spokenText: q.english }])).values()];
+
+// src/race/tonightVocabulary.ts
+var tonightWords = [
+  ["hotel", "\u0E42\u0E23\u0E07\u0E41\u0E23\u0E21"],
+  ["toilet", "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E49\u0E33"],
+  ["gym", "\u0E22\u0E34\u0E21"],
+  ["padel court", "\u0E2A\u0E19\u0E32\u0E21\u0E1E\u0E32\u0E40\u0E14\u0E25"],
+  ["racket", "\u0E44\u0E21\u0E49\u0E41\u0E23\u0E47\u0E01\u0E40\u0E01\u0E15"],
+  ["phone", "\u0E42\u0E17\u0E23\u0E28\u0E31\u0E1E\u0E17\u0E4C"],
+  ["aircon", "\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E1B\u0E23\u0E31\u0E1A\u0E2D\u0E32\u0E01\u0E32\u0E28"],
+  ["fan", "\u0E1E\u0E31\u0E14\u0E25\u0E21"],
+  ["remote", "\u0E23\u0E35\u0E42\u0E21\u0E15"],
+  ["doctor", "\u0E2B\u0E21\u0E2D"],
+  ["clinic", "\u0E04\u0E25\u0E34\u0E19\u0E34\u0E01"],
+  ["school", "\u0E42\u0E23\u0E07\u0E40\u0E23\u0E35\u0E22\u0E19"],
+  ["motorbike", "\u0E23\u0E16\u0E21\u0E2D\u0E40\u0E15\u0E2D\u0E23\u0E4C\u0E44\u0E0B\u0E04\u0E4C"],
+  ["table", "\u0E42\u0E15\u0E4A\u0E30"],
+  ["chair", "\u0E40\u0E01\u0E49\u0E32\u0E2D\u0E35\u0E49"],
+  ["bank", "\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23"],
+  ["bookstore", "\u0E23\u0E49\u0E32\u0E19\u0E2B\u0E19\u0E31\u0E07\u0E2A\u0E37\u0E2D"],
+  ["watch", "\u0E19\u0E32\u0E2C\u0E34\u0E01\u0E32\u0E02\u0E49\u0E2D\u0E21\u0E37\u0E2D"],
+  ["clock", "\u0E19\u0E32\u0E2C\u0E34\u0E01\u0E32"],
+  ["bedroom", "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E2D\u0E19"]
+];
+
+// src/race/tonightQuestions.ts
+var tonightMeaningQuestions = tonightWords.flatMap(([word, thai], index) => ["the", "my", "your"].map((determiner, d) => {
+  const owner = ["", "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19", "\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13"][d];
+  const correct = `${thai}${owner}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`;
+  const differentObject = `${tonightWords[(index + 1) % tonightWords.length][1]}${owner}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`;
+  const contrast = d === 0 ? `${thai}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E19\u0E35\u0E48\u0E43\u0E0A\u0E48\u0E44\u0E2B\u0E21` : `${thai}${d === 1 ? "\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13" : "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19"}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`;
+  return {
+    id: `tonight-${word}-${determiner}`,
+    english: `Where is ${determiner} ${word}?`,
+    skill: "race-tonight-slots",
+    audioUrl: "",
+    correct: 0,
+    answers: [[{ text: correct, skill: "race-tonight-slots" }], [{ text: differentObject, skill: "race-tonight-slots" }]],
+    meaningDistractor: contrast
+  };
+}));
+var tonightJudgementQuestions = tonightMeaningQuestions.flatMap((source) => [
+  { suffix: "complete", english: source.english, correct: 0 },
+  { suffix: "missing-is", english: source.english.replace("Where is ", "Where "), correct: 1 },
+  { suffix: "missing-determiner", english: source.english.replace(/ (the|my|your) /, " "), correct: 1 }
+].filter((item) => item.suffix !== "missing-determiner" || !/ (school|aircon)\?/.test(item.english)).map((item) => ({
+  id: `${source.id}-${item.suffix}`,
+  english: item.english,
+  correct: item.correct,
+  skill: "race-class-one",
+  audioUrl: "",
+  answers: [[{ text: "Correct", skill: "race-class-one" }], [{ text: "Wrong", skill: "race-class-one" }]]
+})));
 
 // src/portal/classOne.ts
 var classOneSkill = "class-one-everyday-questions";
@@ -320,57 +590,6 @@ var classOneStages = [
 var classOnePracticeQuestions = classOneStages.flatMap((stage) => stage.questions);
 var classOneAudio = classOnePracticeQuestions.map((q) => ({ spokenText: q.english, audioUrl: q.audioUrl }));
 
-// src/race/holidayVocabulary.ts
-var holidayVocabulary = [
-  { word: "taxi", thai: "\u0E23\u0E16\u0E41\u0E17\u0E47\u0E01\u0E0B\u0E35\u0E48", meaningDistractor: "\u0E23\u0E16\u0E41\u0E17\u0E47\u0E01\u0E0B\u0E35\u0E48\u0E23\u0E32\u0E04\u0E32\u0E40\u0E17\u0E48\u0E32\u0E44\u0E2B\u0E23\u0E48" },
-  { word: "hotel", thai: "\u0E42\u0E23\u0E07\u0E41\u0E23\u0E21", meaningDistractor: "\u0E42\u0E23\u0E07\u0E41\u0E23\u0E21\u0E23\u0E32\u0E04\u0E32\u0E40\u0E17\u0E48\u0E32\u0E44\u0E2B\u0E23\u0E48" },
-  { word: "toilet", thai: "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E49\u0E33", meaningDistractor: "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E49\u0E33\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "restaurant", thai: "\u0E23\u0E49\u0E32\u0E19\u0E2D\u0E32\u0E2B\u0E32\u0E23", meaningDistractor: "\u0E23\u0E49\u0E32\u0E19\u0E2D\u0E32\u0E2B\u0E32\u0E23\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "beach", thai: "\u0E0A\u0E32\u0E22\u0E2B\u0E32\u0E14", meaningDistractor: "\u0E0A\u0E32\u0E22\u0E2B\u0E32\u0E14\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
-  { word: "airport", thai: "\u0E2A\u0E19\u0E32\u0E21\u0E1A\u0E34\u0E19", meaningDistractor: "\u0E2A\u0E19\u0E32\u0E21\u0E1A\u0E34\u0E19\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
-  { word: "shop", thai: "\u0E23\u0E49\u0E32\u0E19\u0E04\u0E49\u0E32", meaningDistractor: "\u0E23\u0E49\u0E32\u0E19\u0E04\u0E49\u0E32\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "ATM", thai: "\u0E15\u0E39\u0E49\u0E40\u0E2D\u0E17\u0E35\u0E40\u0E2D\u0E47\u0E21", meaningDistractor: "\u0E43\u0E0A\u0E49\u0E15\u0E39\u0E49\u0E40\u0E2D\u0E17\u0E35\u0E40\u0E2D\u0E47\u0E21\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E44\u0E23" },
-  { word: "bank", thai: "\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23", meaningDistractor: "\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "pharmacy", thai: "\u0E23\u0E49\u0E32\u0E19\u0E02\u0E32\u0E22\u0E22\u0E32", meaningDistractor: "\u0E23\u0E49\u0E32\u0E19\u0E02\u0E32\u0E22\u0E22\u0E32\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "hospital", thai: "\u0E42\u0E23\u0E07\u0E1E\u0E22\u0E32\u0E1A\u0E32\u0E25", meaningDistractor: "\u0E42\u0E23\u0E07\u0E1E\u0E22\u0E32\u0E1A\u0E32\u0E25\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
-  { word: "supermarket", thai: "\u0E0B\u0E39\u0E40\u0E1B\u0E2D\u0E23\u0E4C\u0E21\u0E32\u0E23\u0E4C\u0E40\u0E01\u0E47\u0E15", meaningDistractor: "\u0E0B\u0E39\u0E40\u0E1B\u0E2D\u0E23\u0E4C\u0E21\u0E32\u0E23\u0E4C\u0E40\u0E01\u0E47\u0E15\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "market", thai: "\u0E15\u0E25\u0E32\u0E14", meaningDistractor: "\u0E15\u0E25\u0E32\u0E14\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "cafe", thai: "\u0E04\u0E32\u0E40\u0E1F\u0E48", meaningDistractor: "\u0E04\u0E32\u0E40\u0E1F\u0E48\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
-  { word: "bus stop", thai: "\u0E1B\u0E49\u0E32\u0E22\u0E23\u0E16\u0E40\u0E21\u0E25\u0E4C", meaningDistractor: "\u0E1B\u0E49\u0E32\u0E22\u0E23\u0E16\u0E40\u0E21\u0E25\u0E4C\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
-  { word: "car park", thai: "\u0E17\u0E35\u0E48\u0E08\u0E2D\u0E14\u0E23\u0E16", meaningDistractor: "\u0E17\u0E35\u0E48\u0E08\u0E2D\u0E14\u0E23\u0E16\u0E23\u0E32\u0E04\u0E32\u0E40\u0E17\u0E48\u0E32\u0E44\u0E2B\u0E23\u0E48" },
-  { word: "entrance", thai: "\u0E17\u0E32\u0E07\u0E40\u0E02\u0E49\u0E32", meaningDistractor: "\u0E17\u0E32\u0E07\u0E40\u0E02\u0E49\u0E32\u0E21\u0E35\u0E01\u0E35\u0E48\u0E17\u0E32\u0E07" },
-  { word: "exit", thai: "\u0E17\u0E32\u0E07\u0E2D\u0E2D\u0E01", meaningDistractor: "\u0E17\u0E32\u0E07\u0E2D\u0E2D\u0E01\u0E21\u0E35\u0E01\u0E35\u0E48\u0E17\u0E32\u0E07" },
-  { word: "lift", thai: "\u0E25\u0E34\u0E1F\u0E15\u0E4C", meaningDistractor: "\u0E25\u0E34\u0E1F\u0E15\u0E4C\u0E23\u0E31\u0E1A\u0E44\u0E14\u0E49\u0E01\u0E35\u0E48\u0E04\u0E19" },
-  { word: "swimming pool", thai: "\u0E2A\u0E23\u0E30\u0E27\u0E48\u0E32\u0E22\u0E19\u0E49\u0E33", meaningDistractor: "\u0E2A\u0E23\u0E30\u0E27\u0E48\u0E32\u0E22\u0E19\u0E49\u0E33\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" }
-];
-
-// src/race/holidayQuestions.ts
-var holidayNouns = holidayVocabulary.map((item) => item.word);
-var holidaySkill = "race-where-is-the";
-var holidayMeanings = holidayVocabulary.map((item) => `${item.thai}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`);
-var holidayMeaningQuestions = holidayNouns.map((noun, i) => ({
-  id: `race-meaning-${noun}`,
-  english: `Where is the ${noun}?`,
-  skill: holidaySkill,
-  correct: 0,
-  answers: [[{ text: holidayMeanings[i], skill: holidaySkill }], [{ text: holidayMeanings[(i + 1) % holidayMeanings.length], skill: holidaySkill }]],
-  audioUrl: `/audio/race-holiday/${noun}-complete.wav`,
-  meaningDistractor: holidayVocabulary[i].meaningDistractor
-}));
-var holidayQuestions = holidayNouns.flatMap((noun) => [
-  { variant: "complete", english: `Where is the ${noun}?`, correct: 0 },
-  { variant: "missing-is", english: `Where the ${noun}?`, correct: 1 },
-  { variant: "missing-the", english: `Where is ${noun}?`, correct: 1 }
-].map((item) => ({
-  id: `race-where-${noun}-${item.variant}`,
-  english: item.english,
-  skill: holidaySkill,
-  correct: item.correct,
-  answers: [[{ text: "Correct", skill: holidaySkill }], [{ text: "Wrong", skill: holidaySkill }]],
-  audioUrl: `/audio/race-holiday/${noun}-${item.variant}.wav`,
-  grammar: { kind: "meaning", context: "Ask where a particular holiday place or thing is.", phase: "practice", targets: ["where is the"], contrast: item.variant, explanation: `Where + is + the + ${noun}?` }
-})));
-
 // src/race/pools.ts
 var racePools = [
   { id: "man-woman", title: "A man \xB7 A woman", questions: classOneVocabularyQuestions.slice(2, 4) },
@@ -379,8 +598,18 @@ var racePools = [
   { id: "much-many", title: "How much \xB7 How many", questions: classOneQuestions.slice(5, 7) },
   { id: "first-questions", title: "Who is this? \xB7 What is this?", questions: classOneFrameQuestions },
   { id: "where-is-the", title: "Where is the\u2026? \xB7 Correct or wrong", kind: "judgement", questions: holidayQuestions },
-  { id: "holiday-meaning", title: "Where is the\u2026? \xB7 Holiday words", kind: "meaning", questions: holidayMeaningQuestions }
+  { id: "holiday-meaning", title: "Where is the\u2026? \xB7 Holiday words", kind: "meaning", questions: holidayMeaningQuestions },
+  { id: "class-one-judgement", title: "Class 1 \xB7 Correct or wrong", kind: "judgement", questions: tonightJudgementQuestions },
+  { id: "tonight-slots", title: "Where is \xB7 the / my / your \xB7 Tonight", kind: "meaning", questions: tonightMeaningQuestions },
+  { id: "lesson-two-number", title: "Lesson 2 \xB7 is / are", kind: "judgement", questions: lessonTwoNumberQuestions },
+  { id: "lesson-two-owner", title: "Lesson 2 \xB7 my / your", kind: "meaning", questions: lessonTwoOwnerQuestions },
+  { id: "lesson-two-review", title: "Lesson 2 \xB7 English \u2192 Thai", kind: "meaning", questions: lessonTwoReviewQuestions }
 ];
+
+// src/race/publicLinks.ts
+var publicRaceOrigin = "https://learn-english-coral.vercel.app";
+var publicPracticeUrl = `${publicRaceOrigin}/english/practice`;
+var publicRaceJoinUrl = (room) => `${publicRaceOrigin}/english/race/join/${room}`;
 
 // server/classroomRaceCloud.ts
 function cloudStore() {
@@ -444,7 +673,7 @@ async function cloudAction(store, action, method, id, secret, body, origin, rece
     const changed = method === "POST" || room.round !== previousRound || room.phase !== previousPhase;
     if (changed && !await store.save(id, stored.revision, room)) continue;
     const view = viewRoom(room, secret, now());
-    if (secret === room.host) view.joinUrl = `${origin}/english/race/join/${room.id}`;
+    if (secret === room.host) view.joinUrl = publicRaceJoinUrl(room.id);
     return view;
   }
   fail("The classroom is busy. Try again.", 409);
@@ -479,7 +708,7 @@ async function handler(req, res) {
       if (!body || typeof body !== "object" || Array.isArray(body)) fail("Send a valid race request.");
     }
     const secret = req.headers.authorization?.replace(/^Bearer /, "") ?? "";
-    const result = await cloudAction(cloudStore(), action, method, url.searchParams.get("room") ?? "", secret, body, origin, receivedAt);
+    const result = await cloudAction(cloudStore(), action, method, url.searchParams.get("room") ?? "", secret, body, publicRaceOrigin, receivedAt);
     res.statusCode = 200;
     res.end(JSON.stringify(result));
   } catch (error) {

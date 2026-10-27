@@ -1,0 +1,15 @@
+.world-objects{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1}
+.world-cloud{position:absolute;width:140px;height:28px;background:#fffef5;border-radius:50px;filter:drop-shadow(0 4px 0 #d5e7d655);animation:cloud-breathe 16s ease-in-out infinite}
+.world-cloud i{position:absolute;bottom:8px;left:25px;width:48px;height:45px;background:inherit;border-radius:50%}
+.world-cloud i:nth-child(2){left:55px;width:60px;height:62px}.world-cloud i:nth-child(3){left:90px;width:35px;height:34px}
+.cloud-one{left:18%;top:62px}.cloud-two{right:8%;top:155px;scale:.7;animation-delay:-8s}
+.world-garden-tree{position:absolute;width:150px;left:-54px;top:215px;transform:rotate(-6deg)}
+.world-garden-tree.tree-right{left:auto;right:-46px;top:440px;width:170px;transform:rotate(5deg)}
+.world-tree{width:100%;height:100%;display:block;overflow:visible}.world-tree-crown{transform-origin:50px 90px;animation:tree-sway 7s ease-in-out infinite}.tree-1 .world-tree-crown{animation-delay:-3s}
+.world-objects-lobby .world-garden-tree{left:2%;top:auto;bottom:10px;width:200px}.world-objects-lobby .tree-right{left:auto;right:3%;bottom:28px;width:170px}
+.world-grass{position:absolute;bottom:20px;left:27%;width:26px;height:22px}.world-grass i{display:block;position:absolute;bottom:0;width:5px;height:20px;background:#83ab61;border-radius:100% 100% 0 0;transform:rotate(-25deg)}.world-grass i:nth-child(2){left:8px;height:26px;transform:rotate(6deg)}.world-grass i:nth-child(3){left:16px;height:15px;transform:rotate(35deg)}.grass-two{left:auto;right:20%;bottom:35px;scale:.75}
+.world-track-tree{position:absolute;pointer-events:none;width:160px;height:200px;transform:translate(-50%,-75%);z-index:0}
+@keyframes tree-sway{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
+@keyframes cloud-breathe{0%,100%{transform:translateX(-12px)}50%{transform:translateX(12px)}}
+@media(max-width:650px){.world-garden-tree{width:90px;left:-55px}.world-garden-tree.tree-right{width:100px;right:-65px}.world-objects-lobby .world-garden-tree{width:110px;left:-35px}.world-objects-lobby .tree-right{left:auto;right:-35px}.world-cloud{scale:.65}.cloud-one{left:30%;top:45px}.cloud-two{right:-50px}}
+@media(prefers-reduced-motion:reduce){.world-tree-crown,.world-cloud{animation:none}}

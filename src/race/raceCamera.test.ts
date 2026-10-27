@@ -13,7 +13,7 @@ describe('shared pack camera', () => {
     }
   })
   it('keeps the whole pack visible throughout the race and reveals the actual finish', () => {
-    for (let t = 0; t < 150000; t += 500) {
+    for (let t = 0; t < 600000; t += 500) {
       const snapshot = demoAt(t)
       const camera = raceCamera(snapshot.players, FINISH)
       for (const p of snapshot.players) {
@@ -23,7 +23,7 @@ describe('shared pack camera', () => {
       if (snapshot.finished) expect(camera.position(FINISH)).toBeCloseTo(camera.finishPosition)
     }
     expect(raceCamera(demoAt(0).players, FINISH).finishPosition).toBeGreaterThan(100)
-    expect(raceCamera(demoAt(150000).players, FINISH).finishPosition).toBeLessThan(100)
+    expect(raceCamera(demoAt(600000).players, FINISH).finishPosition).toBeLessThan(100)
   })
   it('does not invent a leader at the starting line', () => {
     expect(raceCamera(demoAt(0).players, FINISH).leaders).toEqual([])
