@@ -1,3 +1,5 @@
+import WordTray from './WordTray'
+import './wordTray.css'
 import VocabularyPicture from '../VocabularyPicture'
 import { t } from '../../classroom/language'
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
@@ -32,13 +34,6 @@ function MatrixInstance({lesson,settings={},word:controlledWord,onWord:notify,au
   const choicesId = useId()
   const explanationId = useId()
   const board = useRef<HTMLElement>(null)
-  const belt = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    if (active === null) return
-    const selected = belt.current?.querySelector<HTMLButtonElement>('[aria-pressed=true]')
-    selected?.focus({preventScroll:true})
-    selected?.scrollIntoView?.({block:'nearest',inline:'center'})
-  }, [active])
   const motion = useRef<ViewTransition | null>(null)
   function explain(slot: number | null) {
     motion.current?.skipTransition()
@@ -87,23 +82,12 @@ function MatrixInstance({lesson,settings={},word:controlledWord,onWord:notify,au
     return <button type="button" className="cw-slot-picker" data-picker-slot={slot} aria-label={`Change ${slot===1 ? verbs.map(item=>item.word).join(' / ') : slot===2 ? owners.map(item=>item.word).join(' / ') : 'vocabulary'}`} aria-expanded={active===slot} aria-controls={choicesId} onClick={()=>setActive(previous=>previous===slot ? null : slot)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
   }
   const selectedWord = active===1 ? verb : active===2 ? owner : word
-  const conveyor = <div className={`cw-word-conveyor${open ? ' is-open' : ''}`} id={choicesId} hidden={!open} data-slot={active}>
-    {active===3 && <button type="button" className="cw-belt-arrow" aria-label="Previous words" onClick={()=>belt.current?.scrollBy({left:-240,behavior:'smooth'})}><Icon name="back"/></button>}
-    <div className="cw-word-belt" ref={belt} role="group" aria-label="Choose a word">
-      {choices.map(choice=><button type="button" className="cw-word-chip" key={choice.word} aria-pressed={selectedWord===choice.word} disabled={active===1 && !canChooseVerb(choice.word as BeVerb)} onClick={()=>{
-        if(active===1) chooseVerb(choice.word as BeVerb)
-        if(active===2) setOwner(choice.word as Determiner)
-        if(active===3) onWord(choice.word)
-        closeChoices()
-      }}>
-        {active===1 && <WordSlotIcon slot={1} plural={isPluralVerb(choice.word as BeVerb)} past={choice.word==='was'||choice.word==='were'}/>}
-        {active===3 && <VocabularyPicture word={choice.word}/>}
-        <strong lang="en">{choice.word}</strong><span lang="th">{choice.thai}</span>
-      </button>)}
-    </div>
-    {active===3 && <button type="button" className="cw-belt-arrow" aria-label="Next words" onClick={()=>belt.current?.scrollBy({left:240,behavior:'smooth'})}><Icon name="arrow"/></button>}
-    <button type="button" className="cw-belt-close" aria-label="Close word picker" onClick={closeChoices}><Icon name="close"/></button>
-  </div>
+  const conveyor = <WordTray id={choicesId} active={open ? active : null} choices={choices} selected={selectedWord} canChoose={value=>active!==1 || canChooseVerb(value as BeVerb)} onClose={closeChoices} onChoose={value=>{
+    if(active===1) chooseVerb(value as BeVerb)
+    if(active===2) setOwner(value as Determiner)
+    if(active===3) onWord(value)
+    closeChoices()
+  }}/>
   return <section ref={board} className="cw-sentence-board" data-long-word={word.length > 8 || undefined} aria-label={settings.fadeMode?"Listen to the sentence":`Where ${verb} ${owner} ${word}?`} onKeyDown={event => {
     if (event.key === 'Escape' && open) { event.stopPropagation(); closeChoices() }
   }}>

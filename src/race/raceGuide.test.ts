@@ -31,9 +31,9 @@ describe('race teaching walkthrough', () => {
     expect(guide.examples.map(e => e.correct)).toEqual([0, 1, 1])
     expect(guide.examples.map(e => e.units.length)).toEqual([4, 3, 3])
   })
-  it('does not promise audio or plural questions in the current tonight pool', () => {
+  it('provides recorded audio and singular questions in the tonight pool', () => {
     const guide = raceGuide('tonight-slots')!
-    expect(guide.hasAudio).toBe(false)
+    expect(guide.hasAudio).toBe(true)
     expect(guide.examples.every(e => e.english.startsWith('Where is '))).toBe(true)
     expect(raceGuide('holiday-meaning')!.hasAudio).toBe(true)
   })

@@ -313,7 +313,7 @@ var tonightWords = [
   ["padel court", "\u0E2A\u0E19\u0E32\u0E21\u0E1E\u0E32\u0E40\u0E14\u0E25"],
   ["racket", "\u0E44\u0E21\u0E49\u0E41\u0E23\u0E47\u0E01\u0E40\u0E01\u0E15"],
   ["phone", "\u0E42\u0E17\u0E23\u0E28\u0E31\u0E1E\u0E17\u0E4C"],
-  ["AC", "\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E1B\u0E23\u0E31\u0E1A\u0E2D\u0E32\u0E01\u0E32\u0E28"],
+  ["air conditioner", "\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E1B\u0E23\u0E31\u0E1A\u0E2D\u0E32\u0E01\u0E32\u0E28"],
   ["fan", "\u0E1E\u0E31\u0E14\u0E25\u0E21"],
   ["remote", "\u0E23\u0E35\u0E42\u0E21\u0E15"],
   ["doctor", "\u0E2B\u0E21\u0E2D"],
@@ -587,7 +587,7 @@ var tonightJudgementQuestions = tonightMeaningQuestions.flatMap((source) => [
   { suffix: "complete", english: source.english, correct: 0 },
   { suffix: "missing-is", english: source.english.replace("Where is ", "Where "), correct: 1 },
   { suffix: "missing-determiner", english: source.english.replace(/ (the|my|your) /, " "), correct: 1 }
-].filter((item) => item.suffix !== "missing-determiner" || !/ (school|AC)\?/.test(item.english)).map((item) => ({
+].filter((item) => item.suffix !== "missing-determiner" || !/ (school)\?/.test(item.english)).map((item) => ({
   id: `${source.id}-${item.suffix}`,
   english: item.english,
   correct: item.correct,
