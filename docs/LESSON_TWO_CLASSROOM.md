@@ -24,10 +24,10 @@ The teacher chooses the next round after teaching its prerequisites. Round chang
 |---|---|---|---|
 | 1 | Correct / incorrect is–are agreement | all 18 regular noun pairs plus glasses/trousers; the/my/your; complete sentences | 228 |
 | 2 | Understand my vs your | six core nouns, both numbers; same noun and number in both Thai choices | 24 |
-| 3 | Mixed agreement review | all 18 regular noun pairs plus glasses/trousers; the/my/your | 228 |
+| 3 | English to Thai translation | all Lesson 2 forms with the/my/your, plus the 20 Lesson 1 nouns in their taught singular frame | 134 |
 
-Pool counts are available question variants, not a required 480-question session. Review includes the first-round agreement items; do not describe those as all unique questions. Each grammatical variant has an explicitly authored correct answer. Correct and incorrect examples are balanced for every noun and owner. No wrong examples rely on omitting an article from a plural noun, which can be grammatical.
+Pool counts are available variants, not a required 386-question session. Round 1 balances correct/incorrect agreement. Round 3 uses only correct English with two Thai location questions; its distractor changes number, owner or object. Thai number contrasts explicitly use one/several with the noun classifier. Pair nouns do not imply multiple pairs. Earlier place vocabulary stays in its familiar singular frame. The server preserves these authored choices and randomizes their answer positions.
 
-Every race question has locally generated recorded speech (228 distinct sentences). The current classroom briefing shows the selected round’s answer controls and timing; joining stays in its compact QR control. QR targets are public production URLs, including when teaching from localhost.
+Every race question has locally generated recorded speech (228 Lesson 2 recordings plus the 20 existing Lesson 1 recordings). The current classroom briefing shows the selected round’s answer controls and timing; joining stays in its compact QR control. QR targets are public production URLs, including when teaching from localhost.
 
 Do not use round three until its vocabulary and the pair-noun exception have been taught. These are teacher-led transitions, not an automated measurement of student mastery. This lesson does not introduce location prepositions or new tenses.

@@ -235,6 +235,57 @@ function viewRoom(room, secret, now = Date.now()) {
   };
 }
 
+// src/race/holidayVocabulary.ts
+var holidayVocabulary = [
+  { word: "taxi", thai: "\u0E23\u0E16\u0E41\u0E17\u0E47\u0E01\u0E0B\u0E35\u0E48", meaningDistractor: "\u0E23\u0E16\u0E41\u0E17\u0E47\u0E01\u0E0B\u0E35\u0E48\u0E23\u0E32\u0E04\u0E32\u0E40\u0E17\u0E48\u0E32\u0E44\u0E2B\u0E23\u0E48" },
+  { word: "hotel", thai: "\u0E42\u0E23\u0E07\u0E41\u0E23\u0E21", meaningDistractor: "\u0E42\u0E23\u0E07\u0E41\u0E23\u0E21\u0E23\u0E32\u0E04\u0E32\u0E40\u0E17\u0E48\u0E32\u0E44\u0E2B\u0E23\u0E48" },
+  { word: "toilet", thai: "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E49\u0E33", meaningDistractor: "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E49\u0E33\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "restaurant", thai: "\u0E23\u0E49\u0E32\u0E19\u0E2D\u0E32\u0E2B\u0E32\u0E23", meaningDistractor: "\u0E23\u0E49\u0E32\u0E19\u0E2D\u0E32\u0E2B\u0E32\u0E23\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "beach", thai: "\u0E0A\u0E32\u0E22\u0E2B\u0E32\u0E14", meaningDistractor: "\u0E0A\u0E32\u0E22\u0E2B\u0E32\u0E14\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
+  { word: "airport", thai: "\u0E2A\u0E19\u0E32\u0E21\u0E1A\u0E34\u0E19", meaningDistractor: "\u0E2A\u0E19\u0E32\u0E21\u0E1A\u0E34\u0E19\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
+  { word: "shop", thai: "\u0E23\u0E49\u0E32\u0E19\u0E04\u0E49\u0E32", meaningDistractor: "\u0E23\u0E49\u0E32\u0E19\u0E04\u0E49\u0E32\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "ATM", thai: "\u0E15\u0E39\u0E49\u0E40\u0E2D\u0E17\u0E35\u0E40\u0E2D\u0E47\u0E21", meaningDistractor: "\u0E43\u0E0A\u0E49\u0E15\u0E39\u0E49\u0E40\u0E2D\u0E17\u0E35\u0E40\u0E2D\u0E47\u0E21\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E44\u0E23" },
+  { word: "bank", thai: "\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23", meaningDistractor: "\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "pharmacy", thai: "\u0E23\u0E49\u0E32\u0E19\u0E02\u0E32\u0E22\u0E22\u0E32", meaningDistractor: "\u0E23\u0E49\u0E32\u0E19\u0E02\u0E32\u0E22\u0E22\u0E32\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "hospital", thai: "\u0E42\u0E23\u0E07\u0E1E\u0E22\u0E32\u0E1A\u0E32\u0E25", meaningDistractor: "\u0E42\u0E23\u0E07\u0E1E\u0E22\u0E32\u0E1A\u0E32\u0E25\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
+  { word: "supermarket", thai: "\u0E0B\u0E39\u0E40\u0E1B\u0E2D\u0E23\u0E4C\u0E21\u0E32\u0E23\u0E4C\u0E40\u0E01\u0E47\u0E15", meaningDistractor: "\u0E0B\u0E39\u0E40\u0E1B\u0E2D\u0E23\u0E4C\u0E21\u0E32\u0E23\u0E4C\u0E40\u0E01\u0E47\u0E15\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "market", thai: "\u0E15\u0E25\u0E32\u0E14", meaningDistractor: "\u0E15\u0E25\u0E32\u0E14\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
+  { word: "cafe", thai: "\u0E04\u0E32\u0E40\u0E1F\u0E48", meaningDistractor: "\u0E04\u0E32\u0E40\u0E1F\u0E48\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
+  { word: "bus stop", thai: "\u0E1B\u0E49\u0E32\u0E22\u0E23\u0E16\u0E40\u0E21\u0E25\u0E4C", meaningDistractor: "\u0E1B\u0E49\u0E32\u0E22\u0E23\u0E16\u0E40\u0E21\u0E25\u0E4C\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
+  { word: "car park", thai: "\u0E17\u0E35\u0E48\u0E08\u0E2D\u0E14\u0E23\u0E16", meaningDistractor: "\u0E17\u0E35\u0E48\u0E08\u0E2D\u0E14\u0E23\u0E16\u0E23\u0E32\u0E04\u0E32\u0E40\u0E17\u0E48\u0E32\u0E44\u0E2B\u0E23\u0E48" },
+  { word: "entrance", thai: "\u0E17\u0E32\u0E07\u0E40\u0E02\u0E49\u0E32", meaningDistractor: "\u0E17\u0E32\u0E07\u0E40\u0E02\u0E49\u0E32\u0E21\u0E35\u0E01\u0E35\u0E48\u0E17\u0E32\u0E07" },
+  { word: "exit", thai: "\u0E17\u0E32\u0E07\u0E2D\u0E2D\u0E01", meaningDistractor: "\u0E17\u0E32\u0E07\u0E2D\u0E2D\u0E01\u0E21\u0E35\u0E01\u0E35\u0E48\u0E17\u0E32\u0E07" },
+  { word: "lift", thai: "\u0E25\u0E34\u0E1F\u0E15\u0E4C", meaningDistractor: "\u0E25\u0E34\u0E1F\u0E15\u0E4C\u0E23\u0E31\u0E1A\u0E44\u0E14\u0E49\u0E01\u0E35\u0E48\u0E04\u0E19" },
+  { word: "swimming pool", thai: "\u0E2A\u0E23\u0E30\u0E27\u0E48\u0E32\u0E22\u0E19\u0E49\u0E33", meaningDistractor: "\u0E2A\u0E23\u0E30\u0E27\u0E48\u0E32\u0E22\u0E19\u0E49\u0E33\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" }
+];
+
+// src/race/holidayQuestions.ts
+var holidayNouns = holidayVocabulary.map((item) => item.word);
+var holidaySkill = "race-where-is-the";
+var holidayMeanings = holidayVocabulary.map((item) => `${item.thai}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`);
+var holidayMeaningQuestions = holidayNouns.map((noun, i) => ({
+  id: `race-meaning-${noun}`,
+  english: `Where is the ${noun}?`,
+  skill: holidaySkill,
+  correct: 0,
+  answers: [[{ text: holidayMeanings[i], skill: holidaySkill }], [{ text: holidayMeanings[(i + 1) % holidayMeanings.length], skill: holidaySkill }]],
+  audioUrl: `/audio/race-holiday/${noun}-complete.wav`,
+  meaningDistractor: holidayVocabulary[i].meaningDistractor
+}));
+var holidayQuestions = holidayNouns.flatMap((noun) => [
+  { variant: "complete", english: `Where is the ${noun}?`, correct: 0 },
+  { variant: "missing-is", english: `Where the ${noun}?`, correct: 1 },
+  { variant: "missing-the", english: `Where is ${noun}?`, correct: 1 }
+].map((item) => ({
+  id: `race-where-${noun}-${item.variant}`,
+  english: item.english,
+  skill: holidaySkill,
+  correct: item.correct,
+  answers: [[{ text: "Correct", skill: holidaySkill }], [{ text: "Wrong", skill: holidaySkill }]],
+  audioUrl: `/audio/race-holiday/${noun}-${item.variant}.wav`,
+  grammar: { kind: "meaning", context: "Ask where a particular holiday place or thing is.", phase: "practice", targets: ["where is the"], contrast: item.variant, explanation: `Where + is + the + ${noun}?` }
+})));
+
 // src/race/pluralVocabulary.ts
 var pluralVocabulary = [
   { singular: "shoe", group: "wear", classifier: "\u0E02\u0E49\u0E32\u0E07", plural: "shoes", thai: "\u0E23\u0E2D\u0E07\u0E40\u0E17\u0E49\u0E32" },
@@ -319,8 +370,30 @@ var lessonTwoOwnerQuestions = lessonTwoWords.filter((item) => lessonTwoCore.incl
     meaningDistractor: other.thai
   };
 })));
-var lessonTwoReviewQuestions = judgement([...lessonTwoWords, ...lessonTwoPairs], owners);
-var lessonTwoRecordings = [...new Map([...lessonTwoNumberQuestions, ...lessonTwoOwnerQuestions, ...lessonTwoReviewQuestions].map((q) => [q.audioUrl, { audioUrl: q.audioUrl, spokenText: q.english }])).values()];
+var translationWords = [...lessonTwoWords, ...lessonTwoPairs];
+var lessonTwoReviewQuestions = [
+  ...translationWords.flatMap((item, index) => (item.singular ? [false, true] : [true]).flatMap((plural) => owners.map((owner) => {
+    const sentence = numberSentence(item, plural, owner);
+    const otherItem = item.singular ? lessonTwoWords[(index + 1) % lessonTwoWords.length] : lessonTwoPairs[(index - lessonTwoWords.length + 1) % lessonTwoPairs.length];
+    const distractor = owner === "my" ? numberSentence(item, plural, "your").thai : owner === "the" && item.singular ? numberSentence(item, !plural, owner).thai : numberSentence(otherItem, plural, owner).thai;
+    return {
+      id: `l2-translation-${sentence.noun}-${owner}`,
+      english: sentence.english,
+      skill,
+      correct: 0,
+      audioUrl: lessonTwoAudio(sentence.noun, owner, sentence.verb),
+      answers: [[{ text: sentence.thai, skill }], [{ text: distractor, skill }]],
+      meaningDistractor: distractor
+    };
+  }))),
+  // Earlier lesson nouns return in their taught singular Where is the... frame.
+  ...holidayMeaningQuestions.map((question2) => ({
+    ...question2,
+    id: `l2-translation-${question2.id}`,
+    meaningDistractor: question2.answers[1 - question2.correct].map((part) => part.text).join("")
+  }))
+];
+var lessonTwoRecordings = [...new Map([...lessonTwoNumberQuestions, ...lessonTwoOwnerQuestions, ...lessonTwoReviewQuestions].filter((q) => q.audioUrl?.startsWith("/audio/race-lesson-two/")).map((q) => [q.audioUrl, { audioUrl: q.audioUrl, spokenText: q.english }])).values()];
 
 // src/race/tonightVocabulary.ts
 var tonightWords = [
@@ -451,57 +524,6 @@ var classOneStages = [
 var classOnePracticeQuestions = classOneStages.flatMap((stage) => stage.questions);
 var classOneAudio = classOnePracticeQuestions.map((q) => ({ spokenText: q.english, audioUrl: q.audioUrl }));
 
-// src/race/holidayVocabulary.ts
-var holidayVocabulary = [
-  { word: "taxi", thai: "\u0E23\u0E16\u0E41\u0E17\u0E47\u0E01\u0E0B\u0E35\u0E48", meaningDistractor: "\u0E23\u0E16\u0E41\u0E17\u0E47\u0E01\u0E0B\u0E35\u0E48\u0E23\u0E32\u0E04\u0E32\u0E40\u0E17\u0E48\u0E32\u0E44\u0E2B\u0E23\u0E48" },
-  { word: "hotel", thai: "\u0E42\u0E23\u0E07\u0E41\u0E23\u0E21", meaningDistractor: "\u0E42\u0E23\u0E07\u0E41\u0E23\u0E21\u0E23\u0E32\u0E04\u0E32\u0E40\u0E17\u0E48\u0E32\u0E44\u0E2B\u0E23\u0E48" },
-  { word: "toilet", thai: "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E49\u0E33", meaningDistractor: "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E49\u0E33\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "restaurant", thai: "\u0E23\u0E49\u0E32\u0E19\u0E2D\u0E32\u0E2B\u0E32\u0E23", meaningDistractor: "\u0E23\u0E49\u0E32\u0E19\u0E2D\u0E32\u0E2B\u0E32\u0E23\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "beach", thai: "\u0E0A\u0E32\u0E22\u0E2B\u0E32\u0E14", meaningDistractor: "\u0E0A\u0E32\u0E22\u0E2B\u0E32\u0E14\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
-  { word: "airport", thai: "\u0E2A\u0E19\u0E32\u0E21\u0E1A\u0E34\u0E19", meaningDistractor: "\u0E2A\u0E19\u0E32\u0E21\u0E1A\u0E34\u0E19\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
-  { word: "shop", thai: "\u0E23\u0E49\u0E32\u0E19\u0E04\u0E49\u0E32", meaningDistractor: "\u0E23\u0E49\u0E32\u0E19\u0E04\u0E49\u0E32\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "ATM", thai: "\u0E15\u0E39\u0E49\u0E40\u0E2D\u0E17\u0E35\u0E40\u0E2D\u0E47\u0E21", meaningDistractor: "\u0E43\u0E0A\u0E49\u0E15\u0E39\u0E49\u0E40\u0E2D\u0E17\u0E35\u0E40\u0E2D\u0E47\u0E21\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E44\u0E23" },
-  { word: "bank", thai: "\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23", meaningDistractor: "\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "pharmacy", thai: "\u0E23\u0E49\u0E32\u0E19\u0E02\u0E32\u0E22\u0E22\u0E32", meaningDistractor: "\u0E23\u0E49\u0E32\u0E19\u0E02\u0E32\u0E22\u0E22\u0E32\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "hospital", thai: "\u0E42\u0E23\u0E07\u0E1E\u0E22\u0E32\u0E1A\u0E32\u0E25", meaningDistractor: "\u0E42\u0E23\u0E07\u0E1E\u0E22\u0E32\u0E1A\u0E32\u0E25\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
-  { word: "supermarket", thai: "\u0E0B\u0E39\u0E40\u0E1B\u0E2D\u0E23\u0E4C\u0E21\u0E32\u0E23\u0E4C\u0E40\u0E01\u0E47\u0E15", meaningDistractor: "\u0E0B\u0E39\u0E40\u0E1B\u0E2D\u0E23\u0E4C\u0E21\u0E32\u0E23\u0E4C\u0E40\u0E01\u0E47\u0E15\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "market", thai: "\u0E15\u0E25\u0E32\u0E14", meaningDistractor: "\u0E15\u0E25\u0E32\u0E14\u0E40\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" },
-  { word: "cafe", thai: "\u0E04\u0E32\u0E40\u0E1F\u0E48", meaningDistractor: "\u0E04\u0E32\u0E40\u0E1F\u0E48\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
-  { word: "bus stop", thai: "\u0E1B\u0E49\u0E32\u0E22\u0E23\u0E16\u0E40\u0E21\u0E25\u0E4C", meaningDistractor: "\u0E1B\u0E49\u0E32\u0E22\u0E23\u0E16\u0E40\u0E21\u0E25\u0E4C\u0E0A\u0E37\u0E48\u0E2D\u0E2D\u0E30\u0E44\u0E23" },
-  { word: "car park", thai: "\u0E17\u0E35\u0E48\u0E08\u0E2D\u0E14\u0E23\u0E16", meaningDistractor: "\u0E17\u0E35\u0E48\u0E08\u0E2D\u0E14\u0E23\u0E16\u0E23\u0E32\u0E04\u0E32\u0E40\u0E17\u0E48\u0E32\u0E44\u0E2B\u0E23\u0E48" },
-  { word: "entrance", thai: "\u0E17\u0E32\u0E07\u0E40\u0E02\u0E49\u0E32", meaningDistractor: "\u0E17\u0E32\u0E07\u0E40\u0E02\u0E49\u0E32\u0E21\u0E35\u0E01\u0E35\u0E48\u0E17\u0E32\u0E07" },
-  { word: "exit", thai: "\u0E17\u0E32\u0E07\u0E2D\u0E2D\u0E01", meaningDistractor: "\u0E17\u0E32\u0E07\u0E2D\u0E2D\u0E01\u0E21\u0E35\u0E01\u0E35\u0E48\u0E17\u0E32\u0E07" },
-  { word: "lift", thai: "\u0E25\u0E34\u0E1F\u0E15\u0E4C", meaningDistractor: "\u0E25\u0E34\u0E1F\u0E15\u0E4C\u0E23\u0E31\u0E1A\u0E44\u0E14\u0E49\u0E01\u0E35\u0E48\u0E04\u0E19" },
-  { word: "swimming pool", thai: "\u0E2A\u0E23\u0E30\u0E27\u0E48\u0E32\u0E22\u0E19\u0E49\u0E33", meaningDistractor: "\u0E2A\u0E23\u0E30\u0E27\u0E48\u0E32\u0E22\u0E19\u0E49\u0E33\u0E1B\u0E34\u0E14\u0E01\u0E35\u0E48\u0E42\u0E21\u0E07" }
-];
-
-// src/race/holidayQuestions.ts
-var holidayNouns = holidayVocabulary.map((item) => item.word);
-var holidaySkill = "race-where-is-the";
-var holidayMeanings = holidayVocabulary.map((item) => `${item.thai}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`);
-var holidayMeaningQuestions = holidayNouns.map((noun, i) => ({
-  id: `race-meaning-${noun}`,
-  english: `Where is the ${noun}?`,
-  skill: holidaySkill,
-  correct: 0,
-  answers: [[{ text: holidayMeanings[i], skill: holidaySkill }], [{ text: holidayMeanings[(i + 1) % holidayMeanings.length], skill: holidaySkill }]],
-  audioUrl: `/audio/race-holiday/${noun}-complete.wav`,
-  meaningDistractor: holidayVocabulary[i].meaningDistractor
-}));
-var holidayQuestions = holidayNouns.flatMap((noun) => [
-  { variant: "complete", english: `Where is the ${noun}?`, correct: 0 },
-  { variant: "missing-is", english: `Where the ${noun}?`, correct: 1 },
-  { variant: "missing-the", english: `Where is ${noun}?`, correct: 1 }
-].map((item) => ({
-  id: `race-where-${noun}-${item.variant}`,
-  english: item.english,
-  skill: holidaySkill,
-  correct: item.correct,
-  answers: [[{ text: "Correct", skill: holidaySkill }], [{ text: "Wrong", skill: holidaySkill }]],
-  audioUrl: `/audio/race-holiday/${noun}-${item.variant}.wav`,
-  grammar: { kind: "meaning", context: "Ask where a particular holiday place or thing is.", phase: "practice", targets: ["where is the"], contrast: item.variant, explanation: `Where + is + the + ${noun}?` }
-})));
-
 // src/race/pools.ts
 var racePools = [
   { id: "man-woman", title: "A man \xB7 A woman", questions: classOneVocabularyQuestions.slice(2, 4) },
@@ -514,7 +536,7 @@ var racePools = [
   { id: "tonight-slots", title: "Where is \xB7 the / my / your \xB7 Tonight", kind: "meaning", questions: tonightMeaningQuestions },
   { id: "lesson-two-number", title: "Lesson 2 \xB7 is / are", kind: "judgement", questions: lessonTwoNumberQuestions },
   { id: "lesson-two-owner", title: "Lesson 2 \xB7 my / your", kind: "meaning", questions: lessonTwoOwnerQuestions },
-  { id: "lesson-two-review", title: "Lesson 2 \xB7 Review", kind: "judgement", questions: lessonTwoReviewQuestions }
+  { id: "lesson-two-review", title: "Lesson 2 \xB7 English \u2192 Thai", kind: "meaning", questions: lessonTwoReviewQuestions }
 ];
 
 // src/race/publicLinks.ts

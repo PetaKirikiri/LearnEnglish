@@ -89,11 +89,16 @@ it('runs the three lesson-two pools in one room while preserving the student QR 
     expect(view.stageId).toBe(stage)
     expect(view.players.map(p=>p.name)).toEqual(['Lesson two test'])
     expect(view.joinUrl).toBe(joinUrl)
-    expect(rows.get(host.room)!.state.pool.every(q=>q.audioUrl.startsWith('/audio/race-lesson-two/'))).toBe(true)
+    expect(rows.get(host.room)!.state.pool.every(q=>/^\/audio\/race-(lesson-two|holiday)\/.+\.wav$/.test(q.audioUrl))).toBe(true)
     view=await cloudAction(store,'control','POST',host.room,host.token,{action:'start',round:view.round,run:view.run},origin,10,()=>10) as RaceView
     const player=await cloudAction(store,'state','GET',host.room,guest,{},origin,11,()=>11) as RaceView
     expect(player.question?.choices).toHaveLength(2)
     expect(player.question?.correct).toBeUndefined()
+    if(stage==='lesson-two-review'){
+      expect(rows.get(host.room)!.state.kind).toBe('meaning')
+      expect(view.questionIds).toHaveLength(134)
+      expect(player.question!.choices.every(choice=>/[ก-๙]/.test(choice))).toBe(true)
+    }
     expect(view.question?.english).toMatch(/^Where (is|are) (the|my|your) /)
     view=await cloudAction(store,'control','POST',host.room,host.token,{action:'finish',round:view.round,run:view.run},origin,12,()=>12) as RaceView
   }

@@ -1,4 +1,5 @@
 import type { HotelQuestion } from '../hotel/course'
+import { holidayMeaningQuestions } from './holidayQuestions'
 import { lessonTwoWords, lessonTwoPairs, lessonTwoCore, numberSentence, owners, type LessonTwoWord, type Owner } from '../classroom/lessonTwoContent'
 
 const skill = 'race-lesson-two'
@@ -24,5 +25,22 @@ export const lessonTwoOwnerQuestions = lessonTwoWords.filter(item => (lessonTwoC
   return {id:`l2-owner-${sentence.noun}-${owner}`,english:sentence.english,skill,correct:0,audioUrl:lessonTwoAudio(sentence.noun,owner,sentence.verb),
     answers:[[{text:sentence.thai,skill}],[{text:other.thai,skill}]],meaningDistractor:other.thai} satisfies HotelQuestion & {meaningDistractor:string}
 })))
-export const lessonTwoReviewQuestions = judgement([...lessonTwoWords,...lessonTwoPairs],owners)
-export const lessonTwoRecordings = [...new Map([...lessonTwoNumberQuestions,...lessonTwoOwnerQuestions,...lessonTwoReviewQuestions].map(q => [q.audioUrl,{audioUrl:q.audioUrl,spokenText:q.english}])).values()]
+// Translation contrasts change number, owner, or object, never grammaticality.
+// Explicit Thai quantities make the singular/plural choices unambiguous.
+const translationWords: readonly LessonTwoWord[] = [...lessonTwoWords,...lessonTwoPairs]
+export const lessonTwoReviewQuestions: (HotelQuestion & {meaningDistractor:string})[] = [
+  ...translationWords.flatMap((item,index)=>(item.singular?[false,true]:[true]).flatMap(plural=>owners.map(owner=>{
+    const sentence=numberSentence(item,plural,owner)
+    const otherItem=item.singular ? lessonTwoWords[(index+1)%lessonTwoWords.length] : lessonTwoPairs[(index-lessonTwoWords.length+1)%lessonTwoPairs.length]
+    const distractor=owner==='my' ? numberSentence(item,plural,'your').thai
+      : owner==='the' && item.singular ? numberSentence(item,!plural,owner).thai
+      : numberSentence(otherItem,plural,owner).thai
+    return {id:`l2-translation-${sentence.noun}-${owner}`,english:sentence.english,skill,correct:0,
+      audioUrl:lessonTwoAudio(sentence.noun,owner,sentence.verb),
+      answers:[[{text:sentence.thai,skill}],[{text:distractor,skill}]],meaningDistractor:distractor} satisfies HotelQuestion & {meaningDistractor:string}
+  }))),
+  // Earlier lesson nouns return in their taught singular Where is the... frame.
+  ...holidayMeaningQuestions.map(question=>({...question,id:`l2-translation-${question.id}`,
+    meaningDistractor:question.answers[1-question.correct].map(part=>part.text).join('')})),
+]
+export const lessonTwoRecordings = [...new Map([...lessonTwoNumberQuestions,...lessonTwoOwnerQuestions,...lessonTwoReviewQuestions].filter(q=>q.audioUrl?.startsWith('/audio/race-lesson-two/')).map(q => [q.audioUrl,{audioUrl:q.audioUrl,spokenText:q.english}])).values()]

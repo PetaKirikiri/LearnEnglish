@@ -4,6 +4,8 @@ import { expect, it } from 'vitest'
 import { lessonTwoNumberQuestions, lessonTwoOwnerQuestions, lessonTwoReviewQuestions, lessonTwoRecordings } from './lessonTwoQuestions'
 import { lessonTwoWords, lessonTwoPairs } from '../classroom/lessonTwoContent'
 import { racePools } from './pools'
+import { holidayMeaningQuestions } from './holidayQuestions'
+import { numberSentence, owners } from '../classroom/lessonTwoContent'
 import { selectQuestions } from '../../server/classroomRace'
 
 it('covers every lesson two noun in round one with both correct and incorrect agreement',()=>{
@@ -24,17 +26,28 @@ it('covers every lesson two noun in round one with both correct and incorrect ag
   expect(selected.questions).toHaveLength(228)
   expect(selected.questions.every(q=>q.choices.join('|')==='Correct|Wrong')).toBe(true)
 })
-it('tests agreement fairly for every noun and owner, including pair nouns',()=>{
-  expect(lessonTwoReviewQuestions).toHaveLength(228)
-  for(const item of [...lessonTwoWords,...lessonTwoPairs]) for(const owner of ['the','my','your']) {
-    const forms = 'singular' in item ? [item.singular,item.plural] : [item.plural]
-    for(const noun of forms){
-      const variants=lessonTwoReviewQuestions.filter(q=>q.english.endsWith(`${owner} ${noun}?`))
-      expect(variants).toHaveLength(2)
-      expect(variants.map(q=>q.correct).sort()).toEqual([0,1])
-      const verb=noun===item.plural?'are':'is'
-      expect(variants.find(q=>q.correct===0)!.english).toBe(`Where ${verb} ${owner} ${noun}?`)
-    }
+it('makes round three correct English with two distinct Thai translations covering both lessons',()=>{
+  expect(lessonTwoReviewQuestions).toHaveLength(134)
+  expect(new Set(lessonTwoReviewQuestions.map(q=>q.id)).size).toBe(134)
+  for(const item of [...lessonTwoWords,...lessonTwoPairs]) for(const plural of ('singular' in item?[false,true]:[true])) for(const owner of owners){
+    const expected=numberSentence(item,plural,owner)
+    const q=lessonTwoReviewQuestions.find(q=>q.english===expected.english)!
+    expect(q).toBeTruthy()
+    expect(q.answers[q.correct][0].text).toBe(expected.thai)
+    expect(q.meaningDistractor).not.toBe(expected.thai)
+    if(owner==='the' && 'singular' in item) expect(q.meaningDistractor).toBe(numberSentence(item,!plural,owner).thai)
+    expect(existsSync(`public${q.audioUrl}`)).toBe(true)
+  }
+  for(const q of holidayMeaningQuestions) expect(lessonTwoReviewQuestions.some(item=>item.english===q.english && item.audioUrl===q.audioUrl)).toBe(true)
+  const pool=racePools.find(p=>p.id==='lesson-two-review')!
+  expect(pool.kind).toBe('meaning')
+  const selected=selectQuestions({...pool,questions:pool.questions.map(q=>({...q,audioUrl:q.audioUrl??'',choices:q.answers.map(a=>a.map(p=>p.text).join(''))}))})
+  for(const question of selected.questions){
+    const authored=lessonTwoReviewQuestions.find(q=>q.id===question.id)!
+    expect(question.choices).toEqual(authored.answers.map(a=>a.map(p=>p.text).join('')))
+    expect(question.choices).toHaveLength(2)
+    expect(question.choices.every(choice=>/[ก-๙]/.test(choice))).toBe(true)
+    expect(question.choices[0]).not.toBe(question.choices[1])
   }
   expect(lessonTwoReviewQuestions.some(q=>/\bglass\?|\btrouser\?/.test(q.english))).toBe(false)
 })

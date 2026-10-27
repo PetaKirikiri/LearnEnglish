@@ -11,7 +11,7 @@ export const guideModes = [
   { id: 'holiday-meaning', label: 'เลือกความหมาย · สถานที่' },
   {id:'lesson-two-number',label:'is / are'},
   {id:'lesson-two-owner',label:'my / your'},
-  {id:'lesson-two-review',label:'ทบทวน'},
+  {id:'lesson-two-review',label:'อังกฤษ → ไทย'},
 ] as const
 export type GuideExample = { sourceId: string; english: string; units: ExampleUnit[]; thai: string; choices: string[]; correct: number; label: string; explanation: string }
 const vocabulary = new Map<string, string>([...holidayVocabulary.map(v => [v.word, v.thai] as [string, string]), ...tonightWords, ...lessonTwoWords.flatMap(v => [[v.singular,v.thai],[v.plural,v.thai]] as [string,string][]), ...lessonTwoPairs.map(v => [v.plural,v.thai] as [string,string])])
@@ -22,7 +22,7 @@ export function raceGuide(stageId: string, questionIds?: string[]) {
   if (!pool || !guideModes.some(mode => mode.id === stageId)) return null
   const selected = pool.questions.filter(q => questionIds === undefined || questionIds.includes(q.id))
   const paired = meaningChoices(selected.map(q => ({ ...q, choices: q.answers.map(answer => answer.map(part => part.text).join('')) })))
-  const preferences = stageId.startsWith('lesson-two-') ? (pool.kind === 'judgement' ? ['l2-shoe-the-is','l2-shoes-the-is','l2-shoes-the-are'] : ['l2-owner-shoes-my','l2-owner-shoes-your']) : stageId === 'tonight-slots' ? ['tonight-phone-my', 'tonight-phone-your', 'tonight-hotel-the'] : stageId === 'holiday-meaning' ? ['race-meaning-hotel', 'race-meaning-toilet'] : ['race-where-hotel-complete', 'race-where-hotel-missing-is', 'race-where-hotel-missing-the']
+  const preferences = stageId.startsWith('lesson-two-') ? (pool.kind === 'judgement' ? ['l2-shoe-the-is','l2-shoes-the-is','l2-shoes-the-are'] : stageId==='lesson-two-review' ? ['l2-translation-shoes-the','l2-translation-shoe-the','l2-translation-shoes-my'] : ['l2-owner-shoes-my','l2-owner-shoes-your']) : stageId === 'tonight-slots' ? ['tonight-phone-my', 'tonight-phone-your', 'tonight-hotel-the'] : stageId === 'holiday-meaning' ? ['race-meaning-hotel', 'race-meaning-toilet'] : ['race-where-hotel-complete', 'race-where-hotel-missing-is', 'race-where-hotel-missing-the']
   const examples: GuideExample[] = []
   const candidates = [...preferences.flatMap(id => paired.filter(q => q.id === id)), ...paired]
   const seen = new Set<string>()
