@@ -6,6 +6,8 @@ import type { RaceCredential, RaceView } from '../race/types'
 import { racePools } from '../race/pools'
 import { movingPlayers } from '../race/motion'
 import RaceHostView from '../race/RaceHostView'
+import RaceWalkthrough from '../race/RaceWalkthrough'
+import { guideModes } from '../race/raceGuide'
 import { laneColours } from '../race/colours'
 import '../race/race.css'
 import '../race/racePremium.css'
@@ -88,6 +90,7 @@ export default function ClassroomRace() {
         {view?.joinUrl && <a href={view.joinUrl} target="_blank" rel="noreferrer">Open on phone ↗</a>}
       </div>
     </div>
+    {view && guideModes.some(mode => mode.id === view.stageId) && <details className="cw-race-guide"><summary>ก่อนแข่ง · ดูหน้าจอและตัวอย่างคำถาม</summary>{view && <RaceWalkthrough key={`${view.stageId}:${view.questionIds?.join()}`} stageId={view.stageId} questionIds={view.questionIds}/>}</details>}
     <footer><div className="cw-race-roster"><strong>{view?.players.length ?? 0} / 10 joined</strong><ul aria-live="polite">{view?.players.map(player=><li key={player.id}><i style={{background:laneColours[player.lane]}}/>{player.name}</li>)}</ul></div>
       <button className="cw-race-go" disabled={busy || !!connection || !view?.players.length} onClick={()=>void control('start')}>{busy?'Starting…':'Go →'}</button>
     </footer>

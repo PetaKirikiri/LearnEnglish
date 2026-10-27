@@ -6,6 +6,7 @@ import { connectRaceLesson, type LessonSyncState } from './raceLessonSync'
 import RaceLessonQr from './RaceLessonQr'
 import { publicPracticeUrl } from './publicLinks'
 import TonightSlots from './TonightSlots'
+import RaceWalkthrough from './RaceWalkthrough'
 import Icon from '../ui/Icon'
 import './raceLesson.css'
 import './raceLocalDocs.css'
@@ -41,6 +42,7 @@ export default function RaceLessonPage() {
     <div className="lw-main">
       <header className="lw-toolbar"><span><Icon name="book"/>สมุดบทเรียน <span className="lw-crumb">/ {pluralLesson ? '02' : '01'}</span></span><button className="lw-share-button" onClick={() => setSharing(true)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h3v3h-3zM21 14v4m-4 3h4M12 3v2M3 12h3m6-3v4h4M9 12v3m3 3v3"/></svg>เปิดบนมือถือ</button></header>
       <div className="lw-content">
+      {!pluralLesson && <a className="lw-guide-jump" href="#race-guide">ก่อนแข่ง · หน้าจอมือถือและตัวอย่างคำถาม ↓</a>}
       <header className="lw-lesson-hero">
         <div className="lw-hero-copy"><span className="lw-lesson-meta">บทเรียน {pluralLesson ? '02' : '01'}<i/> {pluralLesson ? '27' : '26'} Oct</span><h1 lang="en">{pluralLesson ? 'Where are my…?' : 'Where is the…?'}</h1><p>{pluralLesson ? 'ของฉันอยู่ที่ไหน?' : 'อยู่ที่ไหน?'}</p><span className="lw-hero-caption">{pluralLesson ? 'จากสิ่งเดียว → หลายสิ่ง · ของฉัน → ของคุณ' : 'รูปแบบเดียว · ใช้ถามหาได้หลายที่'}</span></div>
         <div className="lw-guide"><span aria-hidden="true"/><img src="/images/fimo/success-wolf-grey-clay.png" alt=""/></div>
@@ -51,6 +53,7 @@ export default function RaceLessonPage() {
       {state.error && <p role="alert" className="rl-save-error">{state.error}</p>}
       {!state.ready ? <p role="status">กำลังเปิดบทเรียน…</p> : <DocumentEditor doc={doc} page={page} editable={editing && state.canEdit} extensions={raceLessonExtensions}/>}
       </section>
+      {!pluralLesson && <RaceWalkthrough/>}
       </div>
     </div>
     <dialog className="lw-share-dialog" ref={shareDialog} onClose={() => setSharing(false)} aria-label="เปิดบทเรียนบนมือถือ"><button className="lw-dialog-close" onClick={() => setSharing(false)} aria-label="ปิด"><Icon name="close"/></button>{sharing && <RaceLessonQr lesson={pluralLesson ? 'where-are-my' : 'where-is-the'} destination={pluralLesson ? 'lesson' : 'practice'}/>}</dialog>
