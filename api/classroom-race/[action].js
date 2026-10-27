@@ -232,6 +232,47 @@ function viewRoom(room, secret, now = Date.now()) {
   };
 }
 
+// src/race/tonightVocabulary.ts
+var tonightWords = [
+  ["hotel", "\u0E42\u0E23\u0E07\u0E41\u0E23\u0E21"],
+  ["toilet", "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E49\u0E33"],
+  ["gym", "\u0E22\u0E34\u0E21"],
+  ["padel court", "\u0E2A\u0E19\u0E32\u0E21\u0E1E\u0E32\u0E40\u0E14\u0E25"],
+  ["racket", "\u0E44\u0E21\u0E49\u0E41\u0E23\u0E47\u0E01\u0E40\u0E01\u0E15"],
+  ["phone", "\u0E42\u0E17\u0E23\u0E28\u0E31\u0E1E\u0E17\u0E4C"],
+  ["aircon", "\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E1B\u0E23\u0E31\u0E1A\u0E2D\u0E32\u0E01\u0E32\u0E28"],
+  ["fan", "\u0E1E\u0E31\u0E14\u0E25\u0E21"],
+  ["remote", "\u0E23\u0E35\u0E42\u0E21\u0E15"],
+  ["doctor", "\u0E2B\u0E21\u0E2D"],
+  ["clinic", "\u0E04\u0E25\u0E34\u0E19\u0E34\u0E01"],
+  ["school", "\u0E42\u0E23\u0E07\u0E40\u0E23\u0E35\u0E22\u0E19"],
+  ["motorbike", "\u0E23\u0E16\u0E21\u0E2D\u0E40\u0E15\u0E2D\u0E23\u0E4C\u0E44\u0E0B\u0E04\u0E4C"],
+  ["table", "\u0E42\u0E15\u0E4A\u0E30"],
+  ["chair", "\u0E40\u0E01\u0E49\u0E32\u0E2D\u0E35\u0E49"],
+  ["bank", "\u0E18\u0E19\u0E32\u0E04\u0E32\u0E23"],
+  ["bookstore", "\u0E23\u0E49\u0E32\u0E19\u0E2B\u0E19\u0E31\u0E07\u0E2A\u0E37\u0E2D"],
+  ["watch", "\u0E19\u0E32\u0E2C\u0E34\u0E01\u0E32\u0E02\u0E49\u0E2D\u0E21\u0E37\u0E2D"],
+  ["clock", "\u0E19\u0E32\u0E2C\u0E34\u0E01\u0E32"],
+  ["bedroom", "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E2D\u0E19"]
+];
+
+// src/race/tonightQuestions.ts
+var tonightMeaningQuestions = tonightWords.flatMap(([word, thai], index) => ["the", "my", "your"].map((determiner, d) => {
+  const owner = ["", "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19", "\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13"][d];
+  const correct = `${thai}${owner}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`;
+  const differentObject = `${tonightWords[(index + 1) % tonightWords.length][1]}${owner}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`;
+  const contrast = d === 0 ? `${thai}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E19\u0E35\u0E48\u0E43\u0E0A\u0E48\u0E44\u0E2B\u0E21` : `${thai}${d === 1 ? "\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13" : "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19"}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`;
+  return {
+    id: `tonight-${word}-${determiner}`,
+    english: `Where is ${determiner} ${word}?`,
+    skill: "race-tonight-slots",
+    audioUrl: "",
+    correct: 0,
+    answers: [[{ text: correct, skill: "race-tonight-slots" }], [{ text: differentObject, skill: "race-tonight-slots" }]],
+    meaningDistractor: contrast
+  };
+}));
+
 // src/portal/classOne.ts
 var classOneSkill = "class-one-everyday-questions";
 var classOneWords = [
@@ -379,7 +420,8 @@ var racePools = [
   { id: "much-many", title: "How much \xB7 How many", questions: classOneQuestions.slice(5, 7) },
   { id: "first-questions", title: "Who is this? \xB7 What is this?", questions: classOneFrameQuestions },
   { id: "where-is-the", title: "Where is the\u2026? \xB7 Correct or wrong", kind: "judgement", questions: holidayQuestions },
-  { id: "holiday-meaning", title: "Where is the\u2026? \xB7 Holiday words", kind: "meaning", questions: holidayMeaningQuestions }
+  { id: "holiday-meaning", title: "Where is the\u2026? \xB7 Holiday words", kind: "meaning", questions: holidayMeaningQuestions },
+  { id: "tonight-slots", title: "Where is \xB7 the / my / your \xB7 Tonight", kind: "meaning", questions: tonightMeaningQuestions }
 ];
 
 // server/classroomRaceCloud.ts

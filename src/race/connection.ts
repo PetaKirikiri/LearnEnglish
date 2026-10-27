@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { RaceCredential, RaceView } from './types'
 
-export const HOST_KEY = 'english-race:host'
+// Do not reuse a laptop-only room when the local UI connects to public races.
+export const HOST_KEY = import.meta.env.DEV ? 'english-race:public-host' : 'english-race:host'
 export function savedRace(key: string): RaceCredential | null {
   try {
     const value = JSON.parse(localStorage.getItem(key) ?? 'null')
@@ -14,7 +15,7 @@ export async function raceRequest<T>(path: string, credentials?: RaceCredential 
     headers: { ...(credentials ? { Authorization: `Bearer ${credentials.token}` } : {}), ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}) },
     body: body === undefined ? undefined : JSON.stringify(body), signal: AbortSignal.timeout(6000), cache: 'no-store',
   })
-  if (!(response.headers.get('content-type') ?? '').includes('application/json')) throw new Error('The classroom server is unavailable. Open this on the teacher’s laptop.')
+  if (!(response.headers.get('content-type') ?? '').includes('application/json')) throw new Error('The public race server is unavailable. Please retry.')
   const data = await response.json()
   if (!response.ok) throw new Error(data.error ?? 'Could not connect. Please try again.')
   return data as T

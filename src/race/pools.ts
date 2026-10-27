@@ -1,3 +1,4 @@
+import { tonightMeaningQuestions } from './tonightQuestions'
 import { classOneQuestions, classOneVocabularyQuestions, classOneFrameQuestions } from '../portal/classOne'
 import { holidayMeaningQuestions, holidayQuestions } from './holidayQuestions'
 import type { HotelQuestion } from '../hotel/course'
@@ -11,4 +12,5 @@ export const racePools: { id: string; title: string; kind?: 'judgement' | 'meani
   { id: 'first-questions', title: 'Who is this? · What is this?', questions: classOneFrameQuestions },
   { id: 'where-is-the', title: 'Where is the…? · Correct or wrong', kind: 'judgement', questions: holidayQuestions },
   { id: 'holiday-meaning', title: 'Where is the…? · Holiday words', kind: 'meaning', questions: holidayMeaningQuestions },
+  { id: 'tonight-slots', title: 'Where is · the / my / your · Tonight', kind: 'meaning', questions: tonightMeaningQuestions },
 ]
