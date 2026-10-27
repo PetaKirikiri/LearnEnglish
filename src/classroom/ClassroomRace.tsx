@@ -52,7 +52,7 @@ export default function ClassroomRace({ lessonId = 'lesson-1', stages }: { lesso
     if (credentials || opening.current) return
     opening.current = true
     const pool = racePools.find(pool => pool.id === (stages?.[0] ?? 'where-is-the'))!
-    void raceRequest<RaceCredential>('create', null, { stage: pool.id, questionIds: pool.questions.map(q => q.id) })
+    void raceRequest<RaceCredential>('create', null, { stage: pool.id })
       .then(remember).catch(cause => setError(cause instanceof Error ? cause.message : 'Could not open the race.'))
   }, [credentials, remember, stages])
   useEffect(() => {
@@ -71,7 +71,7 @@ export default function ClassroomRace({ lessonId = 'lesson-1', stages }: { lesso
   async function nextRace() {
     if(!credentials || !view || controlLock.current) return
     controlLock.current = true; setBusy(true); setError('')
-    try { sync(await raceRequest<RaceView>('prepare', credentials, {stage:view.stageId,questionIds:view.questionIds,run:view.run})) }
+    try { sync(await raceRequest<RaceView>('prepare', credentials, {stage:view.stageId,questionIds:stages ? undefined : view.questionIds,run:view.run})) }
     catch(cause) { setError(cause instanceof Error ? cause.message : 'Could not prepare the race.') }
     finally { controlLock.current = false; setBusy(false) }
   }
@@ -84,7 +84,7 @@ export default function ClassroomRace({ lessonId = 'lesson-1', stages }: { lesso
     const next = racePools.find(pool => pool.id === stages[number - 1])
     if (!next || controlLock.current) return
     controlLock.current=true;setBusy(true);setError('')
-    try { sync(await raceRequest<RaceView>('prepare', credentials, {stage:next.id,questionIds:next.questions.map(q=>q.id),run:view.run}));setSelectedRace(number) }
+    try { sync(await raceRequest<RaceView>('prepare', credentials, {stage:next.id,run:view.run}));setSelectedRace(number) }
     catch(cause) {setError(cause instanceof Error ? cause.message : 'Could not prepare the race.')}
     finally {controlLock.current=false;setBusy(false)}
   }
