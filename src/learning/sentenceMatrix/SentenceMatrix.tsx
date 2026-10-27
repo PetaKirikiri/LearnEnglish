@@ -5,10 +5,12 @@ import { flushSync } from 'react-dom'
 import WordExplanation, { type Determiner } from './MatrixExplanation'
 import ExampleLanguage from '../ExampleLanguage'
 import Icon from '../../ui/Icon'
+import WordTray from './WordTray'
 import WordSlotIcon from './WordSlotIcon'
 import { determiners, type MatrixLesson, type MatrixSettings } from './model'
 import { useLocationMatrix } from './useLocationMatrix'
 import '../../classroom/sentenceLine.css'
+import './wordTray.css'
 
 export type SentenceMatrixProps = { lesson: MatrixLesson; settings?: MatrixSettings; word?:string; onWord?:(word:string)=>void; audio?:ReactNode }
 export default function SentenceMatrix(props: SentenceMatrixProps) {
@@ -32,13 +34,6 @@ function MatrixInstance({lesson,settings={},word:controlledWord,onWord:notify,au
   const choicesId = useId()
   const explanationId = useId()
   const board = useRef<HTMLElement>(null)
-  const belt = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    if (active === null) return
-    const selected = belt.current?.querySelector<HTMLButtonElement>('[aria-pressed=true]')
-    selected?.focus({preventScroll:true})
-    selected?.scrollIntoView?.({block:'nearest',inline:'center'})
-  }, [active])
   const motion = useRef<ViewTransition | null>(null)
   function explain(slot: number | null) {
     motion.current?.skipTransition()
@@ -87,23 +82,13 @@ function MatrixInstance({lesson,settings={},word:controlledWord,onWord:notify,au
     return <button type="button" className="cw-slot-picker" data-picker-slot={slot} aria-label={`Change ${slot===1 ? 'is / are' : slot===2 ? 'the / my / your' : 'vocabulary'}`} aria-expanded={active===slot} aria-controls={choicesId} onClick={()=>setActive(previous=>previous===slot ? null : slot)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
   }
   const selectedWord = active===1 ? verb : active===2 ? owner : word
-  const conveyor = <div className={`cw-word-conveyor${open ? ' is-open' : ''}`} id={choicesId} hidden={!open} data-slot={active}>
-    {active===3 && <button type="button" className="cw-belt-arrow" aria-label="Previous words" onClick={()=>belt.current?.scrollBy({left:-240,behavior:'smooth'})}><Icon name="back"/></button>}
-    <div className="cw-word-belt" ref={belt} role="group" aria-label="Choose a word">
-      {choices.map(choice=><button type="button" className="cw-word-chip" key={choice.word} aria-pressed={selectedWord===choice.word} disabled={active===1 && !canChooseVerb(choice.word as 'is'|'are')} onClick={()=>{
-        if(active===1) chooseVerb(choice.word as 'is'|'are')
-        if(active===2) setOwner(choice.word as Determiner)
-        if(active===3) onWord(choice.word)
-        closeChoices()
-      }}>
-        {active===1 && <WordSlotIcon slot={1} plural={choice.word==='are'}/>}
-        {active===3 && <VocabularyPicture word={choice.word}/>}
-        <strong lang="en">{choice.word}</strong><span lang="th">{choice.thai}</span>
-      </button>)}
-    </div>
-    {active===3 && <button type="button" className="cw-belt-arrow" aria-label="Next words" onClick={()=>belt.current?.scrollBy({left:240,behavior:'smooth'})}><Icon name="arrow"/></button>}
-    <button type="button" className="cw-belt-close" aria-label="Close word picker" onClick={closeChoices}><Icon name="close"/></button>
-  </div>
+  const conveyor = <WordTray id={choicesId} active={open ? active : null} choices={choices} selected={selectedWord} canChoose={value=>active!==1 || canChooseVerb(value as 'is'|'are')} onClose={closeChoices} onChoose={value=>{
+    if(active===1) chooseVerb(value as 'is'|'are')
+    if(active===2) setOwner(value as Determiner)
+    if(active===3) onWord(value)
+    closeChoices()
+  }}/>
+
   return <section ref={board} className="cw-sentence-board" data-long-word={word.length > 8 || undefined} aria-label={`Where ${verb} ${owner} ${word}?`} onKeyDown={event => {
     if (event.key === 'Escape' && open) { event.stopPropagation(); closeChoices() }
   }}>
