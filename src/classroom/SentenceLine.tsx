@@ -1,3 +1,4 @@
+import VocabularyPicture from '../learning/VocabularyPicture'
 import { t } from './language'
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { flushSync } from 'react-dom'
@@ -80,7 +81,7 @@ export default function SentenceLine({ word, onWord, audio, catalogue = lessonOn
         { english: verb, thai: 'อยู่' },
         { english: owner, thai: ownerThai },
         { english: `${word}?`, thai: item.thai },
-      ]} slotDetails={[{label:'Question',count:1,icon:<WordSlotIcon slot={0}/>},{label:'Tense · now',count:pluralLesson ? 2 : 1,icon:<WordSlotIcon slot={1}/>},{label:'Which / whose',count:3,icon:<WordSlotIcon slot={2}/>},{label:'Person / thing',count:catalogue.length,icon:<WordSlotIcon slot={3} plural={item.number==='plural'}/>}]}
+      ]} slotDetails={[{label:'Question',count:1,icon:<WordSlotIcon slot={0}/>},{label:'Tense · now',count:pluralLesson ? 2 : 1,icon:<WordSlotIcon slot={1}/>},{label:'Which / whose',count:3,icon:<WordSlotIcon slot={2}/>},{label:'Person / thing',count:catalogue.length,icon:pluralLesson ? <WordSlotIcon slot={3} plural={item.number==='plural'}/> : <VocabularyPicture word={word}/>}]}
       translationControl={pluralLesson ? <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={async()=>{if(recording.current){recording.current.src=lessonTwoAudio(word,owner,verb);setAudioError(false);try{await recording.current.play()}catch{setAudioError(true)}}}}><Icon name="sound"/></button> : owner === 'the' ? audio : <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={() => {
         window.speechSynthesis.cancel()
         const speech = new SpeechSynthesisUtterance(`Where ${verb} ${owner} ${word}?`)
@@ -100,7 +101,7 @@ export default function SentenceLine({ word, onWord, audio, catalogue = lessonOn
         <section className="cw-vocabulary" aria-labelledby={`${choicesId}-title`}>
           <header><h2 id={`${choicesId}-title`} lang="th">{['Question', 'Tense · present singular', 'the / my / your', 'Vocabulary'][active ?? 3]}</h2><button type="button" aria-label="ปิดคำศัพท์" onClick={closeChoices}><Icon name="close"/></button></header>
           <div className="cw-vocabulary-options" role="group" aria-label="คำศัพท์">
-            {choices.map(choice => <button type="button" key={choice.word} aria-pressed={(active === 2 ? owner : active === 0 ? 'Where' : active === 1 ? 'is' : word) === choice.word} onClick={() => { if(active === 2) setOwner(choice.word as Determiner); if(active === 3) onWord(choice.word) }}><strong lang="en">{choice.word}</strong><span lang="th">{choice.thai}</span>{(active === 2 ? owner : active === 0 ? 'Where' : active === 1 ? 'is' : word) === choice.word && <Icon name="check"/>}</button>)}
+            {choices.map(choice => <button type="button" key={choice.word} aria-pressed={(active === 2 ? owner : active === 0 ? 'Where' : active === 1 ? 'is' : word) === choice.word} onClick={() => { if(active === 2) setOwner(choice.word as Determiner); if(active === 3) onWord(choice.word) }}>{active===3 && <VocabularyPicture word={choice.word}/>}<strong lang="en">{choice.word}</strong><span lang="th">{choice.thai}</span>{(active === 2 ? owner : active === 0 ? 'Where' : active === 1 ? 'is' : word) === choice.word && <Icon name="check"/>}</button>)}
           </div>
         </section>
       </div>

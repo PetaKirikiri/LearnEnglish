@@ -13,3 +13,8 @@ it('limits stale extrapolation and stops at the boundary, countdown and finish',
   expect(movingPlayers({...view,phase:'finished'},1500)[0].metres).toBe(100)
   expect(movingPlayers({...view,opensAt:2000,motionAt:2000},1500)[0].metres).toBe(100)
 })
+it('uses the same ramp as the server for the actual speed readout and position',()=>{
+  const ramp={...view,players:[{...view.players[0],speed:10,targetSpeed:20,accelerationRemainingMs:1000}]}
+  expect(movingPlayers(ramp,1500)[0]).toMatchObject({speed:15,metres:106.25,accelerationRemainingMs:500})
+  expect(ramp.players[0].speed).toBe(10)
+})

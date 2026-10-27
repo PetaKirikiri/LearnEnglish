@@ -1,3 +1,4 @@
+import { tonightWords } from '../race/tonightVocabulary'
 import type { ReactNode } from 'react'
 import './vocabularyPicture.css'
 
@@ -29,6 +30,7 @@ const pluralForms: Record<string, string> = { shoes:'shoe', keys:'key', socks:'s
 export default function VocabularyPicture({ word, count }: { word: string; count?: number }) {
   const normalized = word.toLowerCase().replace(/[?!.,]/g, '').trim()
   const name = pluralForms[normalized] ?? normalized
+  if (tonightWords.some(([word]) => word === normalized)) return <img className="vocabulary-picture vocabulary-picture-rendered" src={`/classroom/icons/level-one/${normalized.replaceAll(' ', '-')}.png`} alt="" aria-hidden="true"/>
   if (!drawings[name]) return null
   const copies = count ?? (pluralForms[normalized] ? 2 : 1)
   return <span className="vocabulary-picture" data-word={name} aria-hidden="true">{Array.from({length:copies}, (_,index) => <svg key={index} viewBox="0 0 64 64" fill="none" stroke="#4b625e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{drawings[name]}</svg>)}</span>

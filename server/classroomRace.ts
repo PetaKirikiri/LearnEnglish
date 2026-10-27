@@ -1,16 +1,17 @@
 import { randomBytes, randomInt } from 'node:crypto'
 import type { RacePhase, RaceView } from '../src/race/types'
-import { FINISH, MIN_SPEED, START_DELAY_MS, WINDOW_MS, speedFor } from '../src/race/rules'
+import { FINISH, START_DELAY_MS, WINDOW_MS, racePositions, roundResult } from '../src/race/rules'
+import { motionAfter, secondsToFinish, type RaceMotion } from '../src/race/kinematics'
 import { meaningChoices } from '../src/race/meaningChoices'
 export { FINISH, WINDOW_MS, speedFor } from '../src/race/rules'
 
 export type RaceQuestion = { id: string; english: string; audioUrl: string; choices: string[]; correct: number; meaningDistractor?: string }
 export type RaceStage = { id: string; title: string; kind?: 'judgement' | 'meaning'; questions: RaceQuestion[] }
-type Player = { id: string; token: string; name: string; lane: number; metres: number; speed: number; streak?: number }
+type Player = RaceMotion & { id: string; token: string; name: string; lane: number; streak?: number }
 type Answer = { choice: number; at: number }
 export type Room = {
   version: 2; id: string; host: string; createdAt: number; title: string; phase: RacePhase; players: Player[];
-  run?: number; stageId?: string;
+  run?: number; stageId?: string; completedRound?: number;
   pool: RaceQuestion[]; deck: RaceQuestion[]; round: number; opensAt: number; closesAt: number;
   updatedAt: number; answers: Record<string, Answer>; kind?: RaceStage['kind'];
 }
@@ -89,6 +90,7 @@ export function prepareRace(room: Room, secret: string, stage: RaceStage, run: n
   room.kind = stage.kind
   room.pool = stage.questions.map(q => ({ ...q, choices: [...q.choices] }))
   room.deck = []
+  delete room.completedRound
   room.round = -1
   room.phase = 'lobby'
   room.answers = {}
@@ -97,7 +99,9 @@ export function prepareRace(room: Room, secret: string, stage: RaceStage, run: n
   room.updatedAt = now
   for (const player of room.players) {
     player.metres = 0
-    player.speed = MIN_SPEED
+    player.speed = 0
+    player.targetSpeed = 0
+    player.accelerationRemainingMs = 0
     player.streak = 0
   }
 }
@@ -110,9 +114,22 @@ export function joinRoom(room: Room, name: string, playerToken: string): Player 
   requireThat(clean.length > 0 && clean.length <= 24 && !/[\p{Cc}\p{Cf}]/u.test(clean), 'Enter a name of 1–24 characters.')
   requireThat(!room.players.some(p => p.name.toLocaleLowerCase() === clean.toLocaleLowerCase()), 'That name is taken. Add your initial.')
   requireThat(/^[a-f0-9]{48}$/.test(playerToken), 'Please reload and join again.')
-  const player = { id: randomBytes(8).toString('hex'), token: playerToken, name: clean, lane: room.players.length, metres: 0, speed: MIN_SPEED }
+  const player = { id: randomBytes(8).toString('hex'), token: playerToken, name: clean, lane: room.players.length, metres: 0, speed: 0, targetSpeed: 0, accelerationRemainingMs: 0 }
   room.players.push(player)
   return player
+}
+// Resolve everybody against the same closing instant, after movement at the old
+// speeds has been integrated. Arrival time affects the gain, never its start time.
+function settleRound(room: Room, at: number) {
+  const positions = racePositions(room.players)
+  for (const [index, player] of room.players.entries()) {
+    const answer = room.answers[player.id]
+    const correct = !!answer && answer.choice === room.deck[room.round].correct
+    Object.assign(player, roundResult(player, correct, answer ? answer.at - room.opensAt : WINDOW_MS, positions[index], room.players.length))
+  }
+  room.opensAt = at
+  room.closesAt = at + WINDOW_MS
+  nextQuestion(room)
 }
 // Integrate actual speed over elapsed time, splitting at every question boundary.
 // Persisted timestamps let a delayed poll/restart catch up without losing distance.
@@ -122,22 +139,19 @@ export function advanceRace(room: Room, now = Date.now()): boolean {
   while (room.phase === 'answering' && now > room.updatedAt) {
     const until = Math.min(now, room.closesAt)
     const duration = (until - room.updatedAt) / 1000
-    const toFinish = Math.min(...room.players.map(p => Math.max(0, FINISH - p.metres) / p.speed))
+    const toFinish = Math.min(...room.players.map(p => secondsToFinish(p, FINISH)))
     const elapsed = Math.min(duration, toFinish)
-    for (const p of room.players) p.metres = Math.min(FINISH, p.metres + p.speed * elapsed)
+    for (const p of room.players) Object.assign(p, motionAfter(p, elapsed))
     room.updatedAt += elapsed * 1000
     changed = true
     if (toFinish <= duration + 1e-9) {
       for (const p of room.players) if (p.metres >= FINISH - 1e-8) p.metres = FINISH
       room.phase = 'finished'; break
     }
-    // The closing instant belongs to this question: a tap exactly at 5s
-    // receives the minimum correct speed. Roll over strictly after it.
+    // The closing instant belongs to this question: a tap exactly at 10s
+    // receives a zero boost. Roll over strictly after it.
     if (until >= room.closesAt && now > room.closesAt) {
-      for (const p of room.players) if (!room.answers[p.id]) { p.speed = MIN_SPEED; p.streak = 0 }
-      room.opensAt = room.closesAt
-      room.closesAt += WINDOW_MS
-      nextQuestion(room)
+      settleRound(room, room.closesAt)
     }
   }
   return changed
@@ -162,20 +176,27 @@ export function answer(room: Room, secret: string, round: number, choice: number
   requireThat(player, 'Join the race first.')
   requireRun(room, run)
   advanceRace(room, now)
+  // The final tap can be retried after its response was lost. The whole
+  // previous round was accepted, so acknowledge it without applying it twice.
+  if (round === room.completedRound && round === room.round - 1) return
   requireThat(round === room.round, 'That question has finished.')
   if (room.answers[player.id]) return // Idempotent first tap; never change speed twice.
   requireThat(room.phase === 'answering' && now >= room.opensAt && now <= room.closesAt, 'The answer window is closed.')
   requireThat(choice === 0 || choice === 1, 'Choose one answer.')
   room.answers[player.id] = { choice, at: now }
-  player.streak = choice === room.deck[room.round].correct ? (player.streak ?? 0) + 1 : 0
-  player.speed = speedFor(choice === room.deck[room.round].correct, now - room.opensAt, player.streak)
+  if (room.players.every(p => room.answers[p.id])) {
+    room.completedRound = room.round
+    // Concurrent requests can commit out of arrival order; never rewind motion.
+    const nextAt = Math.max(now, room.updatedAt)
+    settleRound(room, nextAt)
+  }
 }
 export function viewRoom(room: Room, secret: string, now = Date.now()): RaceView {
   const host = secret === room.host, me = room.players.find(p => p.token === secret)
   const q = room.deck[room.round]
   return { id: room.id, run: room.run ?? 1, stageId: room.stageId ?? '', title: room.title, phase: room.phase, round: room.round, finish: FINISH, serverNow: now,
     opensAt: room.opensAt, closesAt: room.closesAt, motionAt: room.updatedAt,
-    players: room.players.map(p => ({ id: p.id, name: p.name, lane: p.lane, metres: p.metres, speed: p.speed, answered: !!room.answers[p.id], streak: p.streak ?? 0 })),
+    players: room.players.map(p => ({ id: p.id, name: p.name, lane: p.lane, metres: p.metres, speed: p.speed, targetSpeed: p.targetSpeed ?? p.speed, accelerationRemainingMs: p.accelerationRemainingMs ?? 0, answered: !!room.answers[p.id], streak: p.streak ?? 0 })),
     ...(q ? { question: { id: `${room.round}`, choices: q.choices, ...(host ? { english: q.english, audioUrl: q.audioUrl } : {}) } } : {}),
     ...(host ? { questionIds: room.pool.map(question => question.id) } : {}),
     ...(me ? { me: { id: me.id, choice: room.answers[me.id]?.choice } } : {}) }

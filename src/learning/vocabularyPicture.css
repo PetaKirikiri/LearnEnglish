@@ -5,3 +5,5 @@
 .rl-vocabulary button .vocabulary-picture { min-height:58px; width:100%; }
 .rl-number-picture { display:flex; justify-content:center; margin:0 0 16px; }
 .rl-number-picture .vocabulary-picture svg { width:76px; height:76px; flex-basis:76px; }
+
+.vocabulary-picture-rendered{display:block;width:88px;height:88px;object-fit:contain;margin:0 auto 8px;flex-shrink:0}

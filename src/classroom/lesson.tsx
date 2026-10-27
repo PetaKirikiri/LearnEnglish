@@ -1,12 +1,12 @@
-import { lessonTwoCatalogue } from './wordCatalogue'
+import { lessonOneCatalogue, lessonTwoCatalogue } from './wordCatalogue'
 import { lessonTwoStages } from './lessonTwoContent'
 import { LanguageSwitch } from './LanguageSwitch'
 import { useLanguage, t } from './language'
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import ExampleLanguage from '../learning/ExampleLanguage'
-import { QuestionExample } from '../race/RaceLessonExamples'
-import { holidayVocabulary, type HolidayWord } from '../race/holidayVocabulary'
+type HolidayWord = string
+const holidayVocabulary = lessonOneCatalogue
 import Icon from '../ui/Icon'
 import SentenceLine from './SentenceLine'
 import ClassroomRace from './ClassroomRace'
@@ -25,12 +25,13 @@ function PanelHeader({ page, action, lessonTwo = false }: { page: LessonPage; ac
   return <header className="cw-panel-header"><span className="cw-panel-lesson">{t(lessonTwo ? 'Lesson 02' : 'Lesson 01')}</span><div className="cw-panel-header-main"><h1 id="note-title">{t(lessonTitles[page])}</h1>{action}</div></header>
 }
 
-function Sound({ src, label = 'ฟังประโยค', onPlayed }: { src: string; label?: string; onPlayed?: () => void }) {
+function Sound({ src, english, label = 'ฟังประโยค', onPlayed }: { src: string; english?:string; label?: string; onPlayed?: () => void }) {
   const audio = useRef<HTMLAudioElement>(null)
   const [error, setError] = useState(false)
   const [playing, setPlaying] = useState(false)
   useEffect(() => { const player = audio.current; return () => { player?.pause() } }, [])
   async function play() {
+    if (!src && english) { window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(english); utterance.lang='en-GB'; utterance.rate=.85; window.speechSynthesis.speak(utterance); return }
     const player = audio.current
     if (!player) return
     player.currentTime = 0; setError(false)
@@ -40,26 +41,26 @@ function Sound({ src, label = 'ฟังประโยค', onPlayed }: { src: 
 }
 
 function Recall({ word, onWord }: { word: HolidayWord; onWord: (word: HolidayWord) => void }) {
-  return <div className="cw-sentence-panel"><PanelHeader page="recall"/><div className="cw-sentence-workspace"><SentenceLine word={word} onWord={value=>onWord(value as HolidayWord)} audio={<Sound key={word} src={`/audio/race-holiday/${word}-complete.wav`}/>}/></div></div>
+  return <div className="cw-sentence-panel"><PanelHeader page="recall"/><div className="cw-sentence-workspace"><SentenceLine word={word} onWord={value=>onWord(value as HolidayWord)} audio={<Sound key={word} src="" english={`Where is the ${word}?`}/>}/></div></div>
 }
 
 function Meaning({ word, onWord }: { word: HolidayWord; onWord: (word: HolidayWord) => void }) {
-  return <div className="cw-sentence-panel"><PanelHeader page="idea"/><div className="cw-sentence-workspace"><SentenceLine word={word} onWord={value=>onWord(value as HolidayWord)} audio={<Sound key={word} src={`/audio/race-holiday/${word}-complete.wav`}/>}/></div></div>
+  return <div className="cw-sentence-panel"><PanelHeader page="idea"/><div className="cw-sentence-workspace"><SentenceLine word={word} onWord={value=>onWord(value as HolidayWord)} audio={<Sound key={word} src="" english={`Where is the ${word}?`}/>}/></div></div>
 }
 
 function WorkedExample({ word, onWord }: { word: HolidayWord; onWord: (word: HolidayWord) => void }) {
-  return <div className="cw-sentence-panel"><PanelHeader page="example"/><div className="cw-sentence-workspace"><SentenceLine word={word} onWord={value=>onWord(value as HolidayWord)} audio={<Sound key={word} src={`/audio/race-holiday/${word}-complete.wav`}/>}/></div></div>
+  return <div className="cw-sentence-panel"><PanelHeader page="example"/><div className="cw-sentence-workspace"><SentenceLine word={word} onWord={value=>onWord(value as HolidayWord)} audio={<Sound key={word} src="" english={`Where is the ${word}?`}/>}/></div></div>
 }
 
 function Mistake({ word }: { word: HolidayWord }) {
   const [missing, setMissing] = useState<'complete' | 'missing-is' | 'missing-the'>('missing-is')
   const item = holidayVocabulary.find(item => item.word === word)!
   const units = [{ english: 'Where', thai: 'ที่ไหน' }, { english: 'is', thai: 'อยู่' }, { english: 'the', thai: 'ที่กำลังพูดถึง' }, { english: `${word}?`, thai: item.thai }].filter(unit => !((missing === 'missing-is' && unit.english === 'is') || (missing === 'missing-the' && unit.english === 'the')))
-  return <><Heading page="mistake">{t('ในรูปแบบนี้ ต้องมีทั้ง')} <span lang="en">is</span> {t('และ')} <span lang="en">the</span></Heading><div className={`cw-centre cw-${missing}`}><ExampleLanguage matrix english={units.map(unit => unit.english).join(' ')} thai={`${item.thai}อยู่ที่ไหน`} units={units}/><Sound key={`${word}-${missing}`} src={`/audio/race-holiday/${word}-${missing}.wav`}/><p className={`cw-pattern-feedback ${missing === 'complete' ? 'is-complete' : ''}`} role="status">{missing === 'complete' ? t('✓ ครบทั้งสี่ส่วน') : `${t('ยังขาด')} ${missing === 'missing-is' ? 'is' : 'the'}`}</p></div><div className="cw-segments" aria-label={t('เปรียบเทียบรูปแบบ')}>{(['complete', 'missing-is', 'missing-the'] as const).map(variant => <button key={variant} aria-pressed={missing === variant} onClick={() => setMissing(variant)}>{variant === 'complete' ? t('ครบทุกคำ') : `${t('ไม่มี')} ${variant === 'missing-is' ? 'is' : 'the'}`}</button>)}</div></>
+  return <><Heading page="mistake">{t('ในรูปแบบนี้ ต้องมีทั้ง')} <span lang="en">is</span> {t('และ')} <span lang="en">the</span></Heading><div className={`cw-centre cw-${missing}`}><ExampleLanguage matrix english={units.map(unit => unit.english).join(' ')} thai={`${item.thai}อยู่ที่ไหน`} units={units}/><Sound key={`${word}-${missing}`} src="" english={units.map(unit => unit.english).join(' ')}/><p className={`cw-pattern-feedback ${missing === 'complete' ? 'is-complete' : ''}`} role="status">{missing === 'complete' ? t('✓ ครบทั้งสี่ส่วน') : `${t('ยังขาด')} ${missing === 'missing-is' ? 'is' : 'the'}`}</p></div><div className="cw-segments" aria-label={t('เปรียบเทียบรูปแบบ')}>{(['complete', 'missing-is', 'missing-the'] as const).map(variant => <button key={variant} aria-pressed={missing === variant} onClick={() => setMissing(variant)}>{variant === 'complete' ? t('ครบทุกคำ') : `${t('ไม่มี')} ${variant === 'missing-is' ? 'is' : 'the'}`}</button>)}</div></>
 }
 
 function Review({ word }: { word: HolidayWord }) {
-  return <><Heading page="review">{t('จำรูปแบบ แล้วเปลี่ยนแค่คำท้าย')}</Heading><div className="cw-centre"><QuestionExample word={word}/><div className="cw-takeaways"><p><strong lang="en">Where</strong><span>{t('ถามว่าที่ไหน')}</span></p><p><strong lang="en">is the</strong><span>{t('เก็บสองคำนี้ไว้')}</span></p><p><strong lang="en">{word}</strong><span>{t('เปลี่ยนสิ่งที่ถามหา')}</span></p></div></div><a className="cw-race-entry" href="/english/race"><Icon name="flag"/><span>{t('เข้าห้องแข่ง')}</span><Icon name="arrow"/></a></>
+  return <><Heading page="review">{t('จำรูปแบบ แล้วเปลี่ยนแค่คำท้าย')}</Heading><div className="cw-centre"><SentenceLine word={word} onWord={()=>{}} audio={<Sound src="" english={`Where is the ${word}?`}/>}/><div className="cw-takeaways"><p><strong lang="en">Where</strong><span>{t('ถามว่าที่ไหน')}</span></p><p><strong lang="en">is the</strong><span>{t('เก็บสองคำนี้ไว้')}</span></p><p><strong lang="en">{word}</strong><span>{t('เปลี่ยนสิ่งที่ถามหา')}</span></p></div></div><a className="cw-race-entry" href="/english/race"><Icon name="flag"/><span>{t('เข้าห้องแข่ง')}</span><Icon name="arrow"/></a></>
 }
 
 export default function Lesson({ page, lessonId = 'lesson-1' }: { page: LessonPage; lessonId?:string }) {

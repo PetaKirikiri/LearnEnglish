@@ -1,7 +1,7 @@
-import { wordChoices } from './lessonOne'
+import { tonightWords } from '../race/tonightVocabulary'
 import { lessonTwoWords, lessonTwoPairs } from './lessonTwoContent'
 export type ClassroomWord = { word:string; thai:string; singular?:string; plural?:string; number?:'singular'|'plural'; pairOnly?:boolean }
-export const lessonOneCatalogue: readonly ClassroomWord[] = wordChoices
+export const lessonOneCatalogue: readonly ClassroomWord[] = tonightWords.map(([word, thai]) => ({ word, thai }))
 export const lessonTwoCatalogue: readonly ClassroomWord[] = [
   ...lessonTwoWords.flatMap(item=>[
     {word:item.singular,thai:item.thai,singular:item.singular,plural:item.plural,number:'singular' as const},

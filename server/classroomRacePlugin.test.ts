@@ -69,10 +69,10 @@ it('scores fractional arrival times even when processing is held beyond the dead
     const responses = await Promise.all([first.result, second.result])
     responses.forEach(response => expect(response.status).toBe(200))
     const saved = JSON.parse(await readFile(file, 'utf8')) as Room
-    expect(saved.round).toBe(0)
-    expect(saved.players[0].speed).toBeCloseTo(speedFor(true, 1234.5), 10)
-    expect(saved.players[1].speed).toBeCloseTo(speedFor(true, 1234.75), 10)
-    expect(saved.players[0].speed).toBeGreaterThan(saved.players[1].speed)
+    expect(saved.round).toBe(1)
+    expect(saved.players[0].targetSpeed).toBeCloseTo(speedFor(true, 1234.5), 10)
+    expect(saved.players[1].targetSpeed).toBeCloseTo(speedFor(true, 1234.75), 10)
+    expect(saved.players[0].targetSpeed).toBeGreaterThan(saved.players[1].targetSpeed)
     expect(saved.updatedAt).toBe(room.opensAt + 1234.75)
   } finally {
     server.closeAllConnections()
@@ -140,7 +140,7 @@ it('filters host content, preserves the classroom roster and rejects stale or un
     const prepared = await api('prepare', { run: 1, stage: 'who-what' }, host, room)
     expect(prepared.status).toBe(200)
     expect(prepared.data).toMatchObject({ id: room, run: 2, stageId: 'who-what', phase: 'lobby', round: -1 })
-    expect(prepared.data.players).toEqual([{ id: playerId, name: 'Learner', lane: 0, metres: 0, speed: 4, streak: 0, answered: false }])
+    expect(prepared.data.players).toEqual([{ id: playerId, name: 'Learner', lane: 0, metres: 0, speed: 0, targetSpeed: 0, accelerationRemainingMs: 0, streak: 0, answered: false }])
     expect(prepared.data.questionIds).toEqual(racePools.find(pool => pool.id === 'who-what')!.questions.map(q => q.id))
     const beforeStale = await readFile(file, 'utf8')
     for (const [path, body] of [
@@ -160,7 +160,7 @@ it('filters host content, preserves the classroom roster and rejects stale or un
     time = secondRace.opensAt + .125
     const answered = await api('answer', { run: 2, round: 0, choice: secondRace.deck[0].correct }, playerToken, room)
     expect(answered.status).toBe(200)
-    expect(answered.data.players[0].speed).toBeCloseTo(speedFor(true, .125), 10)
+    expect(answered.data.players[0].targetSpeed).toBeCloseTo(speedFor(true, .125), 10)
     expect(answered.data.questionIds).toBeUndefined()
     expect(answered.data.question?.english).toBeUndefined()
 

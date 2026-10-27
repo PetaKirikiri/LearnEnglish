@@ -1,7 +1,39 @@
-.cartoon-horse{display:inline-block;position:relative;width:180px;height:116px;flex:0 0 180px;isolation:isolate}
-.cartoon-horse-frames{position:absolute;inset:0;background-image:url('/images/race/cartoon-gallop-v2.png');background-size:400% 200%;background-repeat:no-repeat;animation:cartoon-gallop var(--gallop-duration,.8s) steps(1,end) infinite}
-.cartoon-horse.is-powered .cartoon-horse-frames{background-image:url('/images/race/cartoon-golden-gallop-v2.png');filter:drop-shadow(0 0 5px #ffca45)}
-.cartoon-horse.is-paused .cartoon-horse-frames{animation-play-state:paused}
-@keyframes cartoon-gallop{0%{background-position:0 0}12.5%{background-position:33.3333% 0}25%{background-position:66.6667% 0}37.5%{background-position:100% 0}50%{background-position:0 100%}62.5%{background-position:33.3333% 100%}75%{background-position:66.6667% 100%}87.5%{background-position:100% 100%}}
-@media(prefers-reduced-motion:reduce){.cartoon-horse-frames{animation:none}}
-@media(max-width:360px){.cartoon-horse{width:150px;flex-basis:150px;height:100px}}
+.cartoon-horse{display:inline-block;position:relative;width:180px;height:138px;flex:0 0 180px;isolation:isolate}
+.cartoon-horse>svg{display:block;width:100%;height:100%;overflow:visible}
+.cartoon-horse-frame{opacity:0;animation:cartoon-gallop-frame var(--gallop-duration,.8s) steps(1,end) infinite;animation-delay:calc(var(--gallop-duration,.8s) * var(--frame-delay))}
+.cartoon-horse.is-paused .cartoon-horse-frame{animation-play-state:paused}
+@keyframes cartoon-gallop-frame{0%{opacity:1}12.5%,100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.cartoon-horse-frame{animation:none;opacity:0}.cartoon-horse-frame:first-of-type{opacity:1}}
+/* Energy is behind the silhouette; only the aura grows, never the race hitbox. */
+.cartoon-energy { position:absolute; inset:12% 3% 10%; z-index:-1; pointer-events:none; }
+.cartoon-energy-halo { position:absolute; inset:-8% -8%; border-radius:50%; background:radial-gradient(ellipse,#fff9a878 8%,#ffe93e66 30%,#ffc21b36 52%,transparent 72%); transform:scale(var(--aura-scale,1)); }
+.cartoon-horse[data-charge="3"] .cartoon-energy-halo,
+.cartoon-horse[data-charge="4"] .cartoon-energy-halo { animation:cartoon-charge var(--charge-duration) ease-in-out infinite; }
+.cartoon-horse[data-charge="3"] .cartoon-horse-art,
+.cartoon-horse[data-charge="4"] .cartoon-horse-art { animation:cartoon-charge-edge var(--charge-duration) ease-in-out infinite; }
+.cartoon-horse.is-powered .cartoon-energy-halo { animation:cartoon-energy-breathe var(--energy-duration) ease-in-out infinite alternate; }
+.cartoon-energy-wake { position:absolute; right:36%; top:10%; width:95%; height:75%; transform-origin:right center; background:linear-gradient(90deg,transparent,#ffbc2238 30%,#ffe35b99 75%,#fff4b9cc); clip-path:polygon(100% 18%,80% 0,58% 25%,18% 12%,38% 43%,0 52%,39% 65%,12% 91%,64% 79%,82% 100%,100% 80%); animation:cartoon-wake var(--energy-duration) ease-in-out infinite alternate; }
+.cartoon-energy-sparks { position:absolute; inset:0; }
+.cartoon-energy-sparks>i { position:absolute; left:65%; top:calc(12% + var(--spark) * 13%); width:5%; height:3%; border-radius:50%; background:#fff5a0; box-shadow:0 0 3px #ffcf22; animation:cartoon-spark var(--energy-duration) linear infinite; animation-delay:calc(var(--spark) * var(--energy-duration) / -6); }
+/* One expanding impact ring, flame rays and a warm core on the 4 -> 5 transition. */
+.cartoon-transform { position:absolute; inset:4% 0 0; pointer-events:none; z-index:2; animation:cartoon-transform-lifetime .85s linear both; }
+.cartoon-transform>i { position:absolute; inset:0; border:3px solid #ffe351; border-radius:50%; box-shadow:0 0 8px #ffe04d,inset 0 0 7px #fff0a2; animation:cartoon-transform-ring .85s ease-out both; }
+.cartoon-transform>b { position:absolute; inset:0; border-radius:50%; background:radial-gradient(ellipse,#fffacd 0%,#ffe75f88 24%,#ffbd2322 50%,transparent 70%); animation:cartoon-transform-core .85s ease-out both; }
+.cartoon-transform>span { position:absolute; left:48%; top:48%; width:5%; height:36%; border-radius:80% 80% 30% 30%; background:linear-gradient(#fff9a6,#ffce2677,transparent); transform-origin:50% 0; animation:cartoon-transform-ray .85s ease-out both; }
+@keyframes cartoon-charge { 0%,60%,100%{opacity:0} 76%{opacity:.9} 88%{opacity:.16} }
+@keyframes cartoon-charge-edge { 0%,60%,100%{filter:none} 76%{filter:drop-shadow(0 0 4px #ffdf43) brightness(1.12)} 88%{filter:drop-shadow(0 0 1px #ffe878)} }
+@keyframes cartoon-energy-breathe { from{opacity:.65;transform:scale(var(--aura-scale))} to{opacity:.92;transform:scale(calc(var(--aura-scale) * 1.07))} }
+@keyframes cartoon-wake { from{transform:scaleX(var(--wake-scale)) scaleY(.88);opacity:.65} to{transform:scaleX(calc(var(--wake-scale) * 1.12)) scaleY(1.04);opacity:.9} }
+@keyframes cartoon-spark { from{transform:translate(0,0);opacity:0} 20%{opacity:.9} to{transform:translate(calc(-2600% * var(--wake-scale)),-100%);opacity:0} }
+@keyframes cartoon-transform-lifetime { from{visibility:visible} to{visibility:visible} }
+@keyframes cartoon-transform-ring { 0%{transform:scale(.3);opacity:0} 12%{opacity:1} 100%{transform:scale(1.9);opacity:0} }
+@keyframes cartoon-transform-core { 0%{transform:scale(.3);opacity:0} 20%{transform:scale(1);opacity:.9} 100%{transform:scale(1.6);opacity:0} }
+@keyframes cartoon-transform-ray { 0%{transform:rotate(calc(var(--ray) * 45deg)) scaleY(.2);opacity:0} 18%{opacity:1} 100%{transform:rotate(calc(var(--ray) * 45deg)) translateY(95%) scaleY(.3);opacity:0} }
+.cartoon-horse.is-paused .cartoon-energy *, .cartoon-horse.is-paused .cartoon-transform,
+.cartoon-horse.is-paused .cartoon-transform *, .cartoon-horse.is-paused .cartoon-horse-art { animation-play-state:paused; }
+@media(prefers-reduced-motion:reduce) {
+ .cartoon-horse .cartoon-energy *, .cartoon-horse .cartoon-horse-art { animation:none!important; }
+ .cartoon-horse .cartoon-transform,.cartoon-horse .cartoon-energy-sparks { display:none; }
+ .cartoon-horse .cartoon-energy-halo { opacity:.55; }
+ .cartoon-horse .cartoon-energy-wake { transform:scaleX(var(--wake-scale)); opacity:.4; }
+}

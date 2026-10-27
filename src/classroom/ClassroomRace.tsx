@@ -1,5 +1,5 @@
 import { t } from './language'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import QRCode from 'qrcode'
 import { HOST_KEY, raceRequest, useRaceConnection } from '../race/connection'
@@ -7,7 +7,8 @@ import type { RaceCredential, RaceView } from '../race/types'
 import { racePools } from '../race/pools'
 import { movingPlayers } from '../race/motion'
 import RaceHostView from '../race/RaceHostView'
-import { WINDOW_MS } from '../race/rules'
+import { WINDOW_MS, MAX_SPEED, speedFor } from '../race/rules'
+import CartoonHorse from '../race/CartoonHorse'
 import { laneColours } from '../race/colours'
 import '../race/race.css'
 import '../race/racePremium.css'
@@ -32,6 +33,7 @@ export default function ClassroomRace({ lessonId = 'lesson-1', stages }: { lesso
   }, [selectedRace])
   const { credentials, view, now, connection, remember, sync, forget } = useRaceConnection(lessonTwo ? `${HOST_KEY}:lesson-2` : HOST_KEY)
   const [qr, setQr] = useState('')
+  const [showJoin, setShowJoin] = useState(false)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   const opening = useRef(false)
@@ -51,7 +53,7 @@ export default function ClassroomRace({ lessonId = 'lesson-1', stages }: { lesso
   useEffect(() => {
     if (credentials || opening.current) return
     opening.current = true
-    const pool = racePools.find(pool => pool.id === (stages?.[0] ?? 'where-is-the'))!
+    const pool = racePools.find(pool => pool.id === (stages?.[0] ?? 'class-one-judgement'))!
     void raceRequest<RaceCredential>('create', null, { stage: pool.id })
       .then(remember).catch(cause => setError(cause instanceof Error ? cause.message : 'Could not open the race.'))
   }, [credentials, remember, stages])
@@ -71,25 +73,36 @@ export default function ClassroomRace({ lessonId = 'lesson-1', stages }: { lesso
   async function nextRace() {
     if(!credentials || !view || controlLock.current) return
     controlLock.current = true; setBusy(true); setError('')
-    try { sync(await raceRequest<RaceView>('prepare', credentials, {stage:view.stageId,questionIds:stages ? undefined : view.questionIds,run:view.run})) }
+    try { sync(await raceRequest<RaceView>('prepare', credentials, {stage:view.stageId,run:view.run})) }
     catch(cause) { setError(cause instanceof Error ? cause.message : 'Could not prepare the race.') }
     finally { controlLock.current = false; setBusy(false) }
   }
-  const pool = racePools.find(pool => pool.id === (view?.stageId ?? stages?.[0] ?? 'where-is-the'))
-  const activeRace = stages && view ? stages.indexOf(view.stageId) + 1 : selectedRace
+  const pool = racePools.find(pool => pool.id === (view?.stageId ?? stages?.[0] ?? 'class-one-judgement'))
+  const raceStages = stages ?? ['class-one-judgement', 'tonight-slots']
+  const matchedRace = view ? raceStages.indexOf(view.stageId) + 1 : 0
+  const activeRace = matchedRace > 0 && selectedRace <= raceStages.length ? matchedRace : selectedRace
   const shownRounds = stages?.length ?? roundCount
   async function selectRace(number: number) {
-    if (!stages) {setSelectedRace(number);return}
-    if (!credentials || !view || busy || connection || number === activeRace) return
-    const next = racePools.find(pool => pool.id === stages[number - 1])
+    if (!raceStages[number - 1]) {setSelectedRace(number);return}
+    if (!credentials || !view || busy || connection || raceStages[number - 1] === view.stageId) return
+    const next = racePools.find(pool => pool.id === raceStages[number - 1])
     if (!next || controlLock.current) return
     controlLock.current=true;setBusy(true);setError('')
     try { sync(await raceRequest<RaceView>('prepare', credentials, {stage:next.id,run:view.run}));setSelectedRace(number) }
     catch(cause) {setError(cause instanceof Error ? cause.message : 'Could not prepare the race.')}
     finally {controlLock.current=false;setBusy(false)}
   }
+  useEffect(() => {
+    if (stages || !credentials || !view || view.phase !== 'lobby' || controlLock.current) return
+    const replacement = view.stageId === 'where-is-the' ? 'class-one-judgement' : view.stageId === 'holiday-meaning' ? 'tonight-slots' : null
+    if (!replacement) return
+    controlLock.current = true
+    void raceRequest<RaceView>('prepare', credentials, {stage:replacement, run:view.run})
+      .then(sync).catch(cause=>setError(cause instanceof Error ? cause.message : 'Could not prepare the race.'))
+      .finally(()=>{controlLock.current=false;setBusy(false)})
+  }, [credentials, view, stages, sync])
   const judgement = pool?.kind === 'judgement'
-  const configured = !!stages || selectedRace === 1
+  const configured = !!raceStages[activeRace - 1]
   const failure = error || connection
   const alert = failure && <div className="cw-race-error" role="alert">{t(failure)}<button onClick={() => {opening.current=false;setError('');forget()}}>{t('Reconnect')}</button></div>
   if(view && view.phase !== 'lobby') {
@@ -120,34 +133,33 @@ export default function ClassroomRace({ lessonId = 'lesson-1', stages }: { lesso
       </div>
       <button className="cw-round-arrow" aria-label={t('Next race')} disabled={activeRace === shownRounds || busy} onClick={() => void selectRace(activeRace + 1)}>›</button>
     </nav>
-    <div className="cw-mission" key={selectedRace}>
-      <div className="cw-mission-copy">
-        <span className="cw-mission-number">{t('Race')} {String(activeRace).padStart(2,'0')}</span>
-        <h2>{configured ? t(judgement ? 'Correct or wrong' : 'Choose the meaning') : t('How to play')}</h2>
-        <p className="cw-mission-lead">{t(configured ? judgement ? 'Listen. Is the English sentence correct?' : 'Listen. Which Thai meaning matches?' : 'Listen to the question. Answer on your phone.')}</p>
-        <div className="cw-mission-steps">
-          <div><span className="cw-step-number">1</span><div><h3>{t('Listen')}</h3><p>{t('English on the main screen')}</p></div></div>
-          <div><span className="cw-step-number">2</span><div><h3>{t('Choose')}</h3><p>{t(configured ? judgement ? 'Swipe left for wrong. Right for correct.' : 'Tap one of the two Thai answers.' : 'Follow the answer controls on your phone.')}</p></div></div>
-          <div><span className="cw-step-number">3</span><div><h3>{t('Race ahead')}</h3><p>{t('Fast, correct answers build speed.')}</p></div></div>
-        </div>
-      </div>
-      <div className="cw-mission-demo" aria-label={t('Answer controls')}>
-        <div className="cw-demo-caption">{t('Your phone')}</div>
-        <div className="cw-demo-phone">
-          <div className="cw-demo-speaker" aria-hidden="true"></div>
-          <div className="cw-demo-sound" aria-hidden="true"><span/><span/><span/><span/><span/></div>
-          <div className="cw-demo-prompt">{t('Your answer')}</div>
-          {configured && judgement ? <div className="cw-demo-judgement"><div><b>×</b><span>{t('Wrong')}</span><small>←</small></div><div><b>✓</b><span>{t('Correct')}</span><small>→</small></div></div> : <div className="cw-demo-choices"><div><b>A</b>{t('Meaning 1')}</div><div><b>B</b>{t('Meaning 2')}</div></div>}
-          <div className="cw-demo-home" aria-hidden="true"/>
-        </div>
+    <div className="cw-briefing" key={selectedRace}>
+      <header className="cw-briefing-title">
+        <div><h2>{configured ? t(judgement ? 'Correct or wrong' : 'Choose the meaning') : t('How to play')}</h2></div>
         <div className="cw-mission-timer"><strong>{WINDOW_MS / 1000}</strong><span>{t('seconds per question')}</span></div>
+      </header>
+      <div className="cw-visual-briefing">
+        <div className="cw-controller-preview"><iframe key={`${selectedRace}:${judgement}`} src={`/english/race/controller${configured && judgement ? '' : '?mode=meaning'}`} title={t('Your phone')} loading="lazy"/></div>
+        <span className="cw-visual-arrow" aria-hidden="true">→</span>
+        <div className="cw-speed-examples" aria-label={t('Answer speed examples')}>
+          {[{correct:true,ms:1000},{correct:true,ms:8000},{correct:false,ms:1000}].map((example,index)=>{
+            const speed = speedFor(example.correct,example.ms)
+            return <div className="cw-speed-example" key={index} aria-label={t(example.correct ? index===0 ? 'Fast correct answer' : 'Slow correct answer' : 'Wrong answer')}>
+              <div className="cw-example-answer"><img src={`/images/race/answer-${example.correct?'correct':'wrong'}-v2.png`} alt={t(example.correct?'Correct':'Wrong')}/><span>{example.ms/1000}<small>s</small></span></div>
+              <div className="cw-example-lane" style={{'--travel': `${speed / MAX_SPEED * 100}%`} as CSSProperties}>
+                <div className="cw-example-runner"><CartoonHorse speed={speed}/><span className="cw-example-speed">{(speed*3.6).toFixed(0)} <small>km/h</small></span></div>
+              </div>
+            </div>
+          })}
+        </div>
       </div>
     </div>
+
     <footer><div className="cw-race-roster"><strong>{view?.players.length ?? 0} / 10 {t('joined')}</strong><ul aria-live="polite">{view?.players.map(player=><li key={player.id}><i style={{background:laneColours[player.lane]}}/>{player.name}</li>)}</ul></div>
-      <details className="cw-join-control"><summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h3v3h3v3h-6z" fill="none" stroke="currentColor" strokeWidth="2"/></svg>{t('Join · QR')}</summary>
-        <div className="cw-join-popover">{qr ? <img src={qr} alt={t('Scan to join the class race')}/> : <p role="status">{failure?t('Race unavailable'):t('Opening the room…')}</p>}<strong>{t('สแกนเพื่อเข้าร่วม')}</strong><p>{t('ใส่ชื่อ แล้วรอเริ่มแข่ง')}</p>{view?.joinUrl && <a href={view.joinUrl} target="_blank" rel="noreferrer">{t('Open on phone ↗')}</a>}</div>
-      </details>
-      <button className="cw-race-go" disabled={(!stages && selectedRace !== 1) || busy || !!connection || !view?.players.length} onClick={()=>void control('start')}>{busy?t('Starting…'):t('Go →')}</button>
+      <div className="cw-join-control"><button className="cw-join-toggle" aria-expanded={showJoin} onClick={()=>setShowJoin(value=>!value)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h3v3h3v3h-6z" fill="none" stroke="currentColor" strokeWidth="2"/></svg>{t('Join · QR')}</button>
+        {showJoin && <div className="cw-join-popover">{qr ? <img src={qr} alt={t('Scan to join the class race')}/> : <p role="status">{failure?t('Race unavailable'):t('Opening the room…')}</p>}<strong>{t('สแกนเพื่อเข้าร่วม')}</strong><p>{t('ใส่ชื่อ แล้วรอเริ่มแข่ง')}</p>{view?.joinUrl && <a href={view.joinUrl} target="_blank" rel="noreferrer">{t('Open on phone ↗')}</a>}</div>}
+      </div>
+      <button className="cw-race-go" disabled={!configured || busy || !!connection || !view?.players.length} onClick={()=>void control('start')}>{busy?t('Starting…'):t('Go →')}</button>
     </footer>
   </section>
 }

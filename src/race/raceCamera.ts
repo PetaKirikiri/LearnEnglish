@@ -1,7 +1,7 @@
 import type { RacePlayer } from './types'
 
 // A single camera and scale for every lane: gaps remain honest, but the entire
-// 1,600m course no longer compresses a few metres of gain into a single pixel.
+// full course never compresses a few metres of gain into a single pixel.
 export function raceCamera(players: RacePlayer[], finish: number) {
   const leader = Math.max(0, ...players.map(p => p.metres))
   const last = players.length ? Math.min(...players.map(p => p.metres)) : 0

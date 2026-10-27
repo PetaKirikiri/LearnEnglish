@@ -1,5 +1,5 @@
 export type RacePhase = 'lobby' | 'answering' | 'finished'
-export type RacePlayer = { id: string; name: string; lane: number; metres: number; speed: number; answered: boolean; streak?: number }
+export type RacePlayer = { id: string; name: string; lane: number; metres: number; speed: number; targetSpeed?: number; accelerationRemainingMs?: number; answered: boolean; streak?: number }
 export type RaceView = {
   id: string; run: number; stageId: string; phase: RacePhase; round: number; finish: number; serverNow: number;
   title: string; players: RacePlayer[]; opensAt: number; closesAt: number; motionAt: number;

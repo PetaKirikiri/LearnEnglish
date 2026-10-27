@@ -1,9 +1,11 @@
-.cw-language-switch{position:fixed;right:20px;top:16px;z-index:40;display:flex;gap:4px;padding:4px;background:#fff;border-radius:14px;box-shadow:0 2px 8px #18385e18;view-transition-name:classroom-languages}
-.cw-language-switch button{display:grid;place-items:center;width:42px;height:36px;border:2px solid transparent;border-radius:10px;background:transparent;cursor:pointer;font-size:24px;line-height:1;transition:background 160ms}
-.cw-language-switch button[aria-pressed=true]{border-color:#1877ef;background:#edf4ff}
+.cw-language-switch{position:fixed;right:20px;top:16px;z-index:40;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:5px;background:#fff;border-radius:14px;box-shadow:0 2px 8px #18385e18;view-transition-name:classroom-languages}
+.cw-language-switch button{display:grid;place-items:center;box-sizing:border-box;width:44px;height:38px;margin:0;padding:0;border:0;border-radius:10px;background:transparent;cursor:pointer;font-size:24px;line-height:1;transition:background 160ms}
+.cw-language-switch button[aria-pressed=true]{background:#e4efff;box-shadow:inset 0 0 0 1px #c8ddfc}
 .cw-language-switch button:focus-visible{outline:3px solid #18385e;outline-offset:2px}
 .classroom .cw-word-heading,.classroom .cw-panel-header{padding-right:132px}
-@media(max-width:700px){.cw-language-switch{right:8px;top:10px}.cw-language-switch button{width:34px;height:32px;font-size:22px}.classroom .cw-word-heading,.classroom .cw-panel-header{padding-right:20px}}
+@media(max-width:700px){.cw-language-switch{right:8px;top:10px}.cw-language-switch button{width:36px;height:34px;font-size:22px}.classroom .cw-word-heading,.classroom .cw-panel-header{padding-right:20px}}
 .cw-language-switch{z-index:1010}
 .cw-live-race .race-host-buttons{margin-right:112px}
 .cw-live-race .cw-race-again{right:132px}
+
+.cw-language-switch button span{display:grid;place-items:center;width:30px;height:28px;line-height:1;transform:translateY(-1px)}

@@ -58,7 +58,7 @@ export default function WordExplanation({slot,value,onChange,onBack,word,thai,on
         <h3><span className="cw-reference-art cw-reference-art-guide" aria-hidden="true"/>{t('ข้อควรรู้ในการใช้')}</h3>
         <ReferenceRows rows={detail.usage}/>
       {(slot===2 || slot===3 || (slot===1 && onVerb)) && <div className="cw-word-options" role="group" aria-label={t('เลือกคำ')}>
-        {(slot===1 ? [{word:'is',thai:'หนึ่งสิ่ง'},{word:'are',thai:'หลายสิ่ง'}] : slot===2 ? Object.entries(meanings).map(([word,item])=>({word,thai:item.gloss})) : catalogue).map(option=><button key={option.word} aria-pressed={selected===option.word} disabled={slot===1 && option.word==='is' && item.pairOnly} onClick={()=>slot===1?onVerb?.(option.word as 'is'|'are'):slot===2?onChange(option.word as Determiner):onWord(option.word)}>{slot===3 && onVerb && <VocabularyPicture word={option.word}/>}<strong>{option.word}</strong><span lang={getLanguage()}>{option.thai}</span></button>)}
+        {(slot===1 ? [{word:'is',thai:'หนึ่งสิ่ง'},{word:'are',thai:'หลายสิ่ง'}] : slot===2 ? Object.entries(meanings).map(([word,item])=>({word,thai:item.gloss})) : catalogue).map(option=><button key={option.word} aria-pressed={selected===option.word} disabled={slot===1 && option.word==='is' && item.pairOnly} onClick={()=>slot===1?onVerb?.(option.word as 'is'|'are'):slot===2?onChange(option.word as Determiner):onWord(option.word)}>{slot===3 && <VocabularyPicture word={option.word}/>}<strong>{option.word}</strong><span lang={getLanguage()}>{option.thai}</span></button>)}
       </div>}
       </section>
       </article>

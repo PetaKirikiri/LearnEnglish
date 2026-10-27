@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import HorseMotion from './HorseMotion'
+import CartoonHorse from './CartoonHorse'
 import RaceWorldTrack from './RaceWorldTrack'
 import { laneColours } from './colours'
-import { MIN_SPEED } from './rules'
 import type { RaceView } from './types'
 import './raceHost.css'
 import './raceHostView.css'
+import './raceGameTheme.css'
+import './raceVenue.css'
 
 const identity = (text: string) => text
 type Props = { translate?: (text:string)=>string; view: RaceView; qr: string; busy: boolean; disconnected: boolean; countdown: number; remaining: number; ready: boolean; finishTitle: string; onControl: (action: string) => void; onReset?: () => void }
@@ -42,7 +43,7 @@ export default function RaceHostView({ view, qr, busy, disconnected, countdown, 
   </section>
 
   const status = countdown ? String(countdown) : view.phase === 'answering' ? `${remaining.toFixed(1)}s` : ''
-  return <section className="race-fullscreen race-classroom-track" aria-label={t('Race track screen')}>
+  return <section data-finished={view.phase === 'finished'} className="race-fullscreen race-classroom-track" aria-label={t('Race track screen')}>
     <audio ref={audio} preload="auto"/>
     <header className="race-host-strip">
       <span className="race-round">{view.round + 1}</span>
@@ -56,6 +57,6 @@ export default function RaceHostView({ view, qr, busy, disconnected, countdown, 
       <h1 className="race-live-question" aria-live="polite">{view.phase === 'finished' ? finishTitle : view.question?.english}</h1>
     </header>
     <RaceWorldTrack players={view.players} finish={view.finish} running={running}
-      renderHorse={player => <HorseMotion mood={player.speed >= 14 ? 'confident' : player.speed > MIN_SPEED ? 'steady' : 'struggling'} speed={player.speed} onFire={(player.streak ?? 0) >= 5} charge={player.streak ?? 0} power={Math.max(1, (player.streak ?? 0) - 4)} paused={!running}/>}/>
+      renderHorse={player => <CartoonHorse lane={player.lane} speed={player.speed} streak={player.streak ?? 0} paused={!running || player.speed <= 0}/>}/>
   </section>
 }

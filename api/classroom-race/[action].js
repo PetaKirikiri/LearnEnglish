@@ -8,20 +8,62 @@ import { randomBytes, randomInt } from "node:crypto";
 
 // src/race/rules.ts
 var WINDOW_MS = 1e4;
-var FINISH = 1600;
-var MIN_SPEED = 4;
-var CORRECT_MIN_SPEED = 8;
-var MAX_SPEED = 16;
-var GOLDEN_MIN_SPEED = 18;
-var GOLDEN_SPEED = 24;
-var LEVEL_SPEED_STEP = 1;
-var powerLevel = (streak) => Math.max(0, Math.floor(streak) - 4);
+var FINISH = 6e3;
+var MIN_SPEED = 5 / 3.6;
+var MAX_BOOST = 5 / 3.6;
+var SPEED_TRANSITION_MS = 1e3;
+var MAX_SPEED = MIN_SPEED + MAX_BOOST;
 var START_DELAY_MS = 2500;
-function speedFor(correct, elapsedMs, streak = 0) {
-  if (!correct) return MIN_SPEED;
+function racePositions(players) {
+  return players.map((player) => 1 + players.filter((other) => other.metres > player.metres + 1e-8).length);
+}
+function wrongAnswerPenalty(position, fieldSize = 4) {
+  if (position <= 1) return 0.6;
+  if (position >= fieldSize) return 0.2;
+  return position === 2 ? 0.4 : position === 3 ? 0.3 : 0.2;
+}
+function speedFor(correct, elapsedMs, _streak = 0, previousSpeed = MIN_SPEED, position = 1, fieldSize = 4) {
+  void _streak;
+  const previous = Math.max(MIN_SPEED, previousSpeed);
+  if (!correct) return Math.max(MIN_SPEED, previous * (1 - wrongAnswerPenalty(position, fieldSize)));
   const quickness = Math.max(0, 1 - Math.max(0, elapsedMs) / WINDOW_MS);
-  if (streak >= 5) return GOLDEN_MIN_SPEED + (GOLDEN_SPEED - GOLDEN_MIN_SPEED) * quickness + (powerLevel(streak) - 1) * LEVEL_SPEED_STEP;
-  return CORRECT_MIN_SPEED + (MAX_SPEED - CORRECT_MIN_SPEED) * quickness;
+  return previous + MAX_BOOST * quickness;
+}
+function roundResult(player, correct, elapsedMs, position = 1, fieldSize = 4) {
+  const streak = correct ? (player.streak ?? 0) + 1 : 0;
+  return {
+    streak,
+    targetSpeed: speedFor(correct, elapsedMs, streak, player.targetSpeed ?? player.speed, position, fieldSize),
+    accelerationRemainingMs: SPEED_TRANSITION_MS
+  };
+}
+
+// src/race/kinematics.ts
+function motionAfter(player, elapsedSeconds) {
+  const seconds = Math.max(0, elapsedSeconds);
+  const target = player.targetSpeed ?? player.speed;
+  const remaining = Math.max(0, player.accelerationRemainingMs ?? 0) / 1e3;
+  const ramp = Math.min(seconds, remaining);
+  const acceleration = remaining > 0 ? (target - player.speed) / remaining : 0;
+  const distance = player.speed * ramp + 0.5 * acceleration * ramp * ramp + target * (seconds - ramp);
+  return {
+    metres: player.metres + distance,
+    speed: seconds >= remaining ? target : player.speed + acceleration * ramp,
+    targetSpeed: target,
+    accelerationRemainingMs: Math.max(0, remaining - seconds) * 1e3
+  };
+}
+function secondsToFinish(player, finish) {
+  const distance = Math.max(0, finish - player.metres);
+  if (distance === 0) return 0;
+  const target = player.targetSpeed ?? player.speed;
+  const remaining = Math.max(0, player.accelerationRemainingMs ?? 0) / 1e3;
+  const rampDistance = (player.speed + target) / 2 * remaining;
+  if (remaining > 0 && distance <= rampDistance) {
+    const acceleration = (target - player.speed) / remaining;
+    return 2 * distance / (player.speed + Math.sqrt(Math.max(0, player.speed ** 2 + 2 * acceleration * distance)));
+  }
+  return target > 0 ? remaining + (distance - rampDistance) / target : Infinity;
 }
 
 // src/race/meaningChoices.ts
@@ -130,6 +172,7 @@ function prepareRace(room, secret, stage, run, now = Date.now()) {
   room.kind = stage.kind;
   room.pool = stage.questions.map((q) => ({ ...q, choices: [...q.choices] }));
   room.deck = [];
+  delete room.completedRound;
   room.round = -1;
   room.phase = "lobby";
   room.answers = {};
@@ -138,7 +181,9 @@ function prepareRace(room, secret, stage, run, now = Date.now()) {
   room.updatedAt = now;
   for (const player of room.players) {
     player.metres = 0;
-    player.speed = MIN_SPEED;
+    player.speed = 0;
+    player.targetSpeed = 0;
+    player.accelerationRemainingMs = 0;
     player.streak = 0;
   }
 }
@@ -151,9 +196,20 @@ function joinRoom(room, name, playerToken) {
   requireThat(clean.length > 0 && clean.length <= 24 && !/[\p{Cc}\p{Cf}]/u.test(clean), "Enter a name of 1\u201324 characters.");
   requireThat(!room.players.some((p) => p.name.toLocaleLowerCase() === clean.toLocaleLowerCase()), "That name is taken. Add your initial.");
   requireThat(/^[a-f0-9]{48}$/.test(playerToken), "Please reload and join again.");
-  const player = { id: randomBytes(8).toString("hex"), token: playerToken, name: clean, lane: room.players.length, metres: 0, speed: MIN_SPEED };
+  const player = { id: randomBytes(8).toString("hex"), token: playerToken, name: clean, lane: room.players.length, metres: 0, speed: 0, targetSpeed: 0, accelerationRemainingMs: 0 };
   room.players.push(player);
   return player;
+}
+function settleRound(room, at) {
+  const positions = racePositions(room.players);
+  for (const [index, player] of room.players.entries()) {
+    const answer2 = room.answers[player.id];
+    const correct = !!answer2 && answer2.choice === room.deck[room.round].correct;
+    Object.assign(player, roundResult(player, correct, answer2 ? answer2.at - room.opensAt : WINDOW_MS, positions[index], room.players.length));
+  }
+  room.opensAt = at;
+  room.closesAt = at + WINDOW_MS;
+  nextQuestion(room);
 }
 function advanceRace(room, now = Date.now()) {
   if (room.phase !== "answering" || now <= room.updatedAt) return false;
@@ -161,9 +217,9 @@ function advanceRace(room, now = Date.now()) {
   while (room.phase === "answering" && now > room.updatedAt) {
     const until = Math.min(now, room.closesAt);
     const duration = (until - room.updatedAt) / 1e3;
-    const toFinish = Math.min(...room.players.map((p) => Math.max(0, FINISH - p.metres) / p.speed));
+    const toFinish = Math.min(...room.players.map((p) => secondsToFinish(p, FINISH)));
     const elapsed = Math.min(duration, toFinish);
-    for (const p of room.players) p.metres = Math.min(FINISH, p.metres + p.speed * elapsed);
+    for (const p of room.players) Object.assign(p, motionAfter(p, elapsed));
     room.updatedAt += elapsed * 1e3;
     changed = true;
     if (toFinish <= duration + 1e-9) {
@@ -172,13 +228,7 @@ function advanceRace(room, now = Date.now()) {
       break;
     }
     if (until >= room.closesAt && now > room.closesAt) {
-      for (const p of room.players) if (!room.answers[p.id]) {
-        p.speed = MIN_SPEED;
-        p.streak = 0;
-      }
-      room.opensAt = room.closesAt;
-      room.closesAt += WINDOW_MS;
-      nextQuestion(room);
+      settleRound(room, room.closesAt);
     }
   }
   return changed;
@@ -205,13 +255,17 @@ function answer(room, secret, round, choice, now = Date.now(), run = room.run ??
   requireThat(player, "Join the race first.");
   requireRun(room, run);
   advanceRace(room, now);
+  if (round === room.completedRound && round === room.round - 1) return;
   requireThat(round === room.round, "That question has finished.");
   if (room.answers[player.id]) return;
   requireThat(room.phase === "answering" && now >= room.opensAt && now <= room.closesAt, "The answer window is closed.");
   requireThat(choice === 0 || choice === 1, "Choose one answer.");
   room.answers[player.id] = { choice, at: now };
-  player.streak = choice === room.deck[room.round].correct ? (player.streak ?? 0) + 1 : 0;
-  player.speed = speedFor(choice === room.deck[room.round].correct, now - room.opensAt, player.streak);
+  if (room.players.every((p) => room.answers[p.id])) {
+    room.completedRound = room.round;
+    const nextAt = Math.max(now, room.updatedAt);
+    settleRound(room, nextAt);
+  }
 }
 function viewRoom(room, secret, now = Date.now()) {
   const host = secret === room.host, me = room.players.find((p) => p.token === secret);
@@ -228,7 +282,7 @@ function viewRoom(room, secret, now = Date.now()) {
     opensAt: room.opensAt,
     closesAt: room.closesAt,
     motionAt: room.updatedAt,
-    players: room.players.map((p) => ({ id: p.id, name: p.name, lane: p.lane, metres: p.metres, speed: p.speed, answered: !!room.answers[p.id], streak: p.streak ?? 0 })),
+    players: room.players.map((p) => ({ id: p.id, name: p.name, lane: p.lane, metres: p.metres, speed: p.speed, targetSpeed: p.targetSpeed ?? p.speed, accelerationRemainingMs: p.accelerationRemainingMs ?? 0, answered: !!room.answers[p.id], streak: p.streak ?? 0 })),
     ...q ? { question: { id: `${room.round}`, choices: q.choices, ...host ? { english: q.english, audioUrl: q.audioUrl } : {} } } : {},
     ...host ? { questionIds: room.pool.map((question2) => question2.id) } : {},
     ...me ? { me: { id: me.id, choice: room.answers[me.id]?.choice } } : {}
@@ -435,6 +489,18 @@ var tonightMeaningQuestions = tonightWords.flatMap(([word, thai], index) => ["th
     meaningDistractor: contrast
   };
 }));
+var tonightJudgementQuestions = tonightMeaningQuestions.flatMap((source) => [
+  { suffix: "complete", english: source.english, correct: 0 },
+  { suffix: "missing-is", english: source.english.replace("Where is ", "Where "), correct: 1 },
+  { suffix: "missing-determiner", english: source.english.replace(/ (the|my|your) /, " "), correct: 1 }
+].filter((item) => item.suffix !== "missing-determiner" || !/ (school|aircon)\?/.test(item.english)).map((item) => ({
+  id: `${source.id}-${item.suffix}`,
+  english: item.english,
+  correct: item.correct,
+  skill: "race-class-one",
+  audioUrl: "",
+  answers: [[{ text: "Correct", skill: "race-class-one" }], [{ text: "Wrong", skill: "race-class-one" }]]
+})));
 
 // src/portal/classOne.ts
 var classOneSkill = "class-one-everyday-questions";
@@ -533,6 +599,7 @@ var racePools = [
   { id: "first-questions", title: "Who is this? \xB7 What is this?", questions: classOneFrameQuestions },
   { id: "where-is-the", title: "Where is the\u2026? \xB7 Correct or wrong", kind: "judgement", questions: holidayQuestions },
   { id: "holiday-meaning", title: "Where is the\u2026? \xB7 Holiday words", kind: "meaning", questions: holidayMeaningQuestions },
+  { id: "class-one-judgement", title: "Class 1 \xB7 Correct or wrong", kind: "judgement", questions: tonightJudgementQuestions },
   { id: "tonight-slots", title: "Where is \xB7 the / my / your \xB7 Tonight", kind: "meaning", questions: tonightMeaningQuestions },
   { id: "lesson-two-number", title: "Lesson 2 \xB7 is / are", kind: "judgement", questions: lessonTwoNumberQuestions },
   { id: "lesson-two-owner", title: "Lesson 2 \xB7 my / your", kind: "meaning", questions: lessonTwoOwnerQuestions },

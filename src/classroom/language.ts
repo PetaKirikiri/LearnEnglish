@@ -89,6 +89,9 @@ Object.assign(thai, {
 'Wrong':'ผิด','Correct':'ถูก','Meaning 1':'ความหมายที่ 1','Meaning 2':'ความหมายที่ 2',
 'seconds per question':'วินาทีต่อคำถาม','Join · QR':'เข้าร่วม · QR'
 })
+Object.assign(thai, {'The actual race: horses moving at different speeds':'ภาพจากการแข่งขันจริง ม้าวิ่งด้วยความเร็วต่างกัน','Correct answers give speed':'ตอบถูก ม้าจะวิ่งเร็วขึ้น','The faster you answer correctly, the more speed you gain.':'ยิ่งตอบถูกเร็วเท่าไร ม้าก็ยิ่งได้ความเร็วเพิ่มมากขึ้น'})
+Object.assign(thai, {'Listen and choose':'ฟังแล้วเลือกคำตอบ'})
+Object.assign(thai, {'Answer speed examples':'ตัวอย่างความเร็วจากคำตอบ','Fast correct answer':'ตอบถูกเร็ว','Slow correct answer':'ตอบถูกช้า','Wrong answer':'ตอบผิด'})
 export function t(text:string):string { if(language === 'en' && text.startsWith('คำตอบต้องหมายถึง')) return text.replace('คำตอบต้องหมายถึง', 'The answer must mean'); return (language === 'en' ? english[text] : thai[text]) ?? text }
 export function syncClassroomLanguage() {
  document.documentElement.lang=language
