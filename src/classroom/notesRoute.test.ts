@@ -5,8 +5,8 @@ it('uses the maintained classroom for old lesson-one and walkthrough links', () 
   expect(classroomNotesDestination('/english/race/lesson/', '?lesson=where-is-the', '#race-guide')).toBe('/classroom/index.html#race-guide')
   expect(classroomNotesDestination('/english/race/lesson', '', '#words')).toBe('/classroom/index.html')
 })
-it('preserves the separate plural lesson and other app routes', () => {
-  expect(classroomNotesDestination('/english/race/lesson', '?lesson=where-are-my')).toBeNull()
+it('routes the plural lesson into lesson two without changing other routes', () => {
+  expect(classroomNotesDestination('/english/race/lesson', '?lesson=where-are-my')).toBe('/classroom/index.html?lesson=2')
   expect(classroomNotesDestination('/english/practice', '')).toBeNull()
   expect(classroomNotesDestination('/classroom/index.html', '')).toBeNull()
 })

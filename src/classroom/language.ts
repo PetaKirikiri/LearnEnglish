@@ -63,16 +63,31 @@ Object.assign(english, {
 'ครบทุกส่วน':'All parts present','ขาดคำเชื่อม':'Missing the linking verb','ขาดคำหน้าคำนาม':'Missing the determiner','เลือกความหมายให้ตรงกัน':'Match the meaning','ประโยคครบทั้งสี่ส่วน':'The sentence has all four parts.','ช่องที่สองหายไป ต้องมีคำเชื่อมก่อนคำหน้าคำนาม':'Slot two is missing: this pattern needs the linking verb before the determiner.','ช่องที่สามหายไป ต้องมีคำหน้าคำนามในรูปแบบนี้':'Slot three is missing: this pattern needs a determiner before the noun.',
 'สิ่งเดียวกัน แต่เป็นของใคร?':'The same thing—but whose?','ถามที่ไหน หรือถามอย่างอื่น?':'Asking where, or asking something else?','ของฉัน = ของคนพูด อย่าสลับกับของคนที่เราพูดด้วย':'my refers to the speaker, not the listener.','ของคุณ = ของคนที่เราพูดด้วย อย่าสลับกับของคนพูด':'your refers to the listener, not the speaker.','คำถามนี้ถามตำแหน่ง ไม่ได้ถามราคา หรือถามว่าอยู่ที่นี่ใช่ไหม':'This asks about location—not price, or whether something is here.'
 })
-const thai: Record<string,string> = {'Lesson 01':'บทเรียน 01','Race together':'แข่งไปด้วยกัน','Correct or wrong':'ถูกหรือผิด','Choose the meaning':'เลือกความหมาย','Listen for the complete sentence.':'ฟังว่าประโยคครบหรือไม่','Listen carefully to which person or thing the question means.':'ฟังให้ดีว่าคำถามหมายถึงคนไหนหรือสิ่งไหน','Scan to join the class race':'สแกนเพื่อเข้าร่วมการแข่งขัน','Race unavailable':'เปิดการแข่งขันไม่ได้','Opening the room…':'กำลังเปิดห้อง…','Open on phone ↗':'เปิดบนมือถือ ↗','Starting…':'กำลังเริ่ม…','Go →':'เริ่ม →','joined':'เข้าร่วมแล้ว','Reconnect':'เชื่อมต่อใหม่','Back to lobby':'กลับห้องรอ','Race finished':'จบการแข่งขัน','It’s a tie!':'เสมอกัน!','wins!':'ชนะ!','Class race':'การแข่งขันในชั้นเรียน','Could not open the race.':'เปิดการแข่งขันไม่ได้','Could not show the QR code. Please retry.':'แสดงคิวอาร์โค้ดไม่ได้ กรุณาลองอีกครั้ง','Could not update the race.':'อัปเดตการแข่งขันไม่ได้','Could not prepare the race.':'เตรียมการแข่งขันไม่ได้'}
+Object.assign(english, {'เลือก is / are ให้ตรงกับจำนวน':'Match is / are to the number','จำนวนตรงกัน':'Matching number','จำนวนไม่ตรงกัน':'Number mismatch','สิ่งเดียวใช้ is · หลายสิ่งใช้ are · my / your ไม่ได้บอกจำนวน':'One takes is; more than one takes are. my / your do not tell us the number.'})
+const thai: Record<string,string> = {'Lesson 02':'บทเรียน 02','Lesson 01':'บทเรียน 01','Race together':'แข่งไปด้วยกัน','Correct or wrong':'ถูกหรือผิด','Choose the meaning':'เลือกความหมาย','Listen for the complete sentence.':'ฟังว่าประโยคครบหรือไม่','Listen carefully to which person or thing the question means.':'ฟังให้ดีว่าคำถามหมายถึงคนไหนหรือสิ่งไหน','Scan to join the class race':'สแกนเพื่อเข้าร่วมการแข่งขัน','Race unavailable':'เปิดการแข่งขันไม่ได้','Opening the room…':'กำลังเปิดห้อง…','Open on phone ↗':'เปิดบนมือถือ ↗','Starting…':'กำลังเริ่ม…','Go →':'เริ่ม →','joined':'เข้าร่วมแล้ว','Reconnect':'เชื่อมต่อใหม่','Back to lobby':'กลับห้องรอ','Race finished':'จบการแข่งขัน','It’s a tie!':'เสมอกัน!','wins!':'ชนะ!','Class race':'การแข่งขันในชั้นเรียน','Could not open the race.':'เปิดการแข่งขันไม่ได้','Could not show the QR code. Please retry.':'แสดงคิวอาร์โค้ดไม่ได้ กรุณาลองอีกครั้ง','Could not update the race.':'อัปเดตการแข่งขันไม่ได้','Could not prepare the race.':'เตรียมการแข่งขันไม่ได้'}
 Object.assign(thai, {'The public race server is unavailable. Please retry.':'เชื่อมต่อเซิร์ฟเวอร์การแข่งขันไม่ได้ กรุณาลองอีกครั้ง','Could not connect. Please try again.':'เชื่อมต่อไม่ได้ กรุณาลองอีกครั้ง','Connection lost. Reconnecting…':'การเชื่อมต่อขัดข้อง กำลังเชื่อมต่อใหม่…','Race lobby':'ห้องรอการแข่งขัน','End race':'จบการแข่งขัน','Join the race':'เข้าร่วมการแข่งขัน','Scan to join this race':'สแกนเพื่อเข้าร่วมการแข่งขัน','Connect the laptop to Wi-Fi to show the QR code.':'เชื่อมต่อคอมพิวเตอร์กับไวไฟเพื่อแสดงคิวอาร์โค้ด','Open player screen ↗':'เปิดหน้าจอผู้เล่น ↗','ready':'พร้อมแล้ว','Start race →':'เริ่มแข่ง →','Admin':'ตั้งค่า','Race track screen':'หน้าจอสนามแข่ง','Sound on':'เปิดเสียง','Sound off':'ปิดเสียง','Retry audio':'เล่นเสียงอีกครั้ง','answered':'ตอบแล้ว','Next race →':'การแข่งขันถัดไป →'})
 Object.assign(thai, {'Lesson races':'การแข่งขันของบทเรียน','Race':'รอบที่','Previous race':'รอบก่อนหน้า','Next race':'รอบถัดไป','Add race':'เพิ่มรอบ'})
+Object.assign(thai, {
+'Race ahead':'แข่งให้เร็วขึ้น','How to play':'วิธีเล่น','Listen. Is the English sentence correct?':'ฟัง แล้วตัดสินว่าประโยคภาษาอังกฤษถูกต้องหรือไม่',
+'Listen. Which Thai meaning matches?':'ฟัง แล้วเลือกความหมายภาษาไทยให้ตรงกัน',
+'Listen to the question. Answer on your phone.':'ฟังคำถาม แล้วตอบบนมือถือ',
+'Listen':'ฟัง','English on the main screen':'ฟังภาษาอังกฤษจากหน้าจอหลัก','Choose':'เลือก',
+'Swipe left for wrong. Right for correct.':'ปัดซ้ายเมื่อผิด ปัดขวาเมื่อถูก',
+'Tap one of the two Thai answers.':'แตะเลือกคำตอบภาษาไทยหนึ่งในสองข้อ',
+'Follow the answer controls on your phone.':'ตอบด้วยปุ่มบนหน้าจอมือถือ',
+'Fast, correct answers build speed.':'ตอบถูกและเร็ว ม้าจะวิ่งเร็วขึ้น',
+'Answer controls':'วิธีตอบ','Your phone':'หน้าจอมือถือ','Your answer':'คำตอบของคุณ',
+'Wrong':'ผิด','Correct':'ถูก','Meaning 1':'ความหมายที่ 1','Meaning 2':'ความหมายที่ 2',
+'seconds per question':'วินาทีต่อคำถาม','Join · QR':'เข้าร่วม · QR'
+})
 export function t(text:string):string { if(language === 'en' && text.startsWith('คำตอบต้องหมายถึง')) return text.replace('คำตอบต้องหมายถึง', 'The answer must mean'); return (language === 'en' ? english[text] : thai[text]) ?? text }
 export function syncClassroomLanguage() {
  document.documentElement.lang=language
- document.title=language==='th'?'บทเรียนที่ 1 · English Success':'Lesson 1 · English Success'
+ const number=new URLSearchParams(location.search).get('lesson')==='2'?'2':'1'
+ document.title=language==='th'?`บทเรียนที่ ${number} · English Success`:`Lesson ${number} · English Success`
  document.querySelectorAll<HTMLElement>('[data-ui-label]').forEach(el=>{el.textContent=t(el.dataset.uiLabel!)})
  document.querySelector('.phases')?.setAttribute('lang',language)
  document.querySelector('.phases')?.setAttribute('aria-label',t('ขั้นตอนการเรียน'))
- document.querySelector('.index')?.setAttribute('aria-label',t('บทเรียนที่ 1'))
+ document.querySelector('.index')?.setAttribute('aria-label',language==='th'?`บทเรียนที่ ${number}`:`Lesson ${number}`)
 }
 export function setLanguage(next:Language) {language=next;localStorage.setItem('classroom-language',next);syncClassroomLanguage();listeners.forEach(listener=>listener())}

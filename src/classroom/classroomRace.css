@@ -20,3 +20,24 @@
 .cw-race-welcome{animation:cw-round-enter .3s ease-out}@keyframes cw-round-enter{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media(max-width:700px){.cw-rounds{padding:16px 8px;gap:2px}.cw-round-card{flex-basis:144px;min-height:96px}.cw-round-arrow{width:28px}}
 @media(prefers-reduced-motion:reduce){.cw-round-card{transition:none}.cw-race-welcome{animation:none}.cw-round-rail{scroll-behavior:auto}}
+
+/* Briefing: a clear reading path, with the answer format as the main visual. */
+.cw-mission{display:grid;grid-template-columns:1.2fr 1fr;align-items:center;gap:32px;padding:32px clamp(24px,5vw,80px);flex:1;background:#fff;animation:cw-round-enter .3s ease-out}
+.cw-mission-number{font-size:14px;font-weight:700;color:#1877ef;letter-spacing:.06em}
+.cw-mission h2{font:500 clamp(30px,3.2vw,48px)/1.15 'Fredoka',sans-serif;letter-spacing:-.02em;margin:10px 0 14px;max-width:550px}
+.cw-mission-lead{font-size:20px;line-height:1.6;max-width:480px;margin:0 0 28px;color:#526d8c}
+.cw-mission-steps{display:grid;gap:20px}.cw-mission-steps>div{display:flex;align-items:center;gap:16px}.cw-step-number{display:grid;place-items:center;flex:0 0 36px;height:36px;background:#edf4ff;color:#1877ef;border-radius:50%;font:500 20px 'Fredoka',sans-serif}
+.cw-mission-steps h3{font-size:18px;margin:0 0 3px}.cw-mission-steps p{font-size:15px;line-height:1.5;margin:0;color:#526d8c}
+.cw-mission-demo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}.cw-demo-caption{font-size:14px;font-weight:700;color:#526d8c}
+.cw-demo-phone{width:228px;background:#fff;border:5px solid #18385e;border-radius:34px;padding:12px 16px 10px;box-shadow:0 9px 0 #e3eaf5;display:flex;flex-direction:column;align-items:center;position:relative}
+.cw-demo-speaker{width:42px;height:5px;background:#18385e;border-radius:4px}.cw-demo-sound{display:flex;align-items:center;gap:5px;height:70px;margin-top:10px}.cw-demo-sound span{width:6px;height:18px;background:#1877ef;border-radius:4px}.cw-demo-sound span:nth-child(2n){height:32px}.cw-demo-sound span:nth-child(3){height:46px}.cw-demo-prompt{font-size:14px;color:#526d8c;margin:0 0 20px}
+.cw-demo-judgement{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}.cw-demo-judgement>div{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;background:#ed3044;color:#fff;border-radius:14px;box-shadow:0 3px 0 #b81a2c}.cw-demo-judgement>div+div{background:#148249;box-shadow:0 3px 0 #0b5b31}.cw-demo-judgement b{font-size:36px;line-height:1}.cw-demo-judgement span{font-size:13px;font-weight:700}.cw-demo-judgement small{font-size:22px}
+.cw-demo-choices{display:grid;gap:10px;width:100%}.cw-demo-choices>div{display:flex;align-items:center;gap:12px;border:2px solid #dce7f5;border-radius:12px;padding:12px 10px;font-size:13px;font-weight:600}.cw-demo-choices b{color:#1877ef;font:500 22px 'Fredoka',sans-serif}
+.cw-demo-home{width:62px;height:4px;background:#d8e2ef;border-radius:4px;margin-top:24px}
+.cw-mission-timer{display:flex;align-items:center;gap:10px;color:#18385e;margin-top:4px}.cw-mission-timer strong{font:500 26px 'Fredoka',sans-serif;background:#ffdb3b;min-width:48px;text-align:center;padding:5px;border-radius:12px}.cw-mission-timer span{font-size:14px;max-width:120px}
+.cw-race-lobby>footer{margin-top:auto;background:#f2f6fc;padding-top:18px;padding-bottom:18px}
+.cw-join-control{position:relative}.cw-join-control summary{list-style:none;display:flex;align-items:center;gap:8px;padding:12px 16px;background:white;border:1px solid #d7e3f2;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;white-space:nowrap}.cw-join-control summary::-webkit-details-marker{display:none}.cw-join-control summary svg{width:22px;height:22px}.cw-join-control[open] summary{color:#1877ef;border-color:#1877ef}
+.cw-join-popover{position:absolute;bottom:calc(100% + 16px);right:0;z-index:5;background:#fff;box-shadow:0 10px 40px #18385e26;border:1px solid #d7e3f2;border-radius:20px;padding:20px;width:248px;text-align:center}.cw-join-popover img{width:200px;height:200px;display:block;margin:0 auto 8px}.cw-join-popover strong{font-size:17px}.cw-join-popover p{font-size:13px;margin:6px 0 12px;color:#526d8c}.cw-join-popover a{font-size:13px;color:#1877ef}
+@media(min-width:701px){.cw-rounds{padding-top:16px;padding-bottom:16px}.cw-round-card{min-height:80px;flex-basis:160px}.cw-round-card strong{display:inline;font-size:24px;margin-left:4px}.cw-round-card svg{width:28px;height:28px}}
+@media(max-width:700px){.cw-mission{grid-template-columns:1fr;gap:26px;padding:28px 24px}.cw-mission h2{font-size:32px}.cw-mission-lead{font-size:17px;margin-bottom:22px}.cw-mission-steps{gap:16px}.cw-race-lobby>footer{flex-wrap:wrap;gap:12px}.cw-race-roster{flex-basis:100%}.cw-join-control{margin-right:auto}.cw-join-popover{left:0;right:auto}.cw-race-go{font-size:22px}}
+@media(prefers-reduced-motion:reduce){.cw-mission{animation:none}}

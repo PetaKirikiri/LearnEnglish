@@ -27,6 +27,7 @@ function speedFor(correct, elapsedMs, streak = 0) {
 // src/race/meaningChoices.ts
 function meaningChoices(questions) {
   return questions.map((question2, index) => {
+    if (question2.meaningDistractor && question2.choices.includes(question2.meaningDistractor)) return question2;
     const meaning = question2.choices[question2.correct];
     const other = [...questions.slice(index + 1), ...questions.slice(0, index)].find((q) => q.choices[q.correct] !== meaning);
     if (!other) return question2;
@@ -234,6 +235,93 @@ function viewRoom(room, secret, now = Date.now()) {
   };
 }
 
+// src/race/pluralVocabulary.ts
+var pluralVocabulary = [
+  { singular: "shoe", group: "wear", classifier: "\u0E02\u0E49\u0E32\u0E07", plural: "shoes", thai: "\u0E23\u0E2D\u0E07\u0E40\u0E17\u0E49\u0E32" },
+  { singular: "key", group: "carry", classifier: "\u0E14\u0E2D\u0E01", plural: "keys", thai: "\u0E01\u0E38\u0E0D\u0E41\u0E08" },
+  { singular: "sock", group: "wear", classifier: "\u0E02\u0E49\u0E32\u0E07", plural: "socks", thai: "\u0E16\u0E38\u0E07\u0E40\u0E17\u0E49\u0E32" },
+  { singular: "bag", group: "carry", classifier: "\u0E43\u0E1A", plural: "bags", thai: "\u0E01\u0E23\u0E30\u0E40\u0E1B\u0E4B\u0E32" },
+  { singular: "ticket", group: "carry", classifier: "\u0E43\u0E1A", plural: "tickets", thai: "\u0E15\u0E31\u0E4B\u0E27" },
+  { singular: "book", group: "carry", classifier: "\u0E40\u0E25\u0E48\u0E21", plural: "books", thai: "\u0E2B\u0E19\u0E31\u0E07\u0E2A\u0E37\u0E2D" },
+  { singular: "sandal", group: "wear", classifier: "\u0E02\u0E49\u0E32\u0E07", plural: "sandals", thai: "\u0E23\u0E2D\u0E07\u0E40\u0E17\u0E49\u0E32\u0E41\u0E15\u0E30" },
+  { singular: "boot", group: "wear", classifier: "\u0E02\u0E49\u0E32\u0E07", plural: "boots", thai: "\u0E23\u0E2D\u0E07\u0E40\u0E17\u0E49\u0E32\u0E1A\u0E39\u0E15" },
+  { singular: "shirt", group: "wear", classifier: "\u0E15\u0E31\u0E27", plural: "shirts", thai: "\u0E40\u0E2A\u0E37\u0E49\u0E2D\u0E40\u0E0A\u0E34\u0E49\u0E15" },
+  { singular: "hat", group: "wear", classifier: "\u0E43\u0E1A", plural: "hats", thai: "\u0E2B\u0E21\u0E27\u0E01" },
+  { singular: "pen", group: "carry", classifier: "\u0E14\u0E49\u0E32\u0E21", plural: "pens", thai: "\u0E1B\u0E32\u0E01\u0E01\u0E32" },
+  { singular: "pencil", group: "carry", classifier: "\u0E41\u0E17\u0E48\u0E07", plural: "pencils", thai: "\u0E14\u0E34\u0E19\u0E2A\u0E2D" },
+  { singular: "phone", group: "around", classifier: "\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07", plural: "phones", thai: "\u0E42\u0E17\u0E23\u0E28\u0E31\u0E1E\u0E17\u0E4C" },
+  { singular: "charger", group: "around", classifier: "\u0E2D\u0E31\u0E19", plural: "chargers", thai: "\u0E17\u0E35\u0E48\u0E0A\u0E32\u0E23\u0E4C\u0E08" },
+  { singular: "towel", group: "around", classifier: "\u0E1C\u0E37\u0E19", plural: "towels", thai: "\u0E1C\u0E49\u0E32\u0E02\u0E19\u0E2B\u0E19\u0E39" },
+  { singular: "bottle", group: "around", classifier: "\u0E02\u0E27\u0E14", plural: "bottles", thai: "\u0E02\u0E27\u0E14" },
+  { singular: "cup", group: "around", classifier: "\u0E43\u0E1A", plural: "cups", thai: "\u0E16\u0E49\u0E27\u0E22" },
+  { singular: "plate", group: "around", classifier: "\u0E43\u0E1A", plural: "plates", thai: "\u0E08\u0E32\u0E19" }
+];
+var pairVocabulary = [
+  { plural: "glasses", thai: "\u0E41\u0E27\u0E48\u0E19\u0E15\u0E32" },
+  { plural: "trousers", thai: "\u0E01\u0E32\u0E07\u0E40\u0E01\u0E07\u0E02\u0E32\u0E22\u0E32\u0E27" }
+];
+
+// src/classroom/lessonTwoContent.ts
+var lessonTwoCore = ["shoe", "key", "sock", "bag", "book", "pen"];
+var lessonTwoWords = [...pluralVocabulary].sort((a, b) => {
+  const rank = (word) => {
+    const index = lessonTwoCore.indexOf(word);
+    return index < 0 ? 100 : index;
+  };
+  return rank(a.singular) - rank(b.singular);
+});
+var owners = ["the", "my", "your"];
+var ownerThai = (owner) => owner === "my" ? "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19" : owner === "your" ? "\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13" : "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07";
+var lessonTwoPairs = pairVocabulary;
+function numberSentence(item, plural, owner) {
+  const noun = plural || !item.singular ? item.plural : item.singular;
+  const verb = plural || !item.singular ? "are" : "is";
+  const count = item.classifier ? `${plural ? "\u0E2B\u0E25\u0E32\u0E22" : "\u0E2B\u0E19\u0E36\u0E48\u0E07"}${item.classifier}` : "";
+  return { english: `Where ${verb} ${owner} ${noun}?`, thai: `${item.thai}${count}${owner === "the" ? "" : ownerThai(owner)}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`, units: [
+    { english: "Where", thai: "\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19" },
+    { english: verb, thai: "\u0E2D\u0E22\u0E39\u0E48" },
+    { english: owner, thai: ownerThai(owner) },
+    { english: `${noun}?`, thai: item.thai }
+  ], noun, verb };
+}
+
+// src/race/lessonTwoQuestions.ts
+var skill = "race-lesson-two";
+var lessonTwoAudio = (noun, owner, verb) => `/audio/race-lesson-two/${noun}-${owner}-${verb}.wav`;
+function judgement(items, determiners) {
+  return items.flatMap((item) => (item.singular ? [false, true] : [true]).flatMap((plural) => determiners.flatMap((owner) => {
+    const sentence = numberSentence(item, plural, owner);
+    return [true, false].map((correct) => {
+      const verb = correct ? sentence.verb : sentence.verb === "is" ? "are" : "is";
+      return {
+        id: `l2-${sentence.noun}-${owner}-${verb}`,
+        english: `Where ${verb} ${owner} ${sentence.noun}?`,
+        skill,
+        correct: correct ? 0 : 1,
+        answers: [[{ text: "Correct", skill }], [{ text: "Wrong", skill }]],
+        audioUrl: lessonTwoAudio(sentence.noun, owner, verb),
+        grammar: { kind: "meaning", context: "Match is or are to the noun.", phase: "practice", targets: ["is", "are"], contrast: correct ? "number-correct" : "number-wrong", explanation: sentence.english }
+      };
+    });
+  })));
+}
+var lessonTwoNumberQuestions = judgement(lessonTwoWords.slice(0, 3), ["the"]);
+var lessonTwoOwnerQuestions = lessonTwoWords.filter((item) => lessonTwoCore.includes(item.singular)).flatMap((item) => [false, true].flatMap((plural) => ["my", "your"].map((owner) => {
+  const sentence = numberSentence(item, plural, owner);
+  const other = numberSentence(item, plural, owner === "my" ? "your" : "my");
+  return {
+    id: `l2-owner-${sentence.noun}-${owner}`,
+    english: sentence.english,
+    skill,
+    correct: 0,
+    audioUrl: lessonTwoAudio(sentence.noun, owner, sentence.verb),
+    answers: [[{ text: sentence.thai, skill }], [{ text: other.thai, skill }]],
+    meaningDistractor: other.thai
+  };
+})));
+var lessonTwoReviewQuestions = judgement([...lessonTwoWords, ...lessonTwoPairs], owners);
+var lessonTwoRecordings = [...new Map([...lessonTwoNumberQuestions, ...lessonTwoOwnerQuestions, ...lessonTwoReviewQuestions].map((q) => [q.audioUrl, { audioUrl: q.audioUrl, spokenText: q.english }])).values()];
+
 // src/race/tonightVocabulary.ts
 var tonightWords = [
   ["hotel", "\u0E42\u0E23\u0E07\u0E41\u0E23\u0E21"],
@@ -423,7 +511,10 @@ var racePools = [
   { id: "first-questions", title: "Who is this? \xB7 What is this?", questions: classOneFrameQuestions },
   { id: "where-is-the", title: "Where is the\u2026? \xB7 Correct or wrong", kind: "judgement", questions: holidayQuestions },
   { id: "holiday-meaning", title: "Where is the\u2026? \xB7 Holiday words", kind: "meaning", questions: holidayMeaningQuestions },
-  { id: "tonight-slots", title: "Where is \xB7 the / my / your \xB7 Tonight", kind: "meaning", questions: tonightMeaningQuestions }
+  { id: "tonight-slots", title: "Where is \xB7 the / my / your \xB7 Tonight", kind: "meaning", questions: tonightMeaningQuestions },
+  { id: "lesson-two-number", title: "Lesson 2 \xB7 is / are", kind: "judgement", questions: lessonTwoNumberQuestions },
+  { id: "lesson-two-owner", title: "Lesson 2 \xB7 my / your", kind: "meaning", questions: lessonTwoOwnerQuestions },
+  { id: "lesson-two-review", title: "Lesson 2 \xB7 Review", kind: "judgement", questions: lessonTwoReviewQuestions }
 ];
 
 // src/race/publicLinks.ts

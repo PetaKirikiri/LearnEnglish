@@ -76,3 +76,25 @@ it('keeps game QR links on the public website even when the host uses a preview 
     expect(view.joinUrl).toBe(`${origin}/english/race/join/${host.room}`)
   }
 })
+
+it('runs the three lesson-two pools in one room while preserving the student QR and roster', async () => {
+  const {store,rows}=memoryStore()
+  const host=await cloudAction(store,'create','POST','','',{stage:'lesson-two-number'},origin,0) as {room:string;token:string}
+  const guest=token()
+  await cloudAction(store,'join','POST',host.room,guest,{name:'Lesson two test'},origin,1,()=>1)
+  let view=await cloudAction(store,'state','GET',host.room,host.token,{},origin,2,()=>2) as RaceView
+  const joinUrl=view.joinUrl
+  for(const stage of ['lesson-two-number','lesson-two-owner','lesson-two-review']){
+    view=await cloudAction(store,'prepare','POST',host.room,host.token,{stage,run:view.run},origin,3,()=>3) as RaceView
+    expect(view.stageId).toBe(stage)
+    expect(view.players.map(p=>p.name)).toEqual(['Lesson two test'])
+    expect(view.joinUrl).toBe(joinUrl)
+    expect(rows.get(host.room)!.state.pool.every(q=>q.audioUrl.startsWith('/audio/race-lesson-two/'))).toBe(true)
+    view=await cloudAction(store,'control','POST',host.room,host.token,{action:'start',round:view.round,run:view.run},origin,10,()=>10) as RaceView
+    const player=await cloudAction(store,'state','GET',host.room,guest,{},origin,11,()=>11) as RaceView
+    expect(player.question?.choices).toHaveLength(2)
+    expect(player.question?.correct).toBeUndefined()
+    expect(view.question?.english).toMatch(/^Where (is|are) (the|my|your) /)
+    view=await cloudAction(store,'control','POST',host.room,host.token,{action:'finish',round:view.round,run:view.run},origin,12,()=>12) as RaceView
+  }
+})
