@@ -8,11 +8,11 @@ import { randomBytes, randomInt } from "node:crypto";
 
 // src/race/rules.ts
 var WINDOW_MS = 1e4;
-var FINISH = 6e3;
-var MIN_SPEED = 5 / 3.6;
+var FINISH = 500;
+var MIN_SPEED = 20 / 3.6;
 var MAX_BOOST = 5 / 3.6;
 var SPEED_TRANSITION_MS = 1e3;
-var MAX_SPEED = MIN_SPEED + MAX_BOOST;
+var MAX_SPEED = 40 / 3.6;
 var START_DELAY_MS = 2500;
 function racePositions(players) {
   return players.map((player) => 1 + players.filter((other) => other.metres > player.metres + 1e-8).length);
@@ -24,10 +24,10 @@ function wrongAnswerPenalty(position, fieldSize = 4) {
 }
 function speedFor(correct, elapsedMs, _streak = 0, previousSpeed = MIN_SPEED, position = 1, fieldSize = 4) {
   void _streak;
-  const previous = Math.max(MIN_SPEED, previousSpeed);
+  const previous = Math.min(MAX_SPEED, Math.max(MIN_SPEED, previousSpeed));
   if (!correct) return Math.max(MIN_SPEED, previous * (1 - wrongAnswerPenalty(position, fieldSize)));
   const quickness = Math.max(0, 1 - Math.max(0, elapsedMs) / WINDOW_MS);
-  return previous + MAX_BOOST * quickness;
+  return Math.min(MAX_SPEED, previous + MAX_BOOST * quickness);
 }
 function roundResult(player, correct, elapsedMs, position = 1, fieldSize = 4) {
   const streak = correct ? (player.streak ?? 0) + 1 : 0;

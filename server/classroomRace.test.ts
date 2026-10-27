@@ -25,9 +25,9 @@ describe('simultaneous classroom race', () => {
     expect(room.opensAt).toBe(start+4000)
     expect(room.closesAt).toBe(start+14000)
     players.forEach(p=>expect(p).toMatchObject({metres:0,speed:0,accelerationRemainingMs:1000}))
-    expect(players[0].targetSpeed!*3.6).toBeCloseTo(9.75)
-    expect(players[1].targetSpeed!*3.6).toBeCloseTo(9.25)
-    expect(players[2].targetSpeed!*3.6).toBeCloseTo(5)
+    expect(players[0].targetSpeed!*3.6).toBeCloseTo(24.75)
+    expect(players[1].targetSpeed!*3.6).toBeCloseTo(24.25)
+    expect(players[2].targetSpeed!*3.6).toBeCloseTo(20)
     advanceRace(room,start+4500)
     players.forEach(p=>expect(p.speed).toBeCloseTo(p.targetSpeed!/2))
     advanceRace(room,start+5000)
@@ -35,28 +35,28 @@ describe('simultaneous classroom race', () => {
   })
   it('does not give an early answer any extra movement at the new speed',()=>{
     const {room,players,start}=setup()
-    players.forEach(p=>{p.speed=20;p.targetSpeed=20;p.streak=3})
+    players.forEach(p=>{p.speed=7;p.targetSpeed=7;p.streak=3})
     answer(room,players[0].token,0,room.deck[0].correct,start+100)
     advanceRace(room,start+7000)
-    expect(players.map(p=>p.metres)).toEqual([140,140])
-    expect(players.map(p=>p.speed)).toEqual([20,20])
+    players.forEach(p=>expect(p.metres).toBeCloseTo(49))
+    expect(players.map(p=>p.speed)).toEqual([7,7])
     expect(players.map(p=>p.streak)).toEqual([3,3])
     answer(room,players[1].token,0,room.deck[0].correct,start+8000)
-    expect(players.map(p=>p.metres)).toEqual([160,160])
+    players.forEach(p=>expect(p.metres).toBeCloseTo(56))
     expect(players[0].targetSpeed).toBeGreaterThan(players[1].targetSpeed!)
-    expect(players.every(p=>p.speed===20&&p.accelerationRemainingMs===1000)).toBe(true)
+    expect(players.every(p=>p.speed===7&&p.accelerationRemainingMs===1000)).toBe(true)
   })
   it('applies recorded boosts and missing-answer penalties at the common deadline',()=>{
     const {room,players,start}=setup()
-    players.forEach(p=>{p.speed=100/3.6;p.targetSpeed=p.speed})
+    players.forEach(p=>{p.speed=40/3.6;p.targetSpeed=p.speed})
     answer(room,players[0].token,0,room.deck[0].correct,start+2000)
     advanceRace(room,start+10000)
     expect(room.round).toBe(0)
-    expect(players.every(p=>p.speed===100/3.6)).toBe(true)
+    expect(players.every(p=>p.speed===40/3.6)).toBe(true)
     advanceRace(room,start+10000.125)
     expect(room.round).toBe(1)
-    expect(players[0].targetSpeed!*3.6).toBeCloseTo(104)
-    expect(players[1].targetSpeed!*3.6).toBeCloseTo(40)
+    expect(players[0].targetSpeed!*3.6).toBeCloseTo(40)
+    expect(players[1].targetSpeed!*3.6).toBeCloseTo(20)
     expect(players[0].metres-players[1].metres).toBeLessThan(.000001)
   })
   it('accepts exactly ten seconds with zero boost and rejects late answers',()=>{
@@ -70,41 +70,41 @@ describe('simultaneous classroom race', () => {
   })
   it('applies position penalties together and integrates the full braking second',()=>{
     const {room,players,start}=setup()
-    players.forEach((p,i)=>{p.speed=(i?80:100)/3.6;p.targetSpeed=p.speed;p.streak=9})
+    players.forEach((p,i)=>{p.speed=(i?30:40)/3.6;p.targetSpeed=p.speed;p.streak=9})
     answer(room,players[0].token,0,1-room.deck[0].correct,start+100)
-    expect(players[0].speed*3.6).toBeCloseTo(100)
+    expect(players[0].speed*3.6).toBeCloseTo(40)
     answer(room,players[1].token,0,1-room.deck[0].correct,start+900)
     expect(players.map(p=>p.streak)).toEqual([0,0])
     advanceRace(room,start+1400)
-    expect(players[0].speed*3.6).toBeCloseTo(70)
-    expect(players[1].speed*3.6).toBeCloseTo(72)
+    expect(players[0].speed*3.6).toBeCloseTo(30)
+    expect(players[1].speed*3.6).toBeCloseTo(27)
     advanceRace(room,start+1900)
-    expect(players[0].speed*3.6).toBeCloseTo(40)
-    expect(players[1].speed*3.6).toBeCloseTo(64)
+    expect(players[0].speed*3.6).toBeCloseTo(20)
+    expect(players[1].speed*3.6).toBeCloseTo(24)
   })
   it.each(['answers', 'timeout'])('uses all four distance ranks at the shared %s boundary', mode=>{
     const {room,players,start}=setup(4)
     // Join/lane order deliberately differs from race position.
-    const metres=[200,400,100,300]
-    players.forEach((p,i)=>Object.assign(p,{metres:metres[i],speed:100/3.6,targetSpeed:100/3.6}))
+    const metres=[60,120,30,90]
+    players.forEach((p,i)=>Object.assign(p,{metres:metres[i],speed:40/3.6,targetSpeed:40/3.6}))
     if(mode==='answers') {
       players.forEach((p,i)=>answer(room,p.token,0,1-room.deck[0].correct,start+(i+1)*100))
     } else {
       advanceRace(room,start+WINDOW_MS+.125)
     }
-    ;[70,40,80,60].forEach((speed,i)=>expect(players[i].targetSpeed!*3.6).toBeCloseTo(speed))
+    ;[28,20,32,24].forEach((speed,i)=>expect(players[i].targetSpeed!*3.6).toBeCloseTo(speed))
   })
   it('uses position after an overtake, not position when the early answer arrived',()=>{
     const {room,players,start}=setup(4)
-    players.forEach((p,i)=>Object.assign(p,{metres:[10,0,-100,-200][i],speed:[100,200,50,50][i]/3.6,targetSpeed:[100,200,50,50][i]/3.6}))
+    players.forEach((p,i)=>Object.assign(p,{metres:[1,0,-10,-20][i],speed:[35,40,20,20][i]/3.6,targetSpeed:[35,40,20,20][i]/3.6}))
     const wrong=1-room.deck[0].correct
     answer(room,players[0].token,0,wrong,start+100)
     expect(players[0].metres).toBeGreaterThan(players[1].metres)
-    expect(players[0].targetSpeed!*3.6).toBeCloseTo(100)
+    expect(players[0].targetSpeed!*3.6).toBeCloseTo(35)
     players.slice(1).forEach(p=>answer(room,p.token,0,wrong,start+1000))
     expect(players[1].metres).toBeGreaterThan(players[0].metres)
-    expect(players[0].targetSpeed!*3.6).toBeCloseTo(60)
-    expect(players[1].targetSpeed!*3.6).toBeCloseTo(80)
+    expect(players[0].targetSpeed!*3.6).toBeCloseTo(21)
+    expect(players[1].targetSpeed!*3.6).toBeCloseTo(20)
   })
   it('locks first answers and retries the last answer without applying the round twice',()=>{
     const {room,players,start}=setup()
@@ -170,14 +170,16 @@ describe('simultaneous classroom race', () => {
     expect(room.players[0].speed).toBeCloseTo(restored.players[0].speed,8)
     expect(room.round).toBe(restored.round)
   })
-  it('has no fixed deck limit and allows minimum-speed riders to finish',()=>{
-    const {room,players,start}=setup()
-    advanceRace(room,start+200000)
+  it.each(racePools.map(pool=>pool.id))('finishes %s with every answer missed in 103 seconds from Start',stageId=>{
+    const {room,players,start}=setup(10)
+    room.stageId=stageId
+    advanceRace(room,start+100499)
     expect(room.phase).toBe('answering')
-    expect(room.round).toBeGreaterThanOrEqual(19)
-    advanceRace(room,start+5000000)
+    expect(room.round).toBeGreaterThanOrEqual(10)
+    advanceRace(room,start+100501)
     expect(room.phase).toBe('finished')
     expect(players[0].metres).toBe(FINISH)
+    expect(room.updatedAt-1000).toBeCloseTo(103000,5)
   })
   it('preserves identity on rejoin and enforces ten unique players',()=>{
     const {room,players,start}=setup(10)
@@ -325,4 +327,19 @@ describe('repeated races in one classroom', () => {
     expect(() => prepareRace(room, room.host, { ...nextStage, questions: [nextStage.questions[0]] }, 1, 100)).toThrow()
     expect(JSON.stringify(room)).toBe(before)
   })
+})
+
+it('finishes ten fast accurate players in about 55 seconds without exceeding 40 km/h',()=>{
+  const {room,players}=setup(10)
+  while(room.phase!=='finished') {
+    const at=room.opensAt+3000
+    advanceRace(room,at)
+    if(room.phase==='finished') break
+    const round=room.round, correct=room.deck[round].correct
+    players.forEach(p=>answer(room,p.token,round,correct,at))
+    players.forEach(p=>expect(p.targetSpeed!*3.6).toBeLessThanOrEqual(40))
+  }
+  expect((room.updatedAt-1000)/1000).toBeGreaterThan(54)
+  expect((room.updatedAt-1000)/1000).toBeLessThan(56)
+  expect(players.every(p=>p.metres===FINISH)).toBe(true)
 })
