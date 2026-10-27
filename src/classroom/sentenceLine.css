@@ -144,3 +144,44 @@
 .cw-game-icon-clocks::before,.cw-game-icon-clocks::after{content:"";position:absolute;background:url('/classroom/icons/location-clock.png') right center / 200% 100% no-repeat}
 .cw-game-icon-clocks::before{width:74%;height:74%;top:0;right:0}
 .cw-game-icon-clocks::after{width:78%;height:78%;bottom:0;left:0}
+
+/* Quick word switching stays underneath the four teaching slots. */
+.cw-slot-shell{position:relative;display:flex;min-width:0;align-self:stretch}
+.classroom .cw-sentence-board .cw-slot-shell>.tonight-slot{width:100%;height:100%}
+.cw-slot-picker{position:absolute;right:10px;bottom:8px;display:grid;place-items:center;width:40px;height:36px;padding:0;border:1px solid #18385e24;border-radius:12px;background:#ffffffdc;color:#18385e;cursor:pointer}
+.cw-slot-shell-1 .cw-slot-picker{color:#086036}
+.cw-slot-picker svg{width:22px;height:22px;transition:transform 180ms}
+.cw-slot-picker[aria-expanded=true] svg{transform:rotate(180deg)}
+.cw-slot-picker:hover{background:#fff}
+.cw-slot-picker:focus-visible,.cw-word-conveyor button:focus-visible{outline:3px solid #1877ef;outline-offset:3px}
+.cw-word-conveyor{--belt-accent:#bc8b0c;display:flex;align-items:center;gap:8px;position:relative;margin-top:22px;padding:12px 40px 12px 8px;border:1px solid #dbe4ed;border-top:3px solid var(--belt-accent);border-radius:18px;background:#f5f8fc;min-width:0}
+.cw-word-conveyor[hidden]{display:none}
+.cw-word-conveyor[data-slot="1"]{--belt-accent:#128247}
+.cw-word-belt{display:flex;gap:10px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:#aabed3 transparent;padding:5px 3px 9px;min-width:0;flex:1}
+.cw-word-chip{flex:0 0 120px;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:100px;padding:10px 8px;border:2px solid #dbe4ed;border-radius:14px;background:white;color:#18385e;cursor:pointer}
+.cw-word-chip strong{font-family:'Fredoka',sans-serif;font-size:23px;font-weight:500;line-height:1.2}
+.cw-word-chip>span[lang]{font-size:12px;line-height:1.4}
+.cw-word-chip[aria-pressed=true]{border-color:var(--belt-accent);background:#fff7ce}
+.cw-word-conveyor[data-slot="1"] .cw-word-chip[aria-pressed=true]{background:#e6f5eb}
+.cw-word-chip:disabled{opacity:.4;cursor:not-allowed}
+.cw-word-chip .cw-game-icon{width:46px;height:46px}
+.cw-word-chip .vocabulary-picture{height:44px;max-width:94px;margin:0}
+.cw-word-chip .vocabulary-picture img,.cw-word-chip .vocabulary-picture svg{width:44px;height:44px}
+.cw-belt-arrow,.cw-belt-close{display:grid;place-items:center;flex:none;width:32px;height:40px;padding:0;border:0;border-radius:10px;background:white;color:#1877ef;cursor:pointer}
+.cw-belt-arrow svg,.cw-belt-close svg{width:20px;height:20px}
+.cw-belt-close{position:absolute;right:4px;top:4px;width:30px;height:30px;background:transparent;color:#56718d}
+@media(max-width:700px){
+ .cw-slot-picker{right:4px;bottom:4px;width:32px;height:30px;border-radius:9px}
+ .cw-word-conveyor{margin-top:16px;padding:8px 30px 8px 5px;gap:3px}
+ .cw-word-chip{flex-basis:104px;min-height:92px}
+ .cw-word-chip strong{font-size:20px}
+ .cw-belt-arrow{width:25px}
+}
+@media(prefers-reduced-motion:reduce){.cw-slot-picker svg{transition:none}.cw-word-belt{scroll-behavior:auto}}
+
+.cw-word-conveyor[data-slot="1"],.cw-word-conveyor[data-slot="2"]{width:fit-content;max-width:100%;margin-inline:auto}
+.cw-word-conveyor[data-slot="1"] .cw-word-belt,.cw-word-conveyor[data-slot="2"] .cw-word-belt{flex:0 1 auto}
+.cw-sentence-board:has(.cw-word-conveyor.is-open) .cw-sentence-display{padding-block:18px}
+.classroom .example-matrix .cw-word-chip .vocabulary-picture-art{display:grid;width:60px;height:48px}
+.cw-word-chip .vocabulary-picture-art img{width:100%;height:100%}
+.cw-word-chip .vocabulary-picture-art:has(img:nth-child(2)) img{width:78%;height:78%}

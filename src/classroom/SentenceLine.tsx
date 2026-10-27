@@ -23,10 +23,17 @@ export default function SentenceLine({ word, onWord, audio, catalogue = lessonOn
   const recording = useRef<HTMLAudioElement>(null)
   const [audioError, setAudioError] = useState(false)
   useEffect(()=>{const player=recording.current;return()=>player?.pause()},[word,owner])
-  const choices = active === 0 ? [{word:'Where',thai:'ที่ไหน'}] : active === 1 ? [{word:'is',thai:'อยู่ · ปัจจุบัน'}] : active === 2 ? owners : catalogue
+  const choices = active === 0 ? [{word:'Where',thai:'ที่ไหน'}] : active === 1 ? (pluralLesson ? [{word:'is',thai:'หนึ่งสิ่ง'}, {word:'are',thai:'หลายสิ่ง'}] : [{word:'is',thai:'อยู่ · ปัจจุบัน'}]) : active === 2 ? owners : catalogue
   useEffect(() => () => window.speechSynthesis?.cancel(), [word, owner])
   const choicesId = useId()
   const board = useRef<HTMLElement>(null)
+  const belt = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (active === null) return
+    const selected = belt.current?.querySelector<HTMLButtonElement>('[aria-pressed=true]')
+    selected?.focus({preventScroll:true})
+    selected?.scrollIntoView?.({block:'nearest',inline:'center'})
+  }, [active])
   const motion = useRef<ViewTransition | null>(null)
   function explain(slot: number | null) {
     motion.current?.skipTransition()
@@ -68,8 +75,30 @@ export default function SentenceLine({ word, onWord, audio, catalogue = lessonOn
   if (explaining !== null) return <WordExplanation key={explaining} slot={explaining} value={owner} onChange={setOwner} onBack={()=>explain(null)} word={word} thai={item.thai} onWord={onWord} catalogue={catalogue} verb={verb} onVerb={pluralLesson ? next=>onWord(formForVerb(item,next)) : undefined}/>
   function closeChoices() {
     setActive(null)
-    board.current?.querySelector<HTMLButtonElement>(`.slot-${active}.example-unit-trigger`)?.focus()
+    board.current?.querySelector<HTMLButtonElement>(`[data-picker-slot="${active}"]`)?.focus({preventScroll:true})
   }
+  function picker(slot: number, count: number) {
+    if (count < 2) return undefined
+    return <button type="button" className="cw-slot-picker" data-picker-slot={slot} aria-label={`Change ${slot===1 ? 'is / are' : slot===2 ? 'the / my / your' : 'vocabulary'}`} aria-expanded={active===slot} aria-controls={choicesId} onClick={()=>setActive(previous=>previous===slot ? null : slot)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+  }
+  const selectedWord = active===1 ? verb : active===2 ? owner : word
+  const conveyor = <div className={`cw-word-conveyor${open ? ' is-open' : ''}`} id={choicesId} hidden={!open} data-slot={active}>
+    {active===3 && <button type="button" className="cw-belt-arrow" aria-label="Previous words" onClick={()=>belt.current?.scrollBy({left:-240,behavior:'smooth'})}><Icon name="back"/></button>}
+    <div className="cw-word-belt" ref={belt} role="group" aria-label="Choose a word">
+      {choices.map(choice=><button type="button" className="cw-word-chip" key={choice.word} aria-pressed={selectedWord===choice.word} disabled={active===1 && choice.word==='is' && item.pairOnly} onClick={()=>{
+        if(active===1) onWord(formForVerb(item,choice.word as 'is'|'are'))
+        if(active===2) setOwner(choice.word as Determiner)
+        if(active===3) onWord(choice.word)
+        closeChoices()
+      }}>
+        {active===1 && <WordSlotIcon slot={1} plural={choice.word==='are'}/>}
+        {active===3 && <VocabularyPicture word={choice.word}/>}
+        <strong lang="en">{choice.word}</strong><span lang="th">{choice.thai}</span>
+      </button>)}
+    </div>
+    {active===3 && <button type="button" className="cw-belt-arrow" aria-label="Next words" onClick={()=>belt.current?.scrollBy({left:240,behavior:'smooth'})}><Icon name="arrow"/></button>}
+    <button type="button" className="cw-belt-close" aria-label="Close word picker" onClick={closeChoices}><Icon name="close"/></button>
+  </div>
   return <section ref={board} className="cw-sentence-board" data-long-word={word.length > 8 || undefined} aria-label={`Where ${verb} ${owner} ${word}?`} onKeyDown={event => {
     if (event.key === 'Escape' && open) { event.stopPropagation(); closeChoices() }
   }}>
@@ -81,7 +110,8 @@ export default function SentenceLine({ word, onWord, audio, catalogue = lessonOn
         { english: verb, thai: 'อยู่' },
         { english: owner, thai: ownerThai },
         { english: `${word}?`, thai: item.thai },
-      ]} slotDetails={[{label:'Question',count:1,icon:<WordSlotIcon slot={0}/>},{label:'Tense · now',count:pluralLesson ? 2 : 1,icon:<WordSlotIcon slot={1} plural={verb==='are'}/>},{label:'Which / whose',count:3,icon:<WordSlotIcon slot={2}/>},{label:'Person / thing',count:catalogue.length,icon:pluralLesson ? <WordSlotIcon slot={3} plural={item.number==='plural'}/> : <VocabularyPicture word={word}/>}]}
+      ]} slotDetails={[{label:'Question',count:1,icon:<WordSlotIcon slot={0}/>},{label:'Tense · now',count:pluralLesson ? 2 : 1,control:picker(1,pluralLesson ? 2 : 1),icon:<WordSlotIcon slot={1} plural={verb==='are'}/>},{label:'Which / whose',count:3,control:picker(2,3),icon:<WordSlotIcon slot={2}/>},{label:'Person / thing',count:catalogue.length,control:picker(3,catalogue.length),icon:<VocabularyPicture word={word}/>}]}
+      afterUnits={conveyor}
       translationControl={pluralLesson ? <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={async()=>{if(recording.current){recording.current.src=lessonTwoAudio(word,owner,verb);setAudioError(false);try{await recording.current.play()}catch{setAudioError(true)}}}}><Icon name="sound"/></button> : owner === 'the' ? audio : <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={() => {
         window.speechSynthesis.cancel()
         const speech = new SpeechSynthesisUtterance(`Where ${verb} ${owner} ${word}?`)
@@ -96,15 +126,6 @@ export default function SentenceLine({ word, onWord, audio, catalogue = lessonOn
       ]}/>
 
     </div>
-    <div className={`cw-vocabulary-drawer${open ? ' is-open' : ''}`} id={choicesId} inert={!open} aria-hidden={!open}>
-      <div className="cw-vocabulary-clip">
-        <section className="cw-vocabulary" aria-labelledby={`${choicesId}-title`}>
-          <header><h2 id={`${choicesId}-title`} lang="th">{['Question', 'Tense · present singular', 'the / my / your', 'Vocabulary'][active ?? 3]}</h2><button type="button" aria-label="ปิดคำศัพท์" onClick={closeChoices}><Icon name="close"/></button></header>
-          <div className="cw-vocabulary-options" role="group" aria-label="คำศัพท์">
-            {choices.map(choice => <button type="button" key={choice.word} aria-pressed={(active === 2 ? owner : active === 0 ? 'Where' : active === 1 ? 'is' : word) === choice.word} onClick={() => { if(active === 2) setOwner(choice.word as Determiner); if(active === 3) onWord(choice.word) }}>{active===3 && <VocabularyPicture word={choice.word}/>}<strong lang="en">{choice.word}</strong><span lang="th">{choice.thai}</span>{(active === 2 ? owner : active === 0 ? 'Where' : active === 1 ? 'is' : word) === choice.word && <Icon name="check"/>}</button>)}
-          </div>
-        </section>
-      </div>
-    </div>
+
   </section>
 }
