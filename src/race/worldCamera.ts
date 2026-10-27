@@ -1,7 +1,7 @@
 import type { RacePlayer } from './types'
 
 // Fixed game-world artwork dimensions, never a minimum screen-pixel size.
-export const WORLD_HORSE_WIDTH = 120
+export const WORLD_HORSE_WIDTH = 220
 
 // Race distance and horse artwork share one scale. Lane spacing is a layout
 // dimension: widen it as the camera pulls back so the track still fills the view.

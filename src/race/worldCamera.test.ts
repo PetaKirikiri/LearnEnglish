@@ -40,7 +40,7 @@ describe('one world, one race camera', () => {
   })
   it('zooms horizontally as the field spreads while keeping the lanes full height',()=>{
     const close=demoAt(0).players
-    const spread=close.map((p,i)=>({...p,metres:i*300}))
+    const spread=close.map((p,i)=>({...p,metres:i*450}))
     const a=worldCamera(close,1440,700,4),b=worldCamera(spread,1440,700,4)
     expect(b.scale).toBeLessThan(a.scale)
     expect(b.trackHeight*b.scale).toBeCloseTo(a.trackHeight*a.scale)

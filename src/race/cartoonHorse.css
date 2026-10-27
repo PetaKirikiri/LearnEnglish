@@ -1,0 +1,7 @@
+.cartoon-horse{display:inline-block;position:relative;width:180px;height:116px;flex:0 0 180px;isolation:isolate}
+.cartoon-horse-frames{position:absolute;inset:0;background-image:url('/images/race/cartoon-gallop-v2.png');background-size:400% 200%;background-repeat:no-repeat;animation:cartoon-gallop var(--gallop-duration,.8s) steps(1,end) infinite}
+.cartoon-horse.is-powered .cartoon-horse-frames{background-image:url('/images/race/cartoon-golden-gallop-v2.png');filter:drop-shadow(0 0 5px #ffca45)}
+.cartoon-horse.is-paused .cartoon-horse-frames{animation-play-state:paused}
+@keyframes cartoon-gallop{0%{background-position:0 0}12.5%{background-position:33.3333% 0}25%{background-position:66.6667% 0}37.5%{background-position:100% 0}50%{background-position:0 100%}62.5%{background-position:33.3333% 100%}75%{background-position:66.6667% 100%}87.5%{background-position:100% 100%}}
+@media(prefers-reduced-motion:reduce){.cartoon-horse-frames{animation:none}}
+@media(max-width:360px){.cartoon-horse{width:150px;flex-basis:150px;height:100px}}

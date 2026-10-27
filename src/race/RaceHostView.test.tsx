@@ -28,7 +28,7 @@ it('keeps the minimal race focused on named horses without side statistics or st
   expect(html).toContain('sprint-rider-label')
   expect(html).toContain('Peta')
   expect(html.match(/class="sprint-lane"/g)).toHaveLength(4)
-  for(const hidden of ['sprint-name','km/h','metres','START','sprint-distance','sprint-marker','sprint-trail']) expect(html).not.toContain(hidden)
+  for(const hidden of ['sprint-name','metres','START','sprint-distance','sprint-marker','sprint-trail']) expect(html).not.toContain(hidden)
   expect(html).toContain('sprint-finish')
 })
 
@@ -48,10 +48,11 @@ it('uses the approved world track and animated horses for the classroom race',()
   expect(html).toContain('race-fullscreen')
   expect(html).toContain('race-world-track')
   expect(dom.querySelectorAll('.race-world-lane')).toHaveLength(10)
+  expect(dom.querySelectorAll('.race-horse-speed')).toHaveLength(10)
   expect(dom.querySelectorAll('.race-world-horse .horse-motion')).toHaveLength(10)
   expect(html).toContain('is-running')
   expect(dom.querySelector('.race-live-question')?.textContent).toBe('How many?')
-  for(const hidden of ['race-horse-sprite','sprint-lane','sprint-trail','sprint-course-overview','sprint-name','km/h','/english/race/admin','Scan to join','race-roster','race-header','metres per correct answer']) expect(html).not.toContain(hidden)
+  for(const hidden of ['race-horse-sprite','sprint-lane','sprint-trail','sprint-course-overview','sprint-name','/english/race/admin','Scan to join','race-roster','race-header','metres per correct answer']) expect(html).not.toContain(hidden)
 })
 
 it('keeps a returning rider at their earned distance instead of animating from the start',()=>{

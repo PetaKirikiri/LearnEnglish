@@ -39,7 +39,7 @@ export default function RacePhoneAnswers({ choices, picked, disabled, onChoose }
     const judgement = /^(correct|wrong|incorrect)$/i.test(choice)
     const positive = /^correct$/i.test(choice)
     return <button key={i} className={`${judgement ? `race-judgement ${positive ? 'is-yes' : 'is-no'}` : `race-meaning answer-${i + 1}`}${picked === i ? ' is-picked' : ''}`} aria-pressed={picked === i} disabled={disabled} onClick={() => onChoose(i)}>
-      {judgement && <svg className="race-answer-symbol" viewBox="0 0 64 64" aria-hidden="true"><path d={positive ? 'M12 33 L26 47 L53 17' : 'M17 17 L47 47 M47 17 L17 47'}/></svg>}
+      {judgement && <svg className="race-answer-symbol" viewBox="0 0 64 64" aria-hidden="true"><path d={positive ? 'M8 31 17 22 27 32 47 12 57 22 27 52Z' : 'M14 6 32 24 50 6 58 14 40 32 58 50 50 58 32 40 14 58 6 50 24 32 6 14Z'}/></svg>}
       <span lang="th">{judgement ? positive ? 'ถูกต้อง' : 'ไม่ถูกต้อง' : choice}</span>
       {!judgement && <b className="race-choice-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M20 11a8 8 0 0 1-8 8H5l-3 3V11a9 9 0 0 1 18 0Z"/></svg>{i + 1}</b>}
     </button>

@@ -1,6 +1,7 @@
 import type { Plugin } from 'vite'
 
-export const publicRaceOrigin = 'https://learn-english-coral.vercel.app'
+import { publicRaceOrigin } from '../src/race/publicLinks'
+export { publicRaceOrigin } from '../src/race/publicLinks'
 
 // The teacher may preview the UI locally, but every shared race lives online.
 // Keep the same-origin browser API while forwarding only the race credentials.

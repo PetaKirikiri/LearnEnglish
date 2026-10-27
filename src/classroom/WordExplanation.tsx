@@ -1,0 +1,66 @@
+import { useEffect, useRef, type CSSProperties } from 'react'
+import { wordChoices } from './lessonOne'
+import type { HolidayWord } from '../race/holidayVocabulary'
+import { slotReferences, fixedWordReferences, type ReferenceRow } from './wordReference'
+import './wordExplanation.css'
+
+export type Determiner = 'the' | 'my' | 'your'
+const meanings = {
+  the: { title:'สิ่งที่รู้กันว่าหมายถึงอันไหน', explanation:'ใช้เมื่อผู้พูดและผู้ฟังรู้ว่ากำลังพูดถึงสิ่งไหน', gloss:'ที่กำลังพูดถึง' },
+  my: { title:'ของคนที่กำลังพูด', explanation:'ใช้เมื่อสิ่งนั้นเป็นของผู้พูด', gloss:'ของฉัน' },
+  your: { title:'ของคนที่เราพูดด้วย', explanation:'ใช้เมื่อสิ่งนั้นเป็นของผู้ฟัง', gloss:'ของคุณ' },
+} as const
+const types = [
+  {name:'คำถาม',english:'Question word',role:'บอกว่าเราต้องการรู้อะไร',explanation:'คำถามแต่ละคำใช้ถามข้อมูลต่างกัน ในประโยคนี้เราต้องการรู้สถานที่',colour:'#df2944',ink:'#fff'},
+  {name:'คำกริยา',english:'Verb · be',role:'เชื่อมสิ่งที่พูดถึงกับข้อมูลของสิ่งนั้น',explanation:'ในคำถามนี้ กริยา be อยู่หน้าสิ่งที่ถามถึง รูปของคำเปลี่ยนตามเวลาและสิ่งที่พูดถึง',colour:'#128247',ink:'#fff'},
+  {name:'คำกำหนดนาม',english:'Determiner',role:'บอกว่าสิ่งไหน หรือของใคร',explanation:'อยู่หน้าคำนาม และทำงานร่วมกับคำนาม เช่น สิ่งที่รู้กัน ของฉัน หรือของคุณ',colour:'#ffd43b',ink:'#18385e'},
+  {name:'คำนาม',english:'Noun',role:'ชื่อของคน สถานที่ หรือสิ่งของ',explanation:'ในช่องนี้ เราใส่ชื่อสิ่งที่ต้องการถามหา เปลี่ยนคำนามได้โดยใช้รูปประโยคเดิม',colour:'#ffd43b',ink:'#18385e'},
+] as const
+
+export default function WordExplanation({slot,value,onChange,onBack,word,thai,onWord}: {slot:number;value:Determiner;onChange:(word:Determiner)=>void;onBack:()=>void;word:HolidayWord;thai:string;onWord:(word:HolidayWord)=>void}) {
+  const back = useRef<HTMLButtonElement>(null)
+  useEffect(()=>{back.current?.focus({preventScroll:true})},[])
+  const type = types[slot]
+  const selected = ['Where','is',value,word][slot]
+  const owner = meanings[value]
+  const category = slotReferences[slot]
+  const detail = fixedWordReferences[selected] ?? {
+    meaning:thai,
+    function:'คำนามนับได้ ใช้เรียกสถานที่หรือสิ่งของ',
+    usage:[['จำนวน','รูปที่แสดงเป็นเอกพจน์ หมายถึงหนึ่งหน่วย'],['การใช้','เมื่อใช้คำนามนับได้เอกพจน์ในประโยค โดยทั่วไปต้องมีคำกำหนดนามอยู่ข้างหน้า']] as readonly ReferenceRow[],
+  }
+  return <section id="word-explanation" className="cw-word-explanation" style={{'--word-colour':type.colour,'--word-ink':type.ink} as CSSProperties} onKeyDown={event=>{if(event.key==='Escape'){event.stopPropagation();onBack()}}}>
+    <header className="cw-word-heading">
+      <button ref={back} className="cw-word-return" onClick={onBack} aria-label="กลับไปที่ประโยค" title="กลับไปที่ประโยค"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m14 6-6 6 6 6"/><path d="M8 12h12"/></svg></button>
+      <div className="cw-simple-word-title">
+        {slot < 2 && <span className={`cw-game-icon ${slot===0?'cw-game-icon-pin':'cw-game-icon-clock'}`} aria-hidden="true"/>}
+        <div><h1>{selected}</h1><p lang="th">{slot===0?'ที่ไหน':slot===1?'อยู่ · ปัจจุบัน':slot===2?owner.gloss:thai}</p></div>
+      </div>
+    </header>
+    <div className="cw-word-body">
+      <section className="cw-reference-section" lang="th">
+        <h2>{category.name} <span lang="en">{category.english}</span></h2>
+        <p>{category.responsibility}</p>
+      </section>
+      <section className="cw-reference-section" lang="th">
+        <h2>การทำงานของช่องนี้</h2>
+        <ReferenceRows rows={category.mechanics}/>
+      </section>
+      <section className="cw-reference-section">
+        <h2 lang="en">{selected}</h2>
+        <ReferenceRows rows={[["ความหมาย",detail.meaning],["หน้าที่",detail.function]]}/>
+      </section>
+      <section className="cw-reference-section" lang="th">
+        <h2>ข้อควรรู้ในการใช้</h2>
+        <ReferenceRows rows={detail.usage}/>
+      </section>
+      {(slot===2 || slot===3) && <div className="cw-word-options" role="group" aria-label="เลือกคำ">
+        {(slot===2 ? Object.entries(meanings).map(([word,item])=>({word,thai:item.gloss})) : wordChoices).map(option=><button key={option.word} aria-pressed={selected===option.word} onClick={()=>slot===2?onChange(option.word as Determiner):onWord(option.word as HolidayWord)}><strong>{option.word}</strong><span lang="th">{option.thai}</span></button>)}
+      </div>}
+    </div>
+  </section>
+}
+
+function ReferenceRows({rows}:{rows:readonly ReferenceRow[]}) {
+  return <dl className="cw-reference-rows" lang="th">{rows.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+}

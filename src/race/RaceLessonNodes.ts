@@ -1,6 +1,6 @@
 import { Node, mergeAttributes } from '@tiptap/core'
 import { ReactNodeViewRenderer } from '@tiptap/react'
-import { ExampleView, HolidayWordsView } from './RaceLessonNodeViews'
+import { ExampleView, HolidayWordsView, PluralWordsView } from './RaceLessonNodeViews'
 
 // Port of connectors/src/components/lessons/lessonLayoutNode.ts. The same
 // nested layout nodes stay in Yjs, so editing does not flatten the lesson.
@@ -32,4 +32,10 @@ export const HolidayWordsNode = Node.create({
   renderHTML() { return ['div', { 'data-holiday-words': '' }] },
   addNodeView() { return ReactNodeViewRenderer(HolidayWordsView) },
 })
-export const raceLessonExtensions = [LessonLayoutNode, LessonExampleNode, HolidayWordsNode]
+export const PluralWordsNode = Node.create({
+  name: 'pluralWords', group: 'block', atom: true,
+  parseHTML() { return [{ tag: 'div[data-plural-words]' }] },
+  renderHTML() { return ['div', { 'data-plural-words': '' }] },
+  addNodeView() { return ReactNodeViewRenderer(PluralWordsView) },
+})
+export const raceLessonExtensions = [LessonLayoutNode, LessonExampleNode, HolidayWordsNode, PluralWordsNode]

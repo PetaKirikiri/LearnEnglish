@@ -96,3 +96,7 @@
 .rl-share-code img { display:block; width:192px; height:192px; image-rendering:pixelated; }
 @media(max-width:540px) { .rl-share { padding:16px; gap:12px; }.rl-share-code { flex-basis:148px; width:148px; }.rl-share-code img { width:148px; height:148px; }.rl-share h2 { font-size:21px; }.rl-share>div>a { font-size:13px; } }
 @media(max-width:360px) { .rl-share { flex-direction:column; text-align:center; }.rl-share-code { flex-basis:auto; } }
+
+.rl-lesson-nav { display:flex; gap:12px; flex-wrap:wrap; margin:0 0 24px; }
+.rl-lesson-nav a { color:#425a4b; padding:10px 16px; border-radius:12px; text-decoration:none; border:1px solid #d6dfd7; }
+.rl-lesson-nav a[aria-current="page"] { background:#2e4d3b; color:white; }

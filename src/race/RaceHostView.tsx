@@ -55,6 +55,6 @@ export default function RaceHostView({ view, qr, busy, disconnected, countdown, 
       <h1 className="race-live-question" aria-live="polite">{view.phase === 'finished' ? finishTitle : view.question?.english}</h1>
     </header>
     <RaceWorldTrack players={view.players} finish={view.finish} running={running}
-      renderHorse={player => <HorseMotion mood={player.speed >= 14 ? 'confident' : player.speed > MIN_SPEED ? 'steady' : 'struggling'} speed={player.speed} onFire={(player.streak ?? 0) >= 3} paused={!running}/>}/>
+      renderHorse={player => <HorseMotion mood={player.speed >= 14 ? 'confident' : player.speed > MIN_SPEED ? 'steady' : 'struggling'} speed={player.speed} onFire={(player.streak ?? 0) >= 5} charge={player.streak ?? 0} power={Math.max(1, (player.streak ?? 0) - 4)} paused={!running}/>}/>
   </section>
 }

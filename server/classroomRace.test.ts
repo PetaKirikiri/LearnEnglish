@@ -33,7 +33,7 @@ describe('continuous classroom race', () => {
   })
   it.each([
     { streak: 0, minimum: CORRECT_MIN_SPEED },
-    { streak: 2, minimum: GOLDEN_MIN_SPEED },
+    { streak: 4, minimum: GOLDEN_MIN_SPEED },
   ])('accepts a correct answer at exactly ten seconds with prior streak $streak', ({ streak, minimum }) => {
     const {room,players,start} = setup()
     players[0].streak = streak
@@ -58,7 +58,7 @@ describe('continuous classroom race', () => {
   })
   it.each([
     { streak: 0, maximum: MAX_SPEED, minimum: CORRECT_MIN_SPEED },
-    { streak: 2, maximum: GOLDEN_SPEED, minimum: GOLDEN_MIN_SPEED },
+    { streak: 4, maximum: GOLDEN_SPEED, minimum: GOLDEN_MIN_SPEED },
   ])('preserves fractional-millisecond response timing with prior streak $streak', ({ streak, maximum, minimum }) => {
     const {room,players,start} = setup()
     const responseMs = 1234.125
@@ -117,15 +117,18 @@ describe('continuous classroom race', () => {
   it('perfect play crosses at the integrated boosted time without a next/reveal action', () => {
     const {room,players,start} = setup()
     const responseMs = .25
-    const normalSpeed = MAX_SPEED - (MAX_SPEED - CORRECT_MIN_SPEED) * responseMs / WINDOW_MS
-    const goldenSpeed = GOLDEN_SPEED - (GOLDEN_SPEED - GOLDEN_MIN_SPEED) * responseMs / WINDOW_MS
-    const warmup = 2 * WINDOW_MS
-    const distanceBeforeGolden = MIN_SPEED * responseMs / 1000 + normalSpeed * warmup / 1000
-    const finishMs = warmup + responseMs + (FINISH - distanceBeforeGolden) / goldenSpeed * 1000
-    for(let i=0;i<=Math.floor(finishMs / WINDOW_MS);i++) {
+    let distance = MIN_SPEED * responseMs / 1000
+    let elapsed = responseMs
+    let finishMs = 0
+    for (let i = 0; i < 100; i++) {
+      const speed = speedFor(true, responseMs, i + 1)
       const at = start + i * WINDOW_MS + responseMs
-      advanceRace(room,at)
-      answer(room,players[0].token,i,room.deck[i].correct,at)
+      advanceRace(room, at)
+      answer(room, players[0].token, i, room.deck[i].correct, at)
+      const remainingMs = (FINISH - distance) / speed * 1000
+      if (remainingMs <= WINDOW_MS) { finishMs = elapsed + remainingMs; break }
+      distance += speed * WINDOW_MS / 1000
+      elapsed += WINDOW_MS
     }
     advanceRace(room,start+finishMs-1); expect(room.phase).toBe('answering')
     advanceRace(room,start+finishMs+1); expect(room.phase).toBe('finished'); expect(players[0].metres).toBe(FINISH)

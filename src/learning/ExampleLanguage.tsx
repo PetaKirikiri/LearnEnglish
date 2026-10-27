@@ -11,7 +11,7 @@ type UnitAction = { index: number; onClick: () => void; expanded: boolean; contr
  * Units are authored in context; never zip a Thai sentence to English words.
  * ** emphasis may cross unit boundaries (or begin inside an inflected word).
  */
-export default function ExampleLanguage({english,thai,units,matrix=false,unitAction,translationControl,unitActions,slotDetails,groupLastTwo=false}:{english:string;thai:string;units:readonly ExampleUnit[];matrix?:boolean;unitAction?:UnitAction;translationControl?:ReactNode;unitActions?:UnitAction[];slotDetails?:readonly {label:string;count:number}[];groupLastTwo?:boolean}) {
+export default function ExampleLanguage({english,thai,units,matrix=false,unitAction,translationControl,unitActions,slotDetails,groupLastTwo=false}:{english:string;thai:string;units:readonly ExampleUnit[];matrix?:boolean;unitAction?:UnitAction;translationControl?:ReactNode;unitActions?:UnitAction[];slotDetails?:readonly {label:string;count:number;icon?:ReactNode}[];groupLastTwo?:boolean}) {
   const spans=english.split('**').map((text,index,parts)=>{
     const start=parts.slice(0,index).join('').length
     return {text,start,end:start+text.length,marked:index%2===1}
@@ -25,7 +25,7 @@ export default function ExampleLanguage({english,thai,units,matrix=false,unitAct
       const action = unitActions?.find(action => action.index === index) ?? (unitAction?.index === index ? unitAction : undefined)
       const detail = slotDetails?.[index]
       const content = <>
-        {detail && <span className="cw-slot-role">{detail.label}</span>}
+        {detail && <span className="cw-slot-role">{detail.icon === undefined ? detail.label : detail.icon}</span>}
         {matrix && slot === 3 && <VocabularyPicture word={unit.english}/>}
         <span className="example-source">{spans.filter(span=>span.start<end&&span.end>start).map((span,i)=>{
           const text=span.text.slice(Math.max(start,span.start)-span.start,Math.min(end,span.end)-span.start)

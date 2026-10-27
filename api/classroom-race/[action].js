@@ -13,12 +13,14 @@ var MIN_SPEED = 4;
 var CORRECT_MIN_SPEED = 8;
 var MAX_SPEED = 16;
 var GOLDEN_MIN_SPEED = 18;
-var GOLDEN_SPEED = 30;
+var GOLDEN_SPEED = 24;
+var LEVEL_SPEED_STEP = 1;
+var powerLevel = (streak) => Math.max(0, Math.floor(streak) - 4);
 var START_DELAY_MS = 2500;
 function speedFor(correct, elapsedMs, streak = 0) {
   if (!correct) return MIN_SPEED;
   const quickness = Math.max(0, 1 - Math.max(0, elapsedMs) / WINDOW_MS);
-  if (streak >= 3) return GOLDEN_MIN_SPEED + (GOLDEN_SPEED - GOLDEN_MIN_SPEED) * quickness;
+  if (streak >= 5) return GOLDEN_MIN_SPEED + (GOLDEN_SPEED - GOLDEN_MIN_SPEED) * quickness + (powerLevel(streak) - 1) * LEVEL_SPEED_STEP;
   return CORRECT_MIN_SPEED + (MAX_SPEED - CORRECT_MIN_SPEED) * quickness;
 }
 
@@ -424,6 +426,11 @@ var racePools = [
   { id: "tonight-slots", title: "Where is \xB7 the / my / your \xB7 Tonight", kind: "meaning", questions: tonightMeaningQuestions }
 ];
 
+// src/race/publicLinks.ts
+var publicRaceOrigin = "https://learn-english-coral.vercel.app";
+var publicPracticeUrl = `${publicRaceOrigin}/english/practice`;
+var publicRaceJoinUrl = (room) => `${publicRaceOrigin}/english/race/join/${room}`;
+
 // server/classroomRaceCloud.ts
 function cloudStore() {
   const origin = process.env.RACE_SUPABASE_URL;
@@ -486,7 +493,7 @@ async function cloudAction(store, action, method, id, secret, body, origin, rece
     const changed = method === "POST" || room.round !== previousRound || room.phase !== previousPhase;
     if (changed && !await store.save(id, stored.revision, room)) continue;
     const view = viewRoom(room, secret, now());
-    if (secret === room.host) view.joinUrl = `${origin}/english/race/join/${room.id}`;
+    if (secret === room.host) view.joinUrl = publicRaceJoinUrl(room.id);
     return view;
   }
   fail("The classroom is busy. Try again.", 409);
@@ -521,7 +528,7 @@ async function handler(req, res) {
       if (!body || typeof body !== "object" || Array.isArray(body)) fail("Send a valid race request.");
     }
     const secret = req.headers.authorization?.replace(/^Bearer /, "") ?? "";
-    const result = await cloudAction(cloudStore(), action, method, url.searchParams.get("room") ?? "", secret, body, origin, receivedAt);
+    const result = await cloudAction(cloudStore(), action, method, url.searchParams.get("room") ?? "", secret, body, publicRaceOrigin, receivedAt);
     res.statusCode = 200;
     res.end(JSON.stringify(result));
   } catch (error) {

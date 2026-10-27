@@ -161,13 +161,13 @@ it('previews the same-noun curveball pair alongside the normal meaning pair', as
 })
 
 
-it('shows only teacher settings and Done without branding, classroom panels or separate-screen links', async () => {
+it('shows teacher settings with lesson and race navigation without classroom panels', async () => {
   localStorage.setItem(HOST_KEY, JSON.stringify(credentials))
   current = { ...current, phase: 'lobby', round: -1, players: [{ id: 'peta', name: 'Peta', lane: 0, metres: 0, speed: 4, answered: false }] }
   await mount()
   expect(doneButton()).toBeTruthy()
   expect(host.querySelectorAll('img, [target="_blank"]')).toHaveLength(0)
-  expect([...host.querySelectorAll('a')].every(link => link.getAttribute('href') === '/english/race/lesson')).toBe(true)
+  expect([...host.querySelectorAll('a')].map(link => link.getAttribute('href'))).toEqual(['/english/race/lesson', '/english/race'])
   expect(host.querySelector('.race-admin-classroom, .race-admin-roster, .race-admin-card')).toBeNull()
   for (const text of ['ENGLISH SUCCESS', 'Open race screen', 'Show QR code', 'Classroom', 'Players', 'Start race', 'Peta']) expect(host.textContent).not.toContain(text)
   expect([...host.querySelectorAll('button')].filter(button => !button.getAttribute('aria-label')?.startsWith('Play '))).toHaveLength(1)
@@ -185,7 +185,7 @@ it('creates the first classroom on Done and confirms the update in place', async
   expect(host.textContent).toContain('Updated')
   expect(window.location.pathname).toBe('/english/race/admin')
   expect(host.querySelectorAll('[target="_blank"]')).toHaveLength(0)
-  expect([...host.querySelectorAll('a')].every(link => link.getAttribute('href') === '/english/race/lesson')).toBe(true)
+  expect([...host.querySelectorAll('a')].map(link => link.getAttribute('href'))).toEqual(['/english/race/lesson', '/english/race'])
 })
 
 it.each([0, 2])('updates a waiting lobby with %i joined players using the same credential and latest run', async playerCount => {

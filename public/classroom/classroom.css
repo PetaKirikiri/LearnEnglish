@@ -201,3 +201,7 @@ main{display:flex;flex-direction:column}
 /* The brand is a single white initial integrated into the blue rail. */
 .brand-mark{display:block;flex:none;color:#fff;font-family:'Fredoka','Nunito',sans-serif;font-size:clamp(84px,7vw,132px);font-weight:600;line-height:.85;letter-spacing:-.035em;text-indent:-.035em;user-select:none}
 @media(max-width:700px){.brand-mark{font-size:40px;line-height:1}}
+
+/* Thai classroom navigation keeps Thai glyphs and tone marks legible. */
+.phases[lang=th] .phase-button,.phases[lang=th] .submenu-items button{font-family:"Noto Sans Thai",sans-serif;line-height:1.55;letter-spacing:0}
+.phases[lang=th] .submenu-items button{white-space:normal}

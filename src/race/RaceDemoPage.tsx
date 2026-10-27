@@ -59,7 +59,7 @@ export default function RaceDemoPage() {
         {audioError && <button className="demo-audio-error" onClick={() => { setAudioError(false); void audio.current?.play().catch(() => setAudioError(true)) }}>Audio unavailable · Retry</button>}
       </header>
       <RaceWorldTrack players={snapshot.players} finish={FINISH} running={running}
-        renderHorse={player => <HorseMotion mood={snapshot.players[player.lane].mood} speed={player.speed} onFire={(player.streak ?? 0) >= 3} paused={!running}/>}/>
+        renderHorse={player => <HorseMotion mood={snapshot.players[player.lane].mood} speed={player.speed} onFire={(player.streak ?? 0) >= 5} charge={player.streak ?? 0} power={Math.max(1, (player.streak ?? 0) - 4)} paused={!running}/>}/>
     </section>}
   </main>
 }

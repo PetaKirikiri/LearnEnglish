@@ -67,3 +67,12 @@ it('rejects invalid routes, expired rooms and failed atomic writes',async()=>{
   await expect(cloudAction(blocked,'join','POST',host.room,token(),{name:'Guest'},origin,1)).rejects.toThrow('busy')
   expect(rows.get(host.room)!.state.players).toHaveLength(0)
 })
+
+it('keeps game QR links on the public website even when the host uses a preview address', async () => {
+  const { store } = memoryStore()
+  const host = await cloudAction(store, 'create', 'POST', '', '', selection, 'http://localhost:5185', 0) as {room:string;token:string}
+  for (const hostOrigin of ['http://localhost:5185', 'https://preview.example.com']) {
+    const view = await cloudAction(store, 'state', 'GET', host.room, host.token, {}, hostOrigin, 1, () => 1) as RaceView
+    expect(view.joinUrl).toBe(`${origin}/english/race/join/${host.room}`)
+  }
+})

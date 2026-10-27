@@ -11,10 +11,10 @@ function xml(node: JSONContent): Y.XmlElement | Y.XmlText {
   if (node.content?.length) element.insert(0, node.content.map(xml))
   return element
 }
-export function seedRaceLesson() {
+export function seedRaceLesson(seed: JSONContent = raceLessonSeed) {
   const doc = new Y.Doc()
   doc.getMap('pages').set('default', { id: 'default', title: 'Teaching', order: 0 })
-  doc.getXmlFragment('default').insert(0, raceLessonSeed.content!.map(xml))
+  doc.getXmlFragment('default').insert(0, seed.content!.map(xml))
   return doc
 }
 export const snapshotOf = (doc: Y.Doc) => Buffer.from(Y.encodeStateAsUpdate(doc)).toString('base64')
@@ -22,9 +22,9 @@ export function applySnapshot(doc: Y.Doc, snapshot: unknown) {
   if (typeof snapshot !== 'string' || snapshot.length > 2_000_000 || !/^[A-Za-z0-9+/]+={0,2}$/.test(snapshot)) throw new Error('Invalid document snapshot')
   Y.applyUpdate(doc, Buffer.from(snapshot, 'base64'))
 }
-export function raceLessonStore(directory: string) {
+export function raceLessonStore(directory: string, options: { filename?: string; seed?: JSONContent } = {}) {
   let queue = Promise.resolve()
-  const path = join(directory, 'where-is-the-notes.json')
+  const path = join(directory, options.filename ?? 'where-is-the-notes.json')
   const save = async (doc: Y.Doc) => {
     const snapshot = snapshotOf(doc)
     if (snapshot.length > 2_000_000) throw new Error('Document is too large')
@@ -40,7 +40,7 @@ export function raceLessonStore(directory: string) {
         try { const stored = JSON.parse(await readFile(path, 'utf8')); applySnapshot(doc, stored.snapshot) }
         catch (error) {
           if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
-          const seeded = seedRaceLesson(); Y.applyUpdate(doc, Y.encodeStateAsUpdate(seeded)); seeded.destroy()
+          const seeded = seedRaceLesson(options.seed); Y.applyUpdate(doc, Y.encodeStateAsUpdate(seeded)); seeded.destroy()
           await save(doc)
         }
         if (incoming !== undefined) { applySnapshot(doc, incoming); return await save(doc) }

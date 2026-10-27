@@ -1,3 +1,4 @@
+import PluralWordExplorer from './PluralWordExplorer'
 import { NodeViewWrapper, useEditorState, type NodeViewProps } from '@tiptap/react'
 import { useState } from 'react'
 import ExampleLanguage, { type ExampleUnit } from '../learning/ExampleLanguage'
@@ -8,7 +9,7 @@ export function ExampleView({ node, editor, updateAttributes }: NodeViewProps) {
   const editable = useEditorState({ editor, selector: ({ editor }) => editor.isEditable })
   const units = node.attrs.units as ExampleUnit[]
   return <NodeViewWrapper className="rl-document-example" contentEditable={false}>
-    <ExampleLanguage english={node.attrs.english} thai={node.attrs.thai} units={units}/>
+    <ExampleLanguage matrix english={node.attrs.english} thai={node.attrs.thai} units={units}/>
     {editable && <button className="rl-edit-example" onClick={() => setEditing(!editing)}>{editing ? 'Done' : 'Edit example'}</button>}
     {editing && editable && <div className="rl-example-fields">
       {units.map((unit, index) => <div key={index}>
@@ -20,3 +21,5 @@ export function ExampleView({ node, editor, updateAttributes }: NodeViewProps) {
   </NodeViewWrapper>
 }
 export function HolidayWordsView() { return <NodeViewWrapper><HolidayWordExplorer/></NodeViewWrapper> }
+
+export function PluralWordsView() { return <NodeViewWrapper><PluralWordExplorer/></NodeViewWrapper> }

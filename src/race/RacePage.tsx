@@ -3,14 +3,15 @@ import QRCode from 'qrcode'
 import RacePhoneAnswers from './RacePhoneAnswers'
 import './racePhoneThai.css'
 import { Horse } from './RaceTrack'
+import CartoonHorse from './CartoonHorse'
 import RaceHostView from './RaceHostView'
-import { laneColours } from './colours'
 import type { RaceView } from './types'
 import { HOST_KEY, raceRequest as request, savedRace as saved, useRaceConnection } from './connection'
 import { movingPlayers } from './motion'
 import { WINDOW_MS } from './rules'
 import './race.css'
 import './racePremium.css'
+import './raceController.css'
 
 function randomToken() { return Array.from(crypto.getRandomValues(new Uint8Array(24)), n => n.toString(16).padStart(2, '0')).join('') }
 
@@ -64,7 +65,7 @@ function LiveRacePage() {
       <Horse/><h1>{participant ? 'คุณชื่ออะไร?' : 'Race day'}</h1>
       {participant ? <form onSubmit={join}><input autoComplete="given-name" aria-label="ชื่อของคุณ" placeholder="ชื่อของคุณ" value={name} maxLength={24} onChange={e => setName(e.target.value)} required/><button className="race-primary" disabled={busy || !roomId}>เข้าร่วมแข่ง →</button></form> : <a className="race-primary" href="/english/race/admin">Open race settings →</a>}
     </section> : !view ? <p className="race-loading" role="status">{participant ? 'กำลังเชื่อมต่อ…' : 'Connecting to the race…'}</p> : participant ? <>
-      <section className={`race-player-status${ready ? ' is-racing' : ''}`}><Horse colour={laneColours[me?.lane ?? 0]} running={!!ready && !connection} speed={me?.speed}/><div><strong>{Math.floor(me?.metres ?? 0)}<small> เมตร</small></strong><span>{view.phase === 'lobby' ? `ช่อง ${(me?.lane ?? 0) + 1}` : `${((me?.speed ?? 0) * 3.6).toFixed(0)} กม./ชม.`}</span></div></section>
+      <section className={`race-player-status${ready ? ' is-racing' : ''}`}><CartoonHorse powered={(me?.streak ?? 0) >= 5} paused={!ready || !!connection} speed={me?.speed ?? 4}/><div><strong>{Math.floor(me?.metres ?? 0)}<small> เมตร</small></strong><span>{view.phase === 'lobby' ? `ช่อง ${(me?.lane ?? 0) + 1}` : `${((me?.speed ?? 0) * 3.6).toFixed(0)} กม./ชม.`}</span></div></section>
       <section className="race-phone-question race-phone-round" aria-live="polite">
         {view.phase === 'lobby' ? <h1>เข้าร่วมแล้ว รอครูเริ่มแข่ง</h1> : <span className="race-round">ข้อ {view.round + 1}</span>}
         {countdown > 0 && <strong className="race-phone-countdown">{countdown}</strong>}
@@ -78,13 +79,16 @@ function LiveRacePage() {
 }
 
 function PhonePreview() {
+  const [meaning, setMeaning] = useState(false)
+  const [powered, setPowered] = useState(true)
   const [picked, setPicked] = useState<number | null>(null)
   return <main lang="th" className="classroom-race race-phone race-phone-preview">
-    <header className="race-header"><img width="64" src="/images/fimo/success-wolf-grey-clay.png" alt=""/><strong>ผู้เล่น</strong></header>
-    <section className="race-player-status"><Horse running speed={16}/></section>
+    <header className="race-header"><img width="64" src="/images/fimo/success-wolf-grey-clay.png" alt=""/><div className="controller-brand"><small>ENGLISH SUCCESS</small><strong>Race day</strong></div><strong className="controller-player">P</strong></header>
+    <section className="race-player-status"><CartoonHorse powered={powered} speed={powered ? 24 : 12}/><div><strong>240<small> เมตร</small></strong><span>58 กม./ชม.</span></div></section>
     <section className="race-phone-question race-phone-round"><span className="race-round">ข้อ 1</span><progress max={10} value={10} aria-label="เวลาที่เหลือ"/></section>
-    <RacePhoneAnswers choices={['Correct','Wrong']} picked={picked} disabled={picked !== null} onChoose={setPicked}/>
+    <RacePhoneAnswers choices={meaning ? ['โรงแรมอยู่ที่ไหน','โรงแรมราคาเท่าไหร่'] : ['Correct','Wrong']} picked={picked} disabled={picked !== null} onChoose={setPicked}/>
+    <div className="controller-mode"><button aria-pressed={powered} onClick={() => setPowered(!powered)}>⚡ {powered ? 'Super' : 'Normal'}</button><button onClick={() => { setMeaning(!meaning); setPicked(null) }}>{meaning ? '✓ / ✕' : 'ความหมาย'}</button></div>
     {picked !== null && <div className="race-preview-reset"><p>ส่งคำตอบแล้ว</p><button onClick={() => setPicked(null)}>ลองอีกครั้ง</button></div>}
   </main>
 }
-export default function RacePage() { return location.pathname === '/english/race/phone' ? <PhonePreview/> : <LiveRacePage/> }
+export default function RacePage() { return location.pathname === '/english/race/controller' ? <PhonePreview/> : <LiveRacePage/> }

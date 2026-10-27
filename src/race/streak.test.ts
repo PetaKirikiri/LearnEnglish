@@ -5,13 +5,13 @@ import { demoAt, demoQuestion } from './demoRace'
 import { GOLDEN_SPEED, MAX_SPEED, MIN_SPEED, START_DELAY_MS, WINDOW_MS, speedFor } from './rules'
 
 describe('golden horse streak', () => {
-  it('activates on the third correct tap, ignores duplicate taps and clears on wrong or missed answers', () => {
+  it('activates on the fifth correct tap, ignores duplicate taps and clears on wrong or missed answers', () => {
     const questions = [demoQuestion(0), demoQuestion(1)].map(q => ({ id:q.id, english:q.english, audioUrl:q.audioUrl ?? '', correct:q.correct, choices:['Correct','Wrong'] }))
     const room = createRoom({ id:'test', title:'Test', questions }, 0)
     const token = 'a'.repeat(48)
     const player = joinRoom(room, 'Rider', token)
     command(room, room.host, 'start', -1, 0)
-    for (let round = 0; round < 3; round++) {
+    for (let round = 0; round < 5; round++) {
       const at = START_DELAY_MS + WINDOW_MS * round + 500
       advanceRace(room, at)
       const correct = room.deck[round].correct
@@ -20,33 +20,33 @@ describe('golden horse streak', () => {
       expect(viewRoom(room, room.host, at).players[0].streak).toBe(round + 1)
       expect(player.speed).toBe(speedFor(true, 500, round + 1))
     }
-    const wrongAt = START_DELAY_MS + WINDOW_MS * 3 + 500
+    const wrongAt = START_DELAY_MS + WINDOW_MS * 5 + 500
     advanceRace(room, wrongAt)
-    answer(room, token, 3, 1 - room.deck[3].correct, wrongAt)
+    answer(room, token, 5, 1 - room.deck[5].correct, wrongAt)
     expect(player.streak).toBe(0)
     expect(player.speed).toBe(MIN_SPEED)
-    for (let round = 4; round < 7; round++) {
+    for (let round = 6; round < 9; round++) {
       const at = START_DELAY_MS + WINDOW_MS * round + 500
       advanceRace(room, at)
       answer(room, token, round, room.deck[round].correct, at)
     }
     expect(player.streak).toBe(3)
-    advanceRace(room, START_DELAY_MS + WINDOW_MS * 8 + .125)
+    advanceRace(room, START_DELAY_MS + WINDOW_MS * 10 + .125)
     expect(player.streak).toBe(0)
     expect(player.speed).toBe(MIN_SPEED)
   })
   it('makes even a slow golden answer faster than the fastest normal answer', () => {
-    expect(speedFor(true, 4900, 3)).toBeCloseTo(18.24)
-    expect(speedFor(true, 4900, 3)).toBeGreaterThan(MAX_SPEED)
+    expect(speedFor(true, 9900, 5)).toBeCloseTo(18.06)
+    expect(speedFor(true, 9900, 5)).toBeGreaterThan(MAX_SPEED)
     expect(speedFor(true, 0, 2)).toBe(MAX_SPEED)
     expect(speedFor(false, 0, 3)).toBe(MIN_SPEED)
   })
   it('gains ground against a normal horse while golden', () => {
     // Bea is the slow responder; Chai answers quickly but cannot sustain a streak.
-    const start = demoAt(START_DELAY_MS + WINDOW_MS * 2 + 3700)
-    const later = demoAt(START_DELAY_MS + WINDOW_MS * 2 + 4700)
-    expect(start.players[1].streak).toBe(3)
-    expect(start.players[2].streak).toBe(1)
+    const start = demoAt(START_DELAY_MS + WINDOW_MS * 4 + 3700)
+    const later = demoAt(START_DELAY_MS + WINDOW_MS * 4 + 4700)
+    expect(start.players[1].streak).toBe(5)
+    expect(start.players[2].streak).toBe(0)
     const gapBefore = start.players[2].metres - start.players[1].metres
     const gapAfter = later.players[2].metres - later.players[1].metres
     expect(gapAfter).toBeLessThan(gapBefore)
@@ -54,14 +54,14 @@ describe('golden horse streak', () => {
   })
   it.each([
     { label: 'fast normal horse', speed: MAX_SPEED, streak: 0 },
-    { label: 'slow golden horse', speed: speedFor(true, 3600, 3), streak: 3 },
+    { label: 'slow golden horse', speed: speedFor(true, 9000, 5), streak: 5 },
   ])('overtakes a $label from behind through continuous movement', ({ speed, streak }) => {
     const questions = [demoQuestion(0), demoQuestion(1)].map(q => ({ id:q.id, english:q.english, audioUrl:q.audioUrl ?? '', correct:q.correct, choices:['Correct','Wrong'] }))
     const room = createRoom({ id:'catch', title:'Catch', questions }, 0)
     const golden = joinRoom(room, 'Golden', 'b'.repeat(48))
     const normal = joinRoom(room, 'Normal', 'c'.repeat(48))
     command(room, room.host, 'start', -1, 0)
-    golden.metres = 100; golden.streak = 2
+    golden.metres = 100; golden.streak = 4
     normal.metres = 120; normal.speed = speed; normal.streak = streak
     answer(room, golden.token, 0, room.deck[0].correct, START_DELAY_MS)
     expect(golden.metres).toBe(100)

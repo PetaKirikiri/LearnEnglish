@@ -4,7 +4,9 @@ export const MIN_SPEED = 4
 export const CORRECT_MIN_SPEED = 8
 export const MAX_SPEED = 16
 export const GOLDEN_MIN_SPEED = 18
-export const GOLDEN_SPEED = 30
+export const GOLDEN_SPEED = 24
+export const LEVEL_SPEED_STEP = 1
+export const powerLevel = (streak: number) => Math.max(0, Math.floor(streak) - 4)
 export const START_DELAY_MS = 2_500
 
 // Metres/second from the exact elapsed milliseconds; never bucket or round.
@@ -13,6 +15,6 @@ export const START_DELAY_MS = 2_500
 export function speedFor(correct: boolean, elapsedMs: number, streak = 0) {
   if (!correct) return MIN_SPEED
   const quickness = Math.max(0, 1 - Math.max(0, elapsedMs) / WINDOW_MS)
-  if (streak >= 3) return GOLDEN_MIN_SPEED + (GOLDEN_SPEED - GOLDEN_MIN_SPEED) * quickness
+  if (streak >= 5) return GOLDEN_MIN_SPEED + (GOLDEN_SPEED - GOLDEN_MIN_SPEED) * quickness + (powerLevel(streak) - 1) * LEVEL_SPEED_STEP
   return CORRECT_MIN_SPEED + (MAX_SPEED - CORRECT_MIN_SPEED) * quickness
 }

@@ -117,3 +117,14 @@
  .cw-slot-change,.classroom .cw-sentence-board[data-long-word] .cw-slot-change{right:8px;bottom:10px}
 }
 .classroom .cw-sentence-board .cw-noun-group .tonight-slot{grid-column:auto;grid-row:auto}
+/* Dimensional teaching cues replace the role headings. */
+.cw-sentence-board .cw-slot-role{display:flex;align-items:center;justify-content:center;height:68px;min-height:68px;width:100%;order:-1}
+.cw-game-icon{display:block;width:80px;height:80px;background-image:url('/classroom/icons/location-clock.png');background-repeat:no-repeat;background-size:200% 100%;filter:drop-shadow(0 3px 2px #0002)}
+.cw-game-icon-pin{background-position:left center}
+.cw-game-icon-clock{background-position:right center}
+.classroom .cw-sentence-board .example-matrix .tonight-slot{gap:10px;padding-top:16px}
+@media(max-width:700px){
+ .cw-sentence-board .cw-slot-role{height:42px;min-height:42px}
+ .cw-game-icon{width:48px;height:48px}
+ .classroom .cw-sentence-board .example-matrix .tonight-slot{gap:8px;padding-top:12px}
+}
