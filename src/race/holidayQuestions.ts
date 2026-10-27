@@ -8,7 +8,7 @@ export const holidaySkill = 'race-where-is-the'
 const holidayMeanings = holidayVocabulary.map(item => `${item.thai}อยู่ที่ไหน`)
 export const holidayMeaningQuestions: (HotelQuestion & { meaningDistractor: string })[] = holidayNouns.map((noun, i) => ({
   id: `race-meaning-${noun}`, english: `Where is the ${noun}?`, skill: holidaySkill, correct: 0,
-  answers: [[{ text: holidayMeanings[i], skill: holidaySkill }], [{ text: holidayMeanings[(i + 1) % holidayMeanings.length], skill: holidaySkill }]],
+  answers: [[{ text: holidayMeanings[i], skill: holidaySkill }], [{ text: holidayVocabulary[i].meaningDistractor, skill: holidaySkill }]],
   audioUrl: `/audio/race-holiday/${noun}-complete.wav`,
   meaningDistractor: holidayVocabulary[i].meaningDistractor,
 }))

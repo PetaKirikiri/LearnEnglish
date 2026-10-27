@@ -2,21 +2,21 @@
 import { describe, expect, it } from 'vitest'
 import { answer, advanceRace, command, createRoom, joinRoom } from '../../server/classroomRace'
 import { demoAt, demoQuestion, demoRoundStart } from './demoRace'
-import { START_DELAY_MS, WINDOW_MS, speedFor } from './rules'
+import { MIN_SPEED, START_DELAY_MS, WINDOW_MS, speedFor } from './rules'
 
 describe('golden visual streak at shared resolution',()=>{
   it('charges and transforms only when the round resolves, and clears on wrong or missed answers',()=>{
     const questions=[demoQuestion(0),demoQuestion(1)].map(q=>({id:q.id,english:q.english,audioUrl:'',correct:q.correct,choices:['Correct','Wrong']}))
     const room=createRoom({id:'test',title:'Test',questions},0)
     const player=joinRoom(room,'Rider','a'.repeat(48))
-    joinRoom(room,'Waiting rider','b'.repeat(48))
+    const waiting=joinRoom(room,'Waiting rider','b'.repeat(48))
     command(room,room.host,'start',-1,0)
     for(let round=0;round<5;round++) {
       const start=room.opensAt
       answer(room,player.token,round,room.deck[round].correct,start+500)
       answer(room,player.token,round,room.deck[round].correct,start+501)
       expect(player.streak??0).toBe(round)
-      advanceRace(room,start+WINDOW_MS+.125)
+      answer(room,waiting.token,round,room.deck[round].correct,start+2000)
       expect(player.streak).toBe(round+1)
     }
     const before=player.targetSpeed!
@@ -25,7 +25,7 @@ describe('golden visual streak at shared resolution',()=>{
     expect(player.streak).toBe(5)
     advanceRace(room,start+WINDOW_MS+.125)
     expect(player.streak).toBe(0)
-    expect(player.targetSpeed).toBeCloseTo(before*.4)
+    expect(player.targetSpeed).toBeCloseTo(Math.max(MIN_SPEED,before*.4))
     for(let n=0;n<3;n++) {
       const start=room.opensAt
       answer(room,player.token,room.round,room.deck[room.round].correct,start+500)

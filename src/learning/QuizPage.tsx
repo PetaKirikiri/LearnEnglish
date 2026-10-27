@@ -1,3 +1,4 @@
+import WordProgressPanel from './wordProgress/WordProgressPanel'
 import ExamProgressPanel from './ExamProgressPanel'
 import { createExamAssessment, memoryFromExamEvents, resumeExamAssessment } from './examReadiness'
 import type { QuizQuestion } from './quizContent'
@@ -196,7 +197,7 @@ export default function QuizPage({
               <h1>{learnerId}’s profile</h1>
             </div>
             {collectionReady && <ExamProgressPanel events={events} available={Boolean(serverReady)} active={Boolean(assessment)||Boolean(resumeExamAssessment(events))} onStart={startAssessment} />}
-            {collectionReady ? <WordCollectionPanel collection={collection} /> : (
+            {collectionReady ? <><WordProgressPanel userId={userId}/><WordCollectionPanel collection={collection} /></> : (
               <p role="status">{collectionError ? 'Your collection is unavailable. Reconnect to load your progress.' : 'Loading your collection…'}</p>
             )}
             {collectionReady && collectionError && <p className="mt-5 text-sm text-slate-500">Showing saved progress. Updates will sync when you reconnect.</p>}

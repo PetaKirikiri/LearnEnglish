@@ -54,7 +54,7 @@ it('stores simultaneous answers once and shares a single question across boundar
   const views=await Promise.all(guests.map(g=>cloudAction(store,'state','GET',host.room,g.token,{},origin,boundary,()=>boundary) as Promise<RaceView>))
   expect(rows.get(host.room)!.revision).toBe(revision+1)
   expect(new Set(views.map(v=>JSON.stringify(v.question))).size).toBe(1)
-  expect(views.every(v=>v.round===2&&!v.question?.english)).toBe(true)
+  expect(views.every(v=>v.round===2&&v.question?.english===rows.get(host.room)!.state.deck[2].english&&v.question?.correct===undefined)).toBe(true)
   await expect(cloudAction(store,'prepare','POST',host.room,host.token,{...selection,run:1},origin,boundary)).rejects.toThrow('Finish the current race')
   await cloudAction(store,'control','POST',host.room,host.token,{action:'finish',round:2,run:1},origin,boundary)
   const prepared=await cloudAction(store,'prepare','POST',host.room,host.token,{...selection,run:1},origin,boundary+1) as RaceView
@@ -106,4 +106,24 @@ it('runs the three lesson-two pools in one room while preserving the student QR 
     expect(view.question?.english).toMatch(/^Where (is|are) (the|my|your) /)
     view=await cloudAction(store,'control','POST',host.room,host.token,{action:'finish',round:view.round,run:view.run},origin,12,()=>12) as RaceView
   }
+})
+
+
+it('serves lesson three stages through the same host and phone race flow',async()=>{
+ const {store}=memoryStore()
+ const origin='https://race.test'
+ const host=await cloudAction(store,'create','POST','','',{stage:'lesson-three-past'},origin,0) as {room:string;token:string}
+ const guest=token()
+ await cloudAction(store,'join','POST',host.room,guest,{name:'Lesson three test'},origin,1,()=>1)
+ let view=await cloudAction(store,'state','GET',host.room,host.token,{},origin,2,()=>2) as RaceView
+ for(const stage of ['lesson-three-past','lesson-three-owner','lesson-three-review']){
+  view=await cloudAction(store,'prepare','POST',host.room,host.token,{stage,run:view.run},origin,3,()=>3) as RaceView
+  view=await cloudAction(store,'control','POST',host.room,host.token,{action:'start',round:view.round,run:view.run},origin,4,()=>4) as RaceView
+  const player=await cloudAction(store,'state','GET',host.room,guest,{},origin,5,()=>5) as RaceView
+  expect(player.question?.english).toBe(view.question?.english)
+  expect(player.question?.choices).toHaveLength(2)
+  expect(view.question?.audioUrl).toMatch(/^\/audio\/race-/)
+  if(stage!=='lesson-three-past')expect(player.question!.choices.every(choice=>/[ก-๙]/.test(choice))).toBe(true)
+  view=await cloudAction(store,'control','POST',host.room,host.token,{action:'finish',round:view.round,run:view.run},origin,6,()=>6) as RaceView
+ }
 })

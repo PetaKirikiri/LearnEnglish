@@ -29,18 +29,19 @@ export const lessonTwoOwnerQuestions = lessonTwoWords.filter(item => (lessonTwoC
 // Explicit Thai quantities make the singular/plural choices unambiguous.
 const translationWords: readonly LessonTwoWord[] = [...lessonTwoWords,...lessonTwoPairs]
 export const lessonTwoReviewQuestions: (HotelQuestion & {meaningDistractor:string})[] = [
-  ...translationWords.flatMap((item,index)=>(item.singular?[false,true]:[true]).flatMap(plural=>owners.map(owner=>{
+  ...translationWords.flatMap(item=>(item.singular?[false,true]:[true]).flatMap(plural=>owners.map(owner=>{
     const sentence=numberSentence(item,plural,owner)
-    const otherItem=item.singular ? lessonTwoWords[(index+1)%lessonTwoWords.length] : lessonTwoPairs[(index-lessonTwoWords.length+1)%lessonTwoPairs.length]
-    const distractor=owner==='my' ? numberSentence(item,plural,'your').thai
-      : owner==='the' && item.singular ? numberSentence(item,!plural,owner).thai
-      : numberSentence(otherItem,plural,owner).thai
+    // Every choice keeps the same referent. Ownership is tested in both
+    // directions; regular nouns also provide an explicit number contrast.
+    const distractor=owner==='the' && item.singular
+      ? numberSentence(item,!plural,owner).thai
+      : numberSentence(item,plural,owner==='my'?'your':'my').thai
     return {id:`l2-translation-${sentence.noun}-${owner}`,english:sentence.english,skill,correct:0,
       audioUrl:lessonTwoAudio(sentence.noun,owner,sentence.verb),
       answers:[[{text:sentence.thai,skill}],[{text:distractor,skill}]],meaningDistractor:distractor} satisfies HotelQuestion & {meaningDistractor:string}
   }))),
   // Earlier lesson nouns return in their taught singular Where is the... frame.
   ...holidayMeaningQuestions.map(question=>({...question,id:`l2-translation-${question.id}`,
-    meaningDistractor:question.answers[1-question.correct].map(part=>part.text).join('')})),
+    meaningDistractor:question.meaningDistractor})),
 ]
 export const lessonTwoRecordings = [...new Map([...lessonTwoNumberQuestions,...lessonTwoOwnerQuestions,...lessonTwoReviewQuestions].filter(q=>q.audioUrl?.startsWith('/audio/race-lesson-two/')).map(q => [q.audioUrl,{audioUrl:q.audioUrl,spokenText:q.english}])).values()]

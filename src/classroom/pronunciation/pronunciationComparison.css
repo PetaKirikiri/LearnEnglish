@@ -1,0 +1,30 @@
+.pronunciation-comparison{font-family:'Avenir Next','Noto Sans Thai',sans-serif;color:#18385e;text-align:left;min-width:0}
+.pronunciation-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pronunciation-side{--pitch-colour:#df2944;--pitch-fill:#fff;min-width:0;border:1px solid #e2e9f2;border-top:3px solid var(--pitch-colour);border-radius:12px;background:#fff;padding:9px 10px 3px}
+.pronunciation-english{--pitch-colour:#1877ef}
+.pronunciation-comparison .pronunciation-side h3{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:650;line-height:1.3;margin:0 0 7px;color:#18385e}
+.pronunciation-side h3 span{font-size:19px}
+.pronunciation-graph{display:block;width:100%;height:68px;overflow:visible}
+.pronunciation-grid{stroke:#18385e12;stroke-width:1;stroke-dasharray:3 5}
+.pronunciation-axis{font:13px sans-serif;fill:#8b9eb3}
+.pronunciation-path{stroke:var(--pitch-colour);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.pronunciation-path.is-unset{stroke-dasharray:4 6;opacity:.35}
+.pronunciation-stem{stroke:var(--pitch-colour);stroke-dasharray:2 4;opacity:.15}
+.pronunciation-dot{fill:var(--pitch-colour);stroke:#fff;stroke-width:2;vector-effect:non-scaling-stroke}
+.pronunciation-dot.is-unset{fill:#fff;stroke:var(--pitch-colour);stroke-width:1.5}
+.pronunciation-dot[role=slider]{cursor:ns-resize;touch-action:none}
+.pronunciation-dot:focus{outline:none;stroke:#18385e;stroke-width:3}
+.pronunciation-labels{position:relative;min-height:29px;margin-top:5px}
+.pronunciation-labels .pronunciation-syllable{position:absolute;transform:translateX(-50%);text-align:center;font:700 14px/1.4 'Avenir Next','Noto Sans Thai',sans-serif;color:#18385e;overflow-wrap:anywhere}
+.pronunciation-labels .pronunciation-syllable.is-stressed{color:#18385e;font-weight:700}
+.pronunciation-comparison .pronunciation-caption{font-size:10px;color:#718299;line-height:1.5;margin:8px 0 0}
+.pronunciation-editor{display:grid;gap:8px;padding:8px 0}
+.pronunciation-editor label{display:grid;gap:4px;font-size:12px;color:#526a80}
+.pronunciation-comparison .pronunciation-editor input,.pronunciation-comparison .pronunciation-editor select{width:100%;min-width:0;box-sizing:border-box;border:1px solid #c6d6e6;border-radius:8px;padding:8px;background:#fff;color:#18385e;font:14px 'Avenir Next','Noto Sans Thai',sans-serif}
+.pronunciation-edit-actions{display:flex;gap:16px;justify-content:space-between;align-items:center;margin-top:12px}
+.pronunciation-edit-actions span{font-size:12px;line-height:1.4;color:#607890}
+.pronunciation-edit-actions button{border:0;border-radius:9px;padding:10px 18px;background:#1877ef;color:white}
+.pronunciation-error{font-size:13px;color:#b52e45}
+.pronunciation-editor input:focus-visible,.pronunciation-editor select:focus-visible,.pronunciation-comparison button:focus-visible{outline:3px solid #1877ef;outline-offset:3px}
+@media(max-width:600px){.pronunciation-columns{gap:8px}.pronunciation-side{padding:8px 6px 3px}.pronunciation-labels .pronunciation-syllable{font-size:12px}.pronunciation-side h3 span{font-size:17px}.pronunciation-comparison .pronunciation-side h3{font-size:11px}}
+

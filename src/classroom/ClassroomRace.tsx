@@ -15,8 +15,7 @@ import '../race/racePremium.css'
 import './classroomRace.css'
 
 export default function ClassroomRace({ lessonId = 'lesson-1', stages }: { lessonId?: string; stages?: string[] }) {
-  const lessonTwo = lessonId === 'lesson-2'
-  const lessonLabel = lessonTwo ? 'Lesson 02' : 'Lesson 01'
+  const lessonLabel = `Lesson ${lessonId.replace('lesson-','').padStart(2,'0')}`
   const roundsKey = `classroom-race-rounds:${lessonId}`
   const [roundCount, setRoundCount] = useState(() => {
     try { const count = Number(localStorage.getItem(roundsKey)); return Number.isInteger(count) && count >= 3 && count <= 30 ? count : 3 } catch { return 3 }
@@ -31,7 +30,7 @@ export default function ClassroomRace({ lessonId = 'lesson-1', stages }: { lesso
   useEffect(() => {
     raceRail.current?.querySelector('[aria-pressed="true"]')?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
   }, [selectedRace])
-  const { credentials, view, now, connection, remember, sync, forget } = useRaceConnection(lessonTwo ? `${HOST_KEY}:lesson-2` : HOST_KEY)
+  const { credentials, view, now, connection, remember, sync, forget } = useRaceConnection(lessonId==='lesson-1' ? HOST_KEY : `${HOST_KEY}:${lessonId}`)
   const [qr, setQr] = useState('')
   const [showJoin, setShowJoin] = useState(false)
   const [error, setError] = useState('')

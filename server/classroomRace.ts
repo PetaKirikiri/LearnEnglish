@@ -197,7 +197,7 @@ export function viewRoom(room: Room, secret: string, now = Date.now()): RaceView
   return { id: room.id, run: room.run ?? 1, stageId: room.stageId ?? '', title: room.title, phase: room.phase, round: room.round, finish: FINISH, serverNow: now,
     opensAt: room.opensAt, closesAt: room.closesAt, motionAt: room.updatedAt,
     players: room.players.map(p => ({ id: p.id, name: p.name, lane: p.lane, metres: p.metres, speed: p.speed, targetSpeed: p.targetSpeed ?? p.speed, accelerationRemainingMs: p.accelerationRemainingMs ?? 0, answered: !!room.answers[p.id], streak: p.streak ?? 0 })),
-    ...(q ? { question: { id: `${room.round}`, choices: q.choices, ...(host ? { english: q.english, audioUrl: q.audioUrl } : {}) } } : {}),
+    ...(q ? { question: { id: `${room.round}`, choices: q.choices, ...((host || me) ? {english:q.english} : {}), ...(host ? {audioUrl:q.audioUrl} : {}) } } : {}),
     ...(host ? { questionIds: room.pool.map(question => question.id) } : {}),
     ...(me ? { me: { id: me.id, choice: room.answers[me.id]?.choice } } : {}) }
 }

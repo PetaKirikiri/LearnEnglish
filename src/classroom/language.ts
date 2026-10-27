@@ -92,10 +92,20 @@ Object.assign(thai, {
 Object.assign(thai, {'The actual race: horses moving at different speeds':'ภาพจากการแข่งขันจริง ม้าวิ่งด้วยความเร็วต่างกัน','Correct answers give speed':'ตอบถูก ม้าจะวิ่งเร็วขึ้น','The faster you answer correctly, the more speed you gain.':'ยิ่งตอบถูกเร็วเท่าไร ม้าก็ยิ่งได้ความเร็วเพิ่มมากขึ้น'})
 Object.assign(thai, {'Listen and choose':'ฟังแล้วเลือกคำตอบ'})
 Object.assign(thai, {'Answer speed examples':'ตัวอย่างความเร็วจากคำตอบ','Fast correct answer':'ตอบถูกเร็ว','Slow correct answer':'ตอบถูกช้า','Wrong answer':'ตอบผิด'})
+Object.assign(english, {
+ 'บอกว่าสิ่งนั้นเป็นของผู้ชายที่เราพูดถึง':'Shows that it belongs to the man or boy we are talking about.',
+ 'บอกว่าสิ่งนั้นเป็นของผู้หญิงที่เราพูดถึง':'Shows that it belongs to the woman or girl we are talking about.',
+ 'วาง his หน้าคำนาม':'Put his before the noun.', 'วาง her หน้าคำนาม':'Put her before the noun.',
+ 'his phone หรือ his phones ใช้ his เหมือนกัน':'his phone → his phones: his stays the same.',
+ 'her phone หรือ her phones ใช้ her เหมือนกัน':'her phone → her phones: her stays the same.',
+ 'ดูจำนวนของคำนามเพื่อเลือก is / are หรือ was / were':'The noun decides is / are or was / were. The owner does not.',
+})
+Object.assign(thai, {'Before':'ก่อนหน้านี้','Lesson 03':'บทเรียน 03'})
 export function t(text:string):string { if(language === 'en' && text.startsWith('คำตอบต้องหมายถึง')) return text.replace('คำตอบต้องหมายถึง', 'The answer must mean'); return (language === 'en' ? english[text] : thai[text]) ?? text }
 export function syncClassroomLanguage() {
  document.documentElement.lang=language
- const number=new URLSearchParams(location.search).get('lesson')==='2'?'2':'1'
+ const requested=new URLSearchParams(location.search).get('lesson')
+ const number=requested==='2'||requested==='3'?requested:'1'
  document.title=language==='th'?`บทเรียนที่ ${number} · English Success`:`Lesson ${number} · English Success`
  document.querySelectorAll<HTMLElement>('[data-ui-label]').forEach(el=>{el.textContent=t(el.dataset.uiLabel!)})
  document.querySelector('.phases')?.setAttribute('lang',language)

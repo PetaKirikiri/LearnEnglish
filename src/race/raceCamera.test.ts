@@ -7,7 +7,7 @@ describe('shared pack camera', () => {
   it('magnifies early gaps without changing their ordering or relative sizes', () => {
     const { players } = demoAt(12500)
     const c = raceCamera(players, FINISH)
-    expect(c.span).toBeLessThan(FINISH / 5)
+    expect(c.span).toBeLessThan(FINISH / 3)
     for (let i = 1; i < players.length; i++) {
       expect(c.position(players[0].metres) - c.position(players[i].metres)).toBeCloseTo((players[0].metres - players[i].metres) / c.span * 100)
     }

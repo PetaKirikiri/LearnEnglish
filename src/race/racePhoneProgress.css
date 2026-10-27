@@ -1,0 +1,24 @@
+.phone-race-progress{width:100%;margin:auto 0 20px;padding:12px 0 10px;border:1px solid #ffffff36;border-radius:22px;background:#143e8b38;color:#fff}
+.phone-progress-ends{display:flex;justify-content:space-between;align-items:center;margin:0 16px 3px;font-size:10px;font-weight:700;color:#e7f1ff}
+.phone-progress-ends>span:last-child{display:flex;gap:6px;align-items:center}
+.phone-progress-ends i{width:12px;height:12px;border:1px solid white;border-radius:2px;background:repeating-conic-gradient(#fff 0 25%,#173a71 0 50%) 0 0/6px 6px}
+.phone-progress-lanes{padding:0 46px 5px;max-height:250px;overflow-y:auto;scrollbar-width:thin}
+.phone-progress-lane{position:relative;height:36px;border-bottom:2px solid #ffffff38}
+.phone-progress-fill{position:absolute;bottom:-2px;left:0;height:2px;width:var(--progress);background:var(--rider-colour)}
+.phone-progress-name{position:absolute;left:var(--progress);bottom:7px;transform:translateX(-50%);max-width:86px;padding:3px 9px;border-radius:12px;background:#f4f8ff;color:#18385e;font-size:12px;font-weight:800;line-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-left:4px solid var(--rider-colour)}
+.phone-progress-dot{position:absolute;left:var(--progress);bottom:-4px;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:#fff}
+.phone-progress-lane.is-me .phone-progress-name{background:#ffda19;color:#17264b;border-left-color:#fff}
+.phone-progress-lane.is-me .phone-progress-fill,.phone-progress-lane.is-me .phone-progress-dot{background:#ffda19}
+@media(max-height:650px){.phone-race-progress{margin-bottom:14px;padding-top:8px}.phone-progress-lane{height:32px}.phone-progress-lanes{max-height:192px}}
+
+.phone-race-progress[data-density=compact],.phone-race-progress[data-density=dense]{margin-top:0;margin-bottom:12px;padding-top:8px;padding-bottom:6px;border-radius:18px}
+.phone-race-progress[data-density=compact] .phone-progress-lane{height:28px}
+.phone-race-progress[data-density=compact] .phone-progress-name{font-size:11px;line-height:15px;padding:2px 7px;bottom:5px}
+.phone-race-progress[data-density=dense] .phone-progress-lane{height:23px}
+.phone-race-progress[data-density=dense] .phone-progress-name{font-size:11px;line-height:14px;padding:1px 7px;bottom:4px}
+.phone-race-progress:not([data-density=normal]) .phone-progress-lanes{max-height:clamp(120px,calc(100svh - 365px),260px)}
+@media(max-height:650px){
+ .phone-race-progress[data-density=dense] .phone-progress-lane{height:20px}
+ .phone-race-progress[data-density=dense] .phone-progress-name{font-size:10px;line-height:12px;bottom:4px}
+ .phone-race-progress:not([data-density=normal]) .phone-progress-lanes{max-height:clamp(110px,calc(100svh - 350px),250px)}
+}

@@ -21,3 +21,12 @@ it('keeps both meanings within the teacher’s selected phone ownership question
   expect(selected.questions).toHaveLength(2)
   for (const q of selected.questions) expect(new Set(q.choices)).toEqual(new Set(['โทรศัพท์ของฉันอยู่ที่ไหน','โทรศัพท์ของคุณอยู่ที่ไหน']))
 })
+
+it('never lets a different noun reveal an ownership answer', () => {
+  for (const [word, thai] of tonightWords) {
+    for (const q of tonightMeaningQuestions.filter(q => q.id.startsWith(`tonight-${word}-`))) {
+      for (const answer of q.answers) expect(answer[0].text.startsWith(thai)).toBe(true)
+      expect(q.answers[1][0].text).toBe(q.meaningDistractor)
+    }
+  }
+})

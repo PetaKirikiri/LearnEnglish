@@ -162,7 +162,9 @@ it('filters host content, preserves the classroom roster and rejects stale or un
     expect(answered.status).toBe(200)
     expect(answered.data.players[0].targetSpeed).toBeCloseTo(speedFor(true, .125), 10)
     expect(answered.data.questionIds).toBeUndefined()
-    expect(answered.data.question?.english).toBeUndefined()
+    const afterAnswer = JSON.parse(await readFile(file, 'utf8')) as Room
+    expect(answered.data.question?.english).toBe(afterAnswer.deck[afterAnswer.round].english)
+    expect(answered.data.question?.correct).toBeUndefined()
 
     const legacy = createRoom({ id: 'man-woman', title: 'People', questions: racePools[0].questions.map(q => ({ id: q.id, english: q.english, audioUrl: q.audioUrl ?? '', choices: q.answers.map(a => a.map(s => s.text).join('')), correct: q.correct })) }, time)
     delete legacy.run
@@ -176,13 +178,12 @@ it('filters host content, preserves the classroom roster and rejects stale or un
     const meaningCreated = await api('create', { stage: 'holiday-meaning', questionIds: meaningIds })
     expect(meaningCreated.status).toBe(200)
     const meaningRoom = JSON.parse(await readFile(join(root, '.classroom-races', `${meaningCreated.data.room}.json`), 'utf8')) as Room
-    const selectedMeanings = racePools.find(pool => pool.id === 'holiday-meaning')!.questions
-      .filter(q => meaningIds.includes(q.id)).map(q => q.answers[q.correct].map(segment => segment.text).join('')).sort()
+
     expect(meaningRoom.kind).toBe('meaning')
     expect(meaningRoom.pool.map(q => q.id)).toEqual(meaningIds)
     meaningRoom.pool.forEach(q => {
-      expect(q.choices.toSorted()).toEqual(selectedMeanings)
       const authored = racePools.find(pool => pool.id === 'holiday-meaning')!.questions.find(question => question.id === q.id)!
+      expect(q.choices.toSorted()).toEqual(authored.answers.map(answer=>answer.map(segment=>segment.text).join('')).toSorted())
       expect(q.meaningDistractor).toBe(authored.meaningDistractor)
       expect(q.meaningDistractor).toBeTruthy()
     })
@@ -192,14 +193,14 @@ it('filters host content, preserves the classroom roster and rejects stale or un
     expect(preparedMeanings.data).toMatchObject({ run: 3, stageId: 'holiday-meaning', questionIds: meaningIds })
     const savedMeanings = JSON.parse(await readFile(file, 'utf8')) as Room
     savedMeanings.pool.forEach(q => {
-      expect(q.choices.toSorted()).toEqual(selectedMeanings)
       expect(q.meaningDistractor).toBe(meaningRoom.pool.find(question => question.id === q.id)!.meaningDistractor)
     })
     expect((await api('control', { run: 3, round: -1, action: 'start' }, host, room)).status).toBe(200)
     const meaningPhone = await api('state', undefined, playerToken, room)
     expect(meaningPhone.data.question).not.toHaveProperty('meaningDistractor')
     expect(meaningPhone.data.question?.correct).toBeUndefined()
-    expect(meaningPhone.data.question?.english).toBeUndefined()
+    expect(meaningPhone.data.question?.english).toEqual(expect.any(String))
+    expect(meaningPhone.data.question?.correct).toBeUndefined()
   } finally {
     server.closeAllConnections()
     await new Promise<void>(resolve => server.close(() => resolve()))

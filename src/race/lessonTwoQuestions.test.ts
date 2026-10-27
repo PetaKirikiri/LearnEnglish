@@ -72,3 +72,11 @@ it('has real matching speech for every question and no missing taught noun pictu
   for(const item of [...lessonTwoWords,...lessonTwoPairs]) expect(drawings).toContain(`${'singular' in item?item.singular:item.plural}:`)
   expect(new Set(lessonTwoOwnerQuestions.map(q=>q.id)).size).toBe(24)
 })
+
+it('tests your as ownership rather than changing the object', () => {
+  for (const item of [...lessonTwoWords,...lessonTwoPairs]) for (const plural of item.singular ? [false,true] : [true]) {
+    const expected=numberSentence(item,plural,'your')
+    const question=lessonTwoReviewQuestions.find(q=>q.english===expected.english)!
+    expect(question.answers[1][0].text).toBe(numberSentence(item,plural,'my').thai)
+  }
+})

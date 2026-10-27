@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { expect, it, vi } from 'vitest'
 import MemberProfilePage from './MemberProfilePage'
 const { load } = vi.hoisted(() => ({ load: vi.fn() }))
+vi.mock('../learning/wordProgress/store', () => ({ loadWordProgress: vi.fn().mockResolvedValue([]) }))
 vi.mock('../learning/progressSync', () => ({ loadLearnerEvents: load }))
 it('loads the selected learner and offers a retry when loading fails', async () => {
  Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })

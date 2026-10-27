@@ -111,3 +111,139 @@
   .phone-practice .tonight-tree .tonight-slot { min-height: 76px; }
   .practice-answers button { min-height: 66px; }
 }
+
+/* Homework shares the classroom's four-slot palette and collectible artwork. */
+.phone-practice{background:#1975ef;color:#18395e;font-family:'Nunito','Noto Sans Thai',system-ui,sans-serif}
+.practice-shell{max-width:720px;padding:20px 22px 0;background:#f4f8ff}
+.phone-practice header{color:#18395e}
+.phone-practice header a{background:white;border:0;box-shadow:0 3px #dce5f3}
+.practice-identity>span{color:#647d9d}
+.phone-practice progress,.phone-practice progress::-webkit-progress-bar{background:#dde7f5}
+.phone-practice progress::-webkit-progress-value,.phone-practice progress::-moz-progress-bar{background:#1975ef}
+.practice-stage{justify-content:center;gap:32px}
+.practice-audio{display:flex;align-items:center;gap:10px;margin:0 auto 24px;border:0;border-radius:50px;padding:12px 22px;background:#1975ef;color:white;font:inherit;font-weight:800;box-shadow:0 4px #1254b0;cursor:pointer}
+.practice-audio span{font-size:24px}
+.homework-slots{display:grid;grid-template-columns:1fr .8fr .8fr 1.35fr;gap:8px;align-items:stretch}
+.homework-slot{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-width:0;min-height:190px;padding:25px 6px 20px;border-radius:22px;background:#ffdc39;box-shadow:0 5px #c6a31e}
+.homework-slot-0{background:#e92345;color:white;box-shadow:0 5px #ad1630}
+.homework-slot-1{background:#148a51;color:white;box-shadow:0 5px #096637}
+.homework-slot-2{border-radius:22px 0 0 22px;margin-right:-8px;border-right:1px solid #d5b52d}
+.homework-slot-3{border-radius:0 22px 22px 0}
+.homework-slot small{position:absolute;top:9px;left:12px;font-weight:800;font-size:11px;opacity:.7}
+.homework-slot strong{font-size:clamp(18px,4.5vw,31px);font-weight:900;text-align:center;line-height:1.15;overflow-wrap:anywhere}
+.homework-slot .cw-game-icon,.homework-slot .vocabulary-picture-art{width:64px;height:64px;max-width:100%;margin:0}
+.practice-instruction{color:#5a7190;font-weight:700}
+.practice-answers{grid-template-columns:1fr;gap:17px;padding:0}
+.practice-answers button{min-height:85px;border:2px solid #dae5f6;background:white;color:#18395e;box-shadow:0 5px #ccdaee;font-weight:800;font-size:23px;border-radius:24px}
+.practice-choice-number{background:#edf4ff;border:0;color:#1975ef}
+.practice-answers button.correct{background:#dcf6df;border-color:#34a85a;outline:0}
+.practice-answers button.incorrect{background:#ffe8ec;border-color:#e92345;border-style:solid}
+.practice-answers .correct .practice-choice-number{background:#219b51;color:white}
+.practice-feedback{background:#f4f8ff;border-color:#dfe8f5}
+.practice-feedback button,.practice-complete button{background:#ffdc39;color:#18395e;border:0;box-shadow:0 4px #c9a71d}
+.phone-practice button:focus-visible,.phone-practice a:focus-visible{outline:3px solid #1975ef}
+@media(max-width:420px){.practice-shell{padding-inline:15px}.homework-slots{gap:5px}.homework-slot{min-height:160px;border-radius:17px;gap:13px}.homework-slot-2{margin-right:-5px;border-radius:17px 0 0 17px}.homework-slot-3{border-radius:0 17px 17px 0}.homework-slot .cw-game-icon,.homework-slot .vocabulary-picture-art{width:52px;height:52px}.practice-answers button{font-size:21px}.practice-stage{gap:26px}}
+@media(max-height:650px){.homework-slot{min-height:130px;gap:7px;padding-block:20px 12px}.homework-slot .cw-game-icon,.homework-slot .vocabulary-picture-art{width:44px;height:44px}.practice-audio{margin-bottom:15px;padding:7px 18px}.practice-stage{gap:16px;padding-block:12px 16px}.practice-answers button{min-height:64px;padding:12px 18px}.practice-feedback{position:static;min-height:68px}}
+
+/* The answer controls use the same solid toy-like surfaces as the sentence. */
+.practice-shell { grid-template-rows:auto 8px auto auto; align-content:start; padding-bottom:max(24px,env(safe-area-inset-bottom)); }
+.practice-stage { padding-top:clamp(28px,6dvh,64px); padding-bottom:18px; gap:28px; }
+.phone-practice header a { width:46px; height:46px; color:#1975ef; }
+.phone-practice header a svg { width:24px; height:24px; }
+.phone-practice progress::-webkit-progress-value { background:#1975ef; }
+.phone-practice progress::-moz-progress-bar { background:#1975ef; }
+.practice-answers button { border:0; min-height:92px; padding:18px 22px; gap:20px; border-radius:26px; box-shadow:0 6px #c8d8ee; font-weight:800; transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s,background .22s; }
+.practice-choice-number { width:46px; height:46px; background:#1975ef; color:white; border:0; border-radius:16px; font-size:24px; box-shadow:0 3px #1254b0; }
+.practice-choice-number img { width:48px; height:48px; object-fit:contain; filter:drop-shadow(0 3px 0 #00000012); }
+.practice-answers button.correct { background:#148a51; color:white; box-shadow:0 6px #096637; outline:0; }
+.practice-answers button.incorrect { background:#e92345; color:white; box-shadow:0 6px #ad1630; }
+.practice-answers .correct .practice-choice-number,.practice-answers .incorrect .practice-choice-number { background:white; box-shadow:0 3px #00000015; width:54px; height:54px; border-radius:18px; padding:7px; }
+.practice-answers button:disabled:not(.correct):not(.incorrect) { opacity:.55; box-shadow:0 4px #ccdaee; }
+.practice-feedback { position:static; border:0; padding:12px 0 0; min-height:80px; gap:12px; }
+.practice-result { font-size:23px; font-weight:900; padding-left:8px; }
+.practice-feedback.is-correct .practice-result { color:#148a51; }
+.practice-feedback.is-incorrect .practice-result { color:#cf1939; }
+.practice-feedback button,.practice-complete button { min-height:62px; min-width:174px; border-radius:22px; font-size:24px; font-weight:900; gap:22px; padding:14px 24px; background:#ffdc39; box-shadow:0 6px #c6a31e; }
+.practice-feedback button svg { width:28px; height:28px; }
+.practice-feedback button:disabled { visibility:hidden; }
+.practice-feedback button:not(:disabled):active { transform:translateY(5px); box-shadow:0 1px #c6a31e; }
+@media(hover:hover) { .practice-answers button:not(:disabled):hover { transform:translateY(-2px); background:#fff; box-shadow:0 8px #a8c6ef; } }
+.practice-answers button:not(:disabled):active { transform:translateY(5px); box-shadow:0 1px #c8d8ee; }
+@media(max-width:420px) {
+ .practice-stage { gap:22px; padding-top:28px; }
+ .practice-answers button { min-height:84px; padding:16px; gap:14px; font-size:21px; }
+ .practice-choice-number { width:38px; height:38px; font-size:21px; border-radius:13px; }
+ .practice-answers .correct .practice-choice-number,.practice-answers .incorrect .practice-choice-number { width:46px;height:46px; }
+ .practice-choice-number img { width:40px;height:40px; }
+ .practice-result { font-size:20px; }
+ .practice-feedback button { min-width:150px; min-height:58px; font-size:22px; }
+}
+
+/* Answer affordance stays visible while audio plays; only submitted choices dim. */
+.practice-response .practice-answers button {
+ background:#1975ef;color:#fff;border:2px solid #378dff;
+ box-shadow:inset 0 2px 0 #ffffff26,0 6px 0 #1053b2;
+ opacity:1;touch-action:manipulation;
+}
+.practice-response .practice-answers button:disabled:not(.correct):not(.incorrect) {
+ opacity:1;box-shadow:inset 0 2px 0 #ffffff26,0 6px 0 #1053b2;
+}
+.practice-response .practice-choice-number {background:#fff;color:#1975ef;box-shadow:0 3px 0 #1053b2;}
+.practice-choice-label {flex:1;min-width:0;}
+.practice-choice-go {display:grid;place-items:center;flex:none;width:24px;}
+.practice-choice-go svg {width:24px;height:24px;}
+.practice-response.is-listening .practice-choice-go {visibility:hidden;}
+.practice-response .practice-instruction {color:#18395e;font-size:15px;font-weight:800;margin-bottom:16px;}
+@media(hover:hover) {
+ .practice-response .practice-answers button:not(:disabled):hover {background:#2684ff;box-shadow:inset 0 2px 0 #ffffff26,0 8px 0 #1053b2;}
+}
+.practice-response .practice-answers button:not(:disabled):active {transform:translateY(5px);box-shadow:0 1px 0 #1053b2;}
+.practice-response .practice-answers button:focus-visible {outline:3px solid #18395e;outline-offset:5px;}
+.practice-response .practice-answers button.correct {background:#148a51;border-color:#2fa868;box-shadow:0 6px 0 #096637;}
+.practice-response .practice-answers button.incorrect {background:#e92345;border-color:#ff4968;box-shadow:0 6px 0 #ad1630;}
+.practice-response.has-answer .practice-choice-go {display:none;}
+.practice-response.has-answer .practice-answers button:disabled:not(.correct):not(.incorrect) {opacity:.6;box-shadow:0 3px 0 #1053b2;}
+@media(max-width:420px) {
+ .practice-response .practice-answers button {gap:12px;padding:16px 14px;}
+ .practice-choice-go,.practice-choice-go svg {width:20px;height:20px;}
+}
+
+/* Keep the listening and continuation controls reachable on short phone screens. */
+.phone-practice header {
+ position:sticky;top:0;z-index:3;background:#f4f8ff;
+ padding-block:8px 12px;gap:10px;
+}
+.phone-practice header .practice-audio {
+ flex:none;margin:0;min-height:44px;padding:8px 12px;gap:6px;
+ font-size:14px;white-space:nowrap;
+}
+.phone-practice header .practice-audio svg {width:24px;height:24px;}
+.practice-feedback {position:sticky;bottom:0;z-index:3;padding-bottom:max(12px,env(safe-area-inset-bottom));}
+.phone-practice button:focus:not(:focus-visible),.phone-practice a:focus:not(:focus-visible) {outline:none;}
+@media(max-width:420px) {
+ .practice-identity>strong {font-size:14px;}
+ .phone-practice header>span {font-size:12px;}
+ .phone-practice header a {width:38px;height:38px;}
+ .phone-practice header .practice-audio {padding-inline:10px;}
+}
+@media(max-height:700px) {
+ .practice-shell {padding-top:0;padding-bottom:8px;}
+ .practice-stage {padding-block:12px;gap:14px;}
+ .homework-slot {min-height:104px;padding-block:20px 10px;gap:6px;}
+ .homework-slot .cw-game-icon,.homework-slot .vocabulary-picture-art {width:36px;height:36px;}
+ .homework-slot strong {font-size:clamp(17px,4.5vw,24px);}
+ .practice-response .practice-instruction {margin-bottom:10px;font-size:13px;}
+ .practice-answers {gap:12px;}
+ .practice-response .practice-answers button {min-height:64px;padding:10px 12px;font-size:19px;gap:12px;}
+ .practice-choice-number,.practice-answers .correct .practice-choice-number,.practice-answers .incorrect .practice-choice-number {width:36px;height:36px;border-radius:12px;font-size:20px;}
+ .practice-choice-number img {width:32px;height:32px;}
+ .practice-feedback {min-height:64px;padding-top:8px;}
+ .practice-feedback button {min-height:44px;min-width:130px;padding:8px 16px;font-size:20px;}
+ .practice-result {font-size:19px;}
+}
+
+.practice-audio-retry {display:block;margin:0 auto 16px;padding:14px 22px;border:0;border-radius:18px;background:#ffdc39;color:#18395e;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 4px #c6a31e;}
+
+.practice-languages {display:flex;gap:6px;flex-shrink:0}
+.practice-languages button {font-size:24px;padding:6px;border:1px solid transparent;border-radius:10px;background:transparent;cursor:pointer}
+.practice-languages button[aria-pressed="true"] {background:#fff2b8;border-color:#b98b19}

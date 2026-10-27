@@ -33,3 +33,31 @@
 @media(max-width:360px){.classroom-race.race-phone .controller-shell .race-answers button:is(.race-judgement,.race-meaning){padding:12px 24px;gap:12px;font-size:25px}.controller-shell .race-answer-art{width:66px;height:66px}}
 @media(max-height:650px){.controller-horse{min-height:155px;flex-basis:155px;max-height:200px}.controller-horse .cartoon-horse{width:290px;height:218px}.race-phone .controller-shell .controller-feedback{min-height:48px}.race-phone .controller-shell .race-answers{gap:12px}}
 @media(prefers-reduced-motion:reduce){.classroom-race.race-phone .controller-shell .race-answers button{transition:none}.controller-horse.is-answered .cartoon-horse{animation:none}}
+
+/* The same prompt as the shared screen, directly above the phone answers. */
+.race-phone .controller-shell .controller-question{margin:0 8px 18px;padding:0;color:#fff;font-family:'Fredoka','Avenir Next',sans-serif;font-size:clamp(24px,6.5vw,32px);font-weight:550;line-height:1.25;text-align:center;text-shadow:none;overflow-wrap:anywhere}
+.race-phone .controller-shell:has(.controller-question) .controller-horse{flex-basis:150px;min-height:140px;max-height:260px}
+.race-phone .controller-shell:has(.controller-question) .controller-horse .cartoon-horse{width:280px;height:210px}
+@media(max-height:650px){
+ .race-phone .controller-shell:has(.controller-question) .controller-horse{flex-basis:105px;min-height:105px;max-height:140px}
+ .race-phone .controller-shell:has(.controller-question) .controller-horse .cartoon-horse{width:210px;height:150px}
+ .race-phone .controller-shell .controller-question{font-size:24px;margin-bottom:12px}
+}
+
+/* More racers share the same phone: compact the overview and controls together. */
+.race-phone .controller-shell:not([data-density=normal])[data-density] .controller-question{font-size:clamp(21px,5.8vw,27px);line-height:1.22;margin-bottom:12px}
+.race-phone .controller-shell:not([data-density=normal])[data-density] .race-phone-round{min-height:24px;margin-bottom:8px;padding-inline:6px}
+.race-phone .controller-shell:not([data-density=normal])[data-density] .race-round{font-size:11px;padding:4px 14px}
+.race-phone .controller-shell:not([data-density=normal])[data-density] .race-answers{gap:10px}
+.classroom-race.race-phone .controller-shell:not([data-density=normal])[data-density] .race-answers button:is(.race-judgement,.race-meaning){min-height:88px;padding:12px 22px;gap:16px;border-radius:30px;font-size:clamp(21px,5.5vw,27px)}
+.classroom-race.race-phone .controller-shell:not([data-density=normal])[data-density] .race-answers button:is(.race-judgement,.race-meaning):before{border-radius:28px}
+.race-phone .controller-shell:not([data-density=normal])[data-density] .race-answer-art{width:60px;height:60px}
+.race-phone .controller-shell:not([data-density=normal])[data-density] .race-choice-badge{width:32px;height:32px;font-size:17px}
+.race-phone .controller-shell:not([data-density=normal])[data-density] .controller-feedback{min-height:30px;font-size:12px;margin-top:6px;padding-inline:6px}
+.classroom-race.race-phone .controller-shell[data-density=dense] .race-answers button:is(.race-judgement,.race-meaning){min-height:78px;padding:10px 20px;gap:14px;font-size:clamp(20px,5.3vw,25px)}
+.race-phone .controller-shell[data-density=dense] .race-answer-art{width:52px;height:52px}
+@media(max-height:650px){
+ .classroom-race.race-phone .controller-shell:not([data-density=normal])[data-density] .race-answers button:is(.race-judgement,.race-meaning){min-height:72px;padding:9px 18px;font-size:21px}
+ .race-phone .controller-shell:not([data-density=normal])[data-density] .race-answer-art{width:48px;height:48px}
+ .race-phone .controller-shell:not([data-density=normal])[data-density] .controller-question{font-size:21px;margin-bottom:10px}
+}

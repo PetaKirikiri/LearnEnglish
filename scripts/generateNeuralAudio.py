@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import sys
 import shutil
+import re
 
 import numpy as np
 import soundfile as sf
@@ -33,7 +34,8 @@ def main():
         name = Path(item['audioUrl']).name
         output = args.output / name
         text = item['spokenText']
-        fingerprint = hashlib.sha256(f'{VERSION}|{SPEED}|{GAP_SECONDS}|{text}'.encode()).hexdigest()
+        synthesis_text = re.sub(r'\bAC\b', 'A. C.', text)
+        fingerprint = hashlib.sha256(f'{VERSION}|{SPEED}|{GAP_SECONDS}|{synthesis_text}'.encode()).hexdigest()
         if manifest.get(name, {}).get('fingerprint') == fingerprint and output.exists():
             continue
         # Identical sentences can test different contrasts. Reuse their exact
@@ -50,7 +52,7 @@ def main():
         # never pass underscores or the hidden answer to the speech engine.
         samples = []
         sample_rate = 24000
-        for part_index, part in enumerate(text.split('_____')):
+        for part_index, part in enumerate(synthesis_text.split('_____')):
             if part_index:
                 samples.append(np.zeros(round(sample_rate * GAP_SECONDS), dtype=np.float32))
             if part.strip():

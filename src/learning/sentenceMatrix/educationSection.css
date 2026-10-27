@@ -1,0 +1,7 @@
+.cw-education-heading{display:flex;align-items:center;gap:10px;min-height:40px;margin:0 0 16px}
+.cw-education-icon{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:10px;background:#edf4ff;color:#1877ef}
+.cw-education-icon svg{width:19px;height:19px}
+.cw-education-heading h2{font:650 17px/1.35 'Avenir Next','Noto Sans Thai',sans-serif;color:#18385e;margin:0;min-width:0}
+.cw-education-actions{margin-left:auto;flex:none;display:flex;align-items:center}
+.cw-education-actions .cw-education-edit{border:0;border-radius:10px;padding:8px 12px;min-height:36px;background:#edf4ff;color:#1767d2;font:600 12px 'Avenir Next',sans-serif;cursor:pointer}
+@media(max-width:600px){.cw-education-heading{gap:8px}.cw-education-heading h2{font-size:16px}}

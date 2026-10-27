@@ -1,6 +1,8 @@
-# Word modal
+# Legacy course word help
 
-The approved word modal is the richer word explorer, not a translation-only popup. It was recovered from the separate `ui-preview.html` checkout on 2026-09-21.
+This document applies only to the older `src/learning/WordHelp.tsx` popup still used by reading and other courses. It is not the classroom education modal and must not be used as the design reference for four-slot teaching features. The current education view is `src/classroom/SentenceLine.tsx` → `src/classroom/WordExplanation.tsx`; pronunciation and new classroom explanations belong there.
+
+The older course word modal is the richer word explorer, not a translation-only popup. It was recovered from the separate `ui-preview.html` checkout on 2026-09-21.
 
 Preserve this order: word and close control, learner confidence with its brain icon and five expressive faces, Thai meaning, word details. Nouns show singular and plural rows with one/many quantity icons and before/after word combinations. Verbs retain their forms and conservative context-based tense hints. Update its visual theme without dropping these features or replacing it with a branded translation card.
 

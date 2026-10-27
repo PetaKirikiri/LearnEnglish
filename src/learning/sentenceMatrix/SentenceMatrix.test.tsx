@@ -1,0 +1,241 @@
+// @vitest-environment happy-dom
+import { act } from 'react'
+import { createRoot } from 'react-dom/client'
+import { afterEach, expect, it, vi } from 'vitest'
+import SentenceMatrix from './SentenceMatrix'
+import CompactMatrix from './CompactMatrix'
+import { classroomMatrices } from '../../classroom/matrixLessons'
+import type { MatrixLesson } from './model'
+Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT:true })
+const host=document.createElement('div')
+document.body.append(host)
+let root=createRoot(host)
+afterEach(async()=>{await act(async()=>root.unmount());host.replaceChildren();root=createRoot(host);vi.restoreAllMocks()})
+const click=async(selector:string)=>act(async()=>host.querySelector<HTMLButtonElement>(selector)!.click())
+const words=(selector:string)=>[...host.querySelectorAll(`${selector} strong`)].map(e=>e.textContent)
+const choose=async(word:string)=>act(async()=>[...host.querySelectorAll<HTMLButtonElement>('.cw-word-chip')].find(b=>b.querySelector('strong')?.textContent===word)!.click())
+it('can disable explanations independently while keeping dropdowns, noun pictures and correct agreement',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-2']} settings={{explanations:false}}/>))
+ expect(host.querySelectorAll('.tonight-slot')).toHaveLength(4)
+ expect(host.querySelector('.example-unit-trigger')).toBeNull()
+ expect(host.querySelectorAll('.slot-3 .vocabulary-picture')).toHaveLength(1)
+ await click('[data-picker-slot="3"]'); await choose('keys')
+ expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('Where are the keys?')
+ await click('[data-picker-slot="1"]'); await choose('is')
+ expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('Where is the key?')
+})
+it('can disable dropdowns and explanation editing without disabling educational windows',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-2']} settings={{wordPicker:false,explanationSelection:false,audio:false}}/>))
+ expect(host.querySelector('.cw-slot-picker')).toBeNull()
+ expect(host.querySelector('.cw-word-conveyor')).toBeNull()
+ expect(host.querySelector('.cw-sound')).toBeNull()
+ await click('[aria-label="Slot 4: shoes"]')
+ expect(host.querySelector('.cw-word-explanation h1')?.textContent).toBe('shoes')
+ expect(host.querySelector('.cw-word-options')).toBeNull()
+ await click('.cw-word-return')
+ expect(document.activeElement).toBe(host.querySelector('[aria-label="Slot 4: shoes"]'))
+})
+it('restricts both selection surfaces and counterpart forms to the supplied lesson vocabulary',async()=>{
+ const lesson:MatrixLesson={...classroomMatrices['lesson-2'],id:'limited',vocabulary:classroomMatrices['lesson-2'].vocabulary.filter(w=>['shoes','keys'].includes(w.word))}
+ await act(async()=>root.render(<SentenceMatrix lesson={lesson}/>))
+ await click('[data-picker-slot="3"]')
+ expect(words('.cw-word-chip')).toEqual(['shoes','keys'])
+ await choose('keys')
+ await click('[data-picker-slot="1"]')
+ expect([...host.querySelectorAll<HTMLButtonElement>('.cw-word-chip')].find(b=>b.textContent?.includes('is'))?.disabled).toBe(true)
+ await click('.cw-belt-close'); await click('[aria-label="Slot 4: keys"]')
+ expect(words('.cw-word-options button')).toEqual(['shoes','keys'])
+})
+it('resets a removed selection and open explanation when switching lessons without remounting the caller',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-2']}/>))
+ await click('[data-picker-slot="3"]'); await choose('glasses')
+ await click('[aria-label="Slot 4: glasses"]')
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-1']}/>))
+ expect(host.querySelector('.cw-word-explanation')).toBeNull()
+ expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('Where is the hotel?')
+ await click('[data-picker-slot="3"]')
+ expect(words('.cw-word-chip')).toHaveLength(20)
+ expect(words('.cw-word-chip')).not.toContain('glasses')
+})
+it('keeps two matrix instances independent with distinct explanation targets',async()=>{
+ await act(async()=>root.render(<><SentenceMatrix lesson={classroomMatrices['lesson-1']}/><SentenceMatrix lesson={classroomMatrices['lesson-2']}/></>))
+ const targets=[...host.querySelectorAll('[aria-label^="Slot 4:"]')].map(e=>e.getAttribute('aria-controls'))
+ expect(new Set(targets).size).toBe(2)
+ await click('[aria-label="Slot 4: hotel"]')
+ expect(host.querySelector('.cw-word-explanation')?.id).toBe(targets[0])
+ expect(host.querySelector('.cw-sentence-board[aria-label]')?.getAttribute('aria-label')).toBe('Where are the shoes?')
+})
+it('uses the selected noun and owner for recorded audio',async()=>{
+ const play=vi.spyOn(HTMLMediaElement.prototype,'play').mockResolvedValue()
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-2']}/>))
+ await click('[data-picker-slot="2"]');await choose('your')
+ await click('[data-picker-slot="3"]');await choose('keys')
+ await click('.cw-sound')
+ expect(host.querySelector('audio')?.getAttribute('src')).toBe(classroomMatrices['lesson-2'].audio('keys','your','are'))
+ expect(play).toHaveBeenCalledOnce()
+})
+it('leaves intentionally incorrect assessment sentences untouched and hides all help',async()=>{
+ const slots=[{label:'Question',options:[['Where','ที่ไหน']]},{label:'Verb',options:[['is','อยู่']]},{label:'Owner',options:[['my','ของฉัน']]},{label:'Noun',options:[['shoe','รองเท้า']]}] as const
+ await act(async()=>root.render(<CompactMatrix slots={slots} values={['Where','is','my','shoes']} assessment label="Question"/>))
+ expect([...host.querySelectorAll('.tonight-slot > strong')].map(e=>e.textContent)).toEqual(['Where','is','my','shoes'])
+ expect(host.querySelector('[lang="th"]')).toBeNull()
+ expect([...host.querySelectorAll<HTMLButtonElement>('.tonight-slot')].every(b=>b.disabled)).toBe(true)
+ expect(host.querySelector('.tonight-choices')).toBeNull()
+})
+it('can lock the compact picker without hiding its teaching translation',async()=>{
+ await act(async()=>root.render(<CompactMatrix slots={[{label:'word',options:[['hotel','โรงแรม'],['shop','ร้าน']]}]} settings={{wordPicker:false}} label="Example" translation={()=>'โรงแรม'}/>))
+ expect(host.querySelector<HTMLButtonElement>('.tonight-slot')?.disabled).toBe(true)
+ expect(host.querySelector('.tonight-sentence')?.textContent).toBe('โรงแรม')
+})
+
+it('always includes pronunciation in every slot explanation, even with selection locked',async()=>{
+ for(const lesson of Object.values(classroomMatrices)) {
+  await act(async()=>root.render(<SentenceMatrix key={lesson.id} lesson={lesson} settings={{wordPicker:false,explanationSelection:false,audio:false}}/>))
+  for(let slot=1;slot<=4;slot++) {
+   await click(`[aria-label^="Slot ${slot}:"]`)
+   const word=host.querySelector('.cw-word-explanation h1')!.textContent!
+   expect(host.querySelectorAll('.pronunciation-comparison'),`${lesson.id}: slot ${slot}`).toHaveLength(1)
+   expect(host.querySelector('.pronunciation-content')?.hasAttribute('hidden')).toBe(false)
+   expect(host.querySelectorAll('.pronunciation-side')).toHaveLength(2)
+   expect(host.querySelector(`[aria-label="english pitch sketch for ${word}"]`)).not.toBeNull()
+   await click('.cw-word-return')
+  }
+ }
+})
+
+it('keeps the pronunciation section for every lesson noun and words with no pronunciation data',async()=>{
+ const unknown={word:'unlistedword',thai:'คำใหม่'}
+ const lessons=[...Object.values(classroomMatrices),{...classroomMatrices['lesson-1'],id:'no-pronunciation-data',initialWord:unknown.word,vocabulary:[unknown]}]
+ for(const lesson of lessons)for(const item of lesson.vocabulary) {
+  await act(async()=>root.render(<SentenceMatrix key={`${lesson.id}:${item.word}`} lesson={lesson} word={item.word} settings={{audio:false}}/>))
+  await click('[aria-label^="Slot 4:"]')
+  expect(host.querySelector('.cw-word-explanation h1')?.textContent).toBe(item.word)
+  expect(host.querySelector('.pronunciation-content')?.hasAttribute('hidden'),item.word).toBe(false)
+  expect(host.querySelectorAll('.pronunciation-side'),item.word).toHaveLength(2)
+  if(item.word===unknown.word) {
+   expect(host.querySelectorAll('.pronunciation-path.is-unset')).toHaveLength(2)
+   await act(async()=>[...host.querySelectorAll<HTMLButtonElement>('.pronunciation-comparison .cw-education-edit')].find(b=>b.textContent==='Edit')!.click())
+   expect(host.querySelectorAll('[role="slider"]')).toHaveLength(2)
+  }
+ }
+},20000)
+
+it('filters the education vocabulary shelf with one/many apples without changing the explained word',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-2']} settings={{audio:false}}/>))
+ await click('[aria-label="Slot 4: shoes"]')
+ expect(host.querySelector('[aria-label="Plural words"]')?.getAttribute('aria-pressed')).toBe('true')
+ expect(words('.cw-word-options button')).toContain('shoes')
+ expect(words('.cw-word-options button')).toContain('glasses')
+ expect(words('.cw-word-options button')).not.toContain('shoe')
+ await click('[aria-label="Singular words"]')
+ expect(words('.cw-word-options button')).toContain('shoe')
+ expect(words('.cw-word-options button')).not.toContain('shoes')
+ expect(words('.cw-word-options button')).not.toContain('glasses')
+ expect(host.querySelector('.cw-word-explanation h1')?.textContent).toBe('shoes')
+ await act(async()=>[...host.querySelectorAll<HTMLButtonElement>('.cw-word-options button')].find(b=>b.querySelector('strong')?.textContent==='key')!.click())
+ expect(host.querySelector('.cw-word-explanation h1')?.textContent).toBe('key')
+ await click('.cw-word-return')
+ expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('Where is the key?')
+ await act(async()=>root.render(<SentenceMatrix key="one" lesson={classroomMatrices['lesson-1']}/>))
+ await click('[aria-label="Slot 4: hotel"]')
+ expect(host.querySelector('.cw-number-filter')).toBeNull()
+})
+
+it('combines vocabulary categories with singular/plural and preserves the explained word',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-2']} settings={{audio:false}}/>))
+ await click('[aria-label="Slot 4: shoes"]')
+ expect(host.querySelector('[data-category="food"]')).toBeNull()
+ await click('[data-category="clothing"]')
+ expect(words('.cw-word-options button')).toContain('shoes')
+ expect(words('.cw-word-options button')).toContain('trousers')
+ expect(words('.cw-word-options button')).not.toContain('keys')
+ await click('[aria-label="Singular words"]')
+ expect(words('.cw-word-options button')).toContain('shoe')
+ expect(words('.cw-word-options button')).not.toContain('shoes')
+ expect(words('.cw-word-options button')).not.toContain('trousers')
+ expect(host.querySelector('.cw-word-explanation h1')?.textContent).toBe('shoes')
+ await click('[data-category="everyday"]')
+ expect(words('.cw-word-options button')).toContain('key')
+ expect(words('.cw-word-options button')).not.toContain('shoe')
+ await click('.cw-category-filters button')
+ expect(words('.cw-word-options button')).toContain('shoe')
+ expect(words('.cw-word-options button')).toContain('key')
+})
+
+it('lets lesson two revisit lesson one vocabulary through both pickers and category filters',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-2']} settings={{audio:false}}/>))
+ await click('[data-picker-slot="3"]')
+ expect(words('.cw-word-chip')).toContain('hotel')
+ await choose('hotel')
+ expect(host.querySelector('.cw-sentence-board[aria-label]')?.getAttribute('aria-label')).toBe('Where is the hotel?')
+ await click('[aria-label="Slot 4: hotel"]')
+ await click('[data-category="places"]')
+ expect(words('.cw-word-options button')).toContain('hotel')
+ expect(words('.cw-word-options button')).toContain('clinic')
+ expect(words('.cw-word-options button')).not.toContain('shoe')
+ await click('[data-category="clothing"]')
+ expect(words('.cw-word-options button')).toContain('shoe')
+ await click('[aria-label="Plural words"]')
+ expect(words('.cw-word-options button')).toContain('shoes')
+ expect(host.querySelector('.cw-word-explanation h1')?.textContent).toBe('hotel')
+})
+
+
+it('keeps categories usable across number filters and lets the active category be cleared',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-2']} settings={{audio:false}}/>))
+ await click('[aria-label="Slot 4: shoes"]')
+ expect(host.querySelector('[aria-label="Plural words"]')?.getAttribute('aria-pressed')).toBe('true')
+ expect([...host.querySelectorAll<HTMLButtonElement>('.cw-category-filters button')].every(button=>!button.disabled)).toBe(true)
+ await click('[data-category="places"]')
+ expect(host.querySelector('[aria-label="Singular words"]')?.getAttribute('aria-pressed')).toBe('true')
+ expect(words('.cw-word-options button')).toContain('hotel')
+ expect(words('.cw-word-options button')).not.toContain('shoe')
+ expect(host.querySelector('.cw-word-explanation h1')?.textContent).toBe('shoes')
+ await click('[data-category="places"]')
+ expect(host.querySelector('.cw-category-filters button')?.getAttribute('aria-pressed')).toBe('true')
+ expect(words('.cw-word-options button')).toContain('shoe')
+ expect(words('.cw-word-options button')).toContain('hotel')
+})
+
+
+it('adds past tense and new owners only in lesson three and preserves them when nouns change',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-3']} settings={{audio:false}}/>))
+ await click('[data-picker-slot="1"]')
+ expect(words('.cw-word-chip')).toEqual(['is','are','was','were'])
+ await choose('was')
+ await click('[data-picker-slot="2"]')
+ expect(words('.cw-word-chip')).toEqual(['the','my','your','his','her'])
+ await choose('her')
+ expect(host.querySelector('.cw-sentence-board[aria-label]')?.getAttribute('aria-label')).toBe('Where was her phone?')
+ await click('[data-picker-slot="1"]')
+ await choose('were')
+ expect(host.querySelector('.cw-sentence-board[aria-label]')?.getAttribute('aria-label')).toBe('Where were her phones?')
+ expect(host.querySelector('.slot-1 .example-source')?.textContent).toBe('were')
+ expect(host.querySelector('.slot-2 .example-source')?.textContent).toBe('her')
+ await click('[data-picker-slot="3"]')
+ await choose('umbrella')
+ expect(host.querySelector('.cw-sentence-board[aria-label]')?.getAttribute('aria-label')).toBe('Where was her umbrella?')
+ await click('[aria-label="Slot 2: was"]')
+ expect(host.querySelector('.cw-word-explanation')?.textContent).toContain('was')
+ expect(host.querySelector('.cw-word-explanation')?.textContent).toContain('were')
+ expect(host.querySelector('.cw-word-explanation')?.textContent).toContain('ก่อนหน้านี้')
+ await click('.cw-word-return')
+ await click('[aria-label="Slot 3: her"]')
+ expect(words('.cw-word-options button')).toContain('his')
+ expect(words('.cw-word-options button')).toContain('her')
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-2']} settings={{audio:false}}/>))
+ await click('[data-picker-slot="1"]')
+ expect(words('.cw-word-chip')).toEqual(['is','are'])
+ await click('[data-picker-slot="2"]')
+ expect(words('.cw-word-chip')).toEqual(['the','my','your'])
+})
+
+it('keeps pair-only words plural in past tense and exposes new vocabulary categories',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={{...classroomMatrices['lesson-3'],initialWord:'glasses',initialTense:'past'}} settings={{audio:false}}/>))
+ expect(host.querySelector('.cw-sentence-board[aria-label]')?.getAttribute('aria-label')).toBe('Where were the glasses?')
+ await click('[data-picker-slot="1"]')
+ expect([...host.querySelectorAll<HTMLButtonElement>('.cw-word-chip')].find(b=>b.querySelector('strong')?.textContent==='was')?.disabled).toBe(true)
+ await click('[aria-label="Slot 4: glasses"]')
+ await click('[data-category="food"]')
+ expect(words('.cw-word-options button')).toEqual(['apples','bananas','oranges','sandwiches'])
+})

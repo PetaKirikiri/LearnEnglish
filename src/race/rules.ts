@@ -1,10 +1,10 @@
 export const WINDOW_MS = 10_000
-export const FINISH = 6_000
-// Internal units are metres/second; the visible rules are 5 km/h and +0..5 km/h.
-export const MIN_SPEED = 5 / 3.6
+export const FINISH = 500
+// Metres/second internally: 20–40 km/h cruising, with up to +5 km/h per answer.
+export const MIN_SPEED = 20 / 3.6
 export const MAX_BOOST = 5 / 3.6
 export const SPEED_TRANSITION_MS = 1_000
-export const MAX_SPEED = MIN_SPEED + MAX_BOOST
+export const MAX_SPEED = 40 / 3.6
 // Legacy renderer thresholds only; golden form has no extra scoring bonus.
 export const GOLDEN_MIN_SPEED = MIN_SPEED
 export const GOLDEN_SPEED = MAX_SPEED
@@ -24,10 +24,10 @@ export function wrongAnswerPenalty(position: number, fieldSize = 4) {
 
 export function speedFor(correct: boolean, elapsedMs: number, _streak = 0, previousSpeed = MIN_SPEED, position = 1, fieldSize = 4) {
   void _streak // Retained for callers; golden power is visual, not a scoring bonus.
-  const previous = Math.max(MIN_SPEED, previousSpeed)
+  const previous = Math.min(MAX_SPEED, Math.max(MIN_SPEED, previousSpeed))
   if (!correct) return Math.max(MIN_SPEED, previous * (1 - wrongAnswerPenalty(position, fieldSize)))
   const quickness = Math.max(0, 1 - Math.max(0, elapsedMs) / WINDOW_MS)
-  return previous + MAX_BOOST * quickness
+  return Math.min(MAX_SPEED, previous + MAX_BOOST * quickness)
 }
 
 export function roundResult(player: { speed: number; targetSpeed?: number; streak?: number }, correct: boolean, elapsedMs: number, position = 1, fieldSize = 4) {

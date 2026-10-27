@@ -1,0 +1,28 @@
+.cw-number-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.cw-number-example{display:flex;flex-direction:column;align-items:center;margin:0;padding:14px 12px 16px;border:2px solid #e7edf5;border-radius:18px;background:#f8faff;min-width:0}
+.cw-number-example.is-current{border-color:#e9bd20;background:#fffbed}
+.cw-number-example figcaption{display:flex;align-items:center;gap:7px;font-size:12px;color:#526d86;line-height:1.4}
+.cw-quantity{display:grid;place-items:center;min-width:25px;height:25px;border-radius:8px;background:#fff;color:#18385e;font:650 13px 'Avenir Next',sans-serif}
+.cw-number-example .vocabulary-picture{width:96px;height:96px;margin:12px 0 6px;flex:none}
+.cw-form-word{font:500 27px/1.25 'Fredoka',sans-serif;color:#18385e;overflow-wrap:anywhere;text-align:center;max-width:100%}
+.cw-form-word mark{background:#ffd43b;color:#18385e;border-radius:5px;padding:0 3px;margin-left:1px}
+.cw-form-meaning{font-size:12px;color:#526d86;margin-top:4px}
+.cw-agreement-arrow{height:23px;width:23px;margin:10px 0;color:#95a9bb}
+.cw-number-comparison.is-single{grid-template-columns:1fr}
+.cw-number-comparison.is-single .cw-number-example{display:grid;grid-template-columns:auto 1fr auto;column-gap:14px;text-align:left}
+.cw-number-comparison.is-single figcaption{grid-column:1/-1;margin-bottom:8px}
+.cw-number-comparison.is-single .vocabulary-picture{grid-column:1;grid-row:2/4;margin:0}
+.cw-number-comparison.is-single .cw-form-word{grid-column:2;grid-row:2;align-self:end;text-align:left}
+.cw-number-comparison.is-single .cw-form-meaning{grid-column:2;grid-row:3;align-self:start}
+.cw-number-comparison.is-single .cw-agreement-arrow{display:none}
+.cw-number-comparison.is-single .cw-verb-match{grid-column:3;grid-row:2/4;min-width:0}
+@media(max-width:600px){.cw-number-comparison{gap:10px}.cw-number-example{padding:12px 8px}.cw-number-example .vocabulary-picture{width:78px;height:78px}.cw-form-word{font-size:24px}.cw-number-comparison.is-single .vocabulary-picture{width:60px;height:60px}}
+/* Reuse the builder's MatrixCard and theme. Only scale its dimensions here. */
+.cw-verb-match.cw-sentence-board{flex:none;width:128px;max-width:100%;background:none}
+.classroom .cw-verb-match.cw-sentence-board .example-matrix .tonight-slot{min-height:150px;padding:12px 10px;gap:7px;border-radius:16px;cursor:default}
+.classroom .cw-verb-match.cw-sentence-board .cw-slot-role{height:42px;min-height:42px}
+.classroom .cw-verb-match.cw-sentence-board .cw-game-icon{width:46px;height:46px}
+.classroom .cw-verb-match.cw-sentence-board .example-source{font-size:32px;font-weight:500}
+.classroom .cw-verb-match.cw-sentence-board .example-gloss{font-size:13px;min-height:20px}
+.cw-agreement-purpose{font-size:15px;font-weight:500;line-height:1.6;color:#294865;margin:0 0 16px}
+.cw-verb-match .cw-verb-caption{font:650 12px/1.4 'Avenir Next','Noto Sans Thai',sans-serif;color:#526d86;text-align:center;margin:0 0 8px}
