@@ -305,7 +305,7 @@ function judgement(items, determiners) {
     });
   })));
 }
-var lessonTwoNumberQuestions = judgement(lessonTwoWords.slice(0, 3), ["the"]);
+var lessonTwoNumberQuestions = judgement([...lessonTwoWords, ...lessonTwoPairs], ["the"]);
 var lessonTwoOwnerQuestions = lessonTwoWords.filter((item) => lessonTwoCore.includes(item.singular)).flatMap((item) => [false, true].flatMap((plural) => ["my", "your"].map((owner) => {
   const sentence = numberSentence(item, plural, owner);
   const other = numberSentence(item, plural, owner === "my" ? "your" : "my");
