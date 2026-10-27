@@ -1,0 +1,119 @@
+/* One readable sentence, with an editable word inside it. */
+.classroom .content:has(.cw-sentence-panel){padding:0;background:#fff}
+.classroom .note[data-page=example]{max-width:none;min-height:100%;gap:0}
+.cw-sentence-panel{display:flex;flex-direction:column;flex:1;min-height:100%;--sentence-blue:#1877ef;--sentence-ink:#18385e;--sentence-red:#d93443;--sentence-green:#168347;--sentence-yellow:#ffda38}
+.cw-sentence-panel .cw-panel-header{min-height:112px;padding:22px clamp(28px,4cqw,64px);gap:6px;flex:none}
+.classroom .cw-sentence-panel .cw-panel-header h1{font-size:clamp(26px,2.6cqw,36px)}
+.cw-sentence-panel .cw-panel-lesson{font-size:13px}
+.cw-sentence-workspace{display:flex;flex:1;min-height:0}
+.cw-sentence-board{display:flex;flex-direction:column;flex:1;min-width:0;background:#fff}
+.cw-sentence-display{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 28px}
+.classroom .cw-sentence-board .example-language{max-width:1100px;margin:auto;width:100%}
+.classroom .cw-sentence-board .example-matrix .tonight-slots{display:grid;grid-template-columns:max-content max-content max-content minmax(0,max-content);justify-content:center;gap:clamp(8px,1.4cqw,22px);padding:0;margin:0;align-items:start;background:none}
+.classroom .cw-sentence-board .example-matrix .tonight-slot{position:relative;display:grid;grid-template-rows:auto auto;justify-content:stretch;justify-items:center;align-items:start;min-height:0;padding:8px 5px;gap:12px;border:0;border-radius:0;box-shadow:none;background:transparent;color:var(--sentence-ink)}
+.classroom .cw-sentence-board .example-matrix .slot-heading,.classroom .cw-sentence-board .example-matrix .slot-role-icon{display:none}
+.classroom .cw-sentence-board .example-matrix .slot-0{color:var(--sentence-red)}
+.classroom .cw-sentence-board .example-matrix .slot-1{color:var(--sentence-green)}
+.classroom .cw-sentence-board .example-matrix .slot-2{color:var(--sentence-blue)}
+.classroom .cw-sentence-board .example-source{grid-row:1;font-family:'Fredoka',sans-serif;font-size:clamp(36px,6.5cqw,82px);line-height:1.15;font-weight:500;letter-spacing:-.025em;overflow-wrap:normal;padding:0 0 6px;border-bottom:4px solid transparent}
+.classroom .cw-sentence-board .example-source strong{font-weight:500}
+.classroom .cw-sentence-board .example-gloss{grid-row:2;max-width:140px;font-size:clamp(15px,1.7cqw,22px);line-height:1.45;font-weight:400;opacity:1;color:#526d8c;text-align:center}
+.classroom .cw-sentence-board .example-matrix .example-unit-trigger{position:relative;border:0;border-radius:10px;background:transparent;color:var(--sentence-ink);box-shadow:none;outline:0;transition:background 220ms}
+.classroom .cw-sentence-board .example-unit-trigger .example-source{border-bottom-color:var(--sentence-yellow);padding-right:27px;transition:border-color 220ms}
+.classroom .cw-sentence-board .example-matrix .example-unit-trigger:hover,.classroom .cw-sentence-board .example-matrix .example-unit-trigger[aria-expanded=true]{background:#fff9df;transform:none;box-shadow:none}
+.classroom .cw-sentence-board .example-matrix .example-unit-trigger:active{background:#fff0a2}
+.classroom .cw-sentence-board .example-matrix .example-unit-trigger:focus-visible{outline:3px solid #1877ef;outline-offset:4px}
+.cw-slot-change{position:absolute;right:7px;top:calc(8px + clamp(36px,6.5cqw,82px) * .58 - 9px);display:flex;color:#826400}
+.cw-slot-change svg{width:18px;height:18px;transition:transform 500ms cubic-bezier(.22,1,.36,1)}
+[aria-expanded=true]>.cw-slot-change svg{transform:rotate(180deg)}
+.classroom .cw-sentence-board[data-long-word] .example-source{font-size:clamp(30px,5cqw,66px)}
+.classroom .cw-sentence-board[data-long-word] .cw-slot-change{top:calc(8px + clamp(30px,5cqw,66px) * .58 - 9px)}
+.cw-sentence-board .example-meaning-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:12px;padding:0;border:0}
+.classroom .cw-sentence-board .example-translation{margin:0;padding:0;color:var(--sentence-ink);font-size:clamp(22px,2.5cqw,34px);font-weight:400;line-height:1.5;text-align:left;border:0}
+.cw-sentence-board .cw-audio{flex:none;position:relative}
+.cw-sentence-board .cw-sound{display:grid;place-items:center;width:46px;height:46px;min-height:46px;padding:0;border:0;border-radius:50%;background:transparent;color:#1877ef;transition:background 200ms,transform 200ms}
+.cw-sentence-board .cw-sound svg{width:27px;height:27px}
+.cw-sentence-board .cw-sound>span{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.cw-sentence-board .cw-sound:hover,.cw-sentence-board .cw-sound.is-playing{background:#eaf3ff}
+.cw-sentence-board .cw-audio>p{position:absolute;top:100%;left:0;width:220px;background:#fff;padding:8px;z-index:2}
+.cw-vocabulary-drawer{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows 550ms cubic-bezier(.22,1,.36,1),opacity 350ms}
+.cw-vocabulary-drawer.is-open{grid-template-rows:1fr;opacity:1}
+.cw-vocabulary-clip{min-height:0;overflow:hidden}
+.cw-vocabulary{background:#fffdf4;border-top:1px solid #f0e6bc;padding:12px clamp(24px,4cqw,64px) 24px}
+.cw-vocabulary header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:10px}
+.cw-vocabulary h2{font-size:15px;font-weight:500;color:#426991;margin:0}
+.cw-vocabulary header button{display:grid;place-items:center;width:44px;height:44px;background:none;border:0;color:#1877ef}
+.cw-vocabulary header svg{width:20px;height:20px}
+.cw-vocabulary-options{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px 18px;max-height:clamp(80px,calc(100cqh - 590px),220px);overflow:auto;overscroll-behavior:contain;padding:4px;scrollbar-width:thin;scrollbar-color:#e4c96b transparent}
+.cw-vocabulary-options button{position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-width:0;min-height:70px;padding:10px 28px 10px 12px;gap:4px;background:transparent;border:0;border-bottom:1px solid #dce8f7;color:#2f527b;text-align:left;transition:color 180ms,background 180ms}
+.cw-vocabulary-options button:hover{background:#fff2b7}
+.cw-vocabulary-options button[aria-pressed=true]{background:var(--sentence-yellow);color:var(--sentence-ink);border-color:#dfb723}
+.cw-vocabulary-options strong{font-family:'Fredoka',sans-serif;font-weight:450;font-size:clamp(18px,1.7cqw,24px);line-height:1.2}
+.cw-vocabulary-options span{font-size:12px;line-height:1.5;opacity:.85}
+.cw-vocabulary-options svg{position:absolute;right:8px;top:18px;width:17px;height:17px}
+@media(min-width:701px) and (max-height:700px){
+ .cw-sentence-panel .cw-panel-header{min-height:96px;padding-top:16px;padding-bottom:16px}
+ .cw-sentence-display{padding-top:24px;padding-bottom:24px}
+ .cw-vocabulary{padding-top:0;padding-bottom:12px}.cw-vocabulary header{margin-bottom:0}
+ .cw-vocabulary-options{max-height:110px}
+}
+@media(min-width:701px) and (max-width:1100px){.cw-vocabulary-options{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:700px){
+ .classroom .note[data-page=example]{min-height:calc(100dvh - 198px)}
+ .cw-sentence-panel .cw-panel-header{min-height:86px;padding:14px 22px;gap:5px}
+ .classroom .cw-sentence-panel .cw-panel-header h1{font-size:25px}
+ .cw-sentence-display{padding:30px 12px}
+ .classroom .cw-sentence-board .example-matrix .tonight-slots{grid-template-columns:max-content max-content max-content minmax(0,max-content);gap:4px}
+ .classroom .cw-sentence-board .example-matrix .tonight-slot{grid-template-rows:auto auto;padding:8px 2px;gap:10px}
+ .classroom .cw-sentence-board .example-source{font-size:clamp(25px,6.3vw,42px);padding-bottom:5px;border-bottom-width:3px}
+ .classroom .cw-sentence-board .example-gloss{font-size:11px;max-width:65px;line-height:1.45}
+ .classroom .cw-sentence-board .example-unit-trigger .example-source{padding-right:17px}
+ .cw-slot-change{right:2px;top:calc(8px + clamp(25px,6.3vw,42px) * .58 - 8px)}.cw-slot-change svg{width:13px;height:16px}
+ .classroom .cw-sentence-board[data-long-word] .example-source{font-size:clamp(18px,4.7vw,32px)}
+ .classroom .cw-sentence-board[data-long-word] .cw-slot-change{top:calc(8px + clamp(18px,4.7vw,32px) * .58 - 8px)}
+ .cw-sentence-board .example-meaning-row{margin-top:16px;gap:8px}
+ .classroom .cw-sentence-board .example-translation{font-size:20px}
+ .cw-sentence-board .cw-sound{width:44px;height:44px;min-height:44px}.cw-sentence-board .cw-sound svg{width:24px;height:24px}
+ .cw-vocabulary{padding:8px 18px 18px}.cw-vocabulary h2{font-size:13px}
+ .cw-vocabulary-options{grid-template-columns:repeat(2,minmax(0,1fr));max-height:230px;gap:5px 10px}
+ .cw-vocabulary-options strong{font-size:18px}
+}
+@media(prefers-reduced-motion:reduce){.cw-vocabulary-drawer,.cw-slot-change svg,.cw-vocabulary-options button,.cw-sentence-board .cw-sound,.classroom .cw-sentence-board .example-matrix .example-unit-trigger,.classroom .cw-sentence-board .example-unit-trigger .example-source{transition:none}}
+
+/* Four stable teaching slots: question, tense, then one connected noun phrase. */
+.classroom .cw-sentence-board .example-matrix .tonight-slots{grid-template-columns:1fr .8fr 2.2fr;gap:14px;align-items:stretch;width:100%}
+.cw-noun-group{display:grid;grid-template-columns:.8fr 1.4fr;gap:0;min-width:0;position:relative;border-radius:24px;background:#ffd43b;box-shadow:0 6px 0 #bc8b0c,0 10px 16px #18385e12}
+.classroom .cw-sentence-board .example-matrix .tonight-slot{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:230px;padding:22px 16px 44px;border:2px solid var(--slot-edge);border-radius:24px;background:var(--slot-fill);box-shadow:0 6px 0 var(--slot-edge),0 10px 16px #18385e12;color:var(--slot-ink);min-width:0;cursor:pointer;transition:transform 160ms,box-shadow 160ms,filter 160ms}
+.classroom .cw-sentence-board .example-matrix .slot-0{--slot-fill:#df2944;--slot-edge:#ad1730;--slot-ink:#fff}
+.classroom .cw-sentence-board .example-matrix .slot-1{--slot-fill:#128247;--slot-edge:#086036;--slot-ink:#fff}
+.classroom .cw-sentence-board .example-matrix .slot-2,.classroom .cw-sentence-board .example-matrix .slot-3{--slot-fill:#ffd43b;--slot-edge:#bc8b0c;--slot-ink:#18385e}
+.classroom .cw-sentence-board .cw-noun-group .slot-2{border-radius:24px 0 0 24px;border-right:1px solid #bc8b0c80}
+.classroom .cw-sentence-board .cw-noun-group .slot-3{border-radius:0 24px 24px 0;border-left:0}
+.classroom .cw-sentence-board .example-matrix .slot-heading{display:none}
+.classroom .cw-sentence-board .example-matrix .slot-heading b{font:inherit;font-weight:600}
+.classroom .cw-sentence-board .slot-role-icon{display:none}
+.cw-slot-role{font-size:12px;line-height:1.2;letter-spacing:.015em;font-weight:600;color:inherit;order:-1;white-space:nowrap}
+.classroom .cw-sentence-board .example-source,.classroom .cw-sentence-board[data-long-word] .example-source{font-size:clamp(28px,4.5cqw,60px);border:0;padding:0;line-height:1.2;color:inherit;overflow-wrap:anywhere;text-align:center}
+.classroom .cw-sentence-board .example-unit-trigger .example-source{padding:0;border:0}
+.classroom .cw-sentence-board .example-gloss{min-height:42px;display:flex;align-items:center;justify-content:center;font-size:clamp(13px,1.5cqw,19px);color:inherit}
+.cw-slot-count{position:absolute;bottom:14px;left:16px;font-size:12px;color:inherit;line-height:1.3}
+.cw-sentence-board .cw-slot-count[aria-label="1 available words"]{display:none}
+.cw-slot-change,.classroom .cw-sentence-board[data-long-word] .cw-slot-change{position:absolute;top:auto;bottom:14px;right:16px;line-height:16px;font-size:20px;color:inherit}
+.classroom .cw-sentence-board .example-matrix .example-unit-trigger:hover,.classroom .cw-sentence-board .example-matrix .example-unit-trigger[aria-expanded=true]{background:var(--slot-fill);box-shadow:0 8px 0 var(--slot-edge);transform:translateY(-2px);filter:brightness(1.04)}
+.classroom .cw-sentence-board .example-matrix .example-unit-trigger:active{transform:translateY(4px);box-shadow:0 2px 0 var(--slot-edge)}
+.cw-sentence-board .example-meaning-row{margin-top:26px}
+.classroom .cw-sentence-board .cw-noun-group .tonight-slot,.classroom .cw-sentence-board .cw-noun-group .tonight-slot:hover,.classroom .cw-sentence-board .cw-noun-group .tonight-slot[aria-expanded=true]{box-shadow:none;transform:none}
+.classroom .cw-sentence-board .example-matrix .example-unit-trigger:focus-visible{outline:3px solid #1877ef;outline-offset:5px;z-index:1}
+@media(max-width:700px){
+ .classroom .cw-sentence-board .example-matrix .tonight-slots{grid-template-columns:1fr .8fr 2.2fr;gap:7px}
+ .classroom .cw-sentence-board .example-matrix .tonight-slot{min-height:190px;padding:16px 4px 34px;gap:8px;border-radius:14px}
+ .cw-noun-group{border-radius:14px}
+ .classroom .cw-sentence-board .cw-noun-group .slot-2{border-radius:14px 0 0 14px}
+ .classroom .cw-sentence-board .cw-noun-group .slot-3{border-radius:0 14px 14px 0}
+ .cw-slot-role{font-size:9px;white-space:normal;min-height:22px;text-align:center}
+ .classroom .cw-sentence-board .example-source,.classroom .cw-sentence-board[data-long-word] .example-source{font-size:clamp(18px,4.7vw,30px);min-height:44px;display:flex;align-items:center;justify-content:center}
+ .classroom .cw-sentence-board .example-gloss{font-size:11px;min-height:48px}
+ .cw-slot-count{font-size:11px;left:8px;bottom:10px}
+ .cw-slot-change,.classroom .cw-sentence-board[data-long-word] .cw-slot-change{right:8px;bottom:10px}
+}
+.classroom .cw-sentence-board .cw-noun-group .tonight-slot{grid-column:auto;grid-row:auto}

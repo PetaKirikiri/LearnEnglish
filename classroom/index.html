@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lesson 1 · English Success</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;650;700&family=Nunito:wght@600;700;800;900&family=Fredoka:wght@450;500;550;600&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/classroom/classroom.css">
+</head>
+<body>
+<div class="classroom">
+<aside class="index" aria-label="Class 01">
+<div class="rail-brand"><span class="brand-mark" role="img" aria-label="English Success">S</span></div>
+<nav class="phases" aria-label="Class sequence">
+ <div class="phase" data-phase="recall"><button class="phase-button" data-open="recall"><span class="phase-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a9 9 0 1 1 1.5 7M3 10V4m0 6h6"/><path d="M12 7v5l3 2"/></svg></span><span>Recall</span></button></div>
+ <div class="phase active" data-phase="learn"><button class="phase-button" data-open="learn"><span class="phase-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C9 4 5 4 2 5v14c3-1 7-1 10 1 3-2 7-2 10-1V5c-3-1-7-1-10 1Z"/><path d="M12 6v14"/></svg></span><span>Learn</span></button></div>
+ <div class="phase" data-phase="practice"><button class="phase-button" data-open="practice"><span class="phase-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m15 4 5 5M4 20l4-1L21 6a2.1 2.1 0 0 0-3-3L5 16l-1 4Z"/><path d="M13 20h8"/></svg></span><span>Practise</span></button></div>
+ <div class="phase" data-phase="review"><button class="phase-button" data-open="review"><span class="phase-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 12 3 3 6-6"/><circle cx="12" cy="12" r="9"/></svg></span><span>Review</span></button></div>
+</nav>
+</aside>
+<main><div class="content"><article class="note" id="note" aria-labelledby="note-title"></article></div></main>
+</div>
+<p class="sr-only" id="announcement" role="status" aria-live="polite"></p>
+<script type="module">
+import { renderLesson } from "/src/classroom/mountLesson.ts";
+import { lessonTitles } from "/src/classroom/lessonOne.ts";
+(() => {
+ const note=document.getElementById('note');
+ const rail=document.querySelector('.index');
+ const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+ const menuMotion=new Map();
+ let motionFrame=0,lastMotionTime=0;
+ const sectionMenus={learn:[
+  {id:'idea',label:'The idea'},
+  {id:'example',label:'Worked example'},
+  {id:'mistake',label:'Common mistake'}
+ ]};
+ const sectionFor=key=>Object.keys(sectionMenus).find(section=>sectionMenus[section].some(item=>item.id===key))||key;
+ let current='example',openSection='learn';
+ const lastNote={learn:'example'};
+ for(const [section,items] of Object.entries(sectionMenus)){
+  const phase=document.querySelector('[data-phase="'+section+'"]');
+  const trigger=phase.querySelector('.phase-button');
+  const menu=document.createElement('div');
+  menu.className='phase-submenu';menu.id=section+'-submenu';
+  menu.innerHTML='<div class="submenu-clip"><div class="submenu-items">'+items.map(item=>'<button data-open="'+item.id+'">'+item.label+'</button>').join('')+'</div></div>';
+  phase.style.setProperty('--submenu-count',items.length);
+  phase.append(menu);trigger.setAttribute('aria-controls',menu.id);
+  trigger.lastElementChild.insertAdjacentHTML('beforeend','<svg class="menu-chevron" aria-hidden="true" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4"/></svg>');
+  menuMotion.set(section,{phase,menu,count:items.length,value:0,target:0,velocity:0});
+ }
+ // One spring drives every occupied height, the header position and the submenu.
+ // Keeping its current velocity lets a second click reverse the motion without a jump.
+ function paintMenuMotion(){
+  let openCount=0;const allocations=[];
+  menuMotion.forEach(state=>{
+   const value=state.value.toFixed(6);
+   state.phase.style.setProperty('--branch-open',value);
+   state.menu.style.visibility=state.value>.001||state.target?'visible':'hidden';
+   openCount+=state.value;
+   allocations.push('(var(--parent-height) + var(--submenu-row) * '+state.count+' + var(--submenu-bottom)) * '+value);
+  });
+  rail.style.setProperty('--open-count',openCount.toFixed(6));
+  rail.style.setProperty('--menu-allocation','calc('+allocations.join(' + ')+')');
+ }
+ function animateMenus(time){
+  const elapsed=lastMotionTime?Math.min((time-lastMotionTime)/1000,1/30):1/60;
+  lastMotionTime=time;
+  const steps=Math.ceil(elapsed/(1/120)),dt=elapsed/steps;
+  let moving=false;
+  menuMotion.forEach(state=>{
+   for(let i=0;i<steps;i++){
+    state.velocity+=(90*(state.target-state.value)-19*state.velocity)*dt;
+    state.value+=state.velocity*dt;
+   }
+   if(Math.abs(state.target-state.value)<.0005&&Math.abs(state.velocity)<.005){state.value=state.target;state.velocity=0;}
+   else moving=true;
+  });
+  paintMenuMotion();
+  motionFrame=moving?requestAnimationFrame(animateMenus):0;
+  if(!moving)lastMotionTime=0;
+ }
+ function setOpenSection(section,animate=true){
+  openSection=section;
+  menuMotion.forEach((state,key)=>{
+   const isOpen=key===section;
+   state.target=Number(isOpen);
+   state.phase.classList.toggle('is-expanded',isOpen);
+   state.phase.querySelector('.phase-button').setAttribute('aria-expanded',String(isOpen));
+   state.menu.inert=!isOpen;state.menu.setAttribute('aria-hidden',String(!isOpen));
+  });
+  if(!animate||reducedMotion.matches){
+   cancelAnimationFrame(motionFrame);motionFrame=0;lastMotionTime=0;
+   menuMotion.forEach(state=>{state.value=state.target;state.velocity=0;});
+   paintMenuMotion();
+  }else if(!motionFrame){motionFrame=requestAnimationFrame(animateMenus);}
+ }
+ reducedMotion.addEventListener('change',()=>{if(reducedMotion.matches)setOpenSection(openSection,false);});
+ function show(request,announce=true){
+  const key=sectionMenus[request]?(lastNote[request]||sectionMenus[request][0].id):request;current=key;
+  const phase=sectionFor(key);if(sectionMenus[phase])lastNote[phase]=key;
+  setOpenSection(sectionMenus[phase]?phase:null,announce);
+  note.dataset.page=key;
+  renderLesson(key);
+  if(announce&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)note.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:240,easing:'ease-out'});
+  document.querySelectorAll('[data-phase]').forEach(el=>el.classList.toggle('active',el.dataset.phase===phase));
+  document.querySelectorAll('[data-open]').forEach(button=>{if(button.dataset.open===key||(button.classList.contains('phase-button')&&button.dataset.open===phase))button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');});
+  if(announce)document.getElementById('announcement').textContent=lessonTitles[key];
+ }
+ document.addEventListener('click',event=>{
+  const control=event.target.closest('[data-open]');if(!control)return;
+  const target=control.dataset.open;
+  if(sectionMenus[target]&&sectionFor(current)===target){setOpenSection(openSection===target?null:target);return;}
+  show(target);
+ });
+ document.addEventListener('keydown',event=>{
+  if(event.key!=='Escape'||!openSection||!event.target.closest('.phases'))return;
+  const trigger=document.querySelector('[data-phase="'+openSection+'"] .phase-button');
+  setOpenSection(null);trigger.focus();event.preventDefault();
+ });
+ show(current,false);
+})();
+</script>
+</body>
+</html>

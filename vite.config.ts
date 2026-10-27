@@ -6,6 +6,9 @@ import { raceLessonPlugin } from './server/raceLessonPlugin'
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), classroomRacePlugin(), raceLessonPlugin()],
+  build: {
+    rollupOptions: { input: { app: 'index.html', classroom: 'classroom/index.html' } },
+  },
   resolve: {
     dedupe: ['react', 'react-dom'],
   },

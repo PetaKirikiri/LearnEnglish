@@ -4,7 +4,7 @@ import { holidayVocabulary, type HolidayWord } from './holidayVocabulary'
 
 export function QuestionExample({ word, emphasis = 'noun' }: { word: HolidayWord; emphasis?: 'noun' | 'frame' }) {
   const item = holidayVocabulary.find(item => item.word === word)!
-  return <ExampleLanguage
+  return <ExampleLanguage matrix
     english={emphasis === 'noun' ? `Where is the **${word}?**` : `Where **is the** ${word}?`}
     thai={`${item.thai}อยู่ที่ไหน`}
     units={[{ english: 'Where', thai: 'ที่ไหน' }, { english: 'is', thai: 'อยู่' }, { english: 'the', thai: 'ที่กำลังพูดถึง' }, { english: `${word}?`, thai: item.thai }]}
