@@ -22,7 +22,7 @@ export default function RaceLessonPage() {
       <a href={import.meta.env.DEV ? "/english/preview/learning" : "/english"} className="rl-brand" aria-label="English Success"><img src="/images/fimo/success-wolf-grey-clay.png" alt=""/><span lang="en">ENGLISH<strong>SUCCESS</strong></span></a>
       {state.canEdit && <a className="rl-start" href="/english/race">เข้าห้องแข่ง · QR <span aria-hidden="true">↗</span></a>}
     </header>
-    <RaceLessonQr/>
+    <RaceLessonQr destination="practice"/>
     <div className="rl-document rl-local-docs">
       <div className="rl-doc-toolbar"><span>Teaching</span>{state.canEdit && <button disabled={!state.ready} aria-pressed={editing} onClick={() => setEditing(!editing)}>{editing ? 'Done' : 'Edit notes'}</button>}{state.saving && <span role="status">Saving…</span>}</div>
       {state.error && <p role="alert" className="rl-save-error">{state.error}</p>}
