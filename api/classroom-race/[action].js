@@ -340,6 +340,25 @@ var holidayQuestions = holidayNouns.flatMap((noun) => [
   grammar: { kind: "meaning", context: "Ask where a particular holiday place or thing is.", phase: "practice", targets: ["where is the"], contrast: item.variant, explanation: `Where + is + the + ${noun}?` }
 })));
 
+// src/learning/sentenceMatrix/model.ts
+var determiners = [
+  { word: "the", thai: "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07" },
+  { word: "my", thai: "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19" },
+  { word: "your", thai: "\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13" }
+];
+var ownerThai = (owner) => determiners.find((item) => item.word === owner).thai;
+var verbForWord = (word) => word.number === "plural" ? "are" : "is";
+function locationSentence(item, owner = "the", count = "") {
+  const verb = verbForWord(item);
+  return {
+    english: `Where ${verb} ${owner} ${item.word}?`,
+    thai: `${item.thai}${count}${owner === "the" ? "" : ownerThai(owner)}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`,
+    units: [{ english: "Where", thai: "\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19" }, { english: verb, thai: "\u0E2D\u0E22\u0E39\u0E48" }, { english: owner, thai: ownerThai(owner) }, { english: `${item.word}?`, thai: item.thai }],
+    noun: item.word,
+    verb
+  };
+}
+
 // src/race/pluralVocabulary.ts
 var pluralVocabulary = [
   { singular: "shoe", group: "wear", classifier: "\u0E02\u0E49\u0E32\u0E07", plural: "shoes", thai: "\u0E23\u0E2D\u0E07\u0E40\u0E17\u0E49\u0E32" },
@@ -376,25 +395,19 @@ var lessonTwoWords = [...pluralVocabulary].sort((a, b) => {
   return rank(a.singular) - rank(b.singular);
 });
 var owners = ["the", "my", "your"];
-var ownerThai = (owner) => owner === "my" ? "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19" : owner === "your" ? "\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13" : "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07";
 var lessonTwoPairs = pairVocabulary;
 function numberSentence(item, plural, owner) {
   const noun = plural || !item.singular ? item.plural : item.singular;
   const verb = plural || !item.singular ? "are" : "is";
   const count = item.classifier ? `${plural ? "\u0E2B\u0E25\u0E32\u0E22" : "\u0E2B\u0E19\u0E36\u0E48\u0E07"}${item.classifier}` : "";
-  return { english: `Where ${verb} ${owner} ${noun}?`, thai: `${item.thai}${count}${owner === "the" ? "" : ownerThai(owner)}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`, units: [
-    { english: "Where", thai: "\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19" },
-    { english: verb, thai: "\u0E2D\u0E22\u0E39\u0E48" },
-    { english: owner, thai: ownerThai(owner) },
-    { english: `${noun}?`, thai: item.thai }
-  ], noun, verb };
+  return locationSentence({ word: noun, thai: item.thai, number: verb === "are" ? "plural" : "singular" }, owner, count);
 }
 
 // src/race/lessonTwoQuestions.ts
 var skill = "race-lesson-two";
 var lessonTwoAudio = (noun, owner, verb) => `/audio/race-lesson-two/${noun}-${owner}-${verb}.wav`;
-function judgement(items, determiners) {
-  return items.flatMap((item) => (item.singular ? [false, true] : [true]).flatMap((plural) => determiners.flatMap((owner) => {
+function judgement(items, determiners2) {
+  return items.flatMap((item) => (item.singular ? [false, true] : [true]).flatMap((plural) => determiners2.flatMap((owner) => {
     const sentence = numberSentence(item, plural, owner);
     return [true, false].map((correct) => {
       const verb = correct ? sentence.verb : sentence.verb === "is" ? "are" : "is";
