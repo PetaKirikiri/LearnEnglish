@@ -35,7 +35,7 @@ export default function ClassroomRace() {
   useEffect(() => {
     if (credentials || opening.current) return
     opening.current = true
-    const pool = racePools.find(pool => pool.id === 'tonight-slots')!
+    const pool = racePools.find(pool => pool.id === 'where-is-the')!
     void raceRequest<RaceCredential>('create', null, { stage: pool.id, questionIds: pool.questions.map(q => q.id) })
       .then(remember).catch(cause => setError(cause instanceof Error ? cause.message : 'Could not open the race.'))
   }, [credentials, remember])
@@ -80,7 +80,7 @@ export default function ClassroomRace() {
     <header><span>Lesson 01</span><h1 id="note-title">Race together</h1></header>
     {alert}
     <div className="cw-race-welcome">
-      <div className="cw-race-brief"><span className="cw-race-eyebrow">{pool?.kind === 'judgement' ? 'Correct or wrong' : 'Choose the meaning'}</span>
+      <div className="cw-race-brief"><span className="cw-race-eyebrow">{pool?.kind === 'judgement' ? 'รอบ 1 · ถูกหรือไม่ถูก' : 'Choose the meaning'}</span>
         <h2>{view?.stageId==='tonight-slots' || !view ? 'Where is the / my / your…?' : view.title}</h2>
         <p lang="th">ฟังคำถาม แล้วเลือกคำตอบบนมือถือ<br/>ตอบถูกและเร็ว ม้าจะวิ่งเร็วขึ้น</p>
         <p className="cw-race-content">{pool?.kind==='judgement' ? 'Listen for the complete sentence.' : 'Listen carefully to which person or thing the question means.'}</p>

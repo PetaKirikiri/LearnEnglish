@@ -9,7 +9,7 @@ function ScreenIcon({ phone = false }: { phone?: boolean }) {
 }
 
 export default function RaceWalkthrough({ stageId, questionIds }: { stageId?: string; questionIds?: string[] }) {
-  const [mode, setMode] = useState('tonight-slots')
+  const [mode, setMode] = useState('where-is-the')
   const selected = stageId ?? mode
   const guide = raceGuide(selected, questionIds)
   const [index, setIndex] = useState(0)

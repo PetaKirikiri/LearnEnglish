@@ -5,9 +5,9 @@ import { tonightWords } from './tonightVocabulary'
 import type { ExampleUnit } from '../learning/ExampleLanguage'
 
 export const guideModes = [
+  { id: 'where-is-the', label: 'รอบ 1 · ถูก / ไม่ถูก' },
   { id: 'tonight-slots', label: 'เลือกความหมาย · ของฉัน / ของคุณ' },
   { id: 'holiday-meaning', label: 'เลือกความหมาย · สถานที่' },
-  { id: 'where-is-the', label: 'ประโยคถูกหรือผิด' },
 ] as const
 export type GuideExample = { sourceId: string; english: string; units: ExampleUnit[]; thai: string; choices: string[]; correct: number; label: string; explanation: string }
 const vocabulary = new Map<string, string>([...holidayVocabulary.map(v => [v.word, v.thai] as [string, string]), ...tonightWords])
