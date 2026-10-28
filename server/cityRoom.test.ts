@@ -1,0 +1,14 @@
+import { describe, expect, it } from 'vitest'
+import { CityRoom } from './cityRoom'
+import { canWalk, movePlayer, places } from '../src/city/world'
+const now=1000
+function setup(){const room=new CityRoom(),credentials=room.join('Bea',1,now),player=room.players.get(credentials.playerId)!;return {room,credentials,player}}
+describe('city movement and classroom rules',()=>{
+ it('uses server positions and clamps joystick speed, including diagonals',()=>{const {room,player}=setup();player.x=600;player.y=600;room.input(player.id,9,9,now);room.tick(.1,now+100);expect(Math.hypot(player.x-600,player.y-600)).toBeCloseTo(12);expect(player.facing).toBe('down')})
+ it('stops at building walls and cannot tunnel through them',()=>{const {player}=setup();player.x=650;player.y=150;player.dx=1;player.dy=0;movePlayer(player,10);expect(player.x).toBeLessThan(676);expect(canWalk(player.x,player.y)).toBe(true)})
+ it('stops a stale controller and a disconnected player',()=>{const {room,player}=setup();room.input(player.id,1,0,now);room.tick(.1,now+500);expect(player.dx).toBe(0);room.input(player.id,1,0,now+600);room.disconnect(player.id);expect(player.online).toBe(false);expect(player.dx).toBe(0)})
+ it('requires proximity and an explicit Here action to confirm arrival',()=>{const {room,player}=setup();room.action(player.id,'here',now);expect(player.found).toBe(false);Object.assign(player,{x:places[0].x,y:places[0].y});room.action(player.id,'here',now+500);expect(player.found).toBe(true);room.control(room.hostToken,'target','bank');expect(player.found).toBe(false)})
+ it('only lets the teacher change destinations or pause movement',()=>{const {room,credentials,player}=setup();expect(()=>room.control(credentials.token,'target','gym')).toThrow('Only the teacher');room.control(room.hostToken,'pause',null);room.input(player.id,1,1,now);expect(player.dx).toBe(0);expect(player.dy).toBe(0)})
+ it('resumes the same player, rejects invalid credentials and limits room size',()=>{const {room,credentials}=setup();expect(room.authenticate(credentials.token)).toBe(credentials.playerId);expect(()=>room.authenticate('wrong')).toThrow();for(let i=1;i<16;i++)room.join('Player '+i,i%4,now);expect(()=>room.join('Extra',0,now)).toThrow('full');expect(room.state(now).players).toHaveLength(16);expect(JSON.stringify(room.state(now))).not.toContain(credentials.token)})
+ it('all entrances and spawn positions are reachable ground',()=>{const {room}=setup();for(const place of places)expect(canWalk(place.x,place.y),place.name).toBe(true);for(let i=1;i<16;i++)room.join('Player '+i,0,now);for(const player of room.players.values())expect(canWalk(player.x,player.y)).toBe(true)})
+})

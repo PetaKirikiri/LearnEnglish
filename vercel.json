@@ -1,15 +1,45 @@
 {
   "rewrites": [
-    { "source": "/success", "destination": "/index.html" },
-    { "source": "/success/:path*", "destination": "/index.html" },
-    { "source": "/english", "destination": "/index.html" },
-    { "source": "/english/:path*", "destination": "/index.html" },
-    { "source": "/padel-coach", "destination": "/index.html" },
-    { "source": "/padel-coach/:path*", "destination": "/index.html" },
-    { "source": "/padel", "destination": "/index.html" },
-    { "source": "/padel/:path*", "destination": "/index.html" },
-    { "source": "/hotel", "destination": "/index.html" },
-    { "source": "/hotel/:path*", "destination": "/index.html" },
+    {
+      "source": "/success",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/success/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/english",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/english/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/padel-coach",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/padel-coach/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/padel",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/padel/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/hotel",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/hotel/:path*",
+      "destination": "/index.html"
+    },
     {
       "source": "/translator",
       "destination": "/translator/index.html"
@@ -34,6 +64,9 @@
   "functions": {
     "api/translator/*.ts": {
       "maxDuration": 240
+    },
+    "api/city/*.js": {
+      "maxDuration": 30
     }
   }
 }
