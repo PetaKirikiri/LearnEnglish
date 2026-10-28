@@ -26,3 +26,17 @@ describe('local phone prediction',()=>{
  it('caps malicious movement bursts and does not move command-driven players again on tick',()=>{const {room,player}=setup();const packet=Array.from({length:12},(_,i)=>({seq:i+1,x:1,y:0,seconds:.05}));room.commands(player.id,packet,0);expect(player.x).toBeCloseTo(612);room.commands(player.id,packet.map(c=>({...c,seq:c.seq+12})),0);room.tick(.1,100);expect(player.x).toBeCloseTo(612);expect(player.inputAck).toBe(24)})
  it('validates a whole packet before applying it and still enforces pause',()=>{const {room,player}=setup();expect(()=>room.commands(player.id,[{seq:1,x:1,y:0,seconds:.05},{seq:2,x:1,y:0,seconds:Infinity}],10)).toThrow();expect(player.x).toBe(600);room.control(room.hostToken,'pause',null);room.commands(player.id,[{seq:1,x:1,y:0,seconds:.05}],100);expect(player.x).toBe(600);expect(player.inputAck).toBe(1)})
 })
+
+ it('keeps high-refresh phones within the network batch budget',()=>{
+  const prediction=new CityPrediction()
+  const room=new CityRoom();const credentials=room.join('Alex',0,0);const p=room.players.get(credentials.playerId)!
+  prediction.reconcile(p,0,true);prediction.setInput(0,-1)
+  for(let frame=1;frame<=144*10;frame++){
+   prediction.step(1/144,true)
+   if(frame%15===0){
+    const commands=prediction.unsent();expect(commands.length).toBeLessThanOrEqual(4)
+    room.commands(p.id,commands,frame*1000/144);prediction.reconcile(p,frame*1000/144,true)
+    expect(prediction.pending.length).toBe(0)
+   }
+  }
+ })

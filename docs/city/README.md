@@ -33,9 +33,9 @@ Tests cover speed bounds, diagonal normalisation, collision/tunnelling, disconne
 
 The landscape controller uses the same `CityCanvas` renderer as the TV, with a camera cropped around the local player. Joystick and action buttons float over the map; no full-map preview, destination marker or route guide is shown.
 
-`CityPrediction` advances locally on the next animation frame using the shared `movePlayer` collision/speed function. Commands carry monotonic sequences and bounded durations, travel in batches approximately every 50ms, and receive `inputAck` in authoritative player snapshots. The phone restores the acknowledged position, replays only pending commands, and eases small visual corrections. The host validates packets, limits movement to elapsed wall time with a bounded jitter allowance, ignores duplicate sequences and does not integrate command-driven players twice. Legacy keyboard players retain host-ticked motion.
+`CityPrediction` advances locally on the next animation frame using the shared `movePlayer` collision/speed function. Commands carry monotonic sequences and bounded durations, travel in batches approximately every 100ms, and receive `inputAck` in authoritative player snapshots. The phone restores the acknowledged position, replays only pending commands, and eases small visual corrections. The host validates packets, limits movement to elapsed wall time with a bounded jitter allowance, ignores duplicate sequences and does not integrate command-driven players twice. Legacy keyboard players retain host-ticked motion.
 
-Release/Stop/Here flush a zero movement command. Pause, portrait rotation, hidden pages, disconnect and stale snapshots stop prediction. Arrival and destination changes remain host-authoritative. The 150ms round-trip simulation is a deterministic test, not a physical-phone latency measurement. Online Mumbai deployment remains a separate outstanding task.
+Release/Stop/Here flush a zero movement command. Pause, portrait rotation, hidden pages, disconnect and stale snapshots stop prediction. Arrival and destination changes remain host-authoritative. The 150ms round-trip simulation is a deterministic test, not a physical-phone latency measurement. The hosted transport below routes these messages through Mumbai.
 
 Validation also includes `npx vitest run src/city/prediction.test.ts` for immediate movement, delayed acknowledgements, turning/release, collision parity, pause, reconnect sequences, duplicate packets and rate limits.
 
@@ -49,4 +49,4 @@ The TV owns simulation and sends ten snapshots per second. Each player has a sep
 
 Release configuration: `CITY_SUPABASE_SERVICE_KEY` is a sensitive Vercel production variable. `CITY_SUPABASE_URL` and `CITY_SUPABASE_ANON_KEY` can override the existing Mumbai `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. Apply only migration `20261028120000_city_rooms.sql` to that project. Do not push the repository's unrelated pending migrations.
 
-Verified: 22 focused tests cover room authority/capacity/expiration, cryptographic identity and replay handling, prediction, delayed packets and the LAN WebSocket loop. The real Mumbai transport also passed two-controller movement, pause, controller refresh, teacher checkpoint recovery and player removal.
+Verified: 23 focused tests cover room authority/capacity/expiration, cryptographic identity and replay handling, prediction, delayed packets and the LAN WebSocket loop. The real Mumbai transport also passed two-controller movement, pause, controller refresh, teacher checkpoint recovery and player removal.

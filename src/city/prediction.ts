@@ -52,6 +52,13 @@ export class CityPrediction {
   return this.player ? { ...this.player, x: this.player.x + this.offset.x, y: this.player.y + this.offset.y } : null
  }
  private queue(seconds: number) {
+  // Coalesce only unsent frames so 120/144Hz screens cannot outgrow the network batch.
+  const last = this.pending[this.pending.length - 1]
+  if (seconds > 0 && last && last.seq > this.sent && last.x === this.input.x && last.y === this.input.y && last.seconds + seconds <= .05) {
+   last.seconds += seconds
+   this.apply({ ...last, seconds })
+   return
+  }
   const command = { seq: ++this.sequence, ...this.input, seconds }
   this.pending.push(command); this.apply(command)
  }
