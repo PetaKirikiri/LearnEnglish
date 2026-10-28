@@ -1,4 +1,4 @@
-import { atDestination, movePlayer, places, type CityState, type CityPlayer, type CityCredentials, type PlaceId } from './world'
+import { atDestination, destinationQuestion, movePlayer, places, type CityState, type CityPlayer, type CityCredentials, type PlaceId } from './world'
 import type { MoveCommand } from './prediction'
 const token=()=>crypto.randomUUID()+crypto.randomUUID()
 export class CityRoom {
@@ -37,7 +37,7 @@ export class CityRoom {
   if(kind==='stop'){p.dx=0;p.dy=0}
   if(now-(this.lastAction.get(id)??0)<350)return
   this.lastAction.set(id,now)
-  if(kind==='ask')p.speech=`Where is the ${places.find(place=>place.id===this.target)!.name}?`
+  if(kind==='ask')p.speech=destinationQuestion(this.target)
   else if(kind==='stop')p.speech='Stop!'
   else if(kind==='here'){if(atDestination(p,this.target)){p.found=true;p.speech='Here! ✓'}else p.speech='Here?'}
   else throw new Error('Unknown action.')

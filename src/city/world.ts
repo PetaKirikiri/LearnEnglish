@@ -3,13 +3,16 @@ export const places = [
  {id:'hotel',name:'hotel',thai:'โรงแรม',x:355,y:327},
  {id:'bank',name:'bank',thai:'ธนาคาร',x:850,y:333},
  {id:'gym',name:'gym',thai:'ยิม',x:1335,y:329},
- {id:'school',name:'school',thai:'โรงเรียน',x:350,y:573},
+ // Retain room destination IDs so existing saved sessions remain compatible.
+ {id:'school',name:'The Resort',thai:'เดอะรีสอร์ต',x:310,y:582},
  {id:'clinic',name:'clinic',thai:'คลินิก',x:1410,y:589},
- {id:'bookstore',name:'bookstore',thai:'ร้านหนังสือ',x:300,y:889},
+ {id:'bookstore',name:'Pann Arai Massage',thai:'Pann Arai Massage',x:250,y:866},
  {id:'toilet',name:'toilet',thai:'ห้องน้ำ',x:815,y:887},
  {id:'padel',name:'padel court',thai:'สนามพาเดล',x:1330,y:885},
 ] as const
 export type PlaceId = typeof places[number]['id']
+export function questionLead(id:PlaceId|undefined){return id==='school'||id==='bookstore'?'Where is':'Where is the'}
+export function destinationQuestion(id:PlaceId){const place=places.find(p=>p.id===id)!;return `${questionLead(id)} ${place.name}?`}
 export type Direction = 'up'|'down'|'left'|'right'
 export type CityPlayer = {id:string;name:string;avatar:number;x:number;y:number;dx:number;dy:number;facing:Direction;online:boolean;speech:string;speechUntil:number;found:boolean;inputAck?:number}
 export type CityState = {code:string;players:CityPlayer[];target:PlaceId;paused:boolean;now:number}

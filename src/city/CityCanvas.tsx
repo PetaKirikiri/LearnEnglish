@@ -6,7 +6,7 @@ export default function CityCanvas({state,focus}:{state:CityState|null;focus?:Fo
  const canvas=useRef<HTMLCanvasElement>(null),latest=useRef({state,focus})
  useEffect(()=>{latest.current={state,focus}},[state,focus])
  useEffect(()=>{
-  const node=canvas.current!,ctx=node.getContext('2d')!,map=new Image(),atlas=new Image();map.src='/city/town.png';atlas.src='/city/players.png'
+  const node=canvas.current!,ctx=node.getContext('2d')!,map=new Image(),atlas=new Image();map.src='/city/town-samui.png';atlas.src='/city/players.png'
   let raf=0,last=performance.now(),camera:{x:number;y:number}|null=null;const positions=new Map<string,{x:number;y:number}>()
   function draw(now:number){
    const rect=node.getBoundingClientRect(),dpr=Math.min(devicePixelRatio,2),width=Math.round(rect.width*dpr),height=Math.round(rect.height*dpr)

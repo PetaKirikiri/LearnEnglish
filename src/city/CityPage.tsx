@@ -3,7 +3,7 @@ import QRCode from 'qrcode'
 import CityCanvas from './CityCanvas'
 import Joystick from './Joystick'
 import { useCityPrediction } from './useCityPrediction'
-import { places, type PlaceId } from './world'
+import { places, questionLead, type PlaceId } from './world'
 import { useCityConnection } from './useCityConnection'
 import './city.css'
 
@@ -20,7 +20,7 @@ function CityHost(){
  const target=places.find(p=>p.id===state?.target)??places[0]
  return <main className="city-host">
   <header className="city-toolbar"><a href="/classroom/index.html?lesson=3" className="city-brand"><img src="/brand/englishsuccess-logo.png" alt=""/><span>English<span>Success</span></span></a>
-   <label className="city-question"><span>Where is the</span><select aria-label="Choose destination" value={target.id} disabled={!state} onChange={e=>send({type:'control',action:'target',value:e.target.value})}>{places.map(place=><option key={place.id} value={place.id}>{place.name}?</option>)}</select></label>
+   <label className="city-question"><span>{questionLead(target.id)}</span><select aria-label="Choose destination" value={target.id} disabled={!state} onChange={e=>send({type:'control',action:'target',value:e.target.value})}>{places.map(place=><option key={place.id} value={place.id}>{place.name}?</option>)}</select></label>
    <div className="city-host-actions">{state&&<><button onClick={()=>send({type:'control',action:'pause'})} aria-label={state.paused?'Resume city':'Pause city'}>{state.paused?'▶':'Ⅱ'}</button><button onClick={()=>setInvite(!invite)}>Join · {state.code}</button></>}</div>
   </header>
   <div className="city-stage"><CityCanvas state={state}/>
@@ -78,7 +78,7 @@ function CityController(){
  return <main className="city-phone city-controller city-controller-map">
   <div className="city-phone-world"><CityCanvas state={state} focus={{playerId:credentials.playerId??'',prediction}}/></div>
   <header className="city-player-bar"><span><Avatar index={player?.avatar??avatar}/><strong>{player?.name??name}</strong></span><div className="city-controller-status">{document.fullscreenEnabled&&<button className="city-expand" aria-label="Expand controller" onClick={()=>void enterControllerFullscreen()}>⛶</button>}<span className={`city-link-state${connected&&!stale?' is-online':''}`} role="status">{state?.paused?'Paused':stale?'Reconnecting…':connected?'Connected':'Reconnecting…'}</span></div></header>
-  <section className="city-phone-question"><span>Where is the</span><strong>{target?.name??'…'}?</strong>{player?.found&&<small>✓ You found it!</small>}</section>
+  <section className="city-phone-question"><span>{questionLead(target?.id)}</span><strong>{target?.name??'…'}?</strong>{player?.found&&<small>✓ You found it!</small>}</section>
   <div className="city-controls"><Joystick key={stopVersion} onMove={move} disabled={!enabled||stale}/><div className="city-action-buttons"><button className="city-ask" disabled={!enabled||stale} onClick={()=>send({type:'action',action:'ask'})}><ActionIcon kind="ask"/><span>Ask</span></button><button className="city-stop" disabled={!enabled||stale} onClick={()=>{move(0,0);setStopVersion(v=>v+1);send({type:'action',action:'stop'})}}><ActionIcon kind="stop"/><span>Stop</span></button><button className="city-here" disabled={!enabled||stale} onClick={()=>{move(0,0);setStopVersion(v=>v+1);send({type:'action',action:'here'})}}><ActionIcon kind="here"/><span>Here!</span></button></div></div>
   <p className="city-controller-feedback" aria-live="polite">{error||(stale?'Reconnecting…':state?.paused?'City paused':'')}</p>
  </main>
