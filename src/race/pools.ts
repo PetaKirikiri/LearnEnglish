@@ -1,4 +1,4 @@
-import { lessonThreePastQuestions, lessonThreeOwnerQuestions, lessonThreeReviewQuestions } from './lessonThreeQuestions'
+import { lessonThreePeopleQuestions, lessonThreeAnswerQuestions, lessonThreeReviewQuestions } from './lessonThreeQuestions'
 import { lessonTwoNumberQuestions, lessonTwoOwnerQuestions, lessonTwoReviewQuestions } from './lessonTwoQuestions'
 import { tonightMeaningQuestions, tonightJudgementQuestions } from './tonightQuestions'
 import { classOneQuestions, classOneVocabularyQuestions, classOneFrameQuestions } from '../portal/classOne'
@@ -19,7 +19,7 @@ export const racePools: { id: string; title: string; kind?: 'judgement' | 'meani
   { id: 'lesson-two-number', title: 'Lesson 2 · is / are', kind: 'judgement', questions: lessonTwoNumberQuestions },
   { id: 'lesson-two-owner', title: 'Lesson 2 · my / your', kind: 'meaning', questions: lessonTwoOwnerQuestions },
   { id: 'lesson-two-review', title: 'Lesson 2 · English → Thai', kind: 'meaning', questions: lessonTwoReviewQuestions },
-  {id:'lesson-three-past',title:'Lesson 3 · was / were',kind:'judgement',questions:lessonThreePastQuestions},
-  {id:'lesson-three-owner',title:'Lesson 3 · his / her',kind:'meaning',questions:lessonThreeOwnerQuestions},
-  {id:'lesson-three-review',title:'Lesson 3 · Mixed review',kind:'meaning',questions:lessonThreeReviewQuestions},
+  {id:'lesson-three-people',title:'Lesson 3 · I am / you are / he is / she is',kind:'judgement',questions:lessonThreePeopleQuestions},
+  {id:'lesson-three-answers',title:'Lesson 3 · At the…',kind:'meaning',questions:lessonThreeAnswerQuestions},
+  {id:'lesson-three-review',title:'Lesson 3 · Ask and answer',kind:'meaning',questions:lessonThreeReviewQuestions},
 ]

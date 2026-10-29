@@ -60,7 +60,7 @@ function LiveRacePage() {
   const finishTitle = !winners.length ? 'Race finished' : winners.length > 1 ? 'It’s a tie!' : `${winners[0].name} wins!`
   const back = '/english/preview/learning?view=document&lesson=9a1254a8-f3d7-4b85-a312-337ffd4df090'
   return <main lang={participant ? 'th' : 'en'} className={`classroom-race race-game-surface ${participant ? 'race-phone' : `race-host${view ? ' race-session' : ''}`}`}>
-    {(!participant && !view) && <header className="race-header"><a href={back} className="race-brand"><img src="/images/fimo/success-wolf-grey-clay.png" alt=""/><span>ENGLISH <strong>SUCCESS</strong></span></a><span className="race-kicker">Class 1 · Race day</span></header>}
+    {(!participant && !view) && <header className="race-header"><a href={back} className="race-brand"><img src="/brand/englishsuccess-cap.svg" alt=""/><span>ENGLISH <strong>SUCCESS</strong></span></a><span className="race-kicker">Class 1 · Race day</span></header>}
     {(error || connection) && <div role="alert" className="race-error">{participant ? 'เชื่อมต่อไม่สำเร็จ กรุณาลองอีกครั้ง' : error || connection}{participant && pendingChoice !== null && view?.me?.choice === undefined && <button onClick={() => void retryAnswer()}>ส่งคำตอบอีกครั้ง</button>}{connection && <button onClick={reset}>{participant ? 'เข้าร่วมอีกครั้ง' : 'New race'}</button>}</div>}
     {!credentials || (participant && view && !view.me) ? <section className="race-entry">
       <CartoonHorse paused/><h1>{participant ? 'คุณชื่ออะไร?' : 'Race day'}</h1>

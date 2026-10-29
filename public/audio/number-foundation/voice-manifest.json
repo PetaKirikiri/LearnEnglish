@@ -1,0 +1,242 @@
+{
+  "the-bag.wav": {
+    "fingerprint": "eb2425ce998f2708ea6089d22af962b8e2ac875cb76d6fbe57a64bbaa0bafd2a",
+    "seconds": 0.939,
+    "text": "the bag",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-bags.wav": {
+    "fingerprint": "90b252dd20f36e3fd50e6d5fba66153e36aab56950119559d6ffc3f1b76041ab",
+    "seconds": 1.024,
+    "text": "the bags",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-book.wav": {
+    "fingerprint": "60add78ca166d850ba3a27c5968f91ddb415113d2478a1ef39a0e64660154228",
+    "seconds": 0.875,
+    "text": "the book",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-books.wav": {
+    "fingerprint": "3ba319caee2f6efb7098f5c08a44024cb4f47c89ed5d0f1e58d572883f796db4",
+    "seconds": 0.939,
+    "text": "the books",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-chair.wav": {
+    "fingerprint": "d8dad34e7be26afef95abd603c887205c3a0b451547c5fd6420206867fed3b42",
+    "seconds": 0.939,
+    "text": "the chair",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-chairs.wav": {
+    "fingerprint": "8d797bf2c4fbfcee10ac38a41de5c6cdc44725e10b8bd3fe19ea0be25163dc96",
+    "seconds": 1.045,
+    "text": "the chairs",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-hotel.wav": {
+    "fingerprint": "4bd18c22c2efd3e3dbd4b8dcd7002557f577948bdc716db3120fb35469b98eb4",
+    "seconds": 1.067,
+    "text": "the hotel",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-hotels.wav": {
+    "fingerprint": "021cbfbbf418cd56a001dac54110a188d5975909c508e26135d1428cabe1070f",
+    "seconds": 1.152,
+    "text": "the hotels",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-key.wav": {
+    "fingerprint": "fb2faeb941a02bb172c960fa9d8064e2d70f3e8ee2b2458575ab6448c7b5f489",
+    "seconds": 0.875,
+    "text": "the key",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-keys.wav": {
+    "fingerprint": "40618db1d98cd65d4c31568c9c57472c14e9f5f061e9ea659f7d28906f20724e",
+    "seconds": 1.024,
+    "text": "the keys",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-phone.wav": {
+    "fingerprint": "dc3cb037f66c3866bc92e53ba22151986f7453fa51bab46d26a7deb5a9f3cb7e",
+    "seconds": 1.003,
+    "text": "the phone",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-phones.wav": {
+    "fingerprint": "7137fdbb49e4bf9a252dd8e1dd469136d565c5e6b0a956edc555bbf2f900bc8f",
+    "seconds": 1.045,
+    "text": "the phones",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-shoe.wav": {
+    "fingerprint": "cc23466961cd0a74e430d11d01d1c00db9a83f0f280c5256d6d6e8ff8fa36567",
+    "seconds": 0.939,
+    "text": "the shoe",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-shoes.wav": {
+    "fingerprint": "7335c8ec502400dcb772b67dfc11eb24ac0f9c92f59315ef740c2210020a6262",
+    "seconds": 1.024,
+    "text": "the shoes",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-sock.wav": {
+    "fingerprint": "d22ea62182f7afda62d93a5f795974ff55dbb0ab8e7a0a600777030f19a6b2fc",
+    "seconds": 1.003,
+    "text": "the sock",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-socks.wav": {
+    "fingerprint": "1638ed408073ffb32e44acf64eda661c8d264efb4868dfabff777c1dd08bb7f2",
+    "seconds": 1.067,
+    "text": "the socks",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-table.wav": {
+    "fingerprint": "c1a28136408fb267cf2b23dd2e9a126c678c9225f5d3f6b423e784814f65efc8",
+    "seconds": 1.003,
+    "text": "the table",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-tables.wav": {
+    "fingerprint": "bca2cbc78ad386e23af4188758ab16d6238ea9b0747732f4d55fb347594cb768",
+    "seconds": 1.067,
+    "text": "the tables",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-watch.wav": {
+    "fingerprint": "88d6a25595d720f825656139b6adb6895adce5fe1bdbfbba1bb94d402ea32ca7",
+    "seconds": 0.981,
+    "text": "the watch",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-watches.wav": {
+    "fingerprint": "d57f364ad271b1d5c25b23419b2d10801ccba617213e78194f99b57b5117d93a",
+    "seconds": 1.152,
+    "text": "the watches",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-bags.wav": {
+    "fingerprint": "0752f733fedee6f86400f944fb7c014190e7c49d35db739898a6e832b8ecd4f9",
+    "seconds": 1.265,
+    "text": "Where are the bags?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-books.wav": {
+    "fingerprint": "7fc9482c88fc9c3a655bdde3942f1889bec73393cc0b609345ab4976bffc4636",
+    "seconds": 1.222,
+    "text": "Where are the books?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-chairs.wav": {
+    "fingerprint": "e3037df6ef5ce654e6544f80ad0932da49c4230577e920545f7f49307a98d16c",
+    "seconds": 1.327,
+    "text": "Where are the chairs?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-hotels.wav": {
+    "fingerprint": "4810cd33ff1101e95637f6f2a3ab1510d1de1db8f0d02ebb5ac04204005dde64",
+    "seconds": 1.421,
+    "text": "Where are the hotels?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-keys.wav": {
+    "fingerprint": "4c93649ca15b3f6a54947949ec4f079641d1ebc6e5cbbe20f2b268feea2036ae",
+    "seconds": 1.275,
+    "text": "Where are the keys?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-phones.wav": {
+    "fingerprint": "8fd0662b921a14d41dfa3bb87b8b2de5448818907e4572dd68a635300fed48dc",
+    "seconds": 1.36,
+    "text": "Where are the phones?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-shoes.wav": {
+    "fingerprint": "0b96555956c17df1c3ef3b6458785f3362c7bf803c1505d5afb7d1459c387c7f",
+    "seconds": 1.349,
+    "text": "Where are the shoes?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-socks.wav": {
+    "fingerprint": "a21e11089169d303ce42c55076bde776e1ff02ce8c38eb0337003862b08f16a4",
+    "seconds": 1.347,
+    "text": "Where are the socks?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-tables.wav": {
+    "fingerprint": "73ade53e7dd621a877ec04d38c5c6d0c8e961dd55c7db9a78ef18f4c4d74d331",
+    "seconds": 1.347,
+    "text": "Where are the tables?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-watches.wav": {
+    "fingerprint": "b5e5f345a4b0ff9357080634d52775db932a0f2a8ad1899c7ba153d82f9d962a",
+    "seconds": 1.401,
+    "text": "Where are the watches?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bag.wav": {
+    "fingerprint": "70dd8df14bd77ec034e7c50d931de08d91b9c52715c1f91d1327ee7e18a2ae68",
+    "seconds": 1.256,
+    "text": "Where is the bag?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-book.wav": {
+    "fingerprint": "0a805daadad6937aaa073c11c81674f565d40db0645c34dbd76ed408c1f296ba",
+    "seconds": 1.213,
+    "text": "Where is the book?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-chair.wav": {
+    "fingerprint": "643cb853e5fc3c0a5c61003bc946c7ea85917edcddeca57248529f1f64803730",
+    "seconds": 1.235,
+    "text": "Where is the chair?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-hotel.wav": {
+    "fingerprint": "3bae0b5804406a21df7eaf45e8e8002125e8a153b2d4cd0efd38db6f91ddfdec",
+    "seconds": 1.37,
+    "text": "Where is the hotel?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-key.wav": {
+    "fingerprint": "9061a33c7f30cb5fe4a29ab1da71c7ab45122833163e9d9ab8c1ec8ae5ccf13b",
+    "seconds": 1.255,
+    "text": "Where is the key?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-phone.wav": {
+    "fingerprint": "f86186c0310425812656d7ec90666c56c3aa5dae41377d7b0743e0278ecf3dbe",
+    "seconds": 1.287,
+    "text": "Where is the phone?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-shoe.wav": {
+    "fingerprint": "34541943637bded4107993e49c1b66bed1d1af48975ea28356a8fa98a34246c6",
+    "seconds": 1.215,
+    "text": "Where is the shoe?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-sock.wav": {
+    "fingerprint": "d41b16e9cc99a5cac36e97cf77368b8b33caedcfe6d2ac4c1d6977e5d8ae4bd5",
+    "seconds": 1.297,
+    "text": "Where is the sock?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-table.wav": {
+    "fingerprint": "3e62e1ef1f9e95bf146c9b3de99502fb694da7c6ad1e05e173497f9da0f8aa76",
+    "seconds": 1.295,
+    "text": "Where is the table?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-watch.wav": {
+    "fingerprint": "92293ca46098209ccfef6c21aa0798a4285f5668ad67a55f3cbd327c1affa401",
+    "seconds": 1.309,
+    "text": "Where is the watch?",
+    "voice": "kokoro-1.0-heart-v1"
+  }
+}

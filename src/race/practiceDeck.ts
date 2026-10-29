@@ -1,8 +1,8 @@
 import { tonightMeaningQuestions } from './tonightQuestions'
 import { lessonTwoReviewQuestions } from './lessonTwoQuestions'
-export function practiceDeck(lesson = new URLSearchParams(window.location.search).get('lesson') === '2' ? 2 : 1) {
+export function practiceDeck(lesson = new URLSearchParams(window.location.search).get('lesson') === '2' ? 2 : 1, questionIds?:readonly string[]) {
   const source = lesson === 2 ? [...tonightMeaningQuestions, ...lessonTwoReviewQuestions.filter(q => q.id.startsWith('l2-translation-') && q.audioUrl?.startsWith('/audio/race-lesson-two/'))] : [...tonightMeaningQuestions]
-  const questions = [...source]
+  const questions = source.filter(q=>!questionIds||questionIds.includes(q.id))
   for (let i = questions.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1)); [questions[i], questions[j]] = [questions[j], questions[i]]
   }

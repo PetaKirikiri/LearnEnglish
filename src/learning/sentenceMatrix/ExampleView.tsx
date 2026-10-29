@@ -1,3 +1,4 @@
+import MatrixLayout, { type MatrixLayoutRequest } from './MatrixLayout'
 import VocabularyPicture from '../VocabularyPicture'
 import FadingWords from './FadingWords'
 import type { MatrixSettings } from './model'
@@ -14,7 +15,7 @@ type UnitAction = { index: number; onClick: () => void; expanded: boolean; contr
  * Units are authored in context; never zip a Thai sentence to English words.
  * ** emphasis may cross unit boundaries (or begin inside an inflected word).
  */
-export default function ExampleLanguage({english,thai,units,matrix=false,unitAction,translationControl,unitActions,slotDetails,afterUnits,groupLastTwo=false,settings={},scores={}}:{settings?:MatrixSettings;scores?:WordScores;english:string;thai:string;units:readonly ExampleUnit[];matrix?:boolean;unitAction?:UnitAction;translationControl?:ReactNode;unitActions?:UnitAction[];slotDetails?:readonly {label:string;count:number;icon?:ReactNode;control?:ReactNode}[];afterUnits?:ReactNode;groupLastTwo?:boolean}) {
+export default function ExampleLanguage({layout,english,thai,units,matrix=false,unitAction,translationControl,unitActions,slotDetails,afterUnits,groupLastTwo=false,groupLabel='Noun phrase',groupSize=2,groupControl,semanticSlots,settings={},scores={}}:{layout?:MatrixLayoutRequest;settings?:MatrixSettings;scores?:WordScores;english:string;thai:string;units:readonly ExampleUnit[];matrix?:boolean;unitAction?:UnitAction;translationControl?:ReactNode;unitActions?:UnitAction[];slotDetails?:readonly {label:string;count:number;icon?:ReactNode;control?:ReactNode}[];afterUnits?:ReactNode;groupLastTwo?:boolean;groupLabel?:string;groupSize?:number;groupControl?:ReactNode;semanticSlots?:readonly number[]}) {
   const spans=english.split('**').map((text,index,parts)=>{
     const start=parts.slice(0,index).join('').length
     return {text,start,end:start+text.length,marked:index%2===1}
@@ -24,7 +25,7 @@ export default function ExampleLanguage({english,thai,units,matrix=false,unitAct
   const cards = units.map((unit,index)=>{
       const start=units.slice(0,index).reduce((sum,previous)=>sum+previous.english.length+1,0),end=start+unit.english.length
       const word = unit.english.toLowerCase().replace(/[?.,!]/g, '')
-      const slot = word === 'where' ? 0 : ['is','are','was','were'].includes(word) ? 1 : ['the','my','your','his','her'].includes(word) ? 2 : 3
+      const slot = semanticSlots?.[index] ?? (word === 'where' ? 0 : ['is','are','was','were'].includes(word) ? 1 : ['the','my','your','his','her'].includes(word) ? 2 : 3)
       const action = settings.fadeMode ? undefined : unitActions?.find(action => action.index === index) ?? (unitAction?.index === index ? unitAction : undefined)
       const detail = slotDetails?.[index]
       const content = <>
@@ -39,9 +40,11 @@ export default function ExampleLanguage({english,thai,units,matrix=false,unitAct
       </>
       return matrix ? <MatrixCard key={index} slot={slot} action={action} control={settings.fadeMode?undefined:detail?.control} affordance={action?.affordance} className={action ? 'example-unit-trigger' : ''}>{content}</MatrixCard> : <span className="example-unit" key={index}>{content}</span>
     })
+  const translation=settings.fadeMode ? translationControl : translationControl ? <div className="example-meaning-row">{translationControl}<p className="bird-thai example-translation" lang="th" aria-live={unitAction || unitActions ? 'polite' : undefined}>{thai}</p></div> : <p className="bird-thai example-translation" lang="th" aria-live={unitAction || unitActions ? 'polite' : undefined}>{thai}</p>
+  if(matrix&&layout)return <MatrixLayout request={layout} settings={settings} cards={cards} label={settings.fadeMode?'Listen to the sentence':plain} translation={translation} tray={afterUnits}/>
   return <div className={`example-language${matrix ? ' example-matrix' : ''}`}>
-    <p className={matrix ? "tonight-slots" : "bird-english example-alignment"} lang="en" aria-label={settings.fadeMode?"Listen to the sentence":plain}>{groupLastTwo ? <>{cards.slice(0,2)}<span className="cw-noun-group" role="group" aria-label="Noun phrase">{cards.slice(2)}</span></> : cards}</p>
+    <p className={matrix ? "tonight-slots" : "bird-english example-alignment"} lang="en" aria-label={settings.fadeMode?"Listen to the sentence":plain}>{groupLastTwo ? <>{cards.slice(0,-groupSize)}<span className="cw-noun-group" role="group" aria-label={groupLabel} data-group-size={groupSize}>{!settings.fadeMode&&groupControl}{cards.slice(-groupSize)}</span></> : cards}</p>
     {!settings.fadeMode && afterUnits}
-    {settings.fadeMode ? translationControl : translationControl ? <div className="example-meaning-row">{translationControl}<p className="bird-thai example-translation" lang="th" aria-live={unitAction || unitActions ? 'polite' : undefined}>{thai}</p></div> : <p className="bird-thai example-translation" lang="th" aria-live={unitAction || unitActions ? 'polite' : undefined}>{thai}</p>}
+    {translation}
   </div>
 }

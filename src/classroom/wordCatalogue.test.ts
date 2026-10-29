@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { existsSync } from 'node:fs'
 import { expect,it } from 'vitest'
-import { cumulativeCatalogue, lessonOneCatalogue,lessonTwoCatalogue,lessonTwoIntroducedCatalogue } from './wordCatalogue'
+import { cumulativeCatalogue, lessonOneCatalogue,lessonTwoCatalogue,lessonTwoIntroducedCatalogue,lessonTwoMatrixCatalogue,lessonThreeMatrixCatalogue } from './wordCatalogue'
 import { classroomMatrices } from './matrixLessons'
 import { categoriesForWord } from '../learning/sentenceMatrix/vocabularyCategories'
 it('accumulates lessons without future words or duplicate entries, preserving later grammar metadata',()=>{
@@ -17,10 +17,21 @@ it('accumulates lessons without future words or duplicate entries, preserving la
 it('includes earlier vocabulary categories and resolves existing audio for every cumulative word',()=>{
  const categories=new Set(lessonTwoCatalogue.flatMap(categoriesForWord))
  for(const category of ['places','buildings','clothing','everyday','furniture','sports','transport','people'] as const)expect(categories.has(category)).toBe(true)
- for(const item of lessonTwoCatalogue)for(const owner of ['the','my','your'] as const) {
+ for(const item of lessonTwoMatrixCatalogue)for(const owner of ['the','my','your'] as const) {
   const url=classroomMatrices['lesson-2'].audio(item.word,owner,item.number==='plural'?'are':'is')
-  expect(existsSync(`public${url}`),url).toBe(true)
+  if(url) expect(existsSync(`public${url}`),url).toBe(true)
+  else expect(item.number).toBe('plural')
  }
+ expect(classroomMatrices['lesson-2'].audio('hotels','my','are')).toBeUndefined()
  expect(classroomMatrices['lesson-2'].audio('hotel','my','is')).toBe('/audio/race-class-one/hotel-my.wav')
  expect(classroomMatrices['lesson-2'].audio('shoes','my','are')).toBe('/audio/race-lesson-two/shoes-my-are.wav')
+})
+
+it('adds authored earlier plural forms to matrices without expanding recorded question catalogues',()=>{
+ expect(lessonTwoMatrixCatalogue).toHaveLength(76)
+ expect(lessonThreeMatrixCatalogue).toHaveLength(100)
+ expect(lessonTwoCatalogue.some(w=>w.word==='hotels')).toBe(false)
+ expect(lessonTwoMatrixCatalogue.find(w=>w.word==='hotels')).toMatchObject({singular:'hotel',plural:'hotels',number:'plural'})
+ expect(lessonTwoMatrixCatalogue.find(w=>w.word==='watches')).toMatchObject({singular:'watch',plural:'watches',number:'plural'})
+ for(const lesson of ['lesson-2','lesson-3'] as const)expect(classroomMatrices[lesson].audio('hotels','the','are')).toBeUndefined()
 })

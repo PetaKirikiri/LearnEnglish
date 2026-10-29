@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <title>Success University</title>
+  <defs>
+    <mask id="overlap" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
+      <path fill="#fff" d="M0 0h128v128H0z"/>
+      <path d="M57 49v37c0 30 48 30 48 0V49" stroke="#000" stroke-width="25" stroke-linecap="round"/>
+    </mask>
+  </defs>
+  <path d="M65 28C55 14 21 16 21 35c0 14 13 17 26 21 14 4 21 11 16 22-7 15-34 16-45 2" stroke="#fff" stroke-width="16" stroke-linecap="round" mask="url(#overlap)"/>
+  <path d="M57 49v37c0 30 48 30 48 0V49" stroke="#fff" stroke-width="16" stroke-linecap="round"/>
+</svg>

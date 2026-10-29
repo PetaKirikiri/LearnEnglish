@@ -1,5 +1,6 @@
+import type { SubjectModeConfig } from './subjectEngine'
 import type { VocabularyCategory } from './vocabularyCategories'
-export type ClassroomWord = { word:string; thai:string; singular?:string; plural?:string; number?:'singular'|'plural'; pairOnly?:boolean; categories?:readonly VocabularyCategory[] }
+export type ClassroomWord = { word:string; thai:string; singular?:string; plural?:string; number?:'singular'|'plural'; pairOnly?:boolean; categories?:readonly VocabularyCategory[]; meaning?:import('../sentenceRules/blueprints').WordMeaning }
 export type Determiner = 'the' | 'my' | 'your' | 'his' | 'her'
 export type BeVerb = 'is' | 'are' | 'was' | 'were'
 export type Tense = 'present' | 'past'
@@ -14,10 +15,14 @@ export type MatrixSettings = import('../wordProgress/model').FadeSettings & {
   wordPicker?: boolean
   /** Allow changing words inside the educational window. */
   explanationSelection?: boolean
+  /** Shared geometry for all sentence constructions and word modes. */
+  layout?: { density?: 'comfortable' | 'compact' | 'content'; maxWidth?: number }
   audio?: boolean
 }
 export type MatrixLesson = {
   id: string
+  pattern?: 'people-location'
+  subjectModes?: SubjectModeConfig
   vocabulary: readonly ClassroomWord[]
   plural: boolean
   past?: boolean
@@ -26,7 +31,7 @@ export type MatrixLesson = {
   settings?: MatrixSettings
   initialOwner?: Determiner
   initialWord: string
-  audio?: (word: string, owner: Determiner, verb: BeVerb) => string
+  audio?: (word: string, owner: Determiner, verb: BeVerb) => string | undefined
 }
 export const determiners = [
   {word:'the',thai:'ที่กำลังพูดถึง'}, {word:'my',thai:'ของฉัน'}, {word:'your',thai:'ของคุณ'},

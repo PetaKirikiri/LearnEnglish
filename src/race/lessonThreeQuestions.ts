@@ -1,28 +1,33 @@
 import type { HotelQuestion } from '../hotel/course'
-import { lessonTwoCatalogue, lessonThreeCatalogue } from '../classroom/wordCatalogue'
-import { lessonThreeAudio } from '../classroom/matrixLessons'
-import { locationSentence, allDeterminers, type Tense, type Determiner, type ClassroomWord } from '../learning/sentenceMatrix/model'
+import { lessonThreeCatalogue } from '../classroom/wordCatalogue'
+import { locationWords, people, peopleAudio, peopleSentence, replyPerson } from '../learning/sentenceMatrix/peopleLocation'
 
-export const lessonThreeStages=['lesson-three-past','lesson-three-owner','lesson-three-review']
+export const lessonThreeStages=['lesson-three-people','lesson-three-answers','lesson-three-review']
 const skill='race-lesson-three'
-const familiar=lessonTwoCatalogue.filter(item=>['shoe','shoes','key','keys','bag','bags','book','books','phone','phones'].includes(item.word))
-// One new contrast at a time: was/were with familiar nouns and the; then his/her
-// with familiar nouns in the present. Only review combines the new pieces.
-export const lessonThreePastQuestions:HotelQuestion[]=familiar.flatMap(item=>[true,false].map(correct=>{
- const sentence=locationSentence(item,'the','','past')
- const verb=correct?sentence.verb:sentence.verb==='was'?'were':'was'
- return {id:`l3-past-${item.word}-${verb}`,english:`Where ${verb} the ${item.word}?`,skill,correct:correct?0:1,
- answers:[[{text:'Correct',skill}],[{text:'Wrong',skill}]],audioUrl:lessonThreeAudio(item.word,'the',verb),
- grammar:{kind:'meaning',context:'Earlier: match was or were to the noun.',phase:'practice',targets:['was','were'],contrast:correct?'number-correct':'number-wrong',explanation:sentence.english}}
+const places=locationWords(lessonThreeCatalogue)
+// Introduce person/be agreement before adding the location answer.
+export const lessonThreePeopleQuestions:HotelQuestion[]=people.flatMap(person=>(['am','is','are'] as const).map(verb=>{
+ const english=`Where ${verb} ${person.word}?`
+ const correct=verb===person.verb
+ return {id:`l3-person-${person.word}-${verb}`,english,skill,correct:correct?0:1,audioUrl:peopleAudio(english),
+ answers:[[{text:'Correct',skill}],[{text:'Wrong',skill}]],
+ grammar:{kind:'meaning',context:'Match I/am, you/are, he/is and she/is.',phase:'practice',targets:['I','you','he','she','am','is','are'],contrast:correct?'person-correct':'person-wrong',explanation:`Where ${person.verb} ${person.word}?`}}
 }))
-function meaning(item:ClassroomWord,owner:Determiner,tense:Tense,contrast:'owner'|'time') {
- const sentence=locationSentence(item,owner,'',tense)
- const translation=(selectedOwner:Determiner,selectedTense:Tense)=>`${selectedTense==='past'?'ก่อนหน้านี้':'ตอนนี้'} ${locationSentence(item,selectedOwner).thai}`
- const correct=translation(owner,tense)
- const distractor=contrast==='time'?translation(owner,tense==='past'?'present':'past'):translation(owner==='his'?'her':owner==='her'?'his':owner==='my'?'your':'my',tense)
- return {id:`l3-${contrast}-${item.word}-${owner}-${tense}`,english:sentence.english,skill,correct:0,
- audioUrl:lessonThreeAudio(item.word,owner,sentence.verb),answers:[[{text:correct,skill}],[{text:distractor,skill}]],meaningDistractor:distractor} satisfies HotelQuestion & {meaningDistractor:string}
-}
-export const lessonThreeOwnerQuestions=familiar.flatMap(item=>(['his','her'] as const).map(owner=>meaning(item,owner,'present','owner')))
-export const lessonThreeReviewQuestions=lessonThreeCatalogue.flatMap(item=>allDeterminers.flatMap(({word:owner})=>(['present','past'] as const).map(tense=>meaning(item,owner,tense,owner==='his'||owner==='her'?'owner':'time')))).map(q=>({...q,id:`review-${q.id}`}))
-export const lessonThreeRecordings=[...new Map([...lessonThreePastQuestions,...lessonThreeOwnerQuestions,...lessonThreeReviewQuestions].filter(q=>q.audioUrl?.startsWith('/audio/race-lesson-three/')).map(q=>[q.audioUrl,{audioUrl:q.audioUrl,spokenText:q.english}])).values()]
+export const lessonThreeAnswerQuestions=places.flatMap(place=>people.map((person,index)=>{
+ const sentence=peopleSentence('answer',person.word,place)
+ // Same destination in both options: recognizing the picture alone cannot win.
+ const distractor=peopleSentence('answer',people[(index+1)%people.length].word,place).thai
+ return {id:`l3-answer-${person.word}-${place.word}`,english:sentence.english,skill,correct:0,audioUrl:peopleAudio(sentence.english),
+ answers:[[{text:sentence.thai,skill}],[{text:distractor,skill}]],meaningDistractor:distractor} satisfies HotelQuestion & {meaningDistractor:string}
+}))
+export const lessonThreeReviewQuestions=places.flatMap((place,index)=>people.map(person=>{
+ const question=peopleSentence('question',person.word,place)
+ const answer=peopleSentence('answer',replyPerson(person.word),place)
+ const english=`${question.english} ${answer.english}`
+ const distractor=peopleSentence('answer',replyPerson(person.word),places[(index+1)%places.length]).thai
+ return {id:`l3-dialogue-${person.word}-${place.word}`,english,skill,correct:0,audioUrl:peopleAudio(english),
+ answers:[[{text:answer.thai,skill}],[{text:distractor,skill}]],meaningDistractor:distractor} satisfies HotelQuestion & {meaningDistractor:string}
+}))
+export const lessonThreeRecordings=[...new Map([
+ ...lessonThreePeopleQuestions,...lessonThreeAnswerQuestions,...lessonThreeReviewQuestions,
+].map(q=>[q.audioUrl!,{audioUrl:q.audioUrl!,spokenText:q.english}])).values()]

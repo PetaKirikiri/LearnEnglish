@@ -2,7 +2,7 @@
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import { beforeEach, expect, it, vi } from 'vitest'
-import PhonePractice from './PhonePractice'
+import {PracticeSession as PhonePractice} from './PhonePractice'
 import { practiceDeck } from './practiceDeck'
 import { loadWordProgress,queueAttempt } from '../learning/wordProgress/store'
 vi.mock('../learning/wordProgress/store',()=>({loadWordProgress:vi.fn(async()=>[]),flushWordAttempts:vi.fn(async()=>{}),queueAttempt:vi.fn()}))
@@ -198,4 +198,47 @@ it('only exposes language flags for testers and switches answer meanings without
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="ไทย"]')!.click())
   expect(host.querySelector('.practice-choice-label')?.textContent).toBe(before)
  }finally{await act(async()=>root.unmount())}
+})
+
+it('ends a short module and requires an explicit continue before the next one',async()=>{
+ const {default:PracticeCourse}=await import('./PracticeCourse')
+ vi.spyOn(Math,'random').mockReturnValue(.1)
+ const host=document.createElement('div');const root=createRoot(host)
+ try{
+  await act(async()=>root.render(<PracticeCourse/>))
+  expect(host.querySelector('header')?.textContent).toContain('1 / 8')
+  for(let i=0;i<8;i++){
+   await listen(host)
+   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.practice-answers button')[i<4?0:1].click())
+   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-feedback button')!.click())
+  }
+  expect(host.querySelector('.practice-complete h1')?.textContent).toBe('ผ่านชุดนี้แล้ว!')
+  expect(host.querySelector('.practice-complete')?.textContent).toContain('8 / 8')
+  expect(host.querySelector('.practice-module-break')).not.toBeNull()
+  expect(host.querySelector('.practice-answers')).toBeNull()
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
+  expect(host.querySelector('header')?.textContent).toContain('ชุด 2/')
+  expect(host.querySelector('header')?.textContent).toContain('1 / 8')
+ }finally{await act(async()=>root.unmount());vi.restoreAllMocks()}
+})
+
+it('keeps an unsuccessful module finite and offers a replay without unlocking the next one',async()=>{
+ const {default:PracticeCourse}=await import('./PracticeCourse')
+ vi.spyOn(Math,'random').mockReturnValue(.1)
+ const host=document.createElement('div');const root=createRoot(host)
+ try{
+  await act(async()=>root.render(<PracticeCourse/>))
+  for(let i=0;i<8;i++){
+   await listen(host)
+   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.practice-answers button')[i<4?1:0].click())
+   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-feedback button')!.click())
+  }
+  expect(host.querySelector('.practice-complete')?.textContent).toContain('0 / 8')
+  expect(host.querySelector('.practice-complete h1')?.textContent).not.toBe('ผ่านชุดนี้แล้ว!')
+  expect(host.querySelectorAll('.practice-complete button')).toHaveLength(1)
+  expect(host.querySelector('.practice-complete button')?.textContent).toBe('ฝึกชุดนี้อีกครั้ง')
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
+  expect(host.querySelector('header')?.textContent).toContain('1 / 8')
+  expect(host.querySelector('header')?.textContent).toContain('ชุด 1/')
+ }finally{await act(async()=>root.unmount());vi.restoreAllMocks()}
 })

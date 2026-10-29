@@ -11,7 +11,7 @@ it('uses air conditioner with natural pronunciation and regenerated recordings a
  expect(defaultGuide('air conditioner').thai.syllables).toEqual(['แอร์','คัน','ดิ','ชัน','เนอร์'])
  expect(existsSync('public/classroom/icons/level-one/air-conditioner.png')).toBe(true)
  const clips=[...tonightMeaningQuestions.map(q=>({audioUrl:q.audioUrl,spokenText:q.english})),...lessonThreeRecordings].filter(q=>/\bair conditioner\b/.test(q.spokenText))
- expect(clips).toHaveLength(10)
+ expect(clips).toHaveLength(3)
  for(const clip of clips){
   const parts=clip.audioUrl!.split('/'),name=parts.pop()!
   const manifest=JSON.parse(readFileSync(`public${parts.join('/')}/voice-manifest.json`,'utf8'))

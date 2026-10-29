@@ -1,0 +1,19 @@
+.foundation-practice .adaptive-practice-stage{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto;align-content:start;gap:20px;padding:24px 0 12px}
+.adaptive-practice-stage>.practice-question{min-width:0;container:matrix-stage / inline-size}
+.adaptive-practice-stage .binary-answer-content{container:matrix-stage / inline-size;white-space:normal}
+.adaptive-practice-stage .binary-answer-label>.classroom{width:100%;min-width:0}
+/* A display-only matrix never reserves the editor's toolbar, translation or picker rows. */
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content]{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;gap:0}
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-layout-toolbar,
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-layout-translation,
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-layout-dock{display:none}
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .tonight-slots{grid-row:1;grid-column:1;grid-template-columns:minmax(0,1fr);height:auto;gap:12px}
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .tonight-slot{min-width:0;padding:12px 8px;gap:8px}
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .example-source{font-size:clamp(22px,7cqw,32px);overflow-wrap:anywhere}
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .example-gloss{white-space:normal;font-size:13px;overflow-wrap:anywhere;text-align:center}
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-count{display:none}
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-layout-leading{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content][data-matrix-layout=location-answer] .matrix-layout-leading{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+.adaptive-practice-stage .matrix-agreement-group{grid-column:auto;grid-template-columns:repeat(2,minmax(0,1fr))}
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-agreement-group .tonight-slot:first-child{border-radius:24px 0 0 24px}
+.adaptive-practice-stage .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-agreement-group .tonight-slot:last-child{border-radius:0 24px 24px 0}

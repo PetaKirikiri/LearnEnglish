@@ -3,6 +3,7 @@ export type PronunciationGuide = { thai: PronunciationSketch; english: Pronuncia
 // Spelling-based teaching chunks, not IPA or measured pitch. Stress is separate
 // from the editable example melody. Unknown words remain whole until authored.
 const chunks: Record<string, [string, number]> = {
+ i:['I',0],you:['you',0],he:['he',0],she:['she',0],am:['am',0],at:['at',0],
  was:['was',0],were:['were',0],his:['his',0],her:['her',0],
  apple:['ap-ple',0],banana:['ba-na-na',1],orange:['or-ange',0],oranges:['or-ang-es',0],
  sandwich:['sand-wich',0],sandwiches:['sand-wich-es',0],umbrella:['um-brel-la',1],wallet:['wal-let',0],
@@ -23,6 +24,7 @@ export const pronunciationKey = (word:string) => word.toLowerCase().trim().repla
 // Thai-script sound approximations of the English word, never its translation.
 // These do not determine a speaker's accent or supply measured lexical tones.
 const thaiSounds: Record<string,string> = {
+ i:'ไอ',you:'ยู',he:'ฮี',she:'ชี',am:'แอม',at:'แอท',
  was:'วอซ',were:'เวอร์',his:'ฮิซ',her:'เฮอร์',
  apple:'แอพ-เพิล',apples:'แอพ-เพิลซ',banana:'เบอะ-แน-นะ',bananas:'เบอะ-แน-นะซ',
  orange:'ออ-รินจ์',oranges:'ออ-ริน-จิซ',sandwich:'แซนด์-วิช',sandwiches:'แซนด์-วิช-อิซ',

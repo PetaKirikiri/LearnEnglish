@@ -70,8 +70,8 @@ function secondsToFinish(player, finish) {
 function meaningChoices(questions) {
   return questions.map((question2, index) => {
     if (question2.meaningDistractor && question2.choices.includes(question2.meaningDistractor)) return question2;
-    const meaning2 = question2.choices[question2.correct];
-    const other = [...questions.slice(index + 1), ...questions.slice(0, index)].find((q) => q.choices[q.correct] !== meaning2);
+    const meaning = question2.choices[question2.correct];
+    const other = [...questions.slice(index + 1), ...questions.slice(0, index)].find((q) => q.choices[q.correct] !== meaning);
     if (!other) return question2;
     const choices = [...question2.choices];
     choices[1 - question2.correct] = other.choices[other.correct];
@@ -328,6 +328,28 @@ var tonightWords = [
   ["clock", "\u0E19\u0E32\u0E2C\u0E34\u0E01\u0E32"],
   ["bedroom", "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E2D\u0E19"]
 ];
+var tonightPluralForms = {
+  hotel: "hotels",
+  toilet: "toilets",
+  gym: "gyms",
+  "padel court": "padel courts",
+  racket: "rackets",
+  phone: "phones",
+  "air conditioner": "air conditioners",
+  fan: "fans",
+  remote: "remotes",
+  doctor: "doctors",
+  clinic: "clinics",
+  school: "schools",
+  motorbike: "motorbikes",
+  table: "tables",
+  chair: "chairs",
+  bank: "banks",
+  bookstore: "bookstores",
+  watch: "watches",
+  clock: "clocks",
+  bedroom: "bedrooms"
+};
 
 // src/learning/sentenceMatrix/model.ts
 var determiners = [
@@ -411,12 +433,211 @@ function cumulativeCatalogue(...stages) {
   }
   return [...words.values()];
 }
+var earlierNounForms = tonightWords.flatMap(([singular, thai]) => {
+  const plural = tonightPluralForms[singular];
+  return [{ word: singular, thai, singular, plural, number: "singular" }, { word: plural, thai, singular, plural, number: "plural" }];
+});
 var lessonTwoCatalogue = cumulativeCatalogue(lessonOneCatalogue, lessonTwoIntroducedCatalogue);
 var lessonThreeIntroducedCatalogue = lessonThreeWords.flatMap((item) => [
   { ...item, word: item.singular, number: "singular" },
   { ...item, word: item.plural, number: "plural" }
 ]);
-var lessonThreeCatalogue = cumulativeCatalogue(lessonOneCatalogue, lessonTwoIntroducedCatalogue, lessonThreeIntroducedCatalogue);
+var lessonThreeCatalogue = cumulativeCatalogue(lessonTwoCatalogue, lessonThreeIntroducedCatalogue);
+var lessonTwoMatrixCatalogue = cumulativeCatalogue(lessonOneCatalogue, earlierNounForms, lessonTwoIntroducedCatalogue);
+var lessonThreeMatrixCatalogue = cumulativeCatalogue(lessonTwoMatrixCatalogue, lessonThreeIntroducedCatalogue);
+
+// src/learning/sentenceMatrix/subjectEngine.ts
+var subjectPronouns = [
+  { word: "I", thai: "\u0E09\u0E31\u0E19", person: 1 },
+  { word: "you", thai: "\u0E04\u0E38\u0E13", person: 2 },
+  { word: "he", thai: "\u0E40\u0E02\u0E32", person: 3 },
+  { word: "she", thai: "\u0E40\u0E18\u0E2D", person: 3 }
+];
+function subjectVerb(subject) {
+  if (subject.number === "plural" || subject.person === 2) return "are";
+  return subject.person === 1 ? "am" : "is";
+}
+
+// src/learning/sentenceRules/meaningProfiles.ts
+var meaningProfiles = {
+  thought: { kind: "abstract" },
+  idea: { kind: "abstract" },
+  happiness: { kind: "abstract" },
+  advice: { kind: "abstract", countability: "mass" },
+  taxi: { kind: "physical-object" },
+  beach: { kind: "place", locationPrepositions: ["at", "on"] },
+  airport: { kind: "place", locationPrepositions: ["at", "in"] },
+  shop: { kind: "place", locationPrepositions: ["at", "in"] },
+  pharmacy: { kind: "place", locationPrepositions: ["at", "in"] },
+  hospital: { kind: "place", locationPrepositions: ["at", "in"] },
+  supermarket: { kind: "place", locationPrepositions: ["at", "in"] },
+  market: { kind: "place", locationPrepositions: ["at", "in"] },
+  cafe: { kind: "place", locationPrepositions: ["at", "in"] },
+  "bus stop": { kind: "place", locationPrepositions: ["at"] },
+  "car park": { kind: "place", locationPrepositions: ["at", "in"] },
+  entrance: { kind: "place", locationPrepositions: ["at"] },
+  exit: { kind: "place", locationPrepositions: ["at"] },
+  atm: { kind: "physical-object", roles: ["destination"], locationPrepositions: ["at"] },
+  lift: { kind: "physical-object", roles: ["destination"], locationPrepositions: ["at", "in"] },
+  "swimming pool": { kind: "place", locationPrepositions: ["at", "in"] }
+};
+
+// src/learning/sentenceMatrix/vocabularyCategories.ts
+var vocabularyCategories = [
+  { id: "clothing", en: "Clothing", th: "\u0E40\u0E2A\u0E37\u0E49\u0E2D\u0E1C\u0E49\u0E32" },
+  { id: "food", en: "Food", th: "\u0E2D\u0E32\u0E2B\u0E32\u0E23" },
+  { id: "places", en: "Places", th: "\u0E2A\u0E16\u0E32\u0E19\u0E17\u0E35\u0E48" },
+  { id: "buildings", en: "Buildings", th: "\u0E2D\u0E32\u0E04\u0E32\u0E23" },
+  { id: "everyday", en: "Everyday objects", th: "\u0E02\u0E2D\u0E07\u0E43\u0E0A\u0E49" },
+  { id: "furniture", en: "Furniture", th: "\u0E40\u0E1F\u0E2D\u0E23\u0E4C\u0E19\u0E34\u0E40\u0E08\u0E2D\u0E23\u0E4C" },
+  { id: "sports", en: "Sports", th: "\u0E01\u0E35\u0E2C\u0E32" },
+  { id: "transport", en: "Transport", th: "\u0E22\u0E32\u0E19\u0E1E\u0E32\u0E2B\u0E19\u0E30" },
+  { id: "people", en: "People", th: "\u0E1C\u0E39\u0E49\u0E04\u0E19" }
+];
+var groups = {
+  clothing: ["shoe", "sock", "sandal", "boot", "shirt", "hat", "trousers", "glasses", "bag", "watch"],
+  food: [],
+  places: ["hotel", "toilet", "gym", "padel court", "clinic", "school", "bank", "bookstore", "bedroom"],
+  buildings: ["hotel", "clinic", "school", "bank", "bookstore"],
+  everyday: ["key", "bag", "ticket", "book", "pen", "pencil", "phone", "charger", "towel", "bottle", "cup", "plate", "watch", "clock", "remote", "fan", "air conditioner", "glasses"],
+  furniture: ["table", "chair"],
+  sports: ["gym", "padel court", "racket"],
+  transport: ["motorbike"],
+  people: ["doctor"]
+};
+function categoriesForWord(item) {
+  if (item.categories) return item.categories;
+  const base = (item.singular ?? item.word).toLowerCase();
+  return vocabularyCategories.filter((category) => groups[category.id].includes(base)).map((category) => category.id);
+}
+
+// src/learning/sentenceRules/blueprints.ts
+var sentenceBlueprints = {
+  "where-noun": { pattern: "Where {be} {determiner} {noun}?", nounKinds: ["place", "person", "physical-object"], agreement: "noun-number" },
+  "where-person": { pattern: "Where {be} {subject}?", nounKinds: [], agreement: "subject-person" },
+  "person-at-place": { pattern: "{subject} {be} at {determiner} {place}.", nounKinds: ["place"], agreement: "subject-person" }
+};
+function meaningForWord(word) {
+  if (word.meaning) return word.meaning;
+  const reviewed = meaningProfiles[(word.singular ?? word.word).toLowerCase()];
+  if (reviewed) return reviewed;
+  const categories = categoriesForWord(word);
+  if (categories.includes("places") || categories.includes("buildings")) return { kind: "place", locationPrepositions: (word.singular ?? word.word) === "bedroom" ? ["in"] : ["at", "in"] };
+  if (categories.includes("people")) return { kind: "person" };
+  if (categories.some((c) => ["clothing", "food", "buildings", "everyday", "furniture", "sports", "transport"].includes(c))) return { kind: "physical-object" };
+  return void 0;
+}
+function validateSentence(request) {
+  const issues = [];
+  const add = (code, slot, word, message) => issues.push({ code, slot, word, message });
+  if (request.blueprint === "where-person" || request.blueprint === "person-at-place") {
+    if (!request.subject) add("missing-subject", "subject", "", "A subject is required.");
+    else if (subjectVerb(request.subject) !== request.verb) add("subject-agreement", "verb", request.verb, `${request.subject.word} requires ${subjectVerb(request.subject)}.`);
+  }
+  if (request.blueprint !== "where-person") {
+    const noun = request.noun;
+    if (!noun) add("missing-noun", "noun", "", "A noun is required.");
+    else {
+      const meaning = meaningForWord(noun), allowed = sentenceBlueprints[request.blueprint].nounKinds;
+      if (!meaning) add("unclassified-meaning", "noun", noun.word, "Add a reviewed meaning category before using this word.");
+      else if (!allowed.includes(meaning.kind) && !(request.blueprint === "person-at-place" && meaning.roles?.includes("destination"))) add("incompatible-meaning", "noun", noun.word, `${meaning.kind} does not fit ${request.blueprint}.`);
+      else if (request.blueprint === "person-at-place" && !meaning.locationPrepositions?.includes("at")) add("preposition-review", "noun", noun.word, "This destination is not approved with at; review its preposition.");
+      if (meaning?.countability === "mass" && (noun.number === "plural" || noun.pairOnly)) add("mass-noun-number", "noun", noun.word, "This sense is a mass noun; do not create a plural form.");
+      if (meaning?.countability === "plural-only" && noun.number !== "plural" && !noun.pairOnly) add("plural-only-number", "noun", noun.word, "This sense requires plural agreement.");
+      if (request.blueprint === "where-noun") {
+        const plural = noun.number === "plural" || Boolean(noun.pairOnly);
+        if (!["is", "are", "was", "were"].includes(request.verb) || plural !== ["are", "were"].includes(request.verb)) add("noun-agreement", "verb", request.verb, `${noun.word} requires a ${plural ? "plural" : "singular"} verb.`);
+      }
+    }
+    if (request.namedPlace) {
+      if (request.determiner) add("proper-name-article", "determiner", request.determiner, "This named place does not take a determiner in this blueprint.");
+    } else if (!["the", "my", "your", "his", "her"].includes(request.determiner ?? "")) add("missing-determiner", "determiner", request.determiner ?? "", "Select an approved determiner.");
+  }
+  return issues;
+}
+function assertSentence(request) {
+  const issues = validateSentence(request);
+  if (issues.length) throw new Error(`${request.blueprint}: ${issues.map((i) => `${i.code} (${i.word}): ${i.message}`).join("; ")}`);
+}
+
+// src/learning/sentenceRules/choices.ts
+var nounVerb = (noun) => noun.number === "plural" || noun.pairOnly ? "are" : "is";
+function nounsForSentence(request, words) {
+  return words.filter((noun) => !validateSentence({ ...request, noun, verb: request.verb ?? nounVerb(noun) }).length);
+}
+
+// src/learning/sentenceMatrix/peopleLocation.ts
+var people = subjectPronouns.map((item) => ({ ...item, verb: subjectVerb(item) }));
+var personDetail = (person) => people.find((item) => item.word === person);
+var replyPerson = (person) => person === "you" ? "I" : person === "I" ? "you" : person;
+var locationWords = (words) => nounsForSentence({ blueprint: "person-at-place", subject: subjectPronouns[0], verb: "am", determiner: "the" }, words).filter((noun) => noun.number !== "plural" && !noun.pairOnly);
+function peopleSentence(pattern, person, place) {
+  const detail = personDetail(person);
+  assertSentence({ blueprint: pattern === "question" ? "where-person" : "person-at-place", subject: detail, verb: detail.verb, noun: place, determiner: "the" });
+  const name = person === "I" ? "I" : person[0].toUpperCase() + person.slice(1);
+  return pattern === "question" ? { english: `Where ${detail.verb} ${person}?`, thai: `${detail.thai}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`, units: [
+    { english: "Where", thai: "\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19" },
+    { english: detail.verb, thai: "\u0E2D\u0E22\u0E39\u0E48" },
+    { english: `${person}?`, thai: detail.thai }
+  ] } : { english: `${name} ${detail.verb} at the ${place.word}.`, thai: `${detail.thai}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48${place.thai}`, units: [
+    { english: name, thai: detail.thai },
+    { english: detail.verb, thai: "\u0E2D\u0E22\u0E39\u0E48" },
+    { english: "at", thai: "\u0E17\u0E35\u0E48" },
+    { english: "the", thai: "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07" },
+    { english: `${place.word}.`, thai: place.thai }
+  ] };
+}
+var peopleAudio = (sentence) => `/audio/race-lesson-three/people-${sentence.toLowerCase().replace(/[^a-z]+/g, "-").replace(/-$/, "")}.wav`;
+
+// src/race/lessonThreeQuestions.ts
+var skill = "race-lesson-three";
+var places = locationWords(lessonThreeCatalogue);
+var lessonThreePeopleQuestions = people.flatMap((person) => ["am", "is", "are"].map((verb) => {
+  const english = `Where ${verb} ${person.word}?`;
+  const correct = verb === person.verb;
+  return {
+    id: `l3-person-${person.word}-${verb}`,
+    english,
+    skill,
+    correct: correct ? 0 : 1,
+    audioUrl: peopleAudio(english),
+    answers: [[{ text: "Correct", skill }], [{ text: "Wrong", skill }]],
+    grammar: { kind: "meaning", context: "Match I/am, you/are, he/is and she/is.", phase: "practice", targets: ["I", "you", "he", "she", "am", "is", "are"], contrast: correct ? "person-correct" : "person-wrong", explanation: `Where ${person.verb} ${person.word}?` }
+  };
+}));
+var lessonThreeAnswerQuestions = places.flatMap((place) => people.map((person, index) => {
+  const sentence = peopleSentence("answer", person.word, place);
+  const distractor = peopleSentence("answer", people[(index + 1) % people.length].word, place).thai;
+  return {
+    id: `l3-answer-${person.word}-${place.word}`,
+    english: sentence.english,
+    skill,
+    correct: 0,
+    audioUrl: peopleAudio(sentence.english),
+    answers: [[{ text: sentence.thai, skill }], [{ text: distractor, skill }]],
+    meaningDistractor: distractor
+  };
+}));
+var lessonThreeReviewQuestions = places.flatMap((place, index) => people.map((person) => {
+  const question2 = peopleSentence("question", person.word, place);
+  const answer2 = peopleSentence("answer", replyPerson(person.word), place);
+  const english = `${question2.english} ${answer2.english}`;
+  const distractor = peopleSentence("answer", replyPerson(person.word), places[(index + 1) % places.length]).thai;
+  return {
+    id: `l3-dialogue-${person.word}-${place.word}`,
+    english,
+    skill,
+    correct: 0,
+    audioUrl: peopleAudio(english),
+    answers: [[{ text: answer2.thai, skill }], [{ text: distractor, skill }]],
+    meaningDistractor: distractor
+  };
+}));
+var lessonThreeRecordings = [...new Map([
+  ...lessonThreePeopleQuestions,
+  ...lessonThreeAnswerQuestions,
+  ...lessonThreeReviewQuestions
+].map((q) => [q.audioUrl, { audioUrl: q.audioUrl, spokenText: q.english }])).values()];
 
 // src/race/holidayVocabulary.ts
 var holidayVocabulary = [
@@ -470,7 +691,7 @@ var holidayQuestions = holidayNouns.flatMap((noun) => [
 })));
 
 // src/race/lessonTwoQuestions.ts
-var skill = "race-lesson-two";
+var skill2 = "race-lesson-two";
 var lessonTwoAudio = (noun, owner, verb) => `/audio/race-lesson-two/${noun}-${owner}-${verb}.wav`;
 function judgement(items, determiners2) {
   return items.flatMap((item) => (item.singular ? [false, true] : [true]).flatMap((plural) => determiners2.flatMap((owner) => {
@@ -480,9 +701,9 @@ function judgement(items, determiners2) {
       return {
         id: `l2-${sentence.noun}-${owner}-${verb}`,
         english: `Where ${verb} ${owner} ${sentence.noun}?`,
-        skill,
+        skill: skill2,
         correct: correct ? 0 : 1,
-        answers: [[{ text: "Correct", skill }], [{ text: "Wrong", skill }]],
+        answers: [[{ text: "Correct", skill: skill2 }], [{ text: "Wrong", skill: skill2 }]],
         audioUrl: lessonTwoAudio(sentence.noun, owner, verb),
         grammar: { kind: "meaning", context: "Match is or are to the noun.", phase: "practice", targets: ["is", "are"], contrast: correct ? "number-correct" : "number-wrong", explanation: sentence.english }
       };
@@ -496,10 +717,10 @@ var lessonTwoOwnerQuestions = lessonTwoWords.filter((item) => lessonTwoCore.incl
   return {
     id: `l2-owner-${sentence.noun}-${owner}`,
     english: sentence.english,
-    skill,
+    skill: skill2,
     correct: 0,
     audioUrl: lessonTwoAudio(sentence.noun, owner, sentence.verb),
-    answers: [[{ text: sentence.thai, skill }], [{ text: other.thai, skill }]],
+    answers: [[{ text: sentence.thai, skill: skill2 }], [{ text: other.thai, skill: skill2 }]],
     meaningDistractor: other.thai
   };
 })));
@@ -511,10 +732,10 @@ var lessonTwoReviewQuestions = [
     return {
       id: `l2-translation-${sentence.noun}-${owner}`,
       english: sentence.english,
-      skill,
+      skill: skill2,
       correct: 0,
       audioUrl: lessonTwoAudio(sentence.noun, owner, sentence.verb),
-      answers: [[{ text: sentence.thai, skill }], [{ text: distractor, skill }]],
+      answers: [[{ text: sentence.thai, skill: skill2 }], [{ text: distractor, skill: skill2 }]],
       meaningDistractor: distractor
     };
   }))),
@@ -526,47 +747,6 @@ var lessonTwoReviewQuestions = [
   }))
 ];
 var lessonTwoRecordings = [...new Map([...lessonTwoNumberQuestions, ...lessonTwoOwnerQuestions, ...lessonTwoReviewQuestions].filter((q) => q.audioUrl?.startsWith("/audio/race-lesson-two/")).map((q) => [q.audioUrl, { audioUrl: q.audioUrl, spokenText: q.english }])).values()];
-
-// src/classroom/matrixLessons.ts
-var lessonTwoRecordedWords = new Set(lessonTwoIntroducedCatalogue.map((item) => item.word));
-var cumulativeLessonTwoAudio = (noun, owner, verb) => lessonTwoRecordedWords.has(noun) ? lessonTwoAudio(noun, owner, verb) : `/audio/race-class-one/${noun.replaceAll(" ", "-")}-${owner}.wav`;
-var earlierWords = new Set(lessonTwoCatalogue.map((item) => item.word));
-var lessonThreeAudio = (noun, owner, verb) => earlierWords.has(noun) && (owner === "the" || owner === "my" || owner === "your") && (verb === "is" || verb === "are") ? cumulativeLessonTwoAudio(noun, owner, verb) : `/audio/race-lesson-three/${noun.replaceAll(" ", "-")}-${owner}-${verb}.wav`;
-
-// src/race/lessonThreeQuestions.ts
-var skill2 = "race-lesson-three";
-var familiar = lessonTwoCatalogue.filter((item) => ["shoe", "shoes", "key", "keys", "bag", "bags", "book", "books", "phone", "phones"].includes(item.word));
-var lessonThreePastQuestions = familiar.flatMap((item) => [true, false].map((correct) => {
-  const sentence = locationSentence(item, "the", "", "past");
-  const verb = correct ? sentence.verb : sentence.verb === "was" ? "were" : "was";
-  return {
-    id: `l3-past-${item.word}-${verb}`,
-    english: `Where ${verb} the ${item.word}?`,
-    skill: skill2,
-    correct: correct ? 0 : 1,
-    answers: [[{ text: "Correct", skill: skill2 }], [{ text: "Wrong", skill: skill2 }]],
-    audioUrl: lessonThreeAudio(item.word, "the", verb),
-    grammar: { kind: "meaning", context: "Earlier: match was or were to the noun.", phase: "practice", targets: ["was", "were"], contrast: correct ? "number-correct" : "number-wrong", explanation: sentence.english }
-  };
-}));
-function meaning(item, owner, tense, contrast) {
-  const sentence = locationSentence(item, owner, "", tense);
-  const translation = (selectedOwner, selectedTense) => `${selectedTense === "past" ? "\u0E01\u0E48\u0E2D\u0E19\u0E2B\u0E19\u0E49\u0E32\u0E19\u0E35\u0E49" : "\u0E15\u0E2D\u0E19\u0E19\u0E35\u0E49"} ${locationSentence(item, selectedOwner).thai}`;
-  const correct = translation(owner, tense);
-  const distractor = contrast === "time" ? translation(owner, tense === "past" ? "present" : "past") : translation(owner === "his" ? "her" : owner === "her" ? "his" : owner === "my" ? "your" : "my", tense);
-  return {
-    id: `l3-${contrast}-${item.word}-${owner}-${tense}`,
-    english: sentence.english,
-    skill: skill2,
-    correct: 0,
-    audioUrl: lessonThreeAudio(item.word, owner, sentence.verb),
-    answers: [[{ text: correct, skill: skill2 }], [{ text: distractor, skill: skill2 }]],
-    meaningDistractor: distractor
-  };
-}
-var lessonThreeOwnerQuestions = familiar.flatMap((item) => ["his", "her"].map((owner) => meaning(item, owner, "present", "owner")));
-var lessonThreeReviewQuestions = lessonThreeCatalogue.flatMap((item) => allDeterminers.flatMap(({ word: owner }) => ["present", "past"].map((tense) => meaning(item, owner, tense, owner === "his" || owner === "her" ? "owner" : "time")))).map((q) => ({ ...q, id: `review-${q.id}` }));
-var lessonThreeRecordings = [...new Map([...lessonThreePastQuestions, ...lessonThreeOwnerQuestions, ...lessonThreeReviewQuestions].filter((q) => q.audioUrl?.startsWith("/audio/race-lesson-three/")).map((q) => [q.audioUrl, { audioUrl: q.audioUrl, spokenText: q.english }])).values()];
 
 // src/race/tonightQuestions.ts
 var tonightMeaningQuestions = tonightWords.flatMap(([word, thai]) => ["the", "my", "your"].map((determiner, d) => {
@@ -698,9 +878,9 @@ var racePools = [
   { id: "lesson-two-number", title: "Lesson 2 \xB7 is / are", kind: "judgement", questions: lessonTwoNumberQuestions },
   { id: "lesson-two-owner", title: "Lesson 2 \xB7 my / your", kind: "meaning", questions: lessonTwoOwnerQuestions },
   { id: "lesson-two-review", title: "Lesson 2 \xB7 English \u2192 Thai", kind: "meaning", questions: lessonTwoReviewQuestions },
-  { id: "lesson-three-past", title: "Lesson 3 \xB7 was / were", kind: "judgement", questions: lessonThreePastQuestions },
-  { id: "lesson-three-owner", title: "Lesson 3 \xB7 his / her", kind: "meaning", questions: lessonThreeOwnerQuestions },
-  { id: "lesson-three-review", title: "Lesson 3 \xB7 Mixed review", kind: "meaning", questions: lessonThreeReviewQuestions }
+  { id: "lesson-three-people", title: "Lesson 3 \xB7 I am / you are / he is / she is", kind: "judgement", questions: lessonThreePeopleQuestions },
+  { id: "lesson-three-answers", title: "Lesson 3 \xB7 At the\u2026", kind: "meaning", questions: lessonThreeAnswerQuestions },
+  { id: "lesson-three-review", title: "Lesson 3 \xB7 Ask and answer", kind: "meaning", questions: lessonThreeReviewQuestions }
 ];
 
 // src/race/publicLinks.ts

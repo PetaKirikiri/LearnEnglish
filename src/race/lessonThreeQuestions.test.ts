@@ -1,9 +1,9 @@
 // @vitest-environment node
 import { expect,it } from 'vitest'
 import { existsSync, readFileSync } from 'node:fs'
-import { lessonThreePastQuestions, lessonThreeOwnerQuestions, lessonThreeReviewQuestions } from './lessonThreeQuestions'
+import { lessonThreePeopleQuestions, lessonThreeAnswerQuestions, lessonThreeReviewQuestions } from './lessonThreeQuestions'
 import { lessonOneCatalogue,lessonTwoCatalogue,lessonThreeCatalogue,lessonThreeIntroducedCatalogue } from '../classroom/wordCatalogue'
-import { locationSentence,allDeterminers } from '../learning/sentenceMatrix/model'
+import { people,peopleSentence,locationWords,replyPerson } from '../learning/sentenceMatrix/peopleLocation'
 import { defaultGuide } from '../classroom/pronunciation/guides'
 it('adds 12 pictured noun families without leaking future words into earlier lessons',()=>{
  expect(lessonOneCatalogue).toHaveLength(20)
@@ -17,22 +17,26 @@ it('adds 12 pictured noun families without leaking future words into earlier les
   expect(defaultGuide(item.word).english.drawn).toBe(true)
  }
 })
-it('introduces past agreement, then ownership, before combining skills in review',()=>{
- expect(lessonThreePastQuestions).toHaveLength(20)
- expect(lessonThreeOwnerQuestions).toHaveLength(20)
- expect(lessonThreeReviewQuestions).toHaveLength(810)
- for(const q of lessonThreePastQuestions){
-  expect(q.english).toMatch(/^Where (was|were) the /)
-  const noun=lessonTwoCatalogue.find(item=>q.english.endsWith(` ${item.word}?`))!
-  expect(q.english===locationSentence(noun,'the','','past').english).toBe(q.correct===0)
+it('teaches present person agreement, location meaning and reciprocal dialogue',()=>{
+ const places=locationWords(lessonThreeCatalogue)
+ expect(lessonThreePeopleQuestions).toHaveLength(12)
+ expect(lessonThreeAnswerQuestions).toHaveLength(places.length*4)
+ expect(lessonThreeReviewQuestions).toHaveLength(places.length*4)
+ expect(places.map(p=>p.word)).not.toContain('shoe')
+ expect(places.map(p=>p.word)).not.toContain('bedroom')
+ for(const q of lessonThreePeopleQuestions){
+  const person=people.find(p=>q.english.endsWith(` ${p.word}?`))!
+  expect(q.english===`Where ${person.verb} ${person.word}?`).toBe(q.correct===0)
  }
- for(const q of lessonThreeOwnerQuestions)expect(q.english).toMatch(/^Where (is|are) (his|her) /)
- for(const item of lessonThreeCatalogue)for(const owner of allDeterminers)for(const tense of ['past','present'] as const){
-  expect(lessonThreeReviewQuestions.some(q=>q.english===locationSentence(item,owner.word,'',tense).english)).toBe(true)
+ for(const place of places)for(const person of people){
+  const q=lessonThreeReviewQuestions.find(q=>q.id===`l3-dialogue-${person.word}-${place.word}`)!
+  expect(q.english).toBe(`${peopleSentence('question',person.word,place).english} ${peopleSentence('answer',replyPerson(person.word),place).english}`)
  }
- const all=[...lessonThreePastQuestions,...lessonThreeOwnerQuestions,...lessonThreeReviewQuestions]
+ const all=[...lessonThreePeopleQuestions,...lessonThreeAnswerQuestions,...lessonThreeReviewQuestions]
+ expect(all.length).toBeGreaterThanOrEqual(80)
  expect(new Set(all.map(q=>q.id)).size).toBe(all.length)
- for(const q of [...lessonThreeOwnerQuestions,...lessonThreeReviewQuestions]){
+ for(const q of all)expect(q.english).not.toMatch(/\b(was|were|his|her)\b/)
+ for(const q of [...lessonThreeAnswerQuestions,...lessonThreeReviewQuestions]){
   expect(q.answers).toHaveLength(2)
   expect(q.answers[0]).not.toEqual(q.answers[1])
   expect(q.answers.every(answer=>/[ก-๙]/.test(answer[0].text))).toBe(true)
@@ -40,7 +44,7 @@ it('introduces past agreement, then ownership, before combining skills in review
 })
 
 it('ships a matching nonempty recording for every question and teaching combination',()=>{
- const all=[...lessonThreePastQuestions,...lessonThreeOwnerQuestions,...lessonThreeReviewQuestions]
+ const all=[...lessonThreePeopleQuestions,...lessonThreeAnswerQuestions,...lessonThreeReviewQuestions]
  for(const q of all){
   expect(existsSync(`public${q.audioUrl}`),q.audioUrl).toBe(true)
   const file=readFileSync(`public${q.audioUrl}`)

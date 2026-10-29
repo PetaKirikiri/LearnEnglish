@@ -23,7 +23,7 @@ it('opens directly into the requested lesson and keeps only the three lesson con
  expect(location.search).toBe('?lesson=3')
  expect(host.querySelector('.cw-word-explanation')).toBeNull()
  await click('[data-picker-slot="1"]')
- expect([...host.querySelectorAll('.cw-word-chip strong')].map(e => e.textContent)).toEqual(['is','are','was','were'])
+ expect([...host.querySelectorAll('.cw-word-chip strong')].map(e => e.textContent)).toEqual(['is','are'])
  await click('[aria-label="Lesson 1"]')
  expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('Where is the hotel?')
  await click('[data-picker-slot="3"]')

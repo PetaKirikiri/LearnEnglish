@@ -1,3 +1,8 @@
+import MatrixPicker from './MatrixPicker'
+import { subjectModes as availableSubjectModes } from './subjectEngine'
+import { type NounMode, type NounSwapperRequest } from './NounModeToggle'
+import SubjectQuestionMatrix from './SubjectQuestionMatrix'
+import PeopleLocationMatrix from './PeopleLocationMatrix'
 import WordTray from './WordTray'
 import './wordTray.css'
 import VocabularyPicture from '../VocabularyPicture'
@@ -16,13 +21,17 @@ export type SentenceMatrixProps = { lesson: MatrixLesson; settings?: MatrixSetti
 export default function SentenceMatrix(props: SentenceMatrixProps) {
   const configured = {...props.lesson.settings,...props.settings}
   const settings = configured.fadeMode ? {...configured,explanations:false,wordPicker:false,explanationSelection:false} : configured
-  const scope = JSON.stringify([props.lesson.id,props.lesson.plural,props.lesson.initialOwner,props.lesson.past,props.lesson.owners,props.lesson.initialTense,props.lesson.initialWord,props.lesson.vocabulary,settings])
-  return <MatrixInstance key={scope} {...props} settings={settings}/>
+  const scope = JSON.stringify([props.lesson.id,props.lesson.pattern,props.lesson.subjectModes,props.lesson.plural,props.lesson.initialOwner,props.lesson.past,props.lesson.owners,props.lesson.initialTense,props.lesson.initialWord,props.lesson.vocabulary,settings])
+  if(props.lesson.pattern==='people-location') return <PeopleLocationMatrix key={scope} {...props} settings={settings}/>
+  return <LocationSentenceMatrix key={scope} {...props} settings={settings}/>
 
 }
-function MatrixInstance({lesson,settings={},word:controlledWord,onWord:notify,audio,wordScores}:SentenceMatrixProps) {
-  const {active,setActive,item,word,owner,verb,chooseWord:onWord,chooseOwner:setOwner,chooseVerb,canChooseVerb,sentence,owners,verbs,tense} = useLocationMatrix(lesson,controlledWord,notify)
-  const catalogue=lesson.vocabulary
+export function LocationSentenceMatrix({lesson,settings={},word:controlledWord,onWord:notify,audio,wordScores}:SentenceMatrixProps) {
+  const {catalogue,active,setActive,item,word,owner,verb,chooseWord:onWord,chooseOwner:setOwner,chooseVerb,canChooseVerb,sentence,owners,verbs,tense} = useLocationMatrix(lesson,controlledWord,notify)
+  const subjectModes=lesson.subjectModes
+  const [nounMode,setNounMode]=useState<NounMode>('noun')
+  const nounSwapper:NounSwapperRequest={modes:subjectModes?availableSubjectModes(subjectModes):['noun'],mode:nounMode,onChange:mode=>{setActive(null);setNounMode(mode)}}
+  const audioSource=lesson.audio?.(word,owner,verb)
   const open = settings.wordPicker !== false && active !== null
   const [explaining, setExplaining] = useState<number | null>(null)
   const restoreSlot = useRef<number | null>(null)
@@ -72,6 +81,7 @@ function MatrixInstance({lesson,settings={},word:controlledWord,onWord:notify,au
       restoreSlot.current = null
     }
   }, [explaining])
+  if(subjectModes&&nounMode!=='noun')return <SubjectQuestionMatrix config={subjectModes} initialVerb={verb==='is'||verb==='are'?verb:undefined} mode={nounMode} swapper={nounSwapper} settings={settings}/>
   if (settings.explanations !== false && explaining !== null) return <WordExplanation id={explanationId} key={explaining} slot={explaining} value={owner} onChange={setOwner} onBack={()=>explain(null)} word={word} thai={item.thai} onWord={onWord} catalogue={catalogue} verb={verb} onVerb={verbs.length>1 ? chooseVerb : undefined} verbs={verbs} owners={owners} allowSelection={settings.explanationSelection !== false} canChooseVerb={canChooseVerb}/>
   function closeChoices() {
     setActive(null)
@@ -79,10 +89,10 @@ function MatrixInstance({lesson,settings={},word:controlledWord,onWord:notify,au
   }
   function picker(slot: number, count: number) {
     if (settings.wordPicker === false || count < 2) return undefined
-    return <button type="button" className="cw-slot-picker" data-picker-slot={slot} aria-label={`Change ${slot===1 ? verbs.map(item=>item.word).join(' / ') : slot===2 ? owners.map(item=>item.word).join(' / ') : 'vocabulary'}`} aria-expanded={active===slot} aria-controls={choicesId} onClick={()=>setActive(previous=>previous===slot ? null : slot)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    return <MatrixPicker slot={slot} label={`Change ${slot===1 ? verbs.map(item=>item.word).join(' / ') : slot===2 ? owners.map(item=>item.word).join(' / ') : 'vocabulary'}`} expanded={active===slot} controls={choicesId} onClick={()=>setActive(previous=>previous===slot ? null : slot)}/>
   }
   const selectedWord = active===1 ? verb : active===2 ? owner : word
-  const conveyor = <WordTray id={choicesId} active={open ? active : null} choices={choices} selected={selectedWord} canChoose={value=>active!==1 || canChooseVerb(value as BeVerb)} onClose={closeChoices} onChoose={value=>{
+  const conveyor = <WordTray vocabulary={active===3?catalogue:undefined} id={choicesId} active={open ? active : null} choices={choices} selected={selectedWord} canChoose={value=>active!==1 || canChooseVerb(value as BeVerb)} onClose={closeChoices} onChoose={value=>{
     if(active===1) chooseVerb(value as BeVerb)
     if(active===2) setOwner(value as Determiner)
     if(active===3) onWord(value)
@@ -94,9 +104,9 @@ function MatrixInstance({lesson,settings={},word:controlledWord,onWord:notify,au
     <audio ref={recording} preload="none"/>
     {audioError&&<p role="alert">{t('เล่นเสียงไม่ได้ ลองกดอีกครั้ง')}</p>}
     <div className="cw-sentence-display">
-      <ExampleLanguage settings={settings} scores={wordScores} matrix groupLastTwo {...sentence} english={`Where ${verb} ${owner} **${word}?**`} slotDetails={[{label:'Question',count:1,icon:<WordSlotIcon slot={0}/>},{label:tense==='past'?'Tense · before':'Tense · now',count:verbs.length,control:picker(1,verbs.length),icon:<WordSlotIcon slot={1} plural={isPluralVerb(verb)} past={tense==='past'}/>},{label:'Which / whose',count:owners.length,control:picker(2,owners.length),icon:<WordSlotIcon slot={2}/>},{label:'Person / thing',count:catalogue.length,control:picker(3,catalogue.length),icon:<VocabularyPicture word={word}/>}]}
+      <ExampleLanguage settings={settings} scores={wordScores} matrix layout={{construction:'question',noun:'phrase',nounSwapper}} {...sentence} english={`Where ${verb} ${owner} **${word}?**`} slotDetails={[{label:'Question',count:1,icon:<WordSlotIcon slot={0}/>},{label:tense==='past'?'Tense · before':'Tense · now',count:verbs.length,control:picker(1,verbs.length),icon:<WordSlotIcon slot={1} plural={isPluralVerb(verb)} past={tense==='past'}/>},{label:'Which / whose',count:owners.length,control:picker(2,owners.length),icon:<WordSlotIcon slot={2}/>},{label:'Person / thing',count:catalogue.length,control:picker(3,catalogue.length),icon:<VocabularyPicture word={word}/>}]}
       afterUnits={settings.wordPicker !== false ? conveyor : undefined}
-      translationControl={settings.audio === false ? undefined : lesson.audio ? <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={async()=>{if(recording.current){recording.current.src=lesson.audio!(word,owner,verb);setAudioError(false);try{await recording.current.play()}catch{setAudioError(true)}}}}><Icon name="sound"/></button> : owner === 'the' && audio ? audio : <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={() => {
+      translationControl={settings.audio === false ? undefined : audioSource ? <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={async()=>{if(recording.current){recording.current.src=audioSource;setAudioError(false);try{await recording.current.play()}catch{setAudioError(true)}}}}><Icon name="sound"/></button> : owner === 'the' && audio ? audio : <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={() => {
         window.speechSynthesis.cancel()
         const speech = new SpeechSynthesisUtterance(`Where ${verb} ${owner} ${word}?`)
         speech.lang = 'en-US'; speech.rate = .85

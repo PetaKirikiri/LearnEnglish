@@ -1,0 +1,27 @@
+# Pronoun icon artwork
+
+Transparent character artwork used by the shared `PronounIcon` component. I and me share the self-pointing illustration. Proper names keep their separate name icon.
+
+## i
+
+Asset: `/classroom/icons/pronouns/i.png`
+
+Use case: stylized-concept. Asset type: a single transparent-background educational mobile-game pronoun icon for EnglishSuccess. Primary request: 'I / me' communicated entirely by a person clearly pointing at their own chest. One friendly youthful cartoon human with warm tan skin, short sculpted brown hair, big kind expressive eyes, a vivid royal-blue shirt, rounded chunky hands, waist-up, facing viewer, one index finger visibly touching their OWN chest. Nintendo Switch Mario Party quality art direction: premium polished 3D toy character render, soft rounded forms, saturated clean colors, dimensional shading, warm soft studio lighting, friendly confident smile. Original character, no hat or moustache. Readable at 64-90px: bold silhouette, oversized face and gesture, minimal small details. Centered square composition, entire head, arms and pointing hand contained with a small consistent transparent margin. Actual alpha transparency; no background, no circle, no tile, no border, no lettering, no symbols or arrows, no ground shadow. The finger must point inward to the chest, NOT at the viewer. One icon only, not a sheet.
+
+## you
+
+Asset: `/classroom/icons/pronouns/you.png`
+
+Use case: stylized-concept. Asset: one transparent educational pronoun icon, original Nintendo Switch / Mario Party quality rounded 3D toy character art matching reference image 1's exact rendering, friendly face, rich colors and soft lighting. Reference image 1 is STYLE and character reference only. Clear visual communication at small 64-90px. Square composition, waist-up figures with large heads and large obvious pointing hand, generous separation, all heads and gesture hands visible. Actual alpha transparent background. No text, lettering, arrow symbols, icon badge, tile, circle, scenery, ground, shadow backdrop or watermark. Generate the YOU icon. Keep the same friendly blue-shirted short-brown-haired tan-skinned character. Face the viewer, smiling kindly. Extend one arm toward the camera and point the index finger STRAIGHT OUT at the viewer, like the Uncle Sam recruiting pose but friendly and welcoming, absolutely not stern or angry. Foreshorten the hand, make the direction unmistakable. Do NOT point at their own chest. One character only.
+
+## she
+
+Asset: `/classroom/icons/pronouns/she.png`
+
+Use case: stylized-concept. Asset: one transparent educational pronoun icon, original Nintendo Switch / Mario Party quality rounded 3D toy character art matching reference image 1's exact rendering, friendly face, rich colors and soft lighting. Reference image 1 is STYLE and character reference only. Clear visual communication at small 64-90px. Square composition, waist-up figures with large heads and large obvious pointing hand, generous separation, all heads and gesture hands visible. Actual alpha transparent background. No text, lettering, arrow symbols, icon badge, tile, circle, scenery, ground, shadow backdrop or watermark. Generate the SHE icon. Two waist-up figures: on the left, a smaller muted slate-blue shadow/silhouette human, in three-quarter rear view, extending an arm and clearly pointing to the OTHER person on the right. This shadow figure is a smooth 3D silhouette without facial details, not a scary ghost. On the right, the main subject: a larger cheerful female cartoon character with a brown ponytail, warm tan skin and a bright coral-red shirt, looking warmly at the viewer. The left figure's large pointing index finger aims at the female's shoulder with a small gap, NOT toward the viewer or itself. The female is fully colored and brightly lit, contrasting with the smaller muted pointer. Both figures form one compact readable icon. Woman is the focus. Match the reference's sculpted facial features and material style.
+
+## he
+
+Asset: `/classroom/icons/pronouns/he.png`
+
+Use case: stylized-concept. Asset: one transparent educational pronoun icon, original Nintendo Switch / Mario Party quality rounded 3D toy character art matching reference image 1's exact rendering, friendly face, rich colors and soft lighting. Reference image 1 is STYLE and character reference only. Clear visual communication at small 64-90px. Square composition, waist-up figures with large heads and large obvious pointing hand, generous separation, all heads and gesture hands visible. Actual alpha transparent background. No text, lettering, arrow symbols, icon badge, tile, circle, scenery, ground, shadow backdrop or watermark. Generate the HE icon. Two waist-up figures: on the left, a smaller muted slate-blue shadow/silhouette human, in three-quarter rear view, extending an arm and clearly pointing to the OTHER person on the right. This shadow figure is a smooth 3D silhouette without facial details, not a scary ghost. On the right, the main subject: the same larger cheerful male cartoon character from the reference, short sculpted brown hair, warm tan skin, bright royal-blue shirt, looking warmly at the viewer with his own arms relaxed. The left figure's large pointing index finger aims at the male's shoulder with a small gap, NOT toward the viewer or itself. The male is fully colored and brightly lit, contrasting with the smaller muted pointer. Both figures form one compact readable icon. Man is the focus.

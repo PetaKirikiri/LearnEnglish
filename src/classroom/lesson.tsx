@@ -22,7 +22,7 @@ function Heading({ page, children }: { page: LessonPage; children?: ReactNode })
 }
 
 function PanelHeader({ page, action, lessonNumber = 1 }: { page: LessonPage; action?: ReactNode; lessonNumber?:number }) {
-  return <header className="cw-panel-header"><span className="cw-panel-lesson">{t(`Lesson ${String(lessonNumber).padStart(2,'0')}`)}</span><div className="cw-panel-header-main"><h1 id="note-title">{t(lessonTitles[page])}</h1>{action}</div></header>
+  return <header className="cw-panel-header"><span className="cw-panel-lesson">{t(`Lesson ${String(lessonNumber).padStart(2,'0')}`)}</span><div className="cw-panel-header-main"><h1 id="note-title">{lessonNumber===3?'Where is the…?':t(lessonTitles[page])}</h1>{action}</div></header>
 }
 
 function Recall({ word, onWord }: { word: HolidayWord; onWord: (word: HolidayWord) => void }) {
@@ -49,7 +49,7 @@ export default function Lesson({ page, lessonId = 'lesson-1' }: { page: LessonPa
   const language = useLanguage()
   const [word, setWord] = useState<HolidayWord>('hotel')
   const [lessonTwoWord, setLessonTwoWord] = useState('shoes')
-  const [lessonThreeWord,setLessonThreeWord]=useState('phone')
+  const [lessonThreeWord,setLessonThreeWord]=useState('hotel')
   if(lessonId==='lesson-3') return <div lang={language} style={{display:'contents'}}><LanguageSwitch/>{page==='practice'?<ClassroomRace lessonId="lesson-3" stages={lessonThreeStages}/>:<div className="cw-sentence-panel"><PanelHeader page={page} lessonNumber={3}/><div className="cw-sentence-workspace"><SentenceLine lesson={classroomMatrices['lesson-3']} word={lessonThreeWord} onWord={setLessonThreeWord}/></div></div>}</div>
   if(lessonId==='lesson-2') return <div lang={language} style={{display:'contents'}}><LanguageSwitch/>{page==='practice'?<ClassroomRace lessonId="lesson-2" stages={lessonTwoStages}/>:<div className="cw-sentence-panel"><PanelHeader page={page} lessonNumber={2}/><div className="cw-sentence-workspace"><SentenceLine lesson={classroomMatrices['lesson-2']} word={lessonTwoWord} onWord={setLessonTwoWord}/></div></div>}</div>
   return <div lang={language} style={{display:'contents'}}><LanguageSwitch/>{page === 'recall' ? <Recall word={word} onWord={setWord}/> : page === 'idea' ? <Meaning word={word} onWord={setWord}/> : page === 'example' ? <WorkedExample word={word} onWord={setWord}/> : page === 'mistake' ? <Mistake word={word}/> : page === 'practice' ? <ClassroomRace/> : <Review word={word} onWord={setWord}/>}</div>

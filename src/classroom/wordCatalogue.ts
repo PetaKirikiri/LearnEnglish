@@ -1,6 +1,6 @@
 // Lesson catalogues accumulate authored vocabulary, never future content.
 import { lessonThreeWords } from './lessonThreeVocabulary'
-import { tonightWords } from '../race/tonightVocabulary'
+import { tonightWords, tonightPluralForms } from '../race/tonightVocabulary'
 import { lessonTwoWords, lessonTwoPairs } from './lessonTwoContent'
 import type { ClassroomWord } from '../learning/sentenceMatrix/model'
 export type { ClassroomWord } from '../learning/sentenceMatrix/model'
@@ -23,10 +23,19 @@ export function cumulativeCatalogue(...stages:readonly (readonly ClassroomWord[]
   }
   return [...words.values()]
 }
+// Earlier nouns gain their number counterparts when plural agreement is introduced.
+export const earlierNounForms:readonly ClassroomWord[]=tonightWords.flatMap(([singular,thai])=>{
+ const plural=tonightPluralForms[singular]
+ return [{word:singular,thai,singular,plural,number:'singular' as const},{word:plural,thai,singular,plural,number:'plural' as const}]
+})
 export const lessonTwoCatalogue=cumulativeCatalogue(lessonOneCatalogue,lessonTwoIntroducedCatalogue)
 
 export const lessonThreeIntroducedCatalogue:readonly ClassroomWord[]=lessonThreeWords.flatMap(item=>[
  {...item,word:item.singular,number:'singular' as const},
  {...item,word:item.plural,number:'plural' as const},
 ])
-export const lessonThreeCatalogue=cumulativeCatalogue(lessonOneCatalogue,lessonTwoIntroducedCatalogue,lessonThreeIntroducedCatalogue)
+export const lessonThreeCatalogue=cumulativeCatalogue(lessonTwoCatalogue,lessonThreeIntroducedCatalogue)
+
+// Interactive matrices expose number counterparts without adding unrecorded race questions.
+export const lessonTwoMatrixCatalogue=cumulativeCatalogue(lessonOneCatalogue,earlierNounForms,lessonTwoIntroducedCatalogue)
+export const lessonThreeMatrixCatalogue=cumulativeCatalogue(lessonTwoMatrixCatalogue,lessonThreeIntroducedCatalogue)

@@ -91,3 +91,29 @@ The host changes the four-slot layout to two rows for phone readability while
 keeping slots 3 and 4 connected. Word pickers, pronunciation, categories, and
 explanations still come from the shared matrix engine and cumulative catalogues.
 The teacher surface remains `/classroom/index.html?lesson=…`.
+
+## People and location patterns
+
+Set `lesson.pattern: 'people-location'` for the shared Ask / Answer carousel. `PeopleLocationMatrix` composes the existing `ExampleView`, `MatrixCard`, `WordTray`, education headings and pronunciation component. `peopleLocation.ts` owns person agreement, reciprocal I/you replies, destination filtering and recording keys. `ExampleView.semanticSlots` separates semantic colour from sentence position, and `groupLabel` names the grouped subject. Never use a slot colour's old CSS grid column to reorder a new pattern.
+
+## Configurable subject modes
+
+`MatrixLesson.subjectModes` enables the three-way selector above the yellow noun block on any shared `SentenceMatrix`, without requiring the Lesson 3 carousel. Omit it for earlier lessons. The configuration owns allowed pronouns, proper names, initial selections, and optional recorded audio resolution. Empty catalogues hide their mode.
+
+`subjectEngine.ts` owns available modes, allowed-word resolution, person/number agreement and aligned question composition. `subjectVerb` also supplies agreement to the existing people/location pattern. UI components must not maintain their own proper-name lists or verb mappings. A subject declares grammatical `person` and `number`; third-person singular is the default. Names are authored exactly as taught, including any articles that genuinely belong to a name.
+
+`NounModeToggle` and `SubjectQuestionMatrix` are shared engine views. They reuse `ExampleView`, `MatrixCard`, `WordTray`, education headings and `PronunciationComparison`. `ExampleView.groupSize` supports the two-piece determiner/noun group or a single pronoun/name within the same yellow unit. Selecting a mode does not change the retained determiner/noun selection.
+
+Engine and component tests exercise a separate custom lesson using Maya, we and it; they verify agreement, unavailable modes, scope boundaries and restoration of the original noun phrase.
+
+
+### Layout requests (one geometry owner)
+
+`ExampleLanguage` accepts `layout={{ construction: 'question', noun: 'phrase', nounSwapper }}`.
+`MatrixLayout` supplies the centered composition: control row, leading slots, yellow noun group, translation/audio, and selection dock. The other requests are `noun: 'single'` for pronouns/names and `construction: 'location-answer'` for I / am / at / [the / hotel]. Callers provide content and behavior, never per-mode x/y offsets or card heights.
+
+Optional `MatrixSettings.layout` accepts `density: 'comfortable' | 'compact'` and `maxWidth` in pixels. `matrixLayout.css` owns responsive geometry and keeps the same leading/group allocation, card heights, art/word/gloss rows, selector anchors, and translation/dock coordinates across modes. The phone arrangement is driven by available container width, rather than the route name. `MatrixPicker` supplies the same dropdown control for every variable slot. Keep lesson, subject-mode and word-tray styles free of sentence geometry overrides.
+
+`nounSwapper` and `subjectSwapper` are optional layout-request settings containing `{mode, modes, onChange, label}`. The engine renders the shared toggle above the corresponding yellow block; callers no longer supply arbitrary control markup. Lesson 3 enables both on the answer slide. Name catalogue entries identify `kind: person | place`, so the destination selector cannot produce “at Bia” or “at you”.
+
+The noun swapper always shows the same three positions. Its request `modes` enables interactions; other modes remain visible as ghosted native-disabled buttons. Lessons without subject-mode content request only `noun`. Fade/listening mode continues to hide the entire swapper.

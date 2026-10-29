@@ -1,0 +1,3 @@
+.cw-pronoun-icon{display:inline-flex;align-items:center;justify-content:center;width:68px;height:68px;flex-shrink:0}
+.cw-pronoun-icon img,.cw-pronoun-icon svg{display:block;width:100%;height:100%;object-fit:contain}
+.cw-word-art .cw-pronoun-icon{width:64px;height:inherit;min-height:0;min-width:0}

@@ -89,7 +89,7 @@ it('can lock the compact picker without hiding its teaching translation',async()
 })
 
 it('always includes pronunciation in every slot explanation, even with selection locked',async()=>{
- for(const lesson of Object.values(classroomMatrices)) {
+ for(const lesson of Object.values(classroomMatrices).filter(lesson=>!('pattern' in lesson))) {
   await act(async()=>root.render(<SentenceMatrix key={lesson.id} lesson={lesson} settings={{wordPicker:false,explanationSelection:false,audio:false}}/>))
   for(let slot=1;slot<=4;slot++) {
    await click(`[aria-label^="Slot ${slot}:"]`)
@@ -104,8 +104,8 @@ it('always includes pronunciation in every slot explanation, even with selection
 })
 
 it('keeps the pronunciation section for every lesson noun and words with no pronunciation data',async()=>{
- const unknown={word:'unlistedword',thai:'คำใหม่'}
- const lessons=[...Object.values(classroomMatrices),{...classroomMatrices['lesson-1'],id:'no-pronunciation-data',initialWord:unknown.word,vocabulary:[unknown]}]
+ const unknown={word:'unlistedword',thai:'คำใหม่',meaning:{kind:'physical-object' as const}}
+ const lessons=[...Object.values(classroomMatrices).filter(lesson=>!('pattern' in lesson)),{...classroomMatrices['lesson-1'],id:'no-pronunciation-data',initialWord:unknown.word,vocabulary:[unknown]}]
  for(const lesson of lessons)for(const item of lesson.vocabulary) {
   await act(async()=>root.render(<SentenceMatrix key={`${lesson.id}:${item.word}`} lesson={lesson} word={item.word} settings={{audio:false}}/>))
   await click('[aria-label^="Slot 4:"]')
@@ -187,19 +187,19 @@ it('keeps categories usable across number filters and lets the active category b
  expect(host.querySelector('[aria-label="Plural words"]')?.getAttribute('aria-pressed')).toBe('true')
  expect([...host.querySelectorAll<HTMLButtonElement>('.cw-category-filters button')].every(button=>!button.disabled)).toBe(true)
  await click('[data-category="places"]')
- expect(host.querySelector('[aria-label="Singular words"]')?.getAttribute('aria-pressed')).toBe('true')
- expect(words('.cw-word-options button')).toContain('hotel')
- expect(words('.cw-word-options button')).not.toContain('shoe')
+ expect(host.querySelector('[aria-label="Plural words"]')?.getAttribute('aria-pressed')).toBe('true')
+ expect(words('.cw-word-options button')).toContain('hotels')
+ expect(words('.cw-word-options button')).not.toContain('shoes')
  expect(host.querySelector('.cw-word-explanation h1')?.textContent).toBe('shoes')
  await click('[data-category="places"]')
  expect(host.querySelector('.cw-category-filters button')?.getAttribute('aria-pressed')).toBe('true')
- expect(words('.cw-word-options button')).toContain('shoe')
- expect(words('.cw-word-options button')).toContain('hotel')
+ expect(words('.cw-word-options button')).toContain('shoes')
+ expect(words('.cw-word-options button')).toContain('hotels')
 })
 
 
-it('adds past tense and new owners only in lesson three and preserves them when nouns change',async()=>{
- await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-3']} settings={{audio:false}}/>))
+it('preserves explicitly configured advanced tense and ownership when nouns change',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={{...classroomMatrices['lesson-3'],pattern:undefined,plural:true,past:true,owners:['the','my','your','his','her'],initialWord:'phone'}} settings={{audio:false}}/>))
  await click('[data-picker-slot="1"]')
  expect(words('.cw-word-chip')).toEqual(['is','are','was','were'])
  await choose('was')
@@ -231,11 +231,36 @@ it('adds past tense and new owners only in lesson three and preserves them when 
 })
 
 it('keeps pair-only words plural in past tense and exposes new vocabulary categories',async()=>{
- await act(async()=>root.render(<SentenceMatrix lesson={{...classroomMatrices['lesson-3'],initialWord:'glasses',initialTense:'past'}} settings={{audio:false}}/>))
+ await act(async()=>root.render(<SentenceMatrix lesson={{...classroomMatrices['lesson-3'],pattern:undefined,plural:true,past:true,initialWord:'glasses',initialTense:'past'}} settings={{audio:false}}/>))
  expect(host.querySelector('.cw-sentence-board[aria-label]')?.getAttribute('aria-label')).toBe('Where were the glasses?')
  await click('[data-picker-slot="1"]')
  expect([...host.querySelectorAll<HTMLButtonElement>('.cw-word-chip')].find(b=>b.querySelector('strong')?.textContent==='was')?.disabled).toBe(true)
  await click('[aria-label="Slot 4: glasses"]')
  await click('[data-category="food"]')
  expect(words('.cw-word-options button')).toEqual(['apples','bananas','oranges','sandwiches'])
+})
+
+it('changes earlier nouns to their authored counterpart when selecting is or are',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-3']} settings={{audio:false}}/>))
+ for(const [singular,plural] of [['hotel','hotels'],['watch','watches'],['padel court','padel courts']]){
+  await click('[data-picker-slot="3"]');await choose(singular)
+  await click('[data-picker-slot="1"]')
+  expect(host.querySelector<HTMLButtonElement>('[data-word="are"]')?.disabled).toBe(false)
+  await choose('are')
+  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe(`Where are the ${plural}?`)
+  expect(host.querySelectorAll('.slot-3 .vocabulary-picture img')).toHaveLength(2)
+  await click('[data-picker-slot="1"]');await choose('is')
+  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe(`Where is the ${singular}?`)
+ }
+})
+
+it('uses the same eligibility rules in the picker and rendered sentence',async()=>{
+ const lesson={...classroomMatrices['lesson-1'],vocabulary:[{word:'hotel',thai:'โรงแรม'},{word:'thought',thai:'ความคิด'},{word:'unclassified',thai:'ใหม่'}]}
+ await act(async()=>root.render(<SentenceMatrix lesson={lesson} word="thought" settings={{audio:false}}/>))
+ expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe('Where is the hotel?')
+ expect(host.querySelector('[aria-label="Change vocabulary"]')).toBeNull()
+ await click('[aria-label="Slot 4: hotel"]')
+ expect(host.querySelector('.cw-word-explanation h1')?.textContent).toBe('hotel')
+ expect(words('.cw-word-options button')).not.toContain('thought')
+ expect(words('.cw-word-options button')).not.toContain('unclassified')
 })

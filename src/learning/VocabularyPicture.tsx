@@ -1,6 +1,6 @@
 import { lessonThreeWords } from '../classroom/lessonThreeVocabulary'
 import { pluralVocabulary, pairVocabulary } from '../race/pluralVocabulary'
-import { tonightWords } from '../race/tonightVocabulary'
+import { tonightWords, tonightPluralForms } from '../race/tonightVocabulary'
 import type { ReactNode } from 'react'
 import './vocabularyPicture.css'
 
@@ -32,10 +32,11 @@ const pluralForms: Record<string, string> = { shoes:'shoe', keys:'key', socks:'s
 export default function VocabularyPicture({ word, count }: { word: string; count?: number }) {
   const normalized = word.toLowerCase().replace(/[?!.,]/g, '').trim()
   const addedWord=lessonThreeWords.find(item=>item.singular===normalized || item.plural===normalized)
-  const name = addedWord?.singular ?? pluralForms[normalized] ?? normalized
+  const earlierSingular = Object.entries(tonightPluralForms).find(([,plural])=>plural===normalized)?.[0]
+  const name = addedWord?.singular ?? pluralForms[normalized] ?? earlierSingular ?? normalized
   const levelOne = tonightWords.some(([word]) => word.toLowerCase() === name)
   const levelTwo = pluralVocabulary.some(item => item.singular === name) || pairVocabulary.some(item => item.plural === name)
-  const copies = count ?? ((pluralForms[normalized] || addedWord?.plural===normalized) ? 2 : 1)
+  const copies = count ?? ((pluralForms[normalized] || earlierSingular || addedWord?.plural===normalized) ? 2 : 1)
   if (levelOne || levelTwo || addedWord) return <span className="vocabulary-picture vocabulary-picture-art" data-word={name} aria-hidden="true">{Array.from({length:copies}, (_,index) => <img key={index} src={`/classroom/icons/${levelOne ? 'level-one' : levelTwo ? 'level-two' : 'level-three'}/${name.replaceAll(' ', '-')}.png`} alt=""/>)}</span>
   if (!drawings[name]) return null
   return <span className="vocabulary-picture" data-word={name} aria-hidden="true">{Array.from({length:copies}, (_,index) => <svg key={index} viewBox="0 0 64 64" fill="none" stroke="#4b625e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{drawings[name]}</svg>)}</span>

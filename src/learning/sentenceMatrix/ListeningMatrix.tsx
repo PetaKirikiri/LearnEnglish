@@ -11,7 +11,7 @@ export default function ListeningMatrix({sentence,scores={},settings={},onSnapsh
  const words=sentence.split(' '),slots=[words[0],words[1],words[2],words.slice(3).join(' ')]
  return <div className="homework-slots" lang="en" aria-label={settings.fadeMode?'ฟังประโยคภาษาอังกฤษ':sentence}>
  {slots.map((word,slot)=>{
- const opacity=Math.min(...wordTokens(word).map(token=>wordOpacity(token,snapshot,settings)))
- return <div key={slot} className={`homework-slot homework-slot-${slot}`}><small>{slot+1}</small><span aria-hidden="true" style={{opacity}}>{slot===3?<VocabularyPicture word={word}/>:<WordSlotIcon slot={slot} plural={word==='are'}/>}</span><strong aria-hidden={settings.fadeMode || undefined}><FadingWords text={word} scores={snapshot} settings={settings}/></strong></div>
+ const opacity=word==='_____'?1:Math.min(...wordTokens(word).map(token=>wordOpacity(token,snapshot,settings)))
+ return <div key={slot} className={`homework-slot homework-slot-${slot}`}><small>{slot+1}</small><span aria-hidden="true" style={{opacity}}>{word==='_____'?<span className="foundation-blank-icon">?</span>:slot===3?<VocabularyPicture word={word}/>:<WordSlotIcon slot={slot} plural={word==='are'||word==='were'} past={word==='was'||word==='were'}/>}</span><strong aria-hidden={settings.fadeMode || undefined}><FadingWords text={word} scores={snapshot} settings={settings}/></strong></div>
  })}</div>
 }

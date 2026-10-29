@@ -11,7 +11,9 @@
     "typecheck:test": "tsc -p tsconfig.test.json",
     "lint": "eslint . --max-warnings=0",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "audit:sentences": "tsx scripts/auditSentenceBlueprints.ts",
+    "prebuild": "npm run audit:sentences"
   },
   "dependencies": {
     "@line/liff": "^2.30.0",

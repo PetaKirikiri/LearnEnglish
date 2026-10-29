@@ -1,0 +1,148 @@
+// @vitest-environment happy-dom
+import {act} from 'react'
+import {createRoot} from 'react-dom/client'
+import {beforeEach,afterEach,expect,it,vi} from 'vitest'
+import NumberFoundation from './NumberFoundationCourse'
+import {numberDeck,numberPassed,numberRecordings,numberNouns,sentenceNumberNouns,foundationKey} from './numberFoundation'
+Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
+let end:()=>void=()=>{}
+let played=""
+beforeEach(()=>{localStorage.clear();vi.stubGlobal('Audio',class{onended:(()=>void)|null=null;onerror:(()=>void)|null=null;src:string;constructor(src:string){this.src=src}pause(){}play(){played=this.src;end=()=>this.onended?.();return Promise.resolve()}})})
+afterEach(()=>vi.unstubAllGlobals())
+it('uses 30 balanced encounters of the same five noun pairs',()=>{
+ const deck=numberDeck();expect(deck).toHaveLength(30);expect(deck.filter(q=>q.plural)).toHaveLength(15)
+ expect(deck.slice(0,2).map(q=>q.word)).toEqual(['hotel','hotels'])
+ for(const noun of numberNouns)for(const word of [noun.singular,noun.plural])expect(deck.filter(q=>q.word===word)).toHaveLength(3)
+ expect(numberRecordings).toHaveLength(20)
+ expect(numberRecordings.every(r=>r.spokenText.startsWith('the ')&&!/\bis\b|\bare\b/.test(r.spokenText))).toBe(true)
+ expect(numberPassed(deck,Array(30).fill(true))).toBe(true)
+ expect(numberPassed(deck,deck.map(q=>q.plural))).toBe(false)
+ expect(numberPassed(deck,Array(29).fill(true))).toBe(false)
+})
+it('keeps the read-only noun group visible and requires hearing the recording before answering',async()=>{
+ const host=document.createElement('div');const root=createRoot(host)
+ try{
+  await act(async()=>root.render(<NumberFoundation/>))
+  expect(host.querySelector('.practice-question .tonight-slots')?.getAttribute('aria-label')).toBe('the hotel')
+  expect(host.querySelector('.practice-question button')).toBeNull()
+  expect(host.querySelector<HTMLProgressElement>('header progress')?.value).toBe(0)
+  expect(host.querySelector('.foundation-question-count')).toBeNull()
+  expect(host.querySelector('.cw-game-icon-apple')).not.toBeNull()
+  expect(host.querySelector('.cw-game-icon-apples')).not.toBeNull()
+  expect(host.querySelector('[data-matrix-layout=noun-phrase]')).not.toBeNull()
+  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(true)
+  await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-header-audio')!.click())
+  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(true)
+  await act(async()=>end())
+  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(false)
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-answers button')!.click())
+  expect(host.textContent).toContain('the hotel')
+  expect(host.querySelector<HTMLProgressElement>('header progress')?.value).toBe(1)
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-feedback button')!.click())
+  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(true)
+ }finally{await act(async()=>root.unmount())}
+})
+it('adds full-sentence number recognition before the blank-verb module',async()=>{
+ const host=document.createElement('div');const root=createRoot(host)
+ localStorage.setItem(foundationKey(),JSON.stringify({module:1,deck:numberDeck(),answers:Array(30).fill(true),picked:null,numberComplete:false}))
+ try{
+  await act(async()=>root.render(<NumberFoundation/>))
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
+  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe('Where is the hotel?')
+  expect([...host.querySelectorAll('.practice-answers button')].map(b=>b.textContent)).toEqual(['หนึ่งสิ่ง','หลายสิ่ง'])
+  expect(host.querySelector('.cw-game-icon-apples')).not.toBeNull()
+  expect(host.querySelector('.practice-question button')).toBeNull()
+  for(let i=0;i<30;i++){
+   const saved=JSON.parse(localStorage.getItem(foundationKey())!)
+   const q=saved.deck[i]
+   expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe(`Where ${q.plural?'are':'is'} the ${q.word}?`)
+   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-header-audio')!.click())
+   expect(played).toBe(`/audio/number-foundation/where-${q.plural?'are':'is'}-the-${q.word}.wav`)
+   await act(async()=>end())
+   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.practice-answers button')[q.plural?1:0].click())
+   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-feedback button')!.click())
+  }
+  expect(host.querySelector('.practice-complete')?.textContent).toContain('30 / 30')
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
+  expect(JSON.parse(localStorage.getItem(foundationKey())!).module).toBe(3)
+  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe('Where _____ the hotel?')
+  expect([...host.querySelectorAll('.practice-answers button')].map(b=>b.textContent)).toEqual(['is','are'])
+  await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-header-audio')!.click())
+  expect(played).toBe('/audio/number-foundation/the-hotel.wav')
+ }finally{await act(async()=>root.unmount())}
+})
+it('does not reuse old verb-module results as sentence-listening results',async()=>{
+ localStorage.setItem(foundationKey(),JSON.stringify({module:2,deck:numberDeck(),answers:Array(30).fill(true),picked:null,numberComplete:true}))
+ const host=document.createElement('div');const root=createRoot(host)
+ try{
+  await act(async()=>root.render(<NumberFoundation/>))
+  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe('Where is the hotel?')
+  expect(host.querySelector<HTMLProgressElement>('progress')?.value).toBe(0)
+  expect(JSON.parse(localStorage.getItem(foundationKey())!).sentenceComplete).toBe(false)
+ }finally{await act(async()=>root.unmount())}
+})
+it('ends at thirty, gives a clear pass milestone, and advances using the same noun set',async()=>{
+ const host=document.createElement('div');const root=createRoot(host)
+ try{
+  await act(async()=>root.render(<NumberFoundation/>))
+  for(let i=0;i<30;i++){
+   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-header-audio')!.click())
+   await act(async()=>end())
+   const saved=JSON.parse(localStorage.getItem(foundationKey())!)
+   const correct=saved.deck[i].plural?1:0
+   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.practice-answers button')[correct].click())
+   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-feedback button')!.click())
+  }
+  expect(host.querySelector<HTMLProgressElement>('header progress')?.value).toBe(30)
+  expect(host.querySelector('.practice-complete')?.textContent).toContain('30 / 30')
+  expect(host.querySelector('.practice-complete h1')?.textContent).toBe('ผ่านชุดนี้แล้ว!')
+  expect(host.querySelector('.practice-answers')).toBeNull()
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
+  const saved=JSON.parse(localStorage.getItem(foundationKey())!)
+  expect(saved.module).toBe(2);expect(saved.numberComplete).toBe(true)
+  expect(host.querySelector<HTMLProgressElement>('header progress')?.value).toBe(0)
+  expect(new Set(saved.deck.map((q:{word:string})=>q.word))).toEqual(new Set(numberDeck(2).map(q=>q.word)))
+ }finally{await act(async()=>root.unmount())}
+})
+
+it('expands later rounds with repeated new nouns and balanced familiar review',()=>{
+ for(const module of [2,3] as const){
+  const deck=numberDeck(module)
+  expect(deck).toHaveLength(30)
+  expect(new Set(deck.map(q=>q.id)).size).toBe(30)
+  expect(deck.filter(q=>q.plural)).toHaveLength(15)
+  for(const [index,noun] of sentenceNumberNouns.entries()){
+   for(const word of [noun.singular,noun.plural]){
+    expect(deck.filter(q=>q.word===word)).toHaveLength(index<numberNouns.length?1:2)
+   }
+  }
+ }
+ expect(new Set(numberDeck().map(q=>q.word)).size).toBe(10)
+})
+it('resumes expanded rounds without resetting their answers',async()=>{
+ const deck=numberDeck(2)
+ localStorage.setItem(foundationKey(),JSON.stringify({version:2,module:2,deck,answers:[true,true],picked:null,numberComplete:true,sentenceComplete:false}))
+ const host=document.createElement('div');const root=createRoot(host)
+ try{
+  await act(async()=>root.render(<NumberFoundation/>))
+  expect(host.querySelector<HTMLProgressElement>('progress')?.value).toBe(2)
+  expect(JSON.parse(localStorage.getItem(foundationKey())!).deck).toEqual(deck)
+ }finally{await act(async()=>root.unmount())}
+})
+it('skips beginner rounds for placed accounts without awarding completion and resumes round 3',async()=>{
+ const host=document.createElement('div');let root=createRoot(host)
+ localStorage.setItem(foundationKey('returning'),JSON.stringify({version:2,module:1,deck:numberDeck(),answers:[true],picked:null,numberComplete:false,sentenceComplete:false}))
+ try{
+  await act(async()=>root.render(<NumberFoundation userId="returning" minimumModule={3}/>))
+  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe('Where _____ the hotel?')
+  const saved=JSON.parse(localStorage.getItem(foundationKey('returning'))!)
+  expect(saved.module).toBe(3);expect(saved.numberComplete).toBe(false);expect(saved.sentenceComplete).toBe(false)
+  await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-header-audio')!.click())
+  await act(async()=>end())
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-answers button')!.click())
+  await act(async()=>root.unmount());root=createRoot(host)
+  await act(async()=>root.render(<NumberFoundation userId="returning" minimumModule={3}/>))
+  expect(host.querySelector<HTMLProgressElement>('progress')?.value).toBe(1)
+  expect(host.querySelector('.practice-feedback')?.textContent).toContain('ถูกต้อง!')
+ }finally{await act(async()=>root.unmount())}
+})

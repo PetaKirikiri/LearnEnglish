@@ -1,0 +1,46 @@
+/* Let the carousel and sentence share the full classroom width. */
+.cw-pattern-stage{display:flex;flex-direction:column;flex:1;min-width:0;width:100%}
+.cw-pattern-carousel{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 auto 12px;touch-action:pan-y}
+.cw-pattern-tabs{display:flex;gap:4px;padding:4px;background:#edf3fb;border-radius:22px}
+.cw-pattern-tabs button,.cw-pattern-arrow{border:0;cursor:pointer;color:#345778;min-height:44px}
+.cw-pattern-tabs button{display:flex;align-items:center;justify-content:center;gap:10px;background:transparent;border-radius:18px;padding:10px 24px;font:inherit;font-weight:700}
+.cw-pattern-tabs button[aria-pressed=true]{background:#1978ef;color:white;box-shadow:0 2px 0 #105fc5}
+.cw-pattern-tabs button>span{display:grid;place-items:center;width:25px;height:25px;border:2px solid currentColor;border-radius:50%;font-size:17px}
+.cw-pattern-arrow{display:grid;place-items:center;width:44px;border-radius:50%;background:#edf3fb}
+.cw-pattern-arrow:disabled{opacity:.35;cursor:default}
+.cw-pattern-carousel button:focus-visible{outline:3px solid #1978ef;outline-offset:4px}
+.cw-person-icon{display:inline-flex;width:68px;height:68px;flex-shrink:0}
+.cw-person-icon svg{width:100%;height:100%}
+.cw-person-pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;margin:20px 0}
+.cw-person-pairs>div{display:flex;align-items:center;justify-content:center;gap:10px;background:#f0f5fc;border-radius:20px;padding:16px;flex-wrap:wrap;border:2px solid transparent}
+.cw-person-pairs>div[data-selected=true]{border-color:#1877ef;background:#eaf3ff}
+.cw-person-pairs strong,.cw-person-pairs b{font-size:26px}
+.cw-person-pairs b{background:#128247;color:white;border-radius:14px;padding:8px 14px}
+.cw-person-pairs .cw-person-icon{width:44px;height:44px}
+.cw-place-example{display:flex;gap:16px;align-items:center;justify-content:center;padding:24px 12px;border-radius:20px;background:#f0f5fc;font-size:clamp(18px,3vw,28px);flex-wrap:wrap;margin-top:20px}
+.cw-place-example .vocabulary-picture{width:72px;height:72px}
+.cw-people-example-sentence{text-align:center;font-size:clamp(22px,3vw,34px);font-weight:700;margin:24px 0 8px}
+.cw-people-example-meaning{text-align:center;color:#426381;margin:0}
+.cw-people-explanation .cw-word-options .cw-person-icon{width:64px;height:64px}
+@media(max-width:640px){
+ .cw-pattern-carousel{gap:8px;margin-bottom:12px}.cw-pattern-tabs button{padding:8px 15px;font-size:15px}
+ .cw-person-icon{width:48px;height:48px}
+ .cw-person-pairs{grid-template-columns:repeat(2,1fr);gap:8px}.cw-person-pairs>div{padding:10px;gap:6px}.cw-person-pairs strong,.cw-person-pairs b{font-size:20px}
+}
+.mobile-notes .cw-pattern-carousel{padding:16px 8px 0;margin-bottom:0}
+.mobile-notes .cw-pattern-carousel{width:100%;max-width:420px;box-sizing:border-box;gap:6px}
+.mobile-notes .cw-pattern-arrow{width:36px;flex:0 0 36px}
+.mobile-notes .cw-pattern-tabs{flex:1;min-width:0;gap:2px}
+.mobile-notes .cw-pattern-tabs button{flex:1;min-width:0;padding:8px 6px;gap:5px;font-size:14px}
+.mobile-notes .cw-pattern-tabs button>span{width:20px;height:20px;font-size:14px;flex-shrink:0}
+.cw-people-board .cw-slot-role>.cw-game-icon{flex-shrink:0;width:clamp(40px,5cqw,64px);height:clamp(40px,5cqw,64px)}
+
+/* Bound relationship arrows explicitly: classroom pages do not load utility sizing. */
+.cw-education-arrow{display:block;width:24px;height:24px;min-width:24px;max-width:24px;flex:0 0 24px;align-self:center}
+.cw-place-part{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:0}
+.cw-place-part strong{overflow-wrap:anywhere}
+.cw-place-example .cw-game-icon{width:56px;height:56px;flex:0 0 56px}
+.cw-place-example .vocabulary-picture{width:56px;height:56px;flex:0 0 56px}
+.cw-person-pairs>div{flex-wrap:nowrap;gap:8px}
+.cw-person-pairs strong,.cw-person-pairs b{font-size:22px}
+@container(max-width:500px){.cw-place-example{gap:10px;padding:16px 10px}.cw-place-part{gap:6px}.cw-place-example .cw-game-icon,.cw-place-example .vocabulary-picture{width:40px;height:40px;flex-basis:40px}.cw-person-pairs{grid-template-columns:1fr}.cw-person-pairs>div{padding:10px}}

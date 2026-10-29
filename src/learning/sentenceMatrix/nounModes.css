@@ -1,0 +1,11 @@
+.cw-noun-mode-toggle{display:flex;gap:3px;padding:3px;border:1px solid #dce3ec;border-radius:14px;background:#f0f4fa;z-index:2;white-space:nowrap}
+.cw-noun-mode-toggle button{display:grid;place-items:center;width:38px;height:34px;padding:5px;border:0;border-radius:10px;background:transparent;color:#345778;cursor:pointer}
+.cw-noun-mode-toggle button[aria-pressed=true]{background:#ffd43b;color:#18385e;box-shadow:0 1px 3px #18385e20}
+.cw-noun-mode-toggle button:focus-visible{outline:3px solid #1877ef;outline-offset:3px}
+.cw-noun-mode-toggle svg,.cw-noun-mode-toggle .cw-game-icon{width:25px;height:25px;display:block}
+.cw-subject-icon{display:grid;place-items:center;width:60px;height:60px}
+.cw-subject-icon svg{width:100%;height:100%}
+@media(max-width:700px){.cw-noun-mode-toggle button{width:34px}.cw-subject-icon{width:42px;height:42px}}
+
+/* Keep learned positions visible before a lesson enables the mode. */
+.cw-noun-mode-toggle button:disabled{opacity:.38;filter:grayscale(1);cursor:default;background:transparent;box-shadow:none}
