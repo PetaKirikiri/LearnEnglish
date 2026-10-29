@@ -1,0 +1,13 @@
+{
+  "richMenuId": "richmenu-76e1c7aa81958fd2c1bc13e89b73ad23",
+  "previousRichMenuId": "richmenu-6bb5672b587cc4faa7a8d9297fd9609f",
+  "image": "public/line/student-menu-v5-city.jpg",
+  "verifiedDefault": true,
+  "buttons": [
+    "บทเรียน",
+    "ฝึกฝน",
+    "เมือง",
+    "อันดับคะแนน",
+    "โปรไฟล์"
+  ]
+}
