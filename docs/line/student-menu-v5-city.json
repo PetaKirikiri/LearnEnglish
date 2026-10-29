@@ -1,0 +1,76 @@
+{
+  "size": {
+    "width": 2500,
+    "height": 843
+  },
+  "selected": true,
+  "name": "English Success · Five buttons",
+  "chatBarText": "เมนูเรียน",
+  "areas": [
+    {
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 500,
+        "height": 843
+      },
+      "action": {
+        "type": "uri",
+        "label": "บทเรียน",
+        "uri": "https://liff.line.me/2010311582-ziuNvGjb?lesson=2&view=notes"
+      }
+    },
+    {
+      "bounds": {
+        "x": 500,
+        "y": 0,
+        "width": 500,
+        "height": 843
+      },
+      "action": {
+        "type": "uri",
+        "label": "ฝึกฝน",
+        "uri": "https://liff.line.me/2010311582-ziuNvGjb?lesson=2"
+      }
+    },
+    {
+      "bounds": {
+        "x": 1000,
+        "y": 0,
+        "width": 500,
+        "height": 843
+      },
+      "action": {
+        "type": "uri",
+        "label": "เมือง",
+        "uri": "https://liff.line.me/2010311582-ziuNvGjb?view=city"
+      }
+    },
+    {
+      "bounds": {
+        "x": 1500,
+        "y": 0,
+        "width": 500,
+        "height": 843
+      },
+      "action": {
+        "type": "uri",
+        "label": "อันดับคะแนน",
+        "uri": "https://liff.line.me/2010311582-ziuNvGjb?view=scoreboard"
+      }
+    },
+    {
+      "bounds": {
+        "x": 2000,
+        "y": 0,
+        "width": 500,
+        "height": 843
+      },
+      "action": {
+        "type": "uri",
+        "label": "โปรไฟล์",
+        "uri": "https://liff.line.me/2010311582-ziuNvGjb?view=profile"
+      }
+    }
+  ]
+}

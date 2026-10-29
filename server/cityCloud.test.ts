@@ -41,3 +41,12 @@ describe('cloud city room permissions and recovery',()=>{
   await expect(cityCloudAction(store,'create',{publicKey:{kty:'EC',crv:'P-256',x:'bad',y:'bad'}},'')).rejects.toThrow('identity')
  })
 })
+
+// A menu link must never guess between teachers or revive an abandoned room.
+it('resolves only a single recently active teacher city',async()=>{
+ const {selectActiveCity}=await import('./cityCloud')
+ const row=(code:string,lastActive:number)=>({code,data:{lastActive}} as import('./cityCloud').CityRow)
+ expect(selectActiveCity([row('123456',99000)],100000)).toBe('123456')
+ expect(()=>selectActiveCity([row('123456',1000)],100000)).toThrow('No city game')
+ expect(()=>selectActiveCity([row('123456',99000),row('654321',99000)],100000)).toThrow('Ask your teacher')
+})

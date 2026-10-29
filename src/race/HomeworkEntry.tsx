@@ -42,6 +42,9 @@ export default function HomeworkEntry() {
     if(account) void supabase.from('english_tester_accounts').select('learner_id').eq('learner_id',account).maybeSingle().then(({data,error})=>{if(active)setTester(!error && !!data)})
     return ()=>{active=false}
   },[account])
+  const cityEntry=new URLSearchParams(location.search).get('view')==='city'
+  useEffect(()=>{if(account&&cityEntry)location.replace('/english/city/controller')},[account,cityEntry])
+  if(account&&cityEntry)return <main className="phone-practice" role="status">กำลังเปิดเมือง…</main>
   if (local || account) return homeworkDestination() === 'scoreboard' ? <CohortLeaderboard userId={account ?? undefined}/> : <PhonePractice key={account ?? 'local'} userId={account ?? undefined} tester={tester}/>
   const link = homeworkLineUrl(new URLSearchParams(location.search).get('lesson') === '2' ? 2 : 1)
   return <main className="phone-practice" lang="th"><div className="practice-shell"><section className="practice-complete" aria-live="polite">

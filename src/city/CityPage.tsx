@@ -8,6 +8,10 @@ import { useCityConnection } from './useCityConnection'
 import { controllerExpanded, enterControllerFullscreen, subscribeControllerExpanded } from './fullscreen'
 import FullscreenHelp from './FullscreenHelp'
 import './city.css'
+import { supabase } from '../lib/supabase'
+import { finishHotelReturn } from '../hotel/accountHandoff'
+import { homeworkLiffId, recogniseHomeworkAccount } from '../auth/homeworkLine'
+import { cityInvitation } from './invitation'
 
 function ActionIcon({kind}:{kind:'ask'|'stop'|'here'}){return <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{kind==='ask'?<path d="M26 15c0 6-5 10-11 10H7l-5 4 1-9A11 11 0 0 1 2 15C2 8 7 4 14 4S26 8 26 15Z"/>:kind==='here'?<><path d="M16 29s10-10 10-17a10 10 0 0 0-20 0c0 7 10 17 10 17Z"/><circle cx="16" cy="12" r="3"/></>:<path d="M10 17V7c0-3 4-3 4 0V4c0-3 4-3 4 0v3c0-3 4-3 4 0v4c0-3 4-3 4 0v8c0 7-4 11-10 11-4 0-7-3-9-6L3 17c-2-4 2-6 4-2l3 3m4-11v9m4-9v9m4-5v6"/>}</svg>}
 function Avatar({index=0}:{index?:number}){return <span className="city-avatar" style={{backgroundPosition:`${index*100/3}% 0%`}} aria-hidden="true"/>}
@@ -15,7 +19,7 @@ function CityHost(){
  const connection=useCityConnection('english-city:host'),{state,credentials,status,error,connect,send}=connection
  const keyboard=useCityConnection('english-city:keyboard')
  const [invite,setInvite]=useState(false),[origin,setOrigin]=useState(location.origin),[qr,setQr]=useState('')
- const joinUrl=`${origin}/english/city/controller?room=${state?.code??credentials?.code??''}`
+ const {joinUrl,shareUrl}=cityInvitation(origin,state?.code??credentials?.code??'',import.meta.env.VITE_LIFF_ID)
  useEffect(()=>{fetch('/api/city/config').then(r=>r.json()).then(data=>setOrigin(data.joinOrigin)).catch(()=>{})},[])
  useEffect(()=>{let active=true;QRCode.toDataURL(joinUrl,{width:240,margin:1}).then(url=>{if(active)setQr(url)});return()=>{active=false}},[joinUrl])
  useKeyboard(keyboard.send,keyboard.status==='connected'&&!state?.paused)
@@ -29,7 +33,7 @@ function CityHost(){
    {!credentials&&<section className="city-welcome"><h1>A whole city.<br/>One conversation.</h1><p>Find your way together.</p><button className="city-primary" disabled={status==='connecting'} onClick={()=>{connect({type:'create'});setInvite(true)}}>{status==='connecting'?'Connecting…':'Open the city'}</button>{error&&<p role="alert">{error}</p>}</section>}
    {state?.paused&&<div className="city-pause-banner">City paused</div>}
    {credentials&&status!=='connected'&&<div className="city-connection" role="status">Reconnecting to the city… {error}</div>}
-   {invite&&state&&<aside className="city-invite"><button className="city-close" aria-label="Close join panel" onClick={()=>setInvite(false)}>×</button><h2>Come explore</h2><p>Scan on your phone</p>{qr&&<img src={qr} alt="Scan to join this city"/>}<strong className="city-room-code">{state.code}</strong><a href={joinUrl} target="_blank" rel="noreferrer">Open controller ↗</a><p className="city-joined-count">{state.players.filter(p=>p.online).length} players connected</p><div className="city-roster">{state.players.map(p=><span key={p.id}><span>{p.name}{!p.online?' · disconnected':''}</span><button aria-label={`Remove ${p.name}`} onClick={()=>send({type:'control',action:'remove',value:p.id})}>×</button></span>)}</div><button className="city-secondary" onClick={()=>{keyboard.connect({type:'join',code:state.code,name:'Teacher',avatar:0});setInvite(false)}}>Play with keyboard</button></aside>}
+   {invite&&state&&<aside className="city-invite"><button className="city-close" aria-label="Close join panel" onClick={()=>setInvite(false)}>×</button><h2>Come explore</h2><p>Scan on your phone</p>{qr&&<img src={qr} alt="Scan to join this city"/>}<strong className="city-room-code">{state.code}</strong><a href={joinUrl} target="_blank" rel="noreferrer">Open controller ↗</a><a className="city-line-invite" href={shareUrl} target="_blank" rel="noreferrer">Invite in LINE ↗</a><p className="city-joined-count">{state.players.filter(p=>p.online).length} players connected</p><div className="city-roster">{state.players.map(p=><span key={p.id}><span>{p.name}{!p.online?' · disconnected':''}</span><button aria-label={`Remove ${p.name}`} onClick={()=>send({type:'control',action:'remove',value:p.id})}>×</button></span>)}</div><button className="city-secondary" onClick={()=>{keyboard.connect({type:'join',code:state.code,name:'Teacher',avatar:0});setInvite(false)}}>Play with keyboard</button></aside>}
   </div>
   {state&&<footer className="city-host-footer"><span>{state.players.filter(p=>p.online).length} exploring · {state.players.filter(p=>p.found).length} arrived</span>{keyboard.status==='connected'&&<span>Arrow keys / WASD · Space: ask · E: here · Esc: stop</span>}<button onClick={()=>document.documentElement.requestFullscreen?.()}>Full screen ↗</button></footer>}
  </main>
@@ -63,6 +67,26 @@ function CityController(){
   if(meta)meta.content='width=device-width, initial-scale=1.0, viewport-fit=cover'
   return()=>{if(meta&&previous!==undefined)meta.content=previous}
  },[])
+ const autoEntry=!new URLSearchParams(location.search).has('room')
+ const [entryMessage,setEntryMessage]=useState('Opening your city…')
+ const [entryRetry,setEntryRetry]=useState(0)
+ useEffect(()=>{
+  if(!autoEntry||credentials)return
+  let cancelled=false
+  const ticket=new URLSearchParams(location.hash.slice(1)).get('ticket')
+  if(ticket)history.replaceState(null,'',location.pathname+location.search)
+  void (async()=>{
+   await finishHotelReturn(ticket)
+   if(!(await supabase.auth.getSession()).data.session)await recogniseHomeworkAccount()
+   const session=(await supabase.auth.getSession()).data.session
+   if(!session)throw new Error('Sign in to EnglishSuccess first, then open the game again.')
+   const response=await fetch('/api/city/active',{headers:{Authorization:`Bearer ${session.access_token}`}})
+   const result=await response.json()
+   if(!response.ok)throw new Error(result.error||'Could not open the city.')
+   if(!cancelled){setCode(result.code);connect({type:'join',code:result.code,name:result.name,accountToken:session.access_token})}
+  })().catch(error=>{if(!cancelled)setEntryMessage(error.message)})
+  return()=>{cancelled=true}
+ },[autoEntry,credentials,connect,entryRetry])
  const [fullscreenHelp,setFullscreenHelp]=useState(false)
  const expanded=useSyncExternalStore(subscribeControllerExpanded,controllerExpanded)
  const expand=()=>{void enterControllerFullscreen().then(result=>{if(result!=='entered')setFullscreenHelp(true)})}
@@ -73,6 +97,7 @@ function CityController(){
  const {prediction,move,stale}=useCityPrediction(state,credentials?.playerId,enabled,send)
  useKeyboard(send,enabled,move)
  const player=state?.players.find(p=>p.id===credentials?.playerId),target=places.find(p=>p.id===state?.target)
+ if(!credentials&&autoEntry)return <main className="city-phone"><section className="city-join-form"><h1>Your city awaits.</h1><p role="status">{error||entryMessage}</p><button className="city-primary" onClick={()=>{expand();setEntryMessage('Opening your city…');setEntryRetry(value=>value+1)}}>Enter city</button><a href={`https://liff.line.me/${homeworkLiffId}?lesson=2`}>Sign in with LINE</a></section>{help}</main>
  if(!credentials)return <main className="city-phone"><form className="city-join-form" onSubmit={e=>{e.preventDefault();(document.activeElement as HTMLElement)?.blur();expand();connect({type:'join',code,name,avatar})}}><img className="city-join-logo" src="/brand/englishsuccess-logo.png" alt="EnglishSuccess"/><h1>Your city awaits.</h1><div className="city-avatar-options">{[0,1,2,3].map(i=><button key={i} type="button" aria-label={`Character ${i+1}`} aria-pressed={avatar===i} onClick={()=>setAvatar(i)}><Avatar index={i}/></button>)}</div><label>Your name<input value={name} onChange={e=>setName(e.target.value)} maxLength={18} autoComplete="given-name" required/></label><label>City code<input value={code} onChange={e=>setCode(e.target.value.replace(/\D/g,'').slice(0,6))} inputMode="numeric" pattern="[0-9]{6}" required/></label>{error&&<p role="alert">{error}</p>}<button className="city-primary" disabled={status==='connecting'}>{status==='connecting'?'Connecting…':'Let’s explore'}</button></form>{help}</main>
  if(portrait)return <main className="city-phone city-controller city-controller-portrait"><RotatePhone/>{expandButton}{help}</main>
  return <main className="city-phone city-controller city-controller-map">

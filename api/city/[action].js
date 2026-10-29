@@ -71,6 +71,7 @@ async function cityCloudAction(store, action, body, token, now = Date.now()) {
     }
     if (!host || body.lease !== d.lease) fail("This city is open on another teacher screen. Reopen it here to take control.", 403);
     if (action === "remove") d.members = d.members.filter((m) => m.id !== body.playerId);
+    if (action === "sync") d.lastActive = now;
     if (action === "sync" && body.snapshot) {
       const snapshot = body.snapshot;
       if (snapshot.code !== code || !Array.isArray(snapshot.players) || snapshot.players.length > 16 || JSON.stringify(snapshot).length > 16e3) fail("Invalid city snapshot.");
@@ -101,6 +102,26 @@ function cityStore() {
     save: async (row) => (await request(`?code=eq.${row.code}&revision=eq.${row.revision}`, "PATCH", { data: row.data, revision: row.revision + 1 })).length === 1
   };
 }
+async function signedInLearner(accessToken) {
+  const url = process.env.VITE_SUPABASE_URL, key = process.env.VITE_SUPABASE_ANON_KEY;
+  if (!url || !key || !accessToken) fail("Sign in to EnglishSuccess to join the city.", 401);
+  const response = await fetch(`${url}/auth/v1/user`, { headers: { apikey: key, Authorization: `Bearer ${accessToken}` }, signal: AbortSignal.timeout(8e3) });
+  if (!response.ok) fail("Sign in to EnglishSuccess to join the city.", 401);
+  const user = await response.json();
+  return { id: user.id, name: String(user.user_metadata?.display_name || user.user_metadata?.full_name || user.user_metadata?.name || "Student").slice(0, 18) };
+}
+async function activeCity() {
+  const { url, key } = cityConfig();
+  const response = await fetch(`${url}/rest/v1/english_city_rooms?select=code,data&order=created_at.desc&limit=20`, { headers: { apikey: key, Authorization: `Bearer ${key}` }, signal: AbortSignal.timeout(8e3) });
+  if (!response.ok) fail("Could not check the active city.", 503);
+  const rows = await response.json();
+  return selectActiveCity(rows);
+}
+function selectActiveCity(rows, now = Date.now()) {
+  const active = rows.filter((row) => now - (row.data.lastActive ?? 0) < 3e4 && now - (row.data.lastActive ?? 0) >= 0);
+  if (active.length !== 1) fail(active.length ? "Ask your teacher for this city\u2019s join link." : "No city game is running. Wait for your teacher to open it.", 409);
+  return active[0].code;
+}
 async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
   res.setHeader("Content-Type", "application/json");
@@ -110,6 +131,11 @@ async function handler(req, res) {
     const origin = `https://${hostname}`;
     if (req.headers.origin && new URL(req.headers.origin).origin !== origin) fail("Use your teacher\u2019s city link.", 403);
     const action = new URL(req.url ?? "/", origin).pathname.split("/").pop();
+    if (action === "active" && req.method === "GET") {
+      const learner = await signedInLearner(req.headers.authorization?.replace(/^Bearer /, "") ?? "");
+      res.end(JSON.stringify({ code: await activeCity(), name: learner.name }));
+      return;
+    }
     if (action === "config" && req.method === "GET") {
       const { url, anon } = cityConfig();
       res.end(JSON.stringify({ transport: "realtime", joinOrigin: origin, url, anon }));
@@ -130,6 +156,11 @@ async function handler(req, res) {
       fail("Invalid city request.");
     }
     if (!body || typeof body !== "object" || Array.isArray(body)) fail("Invalid city request.");
+    if (action === "join" && body.accountToken) {
+      const learner = await signedInLearner(String(body.accountToken));
+      body.name = learner.name;
+      delete body.accountToken;
+    }
     res.end(JSON.stringify(await cityCloudAction(cityStore(), action, body, req.headers.authorization?.replace(/^Bearer /, "") ?? "")));
   } catch (error) {
     res.statusCode = error instanceof CityCloudError ? error.status : 503;
@@ -142,5 +173,6 @@ export {
   cityCloudAction,
   cityConfig,
   cityStore,
-  handler as default
+  handler as default,
+  selectActiveCity
 };

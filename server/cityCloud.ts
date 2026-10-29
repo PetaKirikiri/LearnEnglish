@@ -2,7 +2,7 @@ import { createHash, randomBytes, randomInt } from 'node:crypto'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { CityState } from '../src/city/world'
 type Member = { id: string; name: string; avatar: number; publicKey: JsonWebKey; tokenHash: string }
-export type StoredCity = { topic: string; secret: string; hostHash: string; publicKey: JsonWebKey; lease: string; members: Member[]; snapshot: CityState | null; created: number }
+export type StoredCity = { topic: string; secret: string; hostHash: string; publicKey: JsonWebKey; lease: string; members: Member[]; snapshot: CityState | null; created: number; lastActive?:number }
 export type CityRow = { code: string; revision: number; data: StoredCity }
 export type CityStore = { insert(row: CityRow): Promise<boolean>; read(code: string): Promise<CityRow | null>; save(row: CityRow): Promise<boolean> }
 const secret = () => randomBytes(32).toString('base64url')
@@ -57,6 +57,7 @@ export async function cityCloudAction(store: CityStore, action: string, body: Re
   }
   if (!host || body.lease !== d.lease) fail('This city is open on another teacher screen. Reopen it here to take control.', 403)
   if (action === 'remove') d.members = d.members.filter(m => m.id !== body.playerId)
+  if (action === 'sync') d.lastActive=now
   if (action === 'sync' && body.snapshot) {
    const snapshot = body.snapshot as CityState
    if (snapshot.code !== code || !Array.isArray(snapshot.players) || snapshot.players.length > 16 || JSON.stringify(snapshot).length > 16000) fail('Invalid city snapshot.')
@@ -84,6 +85,28 @@ export function cityStore(): CityStore {
  return { insert: async row => !!await request('', 'POST', row), read: async code => (await request(`?code=eq.${code}&select=code,revision,data`, 'GET'))[0] ?? null,
   save: async row => (await request(`?code=eq.${row.code}&revision=eq.${row.revision}`, 'PATCH', { data: row.data, revision: row.revision + 1 })).length === 1 }
 }
+
+async function signedInLearner(accessToken:string){
+ const url=process.env.VITE_SUPABASE_URL,key=process.env.VITE_SUPABASE_ANON_KEY
+ if(!url||!key||!accessToken)fail('Sign in to EnglishSuccess to join the city.',401)
+ const response=await fetch(`${url}/auth/v1/user`,{headers:{apikey:key,Authorization:`Bearer ${accessToken}`},signal:AbortSignal.timeout(8000)})
+ if(!response.ok)fail('Sign in to EnglishSuccess to join the city.',401)
+ const user=await response.json()
+ return {id:user.id as string,name:String(user.user_metadata?.display_name||user.user_metadata?.full_name||user.user_metadata?.name||'Student').slice(0,18)}
+}
+async function activeCity(){
+ const {url,key}=cityConfig()
+ const response=await fetch(`${url}/rest/v1/english_city_rooms?select=code,data&order=created_at.desc&limit=20`,{headers:{apikey:key,Authorization:`Bearer ${key}`},signal:AbortSignal.timeout(8000)})
+ if(!response.ok)fail('Could not check the active city.',503)
+ const rows=await response.json() as CityRow[]
+ return selectActiveCity(rows)
+}
+export function selectActiveCity(rows:CityRow[],now=Date.now()){
+ const active=rows.filter(row=>now-(row.data.lastActive??0)<30000&&now-(row.data.lastActive??0)>=0)
+ if(active.length!==1)fail(active.length?'Ask your teacher for this city’s join link.':'No city game is running. Wait for your teacher to open it.',409)
+ return active[0].code
+}
+
 export default async function handler(req: IncomingMessage & { body?: unknown }, res: ServerResponse) {
  res.setHeader('Cache-Control', 'no-store'); res.setHeader('Content-Type', 'application/json')
  try {
@@ -92,6 +115,7 @@ export default async function handler(req: IncomingMessage & { body?: unknown },
   const origin = `https://${hostname}`
   if (req.headers.origin && new URL(req.headers.origin).origin !== origin) fail('Use your teacher’s city link.', 403)
   const action = new URL(req.url ?? '/', origin).pathname.split('/').pop()!
+  if(action==='active'&&req.method==='GET'){const learner=await signedInLearner(req.headers.authorization?.replace(/^Bearer /,'')??'');res.end(JSON.stringify({code:await activeCity(),name:learner.name}));return}
   if (action === 'config' && req.method === 'GET') { const { url, anon } = cityConfig(); res.end(JSON.stringify({ transport: 'realtime', joinOrigin: origin, url, anon })); return }
   if (req.method !== 'POST') fail('Use POST.', 405)
   if (!req.headers['content-type']?.startsWith('application/json')) fail('Send a JSON request.', 415)
@@ -101,6 +125,7 @@ export default async function handler(req: IncomingMessage & { body?: unknown },
   let body: Record<string, unknown>
   try { body = JSON.parse(raw || '{}') } catch { fail('Invalid city request.') }
   if (!body || typeof body !== 'object' || Array.isArray(body)) fail('Invalid city request.')
+  if(action==='join'&&body.accountToken){const learner=await signedInLearner(String(body.accountToken));body.name=learner.name;delete body.accountToken}
   res.end(JSON.stringify(await cityCloudAction(cityStore(), action, body, req.headers.authorization?.replace(/^Bearer /, '') ?? '')))
  } catch (error) {
   res.statusCode = error instanceof CityCloudError ? error.status : 503
