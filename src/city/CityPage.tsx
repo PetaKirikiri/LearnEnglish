@@ -69,35 +69,46 @@ function CityController(){
  },[])
  const autoEntry=!new URLSearchParams(location.search).has('room')
  const [entryMessage,setEntryMessage]=useState('Opening your city…')
- const [entryRetry,setEntryRetry]=useState(0)
+ const [entryNeedsSignIn,setEntryNeedsSignIn]=useState(false)
+ const inLine=/Line\//i.test(navigator.userAgent)
+ const iphone=/iPhone|iPod/.test(navigator.userAgent)
  useEffect(()=>{
   if(!autoEntry||credentials)return
-  let cancelled=false
+  let cancelled=false,timer:ReturnType<typeof setTimeout>|undefined
   const ticket=new URLSearchParams(location.hash.slice(1)).get('ticket')
   if(ticket)history.replaceState(null,'',location.pathname+location.search)
-  void (async()=>{
+  async function enter(){
+   try{
    await finishHotelReturn(ticket)
-   if(!(await supabase.auth.getSession()).data.session)await recogniseHomeworkAccount()
+   if(!(await supabase.auth.getSession()).data.session){
+    try{await recogniseHomeworkAccount()}catch{if(!cancelled)setEntryNeedsSignIn(true);throw new Error(inLine?'Could not connect your LINE account. Reopen City from the menu.':'Open City from the EnglishSuccess LINE menu to sign in.')}
+   }
+   if(!cancelled)setEntryNeedsSignIn(false)
    const session=(await supabase.auth.getSession()).data.session
    if(!session)throw new Error('Sign in to EnglishSuccess first, then open the game again.')
-   const response=await fetch('/api/city/active',{headers:{Authorization:`Bearer ${session.access_token}`}})
+   const response=await fetch('/api/city/active',{headers:{Authorization:`Bearer ${session.access_token}`},signal:AbortSignal.timeout(10000)})
    const result=await response.json()
-   if(!response.ok)throw new Error(result.error||'Could not open the city.')
+   if(!response.ok){
+    if(!cancelled){setEntryMessage(result.error||'Could not open the city.');if(response.status===409||response.status>=500)timer=setTimeout(enter,3000)}
+    return
+   }
    if(!cancelled){setCode(result.code);connect({type:'join',code:result.code,name:result.name,accountToken:session.access_token})}
-  })().catch(error=>{if(!cancelled)setEntryMessage(error.message)})
-  return()=>{cancelled=true}
- },[autoEntry,credentials,connect,entryRetry])
+   }catch(error){if(!cancelled){setEntryMessage(error instanceof Error?error.message:'Could not connect to the city.')}}
+  }
+  void enter()
+  return()=>{cancelled=true;clearTimeout(timer)}
+ },[autoEntry,credentials,connect,inLine])
  const [fullscreenHelp,setFullscreenHelp]=useState(false)
  const expanded=useSyncExternalStore(subscribeControllerExpanded,controllerExpanded)
  const expand=()=>{void enterControllerFullscreen().then(result=>{if(result!=='entered')setFullscreenHelp(true)})}
- const expandButton=!expanded&&<button className="city-expand" aria-label="Expand controller" title="Expand controller" onClick={expand}><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg></button>
+ const expandButton=!expanded&&!(inLine&&iphone)&&<button className="city-expand" aria-label="Expand controller" title="Expand controller" onClick={expand}><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg></button>
  const help=fullscreenHelp&&<FullscreenHelp onClose={()=>setFullscreenHelp(false)}/>
  const [stopVersion,setStopVersion]=useState(0)
  const connected=status==='connected',enabled=connected&&!state?.paused&&!portrait&&!fullscreenHelp
  const {prediction,move,stale}=useCityPrediction(state,credentials?.playerId,enabled,send)
  useKeyboard(send,enabled,move)
  const player=state?.players.find(p=>p.id===credentials?.playerId),target=places.find(p=>p.id===state?.target)
- if(!credentials&&autoEntry)return <main className="city-phone"><section className="city-join-form"><h1>Your city awaits.</h1><p role="status">{error||entryMessage}</p><button className="city-primary" onClick={()=>{expand();setEntryMessage('Opening your city…');setEntryRetry(value=>value+1)}}>Enter city</button><a href={`https://liff.line.me/${homeworkLiffId}?lesson=2`}>Sign in with LINE</a></section>{help}</main>
+ if(!credentials&&autoEntry)return <main className="city-phone"><section className="city-join-form"><h1>Your city awaits.</h1><p role="status">{error||entryMessage}</p>{entryNeedsSignIn&&!inLine&&<a href={`https://liff.line.me/${homeworkLiffId}?view=city`}>Open in LINE</a>}</section></main>
  if(!credentials)return <main className="city-phone"><form className="city-join-form" onSubmit={e=>{e.preventDefault();(document.activeElement as HTMLElement)?.blur();expand();connect({type:'join',code,name,avatar})}}><img className="city-join-logo" src="/brand/englishsuccess-logo.png" alt="EnglishSuccess"/><h1>Your city awaits.</h1><div className="city-avatar-options">{[0,1,2,3].map(i=><button key={i} type="button" aria-label={`Character ${i+1}`} aria-pressed={avatar===i} onClick={()=>setAvatar(i)}><Avatar index={i}/></button>)}</div><label>Your name<input value={name} onChange={e=>setName(e.target.value)} maxLength={18} autoComplete="given-name" required/></label><label>City code<input value={code} onChange={e=>setCode(e.target.value.replace(/\D/g,'').slice(0,6))} inputMode="numeric" pattern="[0-9]{6}" required/></label>{error&&<p role="alert">{error}</p>}<button className="city-primary" disabled={status==='connecting'}>{status==='connecting'?'Connecting…':'Let’s explore'}</button></form>{help}</main>
  if(portrait)return <main className="city-phone city-controller city-controller-portrait"><RotatePhone/>{expandButton}{help}</main>
  return <main className="city-phone city-controller city-controller-map">
