@@ -1,11 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
   <title>Success University</title>
   <defs>
-    <mask id="overlap" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
+    <mask id="su-front-s" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
       <path fill="#fff" d="M0 0h128v128H0z"/>
-      <path d="M57 49v37c0 30 48 30 48 0V49" stroke="#000" stroke-width="25" stroke-linecap="round"/>
+      <path d="M65 28C55 14 21 16 21 35c0 14 13 17 26 21 14 4 21 11 16 22-7 15-34 16-45 2" stroke="#000" stroke-width="24" stroke-linecap="round"/>
     </mask>
   </defs>
-  <path d="M65 28C55 14 21 16 21 35c0 14 13 17 26 21 14 4 21 11 16 22-7 15-34 16-45 2" stroke="#fff" stroke-width="16" stroke-linecap="round" mask="url(#overlap)"/>
-  <path d="M57 49v37c0 30 48 30 48 0V49" stroke="#fff" stroke-width="16" stroke-linecap="round"/>
+  <g transform="translate(7 31) scale(.84)">
+    <path d="M57 49v37c0 30 48 30 48 0V49" stroke="#fff" stroke-width="16" stroke-linecap="round" mask="url(#su-front-s)"/>
+    <path d="M65 28C55 14 21 16 21 35c0 14 13 17 26 21 14 4 21 11 16 22-7 15-34 16-45 2" stroke="#fff" stroke-width="16" stroke-linecap="round"/>
+  </g>
+  <g transform="rotate(12 58 25)" fill="#fff">
+    <path d="M35 29v9c0 8 38 8 38 0v-9L55 37a4 4 0 0 1-3 0Z"/>
+    <path d="m54 7 34 14c3 1 3 5 0 6L56 40a5 5 0 0 1-4 0L20 27c-3-1-3-5 0-6L52 7a3 3 0 0 1 2 0Z"/>
+    <path d="M86 25v16" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+    <rect x="82" y="38" width="8" height="11" rx="4"/>
+  </g>
 </svg>

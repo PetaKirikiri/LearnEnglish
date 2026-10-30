@@ -5,11 +5,11 @@ import EducationSectionHeading from '../../learning/sentenceMatrix/EducationSect
 import { getLanguage } from '../language'
 
 type Side='thai'|'english'
-export default function PronunciationComparison({word}:{word:string}) {
+export default function PronunciationComparison({word,allowEdit=true,language=getLanguage()}:{word:string;allowEdit?:boolean;language?:'th'|'en'}) {
  // Keying by word also resets unsaved editing when a vocabulary selection changes.
- return <Comparison key={word.toLowerCase()} word={word}/>
+ return <Comparison key={word.toLowerCase()} word={word} allowEdit={allowEdit} language={language}/>
 }
-function Comparison({word}:{word:string}) {
+function Comparison({word,allowEdit,language}:{word:string;allowEdit:boolean;language:'th'|'en'}) {
  const [guide,setGuide]=useState(()=>readGuide(word))
  const [draft,setDraft]=useState(guide)
  const [editing,setEditing]=useState(false)
@@ -20,11 +20,11 @@ function Comparison({word}:{word:string}) {
  function save(){try{saveGuide(word,draft);setGuide(draft);setEditing(false);setError('');editButton.current?.focus()}catch{setError('Could not save this sketch. Please try again.')}}
  const shown=editing?draft:guide
  return <section className="pronunciation-comparison" aria-labelledby={titleId}>
-  <EducationSectionHeading id={titleId} icon="sound" actions={<button className="cw-education-edit" ref={editButton} type="button" onClick={()=>{setDraft(guide);setEditing(!editing);setError('')}}>{editing?'Cancel':'Edit'}</button>}>{getLanguage()==='th'?'การออกเสียง':'Pronunciation'}</EducationSectionHeading>
+  <EducationSectionHeading id={titleId} icon="sound" actions={allowEdit&&<button className="cw-education-edit" ref={editButton} type="button" onClick={()=>{setDraft(guide);setEditing(!editing);setError('')}}>{editing?'Cancel':'Edit'}</button>}>{language==='th'?'การออกเสียง':'Pronunciation'}</EducationSectionHeading>
   <div className="pronunciation-content">
   <div className="pronunciation-columns">
    {(['thai','english'] as const).map(side=><article className={`pronunciation-side pronunciation-${side}`} key={side}>
-    <h3><span aria-hidden="true">{side==='thai'?'🇹🇭':'🇬🇧'}</span>{side==='thai'?'Thai sounds':'English stress'}</h3>
+    <h3><span aria-hidden="true">{side==='thai'?'🇹🇭':'🇬🇧'}</span>{language==='th'?(side==='thai'?'เสียงแบบไทย':'เน้นเสียงอังกฤษ'):(side==='thai'?'Thai sounds':'English stress')}</h3>
     <PitchGraph sketch={shown[side]} word={word} side={side} editing={editing} onChange={sketch=>update(side,sketch)}/>
     {editing && <div className="pronunciation-editor">
      <label>Syllables<input aria-label={`${side} syllables`} defaultValue={draft[side].syllables.join('-')} onBlur={event=>update(side,splitSketch(draft[side],event.target.value))} placeholder="com-pu-ter"/></label>
@@ -32,7 +32,7 @@ function Comparison({word}:{word:string}) {
     </div>}
    </article>)}
   </div>
-  {editing ? <footer className="pronunciation-edit-actions"><span>Drag a dot up or down. Use hyphens to split syllables.</span><button type="button" onClick={save}>Save</button></footer> : <p className="pronunciation-caption">Thai spelling ≈ sound · English curve = stress guide</p>}
+  {editing ? <footer className="pronunciation-edit-actions"><span>Drag a dot up or down. Use hyphens to split syllables.</span><button type="button" onClick={save}>Save</button></footer> : <p className="pronunciation-caption">{language==='th'?'คำไทยช่วยอ่านเสียง · เส้นอังกฤษแสดงการเน้นเสียง':'Thai spelling ≈ sound · English curve = stress guide'}</p>}
   {error&&<p role="alert" className="pronunciation-error">{error}</p>}
   </div>
  </section>

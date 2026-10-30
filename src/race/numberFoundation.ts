@@ -16,10 +16,10 @@ export const sentenceNumberNouns=[
  {singular:'sock',plural:'socks',thai:'ถุงเท้า'},
 ] as const
 export const numberNounPool=(module:number)=>module===1?numberNouns:sentenceNumberNouns
-export type NumberPrompt={id:string;word:string;thai:string;plural:boolean;audioUrl:string}
+export type NumberPrompt={id:string;word:string;thai:string;plural:boolean;audioUrl:string;verb?:'is'|'are'}
 export const numberRecordings=sentenceNumberNouns.flatMap(noun=>[noun.singular,noun.plural].map(word=>({audioUrl:`/audio/number-foundation/the-${word}.wav`,spokenText:`the ${word}`})))
-export const numberSentenceText=(prompt:Pick<NumberPrompt,'word'|'plural'>)=>`Where ${prompt.plural?'are':'is'} the ${prompt.word}?`
-export const numberSentenceAudio=(prompt:Pick<NumberPrompt,'word'|'plural'>)=>`/audio/number-foundation/where-${prompt.plural?'are':'is'}-the-${prompt.word}.wav`
+export const numberSentenceText=(prompt:Pick<NumberPrompt,'word'|'plural'|'verb'>)=>`Where ${prompt.verb??(prompt.plural?'are':'is')} the ${prompt.word}?`
+export const numberSentenceAudio=(prompt:Pick<NumberPrompt,'word'|'plural'|'verb'>)=>`/audio/number-foundation/where-${prompt.verb??(prompt.plural?'are':'is')}-the-${prompt.word.replaceAll(' ','-')}.wav`
 export const numberSentenceRecordings=sentenceNumberNouns.flatMap(noun=>[false,true].map(plural=>{
  const prompt={word:plural?noun.plural:noun.singular,plural}
  return {audioUrl:numberSentenceAudio(prompt),spokenText:numberSentenceText(prompt)}
@@ -35,7 +35,7 @@ export function numberDeck(module:1|2|3=1):NumberPrompt[]{
  // First exposure is the requested hotel contrast. Later order is unpredictable.
  const first=prompts.splice(0,2)
  for(let i=prompts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[prompts[i],prompts[j]]=[prompts[j],prompts[i]]}
- return [...first,...prompts]
+ return [...first,...prompts].map((prompt,index)=>module===3?{...prompt,verb:(index%2===0?prompt.plural:!prompt.plural)?'are':'is'}:prompt)
 }
 export function numberPassed(deck:readonly NumberPrompt[],answers:readonly boolean[]){
  if(deck.length!==30||answers.length!==30)return false
@@ -43,3 +43,12 @@ export function numberPassed(deck:readonly NumberPrompt[],answers:readonly boole
  return score>=27&&[false,true].every(plural=>deck.filter((q,i)=>q.plural===plural&&answers[i]).length>=12)
 }
 export const foundationKey=(user?:string)=>`englishsuccess:number-foundation:v1:${user??'guest'}`
+
+/** Answer zero means correct in sentence judgement, singular in number recognition. */
+export const numberAnswer=(prompt:NumberPrompt,module:number)=>module===3?Number((prompt.verb==='are')!==prompt.plural):Number(prompt.plural)
+export function withJudgement(prompt:NumberPrompt,module:number,answered:readonly NumberPrompt[]=[]):NumberPrompt {
+ if(module!==3)return prompt
+ const correctCount=answered.filter(q=>numberAnswer(q,3)===0).length
+ const valid=answered.length===0||Math.random()<(15-correctCount)/(30-answered.length)
+ return {...prompt,verb:(valid?prompt.plural:!prompt.plural)?'are':'is'}
+}

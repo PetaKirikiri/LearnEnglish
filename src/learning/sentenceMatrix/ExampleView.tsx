@@ -22,6 +22,7 @@ export default function ExampleLanguage({layout,english,thai,units,matrix=false,
   })
   const plain=spans.map(span=>span.text).join('')
   if(units.map(unit=>unit.english).join(' ')!==plain) throw new Error(`Example alignment does not match: ${plain}`)
+  const showIcons = !settings.fadeMode || settings.keepIconsWhenFading === true
   const cards = units.map((unit,index)=>{
       const start=units.slice(0,index).reduce((sum,previous)=>sum+previous.english.length+1,0),end=start+unit.english.length
       const word = unit.english.toLowerCase().replace(/[?.,!]/g, '')
@@ -29,8 +30,8 @@ export default function ExampleLanguage({layout,english,thai,units,matrix=false,
       const action = settings.fadeMode ? undefined : unitActions?.find(action => action.index === index) ?? (unitAction?.index === index ? unitAction : undefined)
       const detail = slotDetails?.[index]
       const content = <>
-        {detail && !settings.fadeMode && <span className="cw-slot-role">{detail.icon === undefined ? detail.label : detail.icon}</span>}
-        {!settings.fadeMode && matrix && slot === 3 && !detail?.icon && <VocabularyPicture word={unit.english}/>}
+        {detail && (!settings.fadeMode || showIcons && detail.icon !== undefined) && <span className="cw-slot-role">{detail.icon === undefined ? detail.label : detail.icon}</span>}
+        {showIcons && matrix && slot === 3 && !detail?.icon && <VocabularyPicture word={unit.english}/>}
         <span className="example-source" aria-hidden={settings.fadeMode||undefined}>{settings.fadeMode ? <FadingWords text={unit.english} scores={scores} settings={settings}/> : spans.filter(span=>span.start<end&&span.end>start).map((span,i)=>{
           const text=span.text.slice(Math.max(start,span.start)-span.start,Math.min(end,span.end)-span.start)
           return span.marked?<strong key={i}><FadingWords text={text} scores={scores} settings={settings}/></strong>:<span key={i}><FadingWords text={text} scores={scores} settings={settings}/></span>

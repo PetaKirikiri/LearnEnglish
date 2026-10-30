@@ -1,4 +1,28 @@
 {
+  "the-air-conditioner.wav": {
+    "fingerprint": "609d12537a34cfff8c1f10dee05b20b3d590cf83efdf18b45084de88f833b74f",
+    "seconds": 1.301,
+    "text": "the air conditioner",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-air-conditioners.wav": {
+    "fingerprint": "d8ead548383ee76bcf828b789f35750830154fe70a46a98369b80efce39b4a59",
+    "seconds": 1.28,
+    "text": "the air conditioners",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-apple.wav": {
+    "fingerprint": "eb11574efbbbbf9eeb673eaafafd9206a755af4ebacd1792583a373a2620794e",
+    "seconds": 0.981,
+    "text": "the apple",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-apples.wav": {
+    "fingerprint": "8544ee14da132a1a282679340aaa16042fa29b4f9c9efe5dfb7dc71290ad2dfc",
+    "seconds": 1.067,
+    "text": "the apples",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "the-bag.wav": {
     "fingerprint": "eb2425ce998f2708ea6089d22af962b8e2ac875cb76d6fbe57a64bbaa0bafd2a",
     "seconds": 0.939,
@@ -9,6 +33,54 @@
     "fingerprint": "90b252dd20f36e3fd50e6d5fba66153e36aab56950119559d6ffc3f1b76041ab",
     "seconds": 1.024,
     "text": "the bags",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-banana.wav": {
+    "fingerprint": "8c3039b18546bff24235519264a2b9dc17f2f10fafa1df51696fed9170de2433",
+    "seconds": 1.045,
+    "text": "the banana",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-bananas.wav": {
+    "fingerprint": "89c336a50f79c6d05fcfcde861bb6eb8cbfb29811bfea3acc3ff23648ad87bae",
+    "seconds": 1.173,
+    "text": "the bananas",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-bank.wav": {
+    "fingerprint": "7f2506ab2ef6ad1c84a6be7482c2ee97f69d40bf24f5d3142352d9f4f9e7f811",
+    "seconds": 0.917,
+    "text": "the bank",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-banks.wav": {
+    "fingerprint": "f151f15a8af8e8e318af95379d5a7feefdc4507b5fe3c1352bbe8048396b44b4",
+    "seconds": 1.045,
+    "text": "the banks",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-bedroom.wav": {
+    "fingerprint": "d2d1e5e2fafeb8d6c95cbd82d6bed8b9839bb4d605b7bb06b20c249041553aaf",
+    "seconds": 1.067,
+    "text": "the bedroom",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-bedrooms.wav": {
+    "fingerprint": "dd2f793305dc8eeeeac7d315430d2d5d542bee8336b6b074178bc66d82dcd946",
+    "seconds": 1.173,
+    "text": "the bedrooms",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-bicycle.wav": {
+    "fingerprint": "7a0feb7145a6a20193a4ea095079c7335c0cd451bd6c937a64d3627c0f3b48a7",
+    "seconds": 1.152,
+    "text": "the bicycle",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-bicycles.wav": {
+    "fingerprint": "76684d1807e5648c924d03855f21a3170e59a2bf1246fb0ec7ba2e8481f41e81",
+    "seconds": 1.195,
+    "text": "the bicycles",
     "voice": "kokoro-1.0-heart-v1"
   },
   "the-book.wav": {
@@ -23,6 +95,66 @@
     "text": "the books",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "the-bookstore.wav": {
+    "fingerprint": "340d9ffc83586910c542e396fe380b3685a609e790a3a8090778513f9e433e4a",
+    "seconds": 1.109,
+    "text": "the bookstore",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-bookstores.wav": {
+    "fingerprint": "6a481a1beb804b4fd83a13bca41beb73f693713d3a2759783260245a7c2012a8",
+    "seconds": 1.173,
+    "text": "the bookstores",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-boot.wav": {
+    "fingerprint": "5c3f434ecbfbfdb897f1e09baeb5b594c09cac8b3855b20eb6ccd92494b34567",
+    "seconds": 0.939,
+    "text": "the boot",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-boots.wav": {
+    "fingerprint": "e6222641e3fe3b5e6f6b365dea82b6ed845e243a886cc07762661918d6eb94a9",
+    "seconds": 1.003,
+    "text": "the boots",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-bottle.wav": {
+    "fingerprint": "361e0fa6b9dcc7773263fe6f6e4d49f86e4e475d93e7f6871c3087cddeacae5b",
+    "seconds": 1.003,
+    "text": "the bottle",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-bottles.wav": {
+    "fingerprint": "7a7274b58841ad6fa4f39686cdd8eea0eac63b91e0d3420c67deb1baba73c91a",
+    "seconds": 1.067,
+    "text": "the bottles",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-bus.wav": {
+    "fingerprint": "c3d2bf25e641cd8548e9d3edd11b53c1a4e9380a3b735b952e155171d8e69bb4",
+    "seconds": 0.896,
+    "text": "the bus",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-buses.wav": {
+    "fingerprint": "3c81a8b290c1d7dced2a00839563e55f1b2ef5000bb3c817060ca0981da9e596",
+    "seconds": 1.131,
+    "text": "the buses",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-camera.wav": {
+    "fingerprint": "bba508f04f89aacc7bdcb9acc8a64d20cf164241f2ff62b4cd52a1c9dc8c7507",
+    "seconds": 0.96,
+    "text": "the camera",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-cameras.wav": {
+    "fingerprint": "6baa896ffad84bab6e7afd93f9673f16e16c55e405e97ed50c29529a6fb8373f",
+    "seconds": 1.067,
+    "text": "the cameras",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "the-chair.wav": {
     "fingerprint": "d8dad34e7be26afef95abd603c887205c3a0b451547c5fd6420206867fed3b42",
     "seconds": 0.939,
@@ -33,6 +165,108 @@
     "fingerprint": "8d797bf2c4fbfcee10ac38a41de5c6cdc44725e10b8bd3fe19ea0be25163dc96",
     "seconds": 1.045,
     "text": "the chairs",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-charger.wav": {
+    "fingerprint": "5ebabba4ad9cf96701676092b1b94813b723bdbbd35be1c59fce2c529000deca",
+    "seconds": 1.088,
+    "text": "the charger",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-chargers.wav": {
+    "fingerprint": "56adbb13fff25a9d094519e880d2c3d72948a19185c8be209ec6389d8424023d",
+    "seconds": 1.173,
+    "text": "the chargers",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-clinic.wav": {
+    "fingerprint": "feec5535ec7d33039d8591f09874e24ca01b6a7173316774fef4626c5119f958",
+    "seconds": 0.981,
+    "text": "the clinic",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-clinics.wav": {
+    "fingerprint": "871e4e67c84aa79ac4ae8fde0e31bb8d73452f040695b2821bbfc55350b92144",
+    "seconds": 1.045,
+    "text": "the clinics",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-clock.wav": {
+    "fingerprint": "561f5a33c5d83769b17b88ce74c88d2d19abf0efa5117572c31e2095db9061d6",
+    "seconds": 0.96,
+    "text": "the clock",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-clocks.wav": {
+    "fingerprint": "373a05e252bb09861fcf4f785928046589d1715cc90a2f74f9634d95ef8fdf80",
+    "seconds": 1.045,
+    "text": "the clocks",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-cup.wav": {
+    "fingerprint": "de36dae664a76b2ba192bef50927aeacc512a9718fc14fda9ae3dde5b0fae24e",
+    "seconds": 0.896,
+    "text": "the cup",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-cups.wav": {
+    "fingerprint": "bf4891f293478e56e884e490007dcab0771ebd96215aa55a3995232f91c6ec22",
+    "seconds": 0.96,
+    "text": "the cups",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-doctor.wav": {
+    "fingerprint": "0f439566fb99182146a2d6b39006b94555a5f772bbc11eb111e7cff1a939c40e",
+    "seconds": 1.088,
+    "text": "the doctor",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-doctors.wav": {
+    "fingerprint": "1c3c5349ac507cc7c43a715c2b68c8032a158a53536d9d613c8b05a80fb42c41",
+    "seconds": 1.195,
+    "text": "the doctors",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-fan.wav": {
+    "fingerprint": "9cedb9f9ffd00611b578f666cd297244b74a8a4d1d10cf6985aa05c6b8a8d3ce",
+    "seconds": 0.939,
+    "text": "the fan",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-fans.wav": {
+    "fingerprint": "061d59b2981bd658f327f6e28571a57ad290b93ab2d641c7922a542ff9408477",
+    "seconds": 1.067,
+    "text": "the fans",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-glasses.wav": {
+    "fingerprint": "fcee751e4ab4e9d437836d863213666cb3d293b5e8d53c84956d6d0e1d3f0dd0",
+    "seconds": 1.109,
+    "text": "the glasses",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-gym.wav": {
+    "fingerprint": "00a83d15e8cae89548c89b254f88707a8ff752d271931bcebbe9a742c8b43a57",
+    "seconds": 1.024,
+    "text": "the gym",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-gyms.wav": {
+    "fingerprint": "aaf9c1171005171ada5e47dd816fc3c7b04c05b008dbc5308d6a8a6ace5ccda0",
+    "seconds": 1.067,
+    "text": "the gyms",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-hat.wav": {
+    "fingerprint": "6ce41cf2f276da1468b7fea0c3f8b19162d6d65b9225ac734ff0e9a4307f5b58",
+    "seconds": 0.896,
+    "text": "the hat",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-hats.wav": {
+    "fingerprint": "eab48875be1fdf9dfb8eb6d23b3e6e81b4aae1f4e5f0f947f8a5009fd322c16b",
+    "seconds": 0.981,
+    "text": "the hats",
     "voice": "kokoro-1.0-heart-v1"
   },
   "the-hotel.wav": {
@@ -59,6 +293,90 @@
     "text": "the keys",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "the-laptop.wav": {
+    "fingerprint": "9669d19797043f10e19a250a6ccc431986d4e8ecb6f8691525beb4bd5854a209",
+    "seconds": 1.088,
+    "text": "the laptop",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-laptops.wav": {
+    "fingerprint": "81f67d845b459c79371143e8431ca3369381857ba0091e68a773a16fafd4ca18",
+    "seconds": 1.173,
+    "text": "the laptops",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-motorbike.wav": {
+    "fingerprint": "c9eefa37fac2f5b36696c63f095f7913b0e8e3cbb8e07b37ad100e64f3658ecf",
+    "seconds": 1.109,
+    "text": "the motorbike",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-motorbikes.wav": {
+    "fingerprint": "5a038b4487583886c9b0d556a8f086a5fb6a74e06cc231809410bbfb70c212d4",
+    "seconds": 1.152,
+    "text": "the motorbikes",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-orange.wav": {
+    "fingerprint": "51076461b6dbe4981bb8467d2abe2ffd46fcaa7a285fee2096d098251253cf6c",
+    "seconds": 1.088,
+    "text": "the orange",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-oranges.wav": {
+    "fingerprint": "566f3f8969fad5b2c351318f77f13784d85fd21bf2ffae702eebe63e983473e9",
+    "seconds": 1.173,
+    "text": "the oranges",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-padel-court.wav": {
+    "fingerprint": "ef634cafd4d76310a5f675e88a65d6c12160d43001263a0dd36411adb1ef195a",
+    "seconds": 1.259,
+    "text": "the padel court",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-padel-courts.wav": {
+    "fingerprint": "3d992ee20c9ee1fb3abad8685e928616374444546bbd0481e3c605291d440d5c",
+    "seconds": 1.28,
+    "text": "the padel courts",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-passport.wav": {
+    "fingerprint": "4e83c2815e0ad233c9efdfcd674b20658c59feeb677d230e0823330c771cb63c",
+    "seconds": 1.131,
+    "text": "the passport",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-passports.wav": {
+    "fingerprint": "c14b34674efc21984b4a036bb8555ee97e996cef5a86cb56677161351ee50ca2",
+    "seconds": 1.152,
+    "text": "the passports",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-pen.wav": {
+    "fingerprint": "66a10e89ccbbd9ccbc97bce2ca6fd8fb96b85c8bba131fb96b7613d06ab9b587",
+    "seconds": 0.939,
+    "text": "the pen",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-pencil.wav": {
+    "fingerprint": "578a3035e8b32f6a38fdfd1e20bab9baaf4e98edb33f040b702cabb17892c308",
+    "seconds": 1.045,
+    "text": "the pencil",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-pencils.wav": {
+    "fingerprint": "2c6562b7edfbddd1a46d99aabf9b2902c2fd2e4c4b4bbbf109b8bfc61cb98bb5",
+    "seconds": 1.109,
+    "text": "the pencils",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-pens.wav": {
+    "fingerprint": "e5def918495a0320179d7774b62301960165686dfdb6697717c7ab48125a4513",
+    "seconds": 1.045,
+    "text": "the pens",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "the-phone.wav": {
     "fingerprint": "dc3cb037f66c3866bc92e53ba22151986f7453fa51bab46d26a7deb5a9f3cb7e",
     "seconds": 1.003,
@@ -69,6 +387,102 @@
     "fingerprint": "7137fdbb49e4bf9a252dd8e1dd469136d565c5e6b0a956edc555bbf2f900bc8f",
     "seconds": 1.045,
     "text": "the phones",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-plate.wav": {
+    "fingerprint": "d5a7f0166f72a70db6cc506cca4802c337e715a641b7996c827ab6eb8fb01e2d",
+    "seconds": 0.981,
+    "text": "the plate",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-plates.wav": {
+    "fingerprint": "f378856e61ff833d6b02fd5241228cdcd48d039138c91e9132f70aaae59d12b6",
+    "seconds": 1.003,
+    "text": "the plates",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-racket.wav": {
+    "fingerprint": "4e19d16c4b7f517fe797071ff320b64413dbf219d7bca25ba7d35ac31a6ad106",
+    "seconds": 1.045,
+    "text": "the racket",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-rackets.wav": {
+    "fingerprint": "01241cc180e398fdfd02433d469b3f0f58da217fac88d4fb6d374d4bc33bfe47",
+    "seconds": 1.088,
+    "text": "the rackets",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-remote.wav": {
+    "fingerprint": "02565fa0b25bb9640eddc2f669e1c100427df00dc8abfdb0897461ad717ed502",
+    "seconds": 1.045,
+    "text": "the remote",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-remotes.wav": {
+    "fingerprint": "1ea371ca928f9324369348028785c0c869a57b6c611fde53e99aed5016ff1541",
+    "seconds": 1.109,
+    "text": "the remotes",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-restaurant.wav": {
+    "fingerprint": "3c172cc80c88c166a100ff8c859e985d19a06c28a958e641ee49d7104b1ba97a",
+    "seconds": 1.173,
+    "text": "the restaurant",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-restaurants.wav": {
+    "fingerprint": "b91bf7231707ba5ba1114e22a62649b9d972c73ab72450f432c4ed567e4b9e89",
+    "seconds": 1.152,
+    "text": "the restaurants",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-sandal.wav": {
+    "fingerprint": "06a07284ac4900532549cbd59808a669e7e402e68a1620870411398ea7bfb185",
+    "seconds": 1.045,
+    "text": "the sandal",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-sandals.wav": {
+    "fingerprint": "e9dff3ca8d0f341e2d9235d4078c6321d12a607d719a9e8d50230b838cc5d5da",
+    "seconds": 1.152,
+    "text": "the sandals",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-sandwich.wav": {
+    "fingerprint": "aa336106d440a6e3f51b63ed1fd6f39d9224003d3ef5537444a30c6233de5507",
+    "seconds": 1.173,
+    "text": "the sandwich",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-sandwiches.wav": {
+    "fingerprint": "4185f51383ffe29147b5059faac30d954ada5151f9d744f00d51634cc809f2e1",
+    "seconds": 1.237,
+    "text": "the sandwiches",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-school.wav": {
+    "fingerprint": "d3acddb0188a8d5de36356d0471684f7992d5e3c30c1add54084ba5b630f61d1",
+    "seconds": 1.045,
+    "text": "the school",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-schools.wav": {
+    "fingerprint": "58cacaacd9f23d74624e2f69e83bff1e696ea910951d70d799dfb68f9f59cc88",
+    "seconds": 1.088,
+    "text": "the schools",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-shirt.wav": {
+    "fingerprint": "1c841084c880beb4289f65a8e8e3b48bc2015742dfe28a92ffb93a3e4d834590",
+    "seconds": 0.939,
+    "text": "the shirt",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-shirts.wav": {
+    "fingerprint": "4048844f181262e31e6816b3ffb46daba8c77a73cc82adeef2507f551ae81477",
+    "seconds": 1.024,
+    "text": "the shirts",
     "voice": "kokoro-1.0-heart-v1"
   },
   "the-shoe.wav": {
@@ -107,6 +521,72 @@
     "text": "the tables",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "the-ticket.wav": {
+    "fingerprint": "a6e484403f0002fd42c380ac76ec6c73ff08e94e1c7650ddde33067befccc86e",
+    "seconds": 1.045,
+    "text": "the ticket",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-tickets.wav": {
+    "fingerprint": "eaef94eb872e3115f4ffb52987c48e6706daa0ca6d439e941203a529a0f7f722",
+    "seconds": 1.067,
+    "text": "the tickets",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-toilet.wav": {
+    "fingerprint": "4890051acd2ac7b5dd7d19f799036eb356c4f427198add90cd21c8f0ad05e8c1",
+    "seconds": 0.981,
+    "text": "the toilet",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-toilets.wav": {
+    "fingerprint": "1e66fa63fffbb780237df916670ffbe51eb1112452821520a9c5598b7c57cc4c",
+    "seconds": 1.067,
+    "text": "the toilets",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-towel.wav": {
+    "fingerprint": "6224cfd0719b9157f5c366e9b7a02f3428308ea4f6b0167c8150f5c17acefdf5",
+    "seconds": 1.003,
+    "text": "the towel",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-towels.wav": {
+    "fingerprint": "b7b1ab4023f03ee85b98e4e257b95d5eedf98c748213f2d2ddfe7fb81fb01eaf",
+    "seconds": 1.067,
+    "text": "the towels",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-trousers.wav": {
+    "fingerprint": "ecd2500e18c52ad5ec9a42efe168761ed4d87938c150ec9557e71c73b35e5a60",
+    "seconds": 1.173,
+    "text": "the trousers",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-umbrella.wav": {
+    "fingerprint": "504b6a6e295d6031216f64b08c1eef176af7be73bbce3dab4175a3b127a05c4b",
+    "seconds": 1.088,
+    "text": "the umbrella",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-umbrellas.wav": {
+    "fingerprint": "04910f0f013191187205cab32bfc9e0af7a5103ee3de052a2529e2a9161ca8c1",
+    "seconds": 1.173,
+    "text": "the umbrellas",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-wallet.wav": {
+    "fingerprint": "4de638c057bce3ceb081333d76d3bea181869a01cbf3e6e81acdee8094f1b21c",
+    "seconds": 0.96,
+    "text": "the wallet",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "the-wallets.wav": {
+    "fingerprint": "43ce97de57e795c5dd5bde708d04db7eb2a03f917340127e67581fa7c11b3143",
+    "seconds": 1.024,
+    "text": "the wallets",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "the-watch.wav": {
     "fingerprint": "88d6a25595d720f825656139b6adb6895adce5fe1bdbfbba1bb94d402ea32ca7",
     "seconds": 0.981,
@@ -119,10 +599,94 @@
     "text": "the watches",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "where-are-the-air-conditioner.wav": {
+    "fingerprint": "59f60c043e2fd75c1137cf0fbe29eefbfe3b40598d1bf84a7065f5f6aa4c853c",
+    "seconds": 1.669,
+    "text": "Where are the air conditioner?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-air-conditioners.wav": {
+    "fingerprint": "33684724af7c1bdd9de22c92ac3b1e9ae27c369285eb82f102162917446e441d",
+    "seconds": 1.763,
+    "text": "Where are the air conditioners?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-apple.wav": {
+    "fingerprint": "0750a73ffe7763eec62c68749335065bab308d0bf70e7640339cf4622abed3c3",
+    "seconds": 1.285,
+    "text": "Where are the apple?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-apples.wav": {
+    "fingerprint": "6a677b5eaff8d09744f9186000e3118c618da8e979a05641631f432fe3ec3781",
+    "seconds": 1.37,
+    "text": "Where are the apples?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-bag.wav": {
+    "fingerprint": "e56a8cd853067af9b91f490b286c18b9e31f156912bae4abddc4c58c85f89226",
+    "seconds": 1.256,
+    "text": "Where are the bag?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "where-are-the-bags.wav": {
     "fingerprint": "0752f733fedee6f86400f944fb7c014190e7c49d35db739898a6e832b8ecd4f9",
     "seconds": 1.265,
     "text": "Where are the bags?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-banana.wav": {
+    "fingerprint": "f20de511eb4218f5ece62aecc3762e99681657413da33169968d5f6b70eea025",
+    "seconds": 1.347,
+    "text": "Where are the banana?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-bananas.wav": {
+    "fingerprint": "3c95632b46f96ab19f509f6998ae9b3db2b1927a61c84119728f5c28e37c5201",
+    "seconds": 1.4,
+    "text": "Where are the bananas?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-bank.wav": {
+    "fingerprint": "35edc458032f4d67d47aeb515dccdca832b2334466d95cb7d73c750a0c0ec22b",
+    "seconds": 1.201,
+    "text": "Where are the bank?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-banks.wav": {
+    "fingerprint": "cb73dbae9217937ce8c7af48b39a4216ad379c8e80575768163e72dc1aa911fc",
+    "seconds": 1.275,
+    "text": "Where are the banks?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-bedroom.wav": {
+    "fingerprint": "a6c7380a2db8aa4880dc3fd8956731806922ea5ffc19b097eba73cd084ca080d",
+    "seconds": 1.336,
+    "text": "Where are the bedroom?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-bedrooms.wav": {
+    "fingerprint": "224fbb3515ed2ff4de945fc0bd7045d7f2cef907b6c489db5870f012abb7d26e",
+    "seconds": 1.421,
+    "text": "Where are the bedrooms?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-bicycle.wav": {
+    "fingerprint": "42dbb9714d32abe18cd10b6bee57ccf4c75c7e203d13f77a986326f4e6283c6e",
+    "seconds": 1.443,
+    "text": "Where are the bicycle?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-bicycles.wav": {
+    "fingerprint": "1f48ba9b77607e58093a87c495af8a483aff3d4c448e6ac46f103103e2292459",
+    "seconds": 1.538,
+    "text": "Where are the bicycles?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-book.wav": {
+    "fingerprint": "17cd231cc57e06add65518995f02a525df0fd9e1c57d79b0d8de19aa79247f4a",
+    "seconds": 1.212,
+    "text": "Where are the book?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "where-are-the-books.wav": {
@@ -131,10 +695,184 @@
     "text": "Where are the books?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "where-are-the-bookstore.wav": {
+    "fingerprint": "ae71efb0528e33bb4dd0c08af115123c0c3beb90707d9e000a04c2a1abfcdfe2",
+    "seconds": 1.38,
+    "text": "Where are the bookstore?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-bookstores.wav": {
+    "fingerprint": "c8884bc1d3453dcff2e430a4e45c492f412028b38bef355067f722755f7ab854",
+    "seconds": 1.443,
+    "text": "Where are the bookstores?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-boot.wav": {
+    "fingerprint": "eec20a807bcca8b78741783520db040ddeecf657c87c82cafc3adbeb9762f590",
+    "seconds": 1.255,
+    "text": "Where are the boot?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-boots.wav": {
+    "fingerprint": "80049d0e0668db43dfb3ab9919d4baafc39a1f6fb3fdd80bded05eafab7d18ce",
+    "seconds": 1.317,
+    "text": "Where are the boots?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-bottle.wav": {
+    "fingerprint": "ed1ff6e6af23d98247f86c40d6ed83844313af2c8e8d854b68d69508cb1b373d",
+    "seconds": 1.305,
+    "text": "Where are the bottle?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-bottles.wav": {
+    "fingerprint": "b917774c62d858a1b10f52e3c83e84c0bb578e55c3f9912e846a74ace3268a52",
+    "seconds": 1.379,
+    "text": "Where are the bottles?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-bus.wav": {
+    "fingerprint": "ef20d3091777a46c1ed3e0872c2453bee23a2e0aea8904643e228a3ee0896d0d",
+    "seconds": 1.223,
+    "text": "Where are the bus?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-buses.wav": {
+    "fingerprint": "60cd388e41a7a5fc2fb833132e329b94879cda31337323a4f74e02f914f4bf26",
+    "seconds": 1.35,
+    "text": "Where are the buses?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-camera.wav": {
+    "fingerprint": "68f77a8c0c888579da7874853e6b294d89d5a24d3f548076c125eb4e6cc86509",
+    "seconds": 1.243,
+    "text": "Where are the camera?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-cameras.wav": {
+    "fingerprint": "d2215554af06ac5c5213368550fe42a5cec9995c119fc3c91a9ecc8c65de504a",
+    "seconds": 1.379,
+    "text": "Where are the cameras?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-chair.wav": {
+    "fingerprint": "459dbd264bd010a20bb40965b50905644bbcf4a0a0e93d50488691c8d1472548",
+    "seconds": 1.213,
+    "text": "Where are the chair?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "where-are-the-chairs.wav": {
     "fingerprint": "e3037df6ef5ce654e6544f80ad0932da49c4230577e920545f7f49307a98d16c",
     "seconds": 1.327,
     "text": "Where are the chairs?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-charger.wav": {
+    "fingerprint": "da79d0f6f79831fb5c43306ca83cc4c57b85432d5ec2627247f7c246f2f62713",
+    "seconds": 1.381,
+    "text": "Where are the charger?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-chargers.wav": {
+    "fingerprint": "523ed74c9ad40624698e8f7a57a7708052570447a4870f1345a2947b527fb5e7",
+    "seconds": 1.507,
+    "text": "Where are the chargers?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-clinic.wav": {
+    "fingerprint": "71dd5cfe4da5d521bcb51491e2ca419b8080c1d3ada041b5e47ff7f43850c364",
+    "seconds": 1.295,
+    "text": "Where are the clinic?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-clinics.wav": {
+    "fingerprint": "6170d9929e28bb5f6166a4281794ad1c3c9d8b384a150c6fb41ebceb2cc72a34",
+    "seconds": 1.336,
+    "text": "Where are the clinics?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-clock.wav": {
+    "fingerprint": "f7edcf9fc65189a81610a4920a0abb5a55032da3ea15b648b48405a8a4670e1b",
+    "seconds": 1.263,
+    "text": "Where are the clock?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-clocks.wav": {
+    "fingerprint": "40f73337368cd914242562d32a972d6930d078a867dc1a9a3ef950288cb2f13e",
+    "seconds": 1.357,
+    "text": "Where are the clocks?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-cup.wav": {
+    "fingerprint": "bac548b41e107fbabf58e6eab4cb185872f2728d711dead485778962d53b9c60",
+    "seconds": 1.199,
+    "text": "Where are the cup?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-cups.wav": {
+    "fingerprint": "4ba5378dd71e3a13b554955f01c0eca2770ed7a66f30ed744f3093a054a7bd10",
+    "seconds": 1.242,
+    "text": "Where are the cups?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-doctor.wav": {
+    "fingerprint": "ccd9bda82734036fa29d5319c2c90ae4331023559dd28a0e3fa048ce4ad45f79",
+    "seconds": 1.36,
+    "text": "Where are the doctor?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-doctors.wav": {
+    "fingerprint": "09f116b86117c4848afd7bdad20442e6ded29f1ade2a6d37e401ac45f92e1554",
+    "seconds": 1.433,
+    "text": "Where are the doctors?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-fan.wav": {
+    "fingerprint": "fd55862fa9c79d19cd364e77702165ef1de12e83e7aa0593719b215f7024e7c7",
+    "seconds": 1.223,
+    "text": "Where are the fan?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-fans.wav": {
+    "fingerprint": "ef132390f5c5b4db51f6d2995737a6dcadad1a0cf9e666a670debb259c58888d",
+    "seconds": 1.34,
+    "text": "Where are the fans?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-glasses.wav": {
+    "fingerprint": "3d76997154ad38fa1d4c9ec49eac14392288f48a8a6b2fdcaba65c3ba156c4de",
+    "seconds": 1.444,
+    "text": "Where are the glasses?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-gym.wav": {
+    "fingerprint": "6ab0daa7a9fdfc6e8de62f54d0500fb4794e8b9d3cab51fc1951c725706bb129",
+    "seconds": 1.191,
+    "text": "Where are the gym?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-gyms.wav": {
+    "fingerprint": "597ffb20d16238e5bfd0d445202bc82006a816b1712f2a184dcdd23b7d628fc7",
+    "seconds": 1.327,
+    "text": "Where are the gyms?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-hat.wav": {
+    "fingerprint": "430c17b6da619772b5ea1d770f78b7b7c86a84d995741d0d66893267daae1148",
+    "seconds": 1.222,
+    "text": "Where are the hat?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-hats.wav": {
+    "fingerprint": "487ca7d87f318ac464b496682ec5e4c8411d63878a01729f0560040a9ca6edfd",
+    "seconds": 1.253,
+    "text": "Where are the hats?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-hotel.wav": {
+    "fingerprint": "40e45dffb6fb440de715b4d0c91068e9c12632a0adaab3a4e5001d64eb59eb58",
+    "seconds": 1.347,
+    "text": "Where are the hotel?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "where-are-the-hotels.wav": {
@@ -143,10 +881,106 @@
     "text": "Where are the hotels?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "where-are-the-key.wav": {
+    "fingerprint": "60deb4dfcc6539e8b7c16d89cc93cea113b4ac80bb2443012bae73c4f564dcf7",
+    "seconds": 1.233,
+    "text": "Where are the key?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "where-are-the-keys.wav": {
     "fingerprint": "4c93649ca15b3f6a54947949ec4f079641d1ebc6e5cbbe20f2b268feea2036ae",
     "seconds": 1.275,
     "text": "Where are the keys?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-laptop.wav": {
+    "fingerprint": "f0c07daa3ecf9d97bccc170be4e2f7c05d3f32d5b2e1dfee02ae77c5d2d8e734",
+    "seconds": 1.419,
+    "text": "Where are the laptop?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-laptops.wav": {
+    "fingerprint": "4485533ed33f1a787416a846fb2e54147b50aa063019e7fd9adadf8a8bf2578a",
+    "seconds": 1.515,
+    "text": "Where are the laptops?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-motorbike.wav": {
+    "fingerprint": "975232c9b36794132166381a48ba654894bc29c5eb5721410e30f291d5b2121e",
+    "seconds": 1.4,
+    "text": "Where are the motorbike?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-motorbikes.wav": {
+    "fingerprint": "f39ad664e20e0293d69b6fb959aaee1eb4f15d79c8670b5473b2d59fc3838763",
+    "seconds": 1.495,
+    "text": "Where are the motorbikes?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-orange.wav": {
+    "fingerprint": "9adc2e07a800cdfa67cb4a1d766d92a5cedc8057cd98c59b6178ec6c430295f2",
+    "seconds": 1.37,
+    "text": "Where are the orange?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-oranges.wav": {
+    "fingerprint": "6238b5cddc838f354c67787c9b9b7f3bbe0bb712e6dd471d08ba4a33dc5647dd",
+    "seconds": 1.538,
+    "text": "Where are the oranges?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-padel-court.wav": {
+    "fingerprint": "c2752466244d8f1e6ba6055dfec64b7f1ec8c17c53ee27ad78b310e5b053b5e5",
+    "seconds": 1.602,
+    "text": "Where are the padel court?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-padel-courts.wav": {
+    "fingerprint": "589603132ef823a376fd03d397c72f8e655ee7e0df292de49775c5f3b79f3275",
+    "seconds": 1.665,
+    "text": "Where are the padel courts?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-passport.wav": {
+    "fingerprint": "d6bbc1f11338715d575666c23ab39967973e328bb335735f3253437047213207",
+    "seconds": 1.421,
+    "text": "Where are the passport?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-passports.wav": {
+    "fingerprint": "d3b8d5ad48f85cee5d4dcf2bde6eeb62357a2973bedbad5f610c59565f8cc0f9",
+    "seconds": 1.505,
+    "text": "Where are the passports?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-pen.wav": {
+    "fingerprint": "6914be6e1e30e7dce8eaaf04f38f5ea59993b8e9078595a39c39f6bba2c02ea0",
+    "seconds": 1.192,
+    "text": "Where are the pen?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-pencil.wav": {
+    "fingerprint": "1051bdaef91342b45163b9172eae6e1492af343d4d1a2889809b8b4a09bdd92a",
+    "seconds": 1.327,
+    "text": "Where are the pencil?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-pencils.wav": {
+    "fingerprint": "6f5d7cd54dfa2e8cbad0f2d9cd2e3ad864a4dee9821c7bcd29f19d876401416f",
+    "seconds": 1.423,
+    "text": "Where are the pencils?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-pens.wav": {
+    "fingerprint": "5aabc295f63e5454d6b90de2b3ec8369bc5ac6e01c0e54941a90b38dfc64c585",
+    "seconds": 1.286,
+    "text": "Where are the pens?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-phone.wav": {
+    "fingerprint": "f0cb47d2d50e3e1d4b5d878ffe80b5632ee4271d8e549b2912783a42caf86eb3",
+    "seconds": 1.287,
+    "text": "Where are the phone?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "where-are-the-phones.wav": {
@@ -155,10 +989,118 @@
     "text": "Where are the phones?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "where-are-the-plate.wav": {
+    "fingerprint": "ecf624047d7502e61ab226359e1e6bc654db36e5ab15031850fe407f0c362944",
+    "seconds": 1.275,
+    "text": "Where are the plate?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-plates.wav": {
+    "fingerprint": "ec23ffb763d2f50a45e8bffe240b64767f6c055f4b34d5b3545234824b75f5e5",
+    "seconds": 1.306,
+    "text": "Where are the plates?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-racket.wav": {
+    "fingerprint": "588b78513d1501de37d8746101c230d9adcafec921e22a20dfca59c0cf7d555d",
+    "seconds": 1.369,
+    "text": "Where are the racket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-rackets.wav": {
+    "fingerprint": "820a64df59e8977c1e8422bb74145615b6f47522c1705d24b0f6ef621441a47d",
+    "seconds": 1.39,
+    "text": "Where are the rackets?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-remote.wav": {
+    "fingerprint": "a406656219d67b85deb65631baf9e0e7a106a08a258953bf23c853bc862aa458",
+    "seconds": 1.349,
+    "text": "Where are the remote?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-remotes.wav": {
+    "fingerprint": "e2e10311c1ee400e4342a03f9c66f885c4a37abc1af3d55ed4371822859f8a10",
+    "seconds": 1.357,
+    "text": "Where are the remotes?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-restaurant.wav": {
+    "fingerprint": "f3b5c8043fd2445b1901b8cee3af766fb902b21d900f4de320f1e9e34c08e454",
+    "seconds": 1.454,
+    "text": "Where are the restaurant?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-restaurants.wav": {
+    "fingerprint": "34252498a324b0db4f5e7856fdb146d75fc2b1d1ebb91e7b49bdfa6f39e7a47a",
+    "seconds": 1.517,
+    "text": "Where are the restaurants?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-sandal.wav": {
+    "fingerprint": "9c1a8d4d3b6d19d346e47448fa45465a68b5b4a44981a0d10ef9335439829bf4",
+    "seconds": 1.306,
+    "text": "Where are the sandal?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-sandals.wav": {
+    "fingerprint": "837058ae71fd10ce34566fa139c3c0295d7dc092f6a826bd0ffeb31cdcb586da",
+    "seconds": 1.38,
+    "text": "Where are the sandals?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-sandwich.wav": {
+    "fingerprint": "b440f318419cf0db872f4ea85c7766c55fa7197391f48e568a1740102e7cb98b",
+    "seconds": 1.444,
+    "text": "Where are the sandwich?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-sandwiches.wav": {
+    "fingerprint": "47352c13fc65d25ed7e0ec2e9a0bd3f7e89816c52e1f59cfe36e63a3ca32bd87",
+    "seconds": 1.528,
+    "text": "Where are the sandwiches?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-school.wav": {
+    "fingerprint": "f65bf5c43cc4096b3b3b9ae12c35965cb61bc34a5c48f81a29582ba6c9e2c1b9",
+    "seconds": 1.232,
+    "text": "Where are the school?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-schools.wav": {
+    "fingerprint": "1606c7c873c13c12d320eaf6a9e76767c0d5e42fefa3d87d270a658cb2e0e948",
+    "seconds": 1.349,
+    "text": "Where are the schools?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-shirt.wav": {
+    "fingerprint": "d03099e0506e11d47232d418d27d3d633e5a4bf829ca5dd74ec6059b3a8d1d94",
+    "seconds": 1.265,
+    "text": "Where are the shirt?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-shirts.wav": {
+    "fingerprint": "632af1cbb3aea5c3657382f694b011f541036bb5be7ad6785101ced60a2e334c",
+    "seconds": 1.349,
+    "text": "Where are the shirts?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-shoe.wav": {
+    "fingerprint": "2841ab352f286dd3ef7363f27ed78e5b6a6ed48e1756f4ff47912b23126854ca",
+    "seconds": 1.223,
+    "text": "Where are the shoe?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "where-are-the-shoes.wav": {
     "fingerprint": "0b96555956c17df1c3ef3b6458785f3362c7bf803c1505d5afb7d1459c387c7f",
     "seconds": 1.349,
     "text": "Where are the shoes?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-sock.wav": {
+    "fingerprint": "cca2b358a4a50de67858dc0b605cbf0851fe08dc714d41051350ba23de208063",
+    "seconds": 1.276,
+    "text": "Where are the sock?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "where-are-the-socks.wav": {
@@ -167,10 +1109,88 @@
     "text": "Where are the socks?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "where-are-the-table.wav": {
+    "fingerprint": "47e83d6457c633cf5487a411f963c1a47abedf8fa54fc855c0fe718ca8e2029e",
+    "seconds": 1.273,
+    "text": "Where are the table?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "where-are-the-tables.wav": {
     "fingerprint": "73ade53e7dd621a877ec04d38c5c6d0c8e961dd55c7db9a78ef18f4c4d74d331",
     "seconds": 1.347,
     "text": "Where are the tables?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-ticket.wav": {
+    "fingerprint": "2e18575fb849a42d55b2d77fb2982126831df15034d95eb13fc5fd7f3ba0a740",
+    "seconds": 1.381,
+    "text": "Where are the ticket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-tickets.wav": {
+    "fingerprint": "31af9a947442afaec5648e8de51f20f294beb1a203843722f1d377484aad17e8",
+    "seconds": 1.4,
+    "text": "Where are the tickets?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-toilet.wav": {
+    "fingerprint": "d015748efd7596528c3e35662d903231aa0ecd5121f103bb5b0b768a0cc914ca",
+    "seconds": 1.316,
+    "text": "Where are the toilet?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-toilets.wav": {
+    "fingerprint": "81e443e241f461e9174d08fdc302d01dd2235946fbd046cd4edd593eea7a2a99",
+    "seconds": 1.379,
+    "text": "Where are the toilets?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-towel.wav": {
+    "fingerprint": "772999bcc80fd780608b15bc30bbe1e1180cd4126db4f9e3aeb6bad5ab60d808",
+    "seconds": 1.306,
+    "text": "Where are the towel?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-towels.wav": {
+    "fingerprint": "27e1883bfaa1d122abde57da4148b791259fa98cf706eececf5d07ce9f248ea2",
+    "seconds": 1.39,
+    "text": "Where are the towels?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-trousers.wav": {
+    "fingerprint": "ab91cac951e96ccb5edb10eb447545d544fb67fb60f9e63bb1b3220014c4bf2f",
+    "seconds": 1.423,
+    "text": "Where are the trousers?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-umbrella.wav": {
+    "fingerprint": "c23b22852fa5dc0e683e9cad9829e8eb4699afe11b0ccab21f41c115aa13034c",
+    "seconds": 1.411,
+    "text": "Where are the umbrella?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-umbrellas.wav": {
+    "fingerprint": "5d0848562cf67db430e55fd6c188ee503f8b11d979ae09c544db44dae1d8c85b",
+    "seconds": 1.528,
+    "text": "Where are the umbrellas?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-wallet.wav": {
+    "fingerprint": "dcd70b71c0f3f4681578ccc965ec528ed637d06b6bfbf34baf1668442157c145",
+    "seconds": 1.296,
+    "text": "Where are the wallet?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-wallets.wav": {
+    "fingerprint": "96bd23775d137633984ecf0f192516d58b1804c0d4895880f6187094eafc9082",
+    "seconds": 1.347,
+    "text": "Where are the wallets?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-are-the-watch.wav": {
+    "fingerprint": "77b1c754b2709726d009a9b3053e3ed0e180501f98d19eb951fc84c8db0b6a6a",
+    "seconds": 1.286,
+    "text": "Where are the watch?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "where-are-the-watches.wav": {
@@ -179,10 +1199,88 @@
     "text": "Where are the watches?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "where-is-the-air-conditioner.wav": {
+    "fingerprint": "7f315e373be83967c9a95df3c4e60329de0578428c35eb44b13df63cae1569c8",
+    "seconds": 1.733,
+    "text": "Where is the air conditioner?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-air-conditioners.wav": {
+    "fingerprint": "e6e01148bbc78c7df329d01f4a88f32056f2c4cc1e2e6bf90d4175d1ec25fab0",
+    "seconds": 1.815,
+    "text": "Where is the air conditioners?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-apple.wav": {
+    "fingerprint": "be6c73fa620a80dca4bd05e222fc3ea8ae16003f955d41d39efc0cb6c0d6c0f5",
+    "seconds": 1.296,
+    "text": "Where is the apple?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-apples.wav": {
+    "fingerprint": "534ec97deeb4e0f13c3030fbb8e90038818fe5814f0c4e94f220adb8c2a35f46",
+    "seconds": 1.381,
+    "text": "Where is the apples?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "where-is-the-bag.wav": {
     "fingerprint": "70dd8df14bd77ec034e7c50d931de08d91b9c52715c1f91d1327ee7e18a2ae68",
     "seconds": 1.256,
     "text": "Where is the bag?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bags.wav": {
+    "fingerprint": "d94e45001e681bb301d7d81286530ab4746a84c0cb297c19c90d819bd39f85ed",
+    "seconds": 1.307,
+    "text": "Where is the bags?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-banana.wav": {
+    "fingerprint": "1e561f5c82eb60d2cdfb860d848f69bc3cfb1386ff043c2e908fc4980e9382fe",
+    "seconds": 1.34,
+    "text": "Where is the banana?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bananas.wav": {
+    "fingerprint": "33cf9cfa5df99a5e0e725cb65a9ec269130cb5f0f4f72f271b5dc9588864a16a",
+    "seconds": 1.465,
+    "text": "Where is the bananas?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bank.wav": {
+    "fingerprint": "3be3e7de0edb015e55b686b606370aeabc80bf53e77efd4d03381179a0c5ad4b",
+    "seconds": 1.253,
+    "text": "Where is the bank?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-banks.wav": {
+    "fingerprint": "d836430a808af1617eb864a782c3d6858f3976a37a3e534b26817ca91548085e",
+    "seconds": 1.307,
+    "text": "Where is the banks?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bedroom.wav": {
+    "fingerprint": "0ec8b527f89f939e60baa0e2c511101cfd81de7f34982465c26782a526416625",
+    "seconds": 1.39,
+    "text": "Where is the bedroom?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bedrooms.wav": {
+    "fingerprint": "d4fae15a9738fbb4eab1743ce639eed990f34efabf9523c49c22795e5730a315",
+    "seconds": 1.495,
+    "text": "Where is the bedrooms?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bicycle.wav": {
+    "fingerprint": "0030b9ab27166728e09bfabbbe5ab0ad0ef66ea443edfc6454af07fcf6ef342f",
+    "seconds": 1.475,
+    "text": "Where is the bicycle?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bicycles.wav": {
+    "fingerprint": "a51c7cdc57eb4a09e472a7e1a5903d55d4e764c534930454445e544262f30528",
+    "seconds": 1.559,
+    "text": "Where is the bicycles?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "where-is-the-book.wav": {
@@ -191,10 +1289,184 @@
     "text": "Where is the book?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "where-is-the-books.wav": {
+    "fingerprint": "a3e14c248d12f01e54f1a3c667ca0293874017842c63f103b466d719f43dbff8",
+    "seconds": 1.266,
+    "text": "Where is the books?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bookstore.wav": {
+    "fingerprint": "db8240bc5cd31b488123887e7baf09888c05c88ceb25d6873fecbf1dea831064",
+    "seconds": 1.413,
+    "text": "Where is the bookstore?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bookstores.wav": {
+    "fingerprint": "5607ddaa203bf1dbf486c59e1587f8f833cb16f86d5cc303a42f802b4cf544cd",
+    "seconds": 1.464,
+    "text": "Where is the bookstores?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-boot.wav": {
+    "fingerprint": "ba6db5a7b97de3dce9317c1eeef90b7fdcf9b60aa933fa91d7545a57e6f15d18",
+    "seconds": 1.287,
+    "text": "Where is the boot?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-boots.wav": {
+    "fingerprint": "d11dd853c5dbba76a6650de121c4e8053554fbf47d2e7f2ae0df3e4dc1a22558",
+    "seconds": 1.35,
+    "text": "Where is the boots?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bottle.wav": {
+    "fingerprint": "61ca8e37dc8cfcdb0422731643388581f76dda30ad9493fa297b4745c82ce8be",
+    "seconds": 1.306,
+    "text": "Where is the bottle?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bottles.wav": {
+    "fingerprint": "74ebe609870744e6f11518c006ab67d28a8f2cba9be1ece142a8dab7f841486d",
+    "seconds": 1.423,
+    "text": "Where is the bottles?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-bus.wav": {
+    "fingerprint": "ddcba22a41930d3268f451ea51b0859860bc076d7c9a67d13c1873f4624283d3",
+    "seconds": 1.255,
+    "text": "Where is the bus?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-buses.wav": {
+    "fingerprint": "9de5a6ca21962e8bfb274425113ae1016a54e2ce4e174be1a667d08db3a03200",
+    "seconds": 1.381,
+    "text": "Where is the buses?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-camera.wav": {
+    "fingerprint": "34e6f757816300a650bf106cb8077609ac04dd38614a735ebca1c7749df9ec9d",
+    "seconds": 1.287,
+    "text": "Where is the camera?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-cameras.wav": {
+    "fingerprint": "6754250473c67fb7f169657f35c1fba5c74c359156c2f0600d0373e450ef8c3a",
+    "seconds": 1.413,
+    "text": "Where is the cameras?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "where-is-the-chair.wav": {
     "fingerprint": "643cb853e5fc3c0a5c61003bc946c7ea85917edcddeca57248529f1f64803730",
     "seconds": 1.235,
     "text": "Where is the chair?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-chairs.wav": {
+    "fingerprint": "aeb39fabd91a1873b90bac28976b9cca6f3c1631630de7272a643efb5656fd64",
+    "seconds": 1.349,
+    "text": "Where is the chairs?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-charger.wav": {
+    "fingerprint": "dea414fef000bfb262027beb8c06c2cb5fd3e278a75e7ee54ead67583db7b735",
+    "seconds": 1.413,
+    "text": "Where is the charger?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-chargers.wav": {
+    "fingerprint": "6901bd8ba2c699c3d89dba4128afaad705d9f197520525017eb2d7c896850155",
+    "seconds": 1.549,
+    "text": "Where is the chargers?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-clinic.wav": {
+    "fingerprint": "8c7d090a15c65c4d3bb6771a1e00b07658625750e5264c683f059632142ea608",
+    "seconds": 1.339,
+    "text": "Where is the clinic?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-clinics.wav": {
+    "fingerprint": "9da53961eb5a7586647ca7ccdab62711c753029c0a784ca359fc40698fac28fb",
+    "seconds": 1.4,
+    "text": "Where is the clinics?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-clock.wav": {
+    "fingerprint": "e81a88d973ccae0234de7b3e58b002b6efa560b36d4951fd0d546232dd0a7e8c",
+    "seconds": 1.286,
+    "text": "Where is the clock?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-clocks.wav": {
+    "fingerprint": "5f5b8cd63d0356c3de050ff917b5636cd04d76f7be01fc9d0359f57b9b801c7f",
+    "seconds": 1.359,
+    "text": "Where is the clocks?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-cup.wav": {
+    "fingerprint": "e3055da8039f1fd88070d2864b4093f79851be2d6933ba31b73c531735f7c731",
+    "seconds": 1.211,
+    "text": "Where is the cup?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-cups.wav": {
+    "fingerprint": "903f9eff1df7459067fd7d492f224154c6c19264399c76f888788f85531510d0",
+    "seconds": 1.265,
+    "text": "Where is the cups?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-doctor.wav": {
+    "fingerprint": "67299449ef10476b9ec3579ba0c90a60b1b259e7fed3c2a0d30e10a1f5eac655",
+    "seconds": 1.381,
+    "text": "Where is the doctor?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-doctors.wav": {
+    "fingerprint": "a29fb5e70e97ad8c85bba029f98d281300f0577ced63c1a8140b9d451019e2b6",
+    "seconds": 1.475,
+    "text": "Where is the doctors?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-fan.wav": {
+    "fingerprint": "6c3cdbed77e76ecdd67b25d7f428b3bbdaf29f2c080d803de4a238ce176ff913",
+    "seconds": 1.245,
+    "text": "Where is the fan?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-fans.wav": {
+    "fingerprint": "ee832fc8cb89065d616e2cd689954359a6f9f4367796ed100e69060fcedc08a5",
+    "seconds": 1.33,
+    "text": "Where is the fans?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-glasses.wav": {
+    "fingerprint": "4748c9a34525230120c30650a0f0cb70c43a24287041ed5dc69ece332af807bb",
+    "seconds": 1.465,
+    "text": "Where is the glasses?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-gym.wav": {
+    "fingerprint": "9230cc62fc9ae6f3170677ce6ac05d21d88dc27302ef0eaa4a3df27113f00c22",
+    "seconds": 1.243,
+    "text": "Where is the gym?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-gyms.wav": {
+    "fingerprint": "2dbf130f648c1abbbcc2443a113f18ea4bb6b6925aab92a531dde533fecf12ba",
+    "seconds": 1.329,
+    "text": "Where is the gyms?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-hat.wav": {
+    "fingerprint": "1d6f2de51fa013403e2c21ada646c2bb2dca5bbb050eae05e93b033feafc8856",
+    "seconds": 1.223,
+    "text": "Where is the hat?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-hats.wav": {
+    "fingerprint": "5984c04d3c773260d50b57f49b5dc32953e044d10b450843587078c288e88de7",
+    "seconds": 1.265,
+    "text": "Where is the hats?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "where-is-the-hotel.wav": {
@@ -203,10 +1475,106 @@
     "text": "Where is the hotel?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "where-is-the-hotels.wav": {
+    "fingerprint": "db08f8b3d634c4043c9fa37d31c23102bce8bfc7a94c848289fdcde59dfdb31e",
+    "seconds": 1.497,
+    "text": "Where is the hotels?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "where-is-the-key.wav": {
     "fingerprint": "9061a33c7f30cb5fe4a29ab1da71c7ab45122833163e9d9ab8c1ec8ae5ccf13b",
     "seconds": 1.255,
     "text": "Where is the key?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-keys.wav": {
+    "fingerprint": "35f6d7fa7f9ce4d4ae108c8bc1b3435bd237c4f265d6601b1e1903ee62e07045",
+    "seconds": 1.297,
+    "text": "Where is the keys?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-laptop.wav": {
+    "fingerprint": "4e04e5c6ad2625908d8fae99a573623228b3c2ded3e9620071a8840d424c62a2",
+    "seconds": 1.431,
+    "text": "Where is the laptop?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-laptops.wav": {
+    "fingerprint": "0373ab31118325637408a346bf0b9c7c4dcf69e06c9ae94ca75b53790bfb8e5d",
+    "seconds": 1.538,
+    "text": "Where is the laptops?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-motorbike.wav": {
+    "fingerprint": "3091a24c90149917f2cec6a1a703fae0dc37dcee9011ff66f6ddd50b4369f247",
+    "seconds": 1.495,
+    "text": "Where is the motorbike?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-motorbikes.wav": {
+    "fingerprint": "27dd0953e445c26d0ff5ccef38c22000af20cd70b11c80fd0baea05523bc673c",
+    "seconds": 1.591,
+    "text": "Where is the motorbikes?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-orange.wav": {
+    "fingerprint": "9eba6e915919f0fabceb98ad4148bff2f880c3a5c93dec771576f00ab7c25d71",
+    "seconds": 1.393,
+    "text": "Where is the orange?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-oranges.wav": {
+    "fingerprint": "151162abba79573dfbf2b20f149a85a5cc98976be55dbef98bce8bc4193ad829",
+    "seconds": 1.559,
+    "text": "Where is the oranges?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-padel-court.wav": {
+    "fingerprint": "0f7beb59291de6cd4707211d565228bd22377f3f91dbbfc9d0d98a9c1314c691",
+    "seconds": 1.645,
+    "text": "Where is the padel court?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-padel-courts.wav": {
+    "fingerprint": "081b11ba85373b4438fc66a672bb1df16d2416347a75ee39b0dd73a3dcad47be",
+    "seconds": 1.707,
+    "text": "Where is the padel courts?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-passport.wav": {
+    "fingerprint": "9814eef75da9ce6af0e18f12e2e9dc92ade4d2942ee535eaa340ac94c573af08",
+    "seconds": 1.464,
+    "text": "Where is the passport?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-passports.wav": {
+    "fingerprint": "4b0e3ee6cedb946c7465862ebc319d0262fe835d03cd4cacb1ceb2b2b8d5bfc4",
+    "seconds": 1.548,
+    "text": "Where is the passports?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-pen.wav": {
+    "fingerprint": "b94ede2bfcdb962645116f26b3e6214ebae4d485c17117a9d659e0f1123b3cdb",
+    "seconds": 1.213,
+    "text": "Where is the pen?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-pencil.wav": {
+    "fingerprint": "da854169549637c68552f2693403702b8a9f792e5c74d20f7c6f17a3a10a8f1d",
+    "seconds": 1.36,
+    "text": "Where is the pencil?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-pencils.wav": {
+    "fingerprint": "2638fbbd69777ded0211cebee43c91860d9af0eede7b5f148c644c078b03947c",
+    "seconds": 1.487,
+    "text": "Where is the pencils?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-pens.wav": {
+    "fingerprint": "fd151ff510d09cbf2d620f99511e5a62be7b045087ee3190e0a6969e43ccc9e5",
+    "seconds": 1.35,
+    "text": "Where is the pens?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "where-is-the-phone.wav": {
@@ -215,10 +1583,118 @@
     "text": "Where is the phone?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "where-is-the-phones.wav": {
+    "fingerprint": "ccf1d55ca5a3b90ae33640b57b607e640320b2b3325b50d95710ba5c2c67ed66",
+    "seconds": 1.393,
+    "text": "Where is the phones?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-plate.wav": {
+    "fingerprint": "8fb4d45e3bf1280de1b6d6ca9374c7f42290d4c102a4eb69f7209ffcd7b407ae",
+    "seconds": 1.286,
+    "text": "Where is the plate?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-plates.wav": {
+    "fingerprint": "dfea20f92710bae39ed6a9a0e8a643f114f865459a1a5037624b6e88aa4602fd",
+    "seconds": 1.37,
+    "text": "Where is the plates?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-racket.wav": {
+    "fingerprint": "4d66fd6e89bec152c864ef55d6e8fdf8a1931f9d1814354dc9379dc1aeb2b324",
+    "seconds": 1.371,
+    "text": "Where is the racket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-rackets.wav": {
+    "fingerprint": "3338dd4ba0b69d62e3106931c1983eb224398e5aa514a5c77092ba4c43be344e",
+    "seconds": 1.423,
+    "text": "Where is the rackets?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-remote.wav": {
+    "fingerprint": "87381bbfd5019b5dfc0e80d5b19d1b8db129f7eb4a34b20cf6311876827bda84",
+    "seconds": 1.381,
+    "text": "Where is the remote?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-remotes.wav": {
+    "fingerprint": "a88d6c92f39d1527d3658fa5050cb159e41637a3148e094f38f1aa9e451a4fe2",
+    "seconds": 1.413,
+    "text": "Where is the remotes?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-restaurant.wav": {
+    "fingerprint": "f3bc9fa5c675b89c821add12ae3329c1f10344f5c5fa7ac7182254dfba7e0ad3",
+    "seconds": 1.475,
+    "text": "Where is the restaurant?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-restaurants.wav": {
+    "fingerprint": "a26f26071484ba129899713cc33ad909adcf621421d4f0fe5ee3c05cc1467234",
+    "seconds": 1.517,
+    "text": "Where is the restaurants?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-sandal.wav": {
+    "fingerprint": "9b0d5cf750c9f84d665ed587df4a39ca28fd671ef56781ff88d8fd34fd3cd073",
+    "seconds": 1.359,
+    "text": "Where is the sandal?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-sandals.wav": {
+    "fingerprint": "923e8ae4ec6f1ac17aef7051f880506ea7fc7109c6553666986b921851af8a53",
+    "seconds": 1.413,
+    "text": "Where is the sandals?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-sandwich.wav": {
+    "fingerprint": "66a8b0339f64cea9b6f894e535004316bcd44b2bb6977c4e9b98fe734e53fbe5",
+    "seconds": 1.465,
+    "text": "Where is the sandwich?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-sandwiches.wav": {
+    "fingerprint": "5404c43190bda5dba949402d4c3aa8d79d02040b208cab9945a77ab8a324188d",
+    "seconds": 1.623,
+    "text": "Where is the sandwiches?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-school.wav": {
+    "fingerprint": "f8a8abf52a4f3197bb09fed20b71144e3f28d34a0a9d02601cd0a5ac142836f5",
+    "seconds": 1.317,
+    "text": "Where is the school?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-schools.wav": {
+    "fingerprint": "5d0a524c0b8c98a87d20b9941834d92526b313803d704828a98f18f9f362d2d9",
+    "seconds": 1.381,
+    "text": "Where is the schools?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-shirt.wav": {
+    "fingerprint": "539f911b7e184938f39a1057234b9f2f8c698ac3bdc60f7cb411717f7d9a36bf",
+    "seconds": 1.276,
+    "text": "Where is the shirt?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-shirts.wav": {
+    "fingerprint": "d18300fb3948f91812a31dbc86fb096410256d1de9739743bb5e19463ffc9fcf",
+    "seconds": 1.381,
+    "text": "Where is the shirts?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "where-is-the-shoe.wav": {
     "fingerprint": "34541943637bded4107993e49c1b66bed1d1af48975ea28356a8fa98a34246c6",
     "seconds": 1.215,
     "text": "Where is the shoe?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-shoes.wav": {
+    "fingerprint": "b277d0abeb47e1f6e2ffc846b909c7002109c5f1b9b3cf4ebeb281c8373336e0",
+    "seconds": 1.351,
+    "text": "Where is the shoes?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "where-is-the-sock.wav": {
@@ -227,16 +1703,100 @@
     "text": "Where is the sock?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "where-is-the-socks.wav": {
+    "fingerprint": "b35a0e31e6725b42f6ed94adb76c5d4e4e6c6160e005a0308a421865eee0d201",
+    "seconds": 1.36,
+    "text": "Where is the socks?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "where-is-the-table.wav": {
     "fingerprint": "3e62e1ef1f9e95bf146c9b3de99502fb694da7c6ad1e05e173497f9da0f8aa76",
     "seconds": 1.295,
     "text": "Where is the table?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "where-is-the-tables.wav": {
+    "fingerprint": "19ea0f5bfeea2f8c64440c43359b2c46a3a064cd9e729fd316d6a4917d34e756",
+    "seconds": 1.401,
+    "text": "Where is the tables?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-ticket.wav": {
+    "fingerprint": "f5738b5d36d68eccf0d4bddf5f5c912bd175f7fb7b951eb4f72d8a53bbe58e49",
+    "seconds": 1.393,
+    "text": "Where is the ticket?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-tickets.wav": {
+    "fingerprint": "7a574771efecbf3427f2823281d9ab77f678e810c9066b523e1dd5b9d867724b",
+    "seconds": 1.454,
+    "text": "Where is the tickets?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-toilet.wav": {
+    "fingerprint": "c709fec26d7c47e4716a0e9826bf69a88fd86ab66aa64ce4aeaeb900bcfcc6ad",
+    "seconds": 1.359,
+    "text": "Where is the toilet?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-toilets.wav": {
+    "fingerprint": "1ef9ab08594c97c20a265c8cc52673c6dd7799d596801baeade02928a32801f5",
+    "seconds": 1.411,
+    "text": "Where is the toilets?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-towel.wav": {
+    "fingerprint": "3e66d8f8a49f216fec71de6d0f8fa4002044101574f64fb320699b98c919888a",
+    "seconds": 1.339,
+    "text": "Where is the towel?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-towels.wav": {
+    "fingerprint": "8e30dd17a36a1f147cf875a36eb8cf8f057b3c65d0cff34f1439d868561a9a40",
+    "seconds": 1.391,
+    "text": "Where is the towels?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-trousers.wav": {
+    "fingerprint": "3ab7957f677116ce4da97ade00e8d79c12bd7c386095a4dfa22a1059d8a29c3e",
+    "seconds": 1.444,
+    "text": "Where is the trousers?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-umbrella.wav": {
+    "fingerprint": "4977facf864f0cde823697d203f9bc5764918ea34b227efcf78c18013ca6aa1d",
+    "seconds": 1.434,
+    "text": "Where is the umbrella?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-umbrellas.wav": {
+    "fingerprint": "f96711885df0d263bceb5da52df3c2fd447fc25e16f99740a0e103fef2175abc",
+    "seconds": 1.549,
+    "text": "Where is the umbrellas?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-wallet.wav": {
+    "fingerprint": "1060506328bb90bd04fe21d341ccfa3d4105e285ef26fde227ea545865b501a3",
+    "seconds": 1.307,
+    "text": "Where is the wallet?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-wallets.wav": {
+    "fingerprint": "44b4005d4cf5417e47b9d6e5196850f1416f955eedb6e2927f69abe87d43d81e",
+    "seconds": 1.381,
+    "text": "Where is the wallets?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "where-is-the-watch.wav": {
     "fingerprint": "92293ca46098209ccfef6c21aa0798a4285f5668ad67a55f3cbd327c1affa401",
     "seconds": 1.309,
     "text": "Where is the watch?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "where-is-the-watches.wav": {
+    "fingerprint": "574bc6e1866b538e129524f2d577928c5ffa9324727faf4e19cce75f025b3826",
+    "seconds": 1.454,
+    "text": "Where is the watches?",
     "voice": "kokoro-1.0-heart-v1"
   }
 }

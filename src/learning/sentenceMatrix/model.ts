@@ -7,6 +7,8 @@ export type Tense = 'present' | 'past'
 export const isPluralVerb = (verb:BeVerb) => verb==='are'||verb==='were'
 export const tenseForVerb = (verb:BeVerb):Tense => verb==='was'||verb==='were'?'past':'present'
 export type MatrixSettings = import('../wordProgress/model').FadeSettings & {
+  /** Retain picture cues while the written words fade. */
+  keepIconsWhenFading?: boolean
   /** Persist assessed answers independently from visual support. */
   trackWords?: boolean
   /** Open a word's educational window by pressing its card. */

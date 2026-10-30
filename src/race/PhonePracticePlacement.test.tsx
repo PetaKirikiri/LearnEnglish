@@ -3,6 +3,7 @@ import {act} from 'react'
 import {createRoot,type Root} from 'react-dom/client'
 import {afterEach,beforeEach,expect,it,vi} from 'vitest'
 const load=vi.hoisted(()=>vi.fn())
+vi.mock('./numberRecallStore',()=>({syncRecall:vi.fn().mockResolvedValue(undefined)}))
 vi.mock('./practicePlacement',()=>({loadPracticeStartingRound:load}))
 vi.mock('./NumberFoundationCourse',()=>({default:({minimumModule=1}:{minimumModule?:number})=><div>Round {minimumModule}</div>}))
 import PhonePractice from './PhonePractice'

@@ -142,3 +142,15 @@
 .foundation-practice .foundation-progress::-webkit-progress-value{background:#ffdc39;border-radius:999px;transition:width .3s ease}
 .foundation-practice .foundation-progress::-moz-progress-bar{background:#ffdc39;border-radius:999px}
 @media(prefers-reduced-motion:reduce){.foundation-practice .foundation-progress::-webkit-progress-value{transition:none}}
+
+/* This row always occupies the same space, before and after an answer. */
+.foundation-practice .practice-feedback.foundation-controls{display:flex;align-items:center;justify-content:space-between;gap:16px;height:calc(84px + env(safe-area-inset-bottom));min-height:calc(84px + env(safe-area-inset-bottom));padding:10px 0 calc(14px + env(safe-area-inset-bottom));background:transparent}
+.foundation-practice .foundation-controls .foundation-help{display:grid;place-items:center;width:48px;height:48px;min-width:48px;min-height:48px;padding:0;border:2px solid #cedcf0;border-radius:50%;background:#fff;color:#1976f3;box-shadow:0 3px #cedcf0;font:800 28px/1 'Nunito',sans-serif}
+.foundation-practice .foundation-controls .foundation-next{height:52px;min-height:52px;min-width:140px;padding:10px 20px;font-size:22px;white-space:nowrap}
+.foundation-practice .foundation-controls .foundation-next:disabled{visibility:hidden}
+.foundation-result-announcement{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* Level identifies the current exercise without adding another header row. */
+.foundation-practice .foundation-progress-group{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.foundation-practice .foundation-level{font:700 13px/1.2 Nunito,sans-serif;color:#fff}
+.foundation-practice header .foundation-progress-group .foundation-progress{flex:none;width:100%}

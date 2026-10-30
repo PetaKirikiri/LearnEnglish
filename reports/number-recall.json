@@ -1,0 +1,15 @@
+{
+  "eligibleForms": 100,
+  "lessons": {
+    "1": 40,
+    "2": 36,
+    "3": 24
+  },
+  "verbOnly": [
+    "glasses",
+    "trousers"
+  ],
+  "recordings": 300,
+  "rejected": [],
+  "problems": []
+}
