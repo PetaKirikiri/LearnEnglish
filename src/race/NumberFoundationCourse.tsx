@@ -120,12 +120,14 @@ export default function NumberFoundation({userId,minimumModule=1}:{userId?:strin
 
     {saveError&&<p role="alert">บันทึกคำตอบไม่ได้ กรุณาลองอีกครั้ง</p>}
     {audioError&&<p role="alert">เล่นเสียงไม่ได้ แตะเพื่อฟังอีกครั้ง</p>}
-   </>} answers={<BinaryAnswerZone disabled={!canAnswer||saved.picked!==null} selected={saved.picked} onChoose={choose} choices={choices.map((choice,side)=>({id:choice,label:choice,state:saved.picked!==null&&side===numberAnswer(question,saved.module)?'correct':saved.picked===side?'incorrect':undefined,icon:saved.module!==3?<span className={`cw-game-icon cw-game-icon-${side===0?'apple':'apples'}`}/>:<img src={`/images/race/answer-${side===0?'correct':'wrong'}-v2.png`} alt="" aria-hidden="true"/>,content:choice})) as [BinaryChoice,BinaryChoice]}/>}/>
-   <footer className="practice-feedback foundation-controls">
+   </>} answers={<>
+   <div className="practice-feedback foundation-controls">
     <button type="button" className="foundation-help" aria-label="อธิบายรูปแบบประโยค" aria-haspopup="dialog" onClick={()=>{if(saved.picked===null)assisted.current=true;setExplaining(true)}}>?</button>
     <span className="foundation-result-announcement" role="status">{saved.picked!==null?(saved.answers.at(-1)?'ถูกต้อง':'ยังไม่ถูก'):''}</span>
     <button type="button" className="foundation-next" disabled={saved.picked===null} onClick={next}>ถัดไป →</button>
-   </footer>
+   </div>
+   <BinaryAnswerZone disabled={!canAnswer||saved.picked!==null} selected={saved.picked} onChoose={choose} choices={choices.map((choice,side)=>({id:choice,label:choice,state:saved.picked!==null&&side===numberAnswer(question,saved.module)?'correct':saved.picked===side?'incorrect':undefined,icon:saved.module!==3?<span className={`cw-game-icon cw-game-icon-${side===0?'apple':'apples'}`}/>:<img src={`/images/race/answer-${side===0?'correct':'wrong'}-v2.png`} alt="" aria-hidden="true"/>,content:choice})) as [BinaryChoice,BinaryChoice]}/></>}/>
+
    {explaining&&<PracticePatternExplanation question={question} module={saved.module} onClose={()=>setExplaining(false)}/>}
 
   </>}

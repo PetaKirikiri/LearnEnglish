@@ -80,7 +80,7 @@
 @media(max-height:650px){.foundation-practice .practice-stage{padding-block:18px;gap:18px}.foundation-practice .practice-answers button{min-height:120px}.foundation-practice .practice-answers .cw-game-icon{width:48px;height:48px}}
 
 /* Stable zone order, with content-driven heights instead of empty screen fractions. */
-.foundation-practice .practice-shell{height:auto;min-height:100svh;grid-template-rows:auto auto auto;align-content:start}
+.foundation-practice .practice-shell{height:auto;min-height:100svh;grid-template-rows:auto auto;align-content:start}
 .foundation-practice .practice-stage{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto;align-content:start;justify-content:stretch;gap:20px;padding:24px 0 12px;min-height:0}
 .foundation-practice .practice-question{align-self:stretch;display:flex;align-items:center;overflow:visible;padding:0 0 6px}
 .foundation-practice .practice-question>div{width:100%;min-width:0}
@@ -106,7 +106,7 @@
 .foundation-practice .practice-stage,.foundation-practice .practice-feedback,.foundation-practice .practice-complete{width:calc(100% - 32px);max-width:480px;margin-inline:auto}
 
 /* Two continuous surfaces: sentence above, response controls below. */
-.foundation-practice .practice-shell{grid-template-rows:auto 1fr auto;align-content:stretch;padding-bottom:0;background:#eaf1fb}
+.foundation-practice .practice-shell{grid-template-rows:auto 1fr;align-content:stretch;padding-bottom:0;background:#eaf1fb}
 .foundation-practice .practice-stage.adaptive-practice-stage{width:100%;max-width:none;margin:0;padding:0;gap:0;grid-template-rows:minmax(min-content,1fr) auto;align-content:stretch}
 .foundation-practice .adaptive-practice-stage>.practice-question{display:flex;flex-direction:column;align-items:stretch;justify-content:center;background:#fff;padding:24px max(16px,calc((100% - 480px)/2)) 30px}
 .foundation-practice .practice-answer-area{min-width:0;background:#eaf1fb;border-top:1px solid #dce5f1;padding:24px max(16px,calc((100% - 480px)/2)) max(24px,env(safe-area-inset-bottom))}
@@ -129,7 +129,7 @@
 .foundation-practice .binary-answer-content .cw-game-icon{width:56px;height:56px;margin:0}
 /* Desktop is a bounded exercise, not a phone stretched to the height of a monitor. */
 @media(min-width:700px){
- .foundation-practice .practice-shell{grid-template-rows:auto auto auto;align-content:start}
+ .foundation-practice .practice-shell{grid-template-rows:auto auto;align-content:start}
  .foundation-practice .practice-stage.adaptive-practice-stage{min-height:min(580px,calc(100svh - 93px));grid-template-rows:minmax(min-content,1fr) auto}
  .foundation-practice header{padding-inline:max(24px,calc((100% - 560px)/2))}
  .foundation-practice .adaptive-practice-stage>.practice-question{padding-inline:max(24px,calc((100% - 560px)/2))}
@@ -144,7 +144,7 @@
 @media(prefers-reduced-motion:reduce){.foundation-practice .foundation-progress::-webkit-progress-value{transition:none}}
 
 /* This row always occupies the same space, before and after an answer. */
-.foundation-practice .practice-feedback.foundation-controls{display:flex;align-items:center;justify-content:space-between;gap:16px;height:calc(84px + env(safe-area-inset-bottom));min-height:calc(84px + env(safe-area-inset-bottom));padding:10px 0 calc(14px + env(safe-area-inset-bottom));background:transparent}
+.foundation-practice .practice-feedback.foundation-controls{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;max-width:none;margin:0;height:68px;min-height:68px;padding:0 0 16px;background:transparent}
 .foundation-practice .foundation-controls .foundation-help{display:grid;place-items:center;width:48px;height:48px;min-width:48px;min-height:48px;padding:0;border:2px solid #cedcf0;border-radius:50%;background:#fff;color:#1976f3;box-shadow:0 3px #cedcf0;font:800 28px/1 'Nunito',sans-serif}
 .foundation-practice .foundation-controls .foundation-next{height:52px;min-height:52px;min-width:140px;padding:10px 20px;font-size:22px;white-space:nowrap}
 .foundation-practice .foundation-controls .foundation-next:disabled{visibility:hidden}
