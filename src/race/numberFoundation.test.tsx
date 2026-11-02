@@ -3,6 +3,8 @@ import {act} from 'react'
 import {createRoot} from 'react-dom/client'
 import {beforeEach,afterEach,expect,it,vi} from 'vitest'
 vi.mock('./numberRecallStore',async importOriginal=>({...await importOriginal<typeof import('./numberRecallStore')>(),syncRecall:vi.fn().mockResolvedValue(undefined)}))
+const wordProgress=vi.hoisted(()=>({scores:{} as Record<string,number>,ready:true,error:'',record:vi.fn(),retry:vi.fn()}))
+vi.mock('../learning/wordProgress/useWordProgress',()=>({useWordProgress:()=>wordProgress}))
 import {readRecall,saveRecall} from './numberRecallStore'
 import {recallStates} from './numberRecall'
 import {numberCatalogue} from './numberCatalogue'
@@ -11,7 +13,7 @@ import {numberDeck,numberPassed,numberRecordings,numberNouns,sentenceNumberNouns
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 let end:()=>void=()=>{}
 let played=""
-beforeEach(()=>{vi.stubEnv('DEV',false);localStorage.clear();vi.stubGlobal('Audio',class{onended:(()=>void)|null=null;onerror:(()=>void)|null=null;src:string;constructor(src:string){this.src=src}pause(){}play(){played=this.src;end=()=>this.onended?.();return Promise.resolve()}})})
+beforeEach(()=>{wordProgress.scores={};vi.stubEnv('DEV',false);localStorage.clear();vi.stubGlobal('Audio',class{onended:(()=>void)|null=null;onerror:(()=>void)|null=null;src:string;constructor(src:string){this.src=src}pause(){}play(){played=this.src;end=()=>this.onended?.();return Promise.resolve()}})})
 afterEach(()=>{vi.unstubAllGlobals();vi.unstubAllEnvs()})
 it('uses 30 balanced encounters of the same five noun pairs',()=>{
  const deck=numberDeck();expect(deck).toHaveLength(30);expect(deck.filter(q=>q.plural)).toHaveLength(15)
@@ -170,7 +172,7 @@ it('allows silent development answers and next questions without requiring audio
   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.practice-answers button')[q.plural?0:1].click())
   expect(host.querySelector('.practice-answers .incorrect')).not.toBeNull()
   expect(host.querySelector<HTMLProgressElement>('progress')?.value).toBe(2)
-  expect(played).toBe('')
+  expect(played).toContain('/audio/number-foundation/')
  }finally{await act(async()=>root.unmount())}
 })
 
@@ -269,5 +271,19 @@ it('opens Levels 4 and 5 with real Thai answer options and returns to Level 3',a
   }
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Level 3"]')!.click())
   expect(host.querySelector('[aria-label="Level 3"]')?.getAttribute('aria-pressed')).toBe('true')
+ }finally{await act(async()=>root.unmount())}
+})
+
+it.each([1,2,3,4,5])('uses saved word scores and honors the engine fade switch at level %i',async(level)=>{
+ localStorage.setItem('englishsuccess:practice-level:guest',String(level))
+ wordProgress.scores={'en:hotel':25,'en:where':25,'en:what':25,'en:i':25,'en:he':25,'en:she':25,'en:they':25}
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<NumberFoundation settings={{fadeMode:true}}/>))
+  expect([...host.querySelectorAll<HTMLElement>('.matrix-fading-word')].some(word=>word.style.opacity==='0')).toBe(true)
+  expect(played).toContain('/audio/')
+  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(false)
+  await act(async()=>root.render(<NumberFoundation settings={{fadeMode:false}}/>))
+  expect([...host.querySelectorAll<HTMLElement>('.matrix-fading-word')].some(word=>word.style.opacity==='0')).toBe(false)
  }finally{await act(async()=>root.unmount())}
 })

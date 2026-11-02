@@ -1,3 +1,5 @@
+import {useWordProgress} from '../learning/wordProgress/useWordProgress'
+import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 import ActionPractice from './ActionPractice'
 import PracticeLevelPicker,{type PracticeLevel} from './PracticeLevelPicker'
 import {useEffect,useRef,useState} from 'react'
@@ -5,7 +7,7 @@ import {numberDeck,numberAnswer,withJudgement,numberSentenceText,numberSentenceA
 import {numberItem,numberAudio} from './numberCatalogue'
 import {scheduledNumberDeck,nextRecallItem,recallPrompt,recallStates,recallKey,type RecallAttempt} from './numberRecall'
 import {readRecall,saveRecall,syncRecall} from './numberRecallStore'
-import {wordTokens,wordId} from '../learning/wordProgress/model'
+import {wordTokens,wordId,wordOpacity} from '../learning/wordProgress/model'
 import WordSlotIcon from '../learning/sentenceMatrix/WordSlotIcon'
 import VocabularyPicture from '../learning/VocabularyPicture'
 import ExampleLanguage from '../learning/ExampleLanguage'
@@ -30,13 +32,14 @@ function load(user?:string,minimumModule:1|3=1):Saved{
  }catch{/* Start from the learner's recall history if the saved session is invalid. */}
  return fresh(minimumModule,user)
 }
-export default function NumberFoundation(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:unknown}){
+export default function NumberFoundation(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:MatrixSettings}){
  const key=`englishsuccess:practice-level:${props.userId??'guest'}`
  const [level,setLevel]=useState<PracticeLevel>(()=>{try{const chosen=Number(localStorage.getItem(key));if([1,2,3,4,5].includes(chosen))return chosen as PracticeLevel}catch{}return load(props.userId,props.minimumModule).module})
  function change(value:PracticeLevel){try{localStorage.setItem(key,String(value))}catch{}setLevel(value)}
- return level>=4?<ActionPractice key={level} level={level as 4|5} onLevel={change} userId={props.userId}/>:<NumberLevels key={level} {...props} selectedLevel={level as 1|2|3} onLevel={change}/>
+ return level>=4?<ActionPractice key={level} level={level as 4|5} onLevel={change} userId={props.userId} settings={props.settings}/>:<NumberLevels key={level} {...props} selectedLevel={level as 1|2|3} onLevel={change}/>
 }
-function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel}:{userId?:string;minimumModule?:1|3;selectedLevel:1|2|3;onLevel:(level:PracticeLevel)=>void;tester?:boolean;settings?:unknown}){
+function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,settings={fadeMode:true}}:{userId?:string;minimumModule?:1|3;selectedLevel:1|2|3;onLevel:(level:PracticeLevel)=>void;tester?:boolean;settings?:MatrixSettings}){
+ const progress=useWordProgress(userId)
  const lessonNumber=new URLSearchParams(location.search).get('lesson')
  const lesson=['1','2','3'].includes(lessonNumber??'')?lessonNumber:'1'
  const lessonHref=`${window.innerWidth>=1024?'/classroom/index.html':'/english/notes'}?lesson=${lesson}`
@@ -57,9 +60,11 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel}:{userId?:st
  const question=saved.deck[Math.min(index,saved.deck.length-1)]??numberDeck()[0],score=saved.answers.filter(Boolean).length,passed=finished&&numberPassed(saved.deck,saved.answers)
  const [support,setSupport]=useState(()=>preview?0:recallStates(readRecall(userId))[recallKey(saved.module,question.word)]?.support??0)
  // Restore the complete pattern after an answer, without changing the recorded support.
- const fade=support>0&&saved.picked===null
+ const fade=settings.fadeMode!==false&&saved.picked===null&&(support>0||wordTokens(numberSentenceText(question)).some(word=>wordOpacity(word,progress.scores,{...settings,fadeMode:true})<1))
  const fadeWords=[...wordTokens(question.word),...(saved.module===2?[question.plural?'are':'is']:[])]
- const fadeScores=Object.fromEntries(fadeWords.map(word=>[wordId(word),support]))
+ const fadeScores={...progress.scores}
+ // Retain earned adaptive support alongside the shared per-word score.
+ for(const word of fadeWords){const start=settings.fadeStart??5,end=settings.fadeEnd??25;fadeScores[wordId(word)]=Math.max(fadeScores[wordId(word)]??0,support?start+(end-start)*support/3:0)}
  // Audio failures or autoplay restrictions must never leave answers unclickable.
  const canAnswer=true
  const choices=saved.module!==3?['หนึ่งสิ่ง','หลายสิ่ง']:['ถูก','ผิด']
@@ -81,7 +86,7 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel}:{userId?:st
   void player.play().catch(()=>{if(request.current===current)setAudioError(true)})
  }
  useEffect(()=>{
-  if(!finished&&!preview&&!import.meta.env.DEV)play(question)
+  if(!finished&&!preview)play(question)
   return()=>{request.current++;audio.current?.pause()}
   // Each new question owns exactly one automatic playback.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,7 +136,7 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel}:{userId?:st
    <button onClick={()=>restart(saved.module)}>ฝึกชุดนี้อีกครั้ง</button><a className="practice-module-break" href={lessonHref}>พักก่อน</a>
   </section>:<>
    <PracticeStage question={<>
-    {saved.module===1?<div className="classroom foundation-noun"><div className="cw-sentence-board"><ExampleLanguage matrix layout={{construction:'noun-phrase',noun:'phrase'}} scores={fadeScores} settings={{fadeMode:fade,keepIconsWhenFading:true,fadeStart:0,fadeEnd:3,explanations:false,wordPicker:false,explanationSelection:false,audio:false,layout:{density:'content',maxWidth:520}}} slotDetails={[{label:"Determiner",count:0,icon:<WordSlotIcon slot={2}/>},{label:"Noun",count:0,icon:<VocabularyPicture word={question.word}/>}]} english={`the ${question.word}`} thai="" units={[{english:'the',thai:'ที่กำลังพูดถึง'},{english:question.word,thai:question.thai}]}/></div></div>:<div className="classroom foundation-noun"><div className="cw-sentence-board"><ExampleLanguage matrix layout={{construction:'question',noun:'phrase'}} scores={fadeScores} settings={{fadeMode:fade,keepIconsWhenFading:true,fadeStart:0,fadeEnd:3,explanations:false,wordPicker:false,explanationSelection:false,audio:false,layout:{density:'content',maxWidth:520}}} semanticSlots={[0,1,2,3]} slotDetails={[{label:'Where',count:0,icon:<WordSlotIcon slot={0}/>},{label:'Verb',count:0,icon:<WordSlotIcon slot={1} plural={(question.verb??(question.plural?'are':'is'))==='are'}/>},{label:'Determiner',count:0,icon:<WordSlotIcon slot={2}/>},{label:'Noun',count:0,icon:<VocabularyPicture word={question.word}/>}]} english={numberSentenceText(question)} thai="" units={[{english:'Where',thai:'ที่ไหน'},{english:question.verb??(question.plural?'are':'is'),thai:'อยู่'},{english:'the',thai:'ที่กำลังพูดถึง'},{english:`${question.word}?`,thai:question.thai}]}/></div></div>}
+    {saved.module===1?<div className="classroom foundation-noun"><div className="cw-sentence-board"><ExampleLanguage matrix layout={{construction:'noun-phrase',noun:'phrase'}} scores={fadeScores} settings={{...settings,fadeMode:fade,keepIconsWhenFading:true,explanations:false,wordPicker:false,explanationSelection:false,audio:false,layout:{density:'content',maxWidth:520}}} slotDetails={[{label:"Determiner",count:0,icon:<WordSlotIcon slot={2}/>},{label:"Noun",count:0,icon:<VocabularyPicture word={question.word}/>}]} english={`the ${question.word}`} thai="" units={[{english:'the',thai:'ที่กำลังพูดถึง'},{english:question.word,thai:question.thai}]}/></div></div>:<div className="classroom foundation-noun"><div className="cw-sentence-board"><ExampleLanguage matrix layout={{construction:'question',noun:'phrase'}} scores={fadeScores} settings={{...settings,fadeMode:fade,keepIconsWhenFading:true,explanations:false,wordPicker:false,explanationSelection:false,audio:false,layout:{density:'content',maxWidth:520}}} semanticSlots={[0,1,2,3]} slotDetails={[{label:'Where',count:0,icon:<WordSlotIcon slot={0}/>},{label:'Verb',count:0,icon:<WordSlotIcon slot={1} plural={(question.verb??(question.plural?'are':'is'))==='are'}/>},{label:'Determiner',count:0,icon:<WordSlotIcon slot={2}/>},{label:'Noun',count:0,icon:<VocabularyPicture word={question.word}/>}]} english={numberSentenceText(question)} thai="" units={[{english:'Where',thai:'ที่ไหน'},{english:question.verb??(question.plural?'are':'is'),thai:'อยู่'},{english:'the',thai:'ที่กำลังพูดถึง'},{english:`${question.word}?`,thai:question.thai}]}/></div></div>}
 
     {saveError&&<p role="alert">บันทึกคำตอบไม่ได้ กรุณาลองอีกครั้ง</p>}
     {audioError&&<p role="alert">เล่นเสียงไม่ได้ แตะเพื่อฟังอีกครั้ง</p>}
