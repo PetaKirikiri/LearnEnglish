@@ -251,3 +251,23 @@ it('keeps Level 3 answers usable when phone autoplay is blocked',async()=>{
   expect(host.querySelector<HTMLButtonElement>('.foundation-next')!.disabled).toBe(false)
  }finally{await act(async()=>root.unmount())}
 })
+it('opens Levels 4 and 5 with real Thai answer options and returns to Level 3',async()=>{
+ const host=document.createElement('div');const root=createRoot(host)
+ try{
+  await act(async()=>root.render(<NumberFoundation/>))
+  for(const level of [4,5]){
+   await act(async()=>host.querySelector<HTMLButtonElement>(`[aria-label="Level ${level}"]`)!.click())
+   expect(host.querySelector('[data-matrix-layout]')).not.toBeNull()
+   expect(host.querySelector('.example-gloss')).toBeNull()
+   expect(host.querySelector('.example-translation')).toBeNull()
+   const buttons=host.querySelectorAll<HTMLButtonElement>('.practice-answers button')
+   expect(buttons).toHaveLength(2);expect(buttons[0].textContent).toMatch(/[ก-๙]/)
+   expect(buttons[0].textContent).not.toBe(buttons[1].textContent)
+   await act(async()=>buttons[0].click())
+   expect(host.querySelector<HTMLButtonElement>('.foundation-next')!.disabled).toBe(false)
+   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-next')!.click())
+  }
+  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Level 3"]')!.click())
+  expect(host.querySelector('[aria-label="Level 3"]')?.getAttribute('aria-pressed')).toBe('true')
+ }finally{await act(async()=>root.unmount())}
+})

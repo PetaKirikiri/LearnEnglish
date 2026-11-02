@@ -1,3 +1,5 @@
+import ActionPractice from './ActionPractice'
+import PracticeLevelPicker,{type PracticeLevel} from './PracticeLevelPicker'
 import {useEffect,useRef,useState} from 'react'
 import {numberDeck,numberAnswer,withJudgement,numberSentenceText,numberSentenceAudio,numberPassed,foundationKey,type NumberPrompt} from './numberFoundation'
 import {numberItem,numberAudio} from './numberCatalogue'
@@ -28,13 +30,19 @@ function load(user?:string,minimumModule:1|3=1):Saved{
  }catch{/* Start from the learner's recall history if the saved session is invalid. */}
  return fresh(minimumModule,user)
 }
-export default function NumberFoundation({userId,minimumModule=1}:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:unknown}){
+export default function NumberFoundation(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:unknown}){
+ const key=`englishsuccess:practice-level:${props.userId??'guest'}`
+ const [level,setLevel]=useState<PracticeLevel>(()=>{try{const chosen=Number(localStorage.getItem(key));if([1,2,3,4,5].includes(chosen))return chosen as PracticeLevel}catch{}return load(props.userId,props.minimumModule).module})
+ function change(value:PracticeLevel){try{localStorage.setItem(key,String(value))}catch{}setLevel(value)}
+ return level>=4?<ActionPractice key={level} level={level as 4|5} onLevel={change} userId={props.userId}/>:<NumberLevels key={level} {...props} selectedLevel={level as 1|2|3} onLevel={change}/>
+}
+function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel}:{userId?:string;minimumModule?:1|3;selectedLevel:1|2|3;onLevel:(level:PracticeLevel)=>void;tester?:boolean;settings?:unknown}){
  const lessonNumber=new URLSearchParams(location.search).get('lesson')
  const lesson=['1','2','3'].includes(lessonNumber??'')?lessonNumber:'1'
  const lessonHref=`${window.innerWidth>=1024?'/classroom/index.html':'/english/notes'}?lesson=${lesson}`
  const preview=import.meta.env.DEV?new URLSearchParams(location.search).get('preview'):null
  const [saved,setSaved]=useState<Saved>(()=>{
-  if(!['question','correct','wrong','finished'].includes(preview??''))return load(userId,minimumModule)
+  if(!['question','correct','wrong','finished'].includes(preview??'')){const previous=load(userId,minimumModule);return previous.module===selectedLevel?previous:{...fresh(selectedLevel,userId),manualLevel:true,numberComplete:previous.numberComplete||previous.module===1&&numberPassed(previous.deck,previous.answers),sentenceComplete:previous.sentenceComplete||previous.module===2&&numberPassed(previous.deck,previous.answers)}}
   const moduleParam=Number(new URLSearchParams(location.search).get('module'))
   const module=moduleParam===2||moduleParam===3?moduleParam:1
   return {version:3,sentenceComplete:module===3,module,deck:numberDeck(module),answers:preview==='finished'?Array(30).fill(true):preview==='correct'?[true]:preview==='wrong'?[false]:[],picked:preview==='correct'?0:preview==='wrong'?1:null,numberComplete:module>1}
@@ -115,11 +123,11 @@ export default function NumberFoundation({userId,minimumModule=1}:{userId?:strin
  const title=saved.module===3?'ประโยคนี้ถูกหรือผิด':saved.module===2?'ฟังประโยค: หนึ่งสิ่งหรือหลายสิ่ง':'ฟัง: หนึ่งสิ่งหรือหลายสิ่ง'
  if(import.meta.env.DEV&&preview==='layout')return <PracticeLayoutFixture/>
  return <main className="phone-practice foundation-practice" lang="th"><div className="practice-shell">
-  <header><img className="foundation-cap" src="/brand/success-university-su.svg" alt="Success University"/><div className="foundation-progress-group"><div className="foundation-level-picker" role="group" aria-label="Practice level">{([1,2,3] as const).map(level=><button type="button" key={level} aria-label={`Level ${level}`} aria-pressed={saved.module===level} onClick={()=>{if(level!==saved.module)restart(level,true)}}>{level}</button>)}</div><progress className="foundation-progress" value={saved.answers.length} max={saved.deck.length} aria-label="ความคืบหน้าของบทฝึก" aria-valuetext={`ตอบแล้ว ${saved.answers.length} จาก ${saved.deck.length} ข้อ`}/></div>{!finished&&<button type="button" className="foundation-header-audio" aria-label="ฟังเสียง" title="ฟังเสียง" onClick={()=>play()}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg></button>}</header>
+  <header><img className="foundation-cap" src="/brand/success-university-su.svg" alt="Success University"/><div className="foundation-progress-group"><PracticeLevelPicker level={saved.module} onChange={onLevel}/><progress className="foundation-progress" value={saved.answers.length} max={saved.deck.length} aria-label="ความคืบหน้าของบทฝึก" aria-valuetext={`ตอบแล้ว ${saved.answers.length} จาก ${saved.deck.length} ข้อ`}/></div>{!finished&&<button type="button" className="foundation-header-audio" aria-label="ฟังเสียง" title="ฟังเสียง" onClick={()=>play()}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg></button>}</header>
   {finished?<section className="practice-complete practice-module-complete"><h1>{saved.deck.length<30?'ทบทวนครบแล้ว':passed?'ผ่านชุดนี้แล้ว!':'จบแล้ว มาลองอีกครั้ง'}</h1><p>{title}</p>{saved.deck.length>0&&<p className="practice-module-score">{score} / {saved.deck.length}</p>}<p>{saved.deck.length<30?'คำที่ฝึกได้ดีแล้วจะกลับมาให้ทบทวนภายหลัง':passed?'ทำได้ดีมาก!':'ตอบถูก 27 จาก 30 ข้อเพื่อผ่านชุดนี้'}</p>
-   {passed&&saved.module===1&&<button onClick={()=>restart(2)}>ชุด 2 · ฟังทั้งประโยค →</button>}
-   {passed&&saved.module===2&&<button onClick={()=>restart(3)}>ชุด 3 · ถูกหรือผิด →</button>}
-   {passed&&saved.module===3&&<p>คุณตรวจได้แล้วว่า is / are ตรงกับจำนวนหรือไม่</p>}
+   {passed&&saved.module===1&&<button onClick={()=>onLevel(2)}>ชุด 2 · ฟังทั้งประโยค →</button>}
+   {passed&&saved.module===2&&<button onClick={()=>onLevel(3)}>ชุด 3 · ถูกหรือผิด →</button>}
+   {passed&&saved.module===3&&<button onClick={()=>onLevel(4)}>Level 4 →</button>}{passed&&saved.module===3&&<p>คุณตรวจได้แล้วว่า is / are ตรงกับจำนวนหรือไม่</p>}
    <button onClick={()=>restart(saved.module)}>ฝึกชุดนี้อีกครั้ง</button><a className="practice-module-break" href={lessonHref}>พักก่อน</a>
   </section>:<>
    <PracticeStage question={<>

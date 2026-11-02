@@ -1,0 +1,218 @@
+{
+  "answer-he-drinking.wav": {
+    "fingerprint": "ee0ab1cff53b23a0fc55c08caff8d84879890b979a79217533756cabacaca84b",
+    "seconds": 1.549,
+    "text": "He is drinking water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-he-eating.wav": {
+    "fingerprint": "f94a0fb88aef29aa088387ea55623485c657f66f959b75e8e208781e1042c2c2",
+    "seconds": 1.528,
+    "text": "He is eating an apple.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-he-going.wav": {
+    "fingerprint": "ced2a2eb9967ccc47edbe8727c8a9bc3a22622246047ab5a25f8cb2497635d53",
+    "seconds": 1.743,
+    "text": "He is going to the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-he-playing.wav": {
+    "fingerprint": "fe7c51ee575f1d5155bda4ba17b57ee81d63d269976c7d531f3b7efd52a0702d",
+    "seconds": 1.173,
+    "text": "He is playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-he-reading.wav": {
+    "fingerprint": "59eb828e5b479fca7238c2a8312bc5c8f75cc05c2578ff4d839b048bcd05fb8f",
+    "seconds": 1.421,
+    "text": "He is reading a book.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-he-running.wav": {
+    "fingerprint": "def6da2a22906bd60412970dedf0f08bc03d25be124e0ec7262383662e82611f",
+    "seconds": 1.109,
+    "text": "He is running.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-he-sleeping.wav": {
+    "fingerprint": "512e0de3866a35330c65c0f16c0545c04bc6616d98698bd37c2c874325049036",
+    "seconds": 1.182,
+    "text": "He is sleeping.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-he-walking.wav": {
+    "fingerprint": "a68e5f0f2c88373d8b4d867e851d418d64bbb1b35d1bd7f31e765b0e12ea4927",
+    "seconds": 1.195,
+    "text": "He is walking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-she-drinking.wav": {
+    "fingerprint": "5ad9633b72c78a5251c52c14e1a404976e06f9291d695651cb2a7347dca79118",
+    "seconds": 1.539,
+    "text": "She is drinking water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-she-eating.wav": {
+    "fingerprint": "361f3aa320cffa1dffa047e04ef4c4dd5b6c523840445abdf82b16864346a0d7",
+    "seconds": 1.518,
+    "text": "She is eating an apple.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-she-going.wav": {
+    "fingerprint": "0b2935fd7d126d0012fae29d7154a196eb9f3435612ae915261ccf3112e0e1b5",
+    "seconds": 1.7,
+    "text": "She is going to the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-she-playing.wav": {
+    "fingerprint": "2e7f53f26a7d15a901fe5583886fe7d68c84a1efc7277af71a3dbf2e2f8da857",
+    "seconds": 1.173,
+    "text": "She is playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-she-reading.wav": {
+    "fingerprint": "668958beb8db0bff4a53f7e7ec8752d4b9aee94ce5c7536b76b0740cd60d8797",
+    "seconds": 1.421,
+    "text": "She is reading a book.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-she-running.wav": {
+    "fingerprint": "04ecd1060a8844188a75100e814cda381771269fa27b0b9bcf2ece93fe060d38",
+    "seconds": 1.131,
+    "text": "She is running.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-she-sleeping.wav": {
+    "fingerprint": "3d6f36a543d5eb165610fba40b13b9b10610a4d5cd284ee7bfe9bfd01702ea4c",
+    "seconds": 1.203,
+    "text": "She is sleeping.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-she-walking.wav": {
+    "fingerprint": "1920aaf30f611f2cb0c1cd729943eb8436b22e6156d5c247705c5efaf9d03a6f",
+    "seconds": 1.215,
+    "text": "She is walking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-they-drinking.wav": {
+    "fingerprint": "184573c10445044a1caf5e726c836a3460464b25e88944cb5694f5be79565630",
+    "seconds": 1.561,
+    "text": "They are drinking water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-they-eating.wav": {
+    "fingerprint": "5207fe260c6df9ed583fe99b808a784ada5634a85671ddaf60e717798a1934c0",
+    "seconds": 1.569,
+    "text": "They are eating an apple.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-they-going.wav": {
+    "fingerprint": "100510f381eaf0da5bf1b3fb8991dd5dd03f935c55637ce98adfe5fcc53d2b70",
+    "seconds": 1.71,
+    "text": "They are going to the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-they-playing.wav": {
+    "fingerprint": "4d3b397f2b2a788daa303c4b640b445248f805ca0991af3e751249b93f466311",
+    "seconds": 1.118,
+    "text": "They are playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-they-reading.wav": {
+    "fingerprint": "cec3b90a467c9763e156fa42128d0dfd8ade67c848360a2320397d17ecd44619",
+    "seconds": 1.495,
+    "text": "They are reading a book.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-they-running.wav": {
+    "fingerprint": "a804fedab907dca9e64d91ea09f85a6a70537d86f8547e8f35f9d93c9c415cda",
+    "seconds": 1.128,
+    "text": "They are running.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-they-sleeping.wav": {
+    "fingerprint": "3c40aedbb7c729aae8bf9a8adbe708cd2ca253dfd890b7720f73c3f60ead9857",
+    "seconds": 1.213,
+    "text": "They are sleeping.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-they-walking.wav": {
+    "fingerprint": "3a2a672995a9363657a0db7a8e18658294a49897a677cdd0574ee8e93fbd0e81",
+    "seconds": 1.266,
+    "text": "They are walking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-you-drinking.wav": {
+    "fingerprint": "31155454044235d8912f0d709aacaf0f33b2b90c9f406018cbfdf99c25254717",
+    "seconds": 1.552,
+    "text": "I am drinking water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-you-eating.wav": {
+    "fingerprint": "ec50804a11213f42c3c1227d36dccd5eb68edffd61df2e9791ec47b3a9a3a067",
+    "seconds": 1.549,
+    "text": "I am eating an apple.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-you-going.wav": {
+    "fingerprint": "86a9aa011dd7abf7a2d0412a85b7e1447679b38dca64e5d38bd8e7311102322f",
+    "seconds": 1.795,
+    "text": "I am going to the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-you-playing.wav": {
+    "fingerprint": "21315c10b1f1c8222497ea12e8242590dd19f38b4ff263ca96838e269105e905",
+    "seconds": 1.237,
+    "text": "I am playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-you-reading.wav": {
+    "fingerprint": "035d32ab265e5c6767c7c3bc90734b23647bd8d9f7ca699909222471268a4ea3",
+    "seconds": 1.465,
+    "text": "I am reading a book.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-you-running.wav": {
+    "fingerprint": "be0c7a67e27c9a8568a966a860980fb81bcbce6d5da0b45ca6ce529477761bf6",
+    "seconds": 1.173,
+    "text": "I am running.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-you-sleeping.wav": {
+    "fingerprint": "39c662f3082d7bd2efb0c632c68afe08e0560f3f3ccc16cd530c6b33d8582ae7",
+    "seconds": 1.237,
+    "text": "I am sleeping.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "answer-you-walking.wav": {
+    "fingerprint": "8429b6d48cb0f98dbee4f25051a8f67f7e84e089928b29cab516fe95d8306127",
+    "seconds": 1.195,
+    "text": "I am walking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "question-he.wav": {
+    "fingerprint": "ba877d4c2b924bbef099391ef75a0f244cde8d6a7bbeb111dc7a10c5799377bc",
+    "seconds": 1.232,
+    "text": "What is he doing?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "question-she.wav": {
+    "fingerprint": "9780926d7bf2d1ec0319695e2e06126b864474aacf5ebd9de0abb496f8d888c4",
+    "seconds": 1.242,
+    "text": "What is she doing?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "question-they.wav": {
+    "fingerprint": "337e6efd4a68b06adfb5440a88531c9406683bd408572d306c0a8c5ef4976c54",
+    "seconds": 1.283,
+    "text": "What are they doing?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "question-you.wav": {
+    "fingerprint": "90d856e981b4ef07f89a789a712690b4f70d8d9e635212d4d271067c37dcc7c6",
+    "seconds": 1.221,
+    "text": "What are you doing?",
+    "voice": "kokoro-1.0-heart-v1"
+  }
+}
