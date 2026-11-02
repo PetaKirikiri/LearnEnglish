@@ -276,7 +276,7 @@ it('opens Levels 4 and 5 with real Thai answer options and returns to Level 3',a
 
 it.each([1,2,3,4,5])('uses saved word scores and honors the engine fade switch at level %i',async(level)=>{
  localStorage.setItem('englishsuccess:practice-level:guest',String(level))
- wordProgress.scores={'en:hotel':25,'en:where':25,'en:what':25,'en:i':25,'en:he':25,'en:she':25,'en:they':25}
+ wordProgress.scores={'en:hotel':25,'en:where':25,'en:what':25,'en:i':25,'en:he':25,'en:she':25,'en:they':25,'en:bia':25,'en:doctor':25,'en:doctors':25}
  const host=document.createElement('div'),root=createRoot(host)
  try{
   await act(async()=>root.render(<NumberFoundation settings={{fadeMode:true}}/>))

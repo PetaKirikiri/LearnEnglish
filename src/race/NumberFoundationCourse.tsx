@@ -1,3 +1,4 @@
+import PracticeGold,{awardPracticeGold} from './PracticeGold'
 import {useWordProgress} from '../learning/wordProgress/useWordProgress'
 import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 import ActionPractice from './ActionPractice'
@@ -97,6 +98,7 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,settings={fa
   if(!preview){
    const event:RecallAttempt={id:question.id,word:question.word,module:saved.module,answer:side,correct,at:Date.now(),assisted:assisted.current,heard,replays:replays.current,support,...(saved.module===3?{verb:question.verb}:{})}
    try{saveRecall(event,userId);setSaveError(false)}catch{setSaveError(true);return}
+   awardPracticeGold(question.id,correct,userId)
    events.current=readRecall(userId)
    if(userId)void syncRecall(userId).catch(()=>{/* Retain the outbox for the next connection. */})
   }
@@ -128,7 +130,7 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,settings={fa
  const title=saved.module===3?'ประโยคนี้ถูกหรือผิด':saved.module===2?'ฟังประโยค: หนึ่งสิ่งหรือหลายสิ่ง':'ฟัง: หนึ่งสิ่งหรือหลายสิ่ง'
  if(import.meta.env.DEV&&preview==='layout')return <PracticeLayoutFixture/>
  return <main className="phone-practice foundation-practice" lang="th"><div className="practice-shell">
-  <header><img className="foundation-cap" src="/brand/success-university-su.svg" alt="Success University"/><div className="foundation-progress-group"><PracticeLevelPicker level={saved.module} onChange={onLevel}/><progress className="foundation-progress" value={saved.answers.length} max={saved.deck.length} aria-label="ความคืบหน้าของบทฝึก" aria-valuetext={`ตอบแล้ว ${saved.answers.length} จาก ${saved.deck.length} ข้อ`}/></div>{!finished&&<button type="button" className="foundation-header-audio" aria-label="ฟังเสียง" title="ฟังเสียง" onClick={()=>play()}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg></button>}</header>
+  <header><img className="foundation-cap" src="/brand/success-university-su.svg" alt="Success University"/><div className="foundation-progress-group"><PracticeLevelPicker level={saved.module} onChange={onLevel}/><progress className="foundation-progress" value={saved.answers.length} max={saved.deck.length} aria-label="ความคืบหน้าของบทฝึก" aria-valuetext={`ตอบแล้ว ${saved.answers.length} จาก ${saved.deck.length} ข้อ`}/></div><PracticeGold userId={userId}/>{!finished&&<button type="button" className="foundation-header-audio" aria-label="ฟังเสียง" title="ฟังเสียง" onClick={()=>play()}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg></button>}</header>
   {finished?<section className="practice-complete practice-module-complete"><h1>{saved.deck.length<30?'ทบทวนครบแล้ว':passed?'ผ่านชุดนี้แล้ว!':'จบแล้ว มาลองอีกครั้ง'}</h1><p>{title}</p>{saved.deck.length>0&&<p className="practice-module-score">{score} / {saved.deck.length}</p>}<p>{saved.deck.length<30?'คำที่ฝึกได้ดีแล้วจะกลับมาให้ทบทวนภายหลัง':passed?'ทำได้ดีมาก!':'ตอบถูก 27 จาก 30 ข้อเพื่อผ่านชุดนี้'}</p>
    {passed&&saved.module===1&&<button onClick={()=>onLevel(2)}>ชุด 2 · ฟังทั้งประโยค →</button>}
    {passed&&saved.module===2&&<button onClick={()=>onLevel(3)}>ชุด 3 · ถูกหรือผิด →</button>}
