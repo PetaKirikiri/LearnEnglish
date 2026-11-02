@@ -15,7 +15,7 @@ const english: Record<string,string> = {
 'หลายสิ่ง ใช้ are ในคำถามนี้':'Several things: use are in this question.',
 'หนึ่งสิ่ง ใช้ is ในคำถามนี้':'One thing: use is in this question.',
 
-'ทบทวน':'Recall','เรียนรู้':'Learn','ฝึกฝน':'Practise','สรุป':'Review','หลักการ':'The idea','ตัวอย่าง':'Worked example','ข้อผิดพลาดที่พบบ่อย':'Common mistakes',
+'สุ่มประโยค':'Random sentences','ทบทวน':'Recall','เรียนรู้':'Learn','ฝึกฝน':'Practise','สรุป':'Review','หลักการ':'The idea','ตัวอย่าง':'Worked example','ข้อผิดพลาดที่พบบ่อย':'Common mistakes',
 'ทบทวนรูปประโยค':'Recall the pattern','ถามหาสถานที่':'Ask about a place','เปลี่ยนคำ รูปแบบเดิม':'New words, same pattern','คำเล็ก ๆ ก็สำคัญ':'Small words matter','แข่งม้า':'Horse race','หนึ่งรูปแบบ ใช้ได้หลายที่':'One pattern, many places',
 'บทเรียนที่ 1':'Lesson 1','ขั้นตอนการเรียน':'Class stages','Lesson 01':'Lesson 01','กลับไปที่ประโยค':'Back to the sentence','ฟังประโยค':'Play sentence','เล่นเสียงไม่ได้ ลองกดอีกครั้ง':'Could not play audio. Try again.',
 'คำถาม':'Question words','กริยา be':'The verb be','คำกำหนดนาม':'Determiners','คำนาม':'Nouns','การทำงานของช่องนี้':'How this slot works','ข้อควรรู้ในการใช้':'Using this word','เลือกคำ':'Choose a word',

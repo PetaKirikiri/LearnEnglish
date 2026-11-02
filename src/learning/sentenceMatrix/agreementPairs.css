@@ -1,0 +1,8 @@
+.cw-person-pairs.cw-agreement-pairs{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.cw-person-pairs.cw-agreement-pairs>div{display:flex;gap:10px;padding:12px;background:transparent;border:2px solid transparent;border-radius:20px}
+.cw-person-pairs.cw-agreement-pairs>div[data-selected=true]{border-color:#18385e;background:#f7f9fc}
+.cw-agreement-pairs .cw-agreement-person,.cw-agreement-pairs .cw-agreement-verb{display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:74px;padding:10px 14px;border-radius:16px;box-sizing:border-box}
+.cw-agreement-pairs .cw-agreement-person{flex:1.5;background:#ffd43b;color:#18385e;box-shadow:0 4px 0 #b88b08}
+.cw-person-pairs.cw-agreement-pairs .cw-agreement-verb{flex:1;background:#128247;color:#fff;box-shadow:0 4px 0 #086036}
+.cw-person-pairs.cw-agreement-pairs strong,.cw-person-pairs.cw-agreement-pairs b{font-family:'Fredoka',sans-serif;font-size:26px;font-weight:500;overflow-wrap:anywhere}
+.cw-agreement-pairs .cw-person-icon{width:44px;height:44px}

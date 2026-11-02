@@ -36,33 +36,31 @@
 .cw-word-body{padding:14px 12px 24px}.cw-reference-sheet{padding:0 18px;border-radius:16px}
 .cw-reference-sheet>section{padding:18px 0}
 }
-/* Carry the actual icon and word between layouts, never stretch the card. */
+/* One shared timing for the surface, artwork and tightly fitted text snapshots. */
 .cw-word-explanation>.cw-word-heading{view-transition-name:none}
 .cw-word-explanation>.cw-word-body{animation:none}
-html[data-word-motion="open"] .cw-word-explanation>.cw-word-body{animation:word-reference-arrive 280ms 360ms both cubic-bezier(.2,0,.2,1)}
-@keyframes word-reference-arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.cw-simple-word-title h1{width:fit-content}
+.cw-word-gloss-text{display:inline-block;line-height:1.5}
+html[data-word-motion]{--word-motion-duration:500ms;--word-motion-ease:cubic-bezier(.4,0,.2,1)}
 html[data-word-motion]::view-transition-group(classroom-word-icon),
-html[data-word-motion]::view-transition-group(classroom-word-label){animation-duration:640ms;animation-timing-function:cubic-bezier(.4,0,.2,1)}
+html[data-word-motion]::view-transition-group(classroom-word-label),
+html[data-word-motion]::view-transition-group(classroom-word-gloss){animation-duration:var(--word-motion-duration);animation-timing-function:var(--word-motion-ease);z-index:2}
 html[data-word-motion]::view-transition-old(classroom-word-icon),
-html[data-word-motion]::view-transition-new(classroom-word-icon),
 html[data-word-motion]::view-transition-old(classroom-word-label),
-html[data-word-motion]::view-transition-new(classroom-word-label){height:100%;width:100%;object-fit:fill;animation-duration:640ms;animation-timing-function:cubic-bezier(.4,0,.2,1);mix-blend-mode:normal}
-html[data-word-motion]::view-transition-old(root){animation:word-page-out 160ms both ease-out}
-html[data-word-motion]::view-transition-new(root){animation:word-page-in 260ms 160ms both ease-out}
+html[data-word-motion]::view-transition-old(classroom-word-gloss){display:none}
+html[data-word-motion]::view-transition-new(classroom-word-icon),
+html[data-word-motion]::view-transition-new(classroom-word-label),
+html[data-word-motion]::view-transition-new(classroom-word-gloss){width:100%;height:100%;object-fit:contain;animation:none;mix-blend-mode:normal}
+html[data-word-motion]::view-transition-old(root){animation:word-page-out 180ms both ease-out}
+html[data-word-motion]::view-transition-new(root){animation:word-page-in 180ms both ease-out}
 @keyframes word-page-out{to{opacity:0}}
 @keyframes word-page-in{from{opacity:0}to{opacity:1}}
-@media(prefers-reduced-motion:reduce){html[data-word-motion="open"] .cw-word-explanation>.cw-word-body{animation:none}}
-/* Keep the navigation anchored and avoid a white flash between pages. */
+/* Keep navigation anchored; do not animate the live content under its snapshot. */
 html[data-word-motion] .classroom .index{view-transition-name:classroom-navigation}
 html[data-word-motion]::view-transition-group(classroom-navigation){animation:none}
 html[data-word-motion]::view-transition-old(classroom-navigation){display:none}
 html[data-word-motion]::view-transition-new(classroom-navigation){animation:none}
-html[data-word-motion]::view-transition-new(root){animation:word-page-in 300ms both ease-out}
-html[data-word-motion]::view-transition-old(classroom-word-icon),
-html[data-word-motion]::view-transition-old(classroom-word-label){display:none}
-html[data-word-motion]::view-transition-new(classroom-word-icon),
-html[data-word-motion]::view-transition-new(classroom-word-label){animation:none}
-html[data-word-motion]::view-transition-new(classroom-word-label){filter:drop-shadow(0 1px 2px #18385e55)}
+html[data-word-motion] .example-unit-trigger{transition:none!important}
 
 /* Expand within the teaching pane, rather than limiting it to a reading column. */
 .cw-word-heading:focus{outline:none}
@@ -93,3 +91,29 @@ html[data-word-motion]::view-transition-new(classroom-word-label){filter:drop-sh
 .cw-category-icon{display:grid;place-items:center;width:25px;height:25px;flex:none;color:#1877ef}
 .cw-category-icon>svg{width:19px;height:19px}
 .cw-category-icon .vocabulary-picture,.cw-category-icon .cw-game-icon{width:25px;height:25px;margin:0}
+
+html[data-word-motion]::view-transition-group(classroom-word-surface){
+ animation-duration:var(--word-motion-duration);animation-timing-function:var(--word-motion-ease);z-index:1;overflow:hidden;
+}
+html[data-word-motion]::view-transition-image-pair(classroom-word-surface){isolation:isolate;height:100%;border-radius:inherit;overflow:hidden}
+html[data-word-motion]::view-transition-old(classroom-word-surface),
+html[data-word-motion]::view-transition-new(classroom-word-surface){width:100%;height:100%;object-fit:fill;mix-blend-mode:normal;animation-duration:var(--word-motion-duration)}
+html[data-word-motion]::view-transition-group(classroom-word-icon),
+html[data-word-motion]::view-transition-group(classroom-word-label),
+html[data-word-motion]::view-transition-group(classroom-word-gloss){z-index:2}
+html[data-word-motion="open"]::view-transition-image-pair(classroom-word-surface){animation:word-surface-open var(--word-motion-duration) var(--word-motion-ease) both}
+html[data-word-motion="back"]::view-transition-image-pair(classroom-word-surface){animation:word-surface-close var(--word-motion-duration) var(--word-motion-ease) both}
+@keyframes word-surface-open{from{border-radius:24px}to{border-radius:0}}
+@keyframes word-surface-close{from{border-radius:0}to{border-radius:24px}}
+/* Same clock/timeline, scaled to the compact category toolbar. */
+.cw-category-icon .cw-time-icon{width:25px;gap:0}
+.cw-category-icon .cw-time-icon .cw-game-icon{width:22px;height:22px}
+.cw-category-icon .cw-tense-timeline{width:24px;height:5px}
+.cw-category-icon .cw-tense-timeline::before{top:2px;height:1px;left:2px;right:2px}
+.cw-category-icon .cw-tense-stop{height:5px;width:4px}
+.cw-category-icon .cw-tense-notch{height:4px;width:1px}
+.cw-category-icon .cw-tense-stop.is-current .cw-tense-notch{width:4px;height:4px}
+.cw-word-options .cw-time-icon{margin-inline:auto}
+.cw-vocabulary-section:has(.cw-tense-filters) .cw-education-actions{flex:0 1 auto;justify-content:flex-start}
+.cw-tense-filters{flex-shrink:0}
+.cw-filter-empty{margin:12px 0;color:#526d86;font-size:14px}

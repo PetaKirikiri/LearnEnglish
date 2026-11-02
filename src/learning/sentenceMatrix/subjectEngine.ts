@@ -1,6 +1,7 @@
+import type {NounPhrase} from './nounPhrase'
 /** Content and grammatical agreement for the subject block, independent of its host UI. */
 export type NounMode='noun'|'pronoun'|'name'
-export type SubjectWord={word:string;thai:string;person?:1|2|3;number?:'singular'|'plural';kind?:'person'|'place'}
+export type SubjectWord={phrase?:NounPhrase;word:string;thai:string;person?:1|2|3;number?:'singular'|'plural';kind?:'person'|'place'}
 export type SubjectModeConfig={
  pronouns:readonly SubjectWord[]
  names:readonly SubjectWord[]
@@ -41,4 +42,12 @@ export function subjectForVerb(choices:readonly SubjectWord[],verb:'am'|'is'|'ar
 }
 export function subjectVerbChoices(choices:readonly SubjectWord[]){
  return (['am','is','are'] as const).filter(verb=>choices.some(item=>subjectVerb(item)===verb)).map(word=>({word,thai:choices.filter(item=>subjectVerb(item)===word).map(item=>item.word).join(' / ')}))
+}
+
+/** Both subject and object blocks request modes from their permitted vocabulary. */
+export function nounBlock<T extends {word:string;thai:string}>(sources:Partial<Record<NounMode,readonly T[]>>,mode:NounMode,selected?:string){
+ const modes=(['noun','pronoun','name'] as const).filter(key=>!!sources[key]?.length)
+ const activeMode=modes.includes(mode)?mode:modes[0]
+ const choices=activeMode?sources[activeMode]??[]:[]
+ return {modes,mode:activeMode??mode,choices,selected:choices.find(item=>item.word===selected)??choices[0]}
 }

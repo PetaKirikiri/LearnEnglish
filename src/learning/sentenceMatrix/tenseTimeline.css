@@ -1,0 +1,12 @@
+.cw-time-icon{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:80px;max-width:100%;flex-shrink:0}
+.cw-tense-timeline{position:relative;display:flex;justify-content:space-between;align-items:center;width:54px;height:10px;color:inherit;filter:none}
+.cw-tense-timeline::before{content:"";position:absolute;top:4px;left:3px;right:3px;height:2px;background:currentColor;opacity:.45;border-radius:2px}
+.cw-tense-stop{position:relative;display:grid;place-items:center;width:8px;height:10px}
+.cw-tense-notch{display:block;width:2px;height:7px;background:currentColor;border-radius:2px;opacity:.55}
+.cw-tense-stop.is-current .cw-tense-notch{width:7px;height:7px;border-radius:50%;opacity:1}
+.cw-sentence-board .cw-time-icon .cw-game-icon{width:60px;height:60px}
+@media(max-width:600px){
+ .cw-time-icon{width:60px}
+ .cw-tense-timeline{width:44px}
+ .cw-sentence-board .cw-time-icon .cw-game-icon{width:48px;height:48px}
+}

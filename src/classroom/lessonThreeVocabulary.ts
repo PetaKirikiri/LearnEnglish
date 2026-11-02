@@ -1,10 +1,10 @@
 import type { VocabularyCategory } from '../learning/sentenceMatrix/vocabularyCategories'
 /** New concrete nouns for Lesson 3. Earlier lesson words are merged separately. */
-export const lessonThreeWords:readonly {singular:string;plural:string;thai:string;categories:readonly VocabularyCategory[]}[] = [
- {singular:'apple',plural:'apples',thai:'แอปเปิล',categories:['food']},
- {singular:'banana',plural:'bananas',thai:'กล้วย',categories:['food']},
- {singular:'orange',plural:'oranges',thai:'ส้ม',categories:['food']},
- {singular:'sandwich',plural:'sandwiches',thai:'แซนด์วิช',categories:['food']},
+export const lessonThreeWords:readonly {indefiniteArticle?:'a'|'an';classifierThai?:string;singular:string;plural:string;thai:string;categories:readonly VocabularyCategory[]}[] = [
+ {indefiniteArticle:'an',classifierThai:'ลูก',singular:'apple',plural:'apples',thai:'แอปเปิล',categories:['food']},
+ {indefiniteArticle:'a',classifierThai:'ลูก',singular:'banana',plural:'bananas',thai:'กล้วย',categories:['food']},
+ {indefiniteArticle:'an',classifierThai:'ลูก',singular:'orange',plural:'oranges',thai:'ส้ม',categories:['food']},
+ {indefiniteArticle:'a',classifierThai:'ชิ้น',singular:'sandwich',plural:'sandwiches',thai:'แซนด์วิช',categories:['food']},
  {singular:'umbrella',plural:'umbrellas',thai:'ร่ม',categories:['everyday']},
  {singular:'wallet',plural:'wallets',thai:'กระเป๋าสตางค์',categories:['everyday']},
  {singular:'passport',plural:'passports',thai:'หนังสือเดินทาง',categories:['everyday']},

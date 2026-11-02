@@ -8,7 +8,7 @@ export { verbForWord, formForVerb } from '../learning/sentenceMatrix/model'
 export const lessonOneCatalogue: readonly ClassroomWord[] = tonightWords.map(([word, thai]) => ({ word, thai }))
 export const lessonTwoIntroducedCatalogue: readonly ClassroomWord[] = [
   ...lessonTwoWords.flatMap(item=>[
-    {word:item.singular,thai:item.thai,singular:item.singular,plural:item.plural,number:'singular' as const},
+    {word:item.singular,thai:item.thai,singular:item.singular,plural:item.plural,...(item.singular==='book'?{classifierThai:'เล่ม'}:{}),number:'singular' as const},
     {word:item.plural,thai:item.thai,singular:item.singular,plural:item.plural,number:'plural' as const},
   ]),
   ...lessonTwoPairs.map(item=>({word:item.plural,thai:item.thai,plural:item.plural,number:'plural' as const,pairOnly:true})),
@@ -30,10 +30,10 @@ export const earlierNounForms:readonly ClassroomWord[]=tonightWords.flatMap(([si
 })
 export const lessonTwoCatalogue=cumulativeCatalogue(lessonOneCatalogue,lessonTwoIntroducedCatalogue)
 
-export const lessonThreeIntroducedCatalogue:readonly ClassroomWord[]=lessonThreeWords.flatMap(item=>[
+export const lessonThreeIntroducedCatalogue:readonly ClassroomWord[]=[{word:'water',thai:'น้ำ',categories:['food'],meaning:{kind:'physical-object',countability:'mass',actionContexts:['drink']}},...lessonThreeWords.flatMap(item=>[
  {...item,word:item.singular,number:'singular' as const},
  {...item,word:item.plural,number:'plural' as const},
-])
+])]
 export const lessonThreeCatalogue=cumulativeCatalogue(lessonTwoCatalogue,lessonThreeIntroducedCatalogue)
 
 // Interactive matrices expose number counterparts without adding unrecorded race questions.

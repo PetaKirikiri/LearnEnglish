@@ -240,6 +240,59 @@ it('keeps pair-only words plural in past tense and exposes new vocabulary catego
  expect(words('.cw-word-options button')).toEqual(['apples','bananas','oranges','sandwiches'])
 })
 
+it('moves the shared clock timeline with the selected verb and keeps plural clocks', async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={{...classroomMatrices['lesson-3'],past:true,initialWord:'phone'}} settings={{audio:false}}/>))
+ const time=()=>host.querySelector('.slot-1 .cw-tense-timeline')?.getAttribute('data-tense')
+ expect(time()).toBe('present')
+ for(const [word,tense,plural] of [['was','past',false],['were','past',true],['are','present',true],['is','present',false]] as const){
+  await click('[data-picker-slot="1"]'); await choose(word)
+  expect(time()).toBe(tense)
+  expect(host.querySelectorAll('.slot-1 .cw-tense-stop')).toHaveLength(3)
+  expect(host.querySelectorAll('.slot-1 .cw-tense-stop.is-current')).toHaveLength(1)
+  expect(!!host.querySelector('.slot-1 .cw-game-icon-clocks')).toBe(plural)
+ }
+})
+
+it('filters vocabulary to learned be words and combines the time and number filters',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={{...classroomMatrices['lesson-3'],past:true,initialWord:'phone'}} settings={{audio:false}}/>))
+ await click('[aria-label="Slot 4: phone"]')
+ await click('[data-category="time"]')
+ expect(words('.cw-word-options button')).toEqual(['is','was'])
+ await click('[aria-label="Plural words"]')
+ expect(host.querySelector('[data-category="time"]')?.getAttribute('aria-pressed')).toBe('true')
+ expect(words('.cw-word-options button')).toEqual(['are','were'])
+ await act(async()=>[...host.querySelectorAll<HTMLButtonElement>('.cw-word-options button')].find(button=>button.querySelector('strong')?.textContent==='were')!.click())
+ expect(host.querySelector('.cw-word-explanation h1')?.textContent).toBe('were')
+ await click('.cw-word-return')
+ expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('Where were the phones?')
+})
+it('keeps the time vocabulary filter within the current lesson',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-2']} settings={{audio:false}}/>))
+ await click('[aria-label="Slot 4: shoes"]')
+ await click('[data-category="time"]')
+ expect(words('.cw-word-options button')).toEqual(['are'])
+ await click('[aria-label="Singular words"]')
+ expect(words('.cw-word-options button')).toEqual(['is'])
+ await click('[data-category="time"]')
+ expect(words('.cw-word-options button')).toContain('shoe')
+})
+
+it('puts tense filters directly on the be-word list and allows clearing them',async()=>{
+ await act(async()=>root.render(<SentenceMatrix lesson={{...classroomMatrices['lesson-3'],past:true,initialWord:'phone'}} settings={{audio:false}}/>))
+ await click('[aria-label="Slot 2: is"]')
+ expect(host.querySelectorAll('[data-tense-filter]')).toHaveLength(3)
+ await click('[data-tense-filter="past"]')
+ expect(words('.cw-word-options button')).toEqual(['was','were'])
+ await click('[data-tense-filter="present"]')
+ expect(words('.cw-word-options button')).toEqual(['is','are'])
+ await click('[data-tense-filter="future"]')
+ expect(words('.cw-word-options button')).toEqual([])
+ expect(host.querySelector('[role="status"]')).not.toBeNull()
+ await click('[data-tense-filter="future"]')
+ expect(words('.cw-word-options button')).toEqual(['is','are','was','were'])
+ expect(host.querySelector('[role="status"]')).toBeNull()
+})
+
 it('changes earlier nouns to their authored counterpart when selecting is or are',async()=>{
  await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-3']} settings={{audio:false}}/>))
  for(const [singular,plural] of [['hotel','hotels'],['watch','watches'],['padel court','padel courts']]){

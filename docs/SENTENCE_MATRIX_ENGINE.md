@@ -83,7 +83,7 @@ Teaching catalogues include every word introduced through the selected lesson. `
 
 ## Student Notes in LINE
 
-The left-hand LINE rich-menu Notes action opens `/english/notes?lesson=2`.
+The left-hand LINE rich-menu Notes action uses the shared LIFF entry with `?lesson=2&view=notes`. Both that destination and `/english/notes?lesson=2` pass through `HomeworkEntry` account recognition and class enrolment before rendering the notes. All three menu buttons enrol the learner on entry; no answer is required. Local development retains its existing preview bypass.
 `src/classroom/MobileNotes.tsx` is its phone-only host: a Lesson 1/2/3 selector
 and the canonical `SentenceMatrix`. Do not mount the classroom rail, Recall,
 practice/game tabs, account header, or legacy word help on this route.
@@ -117,3 +117,27 @@ Optional `MatrixSettings.layout` accepts `density: 'comfortable' | 'compact'` an
 `nounSwapper` and `subjectSwapper` are optional layout-request settings containing `{mode, modes, onChange, label}`. The engine renders the shared toggle above the corresponding yellow block; callers no longer supply arbitrary control markup. Lesson 3 enables both on the answer slide. Name catalogue entries identify `kind: person | place`, so the destination selector cannot produce “at Bia” or “at you”.
 
 The noun swapper always shows the same three positions. Its request `modes` enables interactions; other modes remain visible as ghosted native-disabled buttons. Lessons without subject-mode content request only `noun`. Fade/listening mode continues to hide the entire swapper.
+
+## Construction invariant: reuse the noun block
+
+Every construction requests `SentenceMatrix` with its cumulative `lesson.vocabulary`.
+Lesson hosts must never assemble `MatrixCard`, `MatrixLayout`, `MatrixPicker`,
+`NounGroup`, or `WordTray` themselves. `engineBoundary.test.ts` enforces this boundary
+and the single markup owner for noun groups, dropdowns and vocabulary trays.
+
+`NounGroup` is the same joined yellow determiner/noun shell in Lessons 1, 2 and 3.
+`nounPhraseUnits` requires the determiner, noun and optional preposition as separate
+fields; it rejects an article bundled into the noun. Compound nouns such as
+`air conditioner` remain intact. Action noun teaching opens `MatrixExplanation`,
+the canonical education view, and uses `WordTray.vocabulary` for the existing
+number and topic filters. Do not add a construction-specific replacement.
+
+Present-action objects come from `objectsForAction(verb, lesson.vocabulary)`.
+The cumulative catalogue is the source; semantic compatibility narrows it:
+food for eating, drinkable nouns for drinking, reading materials for reading,
+and places/destinations for going. Authored `meaning.actionContexts` overrides
+broad browsing categories (water is under Food but is drinkable, not edible).
+All compatible singular and plural forms already taught remain available.
+Standalone verbs such as sleeping never acquire an object. New words are added
+once to the cumulative catalogue with their meaning, number metadata and art;
+never add a private lesson picker list.

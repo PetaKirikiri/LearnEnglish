@@ -2,21 +2,21 @@
    Opening the dock changes visibility only, never the sentence's coordinates. */
 .classroom .cw-sentence-board{--tray-height:196px;--tray-tile-width:128px;--tray-tile-height:148px}
 .cw-word-dock{grid-row:3;height:var(--tray-height);min-width:0}
-.cw-word-conveyor{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:8px;position:relative;width:100%;height:100%;padding:30px 0 4px;border-top:1px solid #dce3ec;isolation:isolate}
+.cw-word-conveyor{--choice-fill:#ffd43b;--choice-edge:#bc8b0c;--choice-ink:#18385e;display:grid;grid-template-columns:44px minmax(0,1fr) 44px;grid-template-areas:"previous words next";grid-template-rows:minmax(0,1fr);align-items:center;gap:8px;position:relative;width:100%;height:100%;padding:30px 0 4px;border-top:1px solid #dce3ec;isolation:isolate}
 .cw-word-conveyor[hidden]{display:none}
 .cw-word-conveyor.is-open{animation:matrix-tray-arrive 180ms ease-out both}
-.cw-word-belt{display:flex;align-items:center;gap:14px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;padding:8px 5px 10px;min-width:0;min-height:0;scroll-padding-inline:5px}
+.cw-word-belt{grid-area:words;display:flex;align-items:center;gap:14px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;padding:8px 5px 10px;min-width:0;min-height:0;scroll-padding-inline:5px}
 .cw-word-belt::-webkit-scrollbar{display:none}
 .cw-word-conveyor[data-slot="1"] .cw-word-belt,.cw-word-conveyor[data-slot="2"] .cw-word-belt{justify-content:safe center}
-.cw-word-chip{position:relative;flex:0 0 var(--tray-tile-width);height:var(--tray-tile-height);display:grid;grid-template-rows:52px 2.4em minmax(0,1fr);align-items:center;justify-items:center;gap:3px;padding:10px 8px 8px;border:1px solid #dce3ec;border-radius:12px;background:#fff;color:#18385e;box-shadow:0 3px 0 #dce3ec;scroll-snap-align:center;cursor:pointer;transition:box-shadow 140ms ease,border-color 140ms ease,transform 140ms ease}
+.cw-word-chip{position:relative;flex:0 0 var(--tray-tile-width);height:var(--tray-tile-height);display:grid;grid-template-rows:52px 2.4em minmax(0,1fr);align-items:center;justify-items:center;gap:3px;padding:10px 8px 8px;border:1px solid var(--choice-edge);border-radius:12px;background:var(--choice-fill);color:var(--choice-ink);box-shadow:0 3px 0 var(--choice-edge);scroll-snap-align:center;cursor:pointer;transition:box-shadow 140ms ease,border-color 140ms ease,transform 140ms ease}
 .cw-word-chip strong{display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-size:21px;font-weight:500;line-height:1.2;text-align:center;max-width:100%;overflow-wrap:anywhere}
-.cw-word-chip>span[lang]{font-size:12px;line-height:1.35;text-align:center;max-width:100%;align-self:start;color:#52667e}
+.cw-word-chip>span[lang]{font-size:12px;line-height:1.35;text-align:center;max-width:100%;align-self:start;color:var(--choice-ink)}
 .cw-word-art{display:grid;place-items:center;width:100%;height:52px}
 .classroom .example-matrix .cw-word-chip .vocabulary-picture-art{display:grid;width:64px;height:52px;margin:0}
 .cw-word-chip .vocabulary-picture-art img{width:100%;height:100%;object-fit:contain}
 .cw-word-chip .vocabulary-picture-art:has(img:nth-child(2)) img{width:78%;height:78%}
 .cw-word-chip .cw-game-icon{width:52px;height:52px}
-.cw-word-chip[aria-pressed=true]{border-color:#18385e;box-shadow:0 0 0 2px #18385e,0 4px 0 #18385e14}
+.cw-word-chip[aria-pressed=true]{border-color:#18385e;box-shadow:0 0 0 2px #18385e,0 4px 0 var(--choice-edge)}
 .cw-choice-check{position:absolute;right:7px;top:7px;display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#18385e;color:#fff}
 .cw-choice-check svg{width:14px;height:14px}
 .cw-word-chip:hover:not(:disabled){box-shadow:0 0 0 2px #7e94af,0 4px 0 #18385e14}
@@ -57,11 +57,21 @@
 
 /* Filters belong to the vocabulary rail, above its scrolling words. */
 .cw-word-dock.has-vocabulary-filters{height:calc(var(--tray-height) + 56px)}
-.cw-word-dock.has-vocabulary-filters .cw-word-conveyor{grid-template-rows:44px minmax(0,1fr);padding-top:12px}
-.cw-tray-filters{grid-column:1/-1;display:flex;align-items:center;gap:10px;min-width:0;padding-right:24px}
+.cw-word-dock.has-vocabulary-filters .cw-word-conveyor{grid-template-areas:"filters filters filters" "previous words next";grid-template-rows:44px minmax(0,1fr);padding-top:12px}
+.cw-tray-filters{grid-area:filters;max-width:100%;display:flex;align-items:center;gap:10px;min-width:0;padding-right:24px}
 .cw-tray-filters .cw-number-filter{flex:none}
 .cw-tray-categories{display:flex;align-items:center;gap:6px;overflow-x:auto;min-width:0;scrollbar-width:thin;padding:3px}
 .cw-tray-categories button{display:flex;align-items:center;justify-content:center;gap:5px;flex:none;white-space:nowrap;min-height:38px;padding:4px 10px;border:1px solid #dce3ec;border-radius:10px;background:#fff;color:#18385e;font:inherit;font-size:13px;cursor:pointer}
 .cw-tray-categories button[aria-pressed=true]{background:#eaf2ff;border-color:#1877ef;color:#1767d2}
 .cw-tray-filters .cw-category-icon{width:23px;height:23px}
 @media(max-width:700px){.cw-tray-filters{gap:6px}.cw-tray-categories button{padding-inline:7px;font-size:12px}.cw-tray-filters .cw-number-filter button{width:36px}}
+.cw-tray-categories .cw-game-icon,.cw-tray-categories .vocabulary-picture{width:24px;height:24px;flex:none;margin:0}
+.cw-vocabulary-section .cw-word-dock{--tray-height:196px;--tray-tile-width:128px;--tray-tile-height:148px}
+
+/* Explicit areas keep optional filters out of the word rail at every host size. */
+.cw-belt-previous{grid-area:previous}
+.cw-belt-next{grid-area:next}
+
+/* Choices retain the semantic colour of the matrix slot they replace. */
+.cw-word-conveyor[data-slot="0"]{--choice-fill:#df2944;--choice-edge:#ad1730;--choice-ink:#fff}
+.cw-word-conveyor[data-slot="1"]{--choice-fill:#128247;--choice-edge:#086036;--choice-ink:#fff}

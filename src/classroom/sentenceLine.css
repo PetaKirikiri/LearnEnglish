@@ -99,8 +99,8 @@
 .cw-slot-count{position:absolute;bottom:14px;left:16px;font-size:12px;color:inherit;line-height:1.3}
 .cw-sentence-board .cw-slot-count[aria-label="1 available words"]{display:none}
 .cw-slot-change,.classroom .cw-sentence-board[data-long-word] .cw-slot-change{position:absolute;top:auto;bottom:14px;right:16px;line-height:16px;font-size:20px;color:inherit}
-.classroom .cw-sentence-board .example-matrix .example-unit-trigger:hover,.classroom .cw-sentence-board .example-matrix .example-unit-trigger[aria-expanded=true]{background:var(--slot-fill);box-shadow:0 8px 0 var(--slot-edge);transform:translateY(-2px);filter:brightness(1.04)}
-.classroom .cw-sentence-board .example-matrix .example-unit-trigger:active{transform:translateY(4px);box-shadow:0 2px 0 var(--slot-edge)}
+.classroom .cw-sentence-board .example-matrix .example-unit-trigger:hover,.classroom .cw-sentence-board .example-matrix .example-unit-trigger[aria-expanded=true]{background:var(--slot-fill);box-shadow:0 8px 0 var(--slot-edge);transform:none;filter:brightness(1.04)}
+.classroom .cw-sentence-board .example-matrix .example-unit-trigger:active{transform:none;filter:brightness(.97)}
 .cw-sentence-board .example-meaning-row{margin-top:26px}
 .classroom .cw-sentence-board .cw-noun-group .tonight-slot,.classroom .cw-sentence-board .cw-noun-group .tonight-slot:hover,.classroom .cw-sentence-board .cw-noun-group .tonight-slot[aria-expanded=true]{box-shadow:none;transform:none}
 .classroom .cw-sentence-board .example-matrix .example-unit-trigger:focus-visible{outline:3px solid #1877ef;outline-offset:5px;z-index:1}
@@ -118,13 +118,13 @@
 }
 .classroom .cw-sentence-board .cw-noun-group .tonight-slot{grid-column:auto;grid-row:auto}
 /* Dimensional teaching cues replace the role headings. */
-.cw-sentence-board .cw-slot-role{display:flex;align-items:center;justify-content:center;height:68px;min-height:68px;width:100%;order:-1}
+.cw-sentence-board .cw-slot-role{display:flex;align-items:center;justify-content:center;height:80px;min-height:80px;width:100%;order:-1}
 .cw-game-icon{display:block;width:80px;height:80px;background-image:url('/classroom/icons/location-clock.png');background-repeat:no-repeat;background-size:200% 100%;filter:drop-shadow(0 3px 2px #0002)}
 .cw-game-icon-pin{background-position:left center}
 .cw-game-icon-clock{background-position:right center}
 .classroom .cw-sentence-board .example-matrix .tonight-slot{gap:10px;padding-top:16px}
 @media(max-width:700px){
- .cw-sentence-board .cw-slot-role{height:42px;min-height:42px}
+ .cw-sentence-board .cw-slot-role{height:62px;min-height:62px}
  .cw-game-icon{width:48px;height:48px}
  .classroom .cw-sentence-board .example-matrix .tonight-slot{gap:8px;padding-top:12px}
 }
@@ -153,6 +153,9 @@
 .cw-slot-picker svg{width:22px;height:22px;transition:transform 180ms}
 .cw-slot-picker[aria-expanded=true] svg{transform:rotate(180deg)}
 .cw-slot-picker:hover{background:#fff}
-.cw-slot-picker:focus-visible,.cw-word-conveyor button:focus-visible{outline:3px solid #1877ef;outline-offset:3px}
+.cw-slot-picker:focus-visible{outline:3px solid #1877ef;outline-offset:3px}
+@media(max-width:700px){.cw-slot-picker{right:4px;bottom:4px;width:32px;height:30px;border-radius:9px}}
+@media(prefers-reduced-motion:reduce){.cw-slot-picker svg{transition:none}}
+/* Word selection rail styles live only in sentenceMatrix/wordTray.css. */
 
-@media(max-width:700px){.cw-slot-picker{right:4px;bottom:4px;width:36px;height:32px;border-radius:9px}}
+.cw-game-icon{position:relative}.cw-clock-past{position:absolute;bottom:-3px;left:-5px;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff;color:#128247;font:700 23px/1 sans-serif;box-shadow:0 1px 3px #18385e25}

@@ -1,8 +1,11 @@
+import AgreementPairs from './AgreementPairs'
+import EducationFrame from './EducationFrame'
+import PatternNavigation from './PatternNavigation'
 import ProperNounIcon from './ProperNounIcon'
 import PronounIcon from './PronounIcon'
 import { subjectVerb } from './subjectEngine'
 import MatrixPicker from './MatrixPicker'
-import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { LocationSentenceMatrix, type SentenceMatrixProps } from './SentenceMatrix'
 import { getLanguage } from '../../classroom/language'
 import ExampleLanguage from './ExampleView'
@@ -13,7 +16,6 @@ import Icon from '../../ui/Icon'
 import EducationSectionHeading from './EducationSectionHeading'
 import PronunciationComparison from '../../classroom/pronunciation/PronunciationComparison'
 import { locationWords, people, peopleAudio, locationAnswer, personDetail, type Person, type PeoplePattern } from './peopleLocation'
-import './wordTray.css'
 import './peopleLocation.css'
 import '../../classroom/wordExplanation.css'
 
@@ -41,7 +43,6 @@ export default function PeopleLocationMatrix({lesson,settings={},word:controlled
   const audio=useRef<HTMLAudioElement>(null)
   const restoreRole=useRef<Role|null>(null)
   const restoreLabel=useRef<string|null>(null)
-  const touchX=useRef<number|null>(null)
   const id=useId()
   const verb=subjectVerb(subject)
   const th=getLanguage()==='th'
@@ -78,15 +79,10 @@ export default function PeopleLocationMatrix({lesson,settings={},word:controlled
   if(explaining&&settings.explanations!==false) {
     const selected=valueFor(explaining)
     const gloss=explaining==='person'?subject.thai:explaining==='place'?destination.thai:explaining==='determiner'?'ที่รู้กันว่าหมายถึงที่ไหน':explaining==='at'?'ที่':'อยู่'
-    return <section id={`${id}-explanation`} className="cw-word-explanation cw-people-explanation" style={{'--word-colour':explaining==='verb'?'#128247':'#ffd43b','--word-ink':explaining==='verb'?'#fff':'#18385e'} as CSSProperties} onKeyDown={e=>{if(e.key==='Escape')back()}}>
-      <header className="cw-word-heading">
-        <button type="button" autoFocus className="cw-word-return" onClick={back} aria-label="Back to sentence"><Icon name="back"/></button>
-        <div className="cw-simple-word-title">{iconFor(explaining)}<div><span className="cw-word-category">{category(explaining)}</span><h1>{selected}</h1><p lang="th">{gloss}</p></div></div>
-      </header>
-      <div className="cw-word-body"><article className="cw-reference-sheet">
+    return <EducationFrame id={`${id}-explanation`} selected={selected} category={category(explaining)} colour={explaining==='verb'?'#128247':'#ffd43b'} ink={explaining==='verb'?'#fff':'#18385e'} icon={iconFor(explaining)} gloss={gloss} onBack={back}>
         <section className="cw-reference-word">
           <EducationSectionHeading icon="usage">{th?'การใช้คำนี้':'How it works'}</EducationSectionHeading>
-          {explaining==='verb'||explaining==='person'?<div className="cw-person-pairs" aria-label="Person and verb pairs">{(subjectMode==='name'?personNames:people).map(item=><div key={item.word} data-selected={item.word===subject.word}>{iconFor('person',item.word)}<strong>{item.word}</strong><Icon name="arrow" className="cw-education-arrow"/><b>{subjectVerb(item)}</b></div>)}</div>:<div className="cw-place-example"><span className="cw-place-part"><WordSlotIcon slot={0}/><strong>at</strong></span><Icon name="arrow" className="cw-education-arrow"/><span className="cw-place-part">{iconFor('place')}<strong>{placeMode==='noun'?'the ':''}{destination.word}</strong></span></div>}
+          {explaining==='verb'||explaining==='person'?<AgreementPairs pairs={(subjectMode==='name'?personNames:people).map(item=>({person:item.word,verb:subjectVerb(item),icon:iconFor('person',item.word),selected:item.word===subject.word}))}/>:<div className="cw-place-example"><span className="cw-place-part"><WordSlotIcon slot={0}/><strong>at</strong></span><Icon name="arrow" className="cw-education-arrow"/><span className="cw-place-part">{iconFor('place')}<strong>{placeMode==='noun'?'the ':''}{destination.word}</strong></span></div>}
           {explaining==='determiner'&&<p className="cw-people-example-meaning">{th?'the บอกว่าเป็นสถานที่ที่ผู้พูดและผู้ฟังรู้ว่าหมายถึงที่ไหน ไม่ได้บอกว่ามีหนึ่งหรือหลายแห่ง':'The identifies a place the speaker and listener can identify. It does not tell us one or many.'}</p>}
           {(explaining==='place'||explaining==='verb')&&<p className="cw-people-example-meaning">{th?'ในประโยคนี้ คำกริยาขึ้นอยู่กับคนที่พูดถึง ส่วน at the … บอกว่าอยู่ที่ไหน':'Here the person determines am, is or are. At the … tells us the location.'}</p>}
           <p className="cw-people-example-sentence" lang="en">{sentence.english}</p><p className="cw-people-example-meaning" lang="th">{sentence.thai}</p>
@@ -96,17 +92,10 @@ export default function PeopleLocationMatrix({lesson,settings={},word:controlled
           <EducationSectionHeading icon="words">{th?'เลือกคำ':'Choose a word'}</EducationSectionHeading>
           <div className="cw-word-options" role="group" aria-label="Choose a word">{choicesFor(explaining).map(item=><button type="button" key={item.word} aria-pressed={selected===item.word} onClick={()=>choose(explaining,item.word)}>{iconFor(explaining,item.word)}<strong>{item.word}</strong><span lang="th">{item.thai}</span></button>)}</div>
         </section>}
-      </article></div>
-    </section>
+    </EducationFrame>
   }
   return <section ref={board} className="cw-pattern-stage" data-pattern={pattern} aria-label={pattern==='question'?'Sentence patterns':settings.fadeMode?'Listen to the sentence':sentence.english} onKeyDown={e=>{if(e.key==='Escape')setActive(null)}}>
-    <nav className="cw-pattern-carousel" aria-label="Sentence patterns" onTouchStart={e=>{touchX.current=e.touches[0].clientX}} onTouchEnd={e=>{
-      if(touchX.current!==null){const delta=e.changedTouches[0].clientX-touchX.current;if(Math.abs(delta)>45)switchPattern(delta<0?'answer':'question')};touchX.current=null
-    }}>
-      <button type="button" className="cw-pattern-arrow" aria-label="Previous pattern" disabled={pattern==='question'} onClick={()=>switchPattern('question')}><Icon name="back"/></button>
-      <div className="cw-pattern-tabs">{(['question','answer'] as const).map(mode=><button type="button" key={mode} aria-pressed={pattern===mode} onClick={()=>switchPattern(mode)}><span aria-hidden="true">{mode==='question'?'?':'↳'}</span>{mode==='question'?(th?'ถาม':'Ask'):(th?'ตอบ':'Answer')}</button>)}</div>
-      <button type="button" className="cw-pattern-arrow" aria-label="Next pattern" disabled={pattern==='answer'} onClick={()=>switchPattern('answer')}><Icon name="arrow"/></button>
-    </nav>
+    <PatternNavigation pattern={pattern} onChange={switchPattern}/>
     {pattern==='question'?<LocationSentenceMatrix lesson={{...lesson,pattern:undefined,plural:true}} settings={settings} word={controlledWord??localWord} onWord={value=>{setLocalWord(value);onWord?.(value)}} wordScores={wordScores}/>:<section className="cw-sentence-board cw-people-board" data-pattern="answer" aria-label={settings.fadeMode?'Listen to the sentence':sentence.english}>
     <audio ref={audio} preload="none"/>
     <div key={pattern} className="cw-sentence-display">

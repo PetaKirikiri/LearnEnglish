@@ -29,7 +29,7 @@ it('includes earlier vocabulary categories and resolves existing audio for every
 
 it('adds authored earlier plural forms to matrices without expanding recorded question catalogues',()=>{
  expect(lessonTwoMatrixCatalogue).toHaveLength(76)
- expect(lessonThreeMatrixCatalogue).toHaveLength(100)
+ expect(lessonThreeMatrixCatalogue).toHaveLength(101)
  expect(lessonTwoCatalogue.some(w=>w.word==='hotels')).toBe(false)
  expect(lessonTwoMatrixCatalogue.find(w=>w.word==='hotels')).toMatchObject({singular:'hotel',plural:'hotels',number:'plural'})
  expect(lessonTwoMatrixCatalogue.find(w=>w.word==='watches')).toMatchObject({singular:'watch',plural:'watches',number:'plural'})

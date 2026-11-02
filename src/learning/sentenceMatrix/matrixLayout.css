@@ -86,6 +86,24 @@
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group .slot-3{border-radius:24px 0 0 24px;border-right:0}
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group .slot-1{--slot-fill:#ff9f1c;--slot-edge:#c4860c;--slot-ink:#18385e;border-radius:0 24px 24px 0;border-left:1px solid #bb790940}
 @container matrix-stage (max-width:600px){.matrix-agreement-group{grid-template-columns:1fr 1fr}}
+/* Non-noun action slots use the normal independent card layout. */
+.matrix-role-group{display:grid;grid-template-columns:.8fr 1.4fr;gap:var(--matrix-gap);min-width:0;position:relative}
+.matrix-role-group[data-group-size="1"]{grid-template-columns:1fr}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-action-complement=true] .tonight-slots,
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-action-complement=true] .matrix-layout-toolbar{grid-template-columns:1.8fr 2.2fr}
+@container matrix-stage (max-width:600px){
+ .classroom .cw-sentence-board .matrix-layout.example-matrix[data-action-complement=true] .tonight-slots{grid-template-columns:1fr}
+ .classroom .cw-sentence-board .matrix-layout.example-matrix[data-action-complement=true] .matrix-layout-leading{grid-template-columns:var(--matrix-leading)}
+}
+
+/* Raster vocabulary art must not inherit the clock/pin sprite background. */
+.classroom img.cw-game-icon{background:none;object-fit:contain}
+/* Action-mode toggles sit above their yellow block, not between action and object. */
+.classroom .cw-sentence-board .matrix-layout[data-matrix-layout=action-answer]:not([data-action-complement=true])[data-card-count="4"] .matrix-layout-noun-control{display:grid;grid-template-columns:1fr 1fr;gap:var(--matrix-gap)}
+.classroom .cw-sentence-board .matrix-layout[data-matrix-layout=action-answer]:not([data-action-complement=true])[data-card-count="4"] .matrix-layout-noun-control>.cw-noun-mode-toggle{grid-column:2;justify-self:center}
+.classroom .cw-sentence-board .matrix-layout[data-matrix-layout=action-question] .matrix-layout-noun-control{display:grid;grid-template-columns:.8fr 1.4fr;gap:var(--matrix-gap)}
+.classroom .cw-sentence-board .matrix-layout[data-matrix-layout=action-question] .matrix-layout-noun-control>.cw-noun-mode-toggle{grid-column:1;justify-self:center}
+
 
 /* Standalone noun phrase: same cards, with no reserved controls or other slots. */
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout=noun-phrase][data-density]{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;gap:0}

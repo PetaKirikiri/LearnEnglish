@@ -5,14 +5,14 @@ import { lessonThreePeopleQuestions, lessonThreeAnswerQuestions, lessonThreeRevi
 import { lessonOneCatalogue,lessonTwoCatalogue,lessonThreeCatalogue,lessonThreeIntroducedCatalogue } from '../classroom/wordCatalogue'
 import { people,peopleSentence,locationWords,replyPerson } from '../learning/sentenceMatrix/peopleLocation'
 import { defaultGuide } from '../classroom/pronunciation/guides'
-it('adds 12 pictured noun families without leaking future words into earlier lessons',()=>{
+it('adds 12 pictured noun families and water without leaking future words into earlier lessons',()=>{
  expect(lessonOneCatalogue).toHaveLength(20)
  expect(lessonTwoCatalogue).toHaveLength(57)
- expect(lessonThreeIntroducedCatalogue).toHaveLength(24)
- expect(lessonThreeCatalogue).toHaveLength(81)
- expect(new Set(lessonThreeCatalogue.map(item=>item.word)).size).toBe(81)
+ expect(lessonThreeIntroducedCatalogue).toHaveLength(25)
+ expect(lessonThreeCatalogue).toHaveLength(82)
+ expect(new Set(lessonThreeCatalogue.map(item=>item.word)).size).toBe(82)
  for(const item of lessonThreeIntroducedCatalogue){
-  expect(existsSync(`public/classroom/icons/level-three/${item.singular}.png`)).toBe(true)
+  expect(existsSync(item.word==='water'?'public/classroom/icons/actions/water.png':`public/classroom/icons/level-three/${item.singular}.png`)).toBe(true)
   expect(item.categories?.length).toBeGreaterThan(0)
   expect(defaultGuide(item.word).english.drawn).toBe(true)
  }

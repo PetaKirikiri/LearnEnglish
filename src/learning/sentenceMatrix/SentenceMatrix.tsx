@@ -1,14 +1,14 @@
+import ActionMatrix from './ActionMatrix'
 import MatrixPicker from './MatrixPicker'
 import { subjectModes as availableSubjectModes } from './subjectEngine'
 import { type NounMode, type NounSwapperRequest } from './NounModeToggle'
 import SubjectQuestionMatrix from './SubjectQuestionMatrix'
-import PeopleLocationMatrix from './PeopleLocationMatrix'
 import WordTray from './WordTray'
-import './wordTray.css'
+import PeopleLocationMatrix from './PeopleLocationMatrix'
 import VocabularyPicture from '../VocabularyPicture'
 import { t } from '../../classroom/language'
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
-import { flushSync } from 'react-dom'
+import useMatrixEducation from './useMatrixEducation'
 import WordExplanation, { type Determiner } from './MatrixExplanation'
 import ExampleLanguage from '../ExampleLanguage'
 import Icon from '../../ui/Icon'
@@ -22,6 +22,7 @@ export default function SentenceMatrix(props: SentenceMatrixProps) {
   const configured = {...props.lesson.settings,...props.settings}
   const settings = configured.fadeMode ? {...configured,explanations:false,wordPicker:false,explanationSelection:false} : configured
   const scope = JSON.stringify([props.lesson.id,props.lesson.pattern,props.lesson.subjectModes,props.lesson.plural,props.lesson.initialOwner,props.lesson.past,props.lesson.owners,props.lesson.initialTense,props.lesson.initialWord,props.lesson.vocabulary,settings])
+  if(props.lesson.pattern==='present-action') return <ActionMatrix key={scope} {...props} settings={settings}/>
   if(props.lesson.pattern==='people-location') return <PeopleLocationMatrix key={scope} {...props} settings={settings}/>
   return <LocationSentenceMatrix key={scope} {...props} settings={settings}/>
 
@@ -33,8 +34,6 @@ export function LocationSentenceMatrix({lesson,settings={},word:controlledWord,o
   const nounSwapper:NounSwapperRequest={modes:subjectModes?availableSubjectModes(subjectModes):['noun'],mode:nounMode,onChange:mode=>{setActive(null);setNounMode(mode)}}
   const audioSource=lesson.audio?.(word,owner,verb)
   const open = settings.wordPicker !== false && active !== null
-  const [explaining, setExplaining] = useState<number | null>(null)
-  const restoreSlot = useRef<number | null>(null)
   const recording = useRef<HTMLAudioElement>(null)
   const [audioError, setAudioError] = useState(false)
   useEffect(()=>{const player=recording.current;return()=>player?.pause()},[word,owner,verb])
@@ -43,46 +42,9 @@ export function LocationSentenceMatrix({lesson,settings={},word:controlledWord,o
   const choicesId = useId()
   const explanationId = useId()
   const board = useRef<HTMLElement>(null)
-  const motion = useRef<ViewTransition | null>(null)
-  function explain(slot: number | null) {
-    motion.current?.skipTransition()
-    const selectedSlot = slot ?? explaining
-    if (slot === null) restoreSlot.current = explaining
-    const mark = () => {
-      const source = board.current?.querySelector<HTMLElement>(`.slot-${selectedSlot}.example-unit-trigger`)
-      const target = document.getElementById(explanationId)?.querySelector<HTMLElement>('.cw-simple-word-title')
-      const icon = (source ?? target)?.querySelector<HTMLElement>('.cw-game-icon')
-      const word = (source ?? target)?.querySelector<HTMLElement>(source ? '.example-source' : 'h1')
-      if (icon) icon.style.viewTransitionName = 'classroom-word-icon'
-      if (word) word.style.viewTransitionName = 'classroom-word-label'
-    }
-    const update = () => {
-      flushSync(() => { setActive(null); setExplaining(slot) })
-      mark()
-    }
-    if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      mark()
-      document.documentElement.dataset.wordMotion = slot === null ? 'back' : 'open'
-      const transition = document.startViewTransition(update)
-      motion.current = transition
-      void transition.finished.finally(() => {
-        if (motion.current !== transition) return
-        motion.current = null
-        delete document.documentElement.dataset.wordMotion
-        document.querySelectorAll<HTMLElement>('[style*="view-transition-name"]').forEach(element => {
-          if (element.style.viewTransitionName.startsWith('classroom-word-')) element.style.removeProperty('view-transition-name')
-        })
-      })
-    } else update()
-  }
-  useEffect(() => {
-    if (explaining === null && restoreSlot.current !== null) {
-      board.current?.querySelector<HTMLButtonElement>(`.slot-${restoreSlot.current}.example-unit-trigger`)?.focus({preventScroll:true})
-      restoreSlot.current = null
-    }
-  }, [explaining])
+  const {explaining,explain}=useMatrixEducation(board,explanationId,()=>setActive(null))
   if(subjectModes&&nounMode!=='noun')return <SubjectQuestionMatrix config={subjectModes} initialVerb={verb==='is'||verb==='are'?verb:undefined} mode={nounMode} swapper={nounSwapper} settings={settings}/>
-  if (settings.explanations !== false && explaining !== null) return <WordExplanation id={explanationId} key={explaining} slot={explaining} value={owner} onChange={setOwner} onBack={()=>explain(null)} word={word} thai={item.thai} onWord={onWord} catalogue={catalogue} verb={verb} onVerb={verbs.length>1 ? chooseVerb : undefined} verbs={verbs} owners={owners} allowSelection={settings.explanationSelection !== false} canChooseVerb={canChooseVerb}/>
+  if (settings.explanations !== false && explaining !== null) return <WordExplanation id={explanationId} key={explaining} slot={explaining} value={owner} onChange={setOwner} onBack={()=>explain(null)} word={word} thai={item.thai} onWord={onWord} catalogue={catalogue} verb={verb} onVerb={verbs.length>1 ? chooseVerb : undefined} onExplainVerb={value=>{chooseVerb(value);explain(1)}} verbs={verbs} owners={owners} allowSelection={settings.explanationSelection !== false} canChooseVerb={canChooseVerb}/>
   function closeChoices() {
     setActive(null)
     board.current?.querySelector<HTMLButtonElement>(`[data-picker-slot="${active}"]`)?.focus({preventScroll:true})

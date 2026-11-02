@@ -1,3 +1,4 @@
+import RandomMatrix from '../learning/sentenceMatrix/RandomMatrix'
 import { lessonThreeStages } from '../race/lessonThreeQuestions'
 import { classroomMatrices } from './matrixLessons'
 import { lessonTwoStages } from './lessonTwoContent'
@@ -22,12 +23,9 @@ function Heading({ page, children }: { page: LessonPage; children?: ReactNode })
 }
 
 function PanelHeader({ page, action, lessonNumber = 1 }: { page: LessonPage; action?: ReactNode; lessonNumber?:number }) {
-  return <header className="cw-panel-header"><span className="cw-panel-lesson">{t(`Lesson ${String(lessonNumber).padStart(2,'0')}`)}</span><div className="cw-panel-header-main"><h1 id="note-title">{lessonNumber===3?'Where is the…?':t(lessonTitles[page])}</h1>{action}</div></header>
+  return <header className="cw-panel-header"><span className="cw-panel-lesson">{t(`Lesson ${String(lessonNumber).padStart(2,'0')}`)}</span><div className="cw-panel-header-main"><h1 id="note-title">{lessonNumber===3?'Where…? · What…doing?':t(lessonTitles[page])}</h1>{action}</div></header>
 }
 
-function Recall({ word, onWord }: { word: HolidayWord; onWord: (word: HolidayWord) => void }) {
-  return <div className="cw-sentence-panel"><PanelHeader page="recall"/><div className="cw-sentence-workspace"><SentenceLine lesson={classroomMatrices['lesson-1']} word={word} onWord={onWord}/></div></div>
-}
 
 function Meaning({ word, onWord }: { word: HolidayWord; onWord: (word: HolidayWord) => void }) {
   return <div className="cw-sentence-panel"><PanelHeader page="idea"/><div className="cw-sentence-workspace"><SentenceLine lesson={classroomMatrices['lesson-1']} word={word} onWord={onWord}/></div></div>
@@ -50,7 +48,9 @@ export default function Lesson({ page, lessonId = 'lesson-1' }: { page: LessonPa
   const [word, setWord] = useState<HolidayWord>('hotel')
   const [lessonTwoWord, setLessonTwoWord] = useState('shoes')
   const [lessonThreeWord,setLessonThreeWord]=useState('hotel')
-  if(lessonId==='lesson-3') return <div lang={language} style={{display:'contents'}}><LanguageSwitch/>{page==='practice'?<ClassroomRace lessonId="lesson-3" stages={lessonThreeStages}/>:<div className="cw-sentence-panel"><PanelHeader page={page} lessonNumber={3}/><div className="cw-sentence-workspace"><SentenceLine lesson={classroomMatrices['lesson-3']} word={lessonThreeWord} onWord={setLessonThreeWord}/></div></div>}</div>
+  const [construction,setConstruction]=useState<'location'|'action'>('action')
+  if(page==='recall')return <div lang={language} className="cw-sentence-panel"><div className="cw-sentence-workspace"><RandomMatrix key={lessonId} lesson={classroomMatrices[lessonId==='lesson-3'?'lesson-3':lessonId==='lesson-2'?'lesson-2':'lesson-1']}/></div></div>
+  if(lessonId==='lesson-3') return <div lang={language} style={{display:'contents'}}><LanguageSwitch/>{page==='practice'?<ClassroomRace lessonId="lesson-3" stages={lessonThreeStages}/>:<div className="cw-sentence-panel"><PanelHeader page={page} lessonNumber={3}/><div className="cw-sentence-workspace"><div className="cw-pattern-stage"><nav className="cw-pattern-carousel" aria-label="Construction"><div className="cw-pattern-tabs"><button aria-pressed={construction==='location'} onClick={()=>setConstruction('location')}>Where…?</button><button aria-pressed={construction==='action'} onClick={()=>setConstruction('action')}>What…doing?</button></div></nav>{construction==='action'?<SentenceLine lesson={{...classroomMatrices['lesson-3'],id:'lesson-3-actions',pattern:'present-action'}}/>:<SentenceLine lesson={classroomMatrices['lesson-3']} word={lessonThreeWord} onWord={setLessonThreeWord}/>}</div></div></div>}</div>
   if(lessonId==='lesson-2') return <div lang={language} style={{display:'contents'}}><LanguageSwitch/>{page==='practice'?<ClassroomRace lessonId="lesson-2" stages={lessonTwoStages}/>:<div className="cw-sentence-panel"><PanelHeader page={page} lessonNumber={2}/><div className="cw-sentence-workspace"><SentenceLine lesson={classroomMatrices['lesson-2']} word={lessonTwoWord} onWord={setLessonTwoWord}/></div></div>}</div>
-  return <div lang={language} style={{display:'contents'}}><LanguageSwitch/>{page === 'recall' ? <Recall word={word} onWord={setWord}/> : page === 'idea' ? <Meaning word={word} onWord={setWord}/> : page === 'example' ? <WorkedExample word={word} onWord={setWord}/> : page === 'mistake' ? <Mistake word={word}/> : page === 'practice' ? <ClassroomRace/> : <Review word={word} onWord={setWord}/>}</div>
+  return <div lang={language} style={{display:'contents'}}><LanguageSwitch/>{page === 'idea' ? <Meaning word={word} onWord={setWord}/> : page === 'example' ? <WorkedExample word={word} onWord={setWord}/> : page === 'mistake' ? <Mistake word={word}/> : page === 'practice' ? <ClassroomRace/> : <Review word={word} onWord={setWord}/>}</div>
 }

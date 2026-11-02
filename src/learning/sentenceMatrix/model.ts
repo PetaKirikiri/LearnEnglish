@@ -1,14 +1,14 @@
 import type { SubjectModeConfig } from './subjectEngine'
 import type { VocabularyCategory } from './vocabularyCategories'
-export type ClassroomWord = { word:string; thai:string; singular?:string; plural?:string; number?:'singular'|'plural'; pairOnly?:boolean; categories?:readonly VocabularyCategory[]; meaning?:import('../sentenceRules/blueprints').WordMeaning }
-export type Determiner = 'the' | 'my' | 'your' | 'his' | 'her'
+export type ClassroomWord = { indefiniteArticle?:'a'|'an'; classifierThai?:string; word:string; thai:string; singular?:string; plural?:string; number?:'singular'|'plural'; pairOnly?:boolean; categories?:readonly VocabularyCategory[]; meaning?:import('../sentenceRules/blueprints').WordMeaning }
+export type Determiner = 'a' | 'an' | 'the' | 'my' | 'your' | 'his' | 'her'
 export type BeVerb = 'is' | 'are' | 'was' | 'were'
 export type Tense = 'present' | 'past'
 export const isPluralVerb = (verb:BeVerb) => verb==='are'||verb==='were'
 export const tenseForVerb = (verb:BeVerb):Tense => verb==='was'||verb==='were'?'past':'present'
 export type MatrixSettings = import('../wordProgress/model').FadeSettings & {
-  /** Retain picture cues while the written words fade. */
   keepIconsWhenFading?: boolean
+  translations?:boolean
   /** Persist assessed answers independently from visual support. */
   trackWords?: boolean
   /** Open a word's educational window by pressing its card. */
@@ -23,7 +23,7 @@ export type MatrixSettings = import('../wordProgress/model').FadeSettings & {
 }
 export type MatrixLesson = {
   id: string
-  pattern?: 'people-location'
+  pattern?: 'people-location' | 'present-action'
   subjectModes?: SubjectModeConfig
   vocabulary: readonly ClassroomWord[]
   plural: boolean
@@ -38,7 +38,7 @@ export type MatrixLesson = {
 export const determiners = [
   {word:'the',thai:'ที่กำลังพูดถึง'}, {word:'my',thai:'ของฉัน'}, {word:'your',thai:'ของคุณ'},
 ] as const
-export const allDeterminers = [...determiners,{word:'his',thai:'ของเขา (ผู้ชาย)'},{word:'her',thai:'ของเธอ (ผู้หญิง)'}] as const
+export const allDeterminers = [...determiners,{word:'a',thai:'หนึ่ง'},{word:'an',thai:'หนึ่ง'},{word:'his',thai:'ของเขา (ผู้ชาย)'},{word:'her',thai:'ของเธอ (ผู้หญิง)'}] as const
 export const lessonDeterminers = (lesson:MatrixLesson) => allDeterminers.filter(item=>(lesson.owners ?? ['the','my','your']).includes(item.word))
 export const lessonVerbs = (lesson:MatrixLesson):{word:BeVerb;thai:string}[] => [
  {word:'is' as const,thai:'หนึ่งสิ่ง · ตอนนี้'},

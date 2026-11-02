@@ -1,3 +1,4 @@
+import AgreementPairs from './AgreementPairs'
 import ProperNounIcon from './ProperNounIcon'
 import PronounIcon from './PronounIcon'
 import MatrixPicker from './MatrixPicker'
@@ -32,7 +33,7 @@ export default function SubjectQuestionMatrix({config,initialVerb,mode,swapper,s
   return <section className="cw-word-explanation" id={`${id}-explanation`}>
    <header className="cw-word-heading"><button type="button" className="cw-word-return" aria-label="Back to sentence" onClick={()=>setExplaining(null)}><Icon name="back"/></button><div className="cw-simple-word-title">{icons[explaining]}<div><span className="cw-word-category">{explaining===0?(th?'คำถาม':'Question'):explaining===1?(th?'คำกริยา':'Verb · be'):mode==='pronoun'?(th?'คำสรรพนาม':'Pronoun'):(th?'ชื่อเฉพาะ':'Proper noun')}</span><h1>{word}</h1><p>{units[explaining].thai}</p></div></div></header>
    <div className="cw-word-body"><article className="cw-reference-sheet"><section><EducationSectionHeading icon="usage">{th?'การใช้คำนี้':'How it works'}</EducationSectionHeading>
-    <p>{mode==='pronoun'?(th?'ใช้คำสรรพนามแทนคนที่พูดถึง รูปคำกริยาเปลี่ยนตามคำสรรพนาม':'A pronoun stands for the person being discussed. The verb agrees with that pronoun.'):(th?'ชื่อเฉพาะเหล่านี้วางหลังคำกริยาได้โดยตรง โดยไม่เติม the':'These names go directly after the verb, without the.')}</p><div className="cw-person-pairs">{choices.map(choice=><div key={choice.word}><strong>{choice.word}</strong><Icon name="arrow" className="cw-education-arrow"/><b>{subjectVerb(choice)}</b></div>)}</div>
+    <p>{mode==='pronoun'?(th?'ใช้คำสรรพนามแทนคนที่พูดถึง รูปคำกริยาเปลี่ยนตามคำสรรพนาม':'A pronoun stands for the person being discussed. The verb agrees with that pronoun.'):(th?'ชื่อเฉพาะเหล่านี้วางหลังคำกริยาได้โดยตรง โดยไม่เติม the':'These names go directly after the verb, without the.')}</p><AgreementPairs question pairs={choices.map(choice=>({person:choice.word,verb:subjectVerb(choice),icon:subjectIconFor(choice.word),selected:choice.word===item.word}))}/>
     <p className="cw-people-example-sentence">{english}</p><p className="cw-people-example-meaning" lang="th">{thai}</p>
    </section><PronunciationComparison word={word}/>
    {explaining===2&&settings.explanationSelection!==false&&<section><EducationSectionHeading icon="words">{th?'เลือกคำ':'Choose a word'}</EducationSectionHeading><div className="cw-word-options">{choices.map(choice=><button key={choice.word} type="button" aria-pressed={choice.word===item.word} onClick={()=>choose(choice.word)}>{subjectIconFor(choice.word)}<strong>{choice.word}</strong><span>{choice.thai}</span></button>)}</div></section>}

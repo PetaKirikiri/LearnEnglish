@@ -1,6 +1,9 @@
 /* Let the carousel and sentence share the full classroom width. */
 .cw-pattern-stage{display:flex;flex-direction:column;flex:1;min-width:0;width:100%}
 .cw-pattern-carousel{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 auto 12px;touch-action:pan-y}
+/* Education replaces pattern navigation, including navigation owned by a
+   containing construction. Scoped to this stage so other engines stay usable. */
+.cw-pattern-stage:has(.cw-word-explanation) > .cw-pattern-carousel{display:none}
 .cw-pattern-tabs{display:flex;gap:4px;padding:4px;background:#edf3fb;border-radius:22px}
 .cw-pattern-tabs button,.cw-pattern-arrow{border:0;cursor:pointer;color:#345778;min-height:44px}
 .cw-pattern-tabs button{display:flex;align-items:center;justify-content:center;gap:10px;background:transparent;border-radius:18px;padding:10px 24px;font:inherit;font-weight:700}

@@ -1,3 +1,4 @@
+import './wordTray.css'
 import type { ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import Icon from '../../ui/Icon'
@@ -8,8 +9,12 @@ import { categoriesForWord, grammaticalNumber, vocabularyCategories } from './vo
 import type { ClassroomWord } from './model'
 import { getLanguage } from '../../classroom/language'
 
+export type WordChoiceGroup = {id:string;en:string;th:string;words:readonly string[];icon?:ReactNode}
+
 /** A fixed-height selection rail. Scrolling this rail never scrolls the lesson. */
-export default function WordTray({id,active,choices,selected,canChoose,onChoose,onClose,renderIcon,vocabulary}: {
+export default function WordTray({id,active,choices,selected,canChoose,onChoose,onClose,renderIcon,vocabulary,groups=[],reserveFilters=false}: {
+  reserveFilters?:boolean;
+  groups?:readonly WordChoiceGroup[];
   vocabulary?:readonly ClassroomWord[];renderIcon?:(word:string)=>ReactNode;id:string;active:number|null;choices:readonly {word:string;thai:string}[];selected:string;
   canChoose:(word:string)=>boolean;onChoose:(word:string)=>void;onClose:()=>void;
 }) {
@@ -22,7 +27,7 @@ export default function WordTray({id,active,choices,selected,canChoose,onChoose,
   const visibleChoices=vocabulary?choices.filter(choice=>{
     const word=vocabulary.find(word=>word.word===choice.word)
     return word && (!numberFilter || grammaticalNumber(word)===numberFilter) && (categoryFilter==='all' || categoriesForWord(word).some(category=>category===categoryFilter))
-  }):choices
+  }):categoryFilter==='all'?choices:choices.filter(choice=>groups.find(group=>group.id===categoryFilter)?.words.includes(choice.word))
   const available=visibleChoices.filter(choice=>canChoose(choice.word))
   function resetScroll(){if(belt.current)belt.current.scrollLeft=0}
   const cursorIndex=Math.max(0,available.findIndex(choice=>choice.word===cursor))
@@ -45,27 +50,28 @@ export default function WordTray({id,active,choices,selected,canChoose,onChoose,
     const next=buttons[Math.max(0,Math.min(buttons.length-1,(focused<0?selectedIndex:focused)+direction))]
     if(next) reveal(next,true)
   }
-  return <div className={`cw-word-dock${vocabulary?' has-vocabulary-filters':''}`}>
+  return <div className={`cw-word-dock${vocabulary||groups.length||reserveFilters?' has-vocabulary-filters':''}`}>
     <div className={`cw-word-conveyor${active!==null?' is-open':''}`} id={id} hidden={active===null} data-slot={active}>
-      {vocabulary && <div className="cw-tray-filters" aria-label="Vocabulary filters">
-        <div className="cw-number-filter" role="group" aria-label="Filter vocabulary by number">
+      {(vocabulary||groups.length>0) && <div className="cw-tray-filters" aria-label="Vocabulary filters">
+        {vocabulary && <div className="cw-number-filter" role="group" aria-label="Filter vocabulary by number">
           {(['singular','plural'] as const).map(number=><button key={number} type="button" aria-label={number==='singular'?'Singular words':'Plural words'} title={number==='singular'?'Singular words':'Plural words'} aria-pressed={numberFilter===number} aria-controls={`${id}-belt`} onClick={()=>{
             setNumberFilter(numberFilter===number?null:number)
-            if(categoryFilter!=='all'&&!vocabulary.some(word=>grammaticalNumber(word)===number&&categoriesForWord(word).some(category=>category===categoryFilter)))setCategoryFilter('all')
+            if(categoryFilter!=='all'&&!vocabulary!.some(word=>grammaticalNumber(word)===number&&categoriesForWord(word).some(category=>category===categoryFilter)))setCategoryFilter('all')
             resetScroll()
           }}><WordSlotIcon slot={3} plural={number==='plural'}/></button>)}
-        </div>
+        </div>}
         <div className="cw-tray-categories" role="group" aria-label="Vocabulary categories">
           <button type="button" aria-pressed={categoryFilter==='all'} onClick={()=>{setCategoryFilter('all');resetScroll()}}><VocabularyCategoryIcon category="all"/>{th?'ทั้งหมด':'All'}</button>
+          {groups.map(group=><button key={group.id} type="button" data-category={group.id} aria-pressed={categoryFilter===group.id} onClick={()=>{setCategoryFilter(categoryFilter===group.id?'all':group.id);resetScroll()}}>{group.icon}{th?group.th:group.en}</button>)}
           {categories.map(category=><button key={category.id} type="button" data-category={category.id} aria-pressed={categoryFilter===category.id} onClick={()=>{
             setCategoryFilter(categoryFilter===category.id?'all':category.id)
-            if(numberFilter&&!vocabulary.some(word=>grammaticalNumber(word)===numberFilter&&categoriesForWord(word).includes(category.id)))setNumberFilter(null)
+            if(numberFilter&&!vocabulary!.some(word=>grammaticalNumber(word)===numberFilter&&categoriesForWord(word).includes(category.id)))setNumberFilter(null)
             resetScroll()
           }}><VocabularyCategoryIcon category={category.id}/>{th?category.th:category.en}</button>)}
         </div>
       </div>}
       <button type="button" className="cw-belt-close" aria-label="Close word picker" onClick={onClose}><Icon name="close"/></button>
-      <button type="button" className="cw-belt-arrow" aria-label="Previous words" disabled={cursorIndex===0} onClick={()=>move(-1)}><Icon name="back"/></button>
+      <button type="button" className="cw-belt-arrow cw-belt-previous" aria-label="Previous words" disabled={cursorIndex===0} onClick={()=>move(-1)}><Icon name="back"/></button>
       <div className="cw-word-belt" id={`${id}-belt`} ref={belt} role="group" aria-label="Choose a word" onKeyDown={event=>{
         if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();move(event.key==='ArrowRight'?1:-1)}
         if(event.key==='Home'||event.key==='End'){event.preventDefault();move(event.key==='Home'?-choices.length:choices.length)}
@@ -77,7 +83,7 @@ export default function WordTray({id,active,choices,selected,canChoose,onChoose,
           {selected===choice.word && <span className="cw-choice-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 4 4 10-10"/></svg></span>}
         </button>)}
       </div>
-      <button type="button" className="cw-belt-arrow" aria-label="Next words" disabled={available.length===0||cursorIndex===available.length-1} onClick={()=>move(1)}><Icon name="arrow"/></button>
+      <button type="button" className="cw-belt-arrow cw-belt-next" aria-label="Next words" disabled={available.length===0||cursorIndex===available.length-1} onClick={()=>move(1)}><Icon name="arrow"/></button>
     </div>
   </div>
 }
