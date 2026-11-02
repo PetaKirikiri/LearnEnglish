@@ -14,14 +14,14 @@ import BinaryAnswerZone, {type BinaryChoice} from './BinaryAnswerZone'
 import './phonePractice.css'
 import './numberFoundation.css'
 import '../classroom/sentenceLine.css'
-type Saved={version:3;module:1|2|3;sentenceComplete:boolean;deck:NumberPrompt[];answers:boolean[];picked:number|null;numberComplete:boolean}
+type Saved={version:3;manualLevel?:boolean;module:1|2|3;sentenceComplete:boolean;deck:NumberPrompt[];answers:boolean[];picked:number|null;numberComplete:boolean}
 function fresh(module:1|2|3,user?:string):Saved{return {version:3,module,deck:scheduledNumberDeck(module,readRecall(user)),answers:[],picked:null,numberComplete:false,sentenceComplete:false}}
 function load(user?:string,minimumModule:1|3=1):Saved{
  try{
   const saved=JSON.parse(localStorage.getItem(foundationKey(user))??'null')
-  if(saved&&[1,2,3].includes(saved.module)&&Array.isArray(saved.answers)&&saved.answers.length<=30&&saved.answers.every((a:unknown)=>typeof a==='boolean')&&[null,0,1].includes(saved.picked)&&Array.isArray(saved.deck)&&saved.deck.length<=30&&saved.answers.length<=saved.deck.length&&new Set(saved.deck.map((q:NumberPrompt)=>q.id)).size===saved.deck.length&&saved.deck.every((q:NumberPrompt)=>{const item=numberItem(q.word);return item&&q.plural===item.pluralForm&&q.thai===item.thai&&q.audioUrl===numberAudio(q.word)})&&(saved.picked===null||saved.answers.length>0)&&(saved.module===1||saved.numberComplete===true||minimumModule===3)&&(saved.module!==3||saved.sentenceComplete===true||minimumModule===3)){
+  if(saved&&[1,2,3].includes(saved.module)&&Array.isArray(saved.answers)&&saved.answers.length<=30&&saved.answers.every((a:unknown)=>typeof a==='boolean')&&[null,0,1].includes(saved.picked)&&Array.isArray(saved.deck)&&saved.deck.length<=30&&saved.answers.length<=saved.deck.length&&new Set(saved.deck.map((q:NumberPrompt)=>q.id)).size===saved.deck.length&&saved.deck.every((q:NumberPrompt)=>{const item=numberItem(q.word);return item&&q.plural===item.pluralForm&&q.thai===item.thai&&q.audioUrl===numberAudio(q.word)})&&(saved.picked===null||saved.answers.length>0)&&(saved.manualLevel===true||saved.module===1||saved.numberComplete===true||minimumModule===3)&&(saved.manualLevel===true||saved.module!==3||saved.sentenceComplete===true||minimumModule===3)){
    if(saved.module===3&&saved.deck.some((q:NumberPrompt)=>!['is','are'].includes(q.verb??'')))return {...fresh(3,user),numberComplete:saved.numberComplete===true,sentenceComplete:saved.sentenceComplete===true}
-   if(saved.module<minimumModule)return fresh(minimumModule,user)
+   if(!saved.manualLevel&&saved.module<minimumModule)return fresh(minimumModule,user)
    if(!saved.version&&saved.module===2)return {...fresh(2,user),numberComplete:true}
    return {...saved,version:3,deck:saved.deck.map((q:NumberPrompt)=>({...q,id:/^[0-2]-/.test(q.id)?crypto.randomUUID():q.id})),sentenceComplete:saved.sentenceComplete===true}
   }
@@ -52,8 +52,8 @@ export default function NumberFoundation({userId,minimumModule=1}:{userId?:strin
  const fade=support>0&&saved.picked===null
  const fadeWords=[...wordTokens(question.word),...(saved.module===2?[question.plural?'are':'is']:[])]
  const fadeScores=Object.fromEntries(fadeWords.map(word=>[wordId(word),support]))
- // Silent local development must remain interactive without playing classroom audio.
- const canAnswer=heard||import.meta.env.DEV
+ // Audio failures or autoplay restrictions must never leave answers unclickable.
+ const canAnswer=true
  const choices=saved.module!==3?['หนึ่งสิ่ง','หลายสิ่ง']:['ถูก','ผิด']
  useEffect(()=>{if(preview)return;try{localStorage.setItem(foundationKey(userId),JSON.stringify(saved))}catch{/* Continue without storage. */}},[saved,userId,preview])
  useEffect(()=>()=>{request.current++;audio.current?.pause()},[])
@@ -72,6 +72,12 @@ export default function NumberFoundation({userId,minimumModule=1}:{userId?:strin
   player.onerror=()=>{if(request.current===current)setAudioError(true)}
   void player.play().catch(()=>{if(request.current===current)setAudioError(true)})
  }
+ useEffect(()=>{
+  if(!finished&&!preview&&!import.meta.env.DEV)play(question)
+  return()=>{request.current++;audio.current?.pause()}
+  // Each new question owns exactly one automatic playback.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+ },[question.id,saved.module,finished])
  function choose(side:number){
   if(!canAnswer||locked.current||finished)return
   const correct=side===numberAnswer(question,saved.module)
@@ -96,19 +102,20 @@ export default function NumberFoundation({userId,minimumModule=1}:{userId?:strin
   const nextPrompt=deck[saved.answers.length]
   setSupport(preview||!nextPrompt?0:recallStates(events.current)[recallKey(saved.module,nextPrompt.word)]?.support??0)
   setSaved(value=>({...value,deck,picked:null}))
-  if(nextPrompt&&!import.meta.env.DEV)play(nextPrompt)
+
  }
- function restart(module:1|2|3){
+ function restart(module:1|2|3,manual=false){
+  setExplaining(false)
   request.current++;audio.current?.pause();locked.current=false;setHeard(false);setAudioError(false);assisted.current=false;replays.current=0
   events.current=readRecall(userId)
   const deck=preview?numberDeck(module):scheduledNumberDeck(module,events.current)
   setSupport(preview||!deck[0]?0:recallStates(events.current)[recallKey(module,deck[0].word)]?.support??0)
-  setSaved(value=>({version:3,sentenceComplete:value.sentenceComplete||passed&&value.module===2,module,deck,answers:[],picked:null,numberComplete:value.numberComplete||passed&&value.module===1}))
+  setSaved(value=>({version:3,manualLevel:manual||value.manualLevel,sentenceComplete:value.sentenceComplete||passed&&value.module===2,module,deck,answers:[],picked:null,numberComplete:value.numberComplete||passed&&value.module===1}))
  }
  const title=saved.module===3?'ประโยคนี้ถูกหรือผิด':saved.module===2?'ฟังประโยค: หนึ่งสิ่งหรือหลายสิ่ง':'ฟัง: หนึ่งสิ่งหรือหลายสิ่ง'
  if(import.meta.env.DEV&&preview==='layout')return <PracticeLayoutFixture/>
  return <main className="phone-practice foundation-practice" lang="th"><div className="practice-shell">
-  <header><img className="foundation-cap" src="/brand/success-university-su.svg" alt="Success University"/><div className="foundation-progress-group"><span className="foundation-level">Level {saved.module}</span><progress className="foundation-progress" value={saved.answers.length} max={saved.deck.length} aria-label="ความคืบหน้าของบทฝึก" aria-valuetext={`ตอบแล้ว ${saved.answers.length} จาก ${saved.deck.length} ข้อ`}/></div>{!finished&&<button type="button" className="foundation-header-audio" aria-label="ฟังเสียง" title="ฟังเสียง" onClick={()=>play()}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg></button>}</header>
+  <header><img className="foundation-cap" src="/brand/success-university-su.svg" alt="Success University"/><div className="foundation-progress-group"><div className="foundation-level-picker" role="group" aria-label="Practice level">{([1,2,3] as const).map(level=><button type="button" key={level} aria-label={`Level ${level}`} aria-pressed={saved.module===level} onClick={()=>{if(level!==saved.module)restart(level,true)}}>{level}</button>)}</div><progress className="foundation-progress" value={saved.answers.length} max={saved.deck.length} aria-label="ความคืบหน้าของบทฝึก" aria-valuetext={`ตอบแล้ว ${saved.answers.length} จาก ${saved.deck.length} ข้อ`}/></div>{!finished&&<button type="button" className="foundation-header-audio" aria-label="ฟังเสียง" title="ฟังเสียง" onClick={()=>play()}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg></button>}</header>
   {finished?<section className="practice-complete practice-module-complete"><h1>{saved.deck.length<30?'ทบทวนครบแล้ว':passed?'ผ่านชุดนี้แล้ว!':'จบแล้ว มาลองอีกครั้ง'}</h1><p>{title}</p>{saved.deck.length>0&&<p className="practice-module-score">{score} / {saved.deck.length}</p>}<p>{saved.deck.length<30?'คำที่ฝึกได้ดีแล้วจะกลับมาให้ทบทวนภายหลัง':passed?'ทำได้ดีมาก!':'ตอบถูก 27 จาก 30 ข้อเพื่อผ่านชุดนี้'}</p>
    {passed&&saved.module===1&&<button onClick={()=>restart(2)}>ชุด 2 · ฟังทั้งประโยค →</button>}
    {passed&&saved.module===2&&<button onClick={()=>restart(3)}>ชุด 3 · ถูกหรือผิด →</button>}

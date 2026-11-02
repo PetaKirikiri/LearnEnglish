@@ -23,7 +23,7 @@ it('uses 30 balanced encounters of the same five noun pairs',()=>{
  expect(numberPassed(deck,deck.map(q=>q.plural))).toBe(false)
  expect(numberPassed(deck,Array(29).fill(true))).toBe(false)
 })
-it('keeps the read-only noun group visible and requires hearing the recording before answering',async()=>{
+it('keeps the read-only noun group visible and automatically plays audio without locking answer buttons',async()=>{
  const host=document.createElement('div');const root=createRoot(host)
  try{
   await act(async()=>root.render(<NumberFoundation/>))
@@ -34,9 +34,9 @@ it('keeps the read-only noun group visible and requires hearing the recording be
   expect(host.querySelector('.cw-game-icon-apple')).not.toBeNull()
   expect(host.querySelector('.cw-game-icon-apples')).not.toBeNull()
   expect(host.querySelector('[data-matrix-layout=noun-phrase]')).not.toBeNull()
-  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(true)
+  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(false)
   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-header-audio')!.click())
-  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(true)
+  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(false)
   await act(async()=>end())
   expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(false)
   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-answers button')!.click())
@@ -44,7 +44,7 @@ it('keeps the read-only noun group visible and requires hearing the recording be
   expect(host.querySelector('.foundation-controls')?.textContent).not.toContain('the hotel')
   expect(host.querySelector<HTMLProgressElement>('header progress')?.value).toBe(1)
   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-next')!.click())
-  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(true)
+  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(false)
  }finally{await act(async()=>root.unmount())}
 })
 it('adds full-sentence number recognition before sentence judgement',async()=>{
@@ -218,5 +218,36 @@ it('restarts legacy blank-verb rounds without carrying their results into judgem
   await act(async()=>root.render(<NumberFoundation/>))
   const saved=JSON.parse(localStorage.getItem(foundationKey())!)
   expect(saved.answers).toEqual([]);expect(saved.deck.every((q:{verb?:string})=>q.verb==='is'||q.verb==='are')).toBe(true)
+ }finally{await act(async()=>root.unmount())}
+})
+
+it('lets students change level in either direction and retain their choice below automatic placement',async()=>{
+ const host=document.createElement('div');let root=createRoot(host)
+ try{
+  await act(async()=>root.render(<NumberFoundation minimumModule={3}/>))
+  expect(host.querySelector('[aria-label="Level 3"]')?.getAttribute('aria-pressed')).toBe('true')
+  expect(played).toContain('/where-')
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-answers button')!.click())
+  expect(host.querySelector<HTMLProgressElement>('progress')?.value).toBe(1)
+  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Level 1"]')!.click())
+  expect(host.querySelector('[aria-label="Level 1"]')?.getAttribute('aria-pressed')).toBe('true')
+  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')!.disabled).toBe(false)
+  await act(async()=>root.unmount());root=createRoot(host)
+  await act(async()=>root.render(<NumberFoundation minimumModule={3}/>))
+  expect(host.querySelector('[aria-label="Level 1"]')?.getAttribute('aria-pressed')).toBe('true')
+  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Level 3"]')!.click())
+  expect(host.querySelector('[aria-label="Level 3"]')?.getAttribute('aria-pressed')).toBe('true')
+ }finally{await act(async()=>root.unmount())}
+})
+it('keeps Level 3 answers usable when phone autoplay is blocked',async()=>{
+ vi.stubGlobal('Audio',class{pause(){}play(){return Promise.reject(new DOMException('blocked','NotAllowedError'))}})
+ const host=document.createElement('div');const root=createRoot(host)
+ try{
+  await act(async()=>root.render(<NumberFoundation minimumModule={3}/>))
+  expect(host.querySelector('[role=alert]')).not.toBeNull()
+  expect(host.querySelector<HTMLButtonElement>('.practice-answers button')!.disabled).toBe(false)
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-answers button')!.click())
+  expect(host.querySelector<HTMLProgressElement>('progress')?.value).toBe(1)
+  expect(host.querySelector<HTMLButtonElement>('.foundation-next')!.disabled).toBe(false)
  }finally{await act(async()=>root.unmount())}
 })

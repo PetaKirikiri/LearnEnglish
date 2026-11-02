@@ -154,3 +154,5 @@
 .foundation-practice .foundation-progress-group{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 .foundation-practice .foundation-level{font:700 13px/1.2 Nunito,sans-serif;color:#fff}
 .foundation-practice header .foundation-progress-group .foundation-progress{flex:none;width:100%}
+
+.foundation-level-picker{display:flex;gap:6px}.foundation-level-picker button{min-width:40px;min-height:40px;border:2px solid #dce5f1;border-radius:12px;background:#fff;color:#18385e;font:700 18px Nunito,sans-serif}.foundation-level-picker button[aria-pressed=true]{background:#ffdc39;border-color:#c6a31e;box-shadow:0 3px #c6a31e}
