@@ -1,6 +1,6 @@
 import {meaningForWord} from './blueprints'
 import {categoriesForWord,type VocabularyCategory} from '../sentenceMatrix/vocabularyCategories'
-import {determiners,type Determiner,type ClassroomWord} from '../sentenceMatrix/model'
+import {allDeterminers,type Determiner,type ClassroomWord} from '../sentenceMatrix/model'
 import {nounPhraseUnits,type NounPhrase} from '../sentenceMatrix/nounPhrase'
 import {subjectVerb,type SubjectWord} from '../sentenceMatrix/subjectEngine'
 /** Verb frames own their object requirements; lesson views never assemble arbitrary phrases. */
@@ -51,7 +51,7 @@ export function objectsForAction(word:string,catalogue:readonly ClassroomWord[])
 }
 export function objectDeterminers(object:ActionObject){
  const article=object.phrase.determiner
- return [...(article&&['a','an'].includes(article.english)?[{word:article.english as Determiner,thai:article.thai}]:[]),...determiners]
+ return [...(article&&['a','an'].includes(article.english)?[{word:article.english as Determiner,thai:article.thai}]:[]),...allDeterminers.filter(item=>!['a','an'].includes(item.word))]
 }
 export const actionConstruction = {
  id:'present-action-dialogue',subjectKind:'person',actionForm:'present-participle',
@@ -81,7 +81,7 @@ export function actionDialogue(subject:ActionSubject,word:string,selection:{voca
  const units=[...subjectParts(true),{english:be as string,thai:'กำลัง',role:'be' as const},
  {english:action.word,thai:action.thai,role:'action' as const},...(object?nounPhraseUnits(object.phrase).map(unit=>({...unit,role:unit.role==='noun'?'object' as const:unit.role})):[])]
  units[units.length-1]={...units[units.length-1],english:units[units.length-1].english+'.'}
- const objectMeaning=object?(selectedDeterminer&&['the','my','your'].includes(selectedDeterminer.word)?object.phrase.nounThai+(selectedDeterminer.word==='the'?'':selectedDeterminer.thai):object.thai.replace(/^ไปที่/,'')):''
+ const objectMeaning=object?(selectedDeterminer&&['the','my','your','his','her'].includes(selectedDeterminer.word)?object.phrase.nounThai+(selectedDeterminer.word==='the'?'':selectedDeterminer.thai.replace(/ \(.*\)/,'')):object.thai.replace(/^ไปที่/,'')):''
  const meaning=action.complement==='destination'?`ไปที่${objectMeaning}`:`${action.thai}${objectMeaning}`
  return {
  question:{english:`What ${questionBe} ${questionSubject} doing?`,thai:`${speaker?.thai??person.thai}กำลังทำอะไร`,units:[{english:'What',thai:'อะไร',role:'question' as const},{english:questionBe,thai:'—',role:'be' as const},...subjectParts(false),{english:'doing?',thai:'กำลังทำ',role:'action' as const}]},

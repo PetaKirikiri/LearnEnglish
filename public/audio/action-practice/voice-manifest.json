@@ -1,4 +1,1108 @@
 {
+  "action-expanded-l4-what-are-the-doctors-doing.wav": {
+    "fingerprint": "565ed7527d7e4c09fc105ecb8b8855e1df5dce00c2892230f20fa104e87329fa",
+    "seconds": 1.625,
+    "text": "What are the doctors doing?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l4-what-is-bia-doing.wav": {
+    "fingerprint": "51814a75e865203731e50f5b173676673ae82c4d948f01b3309724bb24f233fd",
+    "seconds": 1.38,
+    "text": "What is Bia doing?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l4-what-is-the-doctor-doing.wav": {
+    "fingerprint": "debd14f502eccc4b91ef452e0061188c44956d02f2c22a141ef1577f64713c87",
+    "seconds": 1.613,
+    "text": "What is the doctor doing?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-drinking-water.wav": {
+    "fingerprint": "525df5f97d617de38ce873e4ac580d96c30f30453d8c8e8128a300b200abbe4e",
+    "seconds": 1.667,
+    "text": "Bia is drinking water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-drinking-your-water.wav": {
+    "fingerprint": "ccf25add64e0e5f051a452c14758ed5ef9a7ff794dbd8aa75e23eba05ba66b7c",
+    "seconds": 1.817,
+    "text": "Bia is drinking your water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-eating-a-banana.wav": {
+    "fingerprint": "cf847049ba8c36e46dd1e7203ae9dc55e9e0028db79a1d0915c0585ce67705ad",
+    "seconds": 1.677,
+    "text": "Bia is eating a banana.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-eating-an-apple.wav": {
+    "fingerprint": "c0b5a16c24ad0511c7d610d10c2fc6ec654dbc42b496385de63f7212dceefb54",
+    "seconds": 1.689,
+    "text": "Bia is eating an apple.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-eating-her-oranges.wav": {
+    "fingerprint": "f2e7d98072ce9049057457f64852b2f19506a185617d4233816c6b2b64b05c81",
+    "seconds": 1.945,
+    "text": "Bia is eating her oranges.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-eating-his-apple.wav": {
+    "fingerprint": "8d63d90db3ed4bc519fd6179624ca0fbbc29bc5f056063d095cbc0414ed1838f",
+    "seconds": 1.753,
+    "text": "Bia is eating his apple.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-eating-my-bananas.wav": {
+    "fingerprint": "81d99c2f2af3e4ae648c16cfda740eb2c34ecebf72b6951e59c367ee7eb8469a",
+    "seconds": 1.881,
+    "text": "Bia is eating my bananas.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-eating-the-sandwiches.wav": {
+    "fingerprint": "df65f9956d4a8aaeb999a4257240ca9f101861b9c61c37ddf8e865e5d57c608f",
+    "seconds": 1.986,
+    "text": "Bia is eating the sandwiches.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-eating-your-orange.wav": {
+    "fingerprint": "0e22111c12d5e6882e2b6726fcb2f9c6634e47fbd32bfe94f23690974c6c2358",
+    "seconds": 1.764,
+    "text": "Bia is eating your orange.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-her-bookstores.wav": {
+    "fingerprint": "e53c52529b6a4ae0e2d5fa2f7cc5b7b825a43ccd750fb77401e36ebe36a9c7db",
+    "seconds": 1.976,
+    "text": "Bia is going to her bookstores.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-her-gym.wav": {
+    "fingerprint": "44ff00274d8b0536078d4bdbe23cc4bc52f0c1f3dddc89ff8f447b7301e1d0f3",
+    "seconds": 1.784,
+    "text": "Bia is going to her gym.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-her-hotels.wav": {
+    "fingerprint": "67b72cb08f3be79fe0a536dede441a1c9e0d0164148ad9826d18cce47dc6bc2a",
+    "seconds": 2.051,
+    "text": "Bia is going to her hotels.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-his-padel-courts.wav": {
+    "fingerprint": "07d76c798a7d889862972acde5a88656adcc5abbf6b4ee92b0b71014f81601c4",
+    "seconds": 2.253,
+    "text": "Bia is going to his padel courts.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-his-restaurants.wav": {
+    "fingerprint": "6e24801543bcb7a0a3285b4baca14b8efb85d1dc969ca757149487e6ee3ca070",
+    "seconds": 2.135,
+    "text": "Bia is going to his restaurants.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-his-school.wav": {
+    "fingerprint": "e015a40296fbe449f2f583fe264ebee5c27145c5632006b514ce48f5e7326599",
+    "seconds": 1.753,
+    "text": "Bia is going to his school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-my-clinic.wav": {
+    "fingerprint": "926a6083e4ff8863791e4f985dfc28b7072e2805499581d1b8a1f64c702da012",
+    "seconds": 1.869,
+    "text": "Bia is going to my clinic.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-my-gyms.wav": {
+    "fingerprint": "56a2237f0acc4a5230080d75e4d79475ed1f8d23e0ebe97fa66348e651fe6da7",
+    "seconds": 1.881,
+    "text": "Bia is going to my gyms.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-my-restaurant.wav": {
+    "fingerprint": "dcf355106855b1a7b2adaf3d219bbe10fdfeaa2e28c32d844c86dd82bc409790",
+    "seconds": 2.05,
+    "text": "Bia is going to my restaurant.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-the-bookstore.wav": {
+    "fingerprint": "03cb59b54573c6eb00f904036d786c462b0d08d9f7ba15cf4e03d9bb3a1d6e19",
+    "seconds": 1.945,
+    "text": "Bia is going to the bookstore.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-the-hotel.wav": {
+    "fingerprint": "d485b6c48d3ecd7f5d25b268685d73087688ba443a13eae410b843ea4c8c9f3c",
+    "seconds": 1.849,
+    "text": "Bia is going to the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-the-schools.wav": {
+    "fingerprint": "ae9764b87dbb2825e1c5e66dbd60c2625e206306dc8766957842a6d5a6345762",
+    "seconds": 1.805,
+    "text": "Bia is going to the schools.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-your-banks.wav": {
+    "fingerprint": "a0afed1253a97ebc71b19d91995d0782b2e5ecd7483b63fdb94304994a185588",
+    "seconds": 1.784,
+    "text": "Bia is going to your banks.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-your-bedroom.wav": {
+    "fingerprint": "d551714141d22df3667506136549cc42c5fee8d93e18c3e2fb3010190a7463e4",
+    "seconds": 1.891,
+    "text": "Bia is going to your bedroom.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-going-to-your-toilet.wav": {
+    "fingerprint": "3eaafd6a8380fa6514a52dacc5626575ad0e9479cb1695fb1d9b89a3633edf88",
+    "seconds": 1.838,
+    "text": "Bia is going to your toilet.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-playing.wav": {
+    "fingerprint": "204f513632b3542b5a0c9f1a25fb908be58235b35ac12f12b850dd69cdf259a0",
+    "seconds": 1.259,
+    "text": "Bia is playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-reading-a-book.wav": {
+    "fingerprint": "0960ca264336beff740975e2b571062fdcdf13c00323acf78897f9b48e875f93",
+    "seconds": 1.571,
+    "text": "Bia is reading a book.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-reading-his-book.wav": {
+    "fingerprint": "55f20ed587616455115678ad2704a33086f270da4e8db65511cbc766286abfbb",
+    "seconds": 1.741,
+    "text": "Bia is reading his book.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-running.wav": {
+    "fingerprint": "261881758406ddb6d63b9774f8969662035c1df38878692d473cf0df5fd37db2",
+    "seconds": 1.216,
+    "text": "Bia is running.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-sleeping.wav": {
+    "fingerprint": "6c7499217957758eeba4e21d4f4626762ee7d34fc05d7def20468d2a1d8c54f2",
+    "seconds": 1.32,
+    "text": "Bia is sleeping.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-bia-is-walking.wav": {
+    "fingerprint": "5c7c7056ae12035c9f112d7c8ee692bcfd64974d2e87587f1d6dea5d5bfaf00e",
+    "seconds": 1.259,
+    "text": "Bia is walking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-eating-an-orange.wav": {
+    "fingerprint": "4a2c365d7e4683d951c037a2e108ff4b238715b2ef2596655298e52bbd043d9d",
+    "seconds": 1.613,
+    "text": "He is eating an orange.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-eating-her-sandwiches.wav": {
+    "fingerprint": "1fd431508f4fac2286dcf8dbcaa1e13ecd600c3c391dac645ab786f604be0d56",
+    "seconds": 1.869,
+    "text": "He is eating her sandwiches.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-eating-his-banana.wav": {
+    "fingerprint": "e71b1537a6f98e4f5d0c44a36f7a4506fa4495901f80d573f03ae919ccb29947",
+    "seconds": 1.69,
+    "text": "He is eating his banana.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-eating-my-oranges.wav": {
+    "fingerprint": "89abe62370e134c16ca8a82214eae7d91c98c68d87dde0b63523efb12cf43f6a",
+    "seconds": 1.827,
+    "text": "He is eating my oranges.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-eating-the-apple.wav": {
+    "fingerprint": "d38a1350303bdfbae7e785d12af2b6453b765bc48ed05d23a9b1388825af937c",
+    "seconds": 1.528,
+    "text": "He is eating the apple.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-eating-your-apples.wav": {
+    "fingerprint": "b755577b400bba2bb7a6a2adc89db78369c2e67e38071e454673e08860fa3b4b",
+    "seconds": 1.613,
+    "text": "He is eating your apples.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-eating-your-sandwich.wav": {
+    "fingerprint": "9a3c36605b990deaaa60c00cb47852a6888f9427a094d4f8e96395c7002e86b5",
+    "seconds": 1.699,
+    "text": "He is eating your sandwich.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-her-bookstore.wav": {
+    "fingerprint": "4a19311598515d578f9b0abdea5c681187c36c83494dc1645cf6959e463d69d3",
+    "seconds": 1.828,
+    "text": "He is going to her bookstore.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-her-hotel.wav": {
+    "fingerprint": "0c4e120bcd96745d8f888833396642307b328b0470fa750e92c1368a435ec050",
+    "seconds": 1.817,
+    "text": "He is going to her hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-her-schools.wav": {
+    "fingerprint": "2ee840d2671d5175cec030c729065f2ac7fe24a5ac99c01ca798afd31041ac1d",
+    "seconds": 1.731,
+    "text": "He is going to her schools.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-his-bedrooms.wav": {
+    "fingerprint": "e6ccfc73b41d3a9806512238a050e7958c5409418ee39ad821beab364cea42a3",
+    "seconds": 1.901,
+    "text": "He is going to his bedrooms.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-his-padel-court.wav": {
+    "fingerprint": "7184d6f8d6f14695ba19dda9ac81b485ae1a8260d1788f502e72cdee2ae75dd5",
+    "seconds": 2.051,
+    "text": "He is going to his padel court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-his-toilets.wav": {
+    "fingerprint": "63b7358788a860b1f6fb64e3f2bfb6558d2a25cbc5b72dbd6231a1cb6eb95464",
+    "seconds": 1.857,
+    "text": "He is going to his toilets.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-my-bookstores.wav": {
+    "fingerprint": "b28a57f6871cf82c4c5c326c6d26c034128ee5c8219a711e9580d6684ee2224f",
+    "seconds": 1.881,
+    "text": "He is going to my bookstores.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-my-gym.wav": {
+    "fingerprint": "16bd27d83edc9f4d34bd7c3086e6df26c6382e08de1045b00b2256cd34ed88c3",
+    "seconds": 1.677,
+    "text": "He is going to my gym.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-my-hotels.wav": {
+    "fingerprint": "937bc8d0030868ca5257a7e06b934ae498c2e2f4cb1a57fc4ab278eca5ccc774",
+    "seconds": 1.933,
+    "text": "He is going to my hotels.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-the-padel-courts.wav": {
+    "fingerprint": "2d00466ec83c5e417fcd525d6701ad96cc65e4311b8492ab28a12edffbf66d58",
+    "seconds": 2.05,
+    "text": "He is going to the padel courts.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-the-restaurants.wav": {
+    "fingerprint": "0deab48acc5d0a9c7ce69254ad4c0e9ed9868b966f2901bdb76e7e791feb7756",
+    "seconds": 1.878,
+    "text": "He is going to the restaurants.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-the-school.wav": {
+    "fingerprint": "1491ec168105dde6d59fc36444d5185d1b9680cc4c03ee8ce5cf019c03da6b07",
+    "seconds": 1.583,
+    "text": "He is going to the school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-your-bank.wav": {
+    "fingerprint": "69f6febf9b87d06dc0c43d0cdd533daa38a947a313218aef55d50c895b0e445d",
+    "seconds": 1.592,
+    "text": "He is going to your bank.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-going-to-your-clinics.wav": {
+    "fingerprint": "462513880a44a62975a468d885d6edd072f2975cef7b89cd2b2d5d13a67ea391",
+    "seconds": 1.719,
+    "text": "He is going to your clinics.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-reading-the-book.wav": {
+    "fingerprint": "6a9d9d86396b86ab77a75f6d0f52c5ca7cdbd2d15f54abee7b2c4d2366d01c09",
+    "seconds": 1.495,
+    "text": "He is reading the book.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-he-is-reading-your-books.wav": {
+    "fingerprint": "f8c107f6326197391991a51b58eaa87ec28de4ab0f1e52da6e700645adec48f0",
+    "seconds": 1.581,
+    "text": "He is reading your books.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-eating-her-bananas.wav": {
+    "fingerprint": "d0c7339e7eae2a5cba3855af4b2c92060a865e57a5c247c49c857887537c9e07",
+    "seconds": 1.741,
+    "text": "I am eating her bananas.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-eating-his-sandwiches.wav": {
+    "fingerprint": "905bb4d42f56f1cc19f6c08aa53a568d76554e78eafb745d326a476a128d10ae",
+    "seconds": 1.869,
+    "text": "I am eating his sandwiches.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-eating-my-apples.wav": {
+    "fingerprint": "6d95871580a2206049d3ce9a972b9db0ec78b396608a1b13b45a21d5102a3990",
+    "seconds": 1.687,
+    "text": "I am eating my apples.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-eating-my-sandwich.wav": {
+    "fingerprint": "48f0a5fea6758bc5e6308cff2061c410107d357850efdaa3b087eb8ec25fbc48",
+    "seconds": 1.743,
+    "text": "I am eating my sandwich.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-eating-the-oranges.wav": {
+    "fingerprint": "292e527eaba9bf497281f3ba100cfd4643c2a36c096002891534d0591214c373",
+    "seconds": 1.72,
+    "text": "I am eating the oranges.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-eating-your-banana.wav": {
+    "fingerprint": "a67ce62c05773697cedf244cfbd9c74c4ff15e2bba88d78f770d16cb0f56fab6",
+    "seconds": 1.571,
+    "text": "I am eating your banana.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-her-clinic.wav": {
+    "fingerprint": "5f95d900e5359ee2cc19d23a8032aedc1605ed44aee071e2814a129e35585f24",
+    "seconds": 1.741,
+    "text": "I am going to her clinic.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-her-gyms.wav": {
+    "fingerprint": "15c4d988c6693d95395022a5cda699f44ce7d92ba4ea7edc6e178d56cf216e5e",
+    "seconds": 1.74,
+    "text": "I am going to her gyms.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-her-restaurant.wav": {
+    "fingerprint": "00daf66a02c5aa295ea162415f76a6acd7cb5e089bc20e848c3ce03b21faf5b3",
+    "seconds": 1.901,
+    "text": "I am going to her restaurant.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-his-bookstore.wav": {
+    "fingerprint": "ca58f3a22746b41341cd9f6b8c5debf4a6d431cc4e87dd8316031351f9c1342e",
+    "seconds": 1.892,
+    "text": "I am going to his bookstore.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-his-hotel.wav": {
+    "fingerprint": "3fd7c976d99d51faa922f612b0169b82d57209b6337e27267271974883b5e0a6",
+    "seconds": 1.817,
+    "text": "I am going to his hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-his-schools.wav": {
+    "fingerprint": "724b11766a285c3ce83ba6b7dea0fa1b6a09d540e8e4594af5df78b5367ad4ae",
+    "seconds": 1.731,
+    "text": "I am going to his schools.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-my-bank.wav": {
+    "fingerprint": "e43dd85ecf004388bd2450f876eb8ac93b126114dcbf53ba3d329e2e8973acc5",
+    "seconds": 1.719,
+    "text": "I am going to my bank.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-my-clinics.wav": {
+    "fingerprint": "9614e743353ec853356da27afb53c566f4e39a15b927c343fd91763b2ffb0bf5",
+    "seconds": 1.825,
+    "text": "I am going to my clinics.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-the-bookstores.wav": {
+    "fingerprint": "a01dcda3de6a5ed0100312d67382d00b3c1884bfc39931f8a2d780f1f889ba23",
+    "seconds": 1.848,
+    "text": "I am going to the bookstores.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-the-gym.wav": {
+    "fingerprint": "fd32ea5818b83b067f4f3334a74633fcf7726a37220cf01dfde3bc6bb09582da",
+    "seconds": 1.625,
+    "text": "I am going to the gym.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-the-hotels.wav": {
+    "fingerprint": "dec5686f963a6e7842cf833f019be487723efc8a907e17a625760ede82600ddb",
+    "seconds": 1.901,
+    "text": "I am going to the hotels.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-your-bedrooms.wav": {
+    "fingerprint": "24e0eb2b12caf42d9a16ef62acb9832068a3ac8bceb7929528fa1c89650461b8",
+    "seconds": 1.857,
+    "text": "I am going to your bedrooms.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-your-padel-court.wav": {
+    "fingerprint": "e92be8e1337c2b0ca246864bc38d28aa1c3739ae47e0101837b157395600fcef",
+    "seconds": 2.071,
+    "text": "I am going to your padel court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-going-to-your-toilets.wav": {
+    "fingerprint": "368f2c3dfeefe900d9288a23ed6c4623eb7ae7b98bd10f211b6ff6f147b1fc7d",
+    "seconds": 1.773,
+    "text": "I am going to your toilets.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-i-am-reading-my-books.wav": {
+    "fingerprint": "69a1f3448c867bb5b9ef41986eb280670ab1d8e4604a6b753833ce2295a62e54",
+    "seconds": 1.602,
+    "text": "I am reading my books.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-drinking-the-water.wav": {
+    "fingerprint": "2ec0034edd945df0a6465a6e4b0b2b8b6b8a8ce93037fce325f0e2e4a742c2dc",
+    "seconds": 1.626,
+    "text": "She is drinking the water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-eating-her-banana.wav": {
+    "fingerprint": "461fa7700d17cde3395d318e8729b99461e9de30748b4a2f951c49f57b2ac0d0",
+    "seconds": 1.616,
+    "text": "She is eating her banana.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-eating-his-apples.wav": {
+    "fingerprint": "b72579ac386ecf341898449a70f0b251252cf97d95c6eabb97d8f97ab2abf75f",
+    "seconds": 1.635,
+    "text": "She is eating his apples.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-eating-his-sandwich.wav": {
+    "fingerprint": "6abbbf9afcd0c2e852015ef16a1a19f752f2c46dc52ef23fe3e94af3bcdf77db",
+    "seconds": 1.7,
+    "text": "She is eating his sandwich.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-eating-my-apple.wav": {
+    "fingerprint": "4054f7c713a4ea877c1c3d62663a277b6bdc24fd48e1ccd5d4167fa1be4142c5",
+    "seconds": 1.593,
+    "text": "She is eating my apple.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-eating-the-orange.wav": {
+    "fingerprint": "f5e6e9ad859a8cb65eaafcaedb68e02c2b5684fe3c54da18d2e8a0e53a2e8751",
+    "seconds": 1.582,
+    "text": "She is eating the orange.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-eating-your-oranges.wav": {
+    "fingerprint": "e9914dd6a70f9098131bb28e6c5854eaa3ffec77cee822811f284576c1659a5d",
+    "seconds": 1.773,
+    "text": "She is eating your oranges.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-her-bedrooms.wav": {
+    "fingerprint": "92a576efdfde480701653b377cf17b69f0e35c176064239a0ad6d16236f469e2",
+    "seconds": 1.837,
+    "text": "She is going to her bedrooms.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-her-padel-court.wav": {
+    "fingerprint": "dc9dcb8c86f538a7a9c1410eaa186217a7d5f1097623a5739e0c832d3c41a5e9",
+    "seconds": 2.051,
+    "text": "She is going to her padel court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-her-toilets.wav": {
+    "fingerprint": "ba6593cc198529ef3a18f05d959de162aa354b107b15632391a3148731291e75",
+    "seconds": 1.825,
+    "text": "She is going to her toilets.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-his-bank.wav": {
+    "fingerprint": "f1882b20aef168f61764362795ca971b06a8e751a9d7f5f170bfc2ab75ba669e",
+    "seconds": 1.687,
+    "text": "She is going to his bank.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-his-clinics.wav": {
+    "fingerprint": "7ff9901e2b16232aa32d6459d14f721f201abf8fb3547e9e2f6d57402d430977",
+    "seconds": 1.751,
+    "text": "She is going to his clinics.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-my-padel-courts.wav": {
+    "fingerprint": "9893ae4a14e66b42d4179e349dbefebe6ee0fe63418786a446eff7403a5b054d",
+    "seconds": 2.155,
+    "text": "She is going to my padel courts.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-my-restaurants.wav": {
+    "fingerprint": "3e0467277f6627d95d9960669615b2d70f4ec4f05d000af0618d28f9616ac6a1",
+    "seconds": 1.943,
+    "text": "She is going to my restaurants.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-my-school.wav": {
+    "fingerprint": "714abdf29da663d8e58bdb2ffa23b9b3fdc9108ff9bcdd6a9ac9c95df5300e57",
+    "seconds": 1.605,
+    "text": "She is going to my school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-the-banks.wav": {
+    "fingerprint": "9a0e9d87da7635a72c19d7a4d6dfd65cebb58ba20b2c6e326d11af28f79cbb83",
+    "seconds": 1.623,
+    "text": "She is going to the banks.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-the-bedroom.wav": {
+    "fingerprint": "3d223db6d27b554a142f2fe8a0d2301bec59f515d614d921db52d49ee763cf21",
+    "seconds": 1.7,
+    "text": "She is going to the bedroom.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-the-toilet.wav": {
+    "fingerprint": "1e458c5b26dc5b1a11b0a2f92b18665788ac9b5d6abb94de73f4542d1e53554c",
+    "seconds": 1.7,
+    "text": "She is going to the toilet.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-your-bookstores.wav": {
+    "fingerprint": "8356e4d77c7483f498aa9f874fb596bc370165063402f27501f7e2004543f9ae",
+    "seconds": 1.795,
+    "text": "She is going to your bookstores.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-your-gym.wav": {
+    "fingerprint": "b224235fe7be0287e6ccd0f00083eb1b53fa28ad4d78820af2528ade80db7f9d",
+    "seconds": 1.572,
+    "text": "She is going to your gym.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-going-to-your-hotels.wav": {
+    "fingerprint": "7ad69d5b5db3eea671a2791c9c4547de8a4795b5746e8ced391ee41219ea43dd",
+    "seconds": 1.795,
+    "text": "She is going to your hotels.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-reading-his-books.wav": {
+    "fingerprint": "bc28f3744c9d25e515a883e6ae3f33e33ca4eaafaa4c5701c742b5657db515a1",
+    "seconds": 1.602,
+    "text": "She is reading his books.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-she-is-reading-my-book.wav": {
+    "fingerprint": "8832dff2393c1375b2c2491a9825d3c7aacc0d5d1caa5455f5a0c06b86d9d16b",
+    "seconds": 1.571,
+    "text": "She is reading my book.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-drinking-his-water.wav": {
+    "fingerprint": "8b6d98992d072b06bb3b4c7060d064524b8927bbf502a7a2a67d306b7f404452",
+    "seconds": 2.127,
+    "text": "The doctor is drinking his water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-drinking-water.wav": {
+    "fingerprint": "1ed275c6911d957841a65d0856141b4b6815b0d26ca1f3a9ad29fdc14e0c1ba8",
+    "seconds": 1.903,
+    "text": "The doctor is drinking water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-eating-a-sandwich.wav": {
+    "fingerprint": "c3ee227bfa4f398c7e1a938ae0894cbaa65467cf1cc22a23778cf220ea5cbe2c",
+    "seconds": 2.029,
+    "text": "The doctor is eating a sandwich.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-eating-an-apple.wav": {
+    "fingerprint": "1b8e168a910240200889a32df61ac435750398fdc949460cba2d8f7f28249fe4",
+    "seconds": 1.945,
+    "text": "The doctor is eating an apple.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-eating-her-apple.wav": {
+    "fingerprint": "34e1b9b5e2d5d29e5702bfcd4ae75bf5933f5b81018386b0f809c2d4de7dfd97",
+    "seconds": 1.945,
+    "text": "The doctor is eating her apple.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-eating-his-orange.wav": {
+    "fingerprint": "8b9c055b111cfde5fd5a23d7bbff69a72c71891383a9654f9e588048d74c806c",
+    "seconds": 2.02,
+    "text": "The doctor is eating his orange.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-eating-my-sandwiches.wav": {
+    "fingerprint": "b1d32a0099b01a5d0a3b930afa7cbce2b20708229b0334ac50e2ef5b2b8852ab",
+    "seconds": 2.253,
+    "text": "The doctor is eating my sandwiches.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-eating-the-banana.wav": {
+    "fingerprint": "9198bf8e049957675932c5c64259c0076a5eb885bb4d60753f440efa270956c3",
+    "seconds": 2.051,
+    "text": "The doctor is eating the banana.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-eating-your-bananas.wav": {
+    "fingerprint": "32b8a70a5e69e4307914ddd6f4aebbb2201bea7b50f2add3d2f99611caea2f02",
+    "seconds": 2.051,
+    "text": "The doctor is eating your bananas.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-her-padel-courts.wav": {
+    "fingerprint": "ae26eb768f1605a993035429352464917a983193fba9e59113628f71bd90dcbb",
+    "seconds": 2.521,
+    "text": "The doctor is going to her padel courts.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-her-restaurants.wav": {
+    "fingerprint": "94cd79f4d1b4b6cf301d06129214dda3200341ec1f58e7bd38525eab750841ec",
+    "seconds": 2.381,
+    "text": "The doctor is going to her restaurants.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-her-school.wav": {
+    "fingerprint": "70b6070d6a309208e2053e28d54597523e922a72a5ac406c5317ecdd31bd4e27",
+    "seconds": 2.021,
+    "text": "The doctor is going to her school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-his-banks.wav": {
+    "fingerprint": "4156770ccdf9ce51a3b51d7f9d55ab699b4f0bbaba0dfe01024ac2887f2828c3",
+    "seconds": 2.094,
+    "text": "The doctor is going to his banks.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-his-bedroom.wav": {
+    "fingerprint": "d4d984a826e1132d0d6ed68970967c097ec8062a46b39582dd1b3d5b2572d0c2",
+    "seconds": 2.255,
+    "text": "The doctor is going to his bedroom.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-his-toilet.wav": {
+    "fingerprint": "f4719e603b19c8ecc6724113de0fb7e5e119357e4dca128db6e72988c5a6e9d2",
+    "seconds": 2.115,
+    "text": "The doctor is going to his toilet.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-my-bookstore.wav": {
+    "fingerprint": "bc994fa2820d7f381aba903da227ddc9d0e67c8b2dacd678588221809c214750",
+    "seconds": 2.202,
+    "text": "The doctor is going to my bookstore.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-my-hotel.wav": {
+    "fingerprint": "2bb785a8ea4281ac28589d2112bd316187891b683bede82540acd406d2b62948",
+    "seconds": 2.201,
+    "text": "The doctor is going to my hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-my-schools.wav": {
+    "fingerprint": "a6cd061813713bea1e32e546c9512d55643e906a22dc9e143b624b17ada7228e",
+    "seconds": 2.125,
+    "text": "The doctor is going to my schools.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-the-bedrooms.wav": {
+    "fingerprint": "7f07802de037d316df3bd00354322de7dcf4b3c12316a326e1d4eb339d9239f2",
+    "seconds": 2.253,
+    "text": "The doctor is going to the bedrooms.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-the-hotel.wav": {
+    "fingerprint": "cf22f687f61836608587cfa8595b4a4d95180f4f51a020693e4e9223dfd67166",
+    "seconds": 2.158,
+    "text": "The doctor is going to the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-the-padel-court.wav": {
+    "fingerprint": "67191219905fe8aa0e32feb186e9a3e5cd0ef518c8a04c4c77c415fbbfd212c9",
+    "seconds": 2.425,
+    "text": "The doctor is going to the padel court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-the-toilets.wav": {
+    "fingerprint": "2feff19b7af408ccead7d0fff1cf2aad25891ec5993fe2af4e06e219caf2d1fd",
+    "seconds": 2.198,
+    "text": "The doctor is going to the toilets.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-your-clinic.wav": {
+    "fingerprint": "4ad796f8588643e9bdf13a171ccc7638cb60ef3ddf7fdd6dcef5150780c407e3",
+    "seconds": 2.051,
+    "text": "The doctor is going to your clinic.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-your-gyms.wav": {
+    "fingerprint": "77d64d307800cd59f7c8a36a59921b669800d6290b3631a9887d2aa9f220c6a4",
+    "seconds": 2.104,
+    "text": "The doctor is going to your gyms.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-going-to-your-restaurant.wav": {
+    "fingerprint": "f8c0301ddcc3c7872f122c64b87260d7cd0d2707f43c2f7cf26fe8dfb4bd0e03",
+    "seconds": 2.243,
+    "text": "The doctor is going to your restaurant.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-playing.wav": {
+    "fingerprint": "11727c5d6647142d4aece8c7e88d8d32b53002be4dde5f02dbf9fdfaee2eb731",
+    "seconds": 1.497,
+    "text": "The doctor is playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-reading-a-book.wav": {
+    "fingerprint": "b9866b8dc4305b773b8d22cc16eb4c6f2a9a059723f7d636e6abf6c97918f347",
+    "seconds": 1.815,
+    "text": "The doctor is reading a book.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-reading-her-book.wav": {
+    "fingerprint": "20331147e9760ee0f3ef9ae2bea2d31125b6194f5e8bf188e8f7098c35bb3a31",
+    "seconds": 1.923,
+    "text": "The doctor is reading her book.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-running.wav": {
+    "fingerprint": "0dfdd389e846b348c37a2e9972898f9d5df62621e3a3f4b03cde51392c84398d",
+    "seconds": 1.518,
+    "text": "The doctor is running.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-sleeping.wav": {
+    "fingerprint": "b2a649ddc30cc9d23186c6a73bb820c13086dd92dbd77bd565ac818b4c4fd66e",
+    "seconds": 1.549,
+    "text": "The doctor is sleeping.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctor-is-walking.wav": {
+    "fingerprint": "5f0c545037485f7b3fa29e188074078bf7661c3a28f62952b084ec7f60ef270b",
+    "seconds": 1.549,
+    "text": "The doctor is walking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-drinking-her-water.wav": {
+    "fingerprint": "d5f6ca52cf427b498f94363cb329ad5337aafbc0d0d01cc2de816897f9b6da70",
+    "seconds": 2.213,
+    "text": "The doctors are drinking her water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-drinking-water.wav": {
+    "fingerprint": "2e0e1bbd660ab23d32842b42a11cc238cd3b930038474286fddc7c775c272a6c",
+    "seconds": 1.977,
+    "text": "The doctors are drinking water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-eating-an-apple.wav": {
+    "fingerprint": "a08c2e15fd32a682240e17aa2e2b7a73d350223565c151493cdd0464c79897a3",
+    "seconds": 1.945,
+    "text": "The doctors are eating an apple.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-eating-her-orange.wav": {
+    "fingerprint": "5dc0cde143666228ced8d1980aace96ed642583351992411cffb92720bd168bc",
+    "seconds": 2.158,
+    "text": "The doctors are eating her orange.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-eating-his-bananas.wav": {
+    "fingerprint": "f5d84ed71e0c54e04a2e19e9db80806093fba153be7406aba979a5e4aee4ce7b",
+    "seconds": 2.221,
+    "text": "The doctors are eating his bananas.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-eating-my-banana.wav": {
+    "fingerprint": "dd3d1d049251c1963884762a970d7a9d5de1026a302bcbdb97bc7cfd8f897159",
+    "seconds": 2.117,
+    "text": "The doctors are eating my banana.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-eating-the-apples.wav": {
+    "fingerprint": "5bd8c842ca5f46365ae0055e13a4b486fcf661129aeb09795f2800194cd71475",
+    "seconds": 2.05,
+    "text": "The doctors are eating the apples.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-eating-the-sandwich.wav": {
+    "fingerprint": "bab51c572f84274ffe481173406ad997e591f804a49b97690ed4d349444d2341",
+    "seconds": 2.104,
+    "text": "The doctors are eating the sandwich.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-eating-your-sandwiches.wav": {
+    "fingerprint": "b6269c9d13f0bea493cd3154e15f84b951fff04890440974bf99692d987fd5cb",
+    "seconds": 2.276,
+    "text": "The doctors are eating your sandwiches.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-her-banks.wav": {
+    "fingerprint": "95353cee94e4932d546c1500bd1fb164c4a4ec2fba49469c5f6e9ec83de186ea",
+    "seconds": 2.071,
+    "text": "The doctors are going to her banks.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-her-bedroom.wav": {
+    "fingerprint": "0c9de3b1ca95dd11244c1c17d9292015ec0c82082a3e980b8cc001321cd1557a",
+    "seconds": 2.235,
+    "text": "The doctors are going to her bedroom.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-her-toilet.wav": {
+    "fingerprint": "3a7ac924731ac3d14bd3f191d77e801cfa1de2868d44d9f8af180b815f88fba9",
+    "seconds": 2.191,
+    "text": "The doctors are going to her toilet.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-his-clinic.wav": {
+    "fingerprint": "2e97b7b1a49794b6e41c62f4c2c61c31ec0077165cfaf975507d9e57920400d4",
+    "seconds": 2.115,
+    "text": "The doctors are going to his clinic.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-his-gyms.wav": {
+    "fingerprint": "9ba7ae31be430b82d040013f386dbfffd4a00f13ddf6f3c2b9e74945617ff362",
+    "seconds": 2.201,
+    "text": "The doctors are going to his gyms.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-his-restaurant.wav": {
+    "fingerprint": "739e54777993d46685e03d81646b93c5cea74caec56fe972977b024024bccb0f",
+    "seconds": 2.36,
+    "text": "The doctors are going to his restaurant.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-my-bedrooms.wav": {
+    "fingerprint": "7ec9f6726e75b500e2506a2b242bf6b666b22931a6e3c4dfec3fcd7b286f2339",
+    "seconds": 2.35,
+    "text": "The doctors are going to my bedrooms.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-my-padel-court.wav": {
+    "fingerprint": "0c17dbefa09bda470f736e09a2a18d1b0d4b15d8bfc240362eb410a49b147d3d",
+    "seconds": 2.565,
+    "text": "The doctors are going to my padel court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-my-toilets.wav": {
+    "fingerprint": "96a20ec7645146c7c9dc230813958b216988630c8503fc0f88881f14a3a95d93",
+    "seconds": 2.263,
+    "text": "The doctors are going to my toilets.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-the-bank.wav": {
+    "fingerprint": "f5a5e09733c73cc11aea47d735fe09cb0f81e4d70170420c332a4c54e9bff16f",
+    "seconds": 2.041,
+    "text": "The doctors are going to the bank.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-the-clinics.wav": {
+    "fingerprint": "661fe76d2a2aaee6abbb34d2fd9c0b14d546ec7f775058ebeeace4b636671bf9",
+    "seconds": 2.178,
+    "text": "The doctors are going to the clinics.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-the-hotel.wav": {
+    "fingerprint": "782154d1a841b109d852e9e7c517df230978a77e99264cf52539a11306164caf",
+    "seconds": 2.179,
+    "text": "The doctors are going to the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-your-bookstore.wav": {
+    "fingerprint": "92107e594032482d306600abcbae6c73b58e481823dfd79b95584e5a681471ca",
+    "seconds": 2.233,
+    "text": "The doctors are going to your bookstore.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-your-hotel.wav": {
+    "fingerprint": "3ca213694c1ddbc78d4b3bcbf460dbbf13bfeed360aab681084b5fcb1425ed2d",
+    "seconds": 2.191,
+    "text": "The doctors are going to your hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-going-to-your-schools.wav": {
+    "fingerprint": "553237c298920a59f8d69870f63383eebeb6b93914aac83d9c09e6362925af27",
+    "seconds": 2.127,
+    "text": "The doctors are going to your schools.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-playing.wav": {
+    "fingerprint": "874004f474fb62c0b85b15ceed15679ee03d31b5951a229ce6ddfc2dd26a1193",
+    "seconds": 1.507,
+    "text": "The doctors are playing.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-reading-a-book.wav": {
+    "fingerprint": "b7d4cf21254e50aec71ee606de1a71715177b5a65de7394fad9f29b959e11f9b",
+    "seconds": 1.881,
+    "text": "The doctors are reading a book.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-reading-the-books.wav": {
+    "fingerprint": "66168f72eabcd3a95c98410cf078159b43b032b1d35c7842b51124ca533fcaea",
+    "seconds": 1.953,
+    "text": "The doctors are reading the books.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-running.wav": {
+    "fingerprint": "ee55dab33dbe93ae598621eda443a05764f0d35726672c66a6bfe46fb1bed758",
+    "seconds": 1.518,
+    "text": "The doctors are running.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-sleeping.wav": {
+    "fingerprint": "54ad2832ccb5e5814ccadfd802997ef003d0250716148337026000f03809b117",
+    "seconds": 1.625,
+    "text": "The doctors are sleeping.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-the-doctors-are-walking.wav": {
+    "fingerprint": "e869e120d6825c945beda7cbb59facc9f02f4b7952ad753295d2958542a7bd77",
+    "seconds": 1.582,
+    "text": "The doctors are walking.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-drinking-my-water.wav": {
+    "fingerprint": "099f21cefe0c64f3321335df10b904e2fdba06e7cf57499cc7b15495d15a2323",
+    "seconds": 1.7,
+    "text": "They are drinking my water.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-eating-her-apples.wav": {
+    "fingerprint": "03add5a0452ccb22221c43d6fecd35c68bf5006514efb99af3b07b318c466241",
+    "seconds": 1.697,
+    "text": "They are eating her apples.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-eating-her-sandwich.wav": {
+    "fingerprint": "6e4151d1f70edc7c5ec3843740f63f1b86820b71b6228728822ce1ae5a4b7b1e",
+    "seconds": 1.794,
+    "text": "They are eating her sandwich.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-eating-his-oranges.wav": {
+    "fingerprint": "e9dc88b8b1bc6c2b398f94881aba7e2f9bc917410ad85fbbca4e9e20a07d88ba",
+    "seconds": 1.922,
+    "text": "They are eating his oranges.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-eating-my-orange.wav": {
+    "fingerprint": "2342aa3389a57a9022dc806b7897ca8368eac681faafabd0dacafcb47f4ab525",
+    "seconds": 1.677,
+    "text": "They are eating my orange.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-eating-the-bananas.wav": {
+    "fingerprint": "a8bbcb138c2c19cb6e5819b7730376e2556047f5bbf07471bd86ad30f6692a75",
+    "seconds": 1.699,
+    "text": "They are eating the bananas.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-eating-your-apple.wav": {
+    "fingerprint": "a5bbe17374319520ca50b17a241b30d4027811a0ef3c6aa1a0b7fd3446d1836d",
+    "seconds": 1.581,
+    "text": "They are eating your apple.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-her-bank.wav": {
+    "fingerprint": "cf722caf05f9db90cd7411ba41dc929dcb0412f32d7585b1d32d3851e89f4647",
+    "seconds": 1.602,
+    "text": "They are going to her bank.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-her-clinics.wav": {
+    "fingerprint": "10af479ec21e01c211115e2fe40d2635764b1ded4957ff9b1b130cdd42d85410",
+    "seconds": 1.761,
+    "text": "They are going to her clinics.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-his-bookstores.wav": {
+    "fingerprint": "df3d28692f9276ca85e7b5f71bcb21a1466089075b17e0cf418e7238335f7a5f",
+    "seconds": 1.868,
+    "text": "They are going to his bookstores.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-his-gym.wav": {
+    "fingerprint": "4d95dd4705fd14c5e9476eff41f979357a2b5363611370a8c53553f509c9ce63",
+    "seconds": 1.689,
+    "text": "They are going to his gym.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-his-hotels.wav": {
+    "fingerprint": "e946b607af4a424537332def2b781a122f4fd87fa4af230fc7fc60f45c7b0654",
+    "seconds": 1.869,
+    "text": "They are going to his hotels.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-my-banks.wav": {
+    "fingerprint": "4ff9e3fc189f4aef16f97b0cb8177b4a99d47962dce88e17630e3e53e663749a",
+    "seconds": 1.676,
+    "text": "They are going to my banks.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-my-bedroom.wav": {
+    "fingerprint": "58021e4e7ebe291cbf4f9f0f1cb5e0630b13beaaaf0d4cf97f0e2a5405c8a737",
+    "seconds": 1.794,
+    "text": "They are going to my bedroom.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-my-toilet.wav": {
+    "fingerprint": "b8414abb44a17fe5651d5eed6e1fa97831836bca9bdb05c3c9403371869a608d",
+    "seconds": 1.794,
+    "text": "They are going to my toilet.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-the-clinic.wav": {
+    "fingerprint": "90c93eec0fdb33325738174fbce533e0d9e52fcda5dbef9aeb9cf172d19d48e9",
+    "seconds": 1.645,
+    "text": "They are going to the clinic.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-the-gyms.wav": {
+    "fingerprint": "82f66a6658f81a4f2e8386663abdd3af98c441dca81555078776529c7625062e",
+    "seconds": 1.699,
+    "text": "They are going to the gyms.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-the-restaurant.wav": {
+    "fingerprint": "c1b45c8dd083e41519c92f280492f9c1335eb3e66f036a3e7c0596ebf0b878c7",
+    "seconds": 1.815,
+    "text": "They are going to the restaurant.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-your-padel-courts.wav": {
+    "fingerprint": "8d581de84c1314958555cc9bbfd5d00ba0e99461d7584efc13fde1f76e8e279b",
+    "seconds": 2.071,
+    "text": "They are going to your padel courts.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-your-restaurants.wav": {
+    "fingerprint": "c5a079813b6c25fb172f10fa2fb85dc74839f935b0d067007e105c099ac3fc3d",
+    "seconds": 1.847,
+    "text": "They are going to your restaurants.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-going-to-your-school.wav": {
+    "fingerprint": "2289aa8666dfadb84c36d94fe3d94c5cbe256e45a2f8bf2670ef6f7d4009c7a6",
+    "seconds": 1.561,
+    "text": "They are going to your school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-reading-her-books.wav": {
+    "fingerprint": "9d48fb2a79f2fb9c17d2beeca8a80c8d321fd1375bc7a611adc4f2b3f47cde55",
+    "seconds": 1.602,
+    "text": "They are reading her books.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "action-expanded-l5-they-are-reading-your-book.wav": {
+    "fingerprint": "d055712b08a988a2753f7bf840d137808dd3ac9c5693e85c42e732c30e72a7e9",
+    "seconds": 1.538,
+    "text": "They are reading your book.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "answer-he-drinking.wav": {
     "fingerprint": "ee0ab1cff53b23a0fc55c08caff8d84879890b979a79217533756cabacaca84b",
     "seconds": 1.549,
