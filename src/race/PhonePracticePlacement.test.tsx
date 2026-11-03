@@ -5,7 +5,7 @@ import {afterEach,beforeEach,expect,it,vi} from 'vitest'
 const load=vi.hoisted(()=>vi.fn())
 vi.mock('./numberRecallStore',()=>({syncRecall:vi.fn().mockResolvedValue(undefined)}))
 vi.mock('./practicePlacement',()=>({loadPracticeStartingRound:load}))
-vi.mock('./NumberFoundationCourse',()=>({default:({minimumModule=1}:{minimumModule?:number})=><div>Round {minimumModule}</div>}))
+vi.mock('./PracticeJourney',()=>({default:({minimumModule=1}:{minimumModule?:number})=><div>Round {minimumModule}</div>}))
 import PhonePractice from './PhonePractice'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 let host:HTMLDivElement,root:Root

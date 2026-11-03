@@ -1,6 +1,6 @@
 import {useEffect,useState} from 'react'
 import {syncRecall} from './numberRecallStore'
-import NumberFoundation from './NumberFoundationCourse'
+import NumberFoundation from './PracticeJourney'
 import {loadPracticeStartingRound} from './practicePlacement'
 import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 export {PracticeSession} from './PracticeSession'

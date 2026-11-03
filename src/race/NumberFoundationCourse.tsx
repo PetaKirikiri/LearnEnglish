@@ -31,19 +31,20 @@ function load(user?:string,minimumModule:1|3=1):Saved{
  }catch{/* Start from the learner's recall history if the saved session is invalid. */}
  return fresh(minimumModule,user)
 }
-export default function NumberFoundation(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:MatrixSettings}){
+export default function NumberFoundation(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:MatrixSettings;initialLevel?:PracticeLevel;onLevelRequest?:(level:PracticeLevel)=>void;onComplete?:(level:PracticeLevel,score:number,total:number,passed:boolean)=>void;onExit?:()=>void;newRun?:boolean}){
  const key=`englishsuccess:practice-level:${props.userId??'guest'}`
- const [level,setLevel]=useState<PracticeLevel>(()=>{try{const chosen=Number(localStorage.getItem(key));if([1,2,3,4,5].includes(chosen))return chosen as PracticeLevel}catch{}return load(props.userId,props.minimumModule).module})
- function change(value:PracticeLevel){try{localStorage.setItem(key,String(value))}catch{}setLevel(value)}
- return level>=4?<ActionPractice key={level} level={level as 4|5} onLevel={change} userId={props.userId} settings={props.settings}/>:<NumberLevels key={level} {...props} selectedLevel={level as 1|2|3} onLevel={change}/>
+ const [level,setLevel]=useState<PracticeLevel>(()=>{if(props.initialLevel)return props.initialLevel;try{const chosen=Number(localStorage.getItem(key));if([1,2,3,4,5].includes(chosen))return chosen as PracticeLevel}catch{}return load(props.userId,props.minimumModule).module})
+ function change(value:PracticeLevel){if(props.onLevelRequest){props.onLevelRequest(value);return}try{localStorage.setItem(key,String(value))}catch{}setLevel(value)}
+ return level>=4?<ActionPractice key={level} level={level as 4|5} onLevel={change} userId={props.userId} settings={props.settings} onComplete={props.onComplete} onExit={props.onExit}/>:<NumberLevels key={level} {...props} selectedLevel={level as 1|2|3} onLevel={change}/>
 }
-function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,settings={fadeMode:true}}:{userId?:string;minimumModule?:1|3;selectedLevel:1|2|3;onLevel:(level:PracticeLevel)=>void;tester?:boolean;settings?:MatrixSettings}){
+function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,onExit,newRun,settings={fadeMode:true}}:{userId?:string;minimumModule?:1|3;selectedLevel:1|2|3;onLevel:(level:PracticeLevel)=>void;tester?:boolean;settings?:MatrixSettings;onComplete?:(level:PracticeLevel,score:number,total:number,passed:boolean)=>void;onExit?:()=>void;newRun?:boolean}){
  const progress=useWordProgress(userId)
  const lessonNumber=new URLSearchParams(location.search).get('lesson')
  const lesson=['1','2','3'].includes(lessonNumber??'')?lessonNumber:'1'
  const lessonHref=`${window.innerWidth>=1024?'/classroom/index.html':'/english/notes'}?lesson=${lesson}`
  const preview=import.meta.env.DEV?new URLSearchParams(location.search).get('preview'):null
  const [saved,setSaved]=useState<Saved>(()=>{
+  if(newRun)return {...fresh(selectedLevel,userId),deck:numberDeck(selectedLevel),manualLevel:true}
   if(!['question','correct','wrong','finished'].includes(preview??'')){const previous=load(userId,minimumModule);return previous.module===selectedLevel?previous:{...fresh(selectedLevel,userId),manualLevel:true,numberComplete:previous.numberComplete||previous.module===1&&numberPassed(previous.deck,previous.answers),sentenceComplete:previous.sentenceComplete||previous.module===2&&numberPassed(previous.deck,previous.answers)}}
   const moduleParam=Number(new URLSearchParams(location.search).get('module'))
   const module=moduleParam===2||moduleParam===3?moduleParam:1
@@ -57,6 +58,7 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,settings={fa
  const audio=useRef<HTMLAudioElement|null>(null),locked=useRef(saved.picked!==null),request=useRef(0)
  const index=saved.answers.length-(saved.picked!==null?1:0),finished=saved.answers.length===saved.deck.length&&saved.picked===null
  const question=saved.deck[Math.min(index,saved.deck.length-1)]??numberDeck()[0],score=saved.answers.filter(Boolean).length,passed=finished&&numberPassed(saved.deck,saved.answers)
+ useEffect(()=>{if(finished)onComplete?.(saved.module,score,saved.deck.length,passed)},[finished,onComplete,saved.module,score,saved.deck.length,passed])
  const [support,setSupport]=useState(()=>preview?0:recallStates(readRecall(userId))[recallKey(saved.module,question.word)]?.support??0)
  // Restore the complete pattern after an answer, without changing the recorded support.
  const fade=settings.fadeMode!==false&&saved.picked===null&&(support>0||wordTokens(numberSentenceText(question)).some(word=>wordOpacity(word,progress.scores,{...settings,fadeMode:true})<1))
@@ -128,7 +130,7 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,settings={fa
  const title=saved.module===3?'ประโยคนี้ถูกหรือผิด':saved.module===2?'ฟังประโยค: หนึ่งสิ่งหรือหลายสิ่ง':'ฟัง: หนึ่งสิ่งหรือหลายสิ่ง'
  if(import.meta.env.DEV&&preview==='layout')return <PracticeLayoutFixture/>
  return <main className="phone-practice foundation-practice" lang="th"><div className="practice-shell">
-  <header><img className="foundation-cap" src="/brand/success-university-su.svg" alt="Success University"/><div className="foundation-progress-group"><PracticeLevelPicker level={saved.module} onChange={onLevel}/><progress className="foundation-progress" value={saved.answers.length} max={saved.deck.length} aria-label="ความคืบหน้าของบทฝึก" aria-valuetext={`ตอบแล้ว ${saved.answers.length} จาก ${saved.deck.length} ข้อ`}/></div><PracticeGold userId={userId}/>{!finished&&<button type="button" className="foundation-header-audio" aria-label="ฟังเสียง" title="ฟังเสียง" onClick={()=>play()}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg></button>}</header>
+  <header>{onExit&&<button className="journey-back" onClick={onExit} aria-label="กลับแผนที่">←</button>}<img className="foundation-cap" src="/brand/success-university-su.svg" alt="Success University"/><div className="foundation-progress-group"><PracticeLevelPicker level={saved.module} onChange={onLevel}/><progress className="foundation-progress" value={saved.answers.length} max={saved.deck.length} aria-label="ความคืบหน้าของบทฝึก" aria-valuetext={`ตอบแล้ว ${saved.answers.length} จาก ${saved.deck.length} ข้อ`}/></div><PracticeGold userId={userId}/>{!finished&&<button type="button" className="foundation-header-audio" aria-label="ฟังเสียง" title="ฟังเสียง" onClick={()=>play()}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg></button>}</header>
   {finished?<section className="practice-complete practice-module-complete"><h1>{saved.deck.length<30?'ทบทวนครบแล้ว':passed?'ผ่านชุดนี้แล้ว!':'จบแล้ว มาลองอีกครั้ง'}</h1><p>{title}</p>{saved.deck.length>0&&<p className="practice-module-score">{score} / {saved.deck.length}</p>}<p>{saved.deck.length<30?'คำที่ฝึกได้ดีแล้วจะกลับมาให้ทบทวนภายหลัง':passed?'ทำได้ดีมาก!':'ตอบถูก 27 จาก 30 ข้อเพื่อผ่านชุดนี้'}</p>
    {passed&&saved.module===1&&<button onClick={()=>onLevel(2)}>ชุด 2 · ฟังทั้งประโยค →</button>}
    {passed&&saved.module===2&&<button onClick={()=>onLevel(3)}>ชุด 3 · ถูกหรือผิด →</button>}
