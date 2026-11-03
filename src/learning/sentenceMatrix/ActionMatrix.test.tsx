@@ -109,10 +109,10 @@ it('requests shared noun modes for both blocks and keeps compatible selections',
   await click('[aria-label="Change action"]');await click('[data-word="going"]')
   await click('[aria-label="Object block mode"] [data-noun-mode="name"]')
   expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('The doctor is going to Central.')
-  await click('[aria-label="Subject block mode"] [data-noun-mode="pronoun"]')
-  expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('I am going to Central.')
+  expect(host.querySelector<HTMLButtonElement>('[aria-label="Subject block mode"] [data-noun-mode="pronoun"]')?.disabled).toBe(true)
+  expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('The doctor is going to Central.')
   await click('[aria-label="Change action"]');await click('[data-word="sleeping"]')
-  expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('I am sleeping.')
+  expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('The doctor is sleeping.')
   expect(host.querySelector('[aria-label="Object block mode"]')).toBeNull()
  }finally{await act(async()=>root.unmount())}
 })

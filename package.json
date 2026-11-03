@@ -13,7 +13,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "audit:sentences": "tsx scripts/auditSentenceBlueprints.ts",
-    "prebuild": "npm run audit:sentences"
+    "prebuild": "npm run audit:sentences && npm run audit:action-stars",
+    "audit:action-stars": "node --import tsx scripts/auditActionStars.ts && python3 scripts/auditActionStarAudio.py"
   },
   "dependencies": {
     "@line/liff": "^2.30.0",

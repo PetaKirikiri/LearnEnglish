@@ -14,6 +14,9 @@ export const subjectPronouns=[
  {word:'you',thai:'คุณ',person:2},
  {word:'he',thai:'เขา',person:3},
  {word:'she',thai:'เธอ',person:3},
+ {word:'we',thai:'พวกเรา',person:1,number:'plural'},
+ {word:'they',thai:'พวกเขา',person:3,number:'plural'},
+ {word:'it',thai:'มัน',person:3},
 ] as const
 export function subjectVerb(subject:SubjectWord):'am'|'are'|'is'{
  if(subject.number==='plural'||subject.person===2)return 'are'

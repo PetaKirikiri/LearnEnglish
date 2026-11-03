@@ -1,3 +1,4 @@
+import {requestedLesson} from '../learning/lessonRequests'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { practiceDeck, practiceEnglishMeaning } from './practiceDeck'
 import './phonePractice.css'
@@ -10,22 +11,23 @@ import '../classroom/sentenceLine.css'
 function Arrow({ back = false }: { back?: boolean }) {
   return <svg viewBox="0 0 32 32" aria-hidden="true" style={back ? {transform:'rotate(180deg)'} : undefined}><path d="M6 16h19M17 7l9 9-9 9" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/></svg>
 }
-const lesson = new URLSearchParams(window.location.search).get('lesson') === '2' ? 2 : 1
+const currentLesson = () => Number(requestedLesson(window.location.search))
 
 
-const guestSaveKey = `homework-v3-lesson-${lesson}`
-function restore(saveKey: string,module?:PracticeModule) {
+const guestSaveKey = (lesson:number) => `homework-v3-lesson-${lesson}`
+function restore(saveKey: string,lesson:number,module?:PracticeModule) {
   try {
     const saved = JSON.parse(localStorage.getItem(saveKey) || 'null')
     const expected = practiceDeck(lesson,module?.questionIds)
     if (saved && Array.isArray(saved.deck) && (module?saved.deck.length===expected.length:saved.deck.length>=expected.length) && saved.deck.every((q: {id:string;english:string;choices:string[];correct:number}) => expected.some(e => e.id === q.id && e.english === q.english && q.choices?.[q.correct] === e.choices[e.correct] && q.choices.length===2 && q.choices.every(c=>e.choices.includes(c)))) && Number.isInteger(saved.index) && saved.index >= 0 && saved.index <= saved.deck.length && Number.isInteger(saved.score)) {
-      saved.deck = saved.deck.map((q: {id:string;attemptId?:string}) => ({...q, attemptId:q.attemptId??crypto.randomUUID(), audioUrl: expected.find(e => e.id === q.id)!.audioUrl}))
+      saved.deck = saved.deck.map((q: {id:string;attemptId?:string}) => ({...q, attemptId:q.attemptId??crypto.randomUUID(), audioUrl: expected.find(e => e.id === q.id)!.audioUrl,document:expected.find(e => e.id === q.id)!.document}))
       return saved
     }
   } catch { /* Storage may be unavailable on private browsers. */ }
   return null
 }
 export function PracticeSession({ module,onCompleteModule,onRestartModule,userId,tester=false,settings={fadeMode:true,trackWords:true} }: { module?:PracticeModule;onCompleteModule?:()=>void;onRestartModule?:()=>void;userId?: string;tester?:boolean;settings?:MatrixSettings }) {
+  const lesson=currentLesson()
   const [language,setLanguage]=useState<'th'|'en'>('th')
   const english=tester && language==='en'
   const label=(thai:string,en:string)=>english?en:thai
@@ -33,9 +35,9 @@ export function PracticeSession({ module,onCompleteModule,onRestartModule,userId
   const replays=useRef(0)
   const presentationScores=useRef<WordScores>({})
   const [attemptError,setAttemptError]=useState('')
-  const baseSaveKey = userId ? `${guestSaveKey}:${userId}` : guestSaveKey
+  const baseSaveKey = userId ? `${guestSaveKey(lesson)}:${userId}` : guestSaveKey(lesson)
   const saveKey=module?`${baseSaveKey}:module:${module.id}`:baseSaveKey
-  const [saved] = useState(() => restore(saveKey,module))
+  const [saved] = useState(() => restore(saveKey,lesson,module))
   const [started, setStarted] = useState(false)
   const [audioError, setAudioError] = useState<'blocked'|'failed'|null>(null)
   const autoPlayed = useRef<string|null>(null)
@@ -114,7 +116,7 @@ export function PracticeSession({ module,onCompleteModule,onRestartModule,userId
 
       {audioError && <div role="alert"><button className="practice-audio-retry" onClick={() => play(question)}>{audioError === 'blocked' ? label('▶ แตะเพื่อเปิดเสียง','▶ Enable audio') : label('↻ ลองเล่นเสียงอีกครั้ง','↻ Retry audio')}</button></div>}
       {(progress.error || attemptError) && <p role="alert">{attemptError || progress.error} <button onClick={()=>void progress.retry()}>{label('ลองอีกครั้ง','Try again')}</button></p>}
-      {!progress.ready ? <span role="status" aria-label="กำลังโหลดความคืบหน้า">…</span> : (settings.fadeMode || !question.audioOnly) && <ListeningMatrix key={question.attemptId} sentence={question.english} scores={progress.scores} settings={settings} onSnapshot={scores=>{presentationScores.current=scores}}/>}
+      {!progress.ready ? <span role="status" aria-label="กำลังโหลดความคืบหน้า">…</span> : (settings.fadeMode || !question.audioOnly) && <ListeningMatrix key={question.attemptId} sentence={question.english} document={question.document} scores={progress.scores} settings={settings} onSnapshot={scores=>{presentationScores.current=scores}}/>}
       </section><div className={`practice-response${picked !== null ? ' has-answer' : ' is-ready'}`}><p id="practice-instruction" className="practice-instruction">{picked !== null ? label('ถัดไป →','Next →') : label('แตะคำตอบที่ตรงกับประโยค','Choose the matching answer')}</p>
       <div className="practice-answers" role="group" aria-labelledby="practice-instruction">{question.choices.map((choice, side) => <button ref={side === 0 ? firstAnswer : undefined} key={`${question.id}-${side}`} className={`choice-${side}${picked !== null && side === question.correct ? ' correct' : ''}${picked === side && !correct ? ' incorrect' : ''}`} disabled={picked !== null || !progress.ready} aria-pressed={picked === side} onClick={() => choose(side)}><span className="practice-choice-number" aria-hidden="true">{picked !== null && (side === question.correct || picked === side) ? <img src={`/images/race/answer-${side === question.correct ? 'correct' : 'wrong'}-v2.png`} alt=""/> : side + 1}</span><span className="practice-choice-label">{english ? practiceEnglishMeaning(choice) : choice}</span><span className="practice-choice-go" aria-hidden="true"><Arrow/></span></button>)}</div></div></div>
       <footer className={`practice-feedback${picked !== null ? ' answered' : ''}${picked !== null ? correct ? ' is-correct' : ' is-incorrect' : ''}`}>

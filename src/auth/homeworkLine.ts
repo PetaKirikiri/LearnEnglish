@@ -1,9 +1,10 @@
+import {lessonNumber} from '../learning/lessonRequests'
 import { supabase } from '../lib/supabase'
 
 export const homeworkLiffId = import.meta.env.VITE_ENGLISH_LIFF_ID?.trim() || '2010311582-ziuNvGjb'
 export function homeworkLineUrl(lesson: number) {
   if (!homeworkLiffId) return null
-  return `https://liff.line.me/${homeworkLiffId}?lesson=${lesson === 2 ? 2 : 1}`
+  return `https://liff.line.me/${homeworkLiffId}?lesson=${lessonNumber(lesson)}`
 }
 let pending: Promise<string | null> | null = null
 export function recogniseHomeworkAccount(register = false): Promise<string | null> {

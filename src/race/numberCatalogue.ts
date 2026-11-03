@@ -1,4 +1,5 @@
-import {lessonOneCatalogue,lessonTwoMatrixCatalogue,lessonThreeMatrixCatalogue} from '../classroom/wordCatalogue'
+import {requestLesson} from '../learning/lessonRegistry'
+const lessonOneCatalogue=requestLesson(1).vocabulary,lessonTwoMatrixCatalogue=requestLesson(2).vocabulary,lessonThreeMatrixCatalogue=requestLesson(3).vocabulary
 import {validateSentence} from '../learning/sentenceRules/blueprints'
 import type {ClassroomWord} from '../learning/sentenceMatrix/model'
 /** First lesson assignment is retained when later lessons enrich a word's forms. */

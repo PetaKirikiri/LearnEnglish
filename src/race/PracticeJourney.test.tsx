@@ -12,7 +12,7 @@ it('opens the map, teaches the selected level, then records its result and keeps
  const click=async(text:string)=>act(async()=>[...host.querySelectorAll('button')].find(b=>b.textContent?.includes(text))!.click())
  try{
  await act(async()=>root.render(<PracticeJourney userId="test"/>))
- expect(host.querySelectorAll('.journey-node')).toHaveLength(5)
+ expect(host.querySelectorAll('.journey-node')).toHaveLength(6)
  expect(host.textContent).not.toContain('Run 1')
  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="Level 3:"]')!.click())
  expect(host.querySelector('.journey-tutorial')).not.toBeNull()
@@ -44,7 +44,7 @@ it('previews the real question pools and run sizes rather than the clear target'
  expect(levelPreview(2).words).toHaveLength(10)
  expect(levelPreview(3).total).toBe(30)
  expect(levelPreview(4).words).toContain('you')
- expect(levelPreview(4).total).toBe(7)
+ expect(levelPreview(4).total).toBe(10)
  expect(levelPreview(5).words).toContain('eating')
  expect(levelPreview(5).words).toContain('sleeping')
  expect(levelPreview(5).total).toBe(30)

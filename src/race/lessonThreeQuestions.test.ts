@@ -19,9 +19,9 @@ it('adds 12 pictured noun families and water without leaking future words into e
 })
 it('teaches present person agreement, location meaning and reciprocal dialogue',()=>{
  const places=locationWords(lessonThreeCatalogue)
- expect(lessonThreePeopleQuestions).toHaveLength(12)
- expect(lessonThreeAnswerQuestions).toHaveLength(places.length*4)
- expect(lessonThreeReviewQuestions).toHaveLength(places.length*4)
+ expect(lessonThreePeopleQuestions).toHaveLength(people.length*3)
+ expect(lessonThreeAnswerQuestions).toHaveLength(places.length*people.length)
+ expect(lessonThreeReviewQuestions).toHaveLength(places.length*people.length)
  expect(places.map(p=>p.word)).not.toContain('shoe')
  expect(places.map(p=>p.word)).not.toContain('bedroom')
  for(const q of lessonThreePeopleQuestions){

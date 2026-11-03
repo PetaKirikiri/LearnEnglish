@@ -78,7 +78,7 @@ export default function WordTray({id,active,choices,selected,canChoose,onChoose,
       }}>
         {visibleChoices.length===0&&<p role="status">{th?'ไม่มีคำในหมวดนี้':'No matching words'}</p>}
         {visibleChoices.map(choice=><button type="button" className="cw-word-chip" key={choice.word} data-word={choice.word} onFocus={()=>setCursor(choice.word)} aria-pressed={selected===choice.word} disabled={!canChoose(choice.word)} onClick={()=>onChoose(choice.word)}>
-          <span className="cw-word-art">{renderIcon ? renderIcon(choice.word) : active===3 ? <VocabularyPicture word={choice.word}/> : <WordSlotIcon slot={active??2} plural={choice.word==='are'||choice.word==='were'} past={choice.word==='was'||choice.word==='were'}/>}</span>
+          <span className="cw-word-art">{renderIcon ? renderIcon(choice.word) : active===3 ? <VocabularyPicture word={choice.word}/> : <WordSlotIcon word={choice.word} slot={active??2} plural={choice.word==='are'||choice.word==='were'} past={choice.word==='was'||choice.word==='were'}/>}</span>
           <strong lang="en">{choice.word}</strong><span lang="th">{choice.thai}</span>
           {selected===choice.word && <span className="cw-choice-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 4 4 10-10"/></svg></span>}
         </button>)}

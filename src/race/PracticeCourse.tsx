@@ -1,9 +1,10 @@
+import {requestedLesson} from '../learning/lessonRequests'
 import {useState} from 'react'
 import {PracticeSession} from './PracticeSession'
 import {practiceModules} from './practiceModules'
 import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 export default function PracticeCourse(props:{userId?:string;tester?:boolean;settings?:MatrixSettings}){
- const lesson=new URLSearchParams(location.search).get('lesson')==='2'?2:1
+ const lesson=Number(requestedLesson(location.search))
  const modules=practiceModules(lesson),key=`englishsuccess:modules:v1:l${lesson}:${props.userId??'guest'}`
  const [completed,setCompleted]=useState<string[]>(()=>{try{const ids=JSON.parse(localStorage.getItem(key)??'[]');return Array.isArray(ids)?ids.filter(id=>modules.some(m=>m.id===id)):[]}catch{return []}})
  const [active,setActive]=useState(()=>modules.findIndex(module=>!completed.includes(module.id)))

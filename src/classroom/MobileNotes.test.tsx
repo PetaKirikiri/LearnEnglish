@@ -9,11 +9,11 @@ document.body.append(host)
 let root = createRoot(host)
 afterEach(async () => { await act(async () => root.unmount()); host.replaceChildren(); root = createRoot(host); vi.restoreAllMocks() })
 const click = async (selector: string) => act(async () => host.querySelector<HTMLButtonElement>(selector)!.click())
-it('opens directly into the requested lesson and keeps only the three lesson controls', async () => {
+it('opens directly into the requested lesson and keeps the registered lesson controls', async () => {
  window.history.replaceState({}, '', '/english/notes?lesson=2')
  await act(async () => root.render(<MobileNotes/>))
  expect(host.querySelectorAll('nav')).toHaveLength(1)
- expect(host.querySelectorAll('nav button')).toHaveLength(3)
+ expect(host.querySelectorAll('nav button')).toHaveLength(4)
  expect(host.querySelectorAll('.tonight-slot')).toHaveLength(4)
  expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('Where are the shoes?')
  expect(host.querySelector('.index,.phases,.classroom-race')).toBeNull()
@@ -29,10 +29,16 @@ it('opens directly into the requested lesson and keeps only the three lesson con
  await click('[data-picker-slot="3"]')
  expect(host.querySelectorAll('.cw-word-chip')).toHaveLength(20)
 })
-it('uses recorded lesson-one audio and survives a direct reload with invalid lesson input', async () => {
+it('rejects unsupported requests instead of substituting Lesson 1', async () => {
  window.history.replaceState({}, '', '/english/notes?lesson=unknown')
- const play = vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue()
  await act(async () => root.render(<MobileNotes/>))
+ expect(host.querySelector('[role="alert"]')?.textContent).toContain('Unsupported lesson')
+ expect(host.querySelector('.cw-sentence-board')).toBeNull()
+})
+it('keeps recorded Lesson 1 playback', async () => {
+ window.history.replaceState({}, '', '/english/notes?lesson=1')
+ const play=vi.spyOn(HTMLMediaElement.prototype,'play').mockResolvedValue()
+ await act(async()=>root.render(<MobileNotes/>))
  await click('.cw-sound')
  expect(play).toHaveBeenCalledOnce()
  expect(host.querySelector('audio')?.src).toContain('/audio/race-class-one/hotel-the.wav')

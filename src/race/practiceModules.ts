@@ -1,14 +1,13 @@
-import {tonightMeaningQuestions} from './tonightQuestions'
-import {lessonTwoReviewQuestions} from './lessonTwoQuestions'
+import {lessonPracticeQuestions} from './lessonPractice'
 export type PracticeModule={id:string;title:string;questionIds:string[];number:number;total:number}
 /** Small complete-sentence packs: four contexts, then a listening pass. */
 export function practiceModules(lesson:number):PracticeModule[]{
- const source=lesson===2?[...tonightMeaningQuestions,...lessonTwoReviewQuestions.filter(q=>q.id.startsWith('l2-translation-')&&q.audioUrl?.startsWith('/audio/race-lesson-two/'))]:[...tonightMeaningQuestions]
+ const source=lessonPracticeQuestions(lesson)
  const groups=new Map<string,typeof source>()
  for(const q of source){
   const match=q.english.match(/^Where (is|are) (the|my|your) /)
-  if(!match)throw new Error(`No module pattern for ${q.id}`)
-  const title=`Where ${match[1]} ${match[2]} …?`
+  if(!match&&!q.document)throw new Error(`No module pattern for ${q.id}`)
+  const title=match?`Where ${match[1]} ${match[2]} …?`:q.document?.construction==='location-answer'?'… am/is/are at the …':`… am/is/are ${q.document?.units.find(unit=>unit.role==='action')?.english} …`
   groups.set(title,[...(groups.get(title)??[]),q])
  }
  const signature=(questions:typeof source)=>{let hash=2166136261;for(const char of questions.map(q=>q.id+'|'+q.english+'|'+q.answers[q.correct][0].text).join('~'))hash=Math.imul(hash^char.charCodeAt(0),16777619);return (hash>>>0).toString(36)}

@@ -8,7 +8,7 @@ it('pairs every reviewed action and complement with agreeing subjects and aligne
  for(const subject of Object.keys(actionSubjects) as ActionSubject[])for(const action of actionVocabulary){
   for(const object of objectsForAction(action.word).length?objectsForAction(action.word):[undefined]){
    const pair=actionDialogue(subject,action.word,{object:object?.word}),p=actionSubjects[subject]
-   expect(pair.question.english).toBe(`What ${p.questionBe} ${subject} doing?`)
+   expect(pair.question.english).toBe(`What ${p.questionBe} ${subject==='i'?'I':subject} doing?`)
    expect(pair.answer.english.startsWith(`${p.answer} ${p.answerBe} ${action.word}`)).toBe(true)
    for(const sentence of [pair.question,pair.answer])expect(sentence.units.map(u=>u.english).join(' ')).toBe(sentence.english)
    expect(pair.answer.units.length).toBeLessThanOrEqual(6)

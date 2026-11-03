@@ -141,3 +141,85 @@ All compatible singular and plural forms already taught remain available.
 Standalone verbs such as sleeping never acquire an object. New words are added
 once to the cumulative catalogue with their meaning, number metadata and art;
 never add a private lesson picker list.
+
+
+## Lesson requests and language capabilities
+
+`src/learning/lessonRegistry.ts` owns the numbered Lesson 1–4 configurations,
+ordered race stages, cumulative matrix vocabularies, subject catalogues,
+determiners, allowed actions and initial presentation. `classroom/matrixLessons.ts`
+is a compatibility export. Course lesson numbers are not practice-level numbers:
+the existing university journey and its Level 1–6 progress remain independent.
+
+`lessonRequests.ts` is the shared URL/LINE parser. An absent lesson means the
+established entry; an explicit unsupported value is an error. Public classroom,
+notes and homework hosts display the request error instead of substituting Lesson 1.
+Old named lesson aliases adapt to numbered requests through `notesRoute.ts`.
+
+For action language use `actionCapabilities(lesson)` for scoped choices and
+`composeLessonAction(lesson, request)` for a validated same-subject sentence.
+All person/agreement facts come from `subjectEngine`; `actionSubjects` derives
+its legacy reciprocal replies from that source, preserving existing recordings.
+`ActionMatrix` uses those capabilities for inline and education choices.
+An explicitly empty pronoun catalogue disables pronouns; it does not expose a
+global replacement list. Authored noun/name modes remain available.
+
+`race/lessonPractice.ts` adapts existing banks without changing question IDs or
+recording paths. Lessons 1–2 retain their original recorded projections. Lesson 3
+uses its recorded location answers. Lesson 4 validates existing recorded action
+answers against the configured actions, subjects, objects and determiners before
+making them available to modules, decks and the classroom race pool. The registry preserves the adaptive foundation journey for Lesson 1–2 links and
+selects recorded lesson packs for Lesson 3–4. The unnumbered university journey
+is retained. Its ordered foundation noun lists now resolve meanings and forms
+from the same catalogue instead of copying Thai records.
+No migration or progress-key reset is part of this consolidation.
+
+Structured assessment documents go through `ListeningMatrix` → `LanguageQuadrant`.
+They preserve role-separated noun groups instead of splitting an action or location
+answer into four positional words. Both Thai layers and interactive help remain
+hidden for unanswered assessments. This transport validates geometry and alignment;
+it does not prove the grammatical correctness of arbitrary supplied documents.
+
+Classroom catalogues are authored curriculum data. They are separate from the
+database gloss/profile snapshots used by legacy reading help; this change does not
+claim that a database gloss edit automatically rewrites authored lesson meanings.
+The intentional recorded-race and expanded-matrix vocabulary projections remain.
+
+`lessonParity.test.tsx` checks all supported routes/LINE requests, registry/facade
+identity, race stages, module/deck banks, exact recording manifest text, Lesson 4
+composition and actual inline/education interactions, and hidden Thai in assessment.
+Run it with the engine boundary, construction and consuming-route tests.
+
+
+## Lesson 4 action stars
+
+The Lesson 4 `practiceMode: action-stars` request and the next university journey
+level both open `ActionStarCourse`. Existing Levels 1–5 and their progress keys
+remain intact. `actionStarContent.ts` enumerates the action blueprint through
+`actionCapabilities` and `composeLessonAction`, then joins exact existing recorded
+sentences. It selects three disjoint 50-question sets and retains source question
+IDs, choices, audio paths and a request-level provenance record. There are no
+invented recordings or hand-authored replacement sentences.
+
+One star consolidates eating, reading and drinking. Two stars introduce holding,
+opening and washing in separate stages and return to familiar content. Three
+stars mix all six actions. Each tier covers I/you/he/she/we/they and
+my/your/his/her/our/their. Later stars require two complete unassisted results of
+at least 45/50. New-verb stages also require repeated correct audio-only answers
+before the next new verb. Teaching examples are separate recorded sentences,
+never the next assessed sentence. Both Thai layers, English and icons are hidden
+until an assessment is answered; audio must finish before an answer is enabled.
+Answer positions are balanced 25/25 and survive a reload through a saved run seed.
+
+`lessonPractice.ts`, classroom race pools and the star course use the same selected
+150 records. Existing recorded vocabulary projections remain intentional: all
+compatible words may be taught by the matrix, while the assessed sets select
+recorded combinations. `practiceStage.css` owns its two host regions only;
+content-sized quadrant geometry belongs to `matrixLayout.css`.
+
+Run `node --import tsx scripts/auditActionStars.ts` followed by
+`python3 scripts/auditActionStarAudio.py`. The reports retain all 150 English/Thai
+rows, request provenance, recording paths, contrast checks and decoded PCM metrics,
+plus three separate teaching examples. PCM decoding is signal-integrity evidence,
+not a pronunciation certification. The phrase “there’s 30” remains unassigned
+pending clarification; these tiers contain the explicitly requested 50 questions.

@@ -8,7 +8,7 @@ import BinaryAnswerZone,{type BinaryChoice} from './BinaryAnswerZone'
 import PracticeStage from './PracticeStage'
 import {useWordProgress} from '../learning/wordProgress/useWordProgress'
 import {QUESTION_VERSION,WORD_RULE_VERSION,wordOpacity,wordTokens} from '../learning/wordProgress/model'
-export default function ActionPractice({level,onLevel,userId,onComplete,onExit,settings={fadeMode:true}}:{level:4|5;onLevel:(level:PracticeLevel)=>void;userId?:string;settings?:MatrixSettings;onComplete?:(level:PracticeLevel,score:number,total:number,passed:boolean)=>void;onExit?:()=>void}){
+export default function ActionPractice({level,onLevel,userId,onComplete,onExit,settings={fadeMode:true}}:{level:4|5|6;onLevel:(level:PracticeLevel)=>void;userId?:string;settings?:MatrixSettings;onComplete?:(level:PracticeLevel,score:number,total:number,passed:boolean)=>void;onExit?:()=>void}){
  const [deck]=useState(()=>actionPracticeDeck(level)),[index,setIndex]=useState(0),[picked,setPicked]=useState<number|null>(null),[score,setScore]=useState(0),[audioError,setAudioError]=useState(false),[saveError,setSaveError]=useState(false)
  const progress=useWordProgress(userId),audio=useRef<HTMLAudioElement|null>(null),locked=useRef(false),attempt=useRef(crypto.randomUUID()),replays=useRef(0)
  const q=deck[index],finished=!q

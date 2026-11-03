@@ -1,3 +1,4 @@
+import LanguageQuadrant,{type LanguageDocument} from './LanguageQuadrant'
 import { useEffect, useState } from 'react'
 import VocabularyPicture from '../VocabularyPicture'
 import WordSlotIcon from './WordSlotIcon'
@@ -5,9 +6,10 @@ import FadingWords from './FadingWords'
 import { wordOpacity,wordTokens,type WordScores } from '../wordProgress/model'
 import type { MatrixSettings } from './model'
 /** Assessment presentation shared by listening consumers. Snapshot support per question. */
-export default function ListeningMatrix({sentence,scores={},settings={},onSnapshot}:{sentence:string;scores?:WordScores;settings?:MatrixSettings;onSnapshot?:(scores:WordScores)=>void}){
+export default function ListeningMatrix({sentence,document,scores={},settings={},onSnapshot}:{sentence:string;document?:LanguageDocument;scores?:WordScores;settings?:MatrixSettings;onSnapshot?:(scores:WordScores)=>void}){
  const [snapshot]=useState(scores)
  useEffect(()=>{onSnapshot?.(snapshot)},[snapshot,onSnapshot])
+ if(document)return <div className="classroom"><div className="cw-sentence-board"><div className="cw-sentence-display"><LanguageQuadrant request={{document,presentation:{...settings,thaiMeanings:false,thaiTranslation:false,translations:false,wordPicker:false,explanations:false,size:'phone'}}} scores={snapshot}/></div></div></div>
  const words=sentence.split(' '),slots=[words[0],words[1],words[2],words.slice(3).join(' ')]
  return <div className="homework-slots" lang="en" aria-label={settings.fadeMode?'ฟังประโยคภาษาอังกฤษ':sentence}>
  {slots.map((word,slot)=>{

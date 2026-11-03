@@ -1,3 +1,4 @@
+import ActionStarCourse from './ActionStarCourse'
 import {useCallback,useEffect,useRef,useState} from 'react'
 import NumberFoundation from './NumberFoundationCourse'
 import PracticeGold from './PracticeGold'
@@ -16,7 +17,7 @@ export function levelPreview(level:PracticeLevel){
  const questions=actionPracticeQuestions.filter(q=>q.level===level)
  const role=level===4?'person':'action'
  const words=level<=3?numberNounPool(level).map(n=>n.singular):[...new Set(questions.flatMap(q=>q.units.filter(u=>u.role===role).map(u=>u.english.replace(/[?.]/g,'').trim())))]
- return {words,total:level<=3?30:Math.min(30,questions.length)}
+ return {words,total:level===6?50:level<=3?30:Math.min(30,questions.length)}
 }
 function PreviewAnswers({level,selected,onChoose}:{level:PracticeLevel;selected:number|null;onChoose:(index:number)=>void}){
  const example=sample(level)
@@ -44,7 +45,7 @@ export function subjectPairs(level:PracticeLevel){
   const be=q.units.find(u=>u.role==='be')?.english.trim()
   if(person&&be)pairs.set(person,be)
  }
- const pronouns=['I','you','he','she','they']
+ const pronouns=['I','you','he','she','they','we','it']
  const all=[...pairs]
  return [...all.filter(([p])=>pronouns.includes(p)),...['is','are'].flatMap(be=>{const example=all.find(([p,b])=>!pronouns.includes(p)&&b===be);return example?[example]:[]})]
 }
@@ -72,6 +73,8 @@ function PatternLesson({level}:{level:PracticeLevel}){
     <TeachingMatrix units={(level===4?[{english:be,thai:'',role:'be' as const},{english:person,thai:'',role:'person' as const}]:[{english:person,thai:'',role:'person' as const},{english:be,thai:'',role:'be' as const}])}/>
    </div>)}</div>
    <p>you ใช้ are แม้พูดกับคนเดียว</p>
+   {level===6&&<><p>ใช้รูปประโยคเดิม · เลือกสิ่งที่เข้ากับการกระทำ</p><div className="journey-subject-pairs classroom">{['holding','opening','washing'].map(verb=>{const q=actionPracticeQuestions.find(q=>q.level===6&&q.units.some(u=>u.role==='action'&&u.english===verb))!;return <div className="cw-sentence-board" key={verb}><LanguageQuadrant request={{document:{...q,construction:'action-answer'},presentation:{size:'compact',fadeMode:false,icons:true,thaiMeanings:true,thaiTranslation:true,wordPicker:false,explanations:false,audio:false,layout:{density:'content',maxWidth:720}}}}/></div>})}</div><p>our + สิ่งของ = ของพวกเรา</p></>}
+
    {level===5&&<div className="journey-pattern-repair"><strong>you → I</strong><small>ถามคุณ → ฉันตอบ</small></div>}
   </>}
  </section>
@@ -103,6 +106,7 @@ const levels=[
  {id:3,title:'ถูกหรือผิด',icon:'mystery-apple',hint:'ฟัง แล้วดูว่า is / are ตรงกับจำนวนหรือไม่',choices:['ถูก','ผิด']},
  {id:4,title:'ใครกำลังทำอะไร',icon:'pin',hint:'ฟังคำถาม แล้วเลือกความหมายภาษาไทย',choices:['คุณกำลังทำอะไร','พวกเขากำลังทำอะไร']},
  {id:5,title:'กำลังทำอะไร',icon:'book',hint:'ฟังประโยค แล้วเลือกความหมายภาษาไทย',choices:['ฉันกำลังกินแอปเปิลหนึ่งลูก','ฉันกำลังนอน']},
+ {id:6,title:'ใครทำอะไร กับของใคร',icon:'book',hint:'ฟังว่าใครทำอะไร และของนั้นเป็นของใคร แล้วเลือกคำแปล',choices:['ฉันกำลังกินแอปเปิลของฉัน','ฉันกำลังกินแอปเปิลของคุณ']},
 ] as const
 export type RunResult={level:PracticeLevel;score:number;total:number;passed:boolean}
 type RecordEntry={best:number;total:number;cleared:boolean}
@@ -128,12 +132,13 @@ export default function PracticeJourney(props:{userId?:string;minimumModule?:1|3
 }
 function Journey(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:MatrixSettings}){
  const key=`englishsuccess:journey:v1:${props.userId??'guest'}`
- const [records,setRecords]=useState<JourneyRecord>(()=>{try{const data=JSON.parse(localStorage.getItem(key)??'{}');return Object.fromEntries(Object.entries(data??{}).filter(([id,value])=>{const r=value as RecordEntry;return [1,2,3,4,5].includes(Number(id))&&r&&Number.isFinite(r.best)&&r.best>=0&&r.total>0&&r.best<=r.total&&typeof r.cleared==='boolean'}))}catch{return {}}}),[screen,setScreen]=useState<'map'|'tutorial'|'run'|'result'>('map'),[level,setLevel]=useState<PracticeLevel>(props.minimumModule??1),[result,setResult]=useState<RunResult|null>(null)
+ const [records,setRecords]=useState<JourneyRecord>(()=>{try{const data=JSON.parse(localStorage.getItem(key)??'{}');return Object.fromEntries(Object.entries(data??{}).filter(([id,value])=>{const r=value as RecordEntry;return [1,2,3,4,5,6].includes(Number(id))&&r&&Number.isFinite(r.best)&&r.best>=0&&r.total>0&&r.best<=r.total&&typeof r.cleared==='boolean'}))}catch{return {}}}),[screen,setScreen]=useState<'map'|'tutorial'|'run'|'result'>('map'),[level,setLevel]=useState<PracticeLevel>(props.minimumModule??1),[result,setResult]=useState<RunResult|null>(null)
  const complete=useCallback((level:PracticeLevel,score:number,total:number,passed:boolean)=>{const result={level,score,total,passed};setRecords(old=>mergeRun(old,result));setResult(result);setScreen('result')},[])
  useEffect(()=>{try{localStorage.setItem(key,JSON.stringify(records))}catch{}},[key,records])
  const select=(value:PracticeLevel)=>{setLevel(value);setScreen('tutorial')}
- const recommended=levels.find(item=>item.id>=(props.minimumModule??1)&&!records[item.id]?.cleared)?.id??5
+ const recommended=levels.find(item=>item.id>=(props.minimumModule??1)&&!records[item.id]?.cleared)?.id??6
  if(import.meta.env.DEV&&new URLSearchParams(location.search).has('preview'))return <NumberFoundation {...props}/>
+ if(screen==='run'&&level===6)return <ActionStarCourse userId={props.userId} onExit={()=>setScreen('map')} onComplete={(score,total)=>complete(6,score,total,true)}/>
  if(screen==='run')return <NumberFoundation {...props} initialLevel={level} newRun onLevelRequest={select} onComplete={complete} onExit={()=>setScreen('map')}/>
- return <main className="practice-journey" lang="th"><header className="journey-header"><img src="/brand/success-university-su.svg" alt="Success University"/><span>เส้นทางของฉัน</span><PracticeGold userId={props.userId}/></header>{screen==='tutorial'?<Tutorial key={level} level={level} onStart={()=>setScreen('run')} onBack={()=>setScreen('map')}/>:screen==='result'&&result?<section className="journey-result"><div className="journey-medal">{result.passed?'★':'↻'}</div><h1>{result.passed?'ผ่านแล้ว!':'ลองอีกครั้ง'}</h1><p>LEVEL {result.level}</p><strong>{result.score}<small> / {result.total}</small></strong><div className="journey-result-actions"><button className="journey-play" onClick={()=>select(result.passed&&level<5?(level+1) as PracticeLevel:level)}>{result.passed&&level<5?'ด่านต่อไป →':'เล่นอีกครั้ง ↻'}</button><button onClick={()=>setScreen('map')}>แผนที่</button></div></section>:<section className="journey-map"><div className="journey-intro"><div><span className="journey-eyebrow">LET’S PLAY</span><h1>พร้อมลุยไหม?</h1></div><div className="journey-clears"><span>★</span> {Object.values(records).filter(r=>r?.cleared).length}<small> / 5</small></div></div><div className="journey-path">{levels.map(item=>{const record=records[item.id],current=item.id===recommended;return <article key={item.id} className={`journey-node ${current?'current':''} ${record?.cleared?'cleared':''}`}><button className="journey-node-open" onClick={()=>select(item.id)} aria-label={`Level ${item.id}: ${item.title}`}><span className="journey-node-number">{record?.cleared?'★':String(item.id).padStart(2,'0')}</span><span className="journey-node-content"><span className="journey-eyebrow">LEVEL {item.id}</span><strong>{item.title}</strong><span className="journey-node-score">{record?`★ ${record.best} / ${record.total}`:''}</span></span><span className="journey-node-arrow">{current?'▶':'→'}</span></button><LevelLineup level={item.id}/></article>})}</div></section>}</main>
+ return <main className="practice-journey" lang="th"><header className="journey-header"><img src="/brand/success-university-su.svg" alt="Success University"/><span>เส้นทางของฉัน</span><PracticeGold userId={props.userId}/></header>{screen==='tutorial'?<Tutorial key={level} level={level} onStart={()=>setScreen('run')} onBack={()=>setScreen('map')}/>:screen==='result'&&result?<section className="journey-result"><div className="journey-medal">{result.passed?'★':'↻'}</div><h1>{result.passed?'ผ่านแล้ว!':'ลองอีกครั้ง'}</h1><p>LEVEL {result.level}</p><strong>{result.score}<small> / {result.total}</small></strong><div className="journey-result-actions"><button className="journey-play" onClick={()=>select(result.passed&&level<6?(level+1) as PracticeLevel:level)}>{result.passed&&level<6?'ด่านต่อไป →':'เล่นอีกครั้ง ↻'}</button><button onClick={()=>setScreen('map')}>แผนที่</button></div></section>:<section className="journey-map"><div className="journey-intro"><div><span className="journey-eyebrow">LET’S PLAY</span><h1>พร้อมลุยไหม?</h1></div><div className="journey-clears"><span>★</span> {Object.values(records).filter(r=>r?.cleared).length}<small> / 6</small></div></div><div className="journey-path">{levels.map(item=>{const record=records[item.id],current=item.id===recommended;return <article key={item.id} className={`journey-node ${current?'current':''} ${record?.cleared?'cleared':''}`}><button className="journey-node-open" onClick={()=>select(item.id)} aria-label={`Level ${item.id}: ${item.title}`}><span className="journey-node-number">{record?.cleared?'★':String(item.id).padStart(2,'0')}</span><span className="journey-node-content"><span className="journey-eyebrow">LEVEL {item.id}</span><strong>{item.title}</strong><span className="journey-node-score">{record?`★ ${record.best} / ${record.total}`:''}</span></span><span className="journey-node-arrow">{current?'▶':'→'}</span></button><LevelLineup level={item.id}/></article>})}</div></section>}</main>
 }

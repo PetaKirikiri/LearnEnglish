@@ -1,3 +1,5 @@
+import LessonRequest from '../learning/LessonRequest'
+import {requestedLesson} from '../learning/lessonRequests'
 import ClassroomStudent from '../classroom/ClassroomStudent'
 import {classroomSessionId} from '../classroom/session'
 import { useEffect, useState } from 'react'
@@ -7,7 +9,8 @@ import { supabase } from '../lib/supabase'
 import { homeworkLineUrl, recogniseHomeworkAccount, homeworkDestination } from '../auth/homeworkLine'
 import './phonePractice.css'
 
-export default function HomeworkEntry() {
+export default function HomeworkEntry() { return <LessonRequest>{()=> <ConnectedHomework/>}</LessonRequest> }
+function ConnectedHomework() {
   const [tester,setTester] = useState(false)
   const [account, setAccount] = useState<string | null>(null)
   const [state, setState] = useState<'loading'|'error'>('loading')
@@ -51,7 +54,7 @@ export default function HomeworkEntry() {
   if(classId&&account)return <ClassroomStudent sessionId={classId} userId={account}/>
   if (local && !account && classId) return <main><button onClick={()=>void connect()}>Sign in with LINE</button><p>{error}</p></main>
   if (local || account) return homeworkDestination() === 'scoreboard' ? <CohortLeaderboard userId={account ?? undefined}/> : <PhonePractice key={account ?? 'local'} userId={account ?? undefined} tester={tester}/>
-  const link = homeworkLineUrl(new URLSearchParams(location.search).get('lesson') === '2' ? 2 : 1)
+  const link = homeworkLineUrl(Number(requestedLesson(location.search)))
   return <main className="phone-practice" lang="th"><div className="practice-shell"><section className="practice-complete" aria-live="polite">
     
     {state === 'loading' ? <span role="status" aria-label="กำลังเชื่อมต่อ" style={{display:'block',width:28,height:28,border:'3px solid #dbe8ff',borderTopColor:'#1877ef',borderRadius:'50%'}}/> : <><p role="alert" style={{fontSize:20}}>{error}</p><button onClick={() => void connect()}>ลองอีกครั้ง</button>{link && <a href={link + (classId ? '&class='+encodeURIComponent(classId) : '') + (homeworkDestination() === 'scoreboard' ? '&view=scoreboard' : '')}>เปิดใน LINE</a>}</>}

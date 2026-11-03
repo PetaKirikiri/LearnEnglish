@@ -2615,6 +2615,60 @@
     "text": "I am at the toilet.",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "people-it-is-at-the-bank.wav": {
+    "fingerprint": "0f3dfa8fcfd2cc1425282fe03fd465ac03abde0410e560f4a27a617f8a723266",
+    "seconds": 1.307,
+    "text": "It is at the bank.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-it-is-at-the-bookstore.wav": {
+    "fingerprint": "1413985de53969bce26634a7a6d66120d9de0ccad3647799da1f4fdd1e8ad41c",
+    "seconds": 1.454,
+    "text": "It is at the bookstore.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-it-is-at-the-clinic.wav": {
+    "fingerprint": "b8ebe9ebb82cb75eb09605e71977de2f7b86d1f7a7ac7c1fd9336d5fc54c124f",
+    "seconds": 1.391,
+    "text": "It is at the clinic.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-it-is-at-the-gym.wav": {
+    "fingerprint": "eb6c9f7a914fb41d862a239f05de0c5f24fa056b3fa54ee47bf9c4d31bd9ec40",
+    "seconds": 1.317,
+    "text": "It is at the gym.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-it-is-at-the-hotel.wav": {
+    "fingerprint": "c34c45f09488b9a9fb71b8c93aec1d9c7c25bf36911dd8b01788dda242a9cebd",
+    "seconds": 1.401,
+    "text": "It is at the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-it-is-at-the-padel-court.wav": {
+    "fingerprint": "c498e04aba8468a58ae291fde2e7a4634ae254fe0c4e6b51623fbc7652541bb1",
+    "seconds": 1.815,
+    "text": "It is at the padel court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-it-is-at-the-restaurant.wav": {
+    "fingerprint": "2227f9847ea7c663c4fbe1447bce0a0d8548d5c47c420b993eb4b5a760e4e2fc",
+    "seconds": 1.485,
+    "text": "It is at the restaurant.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-it-is-at-the-school.wav": {
+    "fingerprint": "5ad1345ec8d8a567ebf599d1403aab1eefebf72839c982c74b9da01e58de37b3",
+    "seconds": 1.317,
+    "text": "It is at the school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-it-is-at-the-toilet.wav": {
+    "fingerprint": "465eda9caf2f2d2d3b73ff1bc219f1fe89bd03276f4cf83f571cdcb82b86d090",
+    "seconds": 1.38,
+    "text": "It is at the toilet.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "people-she-is-at-the-bank.wav": {
     "fingerprint": "a6ba62af9fdd6896b1920ed1be2239028a3565954a446ba9f8d0b335188dc121",
     "seconds": 1.296,
@@ -2667,6 +2721,114 @@
     "fingerprint": "b5f12524ca9ee164f56193b150e748c2229bc70ce3118e67aa7df066e263ff13",
     "seconds": 1.413,
     "text": "She is at the toilet.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-they-are-at-the-bank.wav": {
+    "fingerprint": "2fa6b6036cd3f35e9368a7e5fd73e6c74f2d5493e0426eace8daeac27b8a2d21",
+    "seconds": 1.316,
+    "text": "They are at the bank.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-they-are-at-the-bookstore.wav": {
+    "fingerprint": "e5328978e4a38b3b343cf8f7ba0eebe9b3ccdf27cc1b7fb60571578a7dadce39",
+    "seconds": 1.475,
+    "text": "They are at the bookstore.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-they-are-at-the-clinic.wav": {
+    "fingerprint": "f2be75095bed47bfb27e08f5c3f47f33190f20f17ead1f0f8784e1e60a43fe3f",
+    "seconds": 1.443,
+    "text": "They are at the clinic.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-they-are-at-the-gym.wav": {
+    "fingerprint": "334da84838486ab06a9fc0ca5b0e1cbdd7abb12c67961570b1ddb6fa0ad46deb",
+    "seconds": 1.369,
+    "text": "They are at the gym.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-they-are-at-the-hotel.wav": {
+    "fingerprint": "e48eb4ca7a687776ca2361286a58c75cd75e1e08b10b45413de1939d9b880b4e",
+    "seconds": 1.389,
+    "text": "They are at the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-they-are-at-the-padel-court.wav": {
+    "fingerprint": "c501c55e5695c0cc575194a6bb740c7215184f123897037eae5342ecb8d38763",
+    "seconds": 1.741,
+    "text": "They are at the padel court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-they-are-at-the-restaurant.wav": {
+    "fingerprint": "ec6ebf81d4dd234303231d4a3602ae3f8af9db560ee0092c4ae553191b937c29",
+    "seconds": 1.559,
+    "text": "They are at the restaurant.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-they-are-at-the-school.wav": {
+    "fingerprint": "c9dfd7a309a61f0001d02ae82af7ad161a87cf065e91f64b250f2c9e65536014",
+    "seconds": 1.306,
+    "text": "They are at the school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-they-are-at-the-toilet.wav": {
+    "fingerprint": "42e22bd1bf9556bff65b1e6f727d14a1d4b0161b1560a86ca43f1bb074fb6241",
+    "seconds": 1.431,
+    "text": "They are at the toilet.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-we-are-at-the-bank.wav": {
+    "fingerprint": "06cb546af284481c20b302d6509d64ff7c6ab942e11d26598f4271ad499f0164",
+    "seconds": 1.263,
+    "text": "We are at the bank.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-we-are-at-the-bookstore.wav": {
+    "fingerprint": "a9a61c99b0e8b56fe17fa278bfba261a2e03a37e9d079760aa1c568b573c0344",
+    "seconds": 1.454,
+    "text": "We are at the bookstore.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-we-are-at-the-clinic.wav": {
+    "fingerprint": "8778fe96eaa968b3c5ebbf3145a6fdc5675aa93ff723f4ae5987bf334d533f5a",
+    "seconds": 1.421,
+    "text": "We are at the clinic.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-we-are-at-the-gym.wav": {
+    "fingerprint": "e4f3e57c78696a2e57ba91f3371a75e8497551f7c41190c9a5dd3d349913c77b",
+    "seconds": 1.283,
+    "text": "We are at the gym.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-we-are-at-the-hotel.wav": {
+    "fingerprint": "82b39fad1828976ac0e6c8d74f38a4ba406eb13ab98d7b1856fb3a278bd86207",
+    "seconds": 1.4,
+    "text": "We are at the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-we-are-at-the-padel-court.wav": {
+    "fingerprint": "8293a5d72be500503620400541bd99ac4ca8ec1d771c77296facf8cddaa60d4e",
+    "seconds": 1.72,
+    "text": "We are at the padel court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-we-are-at-the-restaurant.wav": {
+    "fingerprint": "db88744111cbfd0f973ceac8f037e9fa87c1b8ccb9024b505c96a716cd307002",
+    "seconds": 1.517,
+    "text": "We are at the restaurant.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-we-are-at-the-school.wav": {
+    "fingerprint": "db91e4c6650c38167cb49041cd40c7453cb2a1b1fe6313b31670ef3b713adbfd",
+    "seconds": 1.263,
+    "text": "We are at the school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-we-are-at-the-toilet.wav": {
+    "fingerprint": "da23f277d7b453ed91185d66dbc4b6f53df2dadfbdb7d9c879f226e7768a3f80",
+    "seconds": 1.39,
+    "text": "We are at the toilet.",
     "voice": "kokoro-1.0-heart-v1"
   },
   "people-where-am-he.wav": {
@@ -2735,10 +2897,28 @@
     "text": "Where am I?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "people-where-am-it.wav": {
+    "fingerprint": "6912aea3efaaedb1f41e9448eeaefde939936ba1967bf42f0c009283b4e8f587",
+    "seconds": 1.045,
+    "text": "Where am it?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "people-where-am-she.wav": {
     "fingerprint": "00bdc5e33e08a140000d9bc4e2feb6a05815894f69541eedcdb0e57d07993c77",
     "seconds": 1.152,
     "text": "Where am she?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-am-they.wav": {
+    "fingerprint": "7df712d4cb122e1bd55b93f442093967cbe3af2a3b7dd1bd49461983261ac3e1",
+    "seconds": 1.067,
+    "text": "Where am they?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-am-we.wav": {
+    "fingerprint": "adc881c3622a4914964e5bec909900661690a11215b8da6525b3d92b3a05a1d4",
+    "seconds": 1.109,
+    "text": "Where am we?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "people-where-am-you.wav": {
@@ -2759,10 +2939,136 @@
     "text": "Where are I?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "people-where-are-it.wav": {
+    "fingerprint": "dbecc27b27df87d0788efb48eb3b7d47c47a5638abdad561f599c7e808b0e415",
+    "seconds": 1.067,
+    "text": "Where are it?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "people-where-are-she.wav": {
     "fingerprint": "eb3d97a89aff498f0dde4857b9ad4d4d9d425f31916987e81f30dea27c1a7807",
     "seconds": 1.088,
     "text": "Where are she?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-they-they-are-at-the-bank.wav": {
+    "fingerprint": "5fa26477ca45f49bcdd53b30d36150d15623c78ab535728750e0a47a73e8f2ad",
+    "seconds": 2.099,
+    "text": "Where are they? They are at the bank.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-they-they-are-at-the-bookstore.wav": {
+    "fingerprint": "b7b4048f6204c57419e2034190ee8bc1f6c1b4025bc6ff8b7d71de9e1c7212fc",
+    "seconds": 2.281,
+    "text": "Where are they? They are at the bookstore.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-they-they-are-at-the-clinic.wav": {
+    "fingerprint": "29d11d4c1db8fb75b365d6b2a957d69c6579d18e2343069403e8f0309e126cb9",
+    "seconds": 2.364,
+    "text": "Where are they? They are at the clinic.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-they-they-are-at-the-gym.wav": {
+    "fingerprint": "9bc24d794f15049aa64189b5873504ddcda6adc629715bbfe92c01422daa240f",
+    "seconds": 2.121,
+    "text": "Where are they? They are at the gym.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-they-they-are-at-the-hotel.wav": {
+    "fingerprint": "6c64ba4682a24222047cbe23cb6d87c9297db8e2dbe7236a6ceb46917e7b1bf1",
+    "seconds": 2.228,
+    "text": "Where are they? They are at the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-they-they-are-at-the-padel-court.wav": {
+    "fingerprint": "bdf344136b296e4ef87aeb2b013048b2806a8b6e6866a8a9274165ed4b6dd7bb",
+    "seconds": 2.494,
+    "text": "Where are they? They are at the padel court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-they-they-are-at-the-restaurant.wav": {
+    "fingerprint": "a8159920d354b51721cb0545403837a2866b664c5fc8bac981beb5b592092140",
+    "seconds": 2.301,
+    "text": "Where are they? They are at the restaurant.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-they-they-are-at-the-school.wav": {
+    "fingerprint": "beecf4bb45bf671493adee3fc3f12becd28401a7ea506a0dae23ef6fd4fee49f",
+    "seconds": 2.117,
+    "text": "Where are they? They are at the school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-they-they-are-at-the-toilet.wav": {
+    "fingerprint": "f74521dfb1b798699cc4bf08b7f48bdb4bac385191acbfc18abe78eb7bbd96a8",
+    "seconds": 2.217,
+    "text": "Where are they? They are at the toilet.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-they.wav": {
+    "fingerprint": "9469408f9016deeffa77cbacfc55ea7640620eb3be3a4d32535d6bab0e9777f1",
+    "seconds": 1.088,
+    "text": "Where are they?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-we-we-are-at-the-bank.wav": {
+    "fingerprint": "7413d6a310065f6e8d325210a5752c9b35c3c9bba22a5a5418df75e7c2439f95",
+    "seconds": 2.075,
+    "text": "Where are we? We are at the bank.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-we-we-are-at-the-bookstore.wav": {
+    "fingerprint": "046071b39b015d9f469d0bdf3c6fae2c737344355690ea3d412cef2acd0187a8",
+    "seconds": 2.248,
+    "text": "Where are we? We are at the bookstore.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-we-we-are-at-the-clinic.wav": {
+    "fingerprint": "6a094c53e6ad121e6dc1771a2cc6fc569a8db693c90fe91a4040d788db53aa5f",
+    "seconds": 2.15,
+    "text": "Where are we? We are at the clinic.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-we-we-are-at-the-gym.wav": {
+    "fingerprint": "05e85a06d3e3c3596d281781147b84a54a5f4ac67575c8c706373be789d3af98",
+    "seconds": 2.096,
+    "text": "Where are we? We are at the gym.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-we-we-are-at-the-hotel.wav": {
+    "fingerprint": "e0e923b8b560020379b053a23ce9b04de16e1f25dd0339c7f12b1f07b956423b",
+    "seconds": 2.205,
+    "text": "Where are we? We are at the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-we-we-are-at-the-padel-court.wav": {
+    "fingerprint": "17fcc385b92c8254537ee3754f8b8947224f9796f63745e6dea65a67804abbae",
+    "seconds": 2.471,
+    "text": "Where are we? We are at the padel court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-we-we-are-at-the-restaurant.wav": {
+    "fingerprint": "c1b3a031dab15610a451d58c67b4da23d088d9a28486293253eee742c2845876",
+    "seconds": 2.268,
+    "text": "Where are we? We are at the restaurant.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-we-we-are-at-the-school.wav": {
+    "fingerprint": "a5221964af7d14a7e722741094ddc16b8625aace4583feb31e4de6d71b6eb2d1",
+    "seconds": 2.106,
+    "text": "Where are we? We are at the school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-we-we-are-at-the-toilet.wav": {
+    "fingerprint": "0ae3ba60c63ce3157ba99712860cc347865b59148b8fbe9836ac1c7137e39fba",
+    "seconds": 2.193,
+    "text": "Where are we? We are at the toilet.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-are-we.wav": {
+    "fingerprint": "e82db866b13694af44059eb6f9a059f2af65c0cb14a90a23c7f05098c000ce74",
+    "seconds": 1.088,
+    "text": "Where are we?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "people-where-are-you-i-am-at-the-bank.wav": {
@@ -2891,6 +3197,66 @@
     "text": "Where is I?",
     "voice": "kokoro-1.0-heart-v1"
   },
+  "people-where-is-it-it-is-at-the-bank.wav": {
+    "fingerprint": "28de88b9d7351a18fc43ec8e4beed574f426138e6b220b0c7edfdd3186ba3201",
+    "seconds": 2.083,
+    "text": "Where is it? It is at the bank.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-is-it-it-is-at-the-bookstore.wav": {
+    "fingerprint": "0fe9d5a2c235054e3e5ace197ed15282bccd7cef0766f814cf11a57d5c8ee9e2",
+    "seconds": 2.287,
+    "text": "Where is it? It is at the bookstore.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-is-it-it-is-at-the-clinic.wav": {
+    "fingerprint": "6f173127bf956c8c016d5ee841c4b1bdbc7d9816284fe4603d3b72238bcd432b",
+    "seconds": 2.159,
+    "text": "Where is it? It is at the clinic.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-is-it-it-is-at-the-gym.wav": {
+    "fingerprint": "9ccf508de69c60e02e19bc8be387f4744262640acee0dad264f5f37941f238b8",
+    "seconds": 2.116,
+    "text": "Where is it? It is at the gym.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-is-it-it-is-at-the-hotel.wav": {
+    "fingerprint": "19b3c8830f9e41144e06206a4d52688e2c230d6fb75471f02e419d7a8eaae220",
+    "seconds": 2.245,
+    "text": "Where is it? It is at the hotel.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-is-it-it-is-at-the-padel-court.wav": {
+    "fingerprint": "1380727f44ad2a983982e1709a228fc0f944e40e570486f0ea5c423a1fd09ab4",
+    "seconds": 2.471,
+    "text": "Where is it? It is at the padel court.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-is-it-it-is-at-the-restaurant.wav": {
+    "fingerprint": "1846a86000e28cff3fd65eadb1c53cc13136917d87af4b39d6cbf718f4fb20a3",
+    "seconds": 2.298,
+    "text": "Where is it? It is at the restaurant.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-is-it-it-is-at-the-school.wav": {
+    "fingerprint": "9d427b8d5a11d1030827348edba7ae5e7a034684a9c9537eb6cb5a2b2b89a4a2",
+    "seconds": 2.137,
+    "text": "Where is it? It is at the school.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-is-it-it-is-at-the-toilet.wav": {
+    "fingerprint": "99acf1a21cd197070f21d014c6a2bbb9f73a699102b60745ac91ef1adc9574bb",
+    "seconds": 2.244,
+    "text": "Where is it? It is at the toilet.",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-is-it.wav": {
+    "fingerprint": "7a13bb07e9105836f111dd21cc6ed4b57e6279d38f425d974615c3a2a6c1a873",
+    "seconds": 1.045,
+    "text": "Where is it?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
   "people-where-is-she-she-is-at-the-bank.wav": {
     "fingerprint": "6821601117e5bac2d64307778704c5f2bce1557b6f3c54cda6e212d02cb75695",
     "seconds": 2.215,
@@ -2949,6 +3315,18 @@
     "fingerprint": "fed9ec1081a685bd0f7c351859b70f0b6bafc3479dda6b3bd4b59441f1f50647",
     "seconds": 1.109,
     "text": "Where is she?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-is-they.wav": {
+    "fingerprint": "fba35c7040d6fac1214b56931a313d887b0c32c6bc744a5083ba14d6ef605162",
+    "seconds": 1.088,
+    "text": "Where is they?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "people-where-is-we.wav": {
+    "fingerprint": "25a710b5a299697884ec3e93f7b5de5e5cf7c2d7357064ff65c050be660998b7",
+    "seconds": 1.109,
+    "text": "Where is we?",
     "voice": "kokoro-1.0-heart-v1"
   },
   "people-where-is-you.wav": {

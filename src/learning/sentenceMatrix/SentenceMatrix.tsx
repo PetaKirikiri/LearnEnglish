@@ -17,11 +17,12 @@ import { isPluralVerb, type BeVerb, type MatrixLesson, type MatrixSettings } fro
 import { useLocationMatrix } from './useLocationMatrix'
 import '../../classroom/sentenceLine.css'
 
-export type SentenceMatrixProps = { initialAction?: {subject?:import('../sentenceRules/actionDialogue').ActionSubject;action?:string;object?:string;determiner?:import('./model').Determiner;personMode?:NounMode;personWord?:string}; lesson: MatrixLesson; settings?: MatrixSettings; wordScores?:import('../wordProgress/model').WordScores; word?:string; onWord?:(word:string)=>void; audio?:ReactNode }
+export type SentenceMatrixProps = { initialAction?: {answerPronoun?:string;subject?:import('../sentenceRules/actionDialogue').ActionSubject;action?:string;object?:string;determiner?:import('./model').Determiner;personMode?:NounMode;personWord?:string}; lesson: MatrixLesson; settings?: MatrixSettings; wordScores?:import('../wordProgress/model').WordScores; word?:string; onWord?:(word:string)=>void; audio?:ReactNode }
 export default function SentenceMatrix(props: SentenceMatrixProps) {
+  if(props.lesson.pattern!==undefined&&!['people-location','present-action'].includes(props.lesson.pattern))throw new Error(`Unsupported sentence construction: ${props.lesson.pattern}`)
   const configured = {...props.lesson.settings,...props.settings}
   const settings = configured.fadeMode ? {...configured,explanations:false,wordPicker:false,explanationSelection:false} : configured
-  const scope = JSON.stringify([props.lesson.id,props.lesson.pattern,props.lesson.subjectModes,props.lesson.plural,props.lesson.initialOwner,props.lesson.past,props.lesson.owners,props.lesson.initialTense,props.lesson.initialWord,props.lesson.vocabulary,props.initialAction,settings])
+  const scope = JSON.stringify([props.lesson.id,props.lesson.pattern,props.lesson.actions,props.lesson.actionReply,props.lesson.subjectModes,props.lesson.plural,props.lesson.initialOwner,props.lesson.past,props.lesson.owners,props.lesson.initialTense,props.lesson.initialWord,props.lesson.vocabulary,props.initialAction,settings])
   if(props.lesson.pattern==='present-action') return <ActionMatrix key={scope} {...props} settings={settings}/>
   if(props.lesson.pattern==='people-location') return <PeopleLocationMatrix key={scope} {...props} settings={settings}/>
   return <LocationSentenceMatrix key={scope} {...props} settings={settings}/>
@@ -66,7 +67,7 @@ export function LocationSentenceMatrix({lesson,settings={},word:controlledWord,o
     <audio ref={recording} preload="none"/>
     {audioError&&<p role="alert">{t('เล่นเสียงไม่ได้ ลองกดอีกครั้ง')}</p>}
     <div className="cw-sentence-display">
-      <ExampleLanguage settings={settings} scores={wordScores} matrix layout={{construction:'question',noun:'phrase',nounSwapper}} {...sentence} english={`Where ${verb} ${owner} **${word}?**`} slotDetails={[{label:'Question',count:1,icon:<WordSlotIcon slot={0}/>},{label:tense==='past'?'Tense · before':'Tense · now',count:verbs.length,control:picker(1,verbs.length),icon:<WordSlotIcon slot={1} plural={isPluralVerb(verb)} past={tense==='past'}/>},{label:'Which / whose',count:owners.length,control:picker(2,owners.length),icon:<WordSlotIcon slot={2}/>},{label:'Person / thing',count:catalogue.length,control:picker(3,catalogue.length),icon:<VocabularyPicture word={word}/>}]}
+      <ExampleLanguage settings={settings} scores={wordScores} matrix layout={{construction:'question',noun:'phrase',nounSwapper}} {...sentence} english={`Where ${verb} ${owner} **${word}?**`} slotDetails={[{label:'Question',count:1,icon:<WordSlotIcon slot={0}/>},{label:tense==='past'?'Tense · before':'Tense · now',count:verbs.length,control:picker(1,verbs.length),icon:<WordSlotIcon slot={1} plural={isPluralVerb(verb)} past={tense==='past'}/>},{label:'Which / whose',count:owners.length,control:picker(2,owners.length),icon:<WordSlotIcon slot={2} word={owner}/>},{label:'Person / thing',count:catalogue.length,control:picker(3,catalogue.length),icon:<VocabularyPicture word={word}/>}]}
       afterUnits={settings.wordPicker !== false ? conveyor : undefined}
       translationControl={settings.audio === false ? undefined : audioSource ? <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={async()=>{if(recording.current){recording.current.src=audioSource;setAudioError(false);try{await recording.current.play()}catch{setAudioError(true)}}}}><Icon name="sound"/></button> : owner === 'the' && audio ? audio : <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={() => {
         window.speechSynthesis.cancel()

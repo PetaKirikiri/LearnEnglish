@@ -1,3 +1,4 @@
+import {ownerThai} from './model'
 export type ReferenceRow = readonly [label: string, value: string]
 export type WordReference = { meaning: string; function: string; usage: readonly ReferenceRow[] }
 export const slotReferences = [
@@ -7,6 +8,8 @@ export const slotReferences = [
   { name:'คำนาม', english:'Nouns', responsibility:'ระบุคน สถานที่ สิ่งของ หรือแนวคิดที่เราพูดถึง', mechanics:[['จำนวน','คำนามนับได้มีรูปเอกพจน์และพหูพจน์ ส่วนคำนามนับไม่ได้ใช้ต่างออกไป'],['ความสัมพันธ์','จำนวนและชนิดของคำนามมีผลต่อคำกำหนดนาม และอาจมีผลต่อรูปกริยา']] },
 ] as const
 export const fixedWordReferences: Record<string, WordReference> = {
+  our:{meaning:ownerThai('our'),function:'บอกความเป็นเจ้าของของกลุ่มที่รวมผู้พูด',usage:[['ตำแหน่ง','ใช้ our หน้าคำนาม เช่น our book'],['รูปคำ','ours ใช้เดี่ยวแทนกลุ่มคำนาม ไม่ใช้หน้าคำนาม']]},
+  their:{meaning:ownerThai('their'),function:'บอกความเป็นเจ้าของของกลุ่มที่เราพูดถึง',usage:[['ตำแหน่ง','ใช้ their หน้าคำนาม เช่น their books'],['จำนวน','their ไม่เปลี่ยนตามจำนวนของสิ่งที่พูดถึง']]},
   Where:{meaning:'ที่ไหน',function:'ถามหาสถานที่หรือตำแหน่ง',usage:[['คำตอบที่คาดหวัง','สถานที่หรือตำแหน่ง ไม่ใช่ชื่อคนหรือเวลา'],['การใช้','ใช้ถามทั้งตำแหน่ง ที่มา หรือจุดหมาย โดยดูร่วมกับคำอื่นในคำถาม']]},
   is:{meaning:'เป็น · คือ · อยู่',function:'รูปปัจจุบันของกริยา be สำหรับประธานบุรุษที่สามเอกพจน์',usage:[['ใช้กับ','he, she, it หรือคำนามเอกพจน์'],['เวลาและประธาน','is เป็นปัจจุบัน แต่ประธาน I ใช้ am และ you ใช้ are แม้หมายถึงคนเดียว'],['ความหมายภาษาไทย','คำแปลขึ้นอยู่กับการใช้ บางครั้งภาษาไทยไม่ต้องมีคำแปลแยก']]},
   are:{meaning:'เป็น · คือ · อยู่',function:'รูปปัจจุบันของ be ใช้กับคำนามพหูพจน์ในรูปแบบนี้',usage:[['ใช้กับ','หลายสิ่ง เช่น shoes หรือ keys จึงใช้ are'],['ความสัมพันธ์','my และ your ไม่ได้บอกจำนวน ให้ดูคำนามเพื่อเลือก is หรือ are'],['ข้อควรรู้ในการใช้','แว่นตา glasses และกางเกง trousers ใช้ are แม้มีหนึ่งคู่']]},

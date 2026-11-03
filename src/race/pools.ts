@@ -1,3 +1,4 @@
+import {lessonPracticeQuestions} from './lessonPractice'
 import {actionPracticeQuestions} from './actionPracticeContent'
 import { lessonThreePeopleQuestions, lessonThreeAnswerQuestions, lessonThreeReviewQuestions } from './lessonThreeQuestions'
 import { lessonTwoNumberQuestions, lessonTwoOwnerQuestions, lessonTwoReviewQuestions } from './lessonTwoQuestions'
@@ -8,6 +9,7 @@ import type { HotelQuestion } from '../hotel/course'
 
 // Keep the teacher's selected vocabulary and question frame stable for a race.
 export const racePools: { id: string; title: string; kind?: 'judgement' | 'meaning'; questions: (HotelQuestion & { meaningDistractor?: string })[] }[] = [
+  {id:'lesson-four-actions',title:'Lesson 4 · Actions and ownership',kind:'meaning',questions:lessonPracticeQuestions(4)},
   { id: 'man-woman', title: 'A man · A woman', questions: classOneVocabularyQuestions.slice(2, 4) },
   { id: 'who-what', title: 'Who · What', questions: classOneQuestions.slice(0, 2) },
   { id: 'where-when', title: 'Where · When', questions: classOneQuestions.slice(2, 4) },

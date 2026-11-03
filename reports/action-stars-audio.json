@@ -1,0 +1,1537 @@
+{
+  "decoded": 153,
+  "findings": [],
+  "method": "All PCM frames decoded; duration, peak and RMS checked. Not a pronunciation certification.",
+  "rows": [
+    {
+      "id": "action-l6-i-am-eating-my-apple",
+      "audio": "/audio/action-practice/action-l6-i-am-eating-my-apple.wav",
+      "kind": "question",
+      "seconds": 1.571,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13212,
+      "rms": 1893.17
+    },
+    {
+      "id": "action-l6-you-are-eating-your-apple",
+      "audio": "/audio/action-practice/action-l6-you-are-eating-your-apple.wav",
+      "kind": "question",
+      "seconds": 1.559,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11262,
+      "rms": 1970.76
+    },
+    {
+      "id": "action-l6-he-is-eating-his-apple",
+      "audio": "/audio/action-practice/action-l6-he-is-eating-his-apple.wav",
+      "kind": "question",
+      "seconds": 1.561,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12799,
+      "rms": 1951.17
+    },
+    {
+      "id": "action-l6-she-is-eating-her-apple",
+      "audio": "/audio/action-practice/action-l6-she-is-eating-her-apple.wav",
+      "kind": "question",
+      "seconds": 1.583,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11964,
+      "rms": 1922.39
+    },
+    {
+      "id": "action-l6-we-are-eating-our-apple",
+      "audio": "/audio/action-practice/action-l6-we-are-eating-our-apple.wav",
+      "kind": "question",
+      "seconds": 1.548,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 9454,
+      "rms": 1943.49
+    },
+    {
+      "id": "action-l6-they-are-eating-their-apple",
+      "audio": "/audio/action-practice/action-l6-they-are-eating-their-apple.wav",
+      "kind": "question",
+      "seconds": 1.655,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12897,
+      "rms": 1937.89
+    },
+    {
+      "id": "action-l6-i-am-eating-your-apple",
+      "audio": "/audio/action-practice/action-l6-i-am-eating-your-apple.wav",
+      "kind": "question",
+      "seconds": 1.549,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 8514,
+      "rms": 1924.36
+    },
+    {
+      "id": "action-l6-you-are-eating-his-apples",
+      "audio": "/audio/action-practice/action-l6-you-are-eating-his-apples.wav",
+      "kind": "question",
+      "seconds": 1.645,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13382,
+      "rms": 1962.38
+    },
+    {
+      "id": "action-l6-he-is-eating-her-apples",
+      "audio": "/audio/action-practice/action-l6-he-is-eating-her-apples.wav",
+      "kind": "question",
+      "seconds": 1.645,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11563,
+      "rms": 1952.05
+    },
+    {
+      "id": "action-l6-she-is-eating-their-apples",
+      "audio": "/audio/action-practice/action-l6-she-is-eating-their-apples.wav",
+      "kind": "question",
+      "seconds": 1.666,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13147,
+      "rms": 1936.76
+    },
+    {
+      "id": "action-l6-we-are-eating-my-apples",
+      "audio": "/audio/action-practice/action-l6-we-are-eating-my-apples.wav",
+      "kind": "question",
+      "seconds": 1.719,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12224,
+      "rms": 1905.27
+    },
+    {
+      "id": "action-l6-they-are-eating-our-apples",
+      "audio": "/audio/action-practice/action-l6-they-are-eating-our-apples.wav",
+      "kind": "question",
+      "seconds": 1.666,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 9550,
+      "rms": 1914.95
+    },
+    {
+      "id": "action-l6-i-am-eating-your-apples",
+      "audio": "/audio/action-practice/action-l6-i-am-eating-your-apples.wav",
+      "kind": "question",
+      "seconds": 1.591,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11927,
+      "rms": 1911.78
+    },
+    {
+      "id": "action-l6-you-are-eating-her-banana",
+      "audio": "/audio/action-practice/action-l6-you-are-eating-her-banana.wav",
+      "kind": "question",
+      "seconds": 1.645,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11004,
+      "rms": 1910.1
+    },
+    {
+      "id": "action-l6-he-is-eating-their-banana",
+      "audio": "/audio/action-practice/action-l6-he-is-eating-their-banana.wav",
+      "kind": "question",
+      "seconds": 1.657,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 9709,
+      "rms": 1916.15
+    },
+    {
+      "id": "action-l6-she-is-eating-our-banana",
+      "audio": "/audio/action-practice/action-l6-she-is-eating-our-banana.wav",
+      "kind": "question",
+      "seconds": 1.573,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13820,
+      "rms": 1919.04
+    },
+    {
+      "id": "action-l6-we-are-eating-your-banana",
+      "audio": "/audio/action-practice/action-l6-we-are-eating-your-banana.wav",
+      "kind": "question",
+      "seconds": 1.581,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 9808,
+      "rms": 1927.15
+    },
+    {
+      "id": "action-l6-they-are-eating-my-banana",
+      "audio": "/audio/action-practice/action-l6-they-are-eating-my-banana.wav",
+      "kind": "question",
+      "seconds": 1.71,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 8590,
+      "rms": 1862.76
+    },
+    {
+      "id": "action-l6-i-am-eating-his-banana",
+      "audio": "/audio/action-practice/action-l6-i-am-eating-his-banana.wav",
+      "kind": "question",
+      "seconds": 1.699,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13225,
+      "rms": 1848.13
+    },
+    {
+      "id": "action-l6-you-are-eating-their-bananas",
+      "audio": "/audio/action-practice/action-l6-you-are-eating-their-bananas.wav",
+      "kind": "question",
+      "seconds": 1.741,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12059,
+      "rms": 1928.63
+    },
+    {
+      "id": "action-l6-he-is-eating-our-bananas",
+      "audio": "/audio/action-practice/action-l6-he-is-eating-our-bananas.wav",
+      "kind": "question",
+      "seconds": 1.699,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13623,
+      "rms": 1901.16
+    },
+    {
+      "id": "action-l6-she-is-eating-my-bananas",
+      "audio": "/audio/action-practice/action-l6-she-is-eating-my-bananas.wav",
+      "kind": "question",
+      "seconds": 1.71,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10007,
+      "rms": 1844.46
+    },
+    {
+      "id": "action-l6-we-are-eating-his-bananas",
+      "audio": "/audio/action-practice/action-l6-we-are-eating-his-bananas.wav",
+      "kind": "question",
+      "seconds": 1.825,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10083,
+      "rms": 1867.51
+    },
+    {
+      "id": "action-l6-they-are-eating-your-bananas",
+      "audio": "/audio/action-practice/action-l6-they-are-eating-your-bananas.wav",
+      "kind": "question",
+      "seconds": 1.72,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10490,
+      "rms": 1910.41
+    },
+    {
+      "id": "action-l6-i-am-eating-her-bananas",
+      "audio": "/audio/action-practice/action-l6-i-am-eating-her-bananas.wav",
+      "kind": "question",
+      "seconds": 1.741,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 15682,
+      "rms": 1816.45
+    },
+    {
+      "id": "action-l6-you-are-eating-our-orange",
+      "audio": "/audio/action-practice/action-l6-you-are-eating-our-orange.wav",
+      "kind": "question",
+      "seconds": 1.677,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12166,
+      "rms": 1908.67
+    },
+    {
+      "id": "action-l6-he-is-eating-my-orange",
+      "audio": "/audio/action-practice/action-l6-he-is-eating-my-orange.wav",
+      "kind": "question",
+      "seconds": 1.646,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10321,
+      "rms": 1942.42
+    },
+    {
+      "id": "action-l6-she-is-eating-your-orange",
+      "audio": "/audio/action-practice/action-l6-she-is-eating-your-orange.wav",
+      "kind": "question",
+      "seconds": 1.593,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10146,
+      "rms": 1943.86
+    },
+    {
+      "id": "action-l6-we-are-eating-her-orange",
+      "audio": "/audio/action-practice/action-l6-we-are-eating-her-orange.wav",
+      "kind": "question",
+      "seconds": 1.709,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10810,
+      "rms": 1908.18
+    },
+    {
+      "id": "action-l6-they-are-eating-his-orange",
+      "audio": "/audio/action-practice/action-l6-they-are-eating-his-orange.wav",
+      "kind": "question",
+      "seconds": 1.699,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 8948,
+      "rms": 1899.23
+    },
+    {
+      "id": "action-l6-i-am-eating-their-orange",
+      "audio": "/audio/action-practice/action-l6-i-am-eating-their-orange.wav",
+      "kind": "question",
+      "seconds": 1.699,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11423,
+      "rms": 1831.48
+    },
+    {
+      "id": "action-l6-you-are-eating-my-oranges",
+      "audio": "/audio/action-practice/action-l6-you-are-eating-my-oranges.wav",
+      "kind": "question",
+      "seconds": 1.825,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11806,
+      "rms": 1917.17
+    },
+    {
+      "id": "action-l6-he-is-eating-your-oranges",
+      "audio": "/audio/action-practice/action-l6-he-is-eating-your-oranges.wav",
+      "kind": "question",
+      "seconds": 1.804,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11477,
+      "rms": 1939.29
+    },
+    {
+      "id": "action-l6-she-is-eating-his-oranges",
+      "audio": "/audio/action-practice/action-l6-she-is-eating-his-oranges.wav",
+      "kind": "question",
+      "seconds": 1.827,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10571,
+      "rms": 1877.97
+    },
+    {
+      "id": "action-l6-we-are-eating-their-oranges",
+      "audio": "/audio/action-practice/action-l6-we-are-eating-their-oranges.wav",
+      "kind": "question",
+      "seconds": 1.804,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10251,
+      "rms": 1922.15
+    },
+    {
+      "id": "action-l6-they-are-eating-her-oranges",
+      "audio": "/audio/action-practice/action-l6-they-are-eating-her-oranges.wav",
+      "kind": "question",
+      "seconds": 1.901,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10373,
+      "rms": 1898.89
+    },
+    {
+      "id": "action-l6-i-am-eating-our-oranges",
+      "audio": "/audio/action-practice/action-l6-i-am-eating-our-oranges.wav",
+      "kind": "question",
+      "seconds": 1.794,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11896,
+      "rms": 1862.36
+    },
+    {
+      "id": "action-l6-you-are-eating-your-sandwich",
+      "audio": "/audio/action-practice/action-l6-you-are-eating-your-sandwich.wav",
+      "kind": "question",
+      "seconds": 1.699,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 14512,
+      "rms": 1975.91
+    },
+    {
+      "id": "action-l6-i-am-reading-my-book",
+      "audio": "/audio/action-practice/action-l6-i-am-reading-my-book.wav",
+      "kind": "question",
+      "seconds": 1.559,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11778,
+      "rms": 1879.19
+    },
+    {
+      "id": "action-l6-you-are-reading-your-book",
+      "audio": "/audio/action-practice/action-l6-you-are-reading-your-book.wav",
+      "kind": "question",
+      "seconds": 1.538,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11329,
+      "rms": 1972.29
+    },
+    {
+      "id": "action-l6-he-is-reading-his-book",
+      "audio": "/audio/action-practice/action-l6-he-is-reading-his-book.wav",
+      "kind": "question",
+      "seconds": 1.569,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11863,
+      "rms": 1953.38
+    },
+    {
+      "id": "action-l6-she-is-reading-her-book",
+      "audio": "/audio/action-practice/action-l6-she-is-reading-her-book.wav",
+      "kind": "question",
+      "seconds": 1.528,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12794,
+      "rms": 1907.04
+    },
+    {
+      "id": "action-l6-we-are-reading-our-book",
+      "audio": "/audio/action-practice/action-l6-we-are-reading-our-book.wav",
+      "kind": "question",
+      "seconds": 1.474,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10403,
+      "rms": 1951.53
+    },
+    {
+      "id": "action-l6-they-are-reading-their-book",
+      "audio": "/audio/action-practice/action-l6-they-are-reading-their-book.wav",
+      "kind": "question",
+      "seconds": 1.623,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 9772,
+      "rms": 1902.23
+    },
+    {
+      "id": "action-l6-i-am-reading-your-books",
+      "audio": "/audio/action-practice/action-l6-i-am-reading-your-books.wav",
+      "kind": "question",
+      "seconds": 1.602,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12936,
+      "rms": 1884.42
+    },
+    {
+      "id": "action-l6-you-are-reading-his-books",
+      "audio": "/audio/action-practice/action-l6-you-are-reading-his-books.wav",
+      "kind": "question",
+      "seconds": 1.602,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12999,
+      "rms": 2014.64
+    },
+    {
+      "id": "action-l6-i-am-drinking-my-water",
+      "audio": "/audio/action-practice/action-l6-i-am-drinking-my-water.wav",
+      "kind": "question",
+      "seconds": 1.7,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11024,
+      "rms": 1852.73
+    },
+    {
+      "id": "action-l6-you-are-drinking-your-water",
+      "audio": "/audio/action-practice/action-l6-you-are-drinking-your-water.wav",
+      "kind": "question",
+      "seconds": 1.615,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10197,
+      "rms": 1953.14
+    },
+    {
+      "id": "action-l6-he-is-drinking-his-water",
+      "audio": "/audio/action-practice/action-l6-he-is-drinking-his-water.wav",
+      "kind": "question",
+      "seconds": 1.677,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10600,
+      "rms": 1913.71
+    },
+    {
+      "id": "action-l6-she-is-drinking-her-water",
+      "audio": "/audio/action-practice/action-l6-she-is-drinking-her-water.wav",
+      "kind": "question",
+      "seconds": 1.669,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10386,
+      "rms": 1875.48
+    },
+    {
+      "id": "action-l6-i-am-holding-my-phone",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-my-phone.wav",
+      "kind": "question",
+      "seconds": 1.593,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 16252,
+      "rms": 1911.83
+    },
+    {
+      "id": "action-l6-you-are-holding-your-phone",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-your-phone.wav",
+      "kind": "question",
+      "seconds": 1.529,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 14431,
+      "rms": 2000.78
+    },
+    {
+      "id": "action-l6-he-is-holding-his-phone",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-his-phone.wav",
+      "kind": "question",
+      "seconds": 1.562,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13318,
+      "rms": 1998.4
+    },
+    {
+      "id": "action-l6-she-is-holding-her-phone",
+      "audio": "/audio/action-practice/action-l6-she-is-holding-her-phone.wav",
+      "kind": "question",
+      "seconds": 1.593,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13384,
+      "rms": 1949.83
+    },
+    {
+      "id": "action-l6-we-are-holding-our-phone",
+      "audio": "/audio/action-practice/action-l6-we-are-holding-our-phone.wav",
+      "kind": "question",
+      "seconds": 1.551,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11503,
+      "rms": 1958.74
+    },
+    {
+      "id": "action-l6-they-are-holding-their-phone",
+      "audio": "/audio/action-practice/action-l6-they-are-holding-their-phone.wav",
+      "kind": "question",
+      "seconds": 1.646,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11614,
+      "rms": 1946.66
+    },
+    {
+      "id": "action-l6-i-am-holding-your-phones",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-your-phones.wav",
+      "kind": "question",
+      "seconds": 1.709,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 20357,
+      "rms": 1904.96
+    },
+    {
+      "id": "action-l6-you-are-holding-his-phones",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-his-phones.wav",
+      "kind": "question",
+      "seconds": 1.635,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 14806,
+      "rms": 1988.03
+    },
+    {
+      "id": "action-l6-he-is-holding-her-phones",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-her-phones.wav",
+      "kind": "question",
+      "seconds": 1.709,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12188,
+      "rms": 1949.83
+    },
+    {
+      "id": "action-l6-she-is-holding-their-phones",
+      "audio": "/audio/action-practice/action-l6-she-is-holding-their-phones.wav",
+      "kind": "question",
+      "seconds": 1.709,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12425,
+      "rms": 1937.49
+    },
+    {
+      "id": "action-l6-we-are-holding-my-phones",
+      "audio": "/audio/action-practice/action-l6-we-are-holding-my-phones.wav",
+      "kind": "question",
+      "seconds": 1.709,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11738,
+      "rms": 1945.76
+    },
+    {
+      "id": "action-l6-they-are-holding-our-phones",
+      "audio": "/audio/action-practice/action-l6-they-are-holding-our-phones.wav",
+      "kind": "question",
+      "seconds": 1.687,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10859,
+      "rms": 1928.68
+    },
+    {
+      "id": "action-l6-i-am-holding-his-key",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-his-key.wav",
+      "kind": "question",
+      "seconds": 1.561,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 14084,
+      "rms": 1985.48
+    },
+    {
+      "id": "action-l6-you-are-holding-her-key",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-her-key.wav",
+      "kind": "question",
+      "seconds": 1.528,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 16812,
+      "rms": 2035.12
+    },
+    {
+      "id": "action-l6-he-is-holding-their-key",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-their-key.wav",
+      "kind": "question",
+      "seconds": 1.571,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10812,
+      "rms": 2042.1
+    },
+    {
+      "id": "action-l6-she-is-holding-our-key",
+      "audio": "/audio/action-practice/action-l6-she-is-holding-our-key.wav",
+      "kind": "question",
+      "seconds": 1.551,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13469,
+      "rms": 1994.35
+    },
+    {
+      "id": "action-l6-we-are-holding-your-key",
+      "audio": "/audio/action-practice/action-l6-we-are-holding-your-key.wav",
+      "kind": "question",
+      "seconds": 1.538,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12730,
+      "rms": 2034.0
+    },
+    {
+      "id": "action-l6-they-are-holding-my-key",
+      "audio": "/audio/action-practice/action-l6-they-are-holding-my-key.wav",
+      "kind": "question",
+      "seconds": 1.623,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11286,
+      "rms": 1952.17
+    },
+    {
+      "id": "action-l6-i-am-holding-her-keys",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-her-keys.wav",
+      "kind": "question",
+      "seconds": 1.643,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 14002,
+      "rms": 1942.77
+    },
+    {
+      "id": "action-l6-you-are-holding-their-keys",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-their-keys.wav",
+      "kind": "question",
+      "seconds": 1.592,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 15398,
+      "rms": 2054.33
+    },
+    {
+      "id": "action-l6-he-is-holding-our-keys",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-our-keys.wav",
+      "kind": "question",
+      "seconds": 1.645,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12683,
+      "rms": 1995.72
+    },
+    {
+      "id": "action-l6-i-am-opening-my-bag",
+      "audio": "/audio/action-practice/action-l6-i-am-opening-my-bag.wav",
+      "kind": "question",
+      "seconds": 1.635,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12935,
+      "rms": 1904.16
+    },
+    {
+      "id": "action-l6-you-are-opening-your-bag",
+      "audio": "/audio/action-practice/action-l6-you-are-opening-your-bag.wav",
+      "kind": "question",
+      "seconds": 1.571,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11581,
+      "rms": 1992.3
+    },
+    {
+      "id": "action-l6-he-is-opening-his-bag",
+      "audio": "/audio/action-practice/action-l6-he-is-opening-his-bag.wav",
+      "kind": "question",
+      "seconds": 1.592,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12371,
+      "rms": 1989.33
+    },
+    {
+      "id": "action-l6-she-is-opening-her-bag",
+      "audio": "/audio/action-practice/action-l6-she-is-opening-her-bag.wav",
+      "kind": "question",
+      "seconds": 1.561,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12375,
+      "rms": 1946.42
+    },
+    {
+      "id": "action-l6-we-are-opening-our-bag",
+      "audio": "/audio/action-practice/action-l6-we-are-opening-our-bag.wav",
+      "kind": "question",
+      "seconds": 1.613,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11336,
+      "rms": 1955.57
+    },
+    {
+      "id": "action-l6-they-are-opening-their-bag",
+      "audio": "/audio/action-practice/action-l6-they-are-opening-their-bag.wav",
+      "kind": "question",
+      "seconds": 1.613,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11029,
+      "rms": 1948.68
+    },
+    {
+      "id": "action-l6-i-am-opening-your-bags",
+      "audio": "/audio/action-practice/action-l6-i-am-opening-your-bags.wav",
+      "kind": "question",
+      "seconds": 1.656,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13774,
+      "rms": 1941.05
+    },
+    {
+      "id": "action-l6-you-are-opening-his-bags",
+      "audio": "/audio/action-practice/action-l6-you-are-opening-his-bags.wav",
+      "kind": "question",
+      "seconds": 1.666,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12211,
+      "rms": 2007.47
+    },
+    {
+      "id": "action-l6-he-is-opening-her-bags",
+      "audio": "/audio/action-practice/action-l6-he-is-opening-her-bags.wav",
+      "kind": "question",
+      "seconds": 1.666,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12833,
+      "rms": 1941.87
+    },
+    {
+      "id": "action-l6-she-is-opening-their-bags",
+      "audio": "/audio/action-practice/action-l6-she-is-opening-their-bags.wav",
+      "kind": "question",
+      "seconds": 1.656,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12900,
+      "rms": 1930.98
+    },
+    {
+      "id": "action-l6-we-are-opening-my-bags",
+      "audio": "/audio/action-practice/action-l6-we-are-opening-my-bags.wav",
+      "kind": "question",
+      "seconds": 1.697,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12850,
+      "rms": 1962.26
+    },
+    {
+      "id": "action-l6-they-are-opening-our-bags",
+      "audio": "/audio/action-practice/action-l6-they-are-opening-our-bags.wav",
+      "kind": "question",
+      "seconds": 1.719,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11721,
+      "rms": 1939.28
+    },
+    {
+      "id": "action-l6-i-am-washing-my-cup",
+      "audio": "/audio/action-practice/action-l6-i-am-washing-my-cup.wav",
+      "kind": "question",
+      "seconds": 1.602,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12578,
+      "rms": 1917.22
+    },
+    {
+      "id": "action-l6-you-are-washing-your-cup",
+      "audio": "/audio/action-practice/action-l6-you-are-washing-your-cup.wav",
+      "kind": "question",
+      "seconds": 1.548,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10601,
+      "rms": 1992.17
+    },
+    {
+      "id": "action-l6-he-is-washing-his-cup",
+      "audio": "/audio/action-practice/action-l6-he-is-washing-his-cup.wav",
+      "kind": "question",
+      "seconds": 1.603,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12136,
+      "rms": 1909.79
+    },
+    {
+      "id": "action-l6-she-is-washing-her-cup",
+      "audio": "/audio/action-practice/action-l6-she-is-washing-her-cup.wav",
+      "kind": "question",
+      "seconds": 1.548,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12499,
+      "rms": 1875.11
+    },
+    {
+      "id": "action-l6-we-are-washing-our-cup",
+      "audio": "/audio/action-practice/action-l6-we-are-washing-our-cup.wav",
+      "kind": "question",
+      "seconds": 1.548,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11172,
+      "rms": 1962.85
+    },
+    {
+      "id": "action-l6-they-are-washing-their-cup",
+      "audio": "/audio/action-practice/action-l6-they-are-washing-their-cup.wav",
+      "kind": "question",
+      "seconds": 1.591,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10090,
+      "rms": 1934.15
+    },
+    {
+      "id": "action-l6-i-am-washing-your-cups",
+      "audio": "/audio/action-practice/action-l6-i-am-washing-your-cups.wav",
+      "kind": "question",
+      "seconds": 1.591,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10354,
+      "rms": 1950.18
+    },
+    {
+      "id": "action-l6-you-are-washing-his-cups",
+      "audio": "/audio/action-practice/action-l6-you-are-washing-his-cups.wav",
+      "kind": "question",
+      "seconds": 1.633,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10470,
+      "rms": 1935.83
+    },
+    {
+      "id": "action-l6-he-is-washing-her-cups",
+      "audio": "/audio/action-practice/action-l6-he-is-washing-her-cups.wav",
+      "kind": "question",
+      "seconds": 1.665,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11128,
+      "rms": 1870.4
+    },
+    {
+      "id": "action-l6-she-is-washing-their-cups",
+      "audio": "/audio/action-practice/action-l6-she-is-washing-their-cups.wav",
+      "kind": "question",
+      "seconds": 1.643,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11608,
+      "rms": 1863.12
+    },
+    {
+      "id": "action-l6-we-are-washing-my-cups",
+      "audio": "/audio/action-practice/action-l6-we-are-washing-my-cups.wav",
+      "kind": "question",
+      "seconds": 1.643,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10770,
+      "rms": 1916.13
+    },
+    {
+      "id": "action-l6-they-are-washing-our-cups",
+      "audio": "/audio/action-practice/action-l6-they-are-washing-our-cups.wav",
+      "kind": "question",
+      "seconds": 1.643,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10621,
+      "rms": 1904.84
+    },
+    {
+      "id": "action-l6-i-am-eating-my-sandwich",
+      "audio": "/audio/action-practice/action-l6-i-am-eating-my-sandwich.wav",
+      "kind": "question",
+      "seconds": 1.743,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12262,
+      "rms": 1863.45
+    },
+    {
+      "id": "action-l6-you-are-eating-his-sandwiches",
+      "audio": "/audio/action-practice/action-l6-you-are-eating-his-sandwiches.wav",
+      "kind": "question",
+      "seconds": 1.912,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 14165,
+      "rms": 1948.59
+    },
+    {
+      "id": "action-l6-he-is-reading-her-books",
+      "audio": "/audio/action-practice/action-l6-he-is-reading-her-books.wav",
+      "kind": "question",
+      "seconds": 1.571,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11878,
+      "rms": 1916.3
+    },
+    {
+      "id": "action-l6-she-is-reading-their-books",
+      "audio": "/audio/action-practice/action-l6-she-is-reading-their-books.wav",
+      "kind": "question",
+      "seconds": 1.602,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10962,
+      "rms": 1895.73
+    },
+    {
+      "id": "action-l6-we-are-drinking-our-water",
+      "audio": "/audio/action-practice/action-l6-we-are-drinking-our-water.wav",
+      "kind": "question",
+      "seconds": 1.593,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 9626,
+      "rms": 1922.72
+    },
+    {
+      "id": "action-l6-i-am-eating-your-sandwiches",
+      "audio": "/audio/action-practice/action-l6-i-am-eating-your-sandwiches.wav",
+      "kind": "question",
+      "seconds": 1.848,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 17582,
+      "rms": 1854.8
+    },
+    {
+      "id": "action-l6-he-is-eating-his-sandwich",
+      "audio": "/audio/action-practice/action-l6-he-is-eating-his-sandwich.wav",
+      "kind": "question",
+      "seconds": 1.699,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12687,
+      "rms": 1911.37
+    },
+    {
+      "id": "action-l6-she-is-eating-her-sandwich",
+      "audio": "/audio/action-practice/action-l6-she-is-eating-her-sandwich.wav",
+      "kind": "question",
+      "seconds": 1.699,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11084,
+      "rms": 1871.25
+    },
+    {
+      "id": "action-l6-we-are-eating-our-sandwich",
+      "audio": "/audio/action-practice/action-l6-we-are-eating-our-sandwich.wav",
+      "kind": "question",
+      "seconds": 1.72,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11823,
+      "rms": 1935.0
+    },
+    {
+      "id": "action-l6-we-are-reading-my-books",
+      "audio": "/audio/action-practice/action-l6-we-are-reading-my-books.wav",
+      "kind": "question",
+      "seconds": 1.581,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10017,
+      "rms": 1939.09
+    },
+    {
+      "id": "action-l6-they-are-reading-our-books",
+      "audio": "/audio/action-practice/action-l6-they-are-reading-our-books.wav",
+      "kind": "question",
+      "seconds": 1.581,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 9874,
+      "rms": 1915.52
+    },
+    {
+      "id": "action-l6-they-are-drinking-their-water",
+      "audio": "/audio/action-practice/action-l6-they-are-drinking-their-water.wav",
+      "kind": "question",
+      "seconds": 1.7,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 8454,
+      "rms": 1894.54
+    },
+    {
+      "id": "action-l6-i-am-holding-their-bag",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-their-bag.wav",
+      "kind": "question",
+      "seconds": 1.592,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10240,
+      "rms": 1905.21
+    },
+    {
+      "id": "action-l6-you-are-holding-our-bag",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-our-bag.wav",
+      "kind": "question",
+      "seconds": 1.528,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10645,
+      "rms": 1941.37
+    },
+    {
+      "id": "action-l6-he-is-holding-my-bag",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-my-bag.wav",
+      "kind": "question",
+      "seconds": 1.592,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10725,
+      "rms": 1942.7
+    },
+    {
+      "id": "action-l6-she-is-holding-my-keys",
+      "audio": "/audio/action-practice/action-l6-she-is-holding-my-keys.wav",
+      "kind": "question",
+      "seconds": 1.677,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12838,
+      "rms": 1964.66
+    },
+    {
+      "id": "action-l6-we-are-holding-his-keys",
+      "audio": "/audio/action-practice/action-l6-we-are-holding-his-keys.wav",
+      "kind": "question",
+      "seconds": 1.571,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13770,
+      "rms": 2023.64
+    },
+    {
+      "id": "action-l6-they-are-holding-your-keys",
+      "audio": "/audio/action-practice/action-l6-they-are-holding-your-keys.wav",
+      "kind": "question",
+      "seconds": 1.613,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12877,
+      "rms": 1998.44
+    },
+    {
+      "id": "action-l6-i-am-holding-our-bags",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-our-bags.wav",
+      "kind": "question",
+      "seconds": 1.666,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 15148,
+      "rms": 1894.2
+    },
+    {
+      "id": "action-l6-you-are-holding-my-bags",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-my-bags.wav",
+      "kind": "question",
+      "seconds": 1.613,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11124,
+      "rms": 1957.79
+    },
+    {
+      "id": "action-l6-he-is-holding-your-bags",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-your-bags.wav",
+      "kind": "question",
+      "seconds": 1.613,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12055,
+      "rms": 1955.21
+    },
+    {
+      "id": "action-l6-she-is-holding-your-bag",
+      "audio": "/audio/action-practice/action-l6-she-is-holding-your-bag.wav",
+      "kind": "question",
+      "seconds": 1.549,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11802,
+      "rms": 1936.26
+    },
+    {
+      "id": "action-l6-we-are-holding-her-bag",
+      "audio": "/audio/action-practice/action-l6-we-are-holding-her-bag.wav",
+      "kind": "question",
+      "seconds": 1.528,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11155,
+      "rms": 1928.99
+    },
+    {
+      "id": "action-l6-they-are-holding-his-bag",
+      "audio": "/audio/action-practice/action-l6-they-are-holding-his-bag.wav",
+      "kind": "question",
+      "seconds": 1.561,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10637,
+      "rms": 1957.26
+    },
+    {
+      "id": "action-l6-i-am-holding-my-book",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-my-book.wav",
+      "kind": "question",
+      "seconds": 1.581,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12145,
+      "rms": 1900.57
+    },
+    {
+      "id": "action-l6-you-are-holding-your-book",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-your-book.wav",
+      "kind": "question",
+      "seconds": 1.474,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11965,
+      "rms": 1995.96
+    },
+    {
+      "id": "action-l6-he-is-holding-his-book",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-his-book.wav",
+      "kind": "question",
+      "seconds": 1.569,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10886,
+      "rms": 1989.87
+    },
+    {
+      "id": "action-l6-she-is-holding-his-bags",
+      "audio": "/audio/action-practice/action-l6-she-is-holding-his-bags.wav",
+      "kind": "question",
+      "seconds": 1.666,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10614,
+      "rms": 1905.18
+    },
+    {
+      "id": "action-l6-we-are-holding-their-bags",
+      "audio": "/audio/action-practice/action-l6-we-are-holding-their-bags.wav",
+      "kind": "question",
+      "seconds": 1.613,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11429,
+      "rms": 1943.02
+    },
+    {
+      "id": "action-l6-they-are-holding-her-bags",
+      "audio": "/audio/action-practice/action-l6-they-are-holding-her-bags.wav",
+      "kind": "question",
+      "seconds": 1.612,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11070,
+      "rms": 1918.45
+    },
+    {
+      "id": "action-l6-i-am-holding-your-books",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-your-books.wav",
+      "kind": "question",
+      "seconds": 1.581,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 14865,
+      "rms": 1925.95
+    },
+    {
+      "id": "action-l6-you-are-holding-his-books",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-his-books.wav",
+      "kind": "question",
+      "seconds": 1.591,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12519,
+      "rms": 1990.44
+    },
+    {
+      "id": "action-l6-i-am-opening-his-book",
+      "audio": "/audio/action-practice/action-l6-i-am-opening-his-book.wav",
+      "kind": "question",
+      "seconds": 1.602,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12173,
+      "rms": 1961.04
+    },
+    {
+      "id": "action-l6-you-are-opening-her-book",
+      "audio": "/audio/action-practice/action-l6-you-are-opening-her-book.wav",
+      "kind": "question",
+      "seconds": 1.581,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12636,
+      "rms": 1981.98
+    },
+    {
+      "id": "action-l6-he-is-opening-their-book",
+      "audio": "/audio/action-practice/action-l6-he-is-opening-their-book.wav",
+      "kind": "question",
+      "seconds": 1.633,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 14924,
+      "rms": 1981.19
+    },
+    {
+      "id": "action-l6-she-is-opening-our-book",
+      "audio": "/audio/action-practice/action-l6-she-is-opening-our-book.wav",
+      "kind": "question",
+      "seconds": 1.561,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12253,
+      "rms": 1960.65
+    },
+    {
+      "id": "action-l6-we-are-opening-your-book",
+      "audio": "/audio/action-practice/action-l6-we-are-opening-your-book.wav",
+      "kind": "question",
+      "seconds": 1.569,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12062,
+      "rms": 1983.94
+    },
+    {
+      "id": "action-l6-they-are-opening-my-book",
+      "audio": "/audio/action-practice/action-l6-they-are-opening-my-book.wav",
+      "kind": "question",
+      "seconds": 1.655,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12797,
+      "rms": 1934.8
+    },
+    {
+      "id": "action-l6-i-am-opening-her-books",
+      "audio": "/audio/action-practice/action-l6-i-am-opening-her-books.wav",
+      "kind": "question",
+      "seconds": 1.623,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12737,
+      "rms": 1936.56
+    },
+    {
+      "id": "action-l6-you-are-opening-their-books",
+      "audio": "/audio/action-practice/action-l6-you-are-opening-their-books.wav",
+      "kind": "question",
+      "seconds": 1.643,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12257,
+      "rms": 1988.76
+    },
+    {
+      "id": "action-l6-he-is-opening-our-books",
+      "audio": "/audio/action-practice/action-l6-he-is-opening-our-books.wav",
+      "kind": "question",
+      "seconds": 1.613,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13111,
+      "rms": 1963.72
+    },
+    {
+      "id": "action-l6-she-is-opening-my-books",
+      "audio": "/audio/action-practice/action-l6-she-is-opening-my-books.wav",
+      "kind": "question",
+      "seconds": 1.633,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12680,
+      "rms": 1936.88
+    },
+    {
+      "id": "action-l6-i-am-washing-his-plate",
+      "audio": "/audio/action-practice/action-l6-i-am-washing-his-plate.wav",
+      "kind": "question",
+      "seconds": 1.645,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11124,
+      "rms": 1950.47
+    },
+    {
+      "id": "action-l6-you-are-washing-her-plate",
+      "audio": "/audio/action-practice/action-l6-you-are-washing-her-plate.wav",
+      "kind": "question",
+      "seconds": 1.623,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10301,
+      "rms": 1945.81
+    },
+    {
+      "id": "action-l6-he-is-washing-their-plate",
+      "audio": "/audio/action-practice/action-l6-he-is-washing-their-plate.wav",
+      "kind": "question",
+      "seconds": 1.699,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10873,
+      "rms": 1917.41
+    },
+    {
+      "id": "action-l6-she-is-washing-our-plate",
+      "audio": "/audio/action-practice/action-l6-she-is-washing-our-plate.wav",
+      "kind": "question",
+      "seconds": 1.677,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12086,
+      "rms": 1866.55
+    },
+    {
+      "id": "action-l6-we-are-washing-your-plate",
+      "audio": "/audio/action-practice/action-l6-we-are-washing-your-plate.wav",
+      "kind": "question",
+      "seconds": 1.623,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10305,
+      "rms": 1942.01
+    },
+    {
+      "id": "action-l6-they-are-washing-my-plate",
+      "audio": "/audio/action-practice/action-l6-they-are-washing-my-plate.wav",
+      "kind": "question",
+      "seconds": 1.699,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 9942,
+      "rms": 1874.98
+    },
+    {
+      "id": "action-l6-i-am-washing-her-plates",
+      "audio": "/audio/action-practice/action-l6-i-am-washing-her-plates.wav",
+      "kind": "question",
+      "seconds": 1.655,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11307,
+      "rms": 1944.96
+    },
+    {
+      "id": "action-l6-you-are-washing-their-plates",
+      "audio": "/audio/action-practice/action-l6-you-are-washing-their-plates.wav",
+      "kind": "question",
+      "seconds": 1.686,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10819,
+      "rms": 1958.56
+    },
+    {
+      "id": "action-l6-he-is-washing-our-plates",
+      "audio": "/audio/action-practice/action-l6-he-is-washing-our-plates.wav",
+      "kind": "question",
+      "seconds": 1.73,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11677,
+      "rms": 1898.75
+    },
+    {
+      "id": "action-l6-she-is-washing-my-plates",
+      "audio": "/audio/action-practice/action-l6-she-is-washing-my-plates.wav",
+      "kind": "question",
+      "seconds": 1.73,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11942,
+      "rms": 1865.82
+    },
+    {
+      "id": "action-l6-we-are-washing-his-plates",
+      "audio": "/audio/action-practice/action-l6-we-are-washing-his-plates.wav",
+      "kind": "question",
+      "seconds": 1.709,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 11232,
+      "rms": 1938.28
+    },
+    {
+      "id": "action-l6-they-are-washing-your-plates",
+      "audio": "/audio/action-practice/action-l6-they-are-washing-your-plates.wav",
+      "kind": "question",
+      "seconds": 1.707,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10053,
+      "rms": 1891.09
+    },
+    {
+      "id": "action-l6-i-am-washing-their-apple",
+      "audio": "/audio/action-practice/action-l6-i-am-washing-their-apple.wav",
+      "kind": "question",
+      "seconds": 1.603,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 9610,
+      "rms": 1907.13
+    },
+    {
+      "id": "action-l6-i-am-holding-his-cup",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-his-cup.wav",
+      "kind": "teaching",
+      "seconds": 1.548,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 12129,
+      "rms": 1955.15
+    },
+    {
+      "id": "action-l6-we-are-opening-his-books",
+      "audio": "/audio/action-practice/action-l6-we-are-opening-his-books.wav",
+      "kind": "teaching",
+      "seconds": 1.655,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 13744,
+      "rms": 1987.65
+    },
+    {
+      "id": "action-l6-i-am-washing-our-apples",
+      "audio": "/audio/action-practice/action-l6-i-am-washing-our-apples.wav",
+      "kind": "teaching",
+      "seconds": 1.751,
+      "rate": 24000,
+      "channels": 1,
+      "peak": 10682,
+      "rms": 1890.58
+    }
+  ]
+}

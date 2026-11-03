@@ -3,7 +3,7 @@ import type {ClassroomWord} from '../sentenceMatrix/model'
 import {categoriesForWord} from '../sentenceMatrix/vocabularyCategories'
 import {subjectVerb,type SubjectWord} from '../sentenceMatrix/subjectEngine'
 export type MeaningKind='place'|'person'|'physical-object'|'abstract'
-export type WordMeaning={actionContexts?:readonly ('food'|'drink'|'readable'|'destination')[];kind:MeaningKind;countability?:'count'|'mass'|'plural-only';roles?:readonly 'destination'[];locationPrepositions?:readonly ('at'|'in'|'on')[]}
+export type WordMeaning={actionContexts?:readonly ('food'|'drink'|'readable'|'destination'|'holdable'|'openable'|'washable')[];kind:MeaningKind;countability?:'count'|'mass'|'plural-only';roles?:readonly 'destination'[];locationPrepositions?:readonly ('at'|'in'|'on')[]}
 export type BlueprintId='where-noun'|'where-person'|'person-at-place'
 export const sentenceBlueprints={
  'where-noun':{pattern:'Where {be} {determiner} {noun}?',nounKinds:['place','person','physical-object'],agreement:'noun-number'},
@@ -46,7 +46,7 @@ export function validateSentence(request:SentenceRequest):RuleIssue[]{
    }
   }
   if(request.namedPlace){if(request.determiner)add('proper-name-article','determiner',request.determiner,'This named place does not take a determiner in this blueprint.')}
-  else if(!['the','my','your','his','her'].includes(request.determiner??''))add('missing-determiner','determiner',request.determiner??'','Select an approved determiner.')
+  else if(!['the','my','your','his','her','our','their'].includes(request.determiner??''))add('missing-determiner','determiner',request.determiner??'','Select an approved determiner.')
  }
  return issues
 }

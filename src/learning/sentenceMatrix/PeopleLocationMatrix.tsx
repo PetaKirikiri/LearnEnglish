@@ -58,7 +58,7 @@ export default function PeopleLocationMatrix({lesson,settings={},word:controlled
   },[explaining])
   const choicesFor=(role:Role)=>role==='person'?(subjectMode==='name'?personNames:people):role==='verb'?(subjectMode==='name'?[]:verbs):role==='place'?(placeMode==='name'?placeNames:places):[]
   const valueFor=(role:Role)=>role==='person'?subject.word:role==='verb'?verb:role==='place'?destination.word:role==='determiner'?'the':'at'
-  const iconFor=(role:Role,value=valueFor(role))=>role==='person'?(subjectMode==='name'?<ProperNounIcon word={value}/>:<PronounIcon word={value}/>):role==='place'?(placeMode==='name'?<ProperNounIcon word={value}/>:<VocabularyPicture word={value}/>):<WordSlotIcon slot={role==='verb'?1:role==='determiner'?2:0} plural={role==='verb'&&value==='are'}/>
+  const iconFor=(role:Role,value=valueFor(role))=>role==='person'?(subjectMode==='name'?<ProperNounIcon word={value}/>:<PronounIcon word={value}/>):role==='place'?(placeMode==='name'?<ProperNounIcon word={value}/>:<VocabularyPicture word={value}/>):<WordSlotIcon word={value} slot={role==='verb'?1:role==='determiner'?2:0} plural={role==='verb'&&value==='are'}/>
   function choose(role:Role,value:string) {
     if(role==='place'){if(placeMode==='name')setPlaceName(value);else{setLocalWord(value);onWord?.(value)}}
     else if(role==='person'&&subjectMode==='name')setSubjectName(value)

@@ -1,3 +1,5 @@
+import ActionStarCourse from './ActionStarCourse'
+import {requestedLesson} from '../learning/lessonRequests'
 import PracticeGold,{awardPracticeGold} from './PracticeGold'
 import {useWordProgress} from '../learning/wordProgress/useWordProgress'
 import type {MatrixSettings} from '../learning/sentenceMatrix/model'
@@ -33,14 +35,14 @@ function load(user?:string,minimumModule:1|3=1):Saved{
 }
 export default function NumberFoundation(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:MatrixSettings;initialLevel?:PracticeLevel;onLevelRequest?:(level:PracticeLevel)=>void;onComplete?:(level:PracticeLevel,score:number,total:number,passed:boolean)=>void;onExit?:()=>void;newRun?:boolean}){
  const key=`englishsuccess:practice-level:${props.userId??'guest'}`
- const [level,setLevel]=useState<PracticeLevel>(()=>{if(props.initialLevel)return props.initialLevel;try{const chosen=Number(localStorage.getItem(key));if([1,2,3,4,5].includes(chosen))return chosen as PracticeLevel}catch{}return load(props.userId,props.minimumModule).module})
+ const [level,setLevel]=useState<PracticeLevel>(()=>{if(props.initialLevel)return props.initialLevel;try{const chosen=Number(localStorage.getItem(key));if([1,2,3,4,5,6].includes(chosen))return chosen as PracticeLevel}catch{}return load(props.userId,props.minimumModule).module})
  function change(value:PracticeLevel){if(props.onLevelRequest){props.onLevelRequest(value);return}try{localStorage.setItem(key,String(value))}catch{}setLevel(value)}
- return level>=4?<ActionPractice key={level} level={level as 4|5} onLevel={change} userId={props.userId} settings={props.settings} onComplete={props.onComplete} onExit={props.onExit}/>:<NumberLevels key={level} {...props} selectedLevel={level as 1|2|3} onLevel={change}/>
+ if(level===6)return <ActionStarCourse userId={props.userId} onExit={props.onExit} onComplete={(score,total)=>props.onComplete?.(6,score,total,true)}/>
+ return level>=4?<ActionPractice key={level} level={level as 4|5|6} onLevel={change} userId={props.userId} settings={props.settings} onComplete={props.onComplete} onExit={props.onExit}/>:<NumberLevels key={level} {...props} selectedLevel={level as 1|2|3} onLevel={change}/>
 }
 function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,onExit,newRun,settings={fadeMode:true}}:{userId?:string;minimumModule?:1|3;selectedLevel:1|2|3;onLevel:(level:PracticeLevel)=>void;tester?:boolean;settings?:MatrixSettings;onComplete?:(level:PracticeLevel,score:number,total:number,passed:boolean)=>void;onExit?:()=>void;newRun?:boolean}){
  const progress=useWordProgress(userId)
- const lessonNumber=new URLSearchParams(location.search).get('lesson')
- const lesson=['1','2','3'].includes(lessonNumber??'')?lessonNumber:'1'
+ const lesson=requestedLesson(location.search)
  const lessonHref=`${window.innerWidth>=1024?'/classroom/index.html':'/english/notes'}?lesson=${lesson}`
  const preview=import.meta.env.DEV?new URLSearchParams(location.search).get('preview'):null
  const [saved,setSaved]=useState<Saved>(()=>{

@@ -1,4 +1,6 @@
-import {existsSync,mkdirSync,writeFileSync} from 'node:fs'
+import {lessonNumbers} from '../src/learning/lessonRequests'
+import {lessonPracticeQuestions} from '../src/race/lessonPractice'
+import {existsSync,mkdirSync,writeFileSync,readFileSync} from 'node:fs'
 import {lessonOneCatalogue,lessonTwoMatrixCatalogue,lessonThreeMatrixCatalogue} from '../src/classroom/wordCatalogue'
 import {validateSentence,meaningForWord,sentenceBlueprints,type RuleIssue} from '../src/learning/sentenceRules/blueprints'
 import {people,locationWords} from '../src/learning/sentenceMatrix/peopleLocation'
@@ -25,7 +27,7 @@ for(const [lesson,catalogue] of Object.entries({lesson1:lessonOneCatalogue,lesso
  }
 }
 for(const q of lessonThreePeopleQuestions){
- const match=q.english.match(/^Where (am|is|are) (I|you|he|she)\?$/)!
+ const match=q.english.match(/^Where (am|is|are) (I|you|he|she|we|they|it)\?$/)!
  const subject=people.find(p=>p.word===match[2])!
  const issues=validateSentence({blueprint:'where-person',subject,verb:match[1]})
  const expectedWrong=q.correct===1;checked++
@@ -38,12 +40,26 @@ for(const noun of locationWords(lessonThreeMatrixCatalogue))for(const subject of
 }
 for(const q of [...lessonThreeAnswerQuestions,...lessonThreeReviewQuestions]){
  checked++
- const match=q.english.match(/^(?:Where (?:am|is|are) (?:I|you|he|she)\? )?(I|You|He|She) (am|is|are) at the (.+)\.$/)
+ const match=q.english.match(/^(?:Where (?:am|is|are) (?:I|you|he|she|we|they|it)\? )?(I|You|He|She|We|They|It) (am|is|are) at the (.+)\.$/)
  if(!match){findings.push({id:q.id,blueprint:'person-at-place',sentence:q.english,issues:[{code:'unrecognised-construction',slot:'sentence',word:q.english,message:'Register this construction before generating it.'}]});continue}
  const subject=people.find(p=>p.word.toLowerCase()===match[1].toLowerCase())!
  const noun=lessonThreeMatrixCatalogue.find(w=>w.word===match[3])
  const issues=validateSentence({blueprint:'person-at-place',subject,noun,verb:match[2],determiner:'the'})
  if(issues.length)findings.push({id:q.id,blueprint:'person-at-place',sentence:q.english,issues})
+}
+// The public lesson adapter validates scoped generation; verify its delivered recordings too.
+const manifests=new Map<string,Record<string,{text:string}>>()
+for(const number of lessonNumbers)for(const q of lessonPracticeQuestions(number)){
+ checked++
+ const issues=questionIntegrity(q)
+ if(q.document&&q.document.units.map(unit=>unit.english).join(' ')!==q.english)issues.push({code:'aligned-source-mismatch',slot:'sentence',word:q.id,message:'Delivered units differ from the prompt.'})
+ if(!q.audioUrl||!existsSync(`public${q.audioUrl}`))issues.push({code:'missing-recording',slot:'audio',word:q.id,message:'Registered lesson prompts require a recorded asset.'})
+ else{
+  const directory=q.audioUrl.slice(0,q.audioUrl.lastIndexOf('/')),path=`public${directory}/voice-manifest.json`
+  if(!manifests.has(directory))manifests.set(directory,JSON.parse(readFileSync(path,'utf8')))
+  if(manifests.get(directory)?.[q.audioUrl.split('/').pop()!]?.text!==q.english)issues.push({code:'recording-text-mismatch',slot:'audio',word:q.id,message:'Recording manifest differs from the delivered sentence.'})
+ }
+ if(issues.length)findings.push({id:q.id,blueprint:`lesson-${number}-delivery`,sentence:q.english,issues})
 }
 const allNouns=[...lessonThreeMatrixCatalogue,...holidayVocabulary]
 let questionCount=0

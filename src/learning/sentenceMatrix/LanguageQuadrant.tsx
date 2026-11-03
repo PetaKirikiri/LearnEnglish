@@ -1,3 +1,4 @@
+import {subjectPronouns} from './subjectEngine'
 import ExampleLanguage from './ExampleView'
 import type {MatrixSettings} from './model'
 import type {WordScores} from '../wordProgress/model'
@@ -12,7 +13,7 @@ export type LanguageRole = 'question'|'be'|'person'|'action'|'object'|'determine
 export type LanguageDocument = {
   english:string
   thai:string
-  construction:'question'|'noun-phrase'|'action-question'|'action-answer'
+  construction:'question'|'noun-phrase'|'location-answer'|'action-question'|'action-answer'
   units:readonly {english:string;thai:string;role:LanguageRole}[]
 }
 /** A transportable presentation request. User scores are injected by the authenticated consumer. */
@@ -26,7 +27,7 @@ export function quadrantLayout(document:LanguageDocument):MatrixLayoutRequest {
  if(!units.length||units.map(u=>u.english).join(' ')!==document.english)throw new Error('Quadrant source and aligned units must match')
  if(units.some(u=>!(u.role in slots)||!u.english.trim()))throw new Error('Unsupported quadrant role')
  // A determiner is never folded into a noun card.
- if(units.some(u=>['person','object'].includes(u.role)&&/^(a|an|the|my|your|his|her)\s/i.test(u.english)))throw new Error('Determiners require their own unit')
+ if(units.some(u=>['person','object'].includes(u.role)&&/^(a|an|the|my|your|his|her|our|their)\s/i.test(u.english)))throw new Error('Determiners require their own unit')
  const roles=units.map(u=>u.role)
  if(construction==='noun-phrase'){
   if(roles.join(',')!=='determiner,object')throw new Error('Unsupported noun phrase')
@@ -35,6 +36,10 @@ export function quadrantLayout(document:LanguageDocument):MatrixLayoutRequest {
  if(construction==='question'){
   if(!['question,be,determiner,object','question,be,person'].includes(roles.join(',')))throw new Error('Unsupported location question')
   return {construction,noun:roles.includes('determiner')?'phrase':'single'}
+ }
+ if(construction==='location-answer'){
+  if(roles.join(',')!=='person,be,preposition,determiner,object')throw new Error('Unsupported location answer')
+  return {construction,noun:'phrase'}
  }
  if(!['action-question','action-answer'].includes(construction))throw new Error('Unsupported construction')
  const subject='(?:person|person-determiner,person)'
@@ -47,11 +52,11 @@ export function quadrantLayout(document:LanguageDocument):MatrixLayoutRequest {
 }
 function roleIcon(unit:LanguageDocument['units'][number],construction:LanguageDocument['construction']){
  const word=unit.english.replace(/[?.!]$/,'')
- if(unit.role==='person')return ['i','you','he','she','they','we','it'].includes(word.toLowerCase())?<PronounIcon word={word}/>:word==='Bia'?<ProperNounIcon word={word}/>:<VocabularyPicture word={word}/>
+ if(unit.role==='person')return subjectPronouns.some(subject=>subject.word.toLowerCase()===word.toLowerCase())?<PronounIcon word={word}/>:word==='Bia'?<ProperNounIcon word={word}/>:<VocabularyPicture word={word}/>
  if(unit.role==='object')return <VocabularyPicture word={word}/>
  if(unit.role==='action')return construction==='action-question'?<img className="cw-game-icon" src="/classroom/icons/constructions/doing.png" alt=""/>:<ActionIcon word={word}/>
  if(unit.role==='question'&&word.toLowerCase()==='what')return <img className="cw-game-icon" src="/classroom/icons/constructions/what.png" alt=""/>
- return <WordSlotIcon slot={slots[unit.role]} plural={word==='are'||word==='were'} past={word==='was'||word==='were'}/>
+ return <WordSlotIcon word={word} slot={slots[unit.role]} plural={word==='are'||word==='were'} past={word==='was'||word==='were'}/>
 }
 export default function LanguageQuadrant({request,scores={}}:{request:QuadrantRequest;scores?:WordScores}){
  const {document,presentation={}}=request

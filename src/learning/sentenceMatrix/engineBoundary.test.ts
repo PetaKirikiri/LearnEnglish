@@ -31,3 +31,15 @@ it('lesson hosts request complete matrices instead of assembling their internals
  expect(actionSource).toContain('<MatrixExplanation')
  expect(actionSource).not.toMatch(/className=.{0,20}(?:cw-noun-group|cw-word-conveyor|cw-slot-picker)/)
 })
+
+
+it('keeps lesson configuration and supported-request parsing behind the language registry',()=>{
+ const facade=readFileSync(`${src}/classroom/matrixLessons.ts`,'utf8')
+ expect(facade).toContain("../learning/lessonRegistry")
+ expect(facade).not.toMatch(/vocabulary:|subjectModes:|initialWord:/)
+ for(const path of ['classroom/mountLesson.ts','classroom/MobileNotes.tsx','race/PracticeCourse.tsx','race/PracticeSession.tsx','race/practiceDeck.ts','auth/homeworkLine.ts']){
+  const source=readFileSync(`${src}/${path}`,'utf8')
+  expect(source).toContain('lessonRequests')
+  expect(source).not.toMatch(/lesson.*===.*['"]2['"].*\?.*2.*:.*1/)
+ }
+})

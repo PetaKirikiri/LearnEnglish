@@ -1,20 +1,13 @@
+import {numberItem} from './numberCatalogue'
 /** A small, reused noun set: /s/, /z/ and /ɪz/ endings, no translation test. */
-export const numberNouns=[
- {singular:'hotel',plural:'hotels',thai:'โรงแรม'},
- {singular:'phone',plural:'phones',thai:'โทรศัพท์'},
- {singular:'key',plural:'keys',thai:'กุญแจ'},
- {singular:'book',plural:'books',thai:'หนังสือ'},
- {singular:'watch',plural:'watches',thai:'นาฬิกาข้อมือ'},
-] as const
-/** New concrete nouns for sentence practice; each has existing classroom artwork. */
-export const sentenceNumberNouns=[
- ...numberNouns,
- {singular:'chair',plural:'chairs',thai:'เก้าอี้'},
- {singular:'table',plural:'tables',thai:'โต๊ะ'},
- {singular:'bag',plural:'bags',thai:'กระเป๋า'},
- {singular:'shoe',plural:'shoes',thai:'รองเท้า'},
- {singular:'sock',plural:'socks',thai:'ถุงเท้า'},
-] as const
+function foundationNoun(singular:string){
+ const item=numberItem(singular),plural=item?.plural,counterpart=plural?numberItem(plural):undefined
+ if(!item||!plural||!counterpart?.pluralForm)throw new Error(`Foundation noun requires a reviewed pair: ${singular}`)
+ return {singular,plural,thai:item.thai}
+}
+// Authored order and review frequency are retained; meanings/forms come from the engine catalogue.
+export const numberNouns=['hotel','phone','key','book','watch'].map(foundationNoun)
+export const sentenceNumberNouns=[...numberNouns,...['chair','table','bag','shoe','sock'].map(foundationNoun)]
 export const numberNounPool=(module:number)=>module===1?numberNouns:sentenceNumberNouns
 export type NumberPrompt={id:string;word:string;thai:string;plural:boolean;audioUrl:string;verb?:'is'|'are'}
 export const numberRecordings=sentenceNumberNouns.flatMap(noun=>[noun.singular,noun.plural].map(word=>({audioUrl:`/audio/number-foundation/the-${word}.wav`,spokenText:`the ${word}`})))

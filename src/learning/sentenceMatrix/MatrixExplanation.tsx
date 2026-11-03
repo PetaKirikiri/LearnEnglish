@@ -1,3 +1,4 @@
+import {ownerThai} from './model'
 import TenseFilters from './TenseFilters'
 import type { TimelineTense } from './TenseTimeline'
 import VocabularyCategoryIcon from './VocabularyCategoryIcon'
@@ -15,15 +16,6 @@ import WordSlotIcon from './WordSlotIcon'
 import '../../classroom/wordExplanation.css'
 
 export type { Determiner } from './model'
-const meanings = {
-  a: {gloss:'หนึ่ง'},
-  an: {gloss:'หนึ่ง'},
-  the: { title:'สิ่งที่รู้กันว่าหมายถึงอันไหน', explanation:'ใช้เมื่อผู้พูดและผู้ฟังรู้ว่ากำลังพูดถึงสิ่งไหน', gloss:'ที่กำลังพูดถึง' },
-  my: { title:'ของคนที่กำลังพูด', explanation:'ใช้เมื่อสิ่งนั้นเป็นของผู้พูด', gloss:'ของฉัน' },
-  his: {gloss:'ของเขา (ผู้ชาย)'},
-  her: {gloss:'ของเธอ (ผู้หญิง)'},
-  your: { title:'ของคนที่เราพูดด้วย', explanation:'ใช้เมื่อสิ่งนั้นเป็นของผู้ฟัง', gloss:'ของคุณ' },
-} as const
 export const matrixWordTypes = [
   {name:'คำถาม',english:'Question word',role:'บอกว่าเราต้องการรู้อะไร',explanation:'คำถามแต่ละคำใช้ถามข้อมูลต่างกัน ในประโยคนี้เราต้องการรู้สถานที่',colour:'#df2944',ink:'#fff'},
   {name:'คำกริยา',english:'Verb · be',role:'เชื่อมสิ่งที่พูดถึงกับข้อมูลของสิ่งนั้น',explanation:'ในคำถามนี้ กริยา be อยู่หน้าสิ่งที่ถามถึง รูปของคำเปลี่ยนตามเวลาและสิ่งที่พูดถึง',colour:'#128247',ink:'#fff'},
@@ -34,7 +26,7 @@ export const matrixWordTypes = [
 export default function WordExplanation({id,slot,value,onChange,onBack,word,thai,onWord,catalogue,verb='is',onVerb,onExplainVerb,allowSelection=true,canChooseVerb,verbs=[{word:'is',thai:'หนึ่งสิ่ง'},{word:'are',thai:'หลายสิ่ง'}],owners=determiners}: {id:string;slot:number;value:Determiner;onChange:(word:Determiner)=>void;onBack:()=>void;word:string;thai:string;onWord:(word:string)=>void;catalogue:readonly ClassroomWord[];verb?:BeVerb;onVerb?:(verb:BeVerb)=>void;onExplainVerb?:(verb:BeVerb)=>void;allowSelection?:boolean;canChooseVerb?:(verb:BeVerb)=>boolean;verbs?:readonly {word:BeVerb;thai:string}[];owners?:readonly {word:Determiner;thai:string}[]}) {
   const type = matrixWordTypes[slot]
   const selected = ['Where',verb,value,word][slot]
-  const owner = meanings[value]
+  const owner = {gloss:ownerThai(value)}
   const category = slotReferences[slot]
   const item = catalogue.find(item=>item.word===word)!
   const [numberFilter,setNumberFilter]=useState<'singular'|'plural'>(()=>item.number==='plural'||item.pairOnly?'plural':'singular')
@@ -56,7 +48,7 @@ export default function WordExplanation({id,slot,value,onChange,onBack,word,thai
     usage:numberRows,
   }
   return <EducationFrame id={id} selected={selected} category={getLanguage()==='th'?category.name:category.english} colour={type.colour} ink={type.ink} onBack={onBack}
-    icon={slot===3?<VocabularyPicture word={selected}/>:<WordSlotIcon slot={slot} plural={slot===1 && isPluralVerb(verb)} past={slot===1 && tenseForVerb(verb)==='past'}/>}
+    icon={slot===3?<VocabularyPicture word={selected}/>:<WordSlotIcon word={value} slot={slot} plural={slot===1 && isPluralVerb(verb)} past={slot===1 && tenseForVerb(verb)==='past'}/>}
     gloss={slot===0?'ที่ไหน':slot===1?(tenseForVerb(verb)==='past'?'อยู่ · ก่อนหน้านี้':'อยู่ · ปัจจุบัน'):slot===2?owner.gloss:thai}>
       <section className="cw-reference-word" lang={getLanguage()}>
         <EducationSectionHeading icon="usage">{getLanguage()==='th'?'การใช้คำนี้':'How it works'}</EducationSectionHeading>
@@ -90,7 +82,7 @@ export default function WordExplanation({id,slot,value,onChange,onBack,word,thai
       </div>}
       </div>}>{getLanguage()==='th'?(slot===3?'คำศัพท์':'เลือกคำ'):(slot===3?'Vocabulary':'Choose a word')}</EducationSectionHeading>
       <div ref={optionsRef} id={`${id}-words`} className={`cw-word-options${hasNumberFilter?' has-number-filter':''}`} role="group" aria-label={t('เลือกคำ')}>
-        {(timeFilter ? visibleVerbs : slot===1 ? visibleVerbs : slot===2 ? owners : visibleWords).map(option=><button key={option.word} aria-pressed={(timeFilter?verb:selected)===option.word} disabled={(slot===1 || timeFilter) && (canChooseVerb ? !canChooseVerb(option.word as BeVerb) : option.word==='is' && item.pairOnly)} onClick={()=>timeFilter?(onExplainVerb??onVerb)?.(option.word as BeVerb):slot===1?onVerb?.(option.word as BeVerb):slot===2?onChange(option.word as Determiner):onWord(option.word)}>{timeFilter?<WordSlotIcon slot={1} plural={isPluralVerb(option.word as BeVerb)} past={tenseForVerb(option.word as BeVerb)==='past'}/>:slot===3 && <VocabularyPicture word={option.word}/>}<strong>{option.word}</strong><span lang={getLanguage()}>{option.thai}</span></button>)}
+        {(timeFilter ? visibleVerbs : slot===1 ? visibleVerbs : slot===2 ? owners : visibleWords).map(option=><button key={option.word} aria-pressed={(timeFilter?verb:selected)===option.word} disabled={(slot===1 || timeFilter) && (canChooseVerb ? !canChooseVerb(option.word as BeVerb) : option.word==='is' && item.pairOnly)} onClick={()=>timeFilter?(onExplainVerb??onVerb)?.(option.word as BeVerb):slot===1?onVerb?.(option.word as BeVerb):slot===2?onChange(option.word as Determiner):onWord(option.word)}>{timeFilter?<WordSlotIcon slot={1} plural={isPluralVerb(option.word as BeVerb)} past={tenseForVerb(option.word as BeVerb)==='past'}/>:slot===2?<WordSlotIcon slot={2} word={option.word}/>:slot===3 && <VocabularyPicture word={option.word}/>}<strong>{option.word}</strong><span lang={getLanguage()}>{option.thai}</span></button>)}
       </div>
       {(slot===1 || timeFilter) && visibleVerbs.length===0 && <p className="cw-filter-empty" role="status">{getLanguage()==='th'?'ไม่มีคำในบทเรียนนี้ที่ตรงกับตัวกรอง':'No words in this lesson match this filter.'}</p>}
       </section>}

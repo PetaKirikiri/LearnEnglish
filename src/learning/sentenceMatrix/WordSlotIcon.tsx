@@ -5,9 +5,10 @@ import './tenseTimeline.css'
 const icons = ['pin', 'clock', 'mystery-apple', 'apple'] as const
 const labels = ['Location', 'Time', 'Which one or whose', 'Thing'] as const
 
-export default function WordSlotIcon({ slot, plural = false, past = false, tense }: {
-  slot: number; plural?: boolean; past?: boolean; tense?: TimelineTense
+export default function WordSlotIcon({ slot, word, plural = false, past = false, tense }: {
+  slot: number; word?:string; plural?: boolean; past?: boolean; tense?: TimelineTense
 }) {
+  if(slot===2 && word && ['my','your','his','her','our','their'].includes(word.toLowerCase()))return <img className="cw-game-icon" src={`/classroom/icons/ownership/${word.toLowerCase()}.png?v=ownership-two-arms-2`} alt={word} draggable={false}/>
   if (slot === 1) {
     const time = tense ?? (past ? 'past' : 'present')
     return <span className="cw-time-icon" role="img" aria-label={`${t('Time')} · ${time}`}>

@@ -1,5 +1,5 @@
 {
-  "checked": 1897,
+  "checked": 2497,
   "compatibilityCoverage": {
     "hotel": [
       "where-noun",
@@ -326,7 +326,7 @@
   "warningCounts": {
     "unrecorded-prompt": 177
   },
-  "questionCount": 787,
+  "questionCount": 850,
   "assetWarnings": [
     {
       "id": "tonight-hotel-the-complete",
@@ -1214,9 +1214,9 @@
       "path": ""
     }
   ],
-  "expectedNegatives": 279,
+  "expectedNegatives": 285,
   "errors": 0,
-  "generatedQuestions": 84,
+  "generatedQuestions": 147,
   "blueprints": {
     "where-noun": {
       "pattern": "Where {be} {determiner} {noun}?",

@@ -1,7 +1,7 @@
 import type { SubjectModeConfig } from './subjectEngine'
 import type { VocabularyCategory } from './vocabularyCategories'
 export type ClassroomWord = { indefiniteArticle?:'a'|'an'; classifierThai?:string; word:string; thai:string; singular?:string; plural?:string; number?:'singular'|'plural'; pairOnly?:boolean; categories?:readonly VocabularyCategory[]; meaning?:import('../sentenceRules/blueprints').WordMeaning }
-export type Determiner = 'a' | 'an' | 'the' | 'my' | 'your' | 'his' | 'her'
+export type Determiner = 'a' | 'an' | 'the' | 'my' | 'your' | 'his' | 'her' | 'our' | 'their'
 export type BeVerb = 'is' | 'are' | 'was' | 'were'
 export type Tense = 'present' | 'past'
 export const isPluralVerb = (verb:BeVerb) => verb==='are'||verb==='were'
@@ -30,8 +30,13 @@ export type MatrixSettings = import('../wordProgress/model').FadeSettings & {
 }
 export type MatrixLesson = {
   id: string
+  stages?: readonly string[]
+  practiceMode?: 'journey' | 'lesson' | 'action-stars'
   pattern?: 'people-location' | 'present-action'
   subjectModes?: SubjectModeConfig
+  /** Allowed action words; omitted only for unrestricted reusable construction requests. */
+  actions?: readonly string[]
+  actionReply?: 'reciprocal' | 'same-subject'
   vocabulary: readonly ClassroomWord[]
   plural: boolean
   past?: boolean
@@ -45,7 +50,7 @@ export type MatrixLesson = {
 export const determiners = [
   {word:'the',thai:'ที่กำลังพูดถึง'}, {word:'my',thai:'ของฉัน'}, {word:'your',thai:'ของคุณ'},
 ] as const
-export const allDeterminers = [...determiners,{word:'a',thai:'หนึ่ง'},{word:'an',thai:'หนึ่ง'},{word:'his',thai:'ของเขา (ผู้ชาย)'},{word:'her',thai:'ของเธอ (ผู้หญิง)'}] as const
+export const allDeterminers = [...determiners,{word:'a',thai:'หนึ่ง'},{word:'an',thai:'หนึ่ง'},{word:'his',thai:'ของเขา (ผู้ชาย)'},{word:'her',thai:'ของเธอ (ผู้หญิง)'},{word:'our',thai:'ของพวกเรา'},{word:'their',thai:'ของพวกเขา'}] as const
 export const lessonDeterminers = (lesson:MatrixLesson) => allDeterminers.filter(item=>(lesson.owners ?? ['the','my','your']).includes(item.word))
 export const lessonVerbs = (lesson:MatrixLesson):{word:BeVerb;thai:string}[] => [
  {word:'is' as const,thai:'หนึ่งสิ่ง · ตอนนี้'},
