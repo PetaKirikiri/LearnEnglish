@@ -12,3 +12,9 @@ export function classroomSessionId(search=location.search){
  return query.get('class')??new URLSearchParams(nested.includes('?')?nested.slice(nested.indexOf('?')+1):nested).get('class')
 }
 export const classroomJoinUrl=(id:string)=>`https://learn-english-coral.vercel.app/english/practice?class=${encodeURIComponent(id)}`
+
+export function classroomHostCall(action:string,session?:string,payload:Record<string,unknown>={}){
+ let secret=localStorage.getItem('su-classroom-host-key');
+ if(!secret){secret=Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');localStorage.setItem('su-classroom-host-key',secret)}
+ return classroomCall(action,session,{...payload,hostSecret:secret})
+}
