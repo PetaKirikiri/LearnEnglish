@@ -9,6 +9,11 @@ export const tenseForVerb = (verb:BeVerb):Tense => verb==='was'||verb==='were'?'
 export type MatrixSettings = import('../wordProgress/model').FadeSettings & {
   keepIconsWhenFading?: boolean
   translations?:boolean
+  /** Independent presentation layers; legacy translations controls both Thai layers. */
+  english?:boolean
+  thaiMeanings?:boolean
+  thaiTranslation?:boolean
+  icons?:boolean
   /** Persist assessed answers independently from visual support. */
   trackWords?: boolean
   /** Open a word's educational window by pressing its card. */

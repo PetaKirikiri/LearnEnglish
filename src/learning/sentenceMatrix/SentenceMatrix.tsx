@@ -43,7 +43,7 @@ export function LocationSentenceMatrix({lesson,settings={},word:controlledWord,o
   const explanationId = useId()
   const board = useRef<HTMLElement>(null)
   const {explaining,explain}=useMatrixEducation(board,explanationId,()=>setActive(null))
-  if(subjectModes&&nounMode!=='noun')return <SubjectQuestionMatrix config={subjectModes} initialVerb={verb==='is'||verb==='are'?verb:undefined} mode={nounMode} swapper={nounSwapper} settings={settings}/>
+  if(subjectModes&&nounMode!=='noun')return <SubjectQuestionMatrix config={subjectModes} initialVerb={verb==='is'||verb==='are'?verb:undefined} mode={nounMode} swapper={nounSwapper} settings={settings} scores={wordScores}/>
   if (settings.explanations !== false && explaining !== null) return <WordExplanation id={explanationId} key={explaining} slot={explaining} value={owner} onChange={setOwner} onBack={()=>explain(null)} word={word} thai={item.thai} onWord={onWord} catalogue={catalogue} verb={verb} onVerb={verbs.length>1 ? chooseVerb : undefined} onExplainVerb={value=>{chooseVerb(value);explain(1)}} verbs={verbs} owners={owners} allowSelection={settings.explanationSelection !== false} canChooseVerb={canChooseVerb}/>
   function closeChoices() {
     setActive(null)

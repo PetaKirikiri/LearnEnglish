@@ -9,9 +9,7 @@ import {numberItem,numberAudio} from './numberCatalogue'
 import {scheduledNumberDeck,nextRecallItem,recallPrompt,recallStates,recallKey,type RecallAttempt} from './numberRecall'
 import {readRecall,saveRecall,syncRecall} from './numberRecallStore'
 import {wordTokens,wordId,wordOpacity} from '../learning/wordProgress/model'
-import WordSlotIcon from '../learning/sentenceMatrix/WordSlotIcon'
-import VocabularyPicture from '../learning/VocabularyPicture'
-import ExampleLanguage from '../learning/ExampleLanguage'
+import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'
 import PracticeStage from './PracticeStage'
 import PracticePatternExplanation from './PracticePatternExplanation'
 import PracticeLayoutFixture from './PracticeLayoutFixture'
@@ -138,7 +136,7 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,settings={fa
    <button onClick={()=>restart(saved.module)}>ฝึกชุดนี้อีกครั้ง</button><a className="practice-module-break" href={lessonHref}>พักก่อน</a>
   </section>:<>
    <PracticeStage question={<>
-    {saved.module===1?<div className="classroom foundation-noun"><div className="cw-sentence-board"><ExampleLanguage matrix layout={{construction:'noun-phrase',noun:'phrase'}} scores={fadeScores} settings={{...settings,fadeMode:fade,keepIconsWhenFading:true,explanations:false,wordPicker:false,explanationSelection:false,audio:false,layout:{density:'content',maxWidth:520}}} slotDetails={[{label:"Determiner",count:0,icon:<WordSlotIcon slot={2}/>},{label:"Noun",count:0,icon:<VocabularyPicture word={question.word}/>}]} english={`the ${question.word}`} thai="" units={[{english:'the',thai:'ที่กำลังพูดถึง'},{english:question.word,thai:question.thai}]}/></div></div>:<div className="classroom foundation-noun"><div className="cw-sentence-board"><ExampleLanguage matrix layout={{construction:'question',noun:'phrase'}} scores={fadeScores} settings={{...settings,fadeMode:fade,keepIconsWhenFading:true,explanations:false,wordPicker:false,explanationSelection:false,audio:false,layout:{density:'content',maxWidth:520}}} semanticSlots={[0,1,2,3]} slotDetails={[{label:'Where',count:0,icon:<WordSlotIcon slot={0}/>},{label:'Verb',count:0,icon:<WordSlotIcon slot={1} plural={(question.verb??(question.plural?'are':'is'))==='are'}/>},{label:'Determiner',count:0,icon:<WordSlotIcon slot={2}/>},{label:'Noun',count:0,icon:<VocabularyPicture word={question.word}/>}]} english={numberSentenceText(question)} thai="" units={[{english:'Where',thai:'ที่ไหน'},{english:question.verb??(question.plural?'are':'is'),thai:'อยู่'},{english:'the',thai:'ที่กำลังพูดถึง'},{english:`${question.word}?`,thai:question.thai}]}/></div></div>}
+    <div className="classroom foundation-noun"><div className="cw-sentence-board"><LanguageQuadrant scores={fadeScores} request={{presentation:{...settings,fadeMode:fade,keepIconsWhenFading:true,explanations:false,wordPicker:false,explanationSelection:false,audio:false,size:'phone',layout:{density:'content',maxWidth:520}},document:saved.module===1?{construction:'noun-phrase',english:`the ${question.word}`,thai:'',units:[{english:'the',thai:'ที่กำลังพูดถึง',role:'determiner'},{english:question.word,thai:question.thai,role:'object'}]}:{construction:'question',english:numberSentenceText(question),thai:'',units:[{english:'Where',thai:'ที่ไหน',role:'question'},{english:question.verb??(question.plural?'are':'is'),thai:'อยู่',role:'be'},{english:'the',thai:'ที่กำลังพูดถึง',role:'determiner'},{english:`${question.word}?`,thai:question.thai,role:'object'}]}}}/></div></div>
 
     {saveError&&<p role="alert">บันทึกคำตอบไม่ได้ กรุณาลองอีกครั้ง</p>}
     {audioError&&<p role="alert">เล่นเสียงไม่ได้ แตะเพื่อฟังอีกครั้ง</p>}

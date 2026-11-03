@@ -9,11 +9,12 @@ import WordTray from './WordTray'
 import { type NounMode, type NounSwapperRequest } from './NounModeToggle'
 import { subjectChoices, subjectQuestion, subjectVerb, subjectForVerb, subjectVerbChoices, type SubjectModeConfig } from './subjectEngine'
 import type { MatrixSettings } from './model'
+import type { WordScores } from '../wordProgress/model'
 import PronunciationComparison from '../../classroom/pronunciation/PronunciationComparison'
 import EducationSectionHeading from './EducationSectionHeading'
 import Icon from '../../ui/Icon'
 import { getLanguage } from '../../classroom/language'
-export default function SubjectQuestionMatrix({config,initialVerb,mode,swapper,settings}:{config:SubjectModeConfig;initialVerb?:'am'|'is'|'are';mode:Exclude<NounMode,'noun'>;swapper:NounSwapperRequest;settings:MatrixSettings}) {
+export default function SubjectQuestionMatrix({config,initialVerb,mode,swapper,settings,scores}:{scores?:WordScores;config:SubjectModeConfig;initialVerb?:'am'|'is'|'are';mode:Exclude<NounMode,'noun'>;swapper:NounSwapperRequest;settings:MatrixSettings}) {
  const [pronoun,setPronoun]=useState(()=>initialVerb ? subjectForVerb(config.pronouns,initialVerb,config.initialPronoun)?.word ?? config.initialPronoun : config.initialPronoun),[name,setName]=useState(config.initialName)
  const [open,setOpen]=useState<false|'subject'|'verb'>(false),[explaining,setExplaining]=useState<number|null>(null),[audioError,setAudioError]=useState(false)
  const choices=subjectChoices(config,mode)
@@ -41,7 +42,7 @@ export default function SubjectQuestionMatrix({config,initialVerb,mode,swapper,s
   </section>
  }
  return <section className="cw-sentence-board cw-named-subject" aria-label={settings.fadeMode?'Listen to the sentence':english} onKeyDown={e=>{if(e.key==='Escape')setOpen(false)}}>
-  <audio ref={audio}/><div className="cw-sentence-display"><ExampleLanguage matrix layout={{construction:'question',noun:'single',nounSwapper:swapper}} semanticSlots={[0,1,3]} english={english} thai={thai} units={units} settings={settings}
+  <audio ref={audio}/><div className="cw-sentence-display"><ExampleLanguage matrix layout={{construction:'question',noun:'single',nounSwapper:swapper}} semanticSlots={[0,1,3]} english={english} thai={thai} units={units} settings={settings} scores={scores}
    slotDetails={units.map((_,index)=>({label:['Question','Verb','Subject'][index],count:index===2?choices.length:index===1?verbs.length:1,icon:icons[index],control:settings.wordPicker!==false&&index===1&&verbs.length>1?<MatrixPicker buttonRef={verbPicker} label={`Change ${verbs.map(v=>v.word).join(' / ')}`} expanded={open==='verb'} controls={`${id}-words`} onClick={()=>setOpen(open==='verb'?false:'verb')}/>:index===2&&settings.wordPicker!==false?<MatrixPicker buttonRef={picker} label={mode==='pronoun'?'Change pronoun':'Change proper noun'} expanded={open==='subject'} controls={`${id}-words`} onClick={()=>setOpen(open==='subject'?false:'subject')}/>:undefined}))}
    unitActions={settings.explanations===false?undefined:units.map((unit,index)=>({index,label:`Explain ${unit.english.replace('?','')}`,expanded:false,controls:`${id}-explanation`,onClick:()=>{setOpen(false);setExplaining(index)}}))}
    afterUnits={settings.wordPicker===false?undefined:<WordTray id={`${id}-words`} active={open?(open==='verb'?1:3):null} choices={open==='verb'?verbs:choices} selected={open==='verb'?verb:item.word} canChoose={()=>true} onChoose={open==='verb'?chooseVerb:choose} onClose={()=>{setOpen(false);(open==='verb'?verbPicker:picker).current?.focus({preventScroll:true})}} renderIcon={open==='verb'?value=><WordSlotIcon slot={1} plural={value==='are'}/>:subjectIconFor}/>}

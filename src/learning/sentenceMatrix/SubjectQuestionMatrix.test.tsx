@@ -123,3 +123,15 @@ it('preserves the noun question verb when entering pronoun mode and leaves its n
   expect(sentence()).toBe('Where are my hotels?')
  }finally{await act(async()=>root.unmount());host.remove()}
 })
+
+it('forwards learner word scores to pronoun and named-subject fade presentation',async()=>{
+ const {default:SubjectQuestionMatrix}=await import('./SubjectQuestionMatrix')
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  for(const mode of ['pronoun','name'] as const){
+   await act(async()=>root.render(<SubjectQuestionMatrix config={classroomMatrices['lesson-3'].subjectModes} mode={mode} settings={{fadeMode:true,audio:false}} scores={{'en:where':25}} swapper={{mode,modes:['pronoun','name'],onChange:()=>{}}}/>))
+   expect(host.querySelector<HTMLElement>('.example-source [data-word="where"]')?.style.opacity).toBe('0')
+   expect(host.querySelector('.example-gloss')).toBeNull()
+  }
+ }finally{await act(async()=>root.unmount())}
+})
