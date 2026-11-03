@@ -343,3 +343,49 @@ it('finishes ten fast accurate players in about 55 seconds without exceeding 40 
   expect((room.updatedAt-1000)/1000).toBeLessThan(56)
   expect(players.every(p=>p.metres===FINISH)).toBe(true)
 })
+
+it('finishes within two minutes even when all ten phones never answer', () => {
+  const {room,players,start}=setup(10)
+  advanceRace(room,start+120_000)
+  expect(room.phase).toBe('finished')
+  expect((room.updatedAt-1000)/1000).toBeCloseTo(103, 4)
+  expect(players.every(p=>p.metres===FINISH)).toBe(true)
+})
+
+it('finishes within two minutes with repeated wrong answers', () => {
+  const {room,players,start}=setup(10)
+  for (let elapsed=1000;elapsed<=120_000 && room.phase!=='finished';elapsed+=1000) {
+    const at=start+elapsed
+    advanceRace(room,at)
+    if(room.phase==='finished') break
+    const round=room.round, wrong=1-room.deck[round].correct
+    players.forEach(p=>answer(room,p.token,round,wrong,at))
+  }
+  expect(room.phase).toBe('finished')
+  expect(room.updatedAt-1000).toBeLessThan(120_000)
+})
+
+it('stops at question 30 even if everyone answers instantly', () => {
+  const {room,players,start}=setup(2)
+  for(let i=0;i<30;i++) {
+    const round=room.round, correct=room.deck[round].correct
+    players.forEach(p=>answer(room,p.token,round,correct,start+i+1))
+  }
+  expect(room.phase).toBe('finished')
+  expect(room.deck).toHaveLength(30)
+  expect(room.round).toBe(29)
+})
+
+it('enforces the persisted time limit before creating another question', () => {
+  const {room,start}=setup()
+  room.endsAt=start+15000
+  const restored=JSON.parse(JSON.stringify(room))
+  advanceRace(restored,start+180000)
+  expect(restored.phase).toBe('finished')
+  expect(restored.updatedAt).toBe(room.endsAt)
+  expect(restored.players.every((p:{metres:number})=>p.metres<FINISH)).toBe(true)
+  prepareRace(restored,restored.host,stage,1,start+180000)
+  expect(restored.endsAt).toBeUndefined()
+  command(restored,restored.host,'start',-1,start+180000,2)
+  expect(restored.endsAt).toBe(start+300000)
+})

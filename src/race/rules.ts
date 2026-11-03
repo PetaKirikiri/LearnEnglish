@@ -1,3 +1,5 @@
+export const MAX_RACE_MS = 120_000
+export const MAX_RACE_QUESTIONS = 30
 export const WINDOW_MS = 10_000
 export const FINISH = 500
 // Metres/second internally: 20–40 km/h cruising, with up to +5 km/h per answer.

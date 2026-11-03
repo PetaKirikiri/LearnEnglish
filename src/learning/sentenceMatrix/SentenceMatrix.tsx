@@ -17,11 +17,11 @@ import { isPluralVerb, type BeVerb, type MatrixLesson, type MatrixSettings } fro
 import { useLocationMatrix } from './useLocationMatrix'
 import '../../classroom/sentenceLine.css'
 
-export type SentenceMatrixProps = { lesson: MatrixLesson; settings?: MatrixSettings; wordScores?:import('../wordProgress/model').WordScores; word?:string; onWord?:(word:string)=>void; audio?:ReactNode }
+export type SentenceMatrixProps = { initialAction?: {subject?:import('../sentenceRules/actionDialogue').ActionSubject;action?:string;object?:string;determiner?:import('./model').Determiner;personMode?:NounMode;personWord?:string}; lesson: MatrixLesson; settings?: MatrixSettings; wordScores?:import('../wordProgress/model').WordScores; word?:string; onWord?:(word:string)=>void; audio?:ReactNode }
 export default function SentenceMatrix(props: SentenceMatrixProps) {
   const configured = {...props.lesson.settings,...props.settings}
   const settings = configured.fadeMode ? {...configured,explanations:false,wordPicker:false,explanationSelection:false} : configured
-  const scope = JSON.stringify([props.lesson.id,props.lesson.pattern,props.lesson.subjectModes,props.lesson.plural,props.lesson.initialOwner,props.lesson.past,props.lesson.owners,props.lesson.initialTense,props.lesson.initialWord,props.lesson.vocabulary,settings])
+  const scope = JSON.stringify([props.lesson.id,props.lesson.pattern,props.lesson.subjectModes,props.lesson.plural,props.lesson.initialOwner,props.lesson.past,props.lesson.owners,props.lesson.initialTense,props.lesson.initialWord,props.lesson.vocabulary,props.initialAction,settings])
   if(props.lesson.pattern==='present-action') return <ActionMatrix key={scope} {...props} settings={settings}/>
   if(props.lesson.pattern==='people-location') return <PeopleLocationMatrix key={scope} {...props} settings={settings}/>
   return <LocationSentenceMatrix key={scope} {...props} settings={settings}/>

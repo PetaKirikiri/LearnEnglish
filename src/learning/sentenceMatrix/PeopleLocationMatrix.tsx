@@ -35,7 +35,7 @@ export default function PeopleLocationMatrix({lesson,settings={},word:controlled
   const [placeName,setPlaceName]=useState(placeNames[0]?.word)
   const subject=subjectMode==='name'?(personNames.find(item=>item.word===subjectName)??personNames[0]):personDetail(person)
   const destination=placeMode==='name'?(placeNames.find(item=>item.word===placeName)??placeNames[0]):place
-  const [pattern,setPattern]=useState<PeoplePattern>('question')
+  const [pattern,setPattern]=useState<PeoplePattern>(settings.initialPattern??'question')
   const [active,setActive]=useState<Role|null>(null)
   const [explaining,setExplaining]=useState<Role|null>(null)
   const [audioError,setAudioError]=useState(false)
@@ -95,7 +95,7 @@ export default function PeopleLocationMatrix({lesson,settings={},word:controlled
     </EducationFrame>
   }
   return <section ref={board} className="cw-pattern-stage" data-pattern={pattern} aria-label={pattern==='question'?'Sentence patterns':settings.fadeMode?'Listen to the sentence':sentence.english} onKeyDown={e=>{if(e.key==='Escape')setActive(null)}}>
-    <PatternNavigation pattern={pattern} onChange={switchPattern}/>
+    {settings.patternNavigation!==false&&<PatternNavigation pattern={pattern} onChange={switchPattern}/>}
     {pattern==='question'?<LocationSentenceMatrix lesson={{...lesson,pattern:undefined,plural:true}} settings={settings} word={controlledWord??localWord} onWord={value=>{setLocalWord(value);onWord?.(value)}} wordScores={wordScores}/>:<section className="cw-sentence-board cw-people-board" data-pattern="answer" aria-label={settings.fadeMode?'Listen to the sentence':sentence.english}>
     <audio ref={audio} preload="none"/>
     <div key={pattern} className="cw-sentence-display">

@@ -4,7 +4,7 @@ import {createRoot} from 'react-dom/client'
 import {beforeEach,expect,it,vi} from 'vitest'
 vi.mock('./PracticeGold',()=>({default:()=>null}))
 vi.mock('./NumberFoundationCourse',()=>({default:({initialLevel,onComplete,onExit}:{initialLevel:number;onComplete:(level:number,score:number,total:number,passed:boolean)=>void;onExit:()=>void})=><div><span>Run {initialLevel}</span><button onClick={()=>onComplete(initialLevel,30,30,true)}>Finish</button><button onClick={onExit}>Exit</button></div>}))
-import PracticeJourney,{mergeRun,sample,levelPreview,guideExamples} from './PracticeJourney'
+import PracticeJourney,{mergeRun,sample,levelPreview,guideExamples,subjectPairs} from './PracticeJourney'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 beforeEach(()=>{localStorage.clear();history.replaceState({},'','/english/practice');vi.stubGlobal('Audio',class{pause(){}play(){return Promise.resolve()}})})
 it('opens the map, teaches the selected level, then records its result and keeps every level selectable',async()=>{
@@ -16,7 +16,7 @@ it('opens the map, teaches the selected level, then records its result and keeps
  expect(host.textContent).not.toContain('Run 1')
  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="Level 3:"]')!.click())
  expect(host.querySelector('.journey-tutorial')).not.toBeNull()
- expect(host.querySelectorAll('.example-source')).toHaveLength(4)
+ expect(host.querySelectorAll('.journey-tutorial > .adaptive-practice-stage .example-source')).toHaveLength(4)
  await act(async()=>host.querySelectorAll<HTMLButtonElement>('.journey-tutorial .binary-answer')[1].click())
  expect(host.querySelector('[role="status"]')?.textContent).toBe('ลองอีกครั้ง')
  await click('เริ่มเล่น');expect(host.textContent).toContain('Run 3')
@@ -60,4 +60,14 @@ it('pairs both outcomes with real examples for every level',()=>{
   expect(examples[0].label).not.toBe(examples[1].label)
   examples.forEach(q=>{expect(q.label).toBe(q.document.thai);expect(q.audio).toBeTruthy()})
  }
+})
+
+it('teaches actual subject agreement in the levels that use people',()=>{
+ expect(subjectPairs(1)).toEqual([])
+ expect(subjectPairs(2)).toEqual([])
+ expect(subjectPairs(3)).toEqual([])
+ expect(subjectPairs(4)).toContainEqual(['you','are'])
+ expect(subjectPairs(4)).toContainEqual(['he','is'])
+ expect(subjectPairs(5)).toContainEqual(['I','am'])
+ expect(subjectPairs(5)).toContainEqual(['they','are'])
 })

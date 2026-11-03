@@ -6,6 +6,8 @@ import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 import LanguageQuadrant,{type LanguageDocument} from '../learning/sentenceMatrix/LanguageQuadrant'
 import {actionPracticeQuestions} from './actionPracticeContent'
 import {numberNounPool} from './numberFoundation'
+import ExampleLanguage from '../learning/sentenceMatrix/ExampleView'
+import WordSlotIcon from '../learning/sentenceMatrix/WordSlotIcon'
 import VocabularyPicture from '../learning/VocabularyPicture'
 import BinaryAnswerZone,{BinaryAnswerButton,type BinaryChoice} from './BinaryAnswerZone'
 import './practiceJourney.css'
@@ -33,6 +35,47 @@ export function guideExamples(level:PracticeLevel){
   return {document,audio:`/audio/number-foundation/${level===1?'the':`where-${be}-the`}-${word}.wav`,label:levels[level-1].choices[index]}
  })
 }
+// Teach only subject/agreement combinations that actually occur in this level.
+export function subjectPairs(level:PracticeLevel){
+ const pairs=new Map<string,string>()
+ for(const q of actionPracticeQuestions.filter(q=>q.level===level)){
+  const rawPerson=q.units.filter(u=>u.role==='person'||u.role==='person-determiner').map(u=>u.english).join(' ').trim()
+  const person=rawPerson==='I'?'I':rawPerson.charAt(0).toLowerCase()+rawPerson.slice(1)
+  const be=q.units.find(u=>u.role==='be')?.english.trim()
+  if(person&&be)pairs.set(person,be)
+ }
+ const pronouns=['I','you','he','she','they']
+ const all=[...pairs]
+ return [...all.filter(([p])=>pronouns.includes(p)),...['is','are'].flatMap(be=>{const example=all.find(([p,b])=>!pronouns.includes(p)&&b===be);return example?[example]:[]})]
+}
+function TeachingMatrix({units}:{units:LanguageDocument['units']}){
+ units=units.flatMap(u=>u.role==='person'&&u.english.startsWith('the ')?[{english:'the',thai:'',role:'person-determiner' as const},{...u,english:u.english.slice(4)}]:[u])
+ return <LanguageQuadrant request={{document:{construction:units[0]?.role==='be'?'action-question':'action-answer',english:(units[0]?.role==='be'?'What ':'')+units.map(u=>u.english).join(' ')+(units[0]?.role==='be'?' doing?':' eating.'),thai:'',units:units[0]?.role==='be'?[{english:'What',thai:'',role:'question'},...units,{english:'doing?',thai:'',role:'action'}]:[...units,{english:'eating.',thai:'',role:'action'}]},presentation:{size:'compact',thaiMeanings:false,thaiTranslation:false,fadeMode:false,icons:true,wordPicker:false,explanations:false,audio:false,layout:{density:'content',maxWidth:520}}}}/>
+}
+function PatternLesson({level}:{level:PracticeLevel}){
+ const pairs=subjectPairs(level)
+ return <section className="journey-pattern" aria-label="Language pattern">
+  {level<=3?<>
+   <div className="journey-pattern-pairs classroom"><div className="cw-sentence-board journey-pattern-board">{[false,true].map(plural=><div className="journey-pattern-example" key={String(plural)}>
+    <ExampleLanguage matrix english={level>1?`${plural?'are':'is'} key${plural?'**s**':''}`:`key${plural?'**s**':''}`} thai=""
+     units={[...(level>1?[{english:plural?'are':'is',thai:''}]:[]),{english:plural?'keys':'key',thai:plural?'หลายสิ่ง':'หนึ่งสิ่ง'}]}
+     semanticSlots={level>1?[1,3]:[3]}
+     slotDetails={[...(level>1?[{label:'',count:0,icon:<WordSlotIcon slot={1} plural={plural}/>}]:[]),{label:'',count:0,icon:<VocabularyPicture word={plural?'keys':'key'}/>} ]}
+     settings={{thaiTranslation:false,thaiMeanings:true,icons:true,fadeMode:false,wordPicker:false,explanations:false}}/>
+
+   </div>)}</div></div>
+   <p>{level===1?'คู่นี้: เติม s → หลายสิ่ง · ฟังเสียงท้ายคำ':'ดูจำนวนสิ่งของ → เลือก is หรือ are'}</p>
+   {level===3&&<div className="journey-pattern-repair"><span>✗ is + keys</span><span>→</span><strong>✓ are + keys</strong><small>หลายสิ่ง ต้องใช้ are</small></div>}
+  </>:<>
+   <p>{level===4?'ถาม: วาง is / are ก่อนคน':'ตอบ: วาง am / is / are หลังคน'}</p>
+   <div className="journey-subject-pairs">{pairs.map(([person,be])=><div key={person}>
+    <TeachingMatrix units={(level===4?[{english:be,thai:'',role:'be' as const},{english:person,thai:'',role:'person' as const}]:[{english:person,thai:'',role:'person' as const},{english:be,thai:'',role:'be' as const}])}/>
+   </div>)}</div>
+   <p>you ใช้ are แม้พูดกับคนเดียว</p>
+   {level===5&&<div className="journey-pattern-repair"><strong>you → I</strong><small>ถามคุณ → ฉันตอบ</small></div>}
+  </>}
+ </section>
+}
 function AnswerGuide({level}:{level:PracticeLevel}){
  const [selected,setSelected]=useState<number|null>(null),player=useRef<HTMLAudioElement|null>(null)
  useEffect(()=>()=>player.current?.pause(),[])
@@ -50,7 +93,7 @@ function LevelLineup({level}:{level:PracticeLevel}){
  const {total}=levelPreview(level)
  return <div className="journey-briefing">
   <div className="journey-task-strip"><span aria-hidden="true">🔊 →</span><span className="journey-round-count"><b>{total}</b> ข้อ</span></div>
-  <AnswerGuide level={level}/>
+  <PatternLesson level={level}/><AnswerGuide level={level}/>
  </div>
 }
 
@@ -78,7 +121,7 @@ function Tutorial({level,onStart,onBack}:{level:PracticeLevel;onStart:()=>void;o
  const item=levels[level-1],example=sample(level),[selected,setSelected]=useState<number|null>(null),[audioError,setAudioError]=useState(false),player=useRef<HTMLAudioElement|null>(null)
  useEffect(()=>()=>player.current?.pause(),[])
  const play=()=>{player.current?.pause();const audio=new Audio(example.audio);player.current=audio;setAudioError(false);void audio.play().catch(()=>setAudioError(true))}
- return <section className="journey-tutorial"><button className="journey-back" onClick={onBack} aria-label="กลับแผนที่">←</button><span className="journey-eyebrow">LEVEL {level}</span><h1>{item.title}</h1><p>{item.hint}</p><div className="journey-listen"><button onClick={play} aria-label="ฟังตัวอย่าง">▶</button><span>ฟัง → เลือก</span></div>{audioError&&<p role="alert">เล่นเสียงไม่ได้ ลองอีกครั้ง</p>}<div className="adaptive-practice-stage"><div className="classroom foundation-noun"><div className="cw-sentence-board"><div className="cw-sentence-display"><LanguageQuadrant request={{document:example.document,presentation:{size:'phone',thaiMeanings:false,thaiTranslation:false,fadeMode:false,icons:true}}}/></div></div></div></div><PreviewAnswers level={level} selected={selected} onChoose={index=>{setSelected(index);player.current?.pause()}}/><div className="journey-demo-feedback" role="status">{selected===null?'ลองเลือกคำตอบ':selected===example.correct?'✓ ถูกต้อง':'ลองอีกครั้ง'}</div><p className="journey-goal">{level<=3?'★ ผ่าน: 27/30 · อย่างน้อย 12 ข้อต่อแบบ':'★ ผ่าน: ตอบถูกอย่างน้อย 90%'}</p><button className="journey-play" onClick={()=>{player.current?.pause();onStart()}}>เริ่มเล่น →</button></section>
+ return <section className="journey-tutorial"><button className="journey-back" onClick={onBack} aria-label="กลับแผนที่">←</button><span className="journey-eyebrow">LEVEL {level}</span><h1>{item.title}</h1><PatternLesson level={level}/><p>{item.hint}</p><div className="journey-listen"><button onClick={play} aria-label="ฟังตัวอย่าง">▶</button><span>ฟัง → เลือก</span></div>{audioError&&<p role="alert">เล่นเสียงไม่ได้ ลองอีกครั้ง</p>}<div className="adaptive-practice-stage"><div className="classroom foundation-noun"><div className="cw-sentence-board"><div className="cw-sentence-display"><LanguageQuadrant request={{document:example.document,presentation:{size:'phone',thaiMeanings:false,thaiTranslation:false,fadeMode:false,icons:true}}}/></div></div></div></div><PreviewAnswers level={level} selected={selected} onChoose={index=>{setSelected(index);player.current?.pause()}}/><div className="journey-demo-feedback" role="status">{selected===null?'ลองเลือกคำตอบ':selected===example.correct?'✓ ถูกต้อง':'ลองอีกครั้ง'}</div><p className="journey-goal">{level<=3?'★ ผ่าน: 27/30 · อย่างน้อย 12 ข้อต่อแบบ':'★ ผ่าน: ตอบถูกอย่างน้อย 90%'}</p><button className="journey-play" onClick={()=>{player.current?.pause();onStart()}}>เริ่มเล่น →</button></section>
 }
 export default function PracticeJourney(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:MatrixSettings}){
  return <Journey key={props.userId??'guest'} {...props}/>

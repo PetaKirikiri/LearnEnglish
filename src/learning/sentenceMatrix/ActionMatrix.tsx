@@ -33,14 +33,14 @@ const actionGroups:WordChoiceGroup[]=vocabularyCategories.map(category=>({
 })).filter(group=>group.words.length>0)
 
 /** Construction data supplies roles; all cards, selectors and education use the shared engine. */
-export default function ActionMatrix({lesson,settings={},wordScores}:SentenceMatrixProps){
- const [subject,setSubject]=useState<ActionSubject>('you')
- const [action,setAction]=useState('eating')
- const [mode,setMode]=useState<'question'|'answer'>('question')
+export default function ActionMatrix({lesson,settings={},wordScores,initialAction}:SentenceMatrixProps){
+ const [subject,setSubject]=useState<ActionSubject>(initialAction?.subject??'you')
+ const [action,setAction]=useState(initialAction?.action??'eating')
+ const [mode,setMode]=useState<'question'|'answer'>(settings.initialPattern??'question')
  const [active,setActive]=useState<Role|null>(null)
- const [determiner,setDeterminer]=useState<Determiner>()
- const [object,setObject]=useState<string|undefined>()
- const [personMode,setPersonMode]=useState<NounMode>('pronoun'),[personWord,setPersonWord]=useState<string>()
+ const [determiner,setDeterminer]=useState<Determiner|undefined>(initialAction?.determiner)
+ const [object,setObject]=useState<string|undefined>(initialAction?.object)
+ const [personMode,setPersonMode]=useState<NounMode>(initialAction?.personMode??'pronoun'),[personWord,setPersonWord]=useState<string|undefined>(initialAction?.personWord)
  const [objectMode,setObjectMode]=useState<NounMode>('noun'),[destinationWord,setDestinationWord]=useState<string>()
  const subjectChoices=(Object.keys(actionSubjects) as ActionSubject[]).map(key=>({word:mode==='question'?key:actionSubjects[key].answer,thai:mode==='question'?actionSubjects[key].thai:actionSubjects[key].answerThai}))
  const personBlock=nounBlock<SubjectWord>({pronoun:subjectChoices,name:lesson.subjectModes?.names.filter(item=>item.kind==='person'),noun:lesson.vocabulary.filter(item=>meaningForWord(item)?.kind==='person').map(item=>({...item,word:`the ${item.word}`,phrase:{noun:item.word,nounThai:item.thai,determiner:{english:'the',thai:'ที่กำลังพูดถึง'}},kind:'person' as const}))},personMode,personWord)
@@ -108,7 +108,7 @@ export default function ActionMatrix({lesson,settings={},wordScores}:SentenceMat
   </EducationFrame>
  }
  return <section ref={board} className="cw-pattern-stage" onKeyDown={e=>{if(e.key==='Escape'&&active){e.stopPropagation();closePicker()}}}>
-  <PatternNavigation label="Question and answer" pattern={mode} onChange={value=>{setMode(value);setActive(null)}}/>
+  {settings.patternNavigation!==false&&<PatternNavigation label="Question and answer" pattern={mode} onChange={value=>{setMode(value);setActive(null)}}/>}
   <section className="cw-sentence-board" aria-label={settings.fadeMode?'Listen to the sentence':sentence.english}><div className="cw-sentence-display">
    <ExampleLanguage matrix {...sentence} settings={settings} scores={wordScores} layout={layout} semanticSlots={slots} slotDetails={details}
     unitActions={settings.explanations===false?undefined:roles.map((role,index)=>({index,label:`Slot ${index+1}: ${valueFor(role)}`,controls:`${id}-explanation`,expanded:false,onClick:()=>explain(index)}))}

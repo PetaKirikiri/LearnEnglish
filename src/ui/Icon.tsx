@@ -1,5 +1,7 @@
-export type IconName = 'back' | 'close' | 'sound' | 'pause' | 'play' | 'flag' | 'check' | 'arrow' | 'book' | 'trophy' | 'grid' | 'star'
+export type IconName = 'qr' | 'whiteboard' | 'back' | 'close' | 'sound' | 'pause' | 'play' | 'flag' | 'check' | 'arrow' | 'book' | 'trophy' | 'grid' | 'star'
 const paths: Record<IconName, string> = {
+  qr:'M3 3h6v6H3V3Zm12 0h6v6h-6V3ZM3 15h6v6H3v-6Zm12 0h3v3h3v3h-6v-6ZM12 3v3m0 6h6M3 12h6m3 3v6m9-9v3',
+  whiteboard:'M3 3h18v14H3V3Zm9 14v4m-5 0h10M7 8h10M7 12h6',
   star: 'm12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z',
   back: 'm14 6-6 6 6 6M8 12h12', close: 'm6 6 12 12M6 18 18 6',
   sound: 'M11 5 6 9H3v6h3l5 4V5Zm4 3a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14',

@@ -1,6 +1,6 @@
 import { randomBytes, randomInt } from 'node:crypto'
 import type { RacePhase, RaceView } from '../src/race/types'
-import { FINISH, START_DELAY_MS, WINDOW_MS, racePositions, roundResult } from '../src/race/rules'
+import { FINISH, START_DELAY_MS, WINDOW_MS, MAX_RACE_MS, MAX_RACE_QUESTIONS, racePositions, roundResult } from '../src/race/rules'
 import { motionAfter, secondsToFinish, type RaceMotion } from '../src/race/kinematics'
 import { meaningChoices } from '../src/race/meaningChoices'
 export { FINISH, WINDOW_MS, speedFor } from '../src/race/rules'
@@ -11,7 +11,7 @@ type Player = RaceMotion & { id: string; token: string; name: string; lane: numb
 type Answer = { choice: number; at: number }
 export type Room = {
   version: 2; id: string; host: string; createdAt: number; title: string; phase: RacePhase; players: Player[];
-  run?: number; stageId?: string; completedRound?: number;
+  run?: number; stageId?: string; completedRound?: number; endsAt?: number;
   pool: RaceQuestion[]; deck: RaceQuestion[]; round: number; opensAt: number; closesAt: number;
   updatedAt: number; answers: Record<string, Answer>; kind?: RaceStage['kind'];
 }
@@ -19,6 +19,7 @@ export const token = () => randomBytes(24).toString('hex')
 export class RaceError extends Error { status = 400 }
 function requireThat(value: unknown, message: string): asserts value { if (!value) throw new RaceError(message) }
 function nextQuestion(room: Room) {
+  if (room.deck.length >= MAX_RACE_QUESTIONS) { room.phase = 'finished'; return }
   if (room.kind === 'judgement') {
     // Balance judgements, not catalogue sizes (each noun has two omissions).
     // Keep Correct on the left and Wrong on the right for quick phone taps.
@@ -90,6 +91,7 @@ export function prepareRace(room: Room, secret: string, stage: RaceStage, run: n
   room.kind = stage.kind
   room.pool = stage.questions.map(q => ({ ...q, choices: [...q.choices] }))
   room.deck = []
+  delete room.endsAt
   delete room.completedRound
   room.round = -1
   room.phase = 'lobby'
@@ -137,7 +139,7 @@ export function advanceRace(room: Room, now = Date.now()): boolean {
   if (room.phase !== 'answering' || now <= room.updatedAt) return false
   let changed = false
   while (room.phase === 'answering' && now > room.updatedAt) {
-    const until = Math.min(now, room.closesAt)
+    const until = Math.min(now, room.closesAt, room.endsAt ?? Infinity)
     const duration = (until - room.updatedAt) / 1000
     const toFinish = Math.min(...room.players.map(p => secondsToFinish(p, FINISH)))
     const elapsed = Math.min(duration, toFinish)
@@ -148,6 +150,7 @@ export function advanceRace(room: Room, now = Date.now()): boolean {
       for (const p of room.players) if (p.metres >= FINISH - 1e-8) p.metres = FINISH
       room.phase = 'finished'; break
     }
+    if (room.updatedAt >= (room.endsAt ?? Infinity)) { room.phase = 'finished'; break }
     // The closing instant belongs to this question: a tap exactly at 10s
     // receives a zero boost. Roll over strictly after it.
     if (until >= room.closesAt && now > room.closesAt) {
@@ -167,6 +170,7 @@ export function command(room: Room, secret: string, action: string, round: numbe
   requireThat(room.players.length, 'Wait for a player to join.')
   nextQuestion(room)
   room.phase = 'answering'
+  room.endsAt = now + MAX_RACE_MS
   room.opensAt = now + START_DELAY_MS
   room.closesAt = room.opensAt + WINDOW_MS
   room.updatedAt = room.opensAt

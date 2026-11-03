@@ -7,6 +7,8 @@ export type Tense = 'present' | 'past'
 export const isPluralVerb = (verb:BeVerb) => verb==='are'||verb==='were'
 export const tenseForVerb = (verb:BeVerb):Tense => verb==='was'||verb==='were'?'past':'present'
 export type MatrixSettings = import('../wordProgress/model').FadeSettings & {
+  initialPattern?: 'question' | 'answer'
+  patternNavigation?: boolean
   keepIconsWhenFading?: boolean
   translations?:boolean
   /** Independent presentation layers; legacy translations controls both Thai layers. */

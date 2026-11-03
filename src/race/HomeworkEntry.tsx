@@ -1,3 +1,5 @@
+import ClassroomStudent from '../classroom/ClassroomStudent'
+import {classroomSessionId} from '../classroom/session'
 import { useEffect, useState } from 'react'
 import PhonePractice from './PhonePractice'
 import CohortLeaderboard from './CohortLeaderboard'
@@ -42,14 +44,17 @@ export default function HomeworkEntry() {
     if(account) void supabase.from('english_tester_accounts').select('learner_id').eq('learner_id',account).maybeSingle().then(({data,error})=>{if(active)setTester(!error && !!data)})
     return ()=>{active=false}
   },[account])
+  const classId=classroomSessionId()
   const cityEntry=new URLSearchParams(location.search).get('view')==='city'
   useEffect(()=>{if(account&&cityEntry)location.replace('/english/city/controller')},[account,cityEntry])
   if(account&&cityEntry)return <main className="phone-practice" role="status">กำลังเปิดเมือง…</main>
+  if(classId&&account)return <ClassroomStudent sessionId={classId} userId={account}/>
+  if (local && !account && classId) return <main><button onClick={()=>void connect()}>Sign in with LINE</button><p>{error}</p></main>
   if (local || account) return homeworkDestination() === 'scoreboard' ? <CohortLeaderboard userId={account ?? undefined}/> : <PhonePractice key={account ?? 'local'} userId={account ?? undefined} tester={tester}/>
   const link = homeworkLineUrl(new URLSearchParams(location.search).get('lesson') === '2' ? 2 : 1)
   return <main className="phone-practice" lang="th"><div className="practice-shell"><section className="practice-complete" aria-live="polite">
     
-    {state === 'loading' ? <span role="status" aria-label="กำลังเชื่อมต่อ" style={{display:'block',width:28,height:28,border:'3px solid #dbe8ff',borderTopColor:'#1877ef',borderRadius:'50%'}}/> : <><p role="alert" style={{fontSize:20}}>{error}</p><button onClick={() => void connect()}>ลองอีกครั้ง</button>{link && <a href={link + (homeworkDestination() === 'scoreboard' ? '&view=scoreboard' : '')}>เปิดใน LINE</a>}</>}
+    {state === 'loading' ? <span role="status" aria-label="กำลังเชื่อมต่อ" style={{display:'block',width:28,height:28,border:'3px solid #dbe8ff',borderTopColor:'#1877ef',borderRadius:'50%'}}/> : <><p role="alert" style={{fontSize:20}}>{error}</p><button onClick={() => void connect()}>ลองอีกครั้ง</button>{link && <a href={link + (classId ? '&class='+encodeURIComponent(classId) : '') + (homeworkDestination() === 'scoreboard' ? '&view=scoreboard' : '')}>เปิดใน LINE</a>}</>}
 
   </section></div></main>
 }
