@@ -20,7 +20,7 @@ export default function ClassroomStudent({sessionId,userId}:{sessionId:string;us
   try{const next=await classroomCall('answer',sessionId,{turn:turn.id,answer:value});setSession(next);awardPracticeGold(turn.id,next.turn?.correct===true,userId);setError('')}catch(e){setError((e as Error).message)}finally{lock.current=false;setBusy(false)}
  }
  return <main className="su-student classroom"><header><strong>Success University</strong><PracticeGold userId={userId}/></header>{error&&<p role="alert">{error}</p>}
- {!mine?<section className="su-wait"><span aria-hidden="true">🎓</span><h1>{session?.members.find(m=>m.id===userId)?.name??'…'}</h1><p>รอรอบของคุณ</p></section>:<>
+ {!mine?<section className="su-wait"><span aria-hidden="true">🎓</span><h1>{session?.members.find(m=>m.id===userId)?.name??'…'}</h1><p>รอรอบของคุณ</p>{turn&&<div className="su-current-student" aria-live="polite"><small>ตอนนี้เป็นรอบของ</small><strong>{session?.members.find(m=>m.id===turn.learner)?.name??'…'}</strong></div>}</section>:<>
  <button className="su-replay" onClick={play} aria-label="ฟังอีกครั้ง">🔊</button><div className="cw-sentence-board">{q?<LanguageQuadrant request={{document:{...q,construction:q.level===4?'action-question':'action-answer'},presentation:{size:'phone',translations:false,explanations:false,wordPicker:false}}}/>:<p role="alert">กรุณาโหลดหน้านี้ใหม่</p>}</div>
  <div className="su-answer-grid">{turn.choices.map(choice=><button key={choice} disabled={busy||turn.answer!==null} aria-pressed={turn.answer===choice} onClick={()=>void answer(choice)}>{choice}</button>)}</div>
  {turn.answer!==null&&<div className="su-result" role="status">{turn.correct?'✓ 🪙 +10':'✕'}<p>ดูคำอธิบายจากครู</p></div>}
