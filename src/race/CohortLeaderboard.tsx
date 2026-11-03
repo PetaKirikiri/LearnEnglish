@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { flushWordAttempts } from '../learning/wordProgress/store'
+import { syncRecall } from './numberRecallStore'
 import MemberAvatar from '../ui/MemberAvatar'
 import Icon from '../ui/Icon'
 import { homeworkLiffId } from '../auth/homeworkLine'
@@ -28,8 +29,8 @@ export default function CohortLeaderboard({userId}:{userId?:string}) {
     const learner=userId??(await supabase.auth.getUser()).data.user?.id
     if(!learner){if(active)setResult({period,signIn:true});return}
     // A failed offline upload must not hide everybody else's saved scores.
-    let syncError=false
-    try {await flushWordAttempts(learner)}catch{syncError=true}
+    const uploads=await Promise.allSettled([flushWordAttempts(learner),syncRecall(learner)])
+    const syncError=uploads.some(upload=>upload.status==='rejected')
     const response=await supabase.rpc('english_success_leaderboard',{p_period:period})
     if(response.error)throw response.error
     if(active)setResult({period,board:response.data as Board,learner,syncError})

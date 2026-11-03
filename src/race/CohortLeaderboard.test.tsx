@@ -1,9 +1,10 @@
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import { afterEach, expect, it, vi } from 'vitest'
-const mocks=vi.hoisted(()=>({rpc:vi.fn(),getUser:vi.fn(),flush:vi.fn()}))
+const mocks=vi.hoisted(()=>({rpc:vi.fn(),getUser:vi.fn(),flush:vi.fn(),recall:vi.fn()}))
 vi.mock('../lib/supabase',()=>({supabase:{rpc:mocks.rpc,auth:{getUser:mocks.getUser}}}))
 vi.mock('../learning/wordProgress/store',()=>({flushWordAttempts:mocks.flush}))
+vi.mock('./numberRecallStore',()=>({syncRecall:mocks.recall}))
 vi.mock('../auth/homeworkLine',()=>({homeworkLiffId:'test-liff'}))
 import CohortLeaderboard from './CohortLeaderboard'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
@@ -53,4 +54,15 @@ it('retries a failed server request',async()=>{
  expect(host.querySelector('[role=alert]')).not.toBeNull()
  await act(async()=>host.querySelector<HTMLButtonElement>('[role=alert] button')!.click())
  expect(host.querySelector('.cohort-points')?.textContent).toBe('10')
+})
+
+it('syncs number answers before fetching scores and keeps saved ranks on upload failure',async()=>{
+ mocks.recall.mockRejectedValue(new Error('number upload offline'))
+ mocks.rpc.mockResolvedValue({data:board('all',300)})
+ await act(async()=>root.render(<CohortLeaderboard userId="student"/>))
+ expect(mocks.recall).toHaveBeenCalledWith('student')
+ expect(mocks.flush).toHaveBeenCalledWith('student')
+ expect(mocks.recall.mock.invocationCallOrder[0]).toBeLessThan(mocks.rpc.mock.invocationCallOrder[0])
+ expect(host.querySelector('.cohort-points')?.textContent).toBe('300')
+ expect(host.querySelector('.cohort-sync')).not.toBeNull()
 })

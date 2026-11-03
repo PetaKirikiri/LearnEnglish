@@ -7,9 +7,7 @@ import LanguageQuadrant,{type LanguageDocument} from '../learning/sentenceMatrix
 import {actionPracticeQuestions} from './actionPracticeContent'
 import {numberNounPool} from './numberFoundation'
 import VocabularyPicture from '../learning/VocabularyPicture'
-import {ActionIcon} from '../learning/sentenceMatrix/ActionVocabularyIcon'
-import PronounIcon from '../learning/sentenceMatrix/PronounIcon'
-import ProperNounIcon from '../learning/sentenceMatrix/ProperNounIcon'
+import BinaryAnswerZone,{BinaryAnswerButton,type BinaryChoice} from './BinaryAnswerZone'
 import './practiceJourney.css'
 
 export function levelPreview(level:PracticeLevel){
@@ -18,22 +16,42 @@ export function levelPreview(level:PracticeLevel){
  const words=level<=3?numberNounPool(level).map(n=>n.singular):[...new Set(questions.flatMap(q=>q.units.filter(u=>u.role===role).map(u=>u.english.replace(/[?.]/g,'').trim())))]
  return {words,total:level<=3?30:Math.min(30,questions.length)}
 }
+function PreviewAnswers({level,selected,onChoose}:{level:PracticeLevel;selected:number|null;onChoose:(index:number)=>void}){
+ const example=sample(level)
+ const choices=levels[level-1].choices.map((label,side)=>({id:label,label,content:label,state:selected===side?(side===example.correct?'correct':'incorrect'):undefined,icon:level<=2?<span className={`cw-game-icon cw-game-icon-${side===0?'apple':'apples'}`}/>:level===3?<img src={`/images/race/answer-${side===0?'correct':'wrong'}-v2.png`} alt=""/>:undefined})) as [BinaryChoice,BinaryChoice]
+ return <div className="foundation-practice journey-real-answers"><div className="practice-answer-area"><BinaryAnswerZone choices={choices} disabled={false} selected={selected} onChoose={onChoose}/></div></div>
+}
+export function guideExamples(level:PracticeLevel){
+ if(level>=4){
+  const first=actionPracticeQuestions.find(q=>q.level===level)!
+  const second=actionPracticeQuestions.find(q=>q.level===level&&q.thai===first.choices[1])!
+  return [first,second].map(q=>({document:{...q,construction:level===4?'action-question':'action-answer'} as LanguageDocument,audio:q.audioUrl,label:q.thai}))
+ }
+ return [0,1].map(index=>{
+  const plural=level===3||index===1,word=plural?'keys':'key',be=level===3?(index===0?'are':'is'):(plural?'are':'is')
+  const document:LanguageDocument=level===1?{construction:'noun-phrase',english:word,thai:'',units:[{english:word,thai:'',role:'object'}]}:{construction:'question',english:`Where ${be} the ${word}?`,thai:'',units:[{english:'Where',thai:'',role:'question'},{english:be,thai:'',role:'be'},{english:'the',thai:'',role:'determiner'},{english:`${word}?`,thai:'',role:'object'}]}
+  return {document,audio:`/audio/number-foundation/${level===1?'the':`where-${be}-the`}-${word}.wav`,label:levels[level-1].choices[index]}
+ })
+}
+function AnswerGuide({level}:{level:PracticeLevel}){
+ const [selected,setSelected]=useState<number|null>(null),player=useRef<HTMLAudioElement|null>(null)
+ useEffect(()=>()=>player.current?.pause(),[])
+ const play=(index:number)=>{player.current?.pause();player.current=new Audio(guideExamples(level)[index].audio);void player.current.play().catch(()=>{})}
+ return <div className={`foundation-practice journey-pair-guide ${level>1?'journey-sentence-guide':''}`}><div className="practice-answer-area">{guideExamples(level).map((example,index)=><div className="journey-pair-row" key={example.document.english}>
+  <div className="journey-pair-source">
+   <button type="button" className="journey-example-audio" aria-label={`ฟัง: ${example.document.english}`} onClick={()=>play(index)}>🔊</button>
+   {level===1?<div className="journey-pair-word"><VocabularyPicture word={index===0?'key':'keys'}/><strong>key{index===1&&<mark>s</mark>}</strong></div>:<div className="adaptive-practice-stage"><div className="classroom foundation-noun"><div className="cw-sentence-board"><div className="cw-sentence-display"><LanguageQuadrant request={{document:example.document,presentation:{size:'compact',thaiMeanings:false,thaiTranslation:false,fadeMode:false,icons:true,wordPicker:false,explanations:false,audio:false,layout:{density:'content',maxWidth:520}}}}/></div></div></div></div>}
+  </div>
+  <span className="journey-pair-arrow" aria-hidden="true">→</span>
+  <BinaryAnswerButton index={index} selected={selected} disabled={false} onChoose={side=>{setSelected(side);play(index)}} choice={{id:example.document.english,label:example.label,content:example.label,icon:level<=2?<span className={`cw-game-icon cw-game-icon-${index===0?'apple':'apples'}`}/>:level===3?<img src={`/images/race/answer-${index===0?'correct':'wrong'}-v2.png`} alt=""/>:undefined}}/>
+ </div>)}</div><span className="journey-preview-feedback">{level<=2?'ฟัง → หนึ่ง / หลาย':level===3?'is + หนึ่ง · are + หลาย':'ฟัง → เลือกความหมาย'}</span></div>
+}
 function LevelLineup({level}:{level:PracticeLevel}){
- const {words,total}=levelPreview(level)
- return <span className="journey-briefing">
-  <span className="journey-task-strip">
-   <span className="journey-answer-preview" aria-label={level<=2?'หนึ่งหรือหลาย':level===3?'ถูกหรือผิด':'อังกฤษเป็นไทย'}>
-    <span aria-hidden="true">♫</span><span aria-hidden="true">→</span>
-    {level<=2?<><VocabularyPicture word="apple"/><span>/</span><VocabularyPicture word="apples"/></>:level===3?<><b className="preview-yes">✓</b><span>/</span><b className="preview-no">✕</b></>:<><span>🇬🇧</span><span>→</span><span>🇹🇭</span><b>× 2</b></>}
-   </span>
-   <span className="journey-round-count"><b>{total}</b> ข้อ</span>
-  </span>
-  <span className="journey-roster-heading">{level<=3?'คำศัพท์':level===4?'คน':'การกระทำ'} <b>× {words.length}</b></span>
-  <span className="journey-roster">{words.map(word=><span className={`journey-roster-item ${level===5?'action':''}`} key={word}>
-   {level<=3?<VocabularyPicture word={word}/>:level===5?<ActionIcon word={word}/>:['you','he','she','they','I','we'].includes(word)?<PronounIcon word={word}/>:word==='Bia'?<ProperNounIcon word={word}/>:<VocabularyPicture word={word.replace(/^the /,'')}/>}
-   <span>{word}</span>
-  </span>)}</span>
- </span>
+ const {total}=levelPreview(level)
+ return <div className="journey-briefing">
+  <div className="journey-task-strip"><span aria-hidden="true">🔊 →</span><span className="journey-round-count"><b>{total}</b> ข้อ</span></div>
+  <AnswerGuide level={level}/>
+ </div>
 }
 
 const levels=[
@@ -60,7 +78,7 @@ function Tutorial({level,onStart,onBack}:{level:PracticeLevel;onStart:()=>void;o
  const item=levels[level-1],example=sample(level),[selected,setSelected]=useState<number|null>(null),[audioError,setAudioError]=useState(false),player=useRef<HTMLAudioElement|null>(null)
  useEffect(()=>()=>player.current?.pause(),[])
  const play=()=>{player.current?.pause();const audio=new Audio(example.audio);player.current=audio;setAudioError(false);void audio.play().catch(()=>setAudioError(true))}
- return <section className="journey-tutorial"><button className="journey-back" onClick={onBack} aria-label="กลับแผนที่">←</button><span className="journey-eyebrow">LEVEL {level}</span><h1>{item.title}</h1><p>{item.hint}</p><div className="journey-listen"><button onClick={play} aria-label="ฟังตัวอย่าง">▶</button><span>ฟัง → เลือก</span></div>{audioError&&<p role="alert">เล่นเสียงไม่ได้ ลองอีกครั้ง</p>}<div className="adaptive-practice-stage"><div className="classroom foundation-noun"><div className="cw-sentence-board"><div className="cw-sentence-display"><LanguageQuadrant request={{document:example.document,presentation:{size:'phone',thaiMeanings:false,thaiTranslation:false,fadeMode:false,icons:true}}}/></div></div></div></div><div className="journey-demo-answers">{item.choices.map((choice,index)=><button key={choice} onClick={()=>{setSelected(index);player.current?.pause()}} className={selected===index?(index===example.correct?'demo-correct':'demo-wrong'):''}>{level<=2?<span className={`cw-game-icon cw-game-icon-${index===0?'apple':'apples'}`}/>:level===3?<span>{index===0?'✓':'✕'}</span>:null}{choice}{selected===index&&<b>{index===example.correct?' ✓':' ↻'}</b>}</button>)}</div><div className="journey-demo-feedback" role="status">{selected===null?'ลองเลือกคำตอบ':selected===example.correct?'✓ ถูกต้อง':'ลองอีกครั้ง'}</div><p className="journey-goal">{level<=3?'★ ผ่าน: 27/30 · อย่างน้อย 12 ข้อต่อแบบ':'★ ผ่าน: ตอบถูกอย่างน้อย 90%'}</p><button className="journey-play" onClick={()=>{player.current?.pause();onStart()}}>เริ่มเล่น →</button></section>
+ return <section className="journey-tutorial"><button className="journey-back" onClick={onBack} aria-label="กลับแผนที่">←</button><span className="journey-eyebrow">LEVEL {level}</span><h1>{item.title}</h1><p>{item.hint}</p><div className="journey-listen"><button onClick={play} aria-label="ฟังตัวอย่าง">▶</button><span>ฟัง → เลือก</span></div>{audioError&&<p role="alert">เล่นเสียงไม่ได้ ลองอีกครั้ง</p>}<div className="adaptive-practice-stage"><div className="classroom foundation-noun"><div className="cw-sentence-board"><div className="cw-sentence-display"><LanguageQuadrant request={{document:example.document,presentation:{size:'phone',thaiMeanings:false,thaiTranslation:false,fadeMode:false,icons:true}}}/></div></div></div></div><PreviewAnswers level={level} selected={selected} onChoose={index=>{setSelected(index);player.current?.pause()}}/><div className="journey-demo-feedback" role="status">{selected===null?'ลองเลือกคำตอบ':selected===example.correct?'✓ ถูกต้อง':'ลองอีกครั้ง'}</div><p className="journey-goal">{level<=3?'★ ผ่าน: 27/30 · อย่างน้อย 12 ข้อต่อแบบ':'★ ผ่าน: ตอบถูกอย่างน้อย 90%'}</p><button className="journey-play" onClick={()=>{player.current?.pause();onStart()}}>เริ่มเล่น →</button></section>
 }
 export default function PracticeJourney(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:MatrixSettings}){
  return <Journey key={props.userId??'guest'} {...props}/>
@@ -74,5 +92,5 @@ function Journey(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settin
  const recommended=levels.find(item=>item.id>=(props.minimumModule??1)&&!records[item.id]?.cleared)?.id??5
  if(import.meta.env.DEV&&new URLSearchParams(location.search).has('preview'))return <NumberFoundation {...props}/>
  if(screen==='run')return <NumberFoundation {...props} initialLevel={level} newRun onLevelRequest={select} onComplete={complete} onExit={()=>setScreen('map')}/>
- return <main className="practice-journey" lang="th"><header className="journey-header"><img src="/brand/success-university-su.svg" alt="Success University"/><span>เส้นทางของฉัน</span><PracticeGold userId={props.userId}/></header>{screen==='tutorial'?<Tutorial key={level} level={level} onStart={()=>setScreen('run')} onBack={()=>setScreen('map')}/>:screen==='result'&&result?<section className="journey-result"><div className="journey-medal">{result.passed?'★':'↻'}</div><h1>{result.passed?'ผ่านแล้ว!':'ลองอีกครั้ง'}</h1><p>LEVEL {result.level}</p><strong>{result.score}<small> / {result.total}</small></strong><div className="journey-result-actions"><button className="journey-play" onClick={()=>select(result.passed&&level<5?(level+1) as PracticeLevel:level)}>{result.passed&&level<5?'ด่านต่อไป →':'เล่นอีกครั้ง ↻'}</button><button onClick={()=>setScreen('map')}>แผนที่</button></div></section>:<section className="journey-map"><div className="journey-intro"><div><span className="journey-eyebrow">LET’S PLAY</span><h1>พร้อมลุยไหม?</h1></div><div className="journey-clears"><span>★</span> {Object.values(records).filter(r=>r?.cleared).length}<small> / 5</small></div></div><div className="journey-path">{levels.map(item=>{const record=records[item.id],current=item.id===recommended;return <button key={item.id} className={`journey-node ${current?'current':''} ${record?.cleared?'cleared':''}`} onClick={()=>select(item.id)} aria-label={`Level ${item.id}: ${item.title}`}><span className="journey-node-number">{record?.cleared?'★':String(item.id).padStart(2,'0')}</span><span className="journey-node-content"><span className="journey-eyebrow">LEVEL {item.id}</span><strong>{item.title}</strong><span className="journey-node-score">{record?`★ ${record.best} / ${record.total}`:''}</span></span><span className="journey-node-arrow">{current?'▶':'→'}</span><LevelLineup level={item.id}/></button>})}</div></section>}</main>
+ return <main className="practice-journey" lang="th"><header className="journey-header"><img src="/brand/success-university-su.svg" alt="Success University"/><span>เส้นทางของฉัน</span><PracticeGold userId={props.userId}/></header>{screen==='tutorial'?<Tutorial key={level} level={level} onStart={()=>setScreen('run')} onBack={()=>setScreen('map')}/>:screen==='result'&&result?<section className="journey-result"><div className="journey-medal">{result.passed?'★':'↻'}</div><h1>{result.passed?'ผ่านแล้ว!':'ลองอีกครั้ง'}</h1><p>LEVEL {result.level}</p><strong>{result.score}<small> / {result.total}</small></strong><div className="journey-result-actions"><button className="journey-play" onClick={()=>select(result.passed&&level<5?(level+1) as PracticeLevel:level)}>{result.passed&&level<5?'ด่านต่อไป →':'เล่นอีกครั้ง ↻'}</button><button onClick={()=>setScreen('map')}>แผนที่</button></div></section>:<section className="journey-map"><div className="journey-intro"><div><span className="journey-eyebrow">LET’S PLAY</span><h1>พร้อมลุยไหม?</h1></div><div className="journey-clears"><span>★</span> {Object.values(records).filter(r=>r?.cleared).length}<small> / 5</small></div></div><div className="journey-path">{levels.map(item=>{const record=records[item.id],current=item.id===recommended;return <article key={item.id} className={`journey-node ${current?'current':''} ${record?.cleared?'cleared':''}`}><button className="journey-node-open" onClick={()=>select(item.id)} aria-label={`Level ${item.id}: ${item.title}`}><span className="journey-node-number">{record?.cleared?'★':String(item.id).padStart(2,'0')}</span><span className="journey-node-content"><span className="journey-eyebrow">LEVEL {item.id}</span><strong>{item.title}</strong><span className="journey-node-score">{record?`★ ${record.best} / ${record.total}`:''}</span></span><span className="journey-node-arrow">{current?'▶':'→'}</span></button><LevelLineup level={item.id}/></article>})}</div></section>}</main>
 }

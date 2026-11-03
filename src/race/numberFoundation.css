@@ -156,3 +156,30 @@
 .foundation-practice header .foundation-progress-group .foundation-progress{flex:none;width:100%}
 
 .foundation-level-picker{display:flex;gap:6px}.foundation-level-picker button{min-width:40px;min-height:40px;border:2px solid #dce5f1;border-radius:12px;background:#fff;color:#18385e;font:700 18px Nunito,sans-serif}.foundation-level-picker button[aria-pressed=true]{background:#ffdc39;border-color:#c6a31e;box-shadow:0 3px #c6a31e}
+
+/* Responsive exercise shell: intrinsic header contents must never widen the page. */
+.phone-practice.foundation-practice .practice-shell{min-width:0;grid-template-columns:minmax(0,1fr)}
+.phone-practice.foundation-practice .practice-shell>header{display:flex;flex-wrap:wrap;gap:10px;padding:12px max(16px,calc((100% - 720px)/2));min-width:0}
+.phone-practice.foundation-practice header .foundation-cap{width:44px;height:44px}
+.phone-practice.foundation-practice header .foundation-progress-group{order:5;flex:1 0 100%;width:100%;min-width:0}
+.phone-practice.foundation-practice header .practice-gold{margin-left:auto}
+.phone-practice.foundation-practice .foundation-level-picker{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;min-width:0}
+.phone-practice.foundation-practice .foundation-level-picker button{width:100%;min-width:0;min-height:40px;padding:4px}
+.phone-practice.foundation-practice .practice-stage.adaptive-practice-stage{min-width:0;min-height:0;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(min-content,1fr) auto}
+.phone-practice.foundation-practice .adaptive-practice-stage>.practice-question{padding:clamp(12px,3dvh,28px) max(12px,calc((100% - 720px)/2));min-width:0}
+.phone-practice.foundation-practice .practice-answer-area{padding:14px max(12px,calc((100% - 720px)/2)) max(16px,env(safe-area-inset-bottom));min-width:0}
+.phone-practice.foundation-practice .practice-shell .practice-feedback.foundation-controls{height:54px;min-height:54px;padding-bottom:10px}
+.phone-practice.foundation-practice .foundation-controls .foundation-help{width:40px;height:40px;min-width:40px;min-height:40px}
+.phone-practice.foundation-practice .practice-answer-area .binary-answer{min-height:72px;padding:12px 16px;font-size:clamp(18px,2.8vw,25px)}
+.phone-practice.foundation-practice .binary-answer-content.has-icon{grid-template-columns:44px minmax(0,1fr);gap:12px}
+.phone-practice.foundation-practice .binary-answer-icon,.phone-practice.foundation-practice .binary-answer-content .cw-game-icon{width:44px;height:44px;flex-basis:44px}
+@media(min-width:760px){
+ .phone-practice.foundation-practice header .foundation-progress-group{order:0;flex:1 1 260px;width:auto}
+ .phone-practice.foundation-practice .practice-stage.adaptive-practice-stage{min-height:min(640px,calc(100dvh - 86px))}
+}
+@media(max-height:700px){
+ .phone-practice.foundation-practice .practice-shell{grid-template-rows:auto auto;align-content:start}
+ .phone-practice.foundation-practice .adaptive-practice-stage>.practice-question{padding-block:12px}
+ .phone-practice.foundation-practice .practice-answer-area .binary-answer{min-height:60px;padding:8px 12px}
+ .phone-practice.foundation-practice .binary-answer-zone .practice-answers{gap:10px}
+}
