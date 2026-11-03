@@ -5,7 +5,37 @@ import type {PracticeLevel} from './PracticeLevelPicker'
 import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 import LanguageQuadrant,{type LanguageDocument} from '../learning/sentenceMatrix/LanguageQuadrant'
 import {actionPracticeQuestions} from './actionPracticeContent'
+import {numberNounPool} from './numberFoundation'
+import VocabularyPicture from '../learning/VocabularyPicture'
+import {ActionIcon} from '../learning/sentenceMatrix/ActionVocabularyIcon'
+import PronounIcon from '../learning/sentenceMatrix/PronounIcon'
+import ProperNounIcon from '../learning/sentenceMatrix/ProperNounIcon'
 import './practiceJourney.css'
+
+export function levelPreview(level:PracticeLevel){
+ const questions=actionPracticeQuestions.filter(q=>q.level===level)
+ const role=level===4?'person':'action'
+ const words=level<=3?numberNounPool(level).map(n=>n.singular):[...new Set(questions.flatMap(q=>q.units.filter(u=>u.role===role).map(u=>u.english.replace(/[?.]/g,'').trim())))]
+ return {words,total:level<=3?30:Math.min(30,questions.length)}
+}
+function LevelLineup({level}:{level:PracticeLevel}){
+ const {words,total}=levelPreview(level)
+ return <span className="journey-briefing">
+  <span className="journey-task-strip">
+   <span className="journey-answer-preview" aria-label={level<=2?'หนึ่งหรือหลาย':level===3?'ถูกหรือผิด':'อังกฤษเป็นไทย'}>
+    <span aria-hidden="true">♫</span><span aria-hidden="true">→</span>
+    {level<=2?<><VocabularyPicture word="apple"/><span>/</span><VocabularyPicture word="apples"/></>:level===3?<><b className="preview-yes">✓</b><span>/</span><b className="preview-no">✕</b></>:<><span>🇬🇧</span><span>→</span><span>🇹🇭</span><b>× 2</b></>}
+   </span>
+   <span className="journey-round-count"><b>{total}</b> ข้อ</span>
+  </span>
+  <span className="journey-roster-heading">{level<=3?'คำศัพท์':level===4?'คน':'การกระทำ'} <b>× {words.length}</b></span>
+  <span className="journey-roster">{words.map(word=><span className={`journey-roster-item ${level===5?'action':''}`} key={word}>
+   {level<=3?<VocabularyPicture word={word}/>:level===5?<ActionIcon word={word}/>:['you','he','she','they','I','we'].includes(word)?<PronounIcon word={word}/>:word==='Bia'?<ProperNounIcon word={word}/>:<VocabularyPicture word={word.replace(/^the /,'')}/>}
+   <span>{word}</span>
+  </span>)}</span>
+ </span>
+}
+
 const levels=[
  {id:1,title:'หนึ่งหรือหลาย',icon:'apples',hint:'ฟังคำ แล้วเลือกหนึ่งสิ่งหรือหลายสิ่ง',choices:['หนึ่งสิ่ง','หลายสิ่ง']},
  {id:2,title:'ฟังทั้งประโยค',icon:'clock',hint:'ฟังทั้งประโยค แล้วเลือกหนึ่งสิ่งหรือหลายสิ่ง',choices:['หนึ่งสิ่ง','หลายสิ่ง']},
@@ -44,5 +74,5 @@ function Journey(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settin
  const recommended=levels.find(item=>item.id>=(props.minimumModule??1)&&!records[item.id]?.cleared)?.id??5
  if(import.meta.env.DEV&&new URLSearchParams(location.search).has('preview'))return <NumberFoundation {...props}/>
  if(screen==='run')return <NumberFoundation {...props} initialLevel={level} newRun onLevelRequest={select} onComplete={complete} onExit={()=>setScreen('map')}/>
- return <main className="practice-journey" lang="th"><header className="journey-header"><img src="/brand/success-university-su.svg" alt="Success University"/><span>เส้นทางของฉัน</span><PracticeGold userId={props.userId}/></header>{screen==='tutorial'?<Tutorial key={level} level={level} onStart={()=>setScreen('run')} onBack={()=>setScreen('map')}/>:screen==='result'&&result?<section className="journey-result"><div className="journey-medal">{result.passed?'★':'↻'}</div><h1>{result.passed?'ผ่านแล้ว!':'ลองอีกครั้ง'}</h1><p>LEVEL {result.level}</p><strong>{result.score}<small> / {result.total}</small></strong><div className="journey-result-actions"><button className="journey-play" onClick={()=>select(result.passed&&level<5?(level+1) as PracticeLevel:level)}>{result.passed&&level<5?'ด่านต่อไป →':'เล่นอีกครั้ง ↻'}</button><button onClick={()=>setScreen('map')}>แผนที่</button></div></section>:<section className="journey-map"><div className="journey-intro"><div><span className="journey-eyebrow">LET’S PLAY</span><h1>พร้อมลุยไหม?</h1></div><div className="journey-clears"><span>★</span> {Object.values(records).filter(r=>r?.cleared).length}<small> / 5</small></div></div><div className="journey-path">{levels.map(item=>{const record=records[item.id],current=item.id===recommended;return <button key={item.id} className={`journey-node ${current?'current':''} ${record?.cleared?'cleared':''}`} onClick={()=>select(item.id)} aria-label={`Level ${item.id}: ${item.title}`}><span className="journey-node-number">{record?.cleared?'★':String(item.id).padStart(2,'0')}</span><span className="journey-node-content"><span className="journey-eyebrow">LEVEL {item.id}</span><strong>{item.title}</strong><span className="journey-node-score">{record?`${record.best} / ${record.total}`:item.id<=3?'🎯 27 / 30':'🎯 90%'}</span></span><span className="journey-node-arrow">{current?'▶':'→'}</span></button>})}</div></section>}</main>
+ return <main className="practice-journey" lang="th"><header className="journey-header"><img src="/brand/success-university-su.svg" alt="Success University"/><span>เส้นทางของฉัน</span><PracticeGold userId={props.userId}/></header>{screen==='tutorial'?<Tutorial key={level} level={level} onStart={()=>setScreen('run')} onBack={()=>setScreen('map')}/>:screen==='result'&&result?<section className="journey-result"><div className="journey-medal">{result.passed?'★':'↻'}</div><h1>{result.passed?'ผ่านแล้ว!':'ลองอีกครั้ง'}</h1><p>LEVEL {result.level}</p><strong>{result.score}<small> / {result.total}</small></strong><div className="journey-result-actions"><button className="journey-play" onClick={()=>select(result.passed&&level<5?(level+1) as PracticeLevel:level)}>{result.passed&&level<5?'ด่านต่อไป →':'เล่นอีกครั้ง ↻'}</button><button onClick={()=>setScreen('map')}>แผนที่</button></div></section>:<section className="journey-map"><div className="journey-intro"><div><span className="journey-eyebrow">LET’S PLAY</span><h1>พร้อมลุยไหม?</h1></div><div className="journey-clears"><span>★</span> {Object.values(records).filter(r=>r?.cleared).length}<small> / 5</small></div></div><div className="journey-path">{levels.map(item=>{const record=records[item.id],current=item.id===recommended;return <button key={item.id} className={`journey-node ${current?'current':''} ${record?.cleared?'cleared':''}`} onClick={()=>select(item.id)} aria-label={`Level ${item.id}: ${item.title}`}><span className="journey-node-number">{record?.cleared?'★':String(item.id).padStart(2,'0')}</span><span className="journey-node-content"><span className="journey-eyebrow">LEVEL {item.id}</span><strong>{item.title}</strong><span className="journey-node-score">{record?`★ ${record.best} / ${record.total}`:''}</span></span><span className="journey-node-arrow">{current?'▶':'→'}</span><LevelLineup level={item.id}/></button>})}</div></section>}</main>
 }

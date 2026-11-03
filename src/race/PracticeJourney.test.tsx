@@ -4,7 +4,7 @@ import {createRoot} from 'react-dom/client'
 import {beforeEach,expect,it,vi} from 'vitest'
 vi.mock('./PracticeGold',()=>({default:()=>null}))
 vi.mock('./NumberFoundationCourse',()=>({default:({initialLevel,onComplete,onExit}:{initialLevel:number;onComplete:(level:number,score:number,total:number,passed:boolean)=>void;onExit:()=>void})=><div><span>Run {initialLevel}</span><button onClick={()=>onComplete(initialLevel,30,30,true)}>Finish</button><button onClick={onExit}>Exit</button></div>}))
-import PracticeJourney,{mergeRun,sample} from './PracticeJourney'
+import PracticeJourney,{mergeRun,sample,levelPreview} from './PracticeJourney'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 beforeEach(()=>{localStorage.clear();history.replaceState({},'','/english/practice');vi.stubGlobal('Audio',class{pause(){}play(){return Promise.resolve()}})})
 it('opens the map, teaches the selected level, then records its result and keeps every level selectable',async()=>{
@@ -37,4 +37,15 @@ it('tutorial prompts and answers match each level task',()=>{
  expect(sample(2).correct).toBe(1);expect(sample(3).correct).toBe(0)
  expect(sample(4).document.english).toBe('What are you doing?')
  expect(sample(5).document.english).toBe('I am eating an apple.')
+})
+
+it('previews the real question pools and run sizes rather than the clear target',()=>{
+ expect(levelPreview(1)).toEqual({words:['hotel','phone','key','book','watch'],total:30})
+ expect(levelPreview(2).words).toHaveLength(10)
+ expect(levelPreview(3).total).toBe(30)
+ expect(levelPreview(4).words).toContain('you')
+ expect(levelPreview(4).total).toBe(7)
+ expect(levelPreview(5).words).toContain('eating')
+ expect(levelPreview(5).words).toContain('sleeping')
+ expect(levelPreview(5).total).toBe(30)
 })
