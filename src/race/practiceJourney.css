@@ -54,3 +54,8 @@
  .journey-carousel-nav button{min-width:32px;min-height:44px;border:0;border-radius:12px;background:transparent;color:#193b65;font:800 16px inherit;cursor:pointer}
  .journey-carousel-nav button[aria-current=true]{background:#2179ef;color:white}.journey-carousel-nav button:disabled{opacity:.3}
 }
+
+.journey-pass-names{display:flex;align-items:center;gap:6px;flex-shrink:0;overflow-x:auto;padding:4px 12px 8px;color:#183d65;max-width:100%;min-width:0}
+.journey-pass-names>span:first-child{color:#a87600}
+.journey-pass-name{white-space:nowrap;border-radius:999px;background:#fff8d6;padding:4px 10px;font-size:13px;font-weight:700}
+.journey-pass-names small{font-size:12px}
