@@ -28,3 +28,29 @@
 .journey-pattern-pairs.classroom .cw-sentence-board .example-source{font-size:28px;line-height:1.1;padding:0;border:0}
 .journey-pattern-pairs.classroom .cw-sentence-board .example-gloss:has(.cw-word-gloss-text:empty){display:none}
 @media(max-width:600px){.journey-pattern-pairs .journey-pattern-board{gap:10px}.journey-pattern-pairs .journey-pattern-example{padding:7px;border-radius:22px}.journey-pattern-pairs.classroom .cw-sentence-board .example-matrix .tonight-slot{padding:12px 5px;border-radius:15px}.journey-pattern-pairs.classroom .cw-sentence-board .example-source{font-size:25px}}
+
+/* Phone course map: a viewport-sized card per swipe, with teaching content retained. */
+.journey-carousel-nav{display:none}
+@media(max-width:600px){
+ .practice-journey:has(.journey-map){height:100dvh;min-height:0;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom);overflow:hidden}
+ .practice-journey .journey-header{height:64px;flex:none;padding:8px 12px;gap:10px;min-width:0}
+ .journey-header>img{width:34px;height:40px}.journey-header>span{font-size:16px;white-space:normal}
+ .journey-header .practice-gold{font-size:20px;flex:none}
+ .journey-map{margin:0;padding:14px 12px 8px;width:100%;min-height:0;flex:1;display:flex;flex-direction:column}
+ .journey-intro{margin-bottom:12px;gap:10px;flex:none}.journey-intro h1{font-size:25px;margin:0}.journey-intro .journey-eyebrow{display:none}.journey-clears{font-size:24px}
+ .journey-path{display:flex;gap:12px;min-height:0;flex:1;width:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 0 8px;overscroll-behavior-x:contain}
+ .journey-path::-webkit-scrollbar{display:none}.journey-path:before{display:none}
+ .journey-path>.journey-node{flex:0 0 100%;width:100%;min-width:0;min-height:0;height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;padding:12px;border-radius:24px;gap:0;overflow:hidden}
+ .journey-node-open{flex:none;gap:10px;padding-bottom:8px}.journey-node-number{width:44px;height:44px;font-size:23px;border-radius:14px}.journey-node-content>strong{font-size:19px}.journey-node-arrow{font-size:24px}
+ .journey-briefing{min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;flex:1;scrollbar-width:thin}
+ .journey-task-strip{padding:8px 0;margin:0}.journey-round-count{font-size:13px;padding:6px 10px}.journey-round-count b{font-size:22px}
+ .journey-pattern{padding:6px 0}.journey-pattern p{font-size:12px;margin:8px 0}
+ .journey-pattern-pairs.classroom .cw-sentence-board .example-matrix .tonight-slot{padding:8px 4px;gap:4px}
+ .journey-pattern-pairs.classroom .cw-sentence-board .cw-slot-role{height:38px;min-height:38px}
+ .journey-pattern-pairs.classroom .cw-sentence-board .cw-game-icon,.journey-pattern-pairs.classroom .cw-sentence-board .vocabulary-picture{width:36px;height:36px}
+ .journey-pattern-pairs.classroom .cw-sentence-board .example-source{font-size:23px}.journey-pattern-pairs.classroom .cw-sentence-board .example-gloss{font-size:12px}
+ .journey-pair-guide .practice-answer-area{gap:8px}.journey-pair-word{padding:6px}.journey-pair-word .vocabulary-picture{width:32px;height:32px}.journey-pair-word strong{font-size:20px}
+ .journey-carousel-nav{display:flex;align-items:center;justify-content:space-between;gap:2px;padding-top:4px;flex:none}
+ .journey-carousel-nav button{min-width:32px;min-height:44px;border:0;border-radius:12px;background:transparent;color:#193b65;font:800 16px inherit;cursor:pointer}
+ .journey-carousel-nav button[aria-current=true]{background:#2179ef;color:white}.journey-carousel-nav button:disabled{opacity:.3}
+}
