@@ -18,13 +18,13 @@ it('shows students with no points and fetches every period from the server',asyn
  await act(async()=>root.render(<CohortLeaderboard userId="student"/>))
  await select('Week')
  expect(host.querySelectorAll('li')).toHaveLength(2)
- expect(host.querySelector('.cohort-rank')?.textContent).toBe('—')
+ expect(host.querySelector('.cohort-rank')?.textContent?.replace('✦','')).toBe('—')
  for(const [label,period] of [['Today','today'],['Month','month'],['All time','all'],['Week','week']]){
   await select(label)
   expect(mocks.rpc).toHaveBeenLastCalledWith('english_success_leaderboard',{p_period:period})
  }
  await select('All time')
- expect(host.querySelector('.cohort-points')?.textContent).toBe('120')
+ expect(host.querySelector('.cohort-points')?.textContent?.replace('✦','')).toBe('120')
  expect(host.querySelector('.is-you')?.textContent).toContain('Student')
 })
 it('does not let a slow old period replace the selected results',async()=>{
@@ -33,7 +33,7 @@ it('does not let a slow old period replace the selected results',async()=>{
  await act(async()=>root.render(<CohortLeaderboard userId="student"/>))
  await select('Today')
  await act(async()=>finish({data:board('all',999)}))
- expect(host.querySelector('.cohort-points')?.textContent).toBe('55')
+ expect(host.querySelector('.cohort-points')?.textContent?.replace('✦','')).toBe('55')
 })
 it('still loads saved ranks if an offline answer cannot sync',async()=>{
  mocks.flush.mockRejectedValue(new Error('offline answer'))
@@ -53,7 +53,7 @@ it('retries a failed server request',async()=>{
  await act(async()=>root.render(<CohortLeaderboard userId="student"/>))
  expect(host.querySelector('[role=alert]')).not.toBeNull()
  await act(async()=>host.querySelector<HTMLButtonElement>('[role=alert] button')!.click())
- expect(host.querySelector('.cohort-points')?.textContent).toBe('10')
+ expect(host.querySelector('.cohort-points')?.textContent?.replace('✦','')).toBe('10')
 })
 
 it('syncs number answers before fetching scores and keeps saved ranks on upload failure',async()=>{
@@ -63,7 +63,7 @@ it('syncs number answers before fetching scores and keeps saved ranks on upload 
  expect(mocks.recall).toHaveBeenCalledWith('student')
  expect(mocks.flush).toHaveBeenCalledWith('student')
  expect(mocks.recall.mock.invocationCallOrder[0]).toBeLessThan(mocks.rpc.mock.invocationCallOrder[0])
- expect(host.querySelector('.cohort-points')?.textContent).toBe('300')
+ expect(host.querySelector('.cohort-points')?.textContent?.replace('✦','')).toBe('300')
  expect(host.querySelector('.cohort-sync')).not.toBeNull()
 })
 
@@ -82,4 +82,13 @@ it('resolves the daily default from a signed-in Peta account',async()=>{
  await act(async()=>root.render(<CohortLeaderboard/>))
  expect(mocks.rpc).toHaveBeenLastCalledWith('english_success_leaderboard',{p_period:'today'})
  expect(host.querySelector('button[aria-label="Today"]')?.getAttribute('aria-pressed')).toBe('true')
+})
+
+it('refreshes saved daily scores when returning to the app',async()=>{
+ mocks.rpc.mockResolvedValueOnce({data:board('today',10)}).mockResolvedValue({data:board('today',20)})
+ await act(async()=>root.render(<CohortLeaderboard userId="7bdc33ac-7f21-4ebf-bfbf-343080724890"/>))
+ expect(host.querySelector('[aria-label="10 gold coins"]')).not.toBeNull()
+ await act(async()=>document.dispatchEvent(new Event('visibilitychange')))
+ expect(mocks.rpc).toHaveBeenLastCalledWith('english_success_leaderboard',{p_period:'today'})
+ expect(host.querySelector('[aria-label="20 gold coins"] .practice-gold-coin')).not.toBeNull()
 })

@@ -7,6 +7,7 @@ import Icon from '../ui/Icon'
 import { PETA_ACCOUNT_ID } from '../auth/appAccess'
 import { homeworkLiffId } from '../auth/homeworkLine'
 import './cohortLeaderboard.css'
+import './practiceGold.css'
 
 type Period = 'today'|'week'|'month'|'all'
 type Row = {id:string;name:string;rank:number|null;points:number;avatarUrl?:string|null}
@@ -46,9 +47,10 @@ export default function CohortLeaderboard({userId}:{userId?:string}) {
   void refresh()
   const update=()=>{if(document.visibilityState!=='hidden')void refresh()}
   const timer=setInterval(update,30000)
+  document.addEventListener('visibilitychange',update)
   window.addEventListener('focus',update)
   window.addEventListener('online',update)
-  return()=>{active=false;clearInterval(timer);window.removeEventListener('focus',update);window.removeEventListener('online',update)}
+  return()=>{active=false;clearInterval(timer);document.removeEventListener('visibilitychange',update);window.removeEventListener('focus',update);window.removeEventListener('online',update)}
  },[userId,selection,retry])
  return <CohortLeaderboardView period={period} result={result} onPeriod={setPeriod} onRetry={()=>setRetry(n=>n+1)}/>
 }
@@ -65,7 +67,7 @@ export function CohortLeaderboardView({period,result,onPeriod,onRetry}:{period:P
      {periods.map(item=><button key={item.id} type="button" aria-label={item.name} aria-pressed={period===item.id} title={`${item.name} · ${item.label}`} onClick={()=>onPeriod(item.id)}><PeriodIcon period={item.id}/></button>)}
     </div>
     {current?.signIn?<div className="cohort-message"><p>เปิดใน LINE เพื่อดูอันดับนักเรียน</p><a href={`https://liff.line.me/${homeworkLiffId}?view=scoreboard`}>เปิดใน LINE <Icon name="arrow"/></a></div>:<>
-     <div className="cohort-list-heading"><span>นักเรียน{board?` · ${board.rows.length}`:''}</span><span>คะแนน</span></div>
+     <div className="cohort-list-heading"><span>นักเรียน{board?` · ${board.rows.length}`:''}</span><span aria-label="Gold coins"><span className="practice-gold-coin" aria-hidden="true">✦</span></span></div>
      {!current&&<p className="cohort-message" role="status">กำลังโหลดอันดับ…</p>}
      {current?.error&&<div className="cohort-message" role="alert"><p>โหลดอันดับไม่ได้</p><button type="button" onClick={onRetry}>ลองอีกครั้ง</button></div>}
      {current?.syncError&&<p className="cohort-sync" role="status">บางคำตอบยังส่งไม่สำเร็จ คะแนนจะแสดงเมื่อเชื่อมต่ออีกครั้ง</p>}
@@ -73,7 +75,7 @@ export function CohortLeaderboardView({period,result,onPeriod,onRetry}:{period:P
       <span className={`cohort-rank${row.rank&&row.rank<=3?' is-podium':''}`} data-rank={row.rank} aria-label={row.rank?`Rank ${row.rank}`:'No points yet'}>{row.rank??'—'}</span>
       <MemberAvatar name={row.name} url={row.avatarUrl} size={40}/>
       <span className="cohort-student"><strong>{row.name}</strong>{row.id===current?.learner&&<small>คุณ</small>}</span>
-      <b className="cohort-points">{row.points.toLocaleString('en-US')}</b>
+      <b className="cohort-points" aria-label={`${row.points.toLocaleString('en-US')} gold coins`}><span className="practice-gold-coin" aria-hidden="true">✦</span><span>{row.points.toLocaleString('en-US')}</span></b>
      </li>)}</ol>}
      {board?.rows.length===0&&<p className="cohort-message">ยังไม่มีนักเรียนในรายชื่อ</p>}
     </>}

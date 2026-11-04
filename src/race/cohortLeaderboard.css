@@ -42,3 +42,6 @@ body:has(.cohort-board){background:#f3f6fb;min-width:0}
 
 .cohort-periods button{display:grid;place-items:center;min-height:48px}
 .cohort-period-icon{width:30px;height:30px}
+
+.cohort-points{display:flex;align-items:center;gap:7px}
+.cohort-points .practice-gold-coin{flex:none;width:21px;height:21px;font-size:13px;border-width:2px}
