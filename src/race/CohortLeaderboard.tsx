@@ -60,9 +60,8 @@ export function CohortLeaderboardView({period,result,onPeriod,onRetry}:{period:P
  const board=current?.board
  return <main className="cohort-board" lang="th">
   <div className="cohort-shell">
-   <header className="cohort-header"><a href="/english/practice" aria-label="กลับไปฝึก"><Icon name="back"/></a><span>ENGLISH SUCCESS</span><img src="/brand/englishsuccess-cap.svg" alt=""/></header>
+   <header className="cohort-header"><a href="/english/practice" aria-label="กลับไปฝึก"><Icon name="back"/></a><h1 id="leaderboard-title"><Icon name="trophy"/><span>อันดับคะแนน</span></h1><img src="/brand/englishsuccess-cap.svg" alt=""/></header>
    <section className="cohort-sheet" aria-labelledby="leaderboard-title">
-    <div className="cohort-title"><span className="cohort-title-icon"><Icon name="trophy"/></span><h1 id="leaderboard-title">อันดับคะแนน</h1></div>
     <div className="cohort-periods" role="group" aria-label="Leaderboard period">
      {periods.map(item=><button key={item.id} type="button" aria-label={item.name} aria-pressed={period===item.id} title={`${item.name} · ${item.label}`} onClick={()=>onPeriod(item.id)}><PeriodIcon period={item.id}/></button>)}
     </div>
