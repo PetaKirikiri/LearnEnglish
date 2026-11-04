@@ -4,6 +4,7 @@ import { flushWordAttempts } from '../learning/wordProgress/store'
 import { syncRecall } from './numberRecallStore'
 import MemberAvatar from '../ui/MemberAvatar'
 import Icon from '../ui/Icon'
+import { PETA_ACCOUNT_ID } from '../auth/appAccess'
 import { homeworkLiffId } from '../auth/homeworkLine'
 import './cohortLeaderboard.css'
 
@@ -17,7 +18,9 @@ const periods: {id:Period;label:string;name:string}[] = [
 ]
 
 export default function CohortLeaderboard({userId}:{userId?:string}) {
- const [period,setPeriod]=useState<Period>('all')
+ const [selection,setPeriod]=useState<Period|null>(null)
+ const [resolvedUser,setResolvedUser]=useState<string|undefined>(userId)
+ const period=selection??((userId??resolvedUser)===PETA_ACCOUNT_ID?'today':'all')
  const [result,setResult]=useState<Result|null>(null)
  const [retry,setRetry]=useState(0)
  useEffect(()=>{
@@ -25,16 +28,19 @@ export default function CohortLeaderboard({userId}:{userId?:string}) {
   async function refresh(){
    if(refreshing)return
    refreshing=true
+   let requestedPeriod=period
    try {
     const learner=userId??(await supabase.auth.getUser()).data.user?.id
     if(!learner){if(active)setResult({period,signIn:true});return}
+    if(active)setResolvedUser(learner)
+    requestedPeriod=selection??(learner===PETA_ACCOUNT_ID?'today':'all')
     // A failed offline upload must not hide everybody else's saved scores.
     const uploads=await Promise.allSettled([flushWordAttempts(learner),syncRecall(learner)])
     const syncError=uploads.some(upload=>upload.status==='rejected')
-    const response=await supabase.rpc('english_success_leaderboard',{p_period:period})
+    const response=await supabase.rpc('english_success_leaderboard',{p_period:requestedPeriod})
     if(response.error)throw response.error
-    if(active)setResult({period,board:response.data as Board,learner,syncError})
-   }catch{if(active)setResult(old=>({...((old?.period===period)?old:{}),period,error:true}))}
+    if(active)setResult({period:requestedPeriod,board:response.data as Board,learner,syncError})
+   }catch{if(active)setResult(old=>({...((old?.period===requestedPeriod)?old:{}),period:requestedPeriod,error:true}))}
    finally{refreshing=false}
   }
   void refresh()
@@ -43,7 +49,7 @@ export default function CohortLeaderboard({userId}:{userId?:string}) {
   window.addEventListener('focus',update)
   window.addEventListener('online',update)
   return()=>{active=false;clearInterval(timer);window.removeEventListener('focus',update);window.removeEventListener('online',update)}
- },[userId,period,retry])
+ },[userId,selection,retry])
  return <CohortLeaderboardView period={period} result={result} onPeriod={setPeriod} onRetry={()=>setRetry(n=>n+1)}/>
 }
 
@@ -56,7 +62,7 @@ export function CohortLeaderboardView({period,result,onPeriod,onRetry}:{period:P
    <section className="cohort-sheet" aria-labelledby="leaderboard-title">
     <div className="cohort-title"><span className="cohort-title-icon"><Icon name="trophy"/></span><h1 id="leaderboard-title">อันดับคะแนน</h1></div>
     <div className="cohort-periods" role="group" aria-label="Leaderboard period">
-     {periods.map(item=><button key={item.id} type="button" aria-label={item.name} aria-pressed={period===item.id} onClick={()=>onPeriod(item.id)}>{item.label}</button>)}
+     {periods.map(item=><button key={item.id} type="button" aria-label={item.name} aria-pressed={period===item.id} title={`${item.name} · ${item.label}`} onClick={()=>onPeriod(item.id)}><PeriodIcon period={item.id}/></button>)}
     </div>
     {current?.signIn?<div className="cohort-message"><p>เปิดใน LINE เพื่อดูอันดับนักเรียน</p><a href={`https://liff.line.me/${homeworkLiffId}?view=scoreboard`}>เปิดใน LINE <Icon name="arrow"/></a></div>:<>
      <div className="cohort-list-heading"><span>นักเรียน{board?` · ${board.rows.length}`:''}</span><span>คะแนน</span></div>
@@ -75,4 +81,10 @@ export function CohortLeaderboardView({period,result,onPeriod,onRetry}:{period:P
    <a className="cohort-train" href="/english/practice">ฝึกต่อ <Icon name="arrow"/></a>
   </div>
  </main>
+}
+
+function PeriodIcon({period}:{period:Period}) {
+ return <svg className="cohort-period-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  {period==='all'?<path d="M16 16c-3-5-5-7-8-7a7 7 0 0 0 0 14c3 0 5-2 8-7s5-7 8-7a7 7 0 0 1 0 14c-3 0-5-2-8-7Z"/>:<><rect x="4" y="6" width="24" height="23" rx="4"/><path d="M10 3v6M22 3v6M4 12h24"/><text x="16" y="25" textAnchor="middle" fill="currentColor" stroke="none" fontSize="12" fontWeight="900">{period==='today'?'1':period==='week'?'7':'31'}</text></>}
+ </svg>
 }

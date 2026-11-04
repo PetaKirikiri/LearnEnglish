@@ -66,3 +66,20 @@ it('syncs number answers before fetching scores and keeps saved ranks on upload 
  expect(host.querySelector('.cohort-points')?.textContent).toBe('300')
  expect(host.querySelector('.cohort-sync')).not.toBeNull()
 })
+
+it('defaults Peta to daily and keeps an explicitly chosen period',async()=>{
+ mocks.rpc.mockImplementation((_:string,{p_period}:{p_period:string})=>Promise.resolve({data:board(p_period,20)}))
+ await act(async()=>root.render(<CohortLeaderboard userId="7bdc33ac-7f21-4ebf-bfbf-343080724890"/>))
+ expect(mocks.rpc).toHaveBeenLastCalledWith('english_success_leaderboard',{p_period:'today'})
+ expect(host.querySelectorAll('.cohort-periods svg')).toHaveLength(4)
+ await select('Month')
+ await act(async()=>window.dispatchEvent(new Event('focus')))
+ expect(mocks.rpc).toHaveBeenLastCalledWith('english_success_leaderboard',{p_period:'month'})
+})
+it('resolves the daily default from a signed-in Peta account',async()=>{
+ mocks.getUser.mockResolvedValue({data:{user:{id:'7bdc33ac-7f21-4ebf-bfbf-343080724890'}}})
+ mocks.rpc.mockImplementation((_:string,{p_period}:{p_period:string})=>Promise.resolve({data:board(p_period,20)}))
+ await act(async()=>root.render(<CohortLeaderboard/>))
+ expect(mocks.rpc).toHaveBeenLastCalledWith('english_success_leaderboard',{p_period:'today'})
+ expect(host.querySelector('button[aria-label="Today"]')?.getAttribute('aria-pressed')).toBe('true')
+})

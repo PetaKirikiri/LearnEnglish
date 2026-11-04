@@ -39,3 +39,6 @@ body:has(.cohort-board){background:#f3f6fb;min-width:0}
 .cohort-header a:focus-visible{outline-color:white}
 @media(hover:hover){.cohort-periods button:not([aria-pressed=true]):hover{background:#dfeafa}.cohort-header>a:hover{background:#ffffff20}.cohort-train:hover{background:#e3edfb;border-radius:12px}}
 @media(max-width:350px){.cohort-sheet{padding-inline:12px}.cohort-rankings li{gap:7px}.cohort-student strong{font-size:14px}.cohort-points{font-size:18px}.cohort-periods button{font-size:11px}}
+
+.cohort-periods button{display:grid;place-items:center;min-height:48px}
+.cohort-period-icon{width:30px;height:30px}
