@@ -127,10 +127,8 @@
 .binary-answer-icon{display:grid;place-items:center;width:56px;height:56px}
 .binary-answer-label{display:block;min-width:0;width:100%;text-align:left}
 .foundation-practice .binary-answer-content .cw-game-icon{width:56px;height:56px;margin:0}
-/* Desktop is a bounded exercise, not a phone stretched to the height of a monitor. */
+/* Keep desktop content readable without shortening the exercise surface. */
 @media(min-width:700px){
- .foundation-practice .practice-shell{grid-template-rows:auto auto;align-content:start}
- .foundation-practice .practice-stage.adaptive-practice-stage{min-height:min(580px,calc(100svh - 93px));grid-template-rows:minmax(min-content,1fr) auto}
  .foundation-practice header{padding-inline:max(24px,calc((100% - 560px)/2))}
  .foundation-practice .adaptive-practice-stage>.practice-question{padding-inline:max(24px,calc((100% - 560px)/2))}
  .foundation-practice .practice-answer-area{padding:20px max(24px,calc((100% - 560px)/2)) 28px}
@@ -157,8 +155,8 @@
 
 .foundation-level-picker{display:flex;gap:6px}.foundation-level-picker button{min-width:40px;min-height:40px;border:2px solid #dce5f1;border-radius:12px;background:#fff;color:#18385e;font:700 18px Nunito,sans-serif}.foundation-level-picker button[aria-pressed=true]{background:#ffdc39;border-color:#c6a31e;box-shadow:0 3px #c6a31e}
 
-/* Responsive exercise shell: intrinsic header contents must never widen the page. */
-.phone-practice.foundation-practice .practice-shell{min-width:0;grid-template-columns:minmax(0,1fr)}
+/* The question fills spare height; answers finish the screen at every breakpoint. */
+.phone-practice.foundation-practice .practice-shell{min-width:0;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(min-content,1fr);align-content:stretch}
 .phone-practice.foundation-practice .practice-shell>header{display:flex;flex-wrap:wrap;gap:10px;padding:12px max(16px,calc((100% - 720px)/2));min-width:0}
 .phone-practice.foundation-practice header .foundation-cap{width:44px;height:44px}
 .phone-practice.foundation-practice header .foundation-progress-group{order:5;flex:1 0 100%;width:100%;min-width:0}
@@ -175,10 +173,8 @@
 .phone-practice.foundation-practice .binary-answer-icon,.phone-practice.foundation-practice .binary-answer-content .cw-game-icon{width:44px;height:44px;flex-basis:44px}
 @media(min-width:760px){
  .phone-practice.foundation-practice header .foundation-progress-group{order:0;flex:1 1 260px;width:auto}
- .phone-practice.foundation-practice .practice-stage.adaptive-practice-stage{min-height:min(640px,calc(100dvh - 86px))}
 }
 @media(max-height:700px){
- .phone-practice.foundation-practice .practice-shell{grid-template-rows:auto auto;align-content:start}
  .phone-practice.foundation-practice .adaptive-practice-stage>.practice-question{padding-block:12px}
  .phone-practice.foundation-practice .practice-answer-area .binary-answer{min-height:60px;padding:8px 12px}
  .phone-practice.foundation-practice .binary-answer-zone .practice-answers{gap:10px}

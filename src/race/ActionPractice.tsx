@@ -1,9 +1,10 @@
 import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'
-import PracticeGold,{awardPracticeGold} from './PracticeGold'
+import {awardPracticeGold} from './PracticeGold'
 import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 import {useCallback,useEffect,useRef,useState} from 'react'
 import {actionPracticeDeck} from './actionPracticeContent'
-import PracticeLevelPicker,{type PracticeLevel} from './PracticeLevelPicker'
+import type {PracticeLevel} from './PracticeLevelPicker'
+import PracticeHeader from './PracticeHeader'
 import BinaryAnswerZone,{type BinaryChoice} from './BinaryAnswerZone'
 import PracticeStage from './PracticeStage'
 import {useWordProgress} from '../learning/wordProgress/useWordProgress'
@@ -17,7 +18,7 @@ export default function ActionPractice({level,onLevel,userId,onComplete,onExit,s
  useEffect(()=>{play();return()=>{audio.current?.pause();audio.current=null}},[play]) // Each sentence gets automatic audio and cleanup.
  function choose(side:number){if(locked.current||!q)return;try{progress.record({id:attempt.current,questionId:q.id,version:QUESTION_VERSION,answer:q.choices[side],occurredAt:new Date().toISOString(),modality:wordTokens(q.english).every(w=>wordOpacity(w,progress.scores,{fadeMode:true,...settings})===0)?'audio':wordTokens(q.english).some(w=>wordOpacity(w,progress.scores,{fadeMode:true,...settings})<1)?'faded':'visible',replays:Math.max(0,replays.current-1),ruleVersion:WORD_RULE_VERSION});setSaveError(false)}catch{setSaveError(true);return}awardPracticeGold(attempt.current,side===q.correct,userId);locked.current=true;setPicked(side);if(side===q.correct)setScore(s=>s+1)}
  function next(){if(!locked.current)return;locked.current=false;setPicked(null);attempt.current=crypto.randomUUID();replays.current=0;setIndex(i=>i+1)}
- return <main className="phone-practice foundation-practice" lang="th"><div className="practice-shell"><header>{onExit&&<button className="journey-back" onClick={onExit} aria-label="กลับแผนที่">←</button>}<img className="foundation-cap" src="/brand/success-university-su.svg" alt="Success University"/><div className="foundation-progress-group"><PracticeLevelPicker level={level} onChange={onLevel}/><progress className="foundation-progress" value={index} max={deck.length} aria-label="ความคืบหน้า"/></div><PracticeGold userId={userId}/>{q&&<button className="foundation-header-audio" aria-label="ฟังเสียง" onClick={play}>▶</button>}</header>
+ return <main className="phone-practice foundation-practice" lang="th"><div className="practice-shell"><PracticeHeader level={level} onLevel={onLevel} value={index} total={deck.length} userId={userId} onExit={onExit} onReplay={q?play:undefined}/>
  {finished?<section className="practice-complete"><h1>{score} / {deck.length}</h1>{level===4&&<button onClick={()=>onLevel(5)}>Level 5 →</button>}<button onClick={()=>{setIndex(0);setScore(0)}}>↻</button></section>:<PracticeStage question={<><div className="classroom foundation-noun"><div className="cw-sentence-board"><LanguageQuadrant scores={progress.scores} request={{document:{english:q.english,thai:q.thai,units:q.units,construction:level===4?'action-question':'action-answer'},presentation:{fadeMode:true,...settings,keepIconsWhenFading:true,translations:false,explanations:false,wordPicker:false,size:'phone'}}}/></div></div>{audioError&&<button onClick={play}>▶ แตะเพื่อฟังเสียง</button>}{(saveError||progress.error)&&<button role="alert" onClick={()=>void progress.retry()}>บันทึกคำตอบไม่ได้ · ลองอีกครั้ง</button>}</>} answers={<><div className="practice-feedback foundation-controls"><span role="status">{picked!==null?(picked===q.correct?'ถูกต้อง':'ยังไม่ถูก'):''}</span><button className="foundation-next" disabled={picked===null} onClick={next}>ถัดไป →</button></div><BinaryAnswerZone selected={picked} disabled={picked!==null} onChoose={choose} choices={([0,1] as const).map(side=>({id:String(side),label:q.choices[side],content:q.choices[side],state:picked!==null&&side===q.correct?'correct' as const:picked===side?'incorrect' as const:undefined})) as [BinaryChoice,BinaryChoice]}/></>}/>}
  </div></main>
 }

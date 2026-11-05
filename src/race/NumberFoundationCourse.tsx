@@ -1,10 +1,11 @@
 import ActionStarCourse from './ActionStarCourse'
 import {requestedLesson} from '../learning/lessonRequests'
-import PracticeGold,{awardPracticeGold} from './PracticeGold'
+import {awardPracticeGold} from './PracticeGold'
 import {useWordProgress} from '../learning/wordProgress/useWordProgress'
 import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 import ActionPractice from './ActionPractice'
-import PracticeLevelPicker,{type PracticeLevel} from './PracticeLevelPicker'
+import type {PracticeLevel} from './PracticeLevelPicker'
+import PracticeHeader from './PracticeHeader'
 import {useEffect,useRef,useState} from 'react'
 import {numberDeck,numberAnswer,withJudgement,numberSentenceText,numberSentenceAudio,numberPassed,foundationKey,type NumberPrompt} from './numberFoundation'
 import {numberItem,numberAudio} from './numberCatalogue'
@@ -37,7 +38,7 @@ export default function NumberFoundation(props:{userId?:string;minimumModule?:1|
  const key=`englishsuccess:practice-level:${props.userId??'guest'}`
  const [level,setLevel]=useState<PracticeLevel>(()=>{if(props.initialLevel)return props.initialLevel;try{const chosen=Number(localStorage.getItem(key));if([1,2,3,4,5,6].includes(chosen))return chosen as PracticeLevel}catch{}return load(props.userId,props.minimumModule).module})
  function change(value:PracticeLevel){if(props.onLevelRequest){props.onLevelRequest(value);return}try{localStorage.setItem(key,String(value))}catch{}setLevel(value)}
- if(level===6)return <ActionStarCourse userId={props.userId} onExit={props.onExit} onComplete={(score,total)=>props.onComplete?.(6,score,total,true)}/>
+ if(level===6)return <ActionStarCourse onLevel={change} userId={props.userId} onExit={props.onExit} onComplete={(score,total)=>props.onComplete?.(6,score,total,true)}/>
  return level>=4?<ActionPractice key={level} level={level as 4|5|6} onLevel={change} userId={props.userId} settings={props.settings} onComplete={props.onComplete} onExit={props.onExit}/>:<NumberLevels key={level} {...props} selectedLevel={level as 1|2|3} onLevel={change}/>
 }
 function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,onExit,newRun,settings={fadeMode:true}}:{userId?:string;minimumModule?:1|3;selectedLevel:1|2|3;onLevel:(level:PracticeLevel)=>void;tester?:boolean;settings?:MatrixSettings;onComplete?:(level:PracticeLevel,score:number,total:number,passed:boolean)=>void;onExit?:()=>void;newRun?:boolean}){
@@ -132,7 +133,7 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,o
  const title=saved.module===3?'ประโยคนี้ถูกหรือผิด':saved.module===2?'ฟังประโยค: หนึ่งสิ่งหรือหลายสิ่ง':'ฟัง: หนึ่งสิ่งหรือหลายสิ่ง'
  if(import.meta.env.DEV&&preview==='layout')return <PracticeLayoutFixture/>
  return <main className="phone-practice foundation-practice" lang="th"><div className="practice-shell">
-  <header>{onExit&&<button className="journey-back" onClick={onExit} aria-label="กลับแผนที่">←</button>}<img className="foundation-cap" src="/brand/success-university-su.svg" alt="Success University"/><div className="foundation-progress-group"><PracticeLevelPicker level={saved.module} onChange={onLevel}/><progress className="foundation-progress" value={saved.answers.length} max={saved.deck.length} aria-label="ความคืบหน้าของบทฝึก" aria-valuetext={`ตอบแล้ว ${saved.answers.length} จาก ${saved.deck.length} ข้อ`}/></div><PracticeGold userId={userId}/>{!finished&&<button type="button" className="foundation-header-audio" aria-label="ฟังเสียง" title="ฟังเสียง" onClick={()=>play()}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg></button>}</header>
+  <PracticeHeader level={saved.module} onLevel={onLevel} value={saved.answers.length} total={saved.deck.length} userId={userId} onExit={onExit} onReplay={finished?undefined:()=>play()}/>
   {finished?<section className="practice-complete practice-module-complete"><h1>{saved.deck.length<30?'ทบทวนครบแล้ว':passed?'ผ่านชุดนี้แล้ว!':'จบแล้ว มาลองอีกครั้ง'}</h1><p>{title}</p>{saved.deck.length>0&&<p className="practice-module-score">{score} / {saved.deck.length}</p>}<p>{saved.deck.length<30?'คำที่ฝึกได้ดีแล้วจะกลับมาให้ทบทวนภายหลัง':passed?'ทำได้ดีมาก!':'ตอบถูก 27 จาก 30 ข้อเพื่อผ่านชุดนี้'}</p>
    {passed&&saved.module===1&&<button onClick={()=>onLevel(2)}>ชุด 2 · ฟังทั้งประโยค →</button>}
    {passed&&saved.module===2&&<button onClick={()=>onLevel(3)}>ชุด 3 · ถูกหรือผิด →</button>}

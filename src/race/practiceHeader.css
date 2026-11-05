@@ -1,0 +1,36 @@
+/* Shared exercise HUD. Never wrap the navigation into a second header row. */
+.phone-practice.foundation-practice .practice-shell > .practice-header {
+ display:flex;align-items:center;flex-wrap:nowrap;gap:8px;
+ width:100%;min-width:0;min-height:52px;box-sizing:border-box;
+ padding:6px max(12px,env(safe-area-inset-right)) 6px max(12px,env(safe-area-inset-left));
+ background:#1976f3;color:#fff;
+}
+.phone-practice.foundation-practice .practice-header .foundation-level-picker {
+ display:flex;align-items:center;flex:none;gap:0;min-width:0;
+}
+.phone-practice.foundation-practice .practice-header button,
+.phone-practice.foundation-practice .practice-header .practice-header-exit {
+ display:grid;place-items:center;flex:none;width:36px;min-width:0;height:40px;min-height:40px;
+ padding:6px;border:0;border-radius:10px;box-shadow:none;background:transparent;
+ color:inherit;cursor:pointer;text-decoration:none;font:800 24px/1 Nunito,sans-serif;
+}
+.phone-practice.foundation-practice .practice-header .foundation-level-picker button {width:28px;padding:4px}
+.phone-practice.foundation-practice .practice-header button:disabled {opacity:.3;cursor:default}
+.phone-practice.foundation-practice .practice-header button:focus-visible,
+.phone-practice.foundation-practice .practice-header a:focus-visible {outline:2px solid #ffdc39;outline-offset:-2px}
+.phone-practice.foundation-practice .practice-header svg {width:20px;height:20px}
+.practice-header .foundation-level-picker svg {fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.practice-header .foundation-level-picker strong,
+.practice-header .practice-header-level {font:900 17px/1 Nunito,sans-serif;font-variant-numeric:tabular-nums;min-width:24px;text-align:center}
+.phone-practice.foundation-practice .practice-header .foundation-progress {
+ appearance:none;flex:1 1 0;min-width:24px;width:0;height:7px;margin:0;
+ border:0;border-radius:999px;overflow:hidden;background:#105cc5;
+}
+.phone-practice.foundation-practice .practice-header .practice-gold {
+ margin:0;padding:4px 7px;gap:4px;min-height:30px;border-radius:12px;box-shadow:0 2px #c89417;font-size:16px;
+}
+.practice-header .practice-gold-coin {width:20px;height:20px;border-width:2px;font-size:13px}
+@media(hover:hover){.phone-practice.foundation-practice .practice-header button:not(:disabled):hover{background:#ffffff1a}}
+@media(max-width:360px){.phone-practice.foundation-practice .practice-shell > .practice-header{gap:4px;padding-inline:8px}}
+
+.practice-header-spacer{flex:1;min-width:0}

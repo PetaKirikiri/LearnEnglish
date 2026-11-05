@@ -19,7 +19,7 @@ export type LanguageDocument = {
 /** A transportable presentation request. User scores are injected by the authenticated consumer. */
 export type QuadrantRequest = {
   document:LanguageDocument
-  presentation?:MatrixSettings & {size?:'classroom'|'phone'|'compact'}
+  presentation?:MatrixSettings & {size?:'classroom'|'phone'|'compact'; emphasis?:readonly string[]}
 }
 const slots:Record<LanguageRole,number>={question:0,preposition:0,be:1,action:1,determiner:2,'person-determiner':2,person:3,object:3}
 export function quadrantLayout(document:LanguageDocument):MatrixLayoutRequest {
@@ -62,7 +62,12 @@ export default function LanguageQuadrant({request,scores={}}:{request:QuadrantRe
  const {document,presentation={}}=request
  const geometry=presentation.size==='phone'?{density:'content' as const,maxWidth:600}:presentation.size==='compact'?{density:'compact' as const,maxWidth:800}:{density:'comfortable' as const,maxWidth:1100}
  const settings={...presentation,layout:{...geometry,...presentation.layout}}
- return <ExampleLanguage matrix english={document.english} thai={document.thai} units={document.units}
+ // Teaching requests can stress a changed word while retaining the original aligned document.
+ const english=presentation.emphasis?.length?document.units.map(unit=>{
+  const plain=unit.english.replace(/[?.!]$/,'')
+  return presentation.emphasis?.some(word=>word.toLowerCase()===plain.toLowerCase())?unit.english.replace(plain,`**${plain}**`):unit.english
+ }).join(' '):document.english
+ return <ExampleLanguage matrix english={english} thai={document.thai} units={document.units}
   layout={quadrantLayout(document)} semanticSlots={document.units.map(u=>slots[u.role])} settings={settings} scores={scores}
   slotDetails={document.units.map(unit=>({label:'',count:0,icon:roleIcon(unit,document.construction)}))}/>
 }

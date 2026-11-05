@@ -9,12 +9,28 @@ import {readRecall,saveRecall} from './numberRecallStore'
 import {recallStates} from './numberRecall'
 import {numberCatalogue} from './numberCatalogue'
 import NumberFoundation from './NumberFoundationCourse'
+import PracticeJourney from './PracticeJourney'
 import {numberDeck,numberPassed,numberRecordings,numberNouns,sentenceNumberNouns,foundationKey} from './numberFoundation'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 let end:()=>void=()=>{}
 let played=""
 beforeEach(()=>{wordProgress.scores={};vi.stubEnv('DEV',false);localStorage.clear();vi.stubGlobal('Audio',class{onended:(()=>void)|null=null;onerror:(()=>void)|null=null;src:string;constructor(src:string){this.src=src}pause(){}play(){played=this.src;end=()=>this.onended?.();return Promise.resolve()}})})
 afterEach(()=>{vi.unstubAllGlobals();vi.unstubAllEnvs()})
+it('changes the actual exercise through the journey header, not only its parent level',async()=>{
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<PracticeJourney/>))
+  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 1:"]')!.click())
+  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="เริ่ม Level 1"]')!.click())
+  for(let level=2;level<=6;level++){
+   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="ด่านถัดไป"]')!.click())
+   expect(host.querySelector('.foundation-level-picker strong')?.getAttribute('aria-label')).toBe(`Level ${level}`)
+  }
+  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="ด่านก่อนหน้า"]')!.click())
+  expect(host.querySelector('.foundation-level-picker strong')?.getAttribute('aria-label')).toBe('Level 5')
+  expect(host.querySelectorAll('.practice-answers button')).toHaveLength(2)
+ }finally{await act(async()=>root.unmount())}
+})
 it('uses 30 balanced encounters of the same five noun pairs',()=>{
  const deck=numberDeck();expect(deck).toHaveLength(30);expect(deck.filter(q=>q.plural)).toHaveLength(15)
  expect(deck.slice(0,2).map(q=>q.word)).toEqual(['hotel','hotels'])
@@ -227,18 +243,19 @@ it('lets students change level in either direction and retain their choice below
  const host=document.createElement('div');let root=createRoot(host)
  try{
   await act(async()=>root.render(<NumberFoundation minimumModule={3}/>))
-  expect(host.querySelector('[aria-label="Level 3"]')?.getAttribute('aria-pressed')).toBe('true')
+  expect(host.querySelector('[aria-label="Level 3"]')?.getAttribute('aria-current')).toBe('step')
   expect(played).toContain('/where-')
   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-answers button')!.click())
   expect(host.querySelector<HTMLProgressElement>('progress')?.value).toBe(1)
-  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Level 1"]')!.click())
-  expect(host.querySelector('[aria-label="Level 1"]')?.getAttribute('aria-pressed')).toBe('true')
+  for(let i=0;i<2;i++)await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="ด่านก่อนหน้า"]')!.click())
+  expect(host.querySelector<HTMLButtonElement>('[aria-label="ด่านก่อนหน้า"]')!.disabled).toBe(true)
+  expect(host.querySelector('[aria-label="Level 1"]')?.getAttribute('aria-current')).toBe('step')
   expect(host.querySelector<HTMLButtonElement>('.practice-answers button')!.disabled).toBe(false)
   await act(async()=>root.unmount());root=createRoot(host)
   await act(async()=>root.render(<NumberFoundation minimumModule={3}/>))
-  expect(host.querySelector('[aria-label="Level 1"]')?.getAttribute('aria-pressed')).toBe('true')
-  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Level 3"]')!.click())
-  expect(host.querySelector('[aria-label="Level 3"]')?.getAttribute('aria-pressed')).toBe('true')
+  expect(host.querySelector('[aria-label="Level 1"]')?.getAttribute('aria-current')).toBe('step')
+  for(let i=0;i<2;i++)await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="ด่านถัดไป"]')!.click())
+  expect(host.querySelector('[aria-label="Level 3"]')?.getAttribute('aria-current')).toBe('step')
  }finally{await act(async()=>root.unmount())}
 })
 it('keeps Level 3 answers usable when phone autoplay is blocked',async()=>{
@@ -258,7 +275,9 @@ it('opens Levels 4 and 5 with real Thai answer options and returns to Level 3',a
  try{
   await act(async()=>root.render(<NumberFoundation/>))
   for(const level of [4,5]){
-   await act(async()=>host.querySelector<HTMLButtonElement>(`[aria-label="Level ${level}"]`)!.click())
+   const steps=level===4?3:1
+   for(let i=0;i<steps;i++)await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="ด่านถัดไป"]')!.click())
+   expect(host.querySelector(`[aria-label="Level ${level}"]`)).not.toBeNull()
    expect(host.querySelector('[data-matrix-layout]')).not.toBeNull()
    expect(host.querySelector('.example-gloss')).toBeNull()
    expect(host.querySelector('.example-translation')).toBeNull()
@@ -269,14 +288,14 @@ it('opens Levels 4 and 5 with real Thai answer options and returns to Level 3',a
    expect(host.querySelector<HTMLButtonElement>('.foundation-next')!.disabled).toBe(false)
    await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-next')!.click())
   }
-  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Level 3"]')!.click())
-  expect(host.querySelector('[aria-label="Level 3"]')?.getAttribute('aria-pressed')).toBe('true')
+  for(let i=0;i<2;i++)await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="ด่านก่อนหน้า"]')!.click())
+  expect(host.querySelector('[aria-label="Level 3"]')?.getAttribute('aria-current')).toBe('step')
  }finally{await act(async()=>root.unmount())}
 })
 
 it.each([1,2,3,4,5])('uses saved word scores and honors the engine fade switch at level %i',async(level)=>{
  localStorage.setItem('englishsuccess:practice-level:guest',String(level))
- wordProgress.scores={'en:hotel':25,'en:where':25,'en:what':25,'en:i':25,'en:he':25,'en:she':25,'en:they':25,'en:bia':25,'en:doctor':25,'en:doctors':25}
+ wordProgress.scores={'en:hotel':25,'en:where':25,'en:what':25,'en:am':25,'en:is':25,'en:are':25,'en:i':25,'en:he':25,'en:she':25,'en:they':25,'en:bia':25,'en:doctor':25,'en:doctors':25}
  const host=document.createElement('div'),root=createRoot(host)
  try{
   await act(async()=>root.render(<NumberFoundation settings={{fadeMode:true}}/>))
@@ -287,3 +306,14 @@ it.each([1,2,3,4,5])('uses saved word scores and honors the engine fade switch a
   expect([...host.querySelectorAll<HTMLElement>('.matrix-fading-word')].some(word=>word.style.opacity==='0')).toBe(false)
  }finally{await act(async()=>root.unmount())}
 })
+
+ it('keeps the compact navigation usable at Level 6 and returns to Level 5',async()=>{
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<NumberFoundation initialLevel={6}/>))
+  expect(host.querySelector<HTMLButtonElement>('[aria-label="ด่านถัดไป"]')!.disabled).toBe(true)
+  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="ด่านก่อนหน้า"]')!.click())
+  expect(host.querySelector('[aria-label="Level 5"]')).not.toBeNull()
+  expect(host.querySelectorAll('.practice-answers button')).toHaveLength(2)
+ }finally{await act(async()=>root.unmount())}
+ })

@@ -25,7 +25,7 @@ export type MatrixSettings = import('../wordProgress/model').FadeSettings & {
   /** Allow changing words inside the educational window. */
   explanationSelection?: boolean
   /** Shared geometry for all sentence constructions and word modes. */
-  layout?: { density?: 'comfortable' | 'compact' | 'content'; maxWidth?: number }
+  layout?: { density?: 'comfortable' | 'compact' | 'content' | 'briefing' | 'thumbnail'; maxWidth?: number }
   audio?: boolean
 }
 export type MatrixLesson = {
