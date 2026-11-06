@@ -21,10 +21,11 @@ it('changes the actual exercise through the journey header, not only its parent 
  try{
   await act(async()=>root.render(<PracticeJourney/>))
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 1:"]')!.click())
-  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="เริ่ม Level 1"]')!.click())
+  expect(host.querySelectorAll('.practice-answers button')).toHaveLength(2)
   for(let level=2;level<=6;level++){
    await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="ด่านถัดไป"]')!.click())
    expect(host.querySelector('.foundation-level-picker strong')?.getAttribute('aria-label')).toBe(`Level ${level}`)
+   expect(host.querySelectorAll('.practice-answers button')).toHaveLength(2)
   }
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="ด่านก่อนหน้า"]')!.click())
   expect(host.querySelector('.foundation-level-picker strong')?.getAttribute('aria-label')).toBe('Level 5')

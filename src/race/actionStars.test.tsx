@@ -61,9 +61,6 @@ it('uses the existing quadrant, waits for finished audio and reveals language on
  const click=async(selector:string)=>act(async()=>host.querySelector<HTMLButtonElement>(selector)!.click())
  try{
   await act(async()=>root.render(<ActionStarCourse/>))
-  expect(host.querySelector<HTMLButtonElement>('[aria-label="2 star · 50 questions"]')?.disabled).toBe(true)
-  await click('[aria-label="1 star · 50 questions"]')
-  await act(async()=>[...host.querySelectorAll('button')].find(b=>b.textContent?.includes('เริ่มฟัง'))!.click())
   expect(host.querySelector('[data-matrix-layout="action-answer"]')).not.toBeNull()
   expect(host.querySelector('.example-source,.example-gloss,.example-translation')).toBeNull()
   expect(host.querySelector<HTMLButtonElement>('.binary-answer')?.disabled).toBe(true)
@@ -75,21 +72,17 @@ it('uses the existing quadrant, waits for finished audio and reveals language on
   await click('.binary-answer');expect(record).toHaveBeenCalledOnce()
  }finally{await act(async()=>root.unmount());vi.unstubAllGlobals()}
 })
-it('uses separate teaching examples and the same audio-only assessment contract in all three tiers',async()=>{
+it('starts the highest unlocked tier immediately and scores only after an answer',async()=>{
  const {actionStarsVersion}=await import('./actionStarContent')
  for(const stars of [1,2,3] as const){
   localStorage.clear();localStorage.setItem('existing-student-progress','keep')
-  localStorage.setItem('englishsuccess:action-stars:v1:guest',JSON.stringify({version:actionStarsVersion,progress:{1:{passes:2,best:50},2:{passes:2,best:50}},reported:[]}))
+  localStorage.setItem('englishsuccess:action-stars:v1:guest',JSON.stringify({version:actionStarsVersion,progress:stars===1?{}:stars===2?{1:{passes:2,best:50}}:{1:{passes:2,best:50},2:{passes:2,best:50}},reported:[]}))
   const host=document.createElement('div'),root=createRoot(host)
   try{
    await act(async()=>root.render(<ActionStarCourse/>))
-   await act(async()=>host.querySelector<HTMLButtonElement>(`[aria-label="${stars} star · 50 questions"]`)!.click())
-   if(stars===2){
-    const shown=host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')
-    expect(actionStarTiers.flatMap(t=>t.questions.map(q=>q.english))).not.toContain(shown)
-    expect(host.querySelector('[data-matrix-layout="action-answer"]')).not.toBeNull()
-   }
-   await act(async()=>[...host.querySelectorAll('button')].find(b=>b.textContent?.includes('เริ่มฟัง'))!.click())
+   expect(host.querySelector('.action-stars-menu,.action-star-teaching')).toBeNull()
+   expect(localStorage.getItem(`englishsuccess:action-stars:v1:guest:run:${stars}`)).toBeTruthy()
+   expect(record).not.toHaveBeenCalled()
    expect(host.querySelector('.example-source,.example-gloss,.example-translation')).toBeNull()
    expect(host.querySelector<HTMLButtonElement>('.binary-answer')?.disabled).toBe(true)
    await act(async()=>finishAudio())

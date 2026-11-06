@@ -1,4 +1,4 @@
-import {useCallback,useEffect,useRef,useState} from 'react'
+import {useCallback,useEffect,useState} from 'react'
 import {JourneyPassNames,useJourneyPasses} from './JourneyPasses'
 import ActionStarCourse from './ActionStarCourse'
 import NumberFoundation from './NumberFoundationCourse'
@@ -9,7 +9,7 @@ import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'
 import ExampleLanguage from '../learning/ExampleLanguage'
 import VocabularyPicture from '../learning/VocabularyPicture'
 import Icon from '../ui/Icon'
-import BinaryAnswerZone,{PracticeAnswerIcon,type BinaryChoice} from './BinaryAnswerZone'
+import {PracticeAnswerIcon} from './BinaryAnswerZone'
 import {briefingFor,journeyBriefings,type LevelBriefing} from './journeyBriefings'
 import './practiceJourney.css'
 
@@ -78,87 +78,31 @@ function LevelTask({item}: {item: LevelBriefing}) {
     </span>}
  </span>
 }
-function NumberBriefing({item,active}:{item:LevelBriefing;active:boolean}){
- const player=useRef<HTMLAudioElement|null>(null)
- const [audioError,setAudioError]=useState(false)
- useEffect(()=>{if(!active)player.current?.pause();return()=>player.current?.pause()},[active])
- function play(source:string){
-  player.current?.pause();setAudioError(false)
-  const audio=new Audio(source);player.current=audio
-  void audio.play().catch(()=>{if(player.current===audio)setAudioError(true)})
- }
- return <section className="journey-briefing journey-number-briefing" aria-label={`ตัวอย่าง Level ${item.id}`}>
-  <div className="journey-number-pairs">
-   {item.examples.map(example=>{
-    const noun=example.document.units.find(unit=>unit.role==='object')!
-    const plural=example.correct===1
-    return <figure className="journey-number-example" key={example.switchLabel} aria-label={`${noun.english} → ${example.choices[example.correct]}`}>
-     <button className="journey-audio" onClick={()=>play(example.audio)} aria-label={`ฟัง: ${example.document.english}`}><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 4 5 9H2v6h3l6 5V4Z M15 8q5 4 0 8 M18 4q9 8 0 16"/></svg></button>
-     <div className="journey-teaching-stage classroom"><div className="cw-sentence-board"><div className="cw-sentence-display"><ExampleLanguage matrix layout={{construction:'noun-phrase',noun:'single'}} english={plural?'key**s**':noun.english} thai={noun.thai} units={[noun]} semanticSlots={[3]} slotDetails={[{label:'Noun',count:0,icon:<VocabularyPicture word={noun.english}/>}]} settings={{thaiMeanings:false,thaiTranslation:false,fadeMode:false,icons:true,wordPicker:false,explanations:false,audio:false,layout:{density:'briefing',maxWidth:350}}}/></div></div></div>
-     <span className="journey-number-link" aria-hidden="true">↓</span>
-     <figcaption className="journey-mapped-answer"><PracticeAnswerIcon kind="number" second={plural}/><span>{example.choices[example.correct]}</span></figcaption>
-    </figure>
-   })}
-  </div>
-  {audioError&&<p className="journey-rule" role="status">เล่นเสียงไม่ได้ · ลองอีกครั้ง</p>}
- </section>
-}
-function LevelBriefingView({item,active}:{item:LevelBriefing;active:boolean}){
- return item.id===1?<NumberBriefing item={item} active={active}/>:<SentenceBriefing item={item} active={active}/>
-}
-function SentenceBriefing({item,active}:{item:LevelBriefing;active:boolean}){
- const [variant,setVariant]=useState(0),[answer,setAnswer]=useState<number|null>(null),[audioError,setAudioError]=useState(false)
- const player=useRef<HTMLAudioElement|null>(null),example=item.examples[variant]
- useEffect(()=>{if(!active)player.current?.pause();return()=>player.current?.pause()},[active])
- function play(){
-  player.current?.pause();setAudioError(false)
-  const audio=new Audio(example.audio);player.current=audio
-  void audio.play().catch(()=>{if(player.current===audio)setAudioError(true)})
- }
- function change(index:number){player.current?.pause();setVariant(index);setAnswer(null);setAudioError(false)}
- const choices=example.choices.map((label,index)=>({id:String(index),label,content:label,
-  state:answer===index?(index===example.correct?'correct':'incorrect'):undefined,
-  icon:item.id<=3?<PracticeAnswerIcon kind={item.id===3?'judgement':'number'} second={index===1}/>:undefined,
- })) as [BinaryChoice,BinaryChoice]
- return <section className="journey-briefing" aria-label={`ตัวอย่าง Level ${item.id}`}>
-  <div className="journey-example-controls"><div className="journey-variants" role="group" aria-label="เปลี่ยนตัวอย่าง">{item.examples.map((e,index)=><button key={e.switchLabel} aria-pressed={variant===index} onClick={()=>change(index)}>{e.switchLabel}</button>)}</div><button className="journey-audio" onClick={play} aria-label={`ฟัง: ${example.document.english}`}><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 4 5 9H2v6h3l6 5V4Z M15 8q5 4 0 8 M18 4q9 8 0 16"/></svg></button></div>
-  <div className="journey-teaching-stage classroom"><div className="cw-sentence-board"><div className="cw-sentence-display"><LanguageQuadrant request={{document:example.document,presentation:{size:'compact',thaiMeanings:false,thaiTranslation:false,fadeMode:false,icons:true,wordPicker:false,explanations:false,audio:false,emphasis:example.focus,layout:{density:'briefing',maxWidth:760}}}}/></div></div></div>
-  <p className="journey-rule">{example.rule}</p>
-  <div className="journey-answer-demo"><span className="journey-task">{item.task}</span><BinaryAnswerZone choices={choices} selected={answer} disabled={false} onChoose={setAnswer}/><div className="journey-demo-feedback" role="status">{audioError?'เล่นเสียงไม่ได้ · ลองอีกครั้ง':answer===null?'ลองตอบ':answer===example.correct?'✓ ใช่แล้ว!':'↻ ลองอีกครั้ง'}</div></div>
- </section>
-}
 export default function PracticeJourney(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:MatrixSettings}){
  return <Journey key={props.userId??'guest'} {...props}/>
 }
 function Journey(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:MatrixSettings}){
  const key=`englishsuccess:journey:v1:${props.userId??'guest'}`
- const [records,setRecords]=useState<JourneyRecord>(()=>loadRecords(key)),[screen,setScreen]=useState<'map'|'guide'|'run'|'result'>('map'),[level,setLevel]=useState<PracticeLevel>(props.minimumModule??1),[result,setResult]=useState<RunResult|null>(null)
+ const [records,setRecords]=useState<JourneyRecord>(()=>loadRecords(key)),[screen,setScreen]=useState<'map'|'run'|'result'>('map'),[level,setLevel]=useState<PracticeLevel>(props.minimumModule??1),[result,setResult]=useState<RunResult|null>(null)
  const {passes,unavailable}=useJourneyPasses(props.userId,records)
  const complete=useCallback((level:PracticeLevel,score:number,total:number,passed:boolean)=>{const next={level,score,total,passed};setRecords(old=>mergeRun(old,next));setResult(next);setScreen('result')},[])
  useEffect(()=>{try{localStorage.setItem(key,JSON.stringify(records))}catch{/* Practice keeps its own durable answer queue. */}},[key,records])
  function returnToMap(){setScreen('map')}
  const start=(value:PracticeLevel)=>{setLevel(value);setScreen('run')}
- function openGuide(value:PracticeLevel){setLevel(value);setScreen('guide')}
  const nextLevel=journeyBriefings.find(item=>!records[item.id]?.cleared)?.id
  if(import.meta.env.DEV&&new URLSearchParams(location.search).has('preview'))return <NumberFoundation {...props}/>
  if(screen==='run'&&level===6)return <ActionStarCourse onLevel={start} userId={props.userId} onExit={returnToMap} onComplete={(score,total)=>complete(6,score,total,true)}/>
  if(screen==='run')return <NumberFoundation key={level} {...props} initialLevel={level} newRun onLevelRequest={start} onComplete={complete} onExit={returnToMap}/>
  return <main className="practice-journey" lang="th">
   <header className="journey-header">
-   {screen==='guide'?<>
-    <button className="journey-map-control" onClick={returnToMap} aria-label="กลับไปเลือกด่าน" title="เลือกด่าน"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></button>
-    <span className="journey-current-level" aria-label={`Level ${level}`}>{String(level).padStart(2,'0')}</span>
-   </>:<img src="/brand/success-university-su.svg" alt="Success University"/>}
+   <img src="/brand/success-university-su.svg" alt="Success University"/>
    <PracticeGold userId={props.userId}/>
-   {screen==='guide'&&<button className="journey-header-play" onClick={()=>start(level)} aria-label={`เริ่ม Level ${level}`} title="เริ่มเล่น"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m8 4 13 8-13 8Z"/></svg><span>เริ่ม</span></button>}
   </header>
-  {screen==='guide'?<section className={`journey-guide${level===1?' journey-guide-number':''}`} aria-label={`วิธีเล่น Level ${level}`}>
-   <LevelBriefingView key={level} item={briefingFor(level)} active/>
-  </section>:screen==='result'&&result?<section className="journey-result"><div className="journey-result-stars" aria-label={`${result.level===6&&result.passed?3:runStars(result)} ดาว`}>{[1,2,3].map(star=><span key={star} className={runStars(result)>=star||result.level===6&&result.passed?'earned':''}>★</span>)}</div><h1>{result.passed?'ผ่านแล้ว!':'ลองอีกครั้ง'}</h1><p>LEVEL {result.level}</p><strong>{result.score}<small> / {result.total}</small></strong><div className="journey-result-actions"><button className="journey-card-play" onClick={()=>openGuide(result.passed&&level<6?(level+1) as PracticeLevel:level)}>{result.passed&&level<6?'ด่านต่อไป →':'เล่นอีกครั้ง ↻'}</button><button onClick={returnToMap}>เลือกด่าน</button></div></section>:<section className="journey-map" aria-label="เลือกด่าน">
+  {screen==='result'&&result?<section className="journey-result"><div className="journey-result-stars" aria-label={`${result.level===6&&result.passed?3:runStars(result)} ดาว`}>{[1,2,3].map(star=><span key={star} className={runStars(result)>=star||result.level===6&&result.passed?'earned':''}>★</span>)}</div><h1>{result.passed?'ผ่านแล้ว!':'ลองอีกครั้ง'}</h1><p>LEVEL {result.level}</p><strong>{result.score}<small> / {result.total}</small></strong><div className="journey-result-actions"><button className="journey-card-play" onClick={()=>start(result.passed&&level<6?(level+1) as PracticeLevel:level)}>{result.passed&&level<6?'ด่านต่อไป →':'เล่นอีกครั้ง ↻'}</button><button onClick={returnToMap}>เลือกด่าน</button></div></section>:<section className="journey-map" aria-label="เลือกด่าน">
    <h1 className="journey-map-title">เลือกด่าน</h1>
    <div className="journey-level-grid">
     {journeyBriefings.map(item=>{const record=records[item.id];return <article key={item.id} className={`journey-node ${record?.cleared?'cleared':''} ${item.id===nextLevel?'next-level':''}`} aria-label={`Level ${item.id}`}>
-     <button className="journey-level-open" onClick={()=>openGuide(item.id)} aria-label={`เปิด Level ${item.id}: ${item.title}`} aria-describedby={`journey-task-${item.id}`}>
+     <button className="journey-level-open" onClick={()=>start(item.id)} aria-label={`เปิด Level ${item.id}: ${item.title}`} aria-describedby={`journey-task-${item.id}`}>
       <span className="journey-node-number">{String(item.id).padStart(2,'0')}</span>
       {record?.cleared&&<span className="journey-clear" aria-label="ผ่านแล้ว">✓</span>}
       <LevelArtwork item={item}/>
