@@ -8,6 +8,14 @@ export type BinaryChoice = {
   state?: 'correct' | 'incorrect'
 }
 
+/** Use the same answer pictures in the level map, tutorial and assessed round. */
+export function PracticeAnswerIcon({ kind, second }: { kind: 'number' | 'judgement'; second: boolean }) {
+  if (kind === 'number') {
+    return <span className={`cw-game-icon cw-game-icon-${second ? 'apples' : 'apple'}`} aria-hidden="true" />
+  }
+  return <img src={`/images/race/answer-${second ? 'wrong' : 'correct'}-v2.png`} alt="" draggable={false} />
+}
+
 export function BinaryAnswerButton({choice,index,disabled,selected,onChoose}:{choice:BinaryChoice;index:number;disabled:boolean;selected:number|null;onChoose:(index:number)=>void}){
  return <button type="button" aria-label={choice.label} disabled={disabled} aria-pressed={selected===index} className={`binary-answer choice-${index} ${choice.state??''}`} onClick={()=>onChoose(index)}><span className={`binary-answer-content ${choice.icon ? 'has-icon' : ''}`}>{choice.icon && <span className="binary-answer-icon" aria-hidden="true">{choice.icon}</span>}<span className="binary-answer-label">{choice.content}</span></span></button>
 }

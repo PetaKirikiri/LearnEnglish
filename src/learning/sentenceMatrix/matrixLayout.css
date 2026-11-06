@@ -202,7 +202,7 @@
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail] .cw-noun-group[data-group-size="1"] .slot-3{border-radius:var(--preview-radius)}
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail] .example-source{font-size:clamp(11px,7.7cqw,22px);font-weight:850;line-height:1.15;white-space:nowrap}
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail][data-action-complement=true] .matrix-layout-leading .example-source{font-size:clamp(11px,7.2cqw,20px)}
-.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail][data-matrix-layout=noun-phrase]{--matrix-art-height:clamp(16px,calc(100cqh - 36px),64px)}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail][data-matrix-layout=noun-phrase]{--matrix-art-height:clamp(22px,calc(100cqh - 28px),64px)}
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail] .cw-noun-group[data-group-size="1"] .example-source{font-size:clamp(14px,8cqw,26px)}
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail] .cw-time-icon{width:var(--matrix-art-height);height:var(--matrix-art-height)}
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail] .cw-time-icon .cw-game-icon{width:var(--matrix-art-height);height:var(--matrix-art-height)}
@@ -211,8 +211,11 @@
  .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail]:not([data-matrix-layout=noun-phrase]){--matrix-art-height:18px}
  .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail] .tonight-slot{padding:2px;gap:2px}
 }
-@container level-preview (max-height:80px){
- .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail]:not([data-matrix-layout=noun-phrase]) .cw-slot-role{display:none}
- .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail]:not([data-matrix-layout=noun-phrase]) .tonight-slot{grid-template-rows:1fr}
- .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail]:not([data-matrix-layout=noun-phrase]) .example-source{grid-row:1}
+/* Keep the requested artwork at every size. In short cards, the engine puts
+   each icon beside its word instead of silently removing the visual cue. */
+@container level-preview (max-height:85px){
+ .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail]:not([data-matrix-layout=noun-phrase]){--matrix-art-height:18px}
+ .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail]:not([data-matrix-layout=noun-phrase]) .tonight-slot{display:flex;flex-direction:row;justify-content:center;align-items:center;gap:3px;padding:2px}
+ .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail]:not([data-matrix-layout=noun-phrase]) .cw-slot-role{display:flex;flex:0 0 var(--matrix-art-height);width:var(--matrix-art-height);height:var(--matrix-art-height);margin:0}
+ .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-density=thumbnail]:not([data-matrix-layout=noun-phrase]) .example-source{width:auto;min-width:0;font-size:clamp(10px,6.5cqw,18px)}
 }

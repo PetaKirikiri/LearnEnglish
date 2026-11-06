@@ -16,7 +16,7 @@ import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'
 import PracticeStage from './PracticeStage'
 import PracticePatternExplanation from './PracticePatternExplanation'
 import PracticeLayoutFixture from './PracticeLayoutFixture'
-import BinaryAnswerZone, {type BinaryChoice} from './BinaryAnswerZone'
+import BinaryAnswerZone, {PracticeAnswerIcon, type BinaryChoice} from './BinaryAnswerZone'
 import './phonePractice.css'
 import './numberFoundation.css'
 import '../classroom/sentenceLine.css'
@@ -151,7 +151,7 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,o
     <span className="foundation-result-announcement" role="status">{saved.picked!==null?(saved.answers.at(-1)?'ถูกต้อง':'ยังไม่ถูก'):''}</span>
     <button type="button" className="foundation-next" disabled={saved.picked===null} onClick={next}>ถัดไป →</button>
    </div>
-   <BinaryAnswerZone disabled={!canAnswer||saved.picked!==null} selected={saved.picked} onChoose={choose} choices={choices.map((choice,side)=>({id:choice,label:choice,state:saved.picked!==null&&side===numberAnswer(question,saved.module)?'correct':saved.picked===side?'incorrect':undefined,icon:saved.module!==3?<span className={`cw-game-icon cw-game-icon-${side===0?'apple':'apples'}`}/>:<img src={`/images/race/answer-${side===0?'correct':'wrong'}-v2.png`} alt="" aria-hidden="true"/>,content:choice})) as [BinaryChoice,BinaryChoice]}/></>}/>
+   <BinaryAnswerZone disabled={!canAnswer||saved.picked!==null} selected={saved.picked} onChoose={choose} choices={choices.map((choice,side)=>({id:choice,label:choice,state:saved.picked!==null&&side===numberAnswer(question,saved.module)?'correct':saved.picked===side?'incorrect':undefined,icon:<PracticeAnswerIcon kind={saved.module===3?'judgement':'number'} second={side===1}/>,content:choice})) as [BinaryChoice,BinaryChoice]}/></>}/>
 
    {explaining&&<PracticePatternExplanation question={question} module={saved.module} onClose={()=>setExplaining(false)}/>}
 

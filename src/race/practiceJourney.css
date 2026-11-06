@@ -25,7 +25,6 @@
 .journey-node-number{position:absolute;z-index:1;top:-9px;left:13px;display:grid;place-items:center;background:#fff;color:#183b66;border:3px solid var(--tile-edge);border-radius:16px;box-shadow:0 3px 0 var(--tile-edge);width:55px;height:48px;font-size:25px;font-weight:950;letter-spacing:-1px}
 .next-level .journey-node-number{background:#ffdf3b}
 .journey-tile-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 4px 2px 10px}
-.journey-topic{font-size:23px;font-weight:950;line-height:1.1}
 .journey-tile-play{display:grid;place-items:center;padding-left:2px;width:34px;height:34px;border-radius:50%;background:#ffffff24;box-shadow:inset 0 1px 0 #ffffff33;color:inherit;font-size:16px;flex:none}
 .next-level .journey-tile-play{background:#183b66;color:#ffdc39;box-shadow:0 3px 0 #102d50}
 .journey-clear{position:absolute;right:18px;top:15px;z-index:1;width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:#137d4b;color:white;font-size:17px;font-weight:900;box-shadow:0 2px 0 #0a5432}
@@ -35,8 +34,38 @@
 .journey-art-words.classroom{width:100%;height:100%;min-width:0;min-height:0;background:transparent}
 .journey-art-words.classroom .cw-sentence-board{width:100%;height:100%;min-height:0;padding:0;background:transparent;border:0;box-shadow:none}
 .journey-art-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.journey-topic{display:flex;align-items:center;gap:5px;white-space:nowrap}
-.journey-topic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.journey-topic {
+ display:flex;
+ align-items:center;
+ gap:4px;
+ height:100%;
+ min-width:0;
+}
+.journey-cue-pair {
+ display:flex;
+ align-items:center;
+ gap:2px;
+ height:100%;
+}
+.journey-cue {
+ display:grid;
+ place-items:center;
+ height:100%;
+ max-height:34px;
+ aspect-ratio:1;
+ border-radius:9px;
+ background:#f3f7ff;
+ box-shadow:0 2px 0 rgb(16 45 80 / 22%);
+}
+.journey-cue > img,
+.journey-cue > .cw-game-icon {
+ width:88%;
+ height:88%;
+ object-fit:contain;
+}
+.journey-cue-arrow { width:14px; height:14px; flex:none; }
+.journey-flag { font-size:clamp(17px,2.5vw,23px); line-height:1; }
+.journey-play-mark { width:50%; height:50%; fill:currentColor; stroke-width:1; }
 .journey-pass-names{flex:none;display:flex;gap:5px;align-items:center;max-height:24px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;font-size:10px;margin:0 12px 8px;color:#183b66}
 .journey-pass-names>span:first-child{color:#c18f00}.journey-pass-name{white-space:nowrap;background:#edf3fc;border-radius:7px;padding:2px 5px}
 @media(hover:hover){.journey-node:has(.journey-level-open:hover){transform:translateY(-3px);box-shadow:0 10px 0 var(--tile-edge),0 15px 14px #183b6612}.journey-node:has(.journey-level-open:active){transform:translateY(5px);box-shadow:0 2px 0 var(--tile-edge)}}
@@ -63,7 +92,7 @@
 .journey-answer-demo .binary-answer-icon{width:30px;flex:0 0 30px;display:grid;place-items:center}
 .journey-answer-demo .binary-answer-icon .cw-game-icon{display:block;width:30px;height:30px}
 .journey-answer-demo .binary-answer-label{width:auto;flex:1;text-align:center;overflow-wrap:normal}
-.journey-answer-symbol{font-size:25px}
+.journey-answer-demo .binary-answer-icon img{width:30px;height:30px;object-fit:contain}
 .practice-journey .journey-answer-demo .binary-answer-zone button.binary-answer.correct{background:#11804e;border-color:#0c693f;box-shadow:0 4px 0 #0a5c37}
 .practice-journey .journey-answer-demo .binary-answer-zone button.binary-answer.incorrect{background:#a53f50;border-color:#853040;box-shadow:0 4px 0 #742e3a}
 .journey-demo-feedback{font-size:12px;font-weight:800;color:#557491;text-align:center;line-height:18px}
@@ -78,13 +107,13 @@
 @media(max-width:650px){
  .journey-map{padding:14px 16px max(23px,env(safe-area-inset-bottom));gap:20px}.journey-map-title{font-size:21px}
  .journey-level-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:22px 14px;max-height:none}
- .journey-node{border-radius:23px}.journey-level-open{padding:7px;gap:6px;border-radius:20px;grid-template-rows:minmax(0,1fr) 30px}.journey-node-number{height:35px;width:40px;font-size:20px;border-radius:12px;left:9px;top:-10px}.journey-level-art{border-radius:15px;padding:23px 6px 5px;gap:5%}.journey-topic{font-size:18px}.journey-tile-footer{padding:0 2px 1px 6px}.journey-tile-play{width:26px;height:26px;font-size:12px}
+ .journey-node{border-radius:23px}.journey-level-open{padding:7px;gap:6px;border-radius:20px;grid-template-rows:minmax(0,1fr) 30px}.journey-node-number{height:35px;width:40px;font-size:20px;border-radius:12px;left:9px;top:-10px}.journey-level-art{border-radius:15px;padding:23px 6px 5px;gap:5%}.journey-tile-footer{padding:0 2px 1px 6px}.journey-tile-play{width:26px;height:26px;font-size:12px}
  .journey-guide{padding:14px;gap:12px;margin-top:12px;margin-bottom:max(12px,env(safe-area-inset-bottom))}.journey-variants button{font-size:12px;padding-inline:7px}.journey-answer-demo .binary-answer-content{font-size:14px}.journey-rule{font-size:12px}
 }
 @media(max-height:650px){
  .journey-header{min-height:44px;padding-block:5px}.journey-header>img{height:28px;width:26px}.journey-header .practice-gold{font-size:16px;padding:3px 8px}
  .journey-map{padding-top:8px;padding-bottom:18px;gap:15px}.journey-map-title{font-size:18px}.journey-level-grid{gap:18px 12px}
- .journey-level-open{grid-template-rows:minmax(0,1fr) 26px;padding:6px;gap:4px}.journey-node-number{height:30px;width:35px;font-size:17px;top:-9px;border-radius:10px}.journey-level-art{padding-top:18px}.journey-topic{font-size:16px}.journey-tile-play{width:23px;height:23px;font-size:11px}
+ .journey-level-open{grid-template-rows:minmax(0,1fr) 26px;padding:6px;gap:4px}.journey-node-number{height:30px;width:35px;font-size:17px;top:-9px;border-radius:10px}.journey-level-art{padding-top:18px}.journey-tile-play{width:23px;height:23px;font-size:11px}
  .journey-guide{padding:10px 14px;gap:8px;margin-top:8px;margin-bottom:10px}.journey-briefing{grid-template-rows:32px minmax(0,1fr) 32px 94px;gap:6px}.journey-card-play{min-height:40px;font-size:18px;padding:5px}.journey-variants button{min-height:28px;padding:3px 8px;font-size:12px}.journey-audio{width:32px;height:32px}.journey-answer-demo .binary-answer-content{font-size:12px}.journey-rule{font-size:12px}
 }
 @media(min-width:650px) and (max-height:500px){

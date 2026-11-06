@@ -8,7 +8,8 @@ import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'
 import ExampleLanguage from '../learning/ExampleLanguage'
 import VocabularyPicture from '../learning/VocabularyPicture'
-import BinaryAnswerZone,{type BinaryChoice} from './BinaryAnswerZone'
+import Icon from '../ui/Icon'
+import BinaryAnswerZone,{PracticeAnswerIcon,type BinaryChoice} from './BinaryAnswerZone'
 import {briefingFor,journeyBriefings,type LevelBriefing} from './journeyBriefings'
 import './practiceJourney.css'
 
@@ -59,9 +60,22 @@ function LevelArtwork({item}:{item:LevelBriefing}){
   </div>
  </div>
 }
-function LevelTask({item}:{item:LevelBriefing}){
- return <span className="journey-topic" aria-label={item.task}>
-  {item.id<=3?<><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 4 5 9H2v6h3l6 5V4Z M15 8q5 4 0 8 M18 4q9 8 0 16"/></svg><span aria-hidden="true">→ {item.id===3?'✓ / ✕':'1 / 2+'}</span></>:<span aria-hidden="true">EN → ไทย</span>}
+function LevelTask({item}: {item: LevelBriefing}) {
+ const translate = item.id >= 4
+ const kind = item.id === 3 ? 'judgement' : 'number'
+ return <span className="journey-topic" id={`journey-task-${item.id}`} role="img" aria-label={item.task}>
+  <span className="journey-cue">
+   {translate
+    ? <span className="journey-flag" aria-hidden="true">🇬🇧</span>
+    : <img src="/classroom/icons/listening-headphones.png" alt="" draggable={false}/>}
+  </span>
+  <Icon name="arrow" className="journey-cue-arrow"/>
+  {translate
+   ? <span className="journey-cue"><span className="journey-flag" aria-hidden="true">🇹🇭</span></span>
+   : <span className="journey-cue-pair">
+     <span className="journey-cue"><PracticeAnswerIcon kind={kind} second={false}/></span>
+     <span className="journey-cue"><PracticeAnswerIcon kind={kind} second/></span>
+    </span>}
  </span>
 }
 function NumberBriefing({item,active}:{item:LevelBriefing;active:boolean}){
@@ -82,7 +96,7 @@ function NumberBriefing({item,active}:{item:LevelBriefing;active:boolean}){
      <button className="journey-audio" onClick={()=>play(example.audio)} aria-label={`ฟัง: ${example.document.english}`}><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 4 5 9H2v6h3l6 5V4Z M15 8q5 4 0 8 M18 4q9 8 0 16"/></svg></button>
      <div className="journey-teaching-stage classroom"><div className="cw-sentence-board"><div className="cw-sentence-display"><ExampleLanguage matrix layout={{construction:'noun-phrase',noun:'single'}} english={plural?'key**s**':noun.english} thai={noun.thai} units={[noun]} semanticSlots={[3]} slotDetails={[{label:'Noun',count:0,icon:<VocabularyPicture word={noun.english}/>}]} settings={{thaiMeanings:false,thaiTranslation:false,fadeMode:false,icons:true,wordPicker:false,explanations:false,audio:false,layout:{density:'briefing',maxWidth:350}}}/></div></div></div>
      <span className="journey-number-link" aria-hidden="true">↓</span>
-     <figcaption className="journey-mapped-answer"><span className={`cw-game-icon cw-game-icon-${plural?'apples':'apple'}`} aria-hidden="true"/><span>{example.choices[example.correct]}</span></figcaption>
+     <figcaption className="journey-mapped-answer"><PracticeAnswerIcon kind="number" second={plural}/><span>{example.choices[example.correct]}</span></figcaption>
     </figure>
    })}
   </div>
@@ -104,7 +118,7 @@ function SentenceBriefing({item,active}:{item:LevelBriefing;active:boolean}){
  function change(index:number){player.current?.pause();setVariant(index);setAnswer(null);setAudioError(false)}
  const choices=example.choices.map((label,index)=>({id:String(index),label,content:label,
   state:answer===index?(index===example.correct?'correct':'incorrect'):undefined,
-  icon:item.id<=2?<span className={`cw-game-icon cw-game-icon-${index===0?'apple':'apples'}`} aria-hidden="true"/>:item.id===3?<span className="journey-answer-symbol" aria-hidden="true">{index===0?'✓':'✕'}</span>:undefined,
+  icon:item.id<=3?<PracticeAnswerIcon kind={item.id===3?'judgement':'number'} second={index===1}/>:undefined,
  })) as [BinaryChoice,BinaryChoice]
  return <section className="journey-briefing" aria-label={`ตัวอย่าง Level ${item.id}`}>
   <div className="journey-example-controls"><div className="journey-variants" role="group" aria-label="เปลี่ยนตัวอย่าง">{item.examples.map((e,index)=><button key={e.switchLabel} aria-pressed={variant===index} onClick={()=>change(index)}>{e.switchLabel}</button>)}</div><button className="journey-audio" onClick={play} aria-label={`ฟัง: ${example.document.english}`}><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 4 5 9H2v6h3l6 5V4Z M15 8q5 4 0 8 M18 4q9 8 0 16"/></svg></button></div>
@@ -144,11 +158,11 @@ function Journey(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settin
    <h1 className="journey-map-title">เลือกด่าน</h1>
    <div className="journey-level-grid">
     {journeyBriefings.map(item=>{const record=records[item.id];return <article key={item.id} className={`journey-node ${record?.cleared?'cleared':''} ${item.id===nextLevel?'next-level':''}`} aria-label={`Level ${item.id}`}>
-     <button className="journey-level-open" onClick={()=>openGuide(item.id)} aria-label={`เปิด Level ${item.id}: ${item.title}`}>
+     <button className="journey-level-open" onClick={()=>openGuide(item.id)} aria-label={`เปิด Level ${item.id}: ${item.title}`} aria-describedby={`journey-task-${item.id}`}>
       <span className="journey-node-number">{String(item.id).padStart(2,'0')}</span>
       {record?.cleared&&<span className="journey-clear" aria-label="ผ่านแล้ว">✓</span>}
       <LevelArtwork item={item}/>
-      <span className="journey-tile-footer"><LevelTask item={item}/><span className="journey-tile-play" aria-hidden="true">▶</span></span>
+      <span className="journey-tile-footer"><LevelTask item={item}/><span className="journey-tile-play" aria-hidden="true"><Icon name="play" className="journey-play-mark"/></span></span>
      </button>
      <JourneyPassNames level={item.id} passes={passes} unavailable={unavailable}/>
     </article>})}
