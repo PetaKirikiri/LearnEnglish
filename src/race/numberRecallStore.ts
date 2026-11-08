@@ -1,5 +1,6 @@
 import {supabase} from '../lib/supabase'
 import type {RecallAttempt} from './numberRecall'
+import {isRejectedAnswer} from '../learning/wordProgress/uploadErrors'
 const key=(user?:string)=>`english:number-recall:v1:${user??'guest'}`
 const outboxKey=(user:string)=>`${key(user)}:outbox`
 function read(key:string):RecallAttempt[]{
@@ -19,11 +20,14 @@ export function syncRecall(user:string):Promise<void>{
  const work=(async()=>{
   const {data}=await supabase.auth.getUser()
   if(data.user?.id!==user)throw new Error('Account changed')
+  const attempted=new Set<string>()
+  let rejected:unknown
   const flushPending=async()=>{
-  while(pending(user).length){
-  for(const event of pending(user)){
+  while(pending(user).some(event=>!attempted.has(event.id))){
+  for(const event of pending(user).filter(event=>!attempted.has(event.id))){
+   attempted.add(event.id)
    const {error}=await supabase.rpc('record_english_number_answer',{p_id:event.id,p_word:event.word,p_module:event.module,p_answer:event.answer,p_at:new Date(event.at).toISOString(),p_assisted:event.assisted,p_heard:event.heard,p_replays:event.replays,p_support:event.support,...(event.verb?{p_verb:event.verb}:{})})
-   if(error)throw error
+   if(error){if(!isRejectedAnswer(error))throw error;rejected??=error;continue}
    localStorage.setItem(outboxKey(user),JSON.stringify(pending(user).filter(item=>item.id!==event.id)))
   }
   }
@@ -39,6 +43,7 @@ export function syncRecall(user:string):Promise<void>{
   localStorage.setItem(key(user),JSON.stringify(merge(rows,pending(user))))
   // A final answer may arrive while history is loading; upload it in this run.
   await flushPending()
+  if(rejected)throw rejected
  })().finally(()=>flushing.delete(user))
  flushing.set(user,work);return work
 }

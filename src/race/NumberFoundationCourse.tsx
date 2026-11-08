@@ -43,6 +43,7 @@ export default function NumberFoundation(props:{userId?:string;minimumModule?:1|
 }
 function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,onExit,newRun,settings={fadeMode:true}}:{userId?:string;minimumModule?:1|3;selectedLevel:1|2|3;onLevel:(level:PracticeLevel)=>void;tester?:boolean;settings?:MatrixSettings;onComplete?:(level:PracticeLevel,score:number,total:number,passed:boolean)=>void;onExit?:()=>void;newRun?:boolean}){
  const progress=useWordProgress(userId)
+ const refreshProgress=progress.retry
  const lesson=requestedLesson(location.search)
  const lessonHref=`${window.innerWidth>=1024?'/classroom/index.html':'/english/notes'}?lesson=${lesson}`
  const preview=import.meta.env.DEV?new URLSearchParams(location.search).get('preview'):null
@@ -75,10 +76,14 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,o
  useEffect(()=>()=>{request.current++;audio.current?.pause()},[])
  useEffect(()=>{
   if(!userId||preview)return
-  const retry=()=>{void syncRecall(userId).catch(()=>{/* Pending answers remain on the device. */})}
+  let active=true
+  const retry=()=>{void syncRecall(userId).catch(()=>{/* Pending answers remain on the device. */}).finally(()=>{if(active){events.current=readRecall(userId);void refreshProgress()}})}
+  retry()
+  const timer=window.setInterval(retry,30000)
   window.addEventListener('online',retry)
-  return()=>window.removeEventListener('online',retry)
- },[userId,preview])
+  window.addEventListener('focus',retry)
+  return()=>{active=false;window.clearInterval(timer);window.removeEventListener('online',retry);window.removeEventListener('focus',retry)}
+ },[userId,preview,refreshProgress])
  function play(prompt=question){
   replays.current++
   const current=++request.current
@@ -102,7 +107,7 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,o
    try{saveRecall(event,userId);setSaveError(false)}catch{setSaveError(true);return}
    awardPracticeGold(question.id,correct,userId)
    events.current=readRecall(userId)
-   if(userId)void syncRecall(userId).catch(()=>{/* Retain the outbox for the next connection. */})
+   if(userId)void syncRecall(userId).catch(()=>{/* Retain the outbox for the next connection. */}).finally(()=>{void refreshProgress()})
   }
   locked.current=true
   setSaved(value=>({...value,picked:side,answers:[...value.answers,side===numberAnswer(question,saved.module)]}))

@@ -1,7 +1,8 @@
 import { supabase } from '../../lib/supabase'
 import type { WordAttempt, WordProgress } from './model'
+import {isRejectedAnswer} from './uploadErrors'
 const key=(userId:string)=>`english-word-outbox:v1:${userId}`
-export function pendingAttempts(userId:string):WordAttempt[]{try{return JSON.parse(localStorage.getItem(key(userId))??'[]')}catch{return []}}
+export function pendingAttempts(userId:string):WordAttempt[]{try{const rows=JSON.parse(localStorage.getItem(key(userId))??'[]');return Array.isArray(rows)?rows:[]}catch{return []}}
 export function queueAttempt(userId:string,attempt:WordAttempt){
  const pending=pendingAttempts(userId)
  if(!pending.some(item=>item.id===attempt.id))localStorage.setItem(key(userId),JSON.stringify([...pending,attempt]))
@@ -21,12 +22,14 @@ export function flushWordAttempts(userId:string):Promise<void>{
  const work=(async()=>{
   const {data}=await supabase.auth.getUser()
   if(data.user?.id!==userId)throw new Error('Account changed')
+  let rejected:unknown
   for(const attempt of pendingAttempts(userId)){
    const {error}=await supabase.rpc('record_english_word_answer',{p_id:attempt.id,p_question:attempt.questionId,p_version:attempt.version,p_answer:attempt.answer,p_occurred:attempt.occurredAt,p_modality:attempt.modality,p_replays:attempt.replays,p_rule:attempt.ruleVersion,p_learner:userId})
-   if(error)throw error
+   if(error){if(!isRejectedAnswer(error))throw error;rejected??=error;continue}
    // Re-read, so answers queued while this request was in flight are preserved.
    localStorage.setItem(key(userId),JSON.stringify(pendingAttempts(userId).filter(item=>item.id!==attempt.id)))
   }
+  if(rejected)throw rejected
  })().finally(()=>flushing.delete(userId))
  flushing.set(userId,work);return work
 }

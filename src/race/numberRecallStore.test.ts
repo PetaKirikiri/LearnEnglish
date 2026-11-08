@@ -32,3 +32,22 @@ it('keeps new answers that arrive while history is downloading',async()=>{
  expect(readRecall('a')).toEqual([event]);expect(mock.rpc).toHaveBeenCalledTimes(1)
  expect(JSON.parse(localStorage.getItem('english:number-recall:v1:a:outbox')??'[]')).toEqual([])
 })
+it('uploads valid siblings of a rejected answer and retains only the rejected answer for repair',async()=>{
+ const rejected={...event,id:'rejected',word:'water'},valid={...event,id:'valid'}
+ saveRecall(rejected,'a');saveRecall(valid,'a')
+ mock.rpc.mockImplementation(async(_name:string,args:{p_id:string})=>({error:args.p_id==='rejected'?{message:'Unknown vocabulary'}:null}))
+ await expect(syncRecall('a')).rejects.toEqual({message:'Unknown vocabulary'})
+ expect(mock.rpc.mock.calls.map(call=>call[1].p_id)).toEqual(['rejected','valid'])
+ expect(JSON.parse(localStorage.getItem('english:number-recall:v1:a:outbox')??'[]')).toEqual([rejected])
+ mock.rpc.mockResolvedValue({error:null})
+ await syncRecall('a')
+ expect(mock.rpc.mock.calls.map(call=>call[1].p_id)).toEqual(['rejected','valid','rejected'])
+ expect(JSON.parse(localStorage.getItem('english:number-recall:v1:a:outbox')??'[]')).toEqual([])
+})
+it('stops on a connection failure without discarding any queued answers',async()=>{
+ saveRecall(event,'a');saveRecall({...event,id:'second'},'a')
+ mock.rpc.mockResolvedValue({error:Error('offline')})
+ await expect(syncRecall('a')).rejects.toThrow('offline')
+ expect(mock.rpc).toHaveBeenCalledTimes(1)
+ expect(JSON.parse(localStorage.getItem('english:number-recall:v1:a:outbox')??'[]')).toHaveLength(2)
+})
