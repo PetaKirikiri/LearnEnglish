@@ -91,7 +91,7 @@ function Journey(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settin
  const start=(value:PracticeLevel)=>{setLevel(value);setScreen('run')}
  const nextLevel=journeyBriefings.find(item=>!records[item.id]?.cleared)?.id
  if(import.meta.env.DEV&&new URLSearchParams(location.search).has('preview'))return <NumberFoundation {...props}/>
- if(screen==='run'&&level===6)return <ActionStarCourse onLevel={start} userId={props.userId} onExit={returnToMap} onComplete={(score,total)=>complete(6,score,total,true)}/>
+ if(screen==='run'&&level===6)return <ActionStarCourse settings={props.settings} onLevel={start} userId={props.userId} onExit={returnToMap} onComplete={(score,total)=>complete(6,score,total,true)}/>
  if(screen==='run')return <NumberFoundation key={level} {...props} initialLevel={level} newRun onLevelRequest={start} onComplete={complete} onExit={returnToMap}/>
  return <main className="practice-journey" lang="th">
   <header className="journey-header">

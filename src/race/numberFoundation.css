@@ -179,3 +179,9 @@
  .phone-practice.foundation-practice .practice-answer-area .binary-answer{min-height:60px;padding:8px 12px}
  .phone-practice.foundation-practice .binary-answer-zone .practice-answers{gap:10px}
 }
+
+/* The question and Next occupy the same right-hand position in the control row. */
+.foundation-practice .practice-feedback.foundation-controls{position:static;flex:none}
+.foundation-practice .foundation-controls .foundation-next:disabled{display:none}
+.foundation-practice .foundation-controls .practice-answer-prompt{color:#294766;font-weight:700;text-align:right}
+.phone-practice.foundation-practice .foundation-controls .foundation-next{min-height:40px;height:40px;padding:5px 16px}

@@ -16,7 +16,7 @@ import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'
 import PracticeStage from './PracticeStage'
 import PracticePatternExplanation from './PracticePatternExplanation'
 import PracticeLayoutFixture from './PracticeLayoutFixture'
-import BinaryAnswerZone, {PracticeAnswerIcon, type BinaryChoice} from './BinaryAnswerZone'
+import {PracticeAnswerIcon, type BinaryChoice} from './BinaryAnswerZone'
 import './phonePractice.css'
 import './numberFoundation.css'
 import '../classroom/sentenceLine.css'
@@ -38,7 +38,7 @@ export default function NumberFoundation(props:{userId?:string;minimumModule?:1|
  const key=`englishsuccess:practice-level:${props.userId??'guest'}`
  const [level,setLevel]=useState<PracticeLevel>(()=>{if(props.initialLevel)return props.initialLevel;try{const chosen=Number(localStorage.getItem(key));if([1,2,3,4,5,6].includes(chosen))return chosen as PracticeLevel}catch{}return load(props.userId,props.minimumModule).module})
  function change(value:PracticeLevel){if(props.onLevelRequest){props.onLevelRequest(value);return}try{localStorage.setItem(key,String(value))}catch{}setLevel(value)}
- if(level===6)return <ActionStarCourse onLevel={change} userId={props.userId} onExit={props.onExit} onComplete={(score,total)=>props.onComplete?.(6,score,total,true)}/>
+ if(level===6)return <ActionStarCourse settings={props.settings} onLevel={change} userId={props.userId} onExit={props.onExit} onComplete={(score,total)=>props.onComplete?.(6,score,total,true)}/>
  return level>=4?<ActionPractice key={level} level={level as 4|5|6} onLevel={change} userId={props.userId} settings={props.settings} onComplete={props.onComplete} onExit={props.onExit}/>:<NumberLevels key={level} {...props} selectedLevel={level as 1|2|3} onLevel={change}/>
 }
 function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,onExit,newRun,settings={fadeMode:true}}:{userId?:string;minimumModule?:1|3;selectedLevel:1|2|3;onLevel:(level:PracticeLevel)=>void;tester?:boolean;settings?:MatrixSettings;onComplete?:(level:PracticeLevel,score:number,total:number,passed:boolean)=>void;onExit?:()=>void;newRun?:boolean}){
@@ -56,7 +56,6 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,o
  const events=useRef<RecallAttempt[]>(readRecall(userId))
  const assisted=useRef(false),replays=useRef(0)
  const [saveError,setSaveError]=useState(false)
- const [explaining,setExplaining]=useState(false)
  const [heard,setHeard]=useState(preview==='correct'||preview==='wrong'),[audioError,setAudioError]=useState(false)
  const audio=useRef<HTMLAudioElement|null>(null),locked=useRef(saved.picked!==null),request=useRef(0)
  const index=saved.answers.length-(saved.picked!==null?1:0),finished=saved.answers.length===saved.deck.length&&saved.picked===null
@@ -123,7 +122,6 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,o
 
  }
  function restart(module:1|2|3,manual=false){
-  setExplaining(false)
   request.current++;audio.current?.pause();locked.current=false;setHeard(false);setAudioError(false);assisted.current=false;replays.current=0
   events.current=readRecall(userId)
   const deck=preview?numberDeck(module):scheduledNumberDeck(module,events.current)
@@ -145,15 +143,14 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,o
 
     {saveError&&<p role="alert">บันทึกคำตอบไม่ได้ กรุณาลองอีกครั้ง</p>}
     {audioError&&<p role="alert">เล่นเสียงไม่ได้ แตะเพื่อฟังอีกครั้ง</p>}
-   </>} answers={<>
-   <div className="practice-feedback foundation-controls">
-    <button type="button" className="foundation-help" aria-label="อธิบายรูปแบบประโยค" aria-haspopup="dialog" onClick={()=>{if(saved.picked===null)assisted.current=true;setExplaining(true)}}>?</button>
-    <span className="foundation-result-announcement" role="status">{saved.picked!==null?(saved.answers.at(-1)?'ถูกต้อง':'ยังไม่ถูก'):''}</span>
-    <button type="button" className="foundation-next" disabled={saved.picked===null} onClick={next}>ถัดไป →</button>
-   </div>
-   <BinaryAnswerZone disabled={!canAnswer||saved.picked!==null} selected={saved.picked} onChoose={choose} choices={choices.map((choice,side)=>({id:choice,label:choice,state:saved.picked!==null&&side===numberAnswer(question,saved.module)?'correct':saved.picked===side?'incorrect':undefined,icon:<PracticeAnswerIcon kind={saved.module===3?'judgement':'number'} second={side===1}/>,content:choice})) as [BinaryChoice,BinaryChoice]}/></>}/>
-
-   {explaining&&<PracticePatternExplanation question={question} module={saved.module} onClose={()=>setExplaining(false)}/>}
+   </>}
+    prompt={saved.module===3?'ประโยคนี้ถูกหรือผิด?':'หนึ่งสิ่งหรือหลายสิ่ง?'}
+    correct={saved.picked===null?null:saved.answers.at(-1)===true}
+    onNext={next}
+    onHelp={()=>{if(saved.picked===null)assisted.current=true}}
+    explanation={close=><PracticePatternExplanation question={question} module={saved.module} onClose={close}/>}
+    answers={{disabled:!canAnswer||saved.picked!==null,selected:saved.picked,onChoose:choose,
+     choices:choices.map((choice,side)=>({id:choice,label:choice,state:saved.picked!==null&&side===numberAnswer(question,saved.module)?'correct':saved.picked===side?'incorrect':undefined,icon:<PracticeAnswerIcon kind={saved.module===3?'judgement':'number'} second={side===1}/>,content:choice})) as [BinaryChoice,BinaryChoice]}}/>
 
   </>}
  </div></main>

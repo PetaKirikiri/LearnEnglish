@@ -34,3 +34,11 @@ The JSON report is machine-readable; `reports/sentence-blueprints.md` is the sho
 ## Bidirectional choice engine
 
 `choices.ts` supplies `nounsForSentence`, `blueprintsForNoun`, and `agreeingNoun`. The matrix picker, destination list and verb counterpart selection consume these helpers. They delegate to the validator; they do not maintain separate whitelist rules. The audit includes a word-to-blueprint compatibility table and checks that forward/reverse selection agree for every Lesson 3 noun. Meaning eligibility, agreement, and lesson vocabulary availability must all hold before a counterpart can be offered.
+
+## Eligibility for student questions
+
+The teacher’s word picker and archived recordings include material for later classes. Before an action can appear in a scored question, both its English prompt and the source of its Thai distractor must pass the taught frames in `src/learning/sentenceRules/assessmentScope.ts`. Location exercises also take their pronouns from that scope. A new frame or pronoun requires an explicit curriculum change. For example, knowing *school* as a place does not introduce *going to the school*.
+
+The first six practice levels must not assess the whole words `it` or `its` (including contractions such as `it's`). Check every sentence slot and the English source of each Thai distractor. Keep these words available in the teaching explorer; their presence there is not permission to assess them.
+
+The app and race draw from the approved bank. Live classroom assignments use its database allowlist. When the taught scope changes, generate the allowlist with `node --import tsx scripts/prepareClassroomCatalogue.ts` in a new migration. Keep historical scoring rows and recordings. Run the sentence audit and the practice content tests before release.

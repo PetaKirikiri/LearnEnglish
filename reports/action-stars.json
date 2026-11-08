@@ -43,6 +43,33 @@
       ],
       "correct": 0,
       "audioUrl": "/audio/action-practice/action-l6-i-am-holding-his-cup.wav",
+      "distractorUnits": [
+        {
+          "english": "I",
+          "thai": "ฉัน",
+          "role": "person"
+        },
+        {
+          "english": "am",
+          "thai": "กำลัง",
+          "role": "be"
+        },
+        {
+          "english": "holding",
+          "thai": "ถือ",
+          "role": "action"
+        },
+        {
+          "english": "her",
+          "thai": "ของเธอ (ผู้หญิง)",
+          "role": "determiner"
+        },
+        {
+          "english": "cup.",
+          "thai": "ถ้วย",
+          "role": "object"
+        }
+      ],
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
@@ -92,6 +119,33 @@
       ],
       "correct": 0,
       "audioUrl": "/audio/action-practice/action-l6-we-are-opening-his-books.wav",
+      "distractorUnits": [
+        {
+          "english": "We",
+          "thai": "พวกเรา",
+          "role": "person"
+        },
+        {
+          "english": "are",
+          "thai": "กำลัง",
+          "role": "be"
+        },
+        {
+          "english": "opening",
+          "thai": "เปิด",
+          "role": "action"
+        },
+        {
+          "english": "her",
+          "thai": "ของเธอ (ผู้หญิง)",
+          "role": "determiner"
+        },
+        {
+          "english": "books.",
+          "thai": "หนังสือ",
+          "role": "object"
+        }
+      ],
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
@@ -141,6 +195,33 @@
       ],
       "correct": 0,
       "audioUrl": "/audio/action-practice/action-l6-i-am-washing-our-apples.wav",
+      "distractorUnits": [
+        {
+          "english": "I",
+          "thai": "ฉัน",
+          "role": "person"
+        },
+        {
+          "english": "am",
+          "thai": "กำลัง",
+          "role": "be"
+        },
+        {
+          "english": "washing",
+          "thai": "ล้าง",
+          "role": "action"
+        },
+        {
+          "english": "my",
+          "thai": "ของฉัน",
+          "role": "determiner"
+        },
+        {
+          "english": "apples.",
+          "thai": "แอปเปิล",
+          "role": "object"
+        }
+      ],
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",

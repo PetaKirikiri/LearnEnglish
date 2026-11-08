@@ -51,7 +51,7 @@ export const journeyBriefings:readonly LevelBriefing[]=[
  ]},
  {id:5,title:'ตอบว่ากำลังทำอะไร',change:'extend',changeText:'จากถาม → ตอบ',task:'ฟัง → เลือกคำแปล',total:30,examples:[
   actionExample('I am eating an apple.','I','ตอบ: I ใช้ am · eating = กำลังกิน',['I','am']),
-  actionExample('He is eating an apple.','he / she / it','he / she / it ใช้ is · กำลังกินเหมือนเดิม',['He','is']),
+  actionExample('He is eating an apple.','he / she','he / she ใช้ is · กำลังกินเหมือนเดิม',['He','is']),
   actionExample('They are eating an apple.','you / we / they','you / we / they ใช้ are · กำลังกินเหมือนเดิม',['They','are']),
  ]},
  {id:6,title:'ใครทำอะไร · ของใคร',change:'combine',changeText:'คน + การกระทำ + เจ้าของ',task:'ฟัง → เลือกคำแปล',total:50,examples:[

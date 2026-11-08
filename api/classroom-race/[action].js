@@ -549,6 +549,50 @@ var lessonTwoReviewQuestions = [
 ];
 var lessonTwoRecordings = [...new Map([...lessonTwoNumberQuestions, ...lessonTwoOwnerQuestions, ...lessonTwoReviewQuestions].filter((q) => q.audioUrl?.startsWith("/audio/race-lesson-two/")).map((q) => [q.audioUrl, { audioUrl: q.audioUrl, spokenText: q.english }])).values()];
 
+// src/learning/sentenceMatrix/subjectEngine.ts
+var subjectPronouns = [
+  { word: "I", thai: "\u0E09\u0E31\u0E19", person: 1 },
+  { word: "you", thai: "\u0E04\u0E38\u0E13", person: 2 },
+  { word: "he", thai: "\u0E40\u0E02\u0E32", person: 3 },
+  { word: "she", thai: "\u0E40\u0E18\u0E2D", person: 3 },
+  { word: "we", thai: "\u0E1E\u0E27\u0E01\u0E40\u0E23\u0E32", person: 1, number: "plural" },
+  { word: "they", thai: "\u0E1E\u0E27\u0E01\u0E40\u0E02\u0E32", person: 3, number: "plural" },
+  { word: "it", thai: "\u0E21\u0E31\u0E19", person: 3 }
+];
+function subjectVerb(subject) {
+  if (subject.number === "plural" || subject.person === 2) return "are";
+  return subject.person === 1 ? "am" : "is";
+}
+
+// src/learning/sentenceRules/assessmentScope.ts
+var knownPronouns = new Set(subjectPronouns.map((person) => person.word.toLowerCase()));
+var taughtDeterminers = /* @__PURE__ */ new Set(["the", "a", "an", "my", "your", "his", "her", "our", "their"]);
+var taughtPronouns = /* @__PURE__ */ new Set(["i", "you", "he", "she", "we", "they"]);
+var assessedSubjectPronouns = subjectPronouns.filter((person) => taughtPronouns.has(person.word.toLowerCase()));
+var hasUntaughtIt = (english) => /\b(?:it|its)\b/i.test(english);
+var actionFrames = {
+  bare: ["sleeping", "walking", "running", "playing"],
+  object: ["eating", "drinking", "reading"],
+  ownership: ["eating", "drinking", "reading", "holding", "opening", "washing"]
+};
+function taughtActionLine(level, units) {
+  if (units.some((unit) => hasUntaughtIt(unit.english))) return false;
+  const word = (index) => units[index]?.english.toLowerCase().replace(/[?.!]$/, "");
+  const roles = units.map((unit) => unit.role);
+  for (const [index, unit] of units.entries()) {
+    const tokens = word(index).match(/[a-z]+/g) ?? [];
+    if (tokens.some((token2) => knownPronouns.has(token2) && !taughtPronouns.has(token2))) return false;
+    if (unit.role === "be" && !["am", "is", "are"].includes(word(index))) return false;
+    if ((unit.role === "determiner" || unit.role === "person-determiner") && !taughtDeterminers.has(word(index))) return false;
+  }
+  const shape = roles.join(" ").replace("person-determiner person", "person");
+  const action = word(roles.indexOf("action"));
+  if (level === 4) return shape === "question be person action" && word(0) === "what" && action === "doing";
+  if (level === 6) return shape === "person be action determiner object" && actionFrames.ownership.includes(action);
+  if (shape === "person be action") return actionFrames.bare.includes(action);
+  return (shape === "person be action object" || shape === "person be action determiner object") && actionFrames.object.includes(action);
+}
+
 // src/classroom/lessonThreeVocabulary.ts
 var lessonThreeWords = [
   { indefiniteArticle: "an", classifierThai: "\u0E25\u0E39\u0E01", singular: "apple", plural: "apples", thai: "\u0E41\u0E2D\u0E1B\u0E40\u0E1B\u0E34\u0E25", categories: ["food"] },
@@ -594,21 +638,6 @@ var lessonThreeIntroducedCatalogue = [{ word: "water", thai: "\u0E19\u0E49\u0E33
 var lessonThreeCatalogue = cumulativeCatalogue(lessonTwoCatalogue, lessonThreeIntroducedCatalogue);
 var lessonTwoMatrixCatalogue = cumulativeCatalogue(lessonOneCatalogue, earlierNounForms, lessonTwoIntroducedCatalogue);
 var lessonThreeMatrixCatalogue = cumulativeCatalogue(lessonTwoMatrixCatalogue, lessonThreeIntroducedCatalogue);
-
-// src/learning/sentenceMatrix/subjectEngine.ts
-var subjectPronouns = [
-  { word: "I", thai: "\u0E09\u0E31\u0E19", person: 1 },
-  { word: "you", thai: "\u0E04\u0E38\u0E13", person: 2 },
-  { word: "he", thai: "\u0E40\u0E02\u0E32", person: 3 },
-  { word: "she", thai: "\u0E40\u0E18\u0E2D", person: 3 },
-  { word: "we", thai: "\u0E1E\u0E27\u0E01\u0E40\u0E23\u0E32", person: 1, number: "plural" },
-  { word: "they", thai: "\u0E1E\u0E27\u0E01\u0E40\u0E02\u0E32", person: 3, number: "plural" },
-  { word: "it", thai: "\u0E21\u0E31\u0E19", person: 3 }
-];
-function subjectVerb(subject) {
-  if (subject.number === "plural" || subject.person === 2) return "are";
-  return subject.person === 1 ? "am" : "is";
-}
 
 // src/learning/sentenceRules/meaningProfiles.ts
 var meaningProfiles = {
@@ -743,8 +772,9 @@ var peopleAudio = (sentence) => `/audio/race-lesson-three/people-${sentence.toLo
 
 // src/race/lessonThreeQuestions.ts
 var skill2 = "race-lesson-three";
+var taughtPeople = people.filter((person) => assessedSubjectPronouns.some((item) => item.word === person.word));
 var places = locationWords(lessonThreeCatalogue);
-var lessonThreePeopleQuestions = people.flatMap((person) => ["am", "is", "are"].map((verb) => {
+var lessonThreePeopleQuestions = taughtPeople.flatMap((person) => ["am", "is", "are"].map((verb) => {
   const english = `Where ${verb} ${person.word}?`;
   const correct = verb === person.verb;
   return {
@@ -757,9 +787,9 @@ var lessonThreePeopleQuestions = people.flatMap((person) => ["am", "is", "are"].
     grammar: { kind: "meaning", context: "Match I/am, you/are, he/is and she/is.", phase: "practice", targets: ["I", "you", "he", "she", "am", "is", "are"], contrast: correct ? "person-correct" : "person-wrong", explanation: `Where ${person.verb} ${person.word}?` }
   };
 }));
-var lessonThreeAnswerQuestions = places.flatMap((place) => people.map((person, index) => {
+var lessonThreeAnswerQuestions = places.flatMap((place) => taughtPeople.map((person, index) => {
   const sentence = peopleSentence("answer", person.word, place);
-  const distractor = peopleSentence("answer", people[(index + 1) % people.length].word, place).thai;
+  const distractor = peopleSentence("answer", taughtPeople[(index + 1) % taughtPeople.length].word, place).thai;
   return {
     id: `l3-answer-${person.word}-${place.word}`,
     english: sentence.english,
@@ -770,7 +800,7 @@ var lessonThreeAnswerQuestions = places.flatMap((place) => people.map((person, i
     meaningDistractor: distractor
   };
 }));
-var lessonThreeReviewQuestions = places.flatMap((place, index) => people.map((person) => {
+var lessonThreeReviewQuestions = places.flatMap((place, index) => taughtPeople.map((person) => {
   const question2 = peopleSentence("question", person.word, place);
   const answer2 = peopleSentence("answer", replyPerson(person.word), place);
   const english = `${question2.english} ${answer2.english}`;
@@ -818,7 +848,7 @@ var classroomMatrices = {
   "lesson-1": { id: "lesson-1", practiceMode: "journey", stages: ["class-one-judgement", "tonight-slots"], vocabulary: lessonOneCatalogue, plural: false, settings: { explanations: true, wordPicker: true }, initialWord: "hotel", audio: cumulativeLessonTwoAudio },
   "lesson-2": { id: "lesson-2", practiceMode: "journey", stages: ["lesson-two-number", "lesson-two-owner", "lesson-two-review"], vocabulary: lessonTwoMatrixCatalogue, plural: true, settings: { explanations: true, wordPicker: true }, initialWord: "shoes", audio: cumulativeLessonTwoAudio },
   "lesson-3": { id: "lesson-3", practiceMode: "lesson", stages: ["lesson-three-people", "lesson-three-answers", "lesson-three-review"], owners: ["the", "my", "your", "a", "an", "his", "her", "our", "their"], vocabulary: lessonThreeMatrixCatalogue, plural: true, pattern: "people-location", subjectModes: { pronouns: subjectPronouns, names: [{ word: "Bia", thai: "Bia", kind: "person" }, { word: "Central", thai: "\u0E40\u0E0B\u0E47\u0E19\u0E17\u0E23\u0E31\u0E25", kind: "place" }, { word: "Success", thai: "Success", kind: "place" }], initialPronoun: "you", initialName: "Bia", audio: (sentence, mode) => mode === "pronoun" ? peopleAudio(sentence) : void 0 }, settings: { explanations: true, wordPicker: true }, initialWord: "hotel", audio: lessonThreeQuestionAudio },
-  "lesson-4": { id: "lesson-4", practiceMode: "action-stars", stages: ["lesson-four-actions"], vocabulary: lessonThreeMatrixCatalogue, plural: true, pattern: "present-action", actionReply: "same-subject", actions: ["eating", "drinking", "reading", "holding", "opening", "washing"], owners: ["the", "my", "your", "his", "her", "our", "their"], initialOwner: "the", subjectModes: { pronouns: subjectPronouns.filter((item) => item.word !== "it"), names: [], initialPronoun: "I" }, settings: { explanations: true, wordPicker: true, initialPattern: "answer" }, initialWord: "apple" }
+  "lesson-4": { id: "lesson-4", practiceMode: "action-stars", stages: ["lesson-four-actions"], vocabulary: lessonThreeMatrixCatalogue, plural: true, pattern: "present-action", actionReply: "same-subject", actions: ["eating", "drinking", "reading", "holding", "opening", "washing"], owners: ["the", "my", "your", "his", "her", "our", "their"], initialOwner: "the", subjectModes: { pronouns: assessedSubjectPronouns, names: [], initialPronoun: "I" }, settings: { explanations: true, wordPicker: true, initialPattern: "answer" }, initialWord: "apple" }
 };
 var lessonRegistry = classroomMatrices;
 function requestLesson(value) {
@@ -950,13 +980,18 @@ function composeLessonAction(lesson, request) {
 var vocabulary = ["apple", "water", "book", "hotel"].map((word) => lessonThreeMatrixCatalogue.find((item) => item.word === word));
 var subjects = ["you", "he", "she", "they"];
 var actions = ["eating", "drinking", "sleeping", "running", "walking", "playing", "reading", "going"];
+function recordedQuestion(level, id, source, other, audioUrl) {
+  return { ...source, id, level, choices: [source.thai, other.thai], correct: 0, audioUrl, distractorUnits: other.units };
+}
 var originalQuestions = subjects.flatMap((subject, index) => {
   const question2 = actionDialogue(subject, "eating", { vocabulary }).question;
   const otherQuestion = actionDialogue(subjects[(index + 1) % subjects.length], "eating", { vocabulary }).question;
-  return [{ ...question2, id: `action-l4-${subject}`, level: 4, choices: [question2.thai, otherQuestion.thai], correct: 0, audioUrl: `/audio/action-practice/question-${subject}.wav` }, ...actions.map((action, actionIndex) => {
+  return [recordedQuestion(4, `action-l4-${subject}`, question2, otherQuestion, `/audio/action-practice/question-${subject}.wav`), ...actions.map((action, actionIndex) => {
     const answer2 = actionDialogue(subject, action, { vocabulary }).answer;
-    const wrong = actionDialogue(subject, actions[(actionIndex + 1) % actions.length], { vocabulary }).answer;
-    return { ...answer2, id: `action-l5-${subject}-${action}`, level: 5, choices: [answer2.thai, wrong.thai], correct: 0, audioUrl: `/audio/action-practice/answer-${subject}-${action}.wav` };
+    const candidate = actionDialogue(subject, actions[(actionIndex + 1) % actions.length], { vocabulary }).answer;
+    const replaceDistractor = !taughtActionLine(5, candidate.units);
+    const wrong = replaceDistractor ? actionDialogue(subject, "sleeping", { vocabulary }).answer : candidate;
+    return recordedQuestion(5, `action-l5-${subject}-${action}${replaceDistractor ? "-taught" : ""}`, answer2, wrong, `/audio/action-practice/answer-${subject}-${action}.wav`);
   })];
 });
 var people2 = [
@@ -970,10 +1005,10 @@ function add(level, speaker, action, object, determiner) {
   const selection = { vocabulary: lessonThreeMatrixCatalogue, subject: speaker.person, object, determiner };
   const pair = actionDialogue(speaker.pronoun, action, selection);
   const sentence = level === 4 ? pair.question : pair.answer;
-  const alternative = level === 4 ? actionDialogue(speaker.pronoun === "they" ? "she" : "they", action, { vocabulary: lessonThreeMatrixCatalogue }).question.thai : actionDialogue(speaker.pronoun, action === "sleeping" ? "running" : "sleeping", { vocabulary: lessonThreeMatrixCatalogue, subject: speaker.person }).answer.thai;
+  const alternative = level === 4 ? actionDialogue(speaker.pronoun === "they" ? "she" : "they", action, { vocabulary: lessonThreeMatrixCatalogue }).question : actionDialogue(speaker.pronoun, action === "sleeping" ? "running" : "sleeping", { vocabulary: lessonThreeMatrixCatalogue, subject: speaker.person }).answer;
   const id = `action-expanded-l${level}-${slug(sentence.english)}`;
   if (expanded.some((q) => q.id === id) || originalQuestions.some((q) => q.level === level && q.english === sentence.english)) return;
-  expanded.push({ ...sentence, id, level, choices: [sentence.thai, alternative], correct: 0, audioUrl: `/audio/action-practice/${id}.wav` });
+  expanded.push(recordedQuestion(level, id, sentence, alternative, `/audio/action-practice/${id}.wav`));
 }
 for (const speaker of speakers) {
   add(4, speaker, "eating");
@@ -998,15 +1033,30 @@ for (const verb of ["eating", "reading", "drinking", "holding", "opening", "wash
     const sentence = actionDialogue("i", verb, selection).answer;
     const other = actionDialogue("i", verb, { ...selection, determiner: nextOwners[(n + person + 1) % nextOwners.length] }).answer;
     const id = `action-l6-${slug(sentence.english)}`;
-    nextLevel.push({ ...sentence, id, level: 6, choices: [sentence.thai, other.thai], correct: 0, audioUrl: `/audio/action-practice/${id}.wav` });
+    nextLevel.push(recordedQuestion(6, id, sentence, other, `/audio/action-practice/${id}.wav`));
   }
 }
 var guide = actionDialogue("i", "eating", { vocabulary: lessonThreeMatrixCatalogue, subject: nextSubjects[0], object: "an apple", determiner: "your" }).answer;
 if (!nextLevel.some((q) => q.english === guide.english)) {
   const id = `action-l6-${slug(guide.english)}`;
-  nextLevel.push({ ...guide, id, level: 6, choices: [guide.thai, nextLevel[0].thai], correct: 0, audioUrl: `/audio/action-practice/${id}.wav` });
+  nextLevel.push(recordedQuestion(6, id, guide, nextLevel[0], `/audio/action-practice/${id}.wav`));
 }
-var actionPracticeQuestions = [...originalQuestions, ...expanded, ...nextLevel];
+var recordings = [...originalQuestions, ...expanded, ...nextLevel];
+var approved = recordings.filter((q) => taughtActionLine(q.level, q.units) && taughtActionLine(q.level, q.distractorUnits));
+var complementKey = (q) => q.units.filter((u) => ["action", "determiner", "object"].includes(u.role)).map((u) => u.english).join(" ");
+var covered = new Set(approved.filter((q) => q.level === 5).map(complementKey));
+var reviewedPairs = new Set(expanded.filter((q) => q.level === 5).map(complementKey));
+var replacements = [];
+for (const q of nextLevel) {
+  const pair = complementKey(q);
+  if (!reviewedPairs.has(pair) || covered.has(pair) || !taughtActionLine(5, q.units)) continue;
+  const subject = q.units.find((u) => u.role === "person").english;
+  const person = nextSubjects.find((p) => p.word.toLowerCase() === subject.toLowerCase());
+  const other = actionDialogue(person.word.toLowerCase(), "sleeping", { vocabulary: lessonThreeMatrixCatalogue, subject: person }).answer;
+  replacements.push(recordedQuestion(5, `action-l5-taught-${slug(q.english)}`, q, other, q.audioUrl));
+  covered.add(pair);
+}
+var actionPracticeQuestions = [...approved, ...replacements];
 
 // src/race/actionStarContent.ts
 var actionStarLesson = requestLesson(4);
@@ -1017,11 +1067,11 @@ var quota = {
 };
 function generatedActionCandidates() {
   const capability = actionCapabilities(actionStarLesson);
-  const recordings = new Map(actionPracticeQuestions.filter((q) => q.level === 6).map((q) => [q.english, q]));
+  const recordings2 = new Map(actionPracticeQuestions.filter((q) => q.level === 6).map((q) => [q.english, q]));
   const candidates = [];
   for (const subject of capability.subjects) for (const action of capability.actions) for (const object of capability.objects(action.word)) for (const owner of capability.determiners(object)) {
     const request = { subject: subject.word, action: action.word, object: object.word, determiner: owner.word };
-    const answer2 = composeLessonAction(actionStarLesson, request).answer, recording = recordings.get(answer2.english);
+    const answer2 = composeLessonAction(actionStarLesson, request).answer, recording = recordings2.get(answer2.english);
     if (!recording) continue;
     if (recording.thai !== answer2.thai || JSON.stringify(recording.units) !== JSON.stringify(answer2.units)) throw new Error(`Recording differs from blueprint: ${recording.id}`);
     if (recording.correct !== 0 || recording.choices[0] !== answer2.thai || recording.choices[0] === recording.choices[1]) throw new Error(`Ambiguous recording choices: ${recording.id}`);

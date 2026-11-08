@@ -1,9 +1,9 @@
 # Sentence content audit
 
-2497 checks across 850 authored questions.
+3178 checks across 829 authored questions.
 
 - Unexpected errors: 0
-- Verified intentional grammar errors: 285
+- Verified intentional grammar errors: 283
 - Audio warnings: 177
 
 ## Problems

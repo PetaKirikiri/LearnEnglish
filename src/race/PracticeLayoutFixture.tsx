@@ -1,5 +1,6 @@
 import PracticeStage from './PracticeStage'
-import BinaryAnswerZone from './BinaryAnswerZone'
+import {useState} from 'react'
+import PracticeHelpDialog from './PracticeHelpDialog'
 import ExampleLanguage from '../learning/ExampleLanguage'
 import WordSlotIcon from '../learning/sentenceMatrix/WordSlotIcon'
 import PronounIcon from '../learning/sentenceMatrix/PronounIcon'
@@ -12,6 +13,10 @@ function Sentence({full=false}:{full?:boolean}){
 }
 /** Development-only fixtures use the real stage, engine and answer component. */
 export default function PracticeLayoutFixture(){
+ const [picked,pick]=useState<number|null>(null)
  const matrix=new URLSearchParams(location.search).get('answers')==='matrix'
- return <main className="phone-practice foundation-practice"><div className="practice-shell"><header><img className="foundation-cap" src="/brand/success-university-su.svg" alt="Success University"/><progress className="foundation-progress" value={15} max={30} aria-label="ความคืบหน้าของบทฝึก"/></header><PracticeStage question={<Sentence full/>} answers={<BinaryAnswerZone disabled={false} selected={null} onChoose={()=>{}} choices={matrix?[{id:'a',label:'the hotel',content:<Sentence/>},{id:'b',label:'I am at the hotel',content:<Sentence full/>}]:[{id:'a',label:'I am at the hotel',content:'I am at the hotel.'},{id:'b',label:'They are at the hospital',content:'They are at the hospital near the school with their mother and father.'}]}/>}/></div></main>
+ return <main className="phone-practice foundation-practice"><div className="practice-shell"><header><img className="foundation-cap" src="/brand/success-university-su.svg" alt="Success University"/><progress className="foundation-progress" value={15} max={30} aria-label="ความคืบหน้าของบทฝึก"/></header><PracticeStage question={<Sentence full/>}
+ prompt="ประโยคนี้แปลว่าอะไร?" correct={picked===null?null:picked===1} onNext={()=>pick(null)}
+ explanation={close=><PracticeHelpDialog title="บอกสถานที่" onClose={close}>ฟังว่าใครอยู่ที่ไหน</PracticeHelpDialog>}
+ answers={{disabled:picked!==null,selected:picked,onChoose:pick,choices:matrix?[{id:'a',label:'the hotel',content:<Sentence/>},{id:'b',label:'I am at the hotel',content:<Sentence full/>}]:[{id:'a',label:'I am at the hotel',content:'I am at the hotel.'},{id:'b',label:'They are at the hospital',content:'They are at the hospital near the school with their mother and father.'}]}}/></div></main>
 }

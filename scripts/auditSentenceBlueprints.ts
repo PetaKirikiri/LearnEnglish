@@ -1,3 +1,5 @@
+import {actionPracticeQuestions} from '../src/race/actionPracticeContent'
+import {taughtActionLine} from '../src/learning/sentenceRules/assessmentScope'
 import {lessonNumbers} from '../src/learning/lessonRequests'
 import {lessonPracticeQuestions} from '../src/race/lessonPractice'
 import {existsSync,mkdirSync,writeFileSync,readFileSync} from 'node:fs'
@@ -93,6 +95,17 @@ for(const blueprint of ['where-noun','person-at-place'] as const){
   checked++
   if(offered.includes(noun)!==compatibilityCoverage[noun.word].includes(blueprint))findings.push({id:`bidirectional:${blueprint}:${noun.word}`,blueprint,issues:[{code:'selection-validation-disagreement',slot:'noun',word:noun.word,message:'Forward and reverse eligibility disagree.'}]})
  }
+}
+// Check every delivered action pair, including the English source of the wrong Thai choice.
+const actionManifest=JSON.parse(readFileSync('public/audio/action-practice/voice-manifest.json','utf8'))
+for(const q of actionPracticeQuestions){
+ const issues:RuleIssue[]=[]
+ for(const units of [q.units,q.distractorUnits]){
+  checked++
+  if(!taughtActionLine(q.level,units))issues.push({code:'untaught-frame',slot:'sentence',word:q.id,message:'Sentence outside the taught practice scope.'})
+ }
+ if(actionManifest[q.audioUrl.split('/').pop()!]?.text!==q.english||!existsSync('public'+q.audioUrl))issues.push({code:'recording-mismatch',slot:'audio',word:q.id,message:'The recording must match the assessed sentence.'})
+ if(issues.length)findings.push({id:q.id,blueprint:'present-action-dialogue',sentence:q.english,issues})
 }
 const warningCounts=Object.fromEntries([...new Set(assetWarnings.map(item=>item.code))].map(code=>[code,assetWarnings.filter(item=>item.code===code).length]))
 const report={checked,compatibilityCoverage,warningCounts,questionCount,assetWarnings,expectedNegatives,errors:findings.length,generatedQuestions:lessonThreePeopleQuestions.length+lessonThreeAnswerQuestions.length+lessonThreeReviewQuestions.length,blueprints:sentenceBlueprints,meaningCoverage:Object.fromEntries(lessonThreeMatrixCatalogue.map(word=>[word.word,meaningForWord(word)?.kind??'UNCLASSIFIED'])),findings}

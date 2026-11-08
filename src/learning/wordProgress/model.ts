@@ -13,3 +13,9 @@ export function wordOpacity(word:string,scores:WordScores={},settings:FadeSettin
 }
 export function scoresFromProgress(rows:WordProgress[]):WordScores {return Object.fromEntries(rows.map(row=>[row.word_id,row.correct]))}
 export type WordAttempt={id:string;questionId:string;version:number;answer:string;occurredAt:string;modality:'visible'|'faded'|'audio';replays:number;ruleVersion:number}
+
+export function sentenceModality(english:string,scores:WordScores,settings:FadeSettings):WordAttempt['modality']{
+ const opacity=wordTokens(english).map(word=>wordOpacity(word,scores,settings))
+ if(opacity.every(value=>value===0))return 'audio'
+ return opacity.some(value=>value<1)?'faded':'visible'
+}

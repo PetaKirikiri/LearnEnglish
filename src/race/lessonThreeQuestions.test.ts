@@ -3,8 +3,9 @@ import { expect,it } from 'vitest'
 import { existsSync, readFileSync } from 'node:fs'
 import { lessonThreePeopleQuestions, lessonThreeAnswerQuestions, lessonThreeReviewQuestions } from './lessonThreeQuestions'
 import { lessonOneCatalogue,lessonTwoCatalogue,lessonThreeCatalogue,lessonThreeIntroducedCatalogue } from '../classroom/wordCatalogue'
-import { people,peopleSentence,locationWords,replyPerson } from '../learning/sentenceMatrix/peopleLocation'
+import { people as allPeople,peopleSentence,locationWords,replyPerson } from '../learning/sentenceMatrix/peopleLocation'
 import { defaultGuide } from '../classroom/pronunciation/guides'
+const people=allPeople.filter(person=>person.word!=='it')
 it('adds 12 pictured noun families and water without leaking future words into earlier lessons',()=>{
  expect(lessonOneCatalogue).toHaveLength(20)
  expect(lessonTwoCatalogue).toHaveLength(57)

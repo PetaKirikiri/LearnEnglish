@@ -6,7 +6,7 @@ import {readFileSync,existsSync} from 'node:fs'
 import {actionStarTiers,actionStarLesson,actionStarDeck,actionStarTeachingExample,completeStar,starAvailable,type StarProgress} from './actionStarContent'
 import {composeLessonAction,actionCapabilities} from '../learning/sentenceRules/actionCapabilities'
 const record=vi.hoisted(()=>vi.fn())
-vi.mock('../learning/wordProgress/useWordProgress',()=>({useWordProgress:()=>({ready:true,error:'',record,retry:vi.fn()})}))
+vi.mock('../learning/wordProgress/useWordProgress',()=>({useWordProgress:()=>({scores:{},ready:true,error:'',record,retry:vi.fn()})}))
 vi.mock('./PracticeGold',()=>({default:()=>null,awardPracticeGold:vi.fn()}))
 import ActionStarCourse from './ActionStarCourse'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
@@ -56,19 +56,23 @@ it('requires two complete unassisted successes and keeps prior success on a late
  const old=progress[1]!.passes;progress=completeStar(progress,1,3,50,true);expect(progress[1]!.passes).toBe(old)
  expect(completeStar(progress,2,20,21,true)).toBe(progress)
 })
-it('uses the existing quadrant, waits for finished audio and reveals language only after answering',async()=>{
+it('uses the existing quadrant, waits for finished audio and shows English and icons before answering and reviews the translation afterwards',async()=>{
  const host=document.createElement('div'),root=createRoot(host)
  const click=async(selector:string)=>act(async()=>host.querySelector<HTMLButtonElement>(selector)!.click())
  try{
   await act(async()=>root.render(<ActionStarCourse/>))
   expect(host.querySelector('[data-matrix-layout="action-answer"]')).not.toBeNull()
-  expect(host.querySelector('.example-source,.example-gloss,.example-translation')).toBeNull()
+  expect(host.querySelector('.example-source')).not.toBeNull()
+  expect(host.querySelector('.cw-slot-role')).not.toBeNull()
+  expect(host.querySelector('.example-gloss,.example-translation')).toBeNull()
+  expect(host.querySelector('.foundation-controls + .binary-answer-zone')).not.toBeNull()
   expect(host.querySelector<HTMLButtonElement>('.binary-answer')?.disabled).toBe(true)
   await act(async()=>finishAudio())
   expect(host.querySelector<HTMLButtonElement>('.binary-answer')?.disabled).toBe(false)
   await click('.binary-answer')
   expect(host.querySelector('.example-source')).not.toBeNull();expect(host.querySelector('.example-translation')).not.toBeNull()
   expect(record).toHaveBeenCalledOnce()
+  expect(record.mock.calls[0][0].modality).toBe('visible')
   await click('.binary-answer');expect(record).toHaveBeenCalledOnce()
  }finally{await act(async()=>root.unmount());vi.unstubAllGlobals()}
 })
@@ -83,7 +87,10 @@ it('starts the highest unlocked tier immediately and scores only after an answer
    expect(host.querySelector('.action-stars-menu,.action-star-teaching')).toBeNull()
    expect(localStorage.getItem(`englishsuccess:action-stars:v1:guest:run:${stars}`)).toBeTruthy()
    expect(record).not.toHaveBeenCalled()
-   expect(host.querySelector('.example-source,.example-gloss,.example-translation')).toBeNull()
+   expect(host.querySelector('.example-source')).not.toBeNull()
+  expect(host.querySelector('.cw-slot-role')).not.toBeNull()
+  expect(host.querySelector('.example-gloss,.example-translation')).toBeNull()
+  expect(host.querySelector('.foundation-controls + .binary-answer-zone')).not.toBeNull()
    expect(host.querySelector<HTMLButtonElement>('.binary-answer')?.disabled).toBe(true)
    await act(async()=>finishAudio())
    expect(host.querySelector<HTMLButtonElement>('.binary-answer')?.disabled).toBe(false)

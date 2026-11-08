@@ -39,7 +39,7 @@ it('awards performance stars only for complete rounds and keeps the gameplay pas
  expect(runStars({level:1,score:27,total:30,passed:false})).toBe(1) // unbalanced outcomes
  expect(runStars({level:1,score:27,total:30,passed:true})).toBe(2)
  expect(runStars({level:1,score:30,total:30,passed:true})).toBe(3)
- expect(runStars({level:4,score:10,total:10,passed:true})).toBe(3)
+ expect(runStars({level:4,score:9,total:9,passed:true})).toBe(3)
  expect(runStars({level:2,score:1,total:1,passed:false})).toBe(0)
  const record=mergeRun({}, {level:1,score:28,total:30,passed:true})
  const retried=mergeRun(record,{level:1,score:2,total:30,passed:false})
