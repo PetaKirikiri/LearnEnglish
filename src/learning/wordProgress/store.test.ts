@@ -5,13 +5,14 @@ vi.mock('../../lib/supabase',()=>({supabase:{rpc:mocks.rpc,auth:{getUser:mocks.g
 import {flushWordAttempts,pendingAttempts,queueAttempt} from './store'
 import type {WordAttempt} from './model'
 const attempt:WordAttempt={id:'attempt-1',questionId:'q1',version:1,answer:'yes',occurredAt:'2026-10-27T00:00:00Z',modality:'faded',replays:0,ruleVersion:1}
-beforeEach(()=>{localStorage.clear();vi.resetAllMocks();mocks.getUser.mockResolvedValue({data:{user:{id:'a'}}})})
+const receipt=(id:string,status='scored')=>({data:{accepted:true,receipt_id:'receipt-'+id,client_id:id,status},error:null})
+beforeEach(()=>{localStorage.clear();vi.resetAllMocks();mocks.getUser.mockResolvedValue({data:{user:{id:'a'}}});mocks.rpc.mockImplementation(async(_name,args)=>receipt(args.p_payload.p_id))})
 it('retains failed requests and retries the same id without duplicating the outbox',async()=>{
  queueAttempt('a',attempt);queueAttempt('a',attempt)
- mocks.rpc.mockResolvedValueOnce({error:new Error('offline')}).mockResolvedValueOnce({error:null})
+ mocks.rpc.mockResolvedValueOnce({error:new Error('offline')}).mockResolvedValueOnce(receipt(attempt.id))
  await expect(flushWordAttempts('a')).rejects.toThrow('offline');expect(pendingAttempts('a')).toHaveLength(1)
  await flushWordAttempts('a');expect(pendingAttempts('a')).toHaveLength(0)
- expect(mocks.rpc.mock.calls.map(c=>c[1].p_id)).toEqual(['attempt-1','attempt-1'])
+ expect(mocks.rpc.mock.calls.map(c=>c[1].p_payload.p_id)).toEqual(['attempt-1','attempt-1'])
 })
 it('never sends another account’s queued answers',async()=>{
  queueAttempt('b',attempt)
@@ -20,17 +21,19 @@ it('never sends another account’s queued answers',async()=>{
 })
 it('keeps newly queued answers when an earlier request completes',async()=>{
  queueAttempt('a',attempt)
- mocks.rpc.mockImplementation(async()=>{queueAttempt('a',{...attempt,id:'attempt-2'});return{error:null}})
+ mocks.rpc.mockImplementation(async()=>{queueAttempt('a',{...attempt,id:'attempt-2'});return receipt(attempt.id)})
  await flushWordAttempts('a');expect(pendingAttempts('a').map(a=>a.id)).toEqual(['attempt-2'])
 })
-it('uploads valid answers past a catalogue rejection and retries the rejected answer after repair',async()=>{
+it('accepts held receipts without blocking later answers',async()=>{
  queueAttempt('a',attempt);queueAttempt('a',{...attempt,id:'attempt-2'})
- mocks.rpc.mockImplementation(async(_name:string,args:{p_id:string})=>({error:args.p_id===attempt.id?{message:'Unknown question or answer'}:null}))
- await expect(flushWordAttempts('a')).rejects.toEqual({message:'Unknown question or answer'})
- expect(mocks.rpc.mock.calls.map(call=>call[1].p_id)).toEqual(['attempt-1','attempt-2'])
- expect(pendingAttempts('a')).toEqual([attempt])
- mocks.rpc.mockResolvedValue({error:null})
+ mocks.rpc.mockImplementation(async(_name,args)=>receipt(args.p_payload.p_id,args.p_payload.p_id===attempt.id?'needs_review':'scored'))
  await flushWordAttempts('a')
+ expect(mocks.rpc.mock.calls.map(call=>call[1].p_payload.p_id)).toEqual(['attempt-1','attempt-2'])
+ expect(mocks.rpc.mock.calls.every(call=>call[0]==='submit_english_attempt'&&call[1].p_source==='word')).toBe(true)
  expect(pendingAttempts('a')).toEqual([])
- expect(mocks.rpc.mock.calls.map(call=>call[1].p_id)).toEqual(['attempt-1','attempt-2','attempt-1'])
+})
+it.each([null,{accepted:true},{accepted:true,receipt_id:'saved',client_id:'another',status:'scored'}])('keeps answers without a matching saved receipt: %j',async(data)=>{
+ queueAttempt('a',attempt);mocks.rpc.mockResolvedValue({data,error:null})
+ await expect(flushWordAttempts('a')).rejects.toThrow('Answer receipt not confirmed')
+ expect(pendingAttempts('a')).toEqual([attempt])
 })

@@ -5,8 +5,9 @@ vi.mock('../lib/supabase',()=>({supabase:{auth:{getUser:mock.getUser},rpc:mock.r
 import {readRecall,saveRecall,syncRecall} from './numberRecallStore'
 import type {RecallAttempt} from './numberRecall'
 const event:RecallAttempt={id:'test-id',word:'hotel',module:1,answer:0,correct:true,at:Date.UTC(2026,9,30),assisted:false,heard:true,replays:1,support:0}
+const receipt=(id:string,status='scored')=>({data:{accepted:true,receipt_id:'receipt-'+id,client_id:id,status},error:null})
 beforeEach(()=>{
- localStorage.clear();vi.clearAllMocks();mock.getUser.mockResolvedValue({data:{user:{id:'a'}}});mock.rpc.mockResolvedValue({error:null});mock.range.mockResolvedValue({data:[],error:null})
+ localStorage.clear();vi.resetAllMocks();mock.getUser.mockResolvedValue({data:{user:{id:'a'}}});mock.rpc.mockImplementation(async(_name,args)=>receipt(args.p_payload.p_id));mock.range.mockResolvedValue({data:[],error:null})
  const query={select:()=>query,eq:()=>query,order:()=>query,range:mock.range};mock.from.mockReturnValue(query)
 })
 it('deduplicates local attempts and keeps accounts separate',()=>{
@@ -32,17 +33,31 @@ it('keeps new answers that arrive while history is downloading',async()=>{
  expect(readRecall('a')).toEqual([event]);expect(mock.rpc).toHaveBeenCalledTimes(1)
  expect(JSON.parse(localStorage.getItem('english:number-recall:v1:a:outbox')??'[]')).toEqual([])
 })
-it('uploads valid siblings of a rejected answer and retains only the rejected answer for repair',async()=>{
- const rejected={...event,id:'rejected',word:'water'},valid={...event,id:'valid'}
- saveRecall(rejected,'a');saveRecall(valid,'a')
- mock.rpc.mockImplementation(async(_name:string,args:{p_id:string})=>({error:args.p_id==='rejected'?{message:'Unknown vocabulary'}:null}))
- await expect(syncRecall('a')).rejects.toEqual({message:'Unknown vocabulary'})
- expect(mock.rpc.mock.calls.map(call=>call[1].p_id)).toEqual(['rejected','valid'])
- expect(JSON.parse(localStorage.getItem('english:number-recall:v1:a:outbox')??'[]')).toEqual([rejected])
- mock.rpc.mockResolvedValue({error:null})
+it('keeps held history while saved receipts let valid siblings upload',async()=>{
+ const held={...event,id:'held',word:'water'},valid={...event,id:'valid'}
+ saveRecall(held,'a');saveRecall(valid,'a')
+ mock.rpc.mockImplementation(async(_name,args)=>receipt(args.p_payload.p_id,args.p_payload.p_id==='held'?'needs_review':'scored'))
  await syncRecall('a')
- expect(mock.rpc.mock.calls.map(call=>call[1].p_id)).toEqual(['rejected','valid','rejected'])
+ expect(mock.rpc.mock.calls.map(call=>call[1].p_payload.p_id)).toEqual(['held','valid'])
+ expect(mock.rpc.mock.calls.every(call=>call[0]==='submit_english_attempt'&&call[1].p_source==='number')).toBe(true)
  expect(JSON.parse(localStorage.getItem('english:number-recall:v1:a:outbox')??'[]')).toEqual([])
+ expect(readRecall('a')).toEqual([held,valid])
+ await syncRecall('a');expect(mock.rpc).toHaveBeenCalledTimes(2)
+})
+it('retains an answer when the server response does not confirm its receipt',async()=>{
+ saveRecall(event,'a');mock.rpc.mockResolvedValue({data:null,error:null})
+ await expect(syncRecall('a')).rejects.toThrow('Answer receipt not confirmed')
+ expect(JSON.parse(localStorage.getItem('english:number-recall:v1:a:outbox')??'[]')).toEqual([event])
+})
+it('replaces a settled legacy receipt without duplicating it or collapsing later reps',async()=>{
+ const legacy={...event,id:'0-hotel'}
+ saveRecall(legacy,'a')
+ mock.range.mockResolvedValue({data:[
+  {...event,id:'server-first',legacy_id:legacy.id,occurred_at:new Date(event.at).toISOString()},
+  {...event,id:'server-second',legacy_id:legacy.id,occurred_at:new Date(event.at+60000).toISOString()},
+ ],error:null})
+ await syncRecall('a')
+ expect(readRecall('a').map(row=>row.id)).toEqual(['server-first','server-second'])
 })
 it('stops on a connection failure without discarding any queued answers',async()=>{
  saveRecall(event,'a');saveRecall({...event,id:'second'},'a')
