@@ -5,13 +5,18 @@ type Snapshot={userId:string;rows:WordProgress[];ready:boolean;error:string}
 export function useWordProgress(userId?:string,tracking=true){
  const [snapshot,setSnapshot]=useState<Snapshot|null>(null)
  const current=useRef(userId)
- const retry=useCallback(()=>{
+ const retry=useCallback(async()=>{
   if(!userId)return Promise.resolve()
-  return (tracking?flushWordAttempts(userId):Promise.resolve()).then(()=>loadWordProgress(userId)).then(rows=>{
-   if(current.current===userId)setSnapshot({userId,rows,ready:true,error:''})
-  }).catch(()=>{
+  let uploadFailed=false
+  // Pending writes must not stop already-earned proficiency from loading.
+  // The store retains failed attempts for retry; only server scores drive fade.
+  if(tracking)try{await flushWordAttempts(userId)}catch{uploadFailed=true}
+  try{
+   const rows=await loadWordProgress(userId)
+   if(current.current===userId)setSnapshot({userId,rows,ready:true,error:uploadFailed?'บันทึกความคืบหน้าไม่ได้ กรุณาลองอีกครั้ง':''})
+  }catch{
    if(current.current===userId)setSnapshot(previous=>({userId,rows:previous?.userId===userId?previous.rows:[],ready:previous?.userId===userId&&previous.ready,error:'บันทึกหรือโหลดความคืบหน้าไม่ได้ กรุณาลองอีกครั้ง'}))
-  })
+  }
  },[userId,tracking])
  useEffect(()=>{current.current=userId;void retry();const timer=setInterval(()=>void retry(),30000);window.addEventListener('online',retry);window.addEventListener('focus',retry);return()=>{current.current=undefined;clearInterval(timer);window.removeEventListener('online',retry);window.removeEventListener('focus',retry)}},[userId,retry])
  function record(attempt:WordAttempt){if(!userId||!tracking)return;queueAttempt(userId,attempt);void retry()}

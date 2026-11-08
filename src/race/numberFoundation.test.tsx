@@ -14,6 +14,11 @@ import {numberDeck,numberPassed,numberRecordings,numberNouns,sentenceNumberNouns
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 let end:()=>void=()=>{}
 let played=""
+function currentSentence(userId?:string){
+ const saved=JSON.parse(localStorage.getItem(foundationKey(userId))!)
+ const question=saved.deck[saved.answers.length]??saved.deck[0]
+ return saved.module===1?`the ${question.word}`:`Where ${saved.module===3?question.verb:question.plural?'are':'is'} the ${question.word}?`
+}
 beforeEach(()=>{wordProgress.scores={};vi.stubEnv('DEV',false);localStorage.clear();vi.stubGlobal('Audio',class{onended:(()=>void)|null=null;onerror:(()=>void)|null=null;src:string;constructor(src:string){this.src=src}pause(){}play(){played=this.src;end=()=>this.onended?.();return Promise.resolve()}})})
 afterEach(()=>{vi.unstubAllGlobals();vi.unstubAllEnvs()})
 it('changes the actual exercise through the journey header, not only its parent level',async()=>{
@@ -46,7 +51,8 @@ it('keeps the read-only noun group visible and automatically plays audio without
  const host=document.createElement('div');const root=createRoot(host)
  try{
   await act(async()=>root.render(<NumberFoundation/>))
-  expect(host.querySelector('.practice-question .tonight-slots')?.getAttribute('aria-label')).toBe('the hotel')
+  const initialSentence=currentSentence()
+  expect(host.querySelector('.practice-question .tonight-slots')?.getAttribute('aria-label')).toBe(initialSentence)
   expect(host.querySelector('.practice-question button')).toBeNull()
   expect(host.querySelector<HTMLProgressElement>('header progress')?.value).toBe(0)
   expect(host.querySelector('.foundation-question-count')).toBeNull()
@@ -59,8 +65,8 @@ it('keeps the read-only noun group visible and automatically plays audio without
   await act(async()=>end())
   expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(false)
   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-answers button')!.click())
-  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe('the hotel')
-  expect(host.querySelector('.foundation-controls')?.textContent).not.toContain('the hotel')
+  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe(initialSentence)
+  expect(host.querySelector('.foundation-controls')?.textContent).not.toContain(initialSentence)
   expect(host.querySelector<HTMLProgressElement>('header progress')?.value).toBe(1)
   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-next')!.click())
   expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(false)
@@ -72,7 +78,7 @@ it('adds full-sentence number recognition before sentence judgement',async()=>{
  try{
   await act(async()=>root.render(<NumberFoundation/>))
   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
-  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe('Where is the hotel?')
+  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe(currentSentence())
   expect([...host.querySelectorAll('.practice-answers button')].map(b=>b.textContent)).toEqual(['หนึ่งสิ่ง','หลายสิ่ง'])
   expect(host.querySelector('.cw-game-icon-apples')).not.toBeNull()
   expect(host.querySelector('.practice-question button')).toBeNull()
@@ -89,10 +95,10 @@ it('adds full-sentence number recognition before sentence judgement',async()=>{
   expect(host.querySelector('.practice-complete')?.textContent).toContain('30 / 30')
   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
   expect(JSON.parse(localStorage.getItem(foundationKey())!).module).toBe(3)
-  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe('Where is the hotel?')
+  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe(currentSentence())
   expect([...host.querySelectorAll('.practice-answers button')].map(b=>b.textContent)).toEqual(['ถูก','ผิด'])
   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-header-audio')!.click())
-  expect(played).toBe('/audio/number-foundation/where-is-the-hotel.wav')
+  expect(played).toBe(`/audio/number-foundation/${currentSentence().toLowerCase().replace(/\?$/,'').replaceAll(' ','-')}.wav`)
  }finally{await act(async()=>root.unmount())}
 })
 it('does not reuse old verb-module results as sentence-listening results',async()=>{
@@ -100,7 +106,7 @@ it('does not reuse old verb-module results as sentence-listening results',async(
  const host=document.createElement('div');const root=createRoot(host)
  try{
   await act(async()=>root.render(<NumberFoundation/>))
-  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe('Where is the hotel?')
+  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe(currentSentence())
   expect(host.querySelector<HTMLProgressElement>('progress')?.value).toBe(0)
   expect(JSON.parse(localStorage.getItem(foundationKey())!).sentenceComplete).toBe(false)
  }finally{await act(async()=>root.unmount())}
@@ -159,12 +165,12 @@ it('skips beginner rounds for placed accounts without awarding completion and re
  localStorage.setItem(foundationKey('returning'),JSON.stringify({version:2,module:1,deck:numberDeck(),answers:[true],picked:null,numberComplete:false,sentenceComplete:false}))
  try{
   await act(async()=>root.render(<NumberFoundation userId="returning" minimumModule={3}/>))
-  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe('Where is the hotel?')
+  expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe(currentSentence('returning'))
   const saved=JSON.parse(localStorage.getItem(foundationKey('returning'))!)
   expect(saved.module).toBe(3);expect(saved.numberComplete).toBe(false);expect(saved.sentenceComplete).toBe(false)
   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-header-audio')!.click())
   await act(async()=>end())
-  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-answers button')!.click())
+  await act(async()=>host.querySelectorAll<HTMLButtonElement>('.practice-answers button')[(saved.deck[0].verb==='are')===saved.deck[0].plural?0:1].click())
   await act(async()=>root.unmount());root=createRoot(host)
   await act(async()=>root.render(<NumberFoundation userId="returning" minimumModule={3}/>))
   expect(host.querySelector<HTMLProgressElement>('progress')?.value).toBe(1)
@@ -296,7 +302,7 @@ it('opens Levels 4 and 5 with real Thai answer options and returns to Level 3',a
 
 it.each([1,2,3,4,5])('uses saved word scores and honors the engine fade switch at level %i',async(level)=>{
  localStorage.setItem('englishsuccess:practice-level:guest',String(level))
- wordProgress.scores={'en:hotel':25,'en:where':25,'en:what':25,'en:am':25,'en:is':25,'en:are':25,'en:i':25,'en:he':25,'en:she':25,'en:they':25,'en:bia':25,'en:doctor':25,'en:doctors':25}
+ wordProgress.scores={...Object.fromEntries(numberCatalogue.map(item=>[`en:${item.word}`,25])),'en:you':25,'en:we':25,'en:hotel':25,'en:where':25,'en:what':25,'en:am':25,'en:is':25,'en:are':25,'en:i':25,'en:he':25,'en:she':25,'en:they':25,'en:bia':25,'en:doctor':25,'en:doctors':25}
  const host=document.createElement('div'),root=createRoot(host)
  try{
   await act(async()=>root.render(<NumberFoundation settings={{fadeMode:true}}/>))
@@ -318,3 +324,13 @@ it.each([1,2,3,4,5])('uses saved word scores and honors the engine fade switch a
   expect(host.querySelectorAll('.practice-answers button')).toHaveLength(2)
  }finally{await act(async()=>root.unmount())}
  })
+
+it('starts journey runs from the wider scheduled noun catalogue',async()=>{
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<NumberFoundation newRun initialLevel={1}/>))
+  const saved=JSON.parse(localStorage.getItem(foundationKey())!)
+  expect(saved.deck).toHaveLength(30)
+  expect(new Set(saved.deck.map((question:{word:string})=>numberCatalogue.find(item=>item.word===question.word)?.singular)).size).toBeGreaterThan(5)
+ }finally{await act(async()=>root.unmount())}
+})

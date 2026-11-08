@@ -4,7 +4,8 @@ import {recallStates,recallKey,selectRecallItem,scheduledNumberDeck,type RecallA
 const now=Date.UTC(2026,9,30)
 const attempt=(changes:Partial<RecallAttempt>={}):RecallAttempt=>({id:crypto.randomUUID(),word:'hotel',module:1,answer:0,correct:true,at:now,assisted:false,heard:true,replays:1,support:0,...changes})
 it('opens the authored catalogue, preserving first lesson assignment and plural-only eligibility',()=>{
- expect(numberCatalogue).toHaveLength(100)
+ expect(numberCatalogue.length).toBeGreaterThanOrEqual(100)
+ expect(new Set(numberCatalogue.map(item=>item.word)).size).toBe(numberCatalogue.length)
  expect(numberCatalogue.find(q=>q.word==='hotels')?.lesson).toBe(1)
  expect(numberCatalogue.find(q=>q.word==='apples')?.lesson).toBe(3)
  const deck=scheduledNumberDeck(1,[],now)
@@ -60,4 +61,10 @@ it('balances agreement judgements independently from noun number',()=>{
  expect(deck.filter(q=>(q.verb==='are')===q.plural)).toHaveLength(15)
  expect(new Set(deck.map(q=>`${q.verb}:${q.plural}`)).size).toBe(4)
  expect(recallStates([attempt({module:3}),attempt({module:3,at:now+1})])).toEqual({})
+})
+
+it('spreads new encounters across noun families instead of repeating the fixed five',()=>{
+ const deck=scheduledNumberDeck(1,[],now)
+ expect(new Set(deck.map(question=>numberCatalogue.find(item=>item.word===question.word)?.singular)).size).toBeGreaterThan(5)
+ expect(selectRecallItem({module:1,events:[],recent:['hotel'],plural:true,now})?.word).not.toBe('hotels')
 })

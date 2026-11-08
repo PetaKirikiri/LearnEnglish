@@ -47,7 +47,7 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,o
  const lessonHref=`${window.innerWidth>=1024?'/classroom/index.html':'/english/notes'}?lesson=${lesson}`
  const preview=import.meta.env.DEV?new URLSearchParams(location.search).get('preview'):null
  const [saved,setSaved]=useState<Saved>(()=>{
-  if(newRun)return {...fresh(selectedLevel,userId),deck:numberDeck(selectedLevel),manualLevel:true}
+  if(newRun)return {...fresh(selectedLevel,userId),manualLevel:true}
   if(!['question','correct','wrong','finished'].includes(preview??'')){const previous=load(userId,minimumModule);return previous.module===selectedLevel?previous:{...fresh(selectedLevel,userId),manualLevel:true,numberComplete:previous.numberComplete||previous.module===1&&numberPassed(previous.deck,previous.answers),sentenceComplete:previous.sentenceComplete||previous.module===2&&numberPassed(previous.deck,previous.answers)}}
   const moduleParam=Number(new URLSearchParams(location.search).get('module'))
   const module=moduleParam===2||moduleParam===3?moduleParam:1

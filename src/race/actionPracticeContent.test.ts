@@ -1,6 +1,6 @@
 import {expect,it} from 'vitest'
 import {existsSync,readFileSync} from 'node:fs'
-import {actionPracticeQuestions} from './actionPracticeContent'
+import {actionPracticeDeck,actionPracticeQuestions} from './actionPracticeContent'
 it('uses reviewed questions with exactly two distinct Thai translations',()=>{
  expect(actionPracticeQuestions.filter(q=>q.level===4&&q.id.startsWith('action-l4-')).map(q=>[q.english,q.thai])).toEqual([
  ['What are you doing?','คุณกำลังทำอะไร'],['What is he doing?','เขากำลังทำอะไร'],['What is she doing?','เธอกำลังทำอะไร'],['What are they doing?','พวกเขากำลังทำอะไร']])
@@ -61,4 +61,20 @@ it('requires taught grammar in every slot even when a future form is valid Engli
  expect(taughtActionLine(5,line.filter(unit=>unit.role!=='determiner').map(unit=>unit.role==='object'?{...unit,english:'it.'}:unit))).toBe(false)
  expect(taughtActionLine(5,actionDialogue('he','going',{vocabulary}).answer.units)).toBe(false)
  expect(taughtActionLine(4,actionDialogue('it','reading',{vocabulary}).question.units)).toBe(false)
+})
+
+it('balances sampled rounds across noun families without changing approved sentences',async()=>{
+ const {lessonThreeMatrixCatalogue}=await import('../classroom/wordCatalogue')
+ const family=(question:typeof actionPracticeQuestions[number])=>{
+  const word=question.units.find(unit=>unit.role==='object')?.english.toLowerCase().replace(/[.!?]$/,'')
+  return lessonThreeMatrixCatalogue.find(item=>item.word===word)?.singular??word??'no-object'
+ }
+ for(const level of [4,5,6] as const){
+  const deck=actionPracticeDeck(level),bank=actionPracticeQuestions.filter(question=>question.level===level)
+  expect(deck).toHaveLength(Math.min(30,bank.length))
+  expect(new Set(deck.map(question=>question.id)).size).toBe(deck.length)
+  for(const question of deck){expect(bank.some(item=>item.id===question.id)).toBe(true);expect(question.choices[question.correct]).toBe(question.thai)}
+  if(level===5)expect(new Set(deck.map(family)).size).toBe(Math.min(30,new Set(bank.map(family)).size))
+  if(level===6)for(const action of ['eating','reading','drinking','holding','opening','washing'])expect(deck.filter(question=>question.units.some(unit=>unit.role==='action'&&unit.english===action))).toHaveLength(5)
+ }
 })

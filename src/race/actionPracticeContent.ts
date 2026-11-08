@@ -1,3 +1,4 @@
+import {diverseQuestions} from './diverseQuestions'
 import {taughtActionLine} from '../learning/sentenceRules/assessmentScope'
 import {subjectPronouns} from '../learning/sentenceMatrix/subjectEngine'
 import {lessonThreeMatrixCatalogue} from '../classroom/wordCatalogue'
@@ -99,4 +100,15 @@ for(const q of nextLevel){
  covered.add(pair)
 }
 export const actionPracticeQuestions=[...approved,...replacements]
-export function actionPracticeDeck(level:4|5|6){const deck=actionPracticeQuestions.filter(q=>q.level===level).map(q=>Math.random()<.5?{...q,choices:[q.choices[1],q.choices[0]] as [string,string],correct:1}:{...q});for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]]}return level===6?['eating','reading','drinking','holding','opening','washing'].flatMap(action=>deck.filter(q=>q.units.some(u=>u.role==='action'&&u.english===action)).slice(0,5)):deck.slice(0,30)}
+function practiceGroups(question:ActionPracticeQuestion){
+ const word=question.units.find(unit=>unit.role==='object')?.english.toLowerCase().replace(/[.!?]$/,'')
+ const noun=lessonThreeMatrixCatalogue.find(item=>item.word===word)
+ return [noun?.singular??word??'no-object',question.units.find(unit=>unit.role==='person')?.english??'',question.units.find(unit=>unit.role==='action')?.english??'',question.units.find(unit=>unit.role==='determiner')?.english??'']
+}
+export function actionPracticeDeck(level:4|5|6){
+ const candidates=actionPracticeQuestions.filter(question=>question.level===level)
+ const selected=level===6
+  ?['eating','reading','drinking','holding','opening','washing'].flatMap(action=>diverseQuestions(candidates.filter(question=>question.units.some(unit=>unit.role==='action'&&unit.english===action)),5,practiceGroups))
+  :diverseQuestions(candidates,30,practiceGroups)
+ return selected.map(question=>Math.random()<.5?{...question,choices:[question.choices[1],question.choices[0]] as [string,string],correct:1}:{...question})
+}

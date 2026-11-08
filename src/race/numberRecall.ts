@@ -1,4 +1,4 @@
-import {numberCatalogue,numberAudio,type NumberItem} from './numberCatalogue'
+import {numberCatalogue,numberItem,numberAudio,type NumberItem} from './numberCatalogue'
 import {withJudgement,type NumberPrompt} from './numberFoundation'
 export type NumberRound=1|2|3
 export type RecallAttempt={id:string;word:string;module:NumberRound;answer:number;correct:boolean;at:number;assisted:boolean;heard:boolean;replays:number;support:number;verb?:'is'|'are'}
@@ -38,7 +38,16 @@ export function selectRecallItem({module,events,recent=[],plural,now=Date.now()}
  const unseen=candidates.filter(item=>!states[recallKey(module,item.word)]&&!recent.includes(item.word))
  // Three review opportunities, then one new word, so neither queue starves.
  const introduce=recent.length%4===3||due.length===0
- const orderedNew=unseen.sort((a,b)=>a.lesson-b.lesson||numberCatalogue.indexOf(a)-numberCatalogue.indexOf(b))
+ const family=(word:string)=>numberItem(word)?.singular??word
+ const recentFamilies=recent.slice(-3).map(family)
+ const familyCount=(word:string)=>recent.filter(previous=>family(previous)===family(word)).length
+ // Stay within the earliest unintroduced lesson, but vary equally suitable nouns.
+ // Treat key/keys as one family so changing number does not masquerade as variety.
+ const earliestLesson=Math.min(...unseen.map(item=>item.lesson))
+ const newLesson=unseen.filter(item=>item.lesson===earliestLesson)
+ const spacedNew=newLesson.filter(item=>!recentFamilies.includes(family(item.word)))
+ const orderedNew=(spacedNew.length?spacedNew:newLesson).map(item=>({item,tie:Math.random()}))
+  .sort((a,b)=>familyCount(a.item.word)-familyCount(b.item.word)||a.tie-b.tie).map(({item})=>item)
  const orderedDue=due.sort((a,b)=>{
   const sa=states[recallKey(module,a.word)],sb=states[recallKey(module,b.word)]
   return sa.support-sb.support||sa.due-sb.due||a.lesson-b.lesson
