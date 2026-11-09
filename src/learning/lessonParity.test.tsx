@@ -24,7 +24,7 @@ it('shares supported lesson requests across URLs, LINE, classroom and engine; re
   expect(requestLesson(Number(number))).toBe(classroomMatrices[`lesson-${number}`])
   for(const stage of requestLesson(number).stages!)expect(racePools.find(p=>p.id===stage)?.questions.length).toBeGreaterThan(0)
  }
- for(const value of ['0','5','unknown','',NaN])expect(()=>requestLesson(value)).toThrow('Unsupported lesson')
+ for(const value of ['0','6','unknown','',NaN])expect(()=>requestLesson(value)).toThrow('Unsupported lesson')
  expect(()=>practiceDeck(99)).toThrow('Unsupported lesson')
  expect(()=>practiceModules(99)).toThrow('Unsupported lesson')
 })
@@ -94,4 +94,30 @@ it('opens Lesson 4 notes and hides Thai layers in unanswered structured assessme
    expect(host.querySelectorAll('.example-source')).toHaveLength(q.document!.units.length)
   }
  }finally{await act(async()=>root.unmount())}
+})
+it('keeps Class 5 destination questions and answers within the taught scope',()=>{
+ const lesson=requestLesson(5),questions=lessonPracticeQuestions(5)
+ expect(questions).toHaveLength(30)
+ expect(questions.filter(q=>q.english.endsWith('?')).map(q=>q.english)).toEqual(['Where am I going?','Where are you going?','Where is he going?','Where is she going?','Where are we going?','Where are they going?'])
+ for(const q of questions){
+  expect(q.english).not.toMatch(/\b(it|its|schools|hotels|bedrooms)\b/i)
+  expect(q.answers).toHaveLength(2)
+  expect(q.answers[0][0].text).not.toBe(q.answers[1][0].text)
+ }
+ expect(lesson.actionQuestion).toBe('destination')
+ expect(lesson.actions).toEqual(['going','walking','running'])
+})
+it('shares destination verb choices and rejects unrelated objects',()=>{
+ const lesson=requestLesson(5),capability=actionCapabilities(lesson)
+ for(const action of ['going','walking','running']){
+  const objects=capability.objects(action)
+  expect(objects.length).toBeGreaterThan(0)
+  expect(objects.every(object=>object.categories.includes('destination'))).toBe(true)
+  const pair=composeLessonAction(lesson,{subject:'I',action,object:'to the hotel',determiner:'the'})
+  expect(pair.answer.english).toBe(`I am ${action} to the hotel.`)
+  expect(pair.question.english).toBe(`Where am I ${action}?`)
+ }
+ expect(composeLessonAction(lesson,{subject:'I',action:'walking',object:'to the hotel'}).answer.thai).toContain('เดินไปที่โรงแรม')
+ expect(()=>capability.objects('eating')).toThrow()
+ expect(()=>composeLessonAction(lesson,{subject:'I',action:'walking',object:'an apple'})).toThrow()
 })

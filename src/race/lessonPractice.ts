@@ -21,6 +21,23 @@ export function lessonPracticeQuestions(value:unknown):LessonPracticeQuestion[] 
   return {...q,document:{...sentence,construction:'location-answer',units:sentence.units.map((unit,index)=>({...unit,role:roles[index]}))}}
  })
  const capability=actionCapabilities(lesson)
+ if(number==='5') {
+  const questions:LessonPracticeQuestion[]=[]
+  for(const [index,subject] of capability.subjects.entries()) {
+   const objects=capability.objects('going')
+   for(const [oi,object] of objects.entries()) {
+    const determiner=lesson.owners![(index+oi)%lesson.owners!.length]
+    const pair=composeLessonAction(lesson,{subject:subject.word,action:'going',object:object.word,determiner})
+    const other=composeLessonAction(lesson,{subject:subject.word,action:'going',object:objects[(oi+1)%objects.length].word,determiner})
+    for(const mode of oi===0?['question','answer'] as const:['answer'] as const) {
+     const sentence=pair[mode],id=`l5-${subject.word.toLowerCase()}-${oi}-${mode}`
+     const distractor=mode==='answer'?other.answer.thai:`${subject.thai}กำลังทำอะไร`
+     questions.push({id,english:sentence.english,skill:'race-lesson-five',correct:0,audioUrl:`/audio/class-five/${id}.wav`,answers:[[{text:sentence.thai,skill:'race-lesson-five'}],[{text:distractor,skill:'race-lesson-five'}]],meaningDistractor:distractor,document:{...sentence,construction:mode==='answer'?'action-answer':'action-question'}})
+    }
+   }
+  }
+  return questions
+ }
  // The recorded action bank supplies the taught ownership contrasts.
  // Validate each candidate against the lesson request instead of maintaining another grammar.
  return actionStarTiers.flatMap(tier=>tier.questions).map(q=>{

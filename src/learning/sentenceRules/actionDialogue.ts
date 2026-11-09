@@ -39,8 +39,15 @@ export function actionContextsForWord(word:ClassroomWord):ObjectCategory[]{
   ...(meaning?.kind==='place'||meaning?.roles?.includes('destination')?['destination' as const]:[]),
  ]
 }
-export function objectsForAction(word:string,catalogue:readonly ClassroomWord[]){
+/** Movement can stand alone or take a destination in the destination blueprint. */
+export function actionForFrame(word:string, question?:'activity'|'destination'):Action|undefined {
  const action=actionVocabulary.find(item=>item.word===word)
+ if(question!=='destination')return action
+ if(!action||!['going','walking','running'].includes(word))throw new Error('Destination questions require a movement verb.')
+ return {...action,complement:'destination',objects:['destination']}
+}
+export function objectsForAction(word:string,catalogue:readonly ClassroomWord[],question?:'activity'|'destination'){
+ const action=actionForFrame(word,question)
  if(!action||action.complement==='none')return []
  const candidates=catalogue.map(item=>{
   const contexts=actionContextsForWord(item)
@@ -62,18 +69,19 @@ export const actionConstruction = {
  id:'present-action-dialogue',subjectKind:'person',actionForm:'present-participle',
  allowedCategories:['food','drink','readable','destination'] as const,objectPolicy:'verb-frame',
 } as const
-export function actionDialogue(subject:ActionSubject,word:string,selection:{vocabulary:readonly ClassroomWord[];determiner?:Determiner;object?:string;subject?:SubjectWord;destination?:SubjectWord}){
- const person=actionSubjects[subject],action=actionVocabulary.find(item=>item.word===word)
+export function actionDialogue(subject:ActionSubject,word:string,selection:{question?:'activity'|'destination';vocabulary:readonly ClassroomWord[];determiner?:Determiner;object?:string;subject?:SubjectWord;destination?:SubjectWord}){
+ const person=actionSubjects[subject],action=actionForFrame(word,selection.question)
  if(!person||!action)throw new Error('Choose a reviewed person and action.')
  if(selection.subject&&selection.subject.kind!=='person')throw new Error('This action needs a person.')
  if(selection.destination&&(action.complement!=='destination'||selection.destination.kind!=='place'))throw new Error('This action does not accept a named place.')
+ const destinationQuestion=selection.question==='destination'
  const speaker=selection.subject
  const questionSubject=speaker?.word??(subject==='i'?'I':subject)
  const answerWord=speaker?.word??person.answer
  const answerSubject=answerWord.charAt(0).toUpperCase()+answerWord.slice(1)
  const be=speaker?subjectVerb(speaker):person.answerBe
  const questionBe=speaker?subjectVerb(speaker):person.questionBe
- const objects=objectsForAction(word,selection.vocabulary)
+ const objects=objectsForAction(word,selection.vocabulary,selection.question)
  const chosenObject=selection.object===undefined?objects[0]:objects.find(item=>item.word===selection.object)
  if(selection.object!==undefined&&!chosenObject)throw new Error('This object does not fit the action.')
  const baseObject:ActionObject|undefined=selection.destination?{word:`to ${selection.destination.word}`,thai:`ไปที่${selection.destination.thai}`,noun:selection.destination.word,phrase:{noun:selection.destination.word,nounThai:selection.destination.thai,preposition:{english:'to',thai:'ที่'}},categories:['destination'] as const}:chosenObject
@@ -87,9 +95,9 @@ export function actionDialogue(subject:ActionSubject,word:string,selection:{voca
  {english:action.word,thai:action.thai,role:'action' as const},...(object?nounPhraseUnits(object.phrase).map(unit=>({...unit,role:unit.role==='noun'?'object' as const:unit.role})):[])]
  units[units.length-1]={...units[units.length-1],english:units[units.length-1].english+'.'}
  const objectMeaning=object?(selectedDeterminer&&['the','my','your','his','her','our','their'].includes(selectedDeterminer.word)?object.phrase.nounThai+(selectedDeterminer.word==='the'?'':selectedDeterminer.thai.replace(/ \(.*\)/,'')):object.thai.replace(/^ไปที่/,'')):''
- const meaning=action.complement==='destination'?`ไปที่${objectMeaning}`:`${action.thai}${objectMeaning}`
+ const meaning=action.complement==='destination'?`${action.thai}${word==='going'?'ที่':'ไปที่'}${objectMeaning}`:`${action.thai}${objectMeaning}`
  return {
- question:{english:`What ${questionBe} ${questionSubject} doing?`,thai:`${speaker?.thai??person.thai}กำลังทำอะไร`,units:[{english:'What',thai:'อะไร',role:'question' as const},{english:questionBe,thai:'—',role:'be' as const},...subjectParts(false),{english:'doing?',thai:'กำลังทำ',role:'action' as const}]},
+ question:{english:`${destinationQuestion?'Where':'What'} ${questionBe} ${questionSubject} ${destinationQuestion?action.word:'doing'}?`,thai:`${speaker?.thai??person.thai}กำลัง${destinationQuestion?`${action.thai}${word==='going'?'ไหน':'ไปไหน'}`:'ทำอะไร'}`,units:[{english:destinationQuestion?'Where':'What',thai:destinationQuestion?'ที่ไหน':'อะไร',role:'question' as const},{english:questionBe,thai:'—',role:'be' as const},...subjectParts(false),{english:destinationQuestion?`${action.word}?`:'doing?',thai:destinationQuestion?action.thai:'กำลังทำ',role:'action' as const}]},
  answer:{english:units.map(unit=>unit.english).join(' '),thai:`${speaker?.thai??person.answerThai}กำลัง${meaning}`,units},object,
  }
 }

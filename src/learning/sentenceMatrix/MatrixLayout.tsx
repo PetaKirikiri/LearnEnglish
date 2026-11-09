@@ -31,7 +31,7 @@ export default function MatrixLayout({request,settings={},cards:sourceCards,labe
   const groupSize=actionRoles?cards.length-2:request.noun==='phrase'?2:1
   const leading=request.leadingCount??(request.construction==='noun-phrase'?0:request.construction==='location-answer'?3:2)
   if(cards.length!==leading+groupSize)throw new Error('Sentence cards do not match the requested matrix construction')
-  const style={'--matrix-max-width':`${settings.layout?.maxWidth??1100}px`,...(request.leadingCount?{'--matrix-leading':request.actionComplement&&leading===3?'0.85fr 0.75fr 1.4fr':`repeat(${leading},minmax(0,1fr))`}:{})} as CSSProperties
+  const style={'--matrix-max-width':`${settings.layout?.maxWidth??1100}px`,...(request.leadingCount?{'--matrix-leading':request.actionComplement&&leading===3?'0.85fr 0.75fr 1.4fr':request.actionComplement&&leading===4?'0.85fr 0.7fr 1.5fr 0.55fr':`repeat(${leading},minmax(0,1fr))`}:{})} as CSSProperties
   return <div className="example-language example-matrix matrix-layout" data-matrix-layout={request.construction} data-card-count={cards.length} data-action-complement={request.actionComplement||undefined} data-noun-swapper={!!request.nounSwapper&&!settings.fadeMode} data-density={settings.layout?.density??'comfortable'} style={style}>
     <div className="matrix-layout-toolbar" aria-hidden={settings.fadeMode||undefined}>
       <div className="matrix-layout-leading-controls"><div>{!settings.fadeMode&&settings.english!==false&&request.subjectSwapper&&<NounModeToggle {...request.subjectSwapper}/>}</div></div>

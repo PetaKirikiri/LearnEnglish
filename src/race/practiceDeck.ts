@@ -18,6 +18,6 @@ export function practiceDeck(lesson:number = Number(requestedLesson(window.locat
 
 
 // Reuse authored meaning pairs rather than translating arbitrary text at runtime.
-const englishMeanings = new Map([...lessonPracticeQuestions(1),...lessonPracticeQuestions(2),...lessonPracticeQuestions(3),...lessonPracticeQuestions(4)]
+const englishMeanings = new Map([...lessonPracticeQuestions(1),...lessonPracticeQuestions(2),...lessonPracticeQuestions(3),...lessonPracticeQuestions(4),...lessonPracticeQuestions(5)]
   .map(q => [q.answers[q.correct][0].text,q.english]))
 export function practiceEnglishMeaning(thai:string) { return englishMeanings.get(thai) ?? thai }

@@ -36,6 +36,7 @@ export type MatrixLesson = {
   subjectModes?: SubjectModeConfig
   /** Allowed action words; omitted only for unrestricted reusable construction requests. */
   actions?: readonly string[]
+  actionQuestion?: 'activity' | 'destination'
   actionReply?: 'reciprocal' | 'same-subject'
   vocabulary: readonly ClassroomWord[]
   plural: boolean
