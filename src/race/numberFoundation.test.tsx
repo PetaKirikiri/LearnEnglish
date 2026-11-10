@@ -56,8 +56,8 @@ it('keeps the read-only noun group visible and automatically plays audio without
   expect(host.querySelector('.practice-question button')).toBeNull()
   expect(host.querySelector<HTMLProgressElement>('header progress')?.value).toBe(0)
   expect(host.querySelector('.foundation-question-count')).toBeNull()
-  expect(host.querySelector('.cw-game-icon-apple')).not.toBeNull()
-  expect(host.querySelector('.cw-game-icon-apples')).not.toBeNull()
+  expect(host.querySelectorAll('.number-choice-picture')[0].querySelectorAll('img')).toHaveLength(1)
+  expect(host.querySelectorAll('.number-choice-picture')[1].querySelectorAll('img')).toHaveLength(2)
   expect(host.querySelector('[data-matrix-layout=noun-phrase]')).not.toBeNull()
   expect(host.querySelector<HTMLButtonElement>('.practice-answers button')?.disabled).toBe(false)
   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-header-audio')!.click())
@@ -79,8 +79,8 @@ it('adds full-sentence number recognition before sentence judgement',async()=>{
   await act(async()=>root.render(<NumberFoundation/>))
   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
   expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe(currentSentence())
-  expect([...host.querySelectorAll('.practice-answers button')].map(b=>b.textContent)).toEqual(['หนึ่งสิ่ง','หลายสิ่ง'])
-  expect(host.querySelector('.cw-game-icon-apples')).not.toBeNull()
+  expect([...host.querySelectorAll('.number-choice-picture small')].map(b=>b.textContent)).toEqual(['One','More than one'])
+  expect(host.querySelectorAll('.number-choice-picture')[1].querySelectorAll('img')).toHaveLength(2)
   expect(host.querySelector('.practice-question button')).toBeNull()
   for(let i=0;i<30;i++){
    const saved=JSON.parse(localStorage.getItem(foundationKey())!)
@@ -96,7 +96,7 @@ it('adds full-sentence number recognition before sentence judgement',async()=>{
   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
   expect(JSON.parse(localStorage.getItem(foundationKey())!).module).toBe(3)
   expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe(currentSentence())
-  expect([...host.querySelectorAll('.practice-answers button')].map(b=>b.textContent)).toEqual(['ถูก','ผิด'])
+  expect([...host.querySelectorAll('.practice-answers button')].map(b=>b.textContent)).toEqual(['Correct','Incorrect'])
   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-header-audio')!.click())
   expect(played).toBe(`/audio/number-foundation/${currentSentence().toLowerCase().replace(/\?$/,'').replaceAll(' ','-')}.wav`)
  }finally{await act(async()=>root.unmount())}
@@ -211,7 +211,7 @@ it.each([2,6])('keeps sentence icons when fading after %i successes and restores
   expect(host.querySelector('.practice-question .vocabulary-picture[data-word=hotel] img')).not.toBeNull()
   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.practice-answers button')[1].click())
   expect(recallStates(readRecall())['1:hotel']).toMatchObject({wrong:1,support:successes/2-1,interval:0})
-  expect(host.querySelector('.practice-question .example-gloss')).not.toBeNull()
+  expect(host.querySelector('.practice-question .vocabulary-picture')).not.toBeNull();expect(host.querySelector('.practice-question .example-gloss')).toBeNull()
  }finally{await act(async()=>root.unmount())}
 })
 
@@ -225,7 +225,7 @@ it.each([
  try{
   await act(async()=>root.render(<NumberFoundation/>))
   expect(host.querySelector('.tonight-slots')?.getAttribute('aria-label')).toBe(`Where ${verb} the ${word}?`)
-  expect([...host.querySelectorAll('.practice-answers button')].map(b=>b.textContent)).toEqual(['ถูก','ผิด'])
+  expect([...host.querySelectorAll('.practice-answers button')].map(b=>b.textContent)).toEqual(['Correct','Incorrect'])
   expect(host.querySelectorAll('.binary-answer-icon img')).toHaveLength(2)
   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-header-audio')!.click())
   expect(played).toBe(`/audio/number-foundation/where-${verb}-the-${word}.wav`)
@@ -277,7 +277,7 @@ it('keeps Level 3 answers usable when phone autoplay is blocked',async()=>{
   expect(host.querySelector<HTMLButtonElement>('.foundation-next')!.disabled).toBe(false)
  }finally{await act(async()=>root.unmount())}
 })
-it('opens Levels 4 and 5 with real Thai answer options and returns to Level 3',async()=>{
+it('opens Levels 4 and 5 with pictures and English answer options and returns to Level 3',async()=>{
  const host=document.createElement('div');const root=createRoot(host)
  try{
   await act(async()=>root.render(<NumberFoundation/>))
@@ -289,7 +289,7 @@ it('opens Levels 4 and 5 with real Thai answer options and returns to Level 3',a
    expect(host.querySelector('.example-gloss')).toBeNull()
    expect(host.querySelector('.example-translation')).toBeNull()
    const buttons=host.querySelectorAll<HTMLButtonElement>('.practice-answers button')
-   expect(buttons).toHaveLength(2);expect(buttons[0].textContent).toMatch(/[ก-๙]/)
+   expect(buttons).toHaveLength(2);expect(buttons[0].textContent).not.toMatch(/[ก-๙]/);expect(buttons[0].querySelectorAll('.picture-sentence-art').length).toBeGreaterThan(1)
    expect(buttons[0].textContent).not.toBe(buttons[1].textContent)
    await act(async()=>buttons[0].click())
    expect(host.querySelector<HTMLButtonElement>('.foundation-next')!.disabled).toBe(false)

@@ -1,0 +1,55 @@
+{
+  "tool": "Built-in image_gen",
+  "assets": [
+    {
+      "name": "eating",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c39a-f4c3-7d62-bfe4-8d612ffc8af8/exec-2dd10172-d34a-4d2d-825e-dd6ecbeee7ff.png",
+      "prompt": "Close-up eating gesture: friendly brown-haired boy in royal blue, spoonful at mouth, landscape 3:2, transparent background, no identifiable fruit, no text."
+    },
+    {
+      "name": "sleeping",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c39a-f4c3-7d62-bfe4-8d612ffc8af8/exec-a88d19f3-2338-4625-b466-6f2e8d034f14.png",
+      "prompt": "Use case: scientific-educational. Create a new SLEEPING. The boy's complete head rests sideways on his hands on a small cream pillow, eyes softly closed. A little blue blanket at bottom. Show whole head and hands with comfortable margin; no bed frame. Standalone language-learning action picture. Friendly polished 3D cartoon brown-haired boy, large brown eyes, royal-blue shirt, consistent with the eating picture just generated. Landscape 3:2 composition specifically composed for a tiny wide tile: close-up on action, minimal torso, full action and all key props inside frame, 7% safe margin. Clear recognizable gesture at 90px high. Transparent background. No scene, words, watermark, frame, decorative symbols. Do not crop top of hair or hands."
+    },
+    {
+      "name": "drinking",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c39a-f4c3-7d62-bfe4-8d612ffc8af8/exec-cd8fed48-8da3-408d-944a-3ff0de65ccba.png",
+      "prompt": "Use case: scientific-educational. Create a new DRINKING. Boy in three-quarter profile with a clear tumbler tilted gently to his lips, visible water, mouth touching glass, hand gripping it. Face, hand and glass dominate, tiny sliver of blue shoulder only. Standalone language-learning action picture. Friendly polished 3D cartoon brown-haired boy, large brown eyes, royal-blue shirt, consistent with the eating picture just generated. Landscape 3:2 composition specifically composed for a tiny wide tile: close-up on action, minimal torso, full action and all key props inside frame, 7% safe margin. Clear recognizable gesture at 90px high. Transparent background. No scene, words, watermark, frame, decorative symbols. Do not crop top of hair or hands."
+    },
+    {
+      "name": "reading",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c39a-f4c3-7d62-bfe4-8d612ffc8af8/exec-33a77343-a9b4-4216-b442-d2a20a6ae3a8.png",
+      "prompt": "Use case: scientific-educational. Create a new READING. Boy's complete head and eyes visibly looking downward at a large open plain book, both hands holding book; face and open pages dominate. No printed letters. Standalone language-learning action picture. Friendly polished 3D cartoon brown-haired boy, large brown eyes, royal-blue shirt, consistent with the eating picture just generated. Landscape 3:2 composition specifically composed for a tiny wide tile: close-up on action, minimal torso, full action and all key props inside frame, 7% safe margin. Clear recognizable gesture at 90px high. Transparent background. No scene, words, watermark, frame, decorative symbols. Do not crop top of hair or hands."
+    },
+    {
+      "name": "running",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c39a-f4c3-7d62-bfe4-8d612ffc8af8/exec-4aa96590-0f82-4d72-bc4d-3b34553f625e.png",
+      "prompt": "Use case: scientific-educational. New standalone English-learning verb illustration: RUNNING: dynamic compact side-view boy sprinting, both feet off ground, elbows bent, knees clearly bent in running stride. Entire body and shoes visible; body pose fills the landscape space. No other objects. Action requires full body, not face closeup. Consistent friendly polished 3D cartoon brown-haired boy with brown eyes and royal-blue shirt, matching the previous images. Landscape 3:2. Compose specifically to be recognizable at 90px high, make action large, use 7% safe margin on every side. No cut-off hair, hands or feet. Transparent background. No words, border, watermark or scenery."
+    },
+    {
+      "name": "walking",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c39a-f4c3-7d62-bfe4-8d612ffc8af8/exec-06cbacec-eca4-445b-bf66-180aad7a1cac.png",
+      "prompt": "Use case: scientific-educational. New standalone English-learning verb illustration: WALKING: calm side-view boy walking in relaxed upright posture, one foot firmly on ground, other stepping forward, arms hanging in gentle swing. Full body and shoes visible, no exaggerated sprint, no speed lines. Action requires full body. Consistent friendly polished 3D cartoon brown-haired boy with brown eyes and royal-blue shirt, matching the previous images. Landscape 3:2. Compose specifically to be recognizable at 90px high, make action large, use 7% safe margin on every side. No cut-off hair, hands or feet. Transparent background. No words, border, watermark or scenery."
+    },
+    {
+      "name": "playing",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c39a-f4c3-7d62-bfe4-8d612ffc8af8/exec-ae94736e-dcb3-4ef4-ac4e-311d14531d9c.png",
+      "prompt": "Use case: scientific-educational. New standalone English-learning verb illustration: PLAYING: close view of boy actively playing a small yellow toy car, hand pushing it along a short plain surface; intent smiling face watches the toy. Head, hand and toy dominate; minimal shoulders and no full torso. Consistent friendly polished 3D cartoon brown-haired boy with brown eyes and royal-blue shirt, matching the previous images. Landscape 3:2. Compose specifically to be recognizable at 90px high, make action large, use 7% safe margin on every side. No cut-off hair, hands or feet. Transparent background. No words, border, watermark or scenery."
+    },
+    {
+      "name": "holding",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c39a-f4c3-7d62-bfe4-8d612ffc8af8/exec-6a5fda43-4a77-4fc3-8815-8e27b5f2ae36.png",
+      "prompt": "Use case: scientific-educational. New standalone English-learning verb illustration: HOLDING: closeup of two hands securely gripping a plain small cream box against royal blue shirt chest. Hands wrapped around each side, box supported underneath. Show only chin at top, focus on grasp, not face; no motion arrows. Friendly polished 3D cartoon style matching the brown-haired boy in blue from previous generated images, warm tan skin, clean rounded shapes. Landscape 3:2. Compose specifically to be recognizable at 90px high, make ACTION large, use 7% safe margin around gesture. Transparent background. No words, border, watermark, furniture or scenery. The object represents generic action; keep it unadorned."
+    },
+    {
+      "name": "opening",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c39a-f4c3-7d62-bfe4-8d612ffc8af8/exec-c79c08e2-c8c0-421e-ad86-3ae473fdd2c8.png",
+      "prompt": "Use case: scientific-educational. New standalone English-learning verb illustration: OPENING: closeup of two hands opening a small plain cream hinged box, one hand steadies base and the other lifts lid high, visibly open interior. A small simple curved blue arrow shows lid moving upward. Blue shirt behind hands; no whole body. Hands, open box and lid fit completely. Friendly polished 3D cartoon style matching the brown-haired boy in blue from previous generated images, warm tan skin, clean rounded shapes. Landscape 3:2. Compose specifically to be recognizable at 90px high, make ACTION large, use 7% safe margin around gesture. Transparent background. No words, border, watermark, furniture or scenery. The object represents generic action; keep it unadorned."
+    },
+    {
+      "name": "washing",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c39a-f4c3-7d62-bfe4-8d612ffc8af8/exec-e88b9b47-54b5-4050-93c9-93aa52b4575f.png",
+      "prompt": "Use case: scientific-educational. New standalone English-learning verb illustration: WASHING: closeup of two hands scrubbing a plain cream cup with a small sponge, clear running water from a short silver faucet, large white soap bubbles. Royal blue sleeve cuffs. Hands, cup, water and foam fill composition. No head needed. Friendly polished 3D cartoon style matching the brown-haired boy in blue from previous generated images, warm tan skin, clean rounded shapes. Landscape 3:2. Compose specifically to be recognizable at 90px high, make ACTION large, use 7% safe margin around gesture. Transparent background. No words, border, watermark, furniture or scenery. The object represents generic action; keep it unadorned."
+    }
+  ]
+}

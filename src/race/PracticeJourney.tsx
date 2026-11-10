@@ -63,15 +63,13 @@ function LevelArtwork({item}:{item:LevelBriefing}){
 function LevelTask({item}: {item: LevelBriefing}) {
  const translate = item.id >= 4
  const kind = item.id === 3 ? 'judgement' : 'number'
- return <span className="journey-topic" id={`journey-task-${item.id}`} role="img" aria-label={item.task}>
+ return <span className="journey-topic" id={`journey-task-${item.id}`} role="img" aria-label={translate?'Listen → choose the pictures':item.task}>
   <span className="journey-cue">
-   {translate
-    ? <span className="journey-flag" aria-hidden="true">🇬🇧</span>
-    : <img src="/classroom/icons/listening-headphones.png" alt="" draggable={false}/>}
+   <img src="/classroom/icons/listening-headphones.png" alt="" draggable={false}/>
   </span>
   <Icon name="arrow" className="journey-cue-arrow"/>
   {translate
-   ? <span className="journey-cue"><span className="journey-flag" aria-hidden="true">🇹🇭</span></span>
+   ? <span className="journey-cue"><svg className="journey-picture-choice" viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="5" width="24" height="22" rx="4" fill="#fff" stroke="#1976f3" strokeWidth="2"/><circle cx="12" cy="12" r="3" fill="#ffcc35"/><path d="m7 24 7-8 4 4 4-6 4 10Z" fill="#31a875"/></svg></span>
    : <span className="journey-cue-pair">
      <span className="journey-cue"><PracticeAnswerIcon kind={kind} second={false}/></span>
      <span className="journey-cue"><PracticeAnswerIcon kind={kind} second/></span>

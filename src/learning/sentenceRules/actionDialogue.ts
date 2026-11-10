@@ -8,17 +8,17 @@ export type ObjectCategory = 'food' | 'drink' | 'readable' | 'destination' | 'ho
 export type Action = {level?:number;word:string;thai:string;complement:'object'|'destination'|'none';objects:readonly ObjectCategory[];categories:readonly VocabularyCategory[];icon:string}
 export type ActionObject = {word:string;thai:string;noun:string;phrase:NounPhrase;categories:readonly ObjectCategory[];icon?:string}
 export const actionVocabulary:readonly Action[] = [
- {word:'eating',categories:['food'],icon:'/classroom/icons/actions/eating.png',thai:'กิน',complement:'object',objects:['food']},
- {word:'drinking',categories:['food'],icon:'/classroom/icons/actions/drinking.png',thai:'ดื่ม',complement:'object',objects:['drink']},
- {word:'sleeping',categories:['places'],icon:'/classroom/icons/actions/sleeping.png',thai:'นอน',complement:'none',objects:[]},
- {word:'running',categories:['sports'],icon:'/classroom/icons/actions/running.png',thai:'วิ่ง',complement:'none',objects:[]},
- {word:'walking',categories:['places', 'sports'],icon:'/classroom/icons/actions/walking.png',thai:'เดิน',complement:'none',objects:[]},
- {word:'playing',categories:['sports'],icon:'/classroom/icons/actions/playing.png',thai:'เล่น',complement:'none',objects:[]},
- {word:'reading',categories:['everyday'],icon:'/classroom/icons/actions/reading.png',thai:'อ่าน',complement:'object',objects:['readable']},
- {word:'going',categories:['places', 'transport'],icon:'/classroom/icons/actions/walking.png',thai:'ไป',complement:'destination',objects:['destination']},
- {word:'holding',level:6,categories:['everyday'],icon:'/classroom/icons/actions/holding.png',thai:'ถือ',complement:'object',objects:['holdable']},
- {word:'opening',level:6,categories:['everyday'],icon:'/classroom/icons/actions/opening.png',thai:'เปิด',complement:'object',objects:['openable']},
- {word:'washing',level:6,categories:['everyday'],icon:'/classroom/icons/actions/washing.png',thai:'ล้าง',complement:'object',objects:['washable']},
+ {word:'eating',categories:['food'],icon:'/classroom/icons/actions/closeup/eating.png',thai:'กิน',complement:'object',objects:['food']},
+ {word:'drinking',categories:['food'],icon:'/classroom/icons/actions/closeup/drinking.png',thai:'ดื่ม',complement:'object',objects:['drink']},
+ {word:'sleeping',categories:['places'],icon:'/classroom/icons/actions/closeup/sleeping.png',thai:'นอน',complement:'none',objects:[]},
+ {word:'running',categories:['sports'],icon:'/classroom/icons/actions/closeup/running.png',thai:'วิ่ง',complement:'none',objects:[]},
+ {word:'walking',categories:['places', 'sports'],icon:'/classroom/icons/actions/closeup/walking.png',thai:'เดิน',complement:'none',objects:[]},
+ {word:'playing',categories:['sports'],icon:'/classroom/icons/actions/closeup/playing.png',thai:'เล่น',complement:'none',objects:[]},
+ {word:'reading',categories:['everyday'],icon:'/classroom/icons/actions/closeup/reading.png',thai:'อ่าน',complement:'object',objects:['readable']},
+ {word:'going',categories:['places', 'transport'],icon:'/classroom/icons/actions/closeup/walking.png',thai:'ไป',complement:'destination',objects:['destination']},
+ {word:'holding',level:6,categories:['everyday'],icon:'/classroom/icons/actions/closeup/holding.png',thai:'ถือ',complement:'object',objects:['holdable']},
+ {word:'opening',level:6,categories:['everyday'],icon:'/classroom/icons/actions/closeup/opening.png',thai:'เปิด',complement:'object',objects:['openable']},
+ {word:'washing',level:6,categories:['everyday'],icon:'/classroom/icons/actions/closeup/washing.png',thai:'ล้าง',complement:'object',objects:['washable']},
 ]
 export type ActionSubject = Lowercase<typeof subjectPronouns[number]['word']>
 /** Legacy dialogue replies retain you → I; all person and agreement data is shared. */

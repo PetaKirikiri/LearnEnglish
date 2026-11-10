@@ -81,3 +81,5 @@
  .journey-level-open{grid-template-rows:minmax(0,1fr) 26px;padding:6px;gap:4px}.journey-node-number{height:30px;width:35px;font-size:17px;top:-9px;border-radius:10px}.journey-level-art{padding-top:18px}.journey-tile-play{width:23px;height:23px;font-size:11px}
 }
 @media(prefers-reduced-motion:reduce){.practice-journey *{scroll-behavior:auto;transition:none}}
+
+.journey-cue .journey-picture-choice{display:block;width:32px;height:32px;max-width:100%;max-height:100%;object-fit:contain}

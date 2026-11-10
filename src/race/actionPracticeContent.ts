@@ -12,7 +12,7 @@ const vocabulary:ClassroomWord[]=['apple','water','book','hotel'].map(word=>less
 const subjects:ActionSubject[]=['you','he','she','they']
 const actions=['eating','drinking','sleeping','running','walking','playing','reading','going']
 type ActionLine = ReturnType<typeof actionDialogue>['question'|'answer']
-export type ActionPracticeQuestion = ActionLine & {id:string;level:4|5|6;choices:[string,string];correct:number;audioUrl:string;distractorUnits:ActionLine['units']}
+export type ActionPracticeQuestion = ActionLine & {id:string;level:4|5|6;choices:[string,string];correct:number;audioUrl:string;distractorUnits:ActionLine['units'];questionVersion?:number}
 
 function recordedQuestion(level:4|5|6,id:string,source:ActionLine,other:ActionLine,audioUrl:string):ActionPracticeQuestion {
  return {...source,id,level,choices:[source.thai,other.thai],correct:0,audioUrl,distractorUnits:other.units}
@@ -100,13 +100,43 @@ for(const q of nextLevel){
  covered.add(pair)
 }
 export const actionPracticeQuestions=[...approved,...replacements]
+/** Picture choices must have the same construction and differ in one meaning only.
+ * Keep the historical bank for existing attempts; new contrasts get scoring version 2. */
+const structure=(units:ActionLine['units'])=>units.map(u=>u.role+(['determiner','person-determiner'].includes(u.role)?(/^(a|an|the)$/i.test(u.english)?':article':':owner'):'')).join(',')
+const meaningParts=(units:ActionLine['units'])=>['person-determiner','person','action','determiner','object'].map(role=>units.filter(u=>u.role===role).map(u=>u.english.toLowerCase().replace(/[?.!]$/,'').replace(/^(a|an)$/,'indefinite')).join(' '))
+function matchedPictureQuestion(q:ActionPracticeQuestion):ActionPracticeQuestion{
+ if(q.level===6)return q // Ownership alternatives already change exactly one equal-sized component.
+ const parts=meaningParts(q.units)
+ const candidates=actionPracticeQuestions.filter(other=>other.level===q.level&&structure(other.units)===structure(q.units)&&meaningParts(other.units).filter((value,index)=>value!==parts[index]).length===1)
+ let hash=0;for(const char of q.id)hash=(Math.imul(hash,31)+char.charCodeAt(0))>>>0
+ let other:ActionLine|undefined=candidates[hash%candidates.length]
+ if(!other){
+  // Sparse recorded combinations still use the shared engine, with the same
+  // subject, action and object. Only the taught owner changes.
+  const person=q.units.filter(u=>['person-determiner','person'].includes(u.role)).map(u=>u.english).join(' ')
+  const subject=[...nextSubjects,...people].find(p=>p.word.toLowerCase()===person.toLowerCase())
+  const action=q.units.find(u=>u.role==='action')!.english.replace(/[?.!]$/,'')
+  const noun=q.units.find(u=>u.role==='object')?.english.replace(/[?.!]$/,'')
+  const object=objectsForAction(action,lessonThreeMatrixCatalogue).find(item=>item.noun===noun)
+  const owner=q.units.find(u=>u.role==='determiner')?.english
+  const alternative=object&&objectDeterminers(object).find(d=>d.word!==owner&&!/^(a|an|the)$/.test(d.word))
+  if(!subject||!object||!alternative)throw new Error(`No matched picture alternative: ${q.id}`)
+  if(owner&&/^(a|an|the)$/.test(owner)){
+   const otherSubject=nextSubjects.find(p=>p.word==='They')??nextSubjects.find(p=>p.word==='they')!
+   other=actionDialogue('they',action,{vocabulary:lessonThreeMatrixCatalogue,subject:otherSubject,object:object.word,determiner:owner as 'the'|'a'|'an'}).answer
+  }else other=actionDialogue('i',action,{vocabulary:lessonThreeMatrixCatalogue,subject,object:object.word,determiner:alternative.word}).answer
+ }
+ if(!taughtActionLine(q.level,other.units)||structure(other.units)!==structure(q.units))throw new Error(`Untaught picture alternative: ${q.id}`)
+ return {...q,choices:[q.thai,other.thai],correct:0,distractorUnits:other.units,questionVersion:2}
+}
+export const pictureActionPracticeQuestions=actionPracticeQuestions.map(matchedPictureQuestion)
 function practiceGroups(question:ActionPracticeQuestion){
  const word=question.units.find(unit=>unit.role==='object')?.english.toLowerCase().replace(/[.!?]$/,'')
  const noun=lessonThreeMatrixCatalogue.find(item=>item.word===word)
  return [noun?.singular??word??'no-object',question.units.find(unit=>unit.role==='person')?.english??'',question.units.find(unit=>unit.role==='action')?.english??'',question.units.find(unit=>unit.role==='determiner')?.english??'']
 }
 export function actionPracticeDeck(level:4|5|6){
- const candidates=actionPracticeQuestions.filter(question=>question.level===level)
+ const candidates=pictureActionPracticeQuestions.filter(question=>question.level===level)
  const selected=level===6
   ?['eating','reading','drinking','holding','opening','washing'].flatMap(action=>diverseQuestions(candidates.filter(question=>question.units.some(unit=>unit.role==='action'&&unit.english===action)),5,practiceGroups))
   :diverseQuestions(candidates,30,practiceGroups)

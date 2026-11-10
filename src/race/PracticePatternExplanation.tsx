@@ -9,9 +9,9 @@ export default function PracticePatternExplanation({question,module,onClose}:{qu
  const noun=numberItem(question.word)
  if(!noun)return null
  const ending=noun.singular&&noun.plural?.startsWith(noun.singular)?noun.plural.slice(noun.singular.length):null
- return <PracticeHelpDialog title={module===1?'หนึ่งสิ่ง · หลายสิ่ง':'จำนวนกับ is / are'} onClose={onClose}>
-   <WordUsageVisual item={{...noun,word:question.word,number:question.plural?'plural':'singular'}} showAgreement={module!==1} nounPhrase language="th"/>
+ return <PracticeHelpDialog title={module===1?'One · More than one':'One → is · More than one → are'} onClose={onClose}>
+   <WordUsageVisual item={{...noun,word:question.word,number:question.plural?'plural':'singular'}} showAgreement={module!==1} nounPhrase language="en"/>
    <div className="practice-pattern-ending"><span className="cw-game-icon cw-game-icon-apples" aria-hidden="true"/><span>{noun.pairOnly?'คำนี้ใช้รูปพหูพจน์ แม้มีหนึ่งคู่':'ฟังรูปคำที่เปลี่ยนไป'} {ending&&<strong lang="en">+{ending}</strong>}</span></div>
-   <PronunciationComparison word={question.word} allowEdit={false} language="th"/>
+   <PronunciationComparison word={question.word} allowEdit={false} language="en"/>
  </PracticeHelpDialog>
 }

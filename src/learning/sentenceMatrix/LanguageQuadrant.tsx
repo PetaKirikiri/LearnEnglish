@@ -50,11 +50,11 @@ export function quadrantLayout(document:LanguageDocument):MatrixLayoutRequest {
  leadingCount:hasObject?roles.indexOf('object')-(hasDeterminer?1:0)-roles.filter(r=>r==='person-determiner').length:undefined,
  nounGroups:roles.flatMap((role,index)=>role==='person-determiner'?[{start:index,end:index+2}]:[])}
 }
-function roleIcon(unit:LanguageDocument['units'][number],construction:LanguageDocument['construction']){
+export function languageRoleIcon(unit:LanguageDocument['units'][number],construction:LanguageDocument['construction']){
  const word=unit.english.replace(/[?.!]$/,'')
  if(unit.role==='person')return subjectPronouns.some(subject=>subject.word.toLowerCase()===word.toLowerCase())?<PronounIcon word={word}/>:word==='Bia'?<ProperNounIcon word={word}/>:<VocabularyPicture word={word}/>
  if(unit.role==='object')return <VocabularyPicture word={word}/>
- if(unit.role==='action')return construction==='action-question'?<img className="cw-game-icon" src="/classroom/icons/constructions/doing.png" alt=""/>:<ActionIcon word={word}/>
+ if(unit.role==='action')return construction==='action-question'&&word.toLowerCase()==='doing'?<img className="cw-game-icon" src="/classroom/icons/constructions/doing.png" alt=""/>:<ActionIcon word={word}/>
  if(unit.role==='question'&&word.toLowerCase()==='what')return <img className="cw-game-icon" src="/classroom/icons/constructions/what.png" alt=""/>
  return <WordSlotIcon word={word} slot={slots[unit.role]} plural={word==='are'||word==='were'} past={word==='was'||word==='were'}/>
 }
@@ -69,5 +69,5 @@ export default function LanguageQuadrant({request,scores={}}:{request:QuadrantRe
  }).join(' '):document.english
  return <ExampleLanguage matrix english={english} thai={document.thai} units={document.units}
   layout={quadrantLayout(document)} semanticSlots={document.units.map(u=>slots[u.role])} settings={settings} scores={scores}
-  slotDetails={document.units.map(unit=>({label:'',count:0,icon:roleIcon(unit,document.construction)}))}/>
+  slotDetails={document.units.map(unit=>({label:'',count:0,icon:languageRoleIcon(unit,document.construction)}))}/>
 }

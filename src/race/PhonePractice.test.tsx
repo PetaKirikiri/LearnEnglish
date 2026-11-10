@@ -17,11 +17,11 @@ it('runs independent binary practice, locks answers and keeps feedback in place 
   const host = document.createElement('div'); const root = createRoot(host)
   try {
     await act(async () => root.render(<PhonePractice/>))
-    expect([...host.querySelectorAll('.homework-slot small')].map(slot => slot.textContent)).toEqual(['1','2','3','4'])
+    expect(host.querySelector('[data-matrix-layout=question]')).not.toBeNull()
     expect(host.querySelector('.practice-question')?.getAttribute('aria-label')).toBe('ฟังแล้วเลือกคำตอบ')
     expect(host.querySelector('.tonight-tree [lang=th]')).toBeNull()
     expect(host.querySelectorAll('.homework-slot button')).toHaveLength(0)
-    const sentence = [...host.querySelectorAll('.homework-slot > strong')].map(s => s.textContent).join(' ')
+    const sentence = [...host.querySelectorAll('.practice-question .example-source')].map(e=>e.textContent).join(' ')
     expect(sentence).toMatch(/^Where is (the|my|your) /)
     expect(host.textContent).not.toContain('ดูคำใบ้')
     expect(host.querySelectorAll('.practice-answers button')).toHaveLength(2)
@@ -31,7 +31,7 @@ it('runs independent binary practice, locks answers and keeps feedback in place 
     expect([...host.querySelectorAll<HTMLButtonElement>('.practice-answers button')].every(b => b.disabled)).toBe(true)
     await act(async () => vi.advanceTimersByTime(1100))
     expect(host.querySelector('header')?.textContent).toContain('1 / 120')
-    expect(host.querySelector('[role=status]')?.textContent).toContain('ถูกต้อง!')
+    expect(host.querySelector('[role=status]')?.textContent).toContain('Correct!')
     await act(async () => host.querySelector<HTMLButtonElement>('.practice-feedback button')!.click())
     expect(host.querySelector('header')?.textContent).toContain('2 / 120')
     await listen(host)
@@ -177,7 +177,7 @@ it('offers one-tap sound activation when automatic playback is blocked', async()
  const host=document.createElement('div'),root=createRoot(host)
  try {
   await act(async()=>root.render(<PhonePractice/>))
-  expect(host.querySelector('.practice-audio-retry')?.textContent).toContain('แตะเพื่อเปิดเสียง')
+  expect(host.querySelector('.practice-audio-retry')?.textContent).toContain('Enable audio')
   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-audio-retry')!.click())
   expect(play).toHaveBeenCalledTimes(2)
   expect(host.querySelector('.practice-audio-retry')).toBeNull()
@@ -185,7 +185,7 @@ it('offers one-tap sound activation when automatic playback is blocked', async()
  }finally{await act(async()=>root.unmount())}
 })
 
-it('only exposes language flags for testers and switches answer meanings without changing answer identity',async()=>{
+it('keeps picture answers and English labels when testers switch the interface language',async()=>{
  const host=document.createElement('div');const root=createRoot(host)
  try{
   await act(async()=>root.render(<PhonePractice/>))
@@ -194,7 +194,7 @@ it('only exposes language flags for testers and switches answer meanings without
   const before=host.querySelector('.practice-choice-label')?.textContent
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="English"]')!.click())
   expect(host.querySelector('main')?.lang).toBe('en')
-  expect(host.querySelector('.practice-choice-label')?.textContent).toMatch(/^Where /)
+  expect(host.querySelector('.practice-choice-label .picture-sentence')?.getAttribute('aria-label')).toMatch(/^Where /)
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="ไทย"]')!.click())
   expect(host.querySelector('.practice-choice-label')?.textContent).toBe(before)
  }finally{await act(async()=>root.unmount())}
@@ -212,12 +212,12 @@ it('ends a short module and requires an explicit continue before the next one',a
    await act(async()=>host.querySelectorAll<HTMLButtonElement>('.practice-answers button')[i<4?0:1].click())
    await act(async()=>host.querySelector<HTMLButtonElement>('.practice-feedback button')!.click())
   }
-  expect(host.querySelector('.practice-complete h1')?.textContent).toBe('ผ่านชุดนี้แล้ว!')
+  expect(host.querySelector('.practice-complete h1')?.textContent).toBe('Module complete!')
   expect(host.querySelector('.practice-complete')?.textContent).toContain('8 / 8')
   expect(host.querySelector('.practice-module-break')).not.toBeNull()
   expect(host.querySelector('.practice-answers')).toBeNull()
   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
-  expect(host.querySelector('header')?.textContent).toContain('ชุด 2/')
+  expect(host.querySelector('header')?.textContent).toContain('Module 2/')
   expect(host.querySelector('header')?.textContent).toContain('1 / 8')
  }finally{await act(async()=>root.unmount());vi.restoreAllMocks()}
 })
@@ -234,11 +234,11 @@ it('keeps an unsuccessful module finite and offers a replay without unlocking th
    await act(async()=>host.querySelector<HTMLButtonElement>('.practice-feedback button')!.click())
   }
   expect(host.querySelector('.practice-complete')?.textContent).toContain('0 / 8')
-  expect(host.querySelector('.practice-complete h1')?.textContent).not.toBe('ผ่านชุดนี้แล้ว!')
+  expect(host.querySelector('.practice-complete h1')?.textContent).not.toBe('Module complete!')
   expect(host.querySelectorAll('.practice-complete button')).toHaveLength(1)
-  expect(host.querySelector('.practice-complete button')?.textContent).toBe('ฝึกชุดนี้อีกครั้ง')
+  expect(host.querySelector('.practice-complete button')?.textContent).toBe('Replay this module')
   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
   expect(host.querySelector('header')?.textContent).toContain('1 / 8')
-  expect(host.querySelector('header')?.textContent).toContain('ชุด 1/')
+  expect(host.querySelector('header')?.textContent).toContain('Module 1/')
  }finally{await act(async()=>root.unmount());vi.restoreAllMocks()}
 })

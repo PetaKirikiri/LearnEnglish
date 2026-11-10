@@ -8,7 +8,7 @@ import {composeLessonAction,actionCapabilities} from '../learning/sentenceRules/
 import {people,peopleSentence} from '../learning/sentenceMatrix/peopleLocation'
 import type {LanguageDocument} from '../learning/sentenceMatrix/LanguageQuadrant'
 import type {HotelQuestion} from '../hotel/course'
-export type LessonPracticeQuestion=HotelQuestion & {meaningDistractor:string;document?:LanguageDocument}
+export type LessonPracticeQuestion=HotelQuestion & {meaningDistractor:string;document?:LanguageDocument;distractorDocument?:LanguageDocument}
 export function lessonPracticeQuestions(value:unknown):LessonPracticeQuestion[] {
  const number=lessonNumber(value),lesson=requestLesson(number)
  if(number==='1')return [...tonightMeaningQuestions]
@@ -32,7 +32,7 @@ export function lessonPracticeQuestions(value:unknown):LessonPracticeQuestion[] 
     for(const mode of oi===0?['question','answer'] as const:['answer'] as const) {
      const sentence=pair[mode],id=`l5-${subject.word.toLowerCase()}-${oi}-${mode}`
      const distractor=mode==='answer'?other.answer.thai:`${subject.thai}กำลังทำอะไร`
-     questions.push({id,english:sentence.english,skill:'race-lesson-five',correct:0,audioUrl:`/audio/class-five/${id}.wav`,answers:[[{text:sentence.thai,skill:'race-lesson-five'}],[{text:distractor,skill:'race-lesson-five'}]],meaningDistractor:distractor,document:{...sentence,construction:mode==='answer'?'action-answer':'action-question'}})
+     questions.push({id,english:sentence.english,skill:'race-lesson-five',correct:0,audioUrl:`/audio/class-five/${id}.wav`,answers:[[{text:sentence.thai,skill:'race-lesson-five'}],[{text:distractor,skill:'race-lesson-five'}]],meaningDistractor:distractor,document:{...sentence,construction:mode==='answer'?'action-answer':'action-question'},distractorDocument:mode==='answer'?{...other.answer,construction:'action-answer'}:{english:sentence.units.map(u=>u.role==='question'?'What':u.role==='action'?'doing?':u.english).join(' '),thai:distractor,construction:'action-question',units:sentence.units.map(u=>u.role==='question'?{...u,english:'What'}:u.role==='action'?{...u,english:'doing?'}:u)}})
     }
    }
   }
@@ -51,6 +51,6 @@ export function lessonPracticeQuestions(value:unknown):LessonPracticeQuestion[] 
   if(sentence.english!==q.english||sentence.thai!==q.thai)throw new Error(`Recorded lesson sentence differs from engine: ${q.id}`)
   if(q.correct!==0&&q.correct!==1)throw new Error(`Invalid answer index: ${q.id}`)
   const other=q.choices[1-q.correct]
-  return {id:q.id,english:q.english,skill:'race-lesson-four',correct:q.correct,audioUrl:q.audioUrl,answers:[[{text:q.choices[0],skill:'race-lesson-four'}],[{text:q.choices[1],skill:'race-lesson-four'}]],meaningDistractor:other,document:{...sentence,construction:'action-answer'}}
+  return {id:q.id,english:q.english,skill:'race-lesson-four',correct:q.correct,audioUrl:q.audioUrl,answers:[[{text:q.choices[0],skill:'race-lesson-four'}],[{text:q.choices[1],skill:'race-lesson-four'}]],meaningDistractor:other,document:{...sentence,construction:'action-answer'},distractorDocument:{english:q.distractorUnits.map(u=>u.english).join(' '),thai:other,units:q.distractorUnits,construction:'action-answer'}}
  })
 }

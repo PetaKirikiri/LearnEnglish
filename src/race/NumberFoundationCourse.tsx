@@ -1,3 +1,5 @@
+import VocabularyPicture from '../learning/VocabularyPicture'
+import './pictureSentence.css'
 import ActionStarCourse from './ActionStarCourse'
 import {requestedLesson} from '../learning/lessonRequests'
 import {awardPracticeGold} from './PracticeGold'
@@ -71,7 +73,9 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,o
  for(const word of fadeWords){const start=settings.fadeStart??5,end=settings.fadeEnd??25;fadeScores[wordId(word)]=Math.max(fadeScores[wordId(word)]??0,support?start+(end-start)*support/3:0)}
  // Audio failures or autoplay restrictions must never leave answers unclickable.
  const canAnswer=true
- const choices=saved.module!==3?['หนึ่งสิ่ง','หลายสิ่ง']:['ถูก','ผิด']
+ const noun=numberItem(question.word)!
+ const choices=saved.module!==3?['One','More than one']:['Correct','Incorrect']
+ const forms=[noun.singular??noun.word,noun.plural??noun.word]
  useEffect(()=>{if(preview)return;try{localStorage.setItem(foundationKey(userId),JSON.stringify(saved))}catch{/* Continue without storage. */}},[saved,userId,preview])
  useEffect(()=>()=>{request.current++;audio.current?.pause()},[])
  useEffect(()=>{
@@ -144,18 +148,18 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,o
    <button onClick={()=>restart(saved.module)}>ฝึกชุดนี้อีกครั้ง</button><a className="practice-module-break" href={lessonHref}>พักก่อน</a>
   </section>:<>
    <PracticeStage question={<>
-    <div className="classroom foundation-noun"><div className="cw-sentence-board"><LanguageQuadrant scores={fadeScores} request={{presentation:{...settings,fadeMode:fade,keepIconsWhenFading:true,explanations:false,wordPicker:false,explanationSelection:false,audio:false,size:'phone',layout:{density:'content',maxWidth:520}},document:saved.module===1?{construction:'noun-phrase',english:`the ${question.word}`,thai:'',units:[{english:'the',thai:'ที่กำลังพูดถึง',role:'determiner'},{english:question.word,thai:question.thai,role:'object'}]}:{construction:'question',english:numberSentenceText(question),thai:'',units:[{english:'Where',thai:'ที่ไหน',role:'question'},{english:question.verb??(question.plural?'are':'is'),thai:'อยู่',role:'be'},{english:'the',thai:'ที่กำลังพูดถึง',role:'determiner'},{english:`${question.word}?`,thai:question.thai,role:'object'}]}}}/></div></div>
+    <div className="classroom foundation-noun"><div className="cw-sentence-board"><LanguageQuadrant scores={fadeScores} request={{presentation:{...settings,fadeMode:fade,keepIconsWhenFading:true,thaiMeanings:false,thaiTranslation:false,explanations:false,wordPicker:false,explanationSelection:false,audio:false,size:'phone',layout:{density:'content',maxWidth:520}},document:saved.module===1?{construction:'noun-phrase',english:`the ${question.word}`,thai:'',units:[{english:'the',thai:'ที่กำลังพูดถึง',role:'determiner'},{english:question.word,thai:question.thai,role:'object'}]}:{construction:'question',english:numberSentenceText(question),thai:'',units:[{english:'Where',thai:'ที่ไหน',role:'question'},{english:question.verb??(question.plural?'are':'is'),thai:'อยู่',role:'be'},{english:'the',thai:'ที่กำลังพูดถึง',role:'determiner'},{english:`${question.word}?`,thai:question.thai,role:'object'}]}}}/></div></div>
 
     {saveError&&<p role="alert">บันทึกคำตอบไม่ได้ กรุณาลองอีกครั้ง</p>}
     {audioError&&<p role="alert">เล่นเสียงไม่ได้ แตะเพื่อฟังอีกครั้ง</p>}
    </>}
-    prompt={saved.module===3?'ประโยคนี้ถูกหรือผิด?':'หนึ่งสิ่งหรือหลายสิ่ง?'}
+    prompt={saved.module===3?'✓ / ✕':'🔊 → 👆'}
     correct={saved.picked===null?null:saved.answers.at(-1)===true}
     onNext={next}
     onHelp={()=>{if(saved.picked===null)assisted.current=true}}
     explanation={close=><PracticePatternExplanation question={question} module={saved.module} onClose={close}/>}
     answers={{disabled:!canAnswer||saved.picked!==null,selected:saved.picked,onChoose:choose,
-     choices:choices.map((choice,side)=>({id:choice,label:choice,state:saved.picked!==null&&side===numberAnswer(question,saved.module)?'correct':saved.picked===side?'incorrect':undefined,icon:<PracticeAnswerIcon kind={saved.module===3?'judgement':'number'} second={side===1}/>,content:choice})) as [BinaryChoice,BinaryChoice]}}/>
+     choices:choices.map((choice,side)=>({id:choice,label:saved.module===3?choice:noun.pairOnly?(side===0?'Singular':`the ${question.word} · Plural`):`the ${forms[side]}`,state:saved.picked!==null&&side===numberAnswer(question,saved.module)?'correct':saved.picked===side?'incorrect':undefined,icon:saved.module===3?<PracticeAnswerIcon kind="judgement" second={side===1}/>:undefined,content:saved.module===3?choice:<span className="number-choice-picture"><>{noun.pairOnly&&side===0?<span className="number-singular-symbol" aria-hidden="true">1</span>:<VocabularyPicture word={forms[side]} count={noun.pairOnly?1:side+1}/>}</><span>{noun.pairOnly&&side===0?'Singular':`the ${forms[side]}`}<small>{noun.pairOnly?(side===0?'One':'Plural · a pair'):choice}</small></span></span>})) as [BinaryChoice,BinaryChoice]}}/>
 
   </>}
  </div></main>

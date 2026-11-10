@@ -20,7 +20,7 @@ export default function PracticeStage({question,prompt,answers,correct,onNext,ex
     <button type="button" className="foundation-help" aria-label="อธิบายรูปแบบประโยค" aria-haspopup="dialog" onClick={()=>{onHelp?.();setHelpOpen(true)}}>?</button>
     <span className="foundation-result-announcement" role="status">{correct===null?'':correct?'ถูกต้อง':'ยังไม่ถูก'}</span>
     {correct===null&&<span className="practice-answer-prompt">{prompt}</span>}
-    <button type="button" className="foundation-next" disabled={correct===null} onClick={onNext}>ถัดไป →</button>
+    <button type="button" className="foundation-next" disabled={correct===null} onClick={onNext}>Next →</button>
    </div>
    <BinaryAnswerZone {...answers}/>
   </section>

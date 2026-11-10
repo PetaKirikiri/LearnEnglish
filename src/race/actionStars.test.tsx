@@ -56,7 +56,7 @@ it('requires two complete unassisted successes and keeps prior success on a late
  const old=progress[1]!.passes;progress=completeStar(progress,1,3,50,true);expect(progress[1]!.passes).toBe(old)
  expect(completeStar(progress,2,20,21,true)).toBe(progress)
 })
-it('uses the existing quadrant, waits for finished audio and shows English and icons before answering and reviews the translation afterwards',async()=>{
+it('uses the existing quadrant, waits for finished audio and shows English and icons before answering and reviews the English and pictures afterwards',async()=>{
  const host=document.createElement('div'),root=createRoot(host)
  const click=async(selector:string)=>act(async()=>host.querySelector<HTMLButtonElement>(selector)!.click())
  try{
@@ -70,7 +70,7 @@ it('uses the existing quadrant, waits for finished audio and shows English and i
   await act(async()=>finishAudio())
   expect(host.querySelector<HTMLButtonElement>('.binary-answer')?.disabled).toBe(false)
   await click('.binary-answer')
-  expect(host.querySelector('.example-source')).not.toBeNull();expect(host.querySelector('.example-translation')).not.toBeNull()
+  expect(host.querySelector('.example-source')).not.toBeNull();expect(host.querySelector('.example-translation')).toBeNull();expect(host.querySelectorAll('.picture-sentence')).toHaveLength(2)
   expect(record).toHaveBeenCalledOnce()
   expect(record.mock.calls[0][0].modality).toBe('visible')
   await click('.binary-answer');expect(record).toHaveBeenCalledOnce()
