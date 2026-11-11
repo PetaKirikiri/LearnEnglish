@@ -1,6 +1,6 @@
 # Sentence content audit
 
-3178 checks across 829 authored questions.
+3208 checks across 829 authored questions.
 
 - Unexpected errors: 0
 - Verified intentional grammar errors: 283

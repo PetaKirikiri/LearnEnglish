@@ -21,7 +21,7 @@ function ConnectedHomework() {
     try {
       const id = await recogniseHomeworkAccount(register)
       if (id) { const joined = await supabase.rpc('join_english_success'); if(joined.error) throw joined.error; setAccount(id) }
-      else throw new Error('เชื่อมต่อไม่สำเร็จ')
+      else return // LINE login has started; keep the loading screen until navigation.
     } catch (cause) { setError(cause instanceof Error ? cause.message : 'เชื่อมต่อไม่สำเร็จ'); setState('error') }
   }
   useEffect(() => {
@@ -33,7 +33,7 @@ function ConnectedHomework() {
     void recogniseHomeworkAccount().then(async id => {
       if (!active) return
       if (id) { const joined = await supabase.rpc('join_english_success'); if(joined.error) throw joined.error; if(active)setAccount(id) }
-      else throw new Error('เชื่อมต่อไม่สำเร็จ')
+      else return // LINE login has started; keep the loading screen until navigation.
     }).catch(cause => {
       if (!active) return
       setError(cause instanceof Error ? cause.message : 'เชื่อมต่อไม่สำเร็จ')
@@ -55,9 +55,11 @@ function ConnectedHomework() {
   if (local && !account && classId) return <main><button onClick={()=>void connect()}>Sign in with LINE</button><p>{error}</p></main>
   if (local || account) return homeworkDestination() === 'scoreboard' ? <CohortLeaderboard userId={account ?? undefined}/> : <PhonePractice key={account ?? 'local'} userId={account ?? undefined} tester={tester}/>
   const link = homeworkLineUrl(Number(requestedLesson(location.search)))
-  return <main className="phone-practice" lang="th"><div className="practice-shell"><section className="practice-complete" aria-live="polite">
+  return <main className="phone-practice" lang="th"><div className="practice-shell"><section className={`practice-complete${classId?' homework-join':''}`} aria-live="polite">
+    {classId&&<div className="homework-join-brand"><img src="/brand/englishsuccess-cap.svg" alt="Success University"/><span>SUCCESS UNIVERSITY</span><h1>Join the class</h1><p>เข้าเรียน · แล้วมาเล่นกัน!</p></div>}
     
-    {state === 'loading' ? <span role="status" aria-label="กำลังเชื่อมต่อ" style={{display:'block',width:28,height:28,border:'3px solid #dbe8ff',borderTopColor:'#1877ef',borderRadius:'50%'}}/> : <><p role="alert" style={{fontSize:20}}>{error}</p><button onClick={() => void connect()}>ลองอีกครั้ง</button>{link && <a href={link + (classId ? '&class='+encodeURIComponent(classId) : '') + (homeworkDestination() === 'scoreboard' ? '&view=scoreboard' : '')}>เปิดใน LINE</a>}</>}
+    {state === 'loading' ? <><p>กำลังเชื่อมต่อ LINE…</p><span role="status" aria-label="กำลังเชื่อมต่อ" style={{display:'block',width:28,height:28,border:'3px solid #dbe8ff',borderTopColor:'#1877ef',borderRadius:'50%'}}/></> : <><p role="alert" style={{fontSize:20}}>{error}</p><button onClick={() => void connect()}>ลองอีกครั้ง</button></>}
+    {link && <a className="homework-line-open" href={link + (classId ? '&class='+encodeURIComponent(classId) : '') + (homeworkDestination() === 'scoreboard' ? '&view=scoreboard' : '')}>เปิดใน LINE · Continue in LINE</a>}
 
   </section></div></main>
 }

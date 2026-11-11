@@ -1,5 +1,5 @@
 import { beforeEach, expect, it, vi } from 'vitest'
-const mocks = vi.hoisted(() => ({ getSession:vi.fn(), getUser:vi.fn(), setSession:vi.fn(), invoke:vi.fn(), init:vi.fn(), getIDToken:vi.fn(), getAccessToken:vi.fn() }))
+const mocks = vi.hoisted(() => ({ getSession:vi.fn(), getUser:vi.fn(), setSession:vi.fn(), invoke:vi.fn(), init:vi.fn(), getIDToken:vi.fn(), getAccessToken:vi.fn(), isInClient:vi.fn(), isLoggedIn:vi.fn(), login:vi.fn() }))
 vi.mock('../lib/supabase', () => ({supabase:{auth:mocks,functions:{invoke:mocks.invoke}}}))
 vi.mock('@line/liff', () => ({default:mocks}))
 beforeEach(() => {
@@ -9,6 +9,8 @@ beforeEach(() => {
  mocks.init.mockResolvedValue(undefined)
  mocks.getIDToken.mockReturnValue('verified-by-server')
  mocks.getAccessToken.mockReturnValue('line-access')
+ mocks.isInClient.mockReturnValue(true)
+ mocks.isLoggedIn.mockReturnValue(true)
  mocks.setSession.mockResolvedValue({data:{user:{id:'member'}},error:null})
 })
 it('recognises an existing LINE member directly through the shared service', async()=>{
@@ -48,4 +50,15 @@ it('initialises LINE deep links even with an existing account',async()=>{
  expect(homeworkDestination()).toBe('scoreboard')
  expect(homeworkDestination('?view=scoreboard')).toBe('scoreboard')
  expect(homeworkDestination('?liff.state=%3Flesson%3D2')).toBe('practice')
+})
+
+it('starts LINE login from Safari and preserves the class link',async()=>{
+ window.history.replaceState({}, '', '/english/practice?class=test-room&lesson=3')
+ mocks.getIDToken.mockReturnValue(null)
+ mocks.isInClient.mockReturnValue(false)
+ mocks.isLoggedIn.mockReturnValue(false)
+ const {recogniseHomeworkAccount}=await import('./homeworkLine')
+ expect(await recogniseHomeworkAccount()).toBeNull()
+ expect(mocks.login).toHaveBeenCalledWith({redirectUri:window.location.href})
+ expect(mocks.invoke).not.toHaveBeenCalled()
 })

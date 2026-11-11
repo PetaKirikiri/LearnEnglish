@@ -225,3 +225,35 @@
  .classroom .cw-sentence-board .matrix-layout.example-matrix[data-action-complement=true][data-card-count="6"] .tonight-slots{grid-template-columns:1fr}
 }
 .classroom .cw-sentence-board .matrix-layout[data-action-complement=true] .matrix-layout-leading .example-source{overflow-wrap:normal;word-break:normal}
+
+/* Content assessments use the existing close-up art at readable phone size. */
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content]{--matrix-art-height:clamp(72px,14dvh,150px);--matrix-gap:8px}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .tonight-slot{grid-template-columns:minmax(0,1fr);grid-template-rows:var(--matrix-art-height) auto auto;padding:6px 5px 10px;gap:4px;min-width:0;overflow:hidden}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-role{display:flex;align-items:center;justify-content:center;width:var(--matrix-art-height);max-width:100%;height:var(--matrix-art-height);min-height:0;max-width:100%;margin:0}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-role>.cw-game-icon,
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-role>.cw-person-icon,
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-role>.vocabulary-picture-art{width:100%;height:100%;max-height:100%;min-width:0;flex-shrink:1;margin:0}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-role img{width:100%;height:100%;max-width:100%;object-fit:contain}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .example-source{font-size:clamp(19px,5.2cqw,32px);line-height:1.15;overflow-wrap:normal;word-break:normal;max-width:100%}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-fading-word{white-space:nowrap}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-role-group:has(>.cw-noun-group){grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-noun-group{min-width:0}
+
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-time-icon{width:100%;height:100%;max-height:none}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-time-icon .cw-game-icon{width:calc(var(--matrix-art-height) - 14px);max-width:100%;height:auto;aspect-ratio:1;max-height:calc(var(--matrix-art-height) - 14px);flex:0 1 auto}
+
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-role-group>.cw-noun-group{grid-column:auto}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-role>span.cw-game-icon{width:var(--matrix-art-height);max-width:100%;height:auto;aspect-ratio:1;max-height:var(--matrix-art-height);flex:0 1 auto}
+
+@container matrix-stage (min-width:640px){
+ .phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content]{max-width:100%}
+ .phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content]:not([data-matrix-layout=noun-phrase]) .tonight-slots{grid-template-columns:minmax(0,1.8fr) minmax(0,2.2fr)}
+ .phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content][data-action-complement=true] .tonight-slots{grid-template-columns:minmax(0,2.4fr) minmax(0,2fr)}
+}
+
+/* A noun subject contains two pictures and needs two cards' worth of space. */
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content][data-action-complement=true] .matrix-layout-leading:has(>.cw-noun-group){grid-template-columns:minmax(0,2fr) minmax(0,.8fr) minmax(0,1.4fr)}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-layout-leading>.cw-noun-group{grid-column:auto}
+@container matrix-stage (min-width:640px){
+ .phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content][data-action-complement=true]:has(.matrix-layout-leading>.cw-noun-group) .tonight-slots{grid-template-columns:minmax(0,3.2fr) minmax(0,2fr)}
+}

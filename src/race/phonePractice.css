@@ -258,3 +258,7 @@
 .practice-identity>.practice-module-pattern{font:600 15px/1.3 Fredoka,Nunito,sans-serif;letter-spacing:0;text-align:left;padding:0;margin:4px 0 0;background:none;color:#345778}
 .practice-module-complete p{font-size:18px;line-height:1.5;font-weight:600}
 .practice-module-complete .practice-module-score{font-size:48px;line-height:1.15;font-weight:800;color:#1877ef}
+
+.practice-complete .homework-line-open{display:block;position:relative;margin:28px auto 0;padding:16px 20px;background:#06c755;color:#fff;border-radius:14px;text-decoration:none;font-size:18px;font-weight:800;line-height:1.4;max-width:320px}
+
+.homework-join{max-width:420px;margin:auto!important;padding:28px 18px!important;background:white;border:3px solid #1877ef;border-radius:28px;box-shadow:0 7px #1054b5;gap:16px}.homework-join-brand{display:flex;flex-direction:column;align-items:center;gap:12px}.homework-join-brand img{width:84px;height:84px;background:#e8f2ff;border-radius:24px;padding:12px}.homework-join-brand span{font-size:11px;font-weight:900;letter-spacing:1px;color:#1877ef}.homework-join-brand h1{font-size:32px;line-height:1.2;font-weight:900;color:#18395e;margin:0}.homework-join-brand p{font-size:17px;color:#526f91}.homework-join .homework-line-open{margin:16px auto 0;box-shadow:0 5px #048b3d;width:100%;font-size:16px}.homework-join>p{font-size:16px;line-height:1.5}.homework-join>button{font-size:18px;min-height:48px}

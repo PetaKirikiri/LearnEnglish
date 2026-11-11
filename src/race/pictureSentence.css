@@ -24,3 +24,25 @@
 .picture-sentence-part[data-role=action] .picture-sentence-art{overflow:hidden;padding:2px}
 .phone-practice.foundation-practice .picture-sentence-part[data-role=action] .picture-sentence-art .cw-game-icon,
 .picture-sentence-part[data-role=action] .picture-sentence-art .cw-game-icon{width:100%;height:100%;max-width:100%;flex:1;object-fit:contain;transform:none}
+
+/* Let existing close-up artwork fill each answer tile. */
+.phone-practice.foundation-practice .picture-sentence{gap:4px}
+.phone-practice.foundation-practice .picture-sentence-part{min-width:0;max-width:none;flex:1 1 0}
+.phone-practice.foundation-practice .picture-sentence-art{width:100%;height:auto;aspect-ratio:1;padding:0;overflow:hidden}
+.phone-practice.foundation-practice .picture-sentence-art>.cw-game-icon,
+.phone-practice.foundation-practice .picture-sentence-art>.cw-person-icon,
+.phone-practice.foundation-practice .picture-sentence-art>.vocabulary-picture-art,
+.phone-practice.foundation-practice .picture-sentence-art>img{width:100%;height:100%;max-width:100%;flex:1;margin:0;object-fit:contain}
+.phone-practice.foundation-practice .picture-sentence-art .cw-person-icon img{width:100%;height:100%;object-fit:contain}
+.phone-practice.foundation-practice .picture-sentence-word{font-size:clamp(11px,3.2vw,18px);overflow-wrap:normal;word-break:normal}
+.phone-practice.foundation-practice .practice-answer-area .binary-answer:has(.picture-sentence){padding:10px 8px}
+
+.phone-practice.foundation-practice .practice-answer-area .picture-sentence-art>img.cw-game-icon{width:100%;height:100%;max-width:100%;flex:1;object-fit:contain}
+
+.phone-practice.foundation-practice .picture-sentence-art{width:min(100%,clamp(72px,18dvh,180px));height:auto;aspect-ratio:1}
+
+/* Match the sentence's semantic colours inside classroom answer choices. */
+.picture-sentence[data-coloured=true] .picture-sentence-part{background:#ffd43b;color:#18385e;border-radius:16px;padding:4px 4px 8px;align-self:stretch;justify-content:center}
+.picture-sentence[data-coloured=true] .picture-sentence-part:is([data-role=be],[data-role=action]){background:#128247;color:#fff}
+.picture-sentence[data-coloured=true] .picture-sentence-part:is([data-role=question],[data-role=preposition]){background:#df2944;color:#fff}
+.picture-sentence[data-coloured=true] .picture-sentence-art{background:transparent}

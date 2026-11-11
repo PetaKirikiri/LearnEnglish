@@ -822,10 +822,10 @@ var lessonThreeRecordings = [...new Map([
 ].map((q) => [q.audioUrl, { audioUrl: q.audioUrl, spokenText: q.english }])).values()];
 
 // src/learning/lessonRequests.ts
-var lessonNumbers = ["1", "2", "3", "4"];
+var lessonNumbers = ["1", "2", "3", "4", "5"];
 var UnsupportedLessonError = class extends Error {
   constructor(value) {
-    super(`Unsupported lesson: ${String(value)}. Choose Lesson 1\u20134.`);
+    super(`Unsupported lesson: ${String(value)}. Choose Lesson 1\u20135.`);
     this.name = "UnsupportedLessonError";
   }
 };
@@ -848,7 +848,8 @@ var classroomMatrices = {
   "lesson-1": { id: "lesson-1", practiceMode: "journey", stages: ["class-one-judgement", "tonight-slots"], vocabulary: lessonOneCatalogue, plural: false, settings: { explanations: true, wordPicker: true }, initialWord: "hotel", audio: cumulativeLessonTwoAudio },
   "lesson-2": { id: "lesson-2", practiceMode: "journey", stages: ["lesson-two-number", "lesson-two-owner", "lesson-two-review"], vocabulary: lessonTwoMatrixCatalogue, plural: true, settings: { explanations: true, wordPicker: true }, initialWord: "shoes", audio: cumulativeLessonTwoAudio },
   "lesson-3": { id: "lesson-3", practiceMode: "lesson", stages: ["lesson-three-people", "lesson-three-answers", "lesson-three-review"], owners: ["the", "my", "your", "a", "an", "his", "her", "our", "their"], vocabulary: lessonThreeMatrixCatalogue, plural: true, pattern: "people-location", subjectModes: { pronouns: subjectPronouns, names: [{ word: "Bia", thai: "Bia", kind: "person" }, { word: "Central", thai: "\u0E40\u0E0B\u0E47\u0E19\u0E17\u0E23\u0E31\u0E25", kind: "place" }, { word: "Success", thai: "Success", kind: "place" }], initialPronoun: "you", initialName: "Bia", audio: (sentence, mode) => mode === "pronoun" ? peopleAudio(sentence) : void 0 }, settings: { explanations: true, wordPicker: true }, initialWord: "hotel", audio: lessonThreeQuestionAudio },
-  "lesson-4": { id: "lesson-4", practiceMode: "action-stars", stages: ["lesson-four-actions"], vocabulary: lessonThreeMatrixCatalogue, plural: true, pattern: "present-action", actionReply: "same-subject", actions: ["eating", "drinking", "reading", "holding", "opening", "washing"], owners: ["the", "my", "your", "his", "her", "our", "their"], initialOwner: "the", subjectModes: { pronouns: assessedSubjectPronouns, names: [], initialPronoun: "I" }, settings: { explanations: true, wordPicker: true, initialPattern: "answer" }, initialWord: "apple" }
+  "lesson-4": { id: "lesson-4", practiceMode: "action-stars", stages: ["lesson-four-actions"], vocabulary: lessonThreeMatrixCatalogue, plural: true, pattern: "present-action", actionReply: "same-subject", actions: ["eating", "drinking", "reading", "holding", "opening", "washing"], owners: ["the", "my", "your", "his", "her", "our", "their"], initialOwner: "the", subjectModes: { pronouns: assessedSubjectPronouns, names: [], initialPronoun: "I" }, settings: { explanations: true, wordPicker: true, initialPattern: "answer" }, initialWord: "apple" },
+  "lesson-5": { id: "lesson-5", practiceMode: "lesson", stages: ["lesson-five-destinations"], vocabulary: lessonThreeMatrixCatalogue.filter((item) => ["hotel", "school", "gym", "bedroom", "kitchen"].includes(item.word)), plural: false, pattern: "present-action", actionQuestion: "destination", actions: ["going", "walking", "running"], owners: ["the", "my", "your", "his", "her", "our", "their"], initialOwner: "the", subjectModes: { pronouns: assessedSubjectPronouns, names: [], initialPronoun: "you" }, settings: { explanations: true, wordPicker: true, initialPattern: "question" }, initialWord: "hotel" }
 };
 var lessonRegistry = classroomMatrices;
 function requestLesson(value) {
@@ -867,17 +868,17 @@ function nounPhraseUnits(phrase) {
 
 // src/learning/sentenceRules/actionDialogue.ts
 var actionVocabulary = [
-  { word: "eating", categories: ["food"], icon: "/classroom/icons/actions/eating.png", thai: "\u0E01\u0E34\u0E19", complement: "object", objects: ["food"] },
-  { word: "drinking", categories: ["food"], icon: "/classroom/icons/actions/drinking.png", thai: "\u0E14\u0E37\u0E48\u0E21", complement: "object", objects: ["drink"] },
-  { word: "sleeping", categories: ["places"], icon: "/classroom/icons/actions/sleeping.png", thai: "\u0E19\u0E2D\u0E19", complement: "none", objects: [] },
-  { word: "running", categories: ["sports"], icon: "/classroom/icons/actions/running.png", thai: "\u0E27\u0E34\u0E48\u0E07", complement: "none", objects: [] },
-  { word: "walking", categories: ["places", "sports"], icon: "/classroom/icons/actions/walking.png", thai: "\u0E40\u0E14\u0E34\u0E19", complement: "none", objects: [] },
-  { word: "playing", categories: ["sports"], icon: "/classroom/icons/actions/playing.png", thai: "\u0E40\u0E25\u0E48\u0E19", complement: "none", objects: [] },
-  { word: "reading", categories: ["everyday"], icon: "/classroom/icons/actions/reading.png", thai: "\u0E2D\u0E48\u0E32\u0E19", complement: "object", objects: ["readable"] },
-  { word: "going", categories: ["places", "transport"], icon: "/classroom/icons/actions/walking.png", thai: "\u0E44\u0E1B", complement: "destination", objects: ["destination"] },
-  { word: "holding", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/holding.png", thai: "\u0E16\u0E37\u0E2D", complement: "object", objects: ["holdable"] },
-  { word: "opening", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/opening.png", thai: "\u0E40\u0E1B\u0E34\u0E14", complement: "object", objects: ["openable"] },
-  { word: "washing", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/washing.png", thai: "\u0E25\u0E49\u0E32\u0E07", complement: "object", objects: ["washable"] }
+  { word: "eating", categories: ["food"], icon: "/classroom/icons/actions/closeup/eating.png", thai: "\u0E01\u0E34\u0E19", complement: "object", objects: ["food"] },
+  { word: "drinking", categories: ["food"], icon: "/classroom/icons/actions/closeup/drinking.png", thai: "\u0E14\u0E37\u0E48\u0E21", complement: "object", objects: ["drink"] },
+  { word: "sleeping", categories: ["places"], icon: "/classroom/icons/actions/closeup/sleeping.png", thai: "\u0E19\u0E2D\u0E19", complement: "none", objects: [] },
+  { word: "running", categories: ["sports"], icon: "/classroom/icons/actions/closeup/running.png", thai: "\u0E27\u0E34\u0E48\u0E07", complement: "none", objects: [] },
+  { word: "walking", categories: ["places", "sports"], icon: "/classroom/icons/actions/closeup/walking.png", thai: "\u0E40\u0E14\u0E34\u0E19", complement: "none", objects: [] },
+  { word: "playing", categories: ["sports"], icon: "/classroom/icons/actions/closeup/playing.png", thai: "\u0E40\u0E25\u0E48\u0E19", complement: "none", objects: [] },
+  { word: "reading", categories: ["everyday"], icon: "/classroom/icons/actions/closeup/reading.png", thai: "\u0E2D\u0E48\u0E32\u0E19", complement: "object", objects: ["readable"] },
+  { word: "going", categories: ["places", "transport"], icon: "/classroom/icons/actions/closeup/walking.png", thai: "\u0E44\u0E1B", complement: "destination", objects: ["destination"] },
+  { word: "holding", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/closeup/holding.png", thai: "\u0E16\u0E37\u0E2D", complement: "object", objects: ["holdable"] },
+  { word: "opening", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/closeup/opening.png", thai: "\u0E40\u0E1B\u0E34\u0E14", complement: "object", objects: ["openable"] },
+  { word: "washing", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/closeup/washing.png", thai: "\u0E25\u0E49\u0E32\u0E07", complement: "object", objects: ["washable"] }
 ];
 var actionSubjects = Object.fromEntries(subjectPronouns.map((subject) => {
   const reply = subject.word === "you" ? subjectPronouns.find((item) => item.word === "I") : subject;
@@ -895,8 +896,14 @@ function actionContextsForWord(word) {
     ...meaning?.kind === "place" || meaning?.roles?.includes("destination") ? ["destination"] : []
   ];
 }
-function objectsForAction(word, catalogue) {
+function actionForFrame(word, question2) {
   const action = actionVocabulary.find((item) => item.word === word);
+  if (question2 !== "destination") return action;
+  if (!action || !["going", "walking", "running"].includes(word)) throw new Error("Destination questions require a movement verb.");
+  return { ...action, complement: "destination", objects: ["destination"] };
+}
+function objectsForAction(word, catalogue, question2) {
+  const action = actionForFrame(word, question2);
   if (!action || action.complement === "none") return [];
   const candidates = catalogue.map((item) => {
     const contexts = actionContextsForWord(item);
@@ -913,17 +920,18 @@ function objectDeterminers(object, allowed) {
   return [...article && ["a", "an"].includes(article.english) ? [{ word: article.english, thai: article.thai }] : [], ...allDeterminers.filter((item) => !["a", "an"].includes(item.word))].filter((item) => !allowed || allowed.includes(item.word));
 }
 function actionDialogue(subject, word, selection) {
-  const person = actionSubjects[subject], action = actionVocabulary.find((item) => item.word === word);
+  const person = actionSubjects[subject], action = actionForFrame(word, selection.question);
   if (!person || !action) throw new Error("Choose a reviewed person and action.");
   if (selection.subject && selection.subject.kind !== "person") throw new Error("This action needs a person.");
   if (selection.destination && (action.complement !== "destination" || selection.destination.kind !== "place")) throw new Error("This action does not accept a named place.");
+  const destinationQuestion = selection.question === "destination";
   const speaker = selection.subject;
   const questionSubject = speaker?.word ?? (subject === "i" ? "I" : subject);
   const answerWord = speaker?.word ?? person.answer;
   const answerSubject = answerWord.charAt(0).toUpperCase() + answerWord.slice(1);
   const be = speaker ? subjectVerb(speaker) : person.answerBe;
   const questionBe = speaker ? subjectVerb(speaker) : person.questionBe;
-  const objects = objectsForAction(word, selection.vocabulary);
+  const objects = objectsForAction(word, selection.vocabulary, selection.question);
   const chosenObject = selection.object === void 0 ? objects[0] : objects.find((item) => item.word === selection.object);
   if (selection.object !== void 0 && !chosenObject) throw new Error("This object does not fit the action.");
   const baseObject = selection.destination ? { word: `to ${selection.destination.word}`, thai: `\u0E44\u0E1B\u0E17\u0E35\u0E48${selection.destination.thai}`, noun: selection.destination.word, phrase: { noun: selection.destination.word, nounThai: selection.destination.thai, preposition: { english: "to", thai: "\u0E17\u0E35\u0E48" } }, categories: ["destination"] } : chosenObject;
@@ -939,9 +947,9 @@ function actionDialogue(subject, word, selection) {
   ];
   units[units.length - 1] = { ...units[units.length - 1], english: units[units.length - 1].english + "." };
   const objectMeaning = object ? selectedDeterminer && ["the", "my", "your", "his", "her", "our", "their"].includes(selectedDeterminer.word) ? object.phrase.nounThai + (selectedDeterminer.word === "the" ? "" : selectedDeterminer.thai.replace(/ \(.*\)/, "")) : object.thai.replace(/^ไปที่/, "") : "";
-  const meaning = action.complement === "destination" ? `\u0E44\u0E1B\u0E17\u0E35\u0E48${objectMeaning}` : `${action.thai}${objectMeaning}`;
+  const meaning = action.complement === "destination" ? `${action.thai}${word === "going" ? "\u0E17\u0E35\u0E48" : "\u0E44\u0E1B\u0E17\u0E35\u0E48"}${objectMeaning}` : `${action.thai}${objectMeaning}`;
   return {
-    question: { english: `What ${questionBe} ${questionSubject} doing?`, thai: `${speaker?.thai ?? person.thai}\u0E01\u0E33\u0E25\u0E31\u0E07\u0E17\u0E33\u0E2D\u0E30\u0E44\u0E23`, units: [{ english: "What", thai: "\u0E2D\u0E30\u0E44\u0E23", role: "question" }, { english: questionBe, thai: "\u2014", role: "be" }, ...subjectParts(false), { english: "doing?", thai: "\u0E01\u0E33\u0E25\u0E31\u0E07\u0E17\u0E33", role: "action" }] },
+    question: { english: `${destinationQuestion ? "Where" : "What"} ${questionBe} ${questionSubject} ${destinationQuestion ? action.word : "doing"}?`, thai: `${speaker?.thai ?? person.thai}\u0E01\u0E33\u0E25\u0E31\u0E07${destinationQuestion ? `${action.thai}${word === "going" ? "\u0E44\u0E2B\u0E19" : "\u0E44\u0E1B\u0E44\u0E2B\u0E19"}` : "\u0E17\u0E33\u0E2D\u0E30\u0E44\u0E23"}`, units: [{ english: destinationQuestion ? "Where" : "What", thai: destinationQuestion ? "\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19" : "\u0E2D\u0E30\u0E44\u0E23", role: "question" }, { english: questionBe, thai: "\u2014", role: "be" }, ...subjectParts(false), { english: destinationQuestion ? `${action.word}?` : "doing?", thai: destinationQuestion ? action.thai : "\u0E01\u0E33\u0E25\u0E31\u0E07\u0E17\u0E33", role: "action" }] },
     answer: { english: units.map((unit) => unit.english).join(" "), thai: `${speaker?.thai ?? person.answerThai}\u0E01\u0E33\u0E25\u0E31\u0E07${meaning}`, units },
     object
   };
@@ -950,18 +958,18 @@ function actionDialogue(subject, word, selection) {
 // src/learning/sentenceRules/actionCapabilities.ts
 function actionCapabilities(lesson) {
   const requestedActions = lesson.actions ? lesson.actions.map((word) => {
-    const action = actionVocabulary.find((item) => item.word === word);
+    const action = actionForFrame(word, lesson.actionQuestion);
     if (!action) throw new Error(`Unsupported action: ${word}`);
     return action;
   }) : actionVocabulary;
-  const available = (action) => action.complement === "none" || objectsForAction(action.word, lesson.vocabulary).length > 0 || action.complement === "destination" && lesson.subjectModes?.names.some((item) => item.kind === "place");
+  const available = (action) => action.complement === "none" || objectsForAction(action.word, lesson.vocabulary, lesson.actionQuestion).length > 0 || action.complement === "destination" && lesson.subjectModes?.names.some((item) => item.kind === "place");
   if (lesson.actions && requestedActions.some((action) => !available(action))) throw new Error("Configured action has no compatible lesson objects");
   const actions2 = requestedActions.filter(available);
   const subjects2 = (lesson.subjectModes?.pronouns ?? subjectPronouns).map((subject) => ({ ...subject, kind: subject.kind ?? "person" }));
   if (!actions2.length) throw new Error("An action lesson needs actions");
   return { actions: actions2, subjects: subjects2, objects: (action) => {
     if (!actions2.some((item) => item.word === action)) throw new Error(`Action outside lesson ${lesson.id}: ${action}`);
-    return objectsForAction(action, lesson.vocabulary);
+    return objectsForAction(action, lesson.vocabulary, lesson.actionQuestion);
   }, determiners: (object) => objectDeterminers(object, lesson.owners) };
 }
 function composeLessonAction(lesson, request) {
@@ -973,7 +981,7 @@ function composeLessonAction(lesson, request) {
   if (request.object !== void 0 && !object) throw new Error("Object outside lesson action scope");
   const determiner = request.determiner ?? (object ? capability.determiners(object)[0]?.word : void 0);
   if (determiner && (!object || !capability.determiners(object).some((item) => item.word === determiner))) throw new Error("Determiner outside lesson scope");
-  return actionDialogue(subject.word.toLowerCase(), request.action, { vocabulary: lesson.vocabulary, subject: { ...subject, kind: "person" }, object: object?.word, determiner });
+  return actionDialogue(subject.word.toLowerCase(), request.action, { question: lesson.actionQuestion, vocabulary: lesson.vocabulary, subject: { ...subject, kind: "person" }, object: object?.word, determiner });
 }
 
 // src/race/actionPracticeContent.ts
@@ -1057,6 +1065,33 @@ for (const q of nextLevel) {
   covered.add(pair);
 }
 var actionPracticeQuestions = [...approved, ...replacements];
+var structure = (units) => units.map((u) => u.role + (["determiner", "person-determiner"].includes(u.role) ? /^(a|an|the)$/i.test(u.english) ? ":article" : ":owner" : "")).join(",");
+var meaningParts = (units) => ["person-determiner", "person", "action", "determiner", "object"].map((role) => units.filter((u) => u.role === role).map((u) => u.english.toLowerCase().replace(/[?.!]$/, "").replace(/^(a|an)$/, "indefinite")).join(" "));
+function matchedPictureQuestion(q) {
+  if (q.level === 6) return q;
+  const parts = meaningParts(q.units);
+  const candidates = actionPracticeQuestions.filter((other2) => other2.level === q.level && structure(other2.units) === structure(q.units) && meaningParts(other2.units).filter((value, index) => value !== parts[index]).length === 1);
+  let hash = 0;
+  for (const char of q.id) hash = Math.imul(hash, 31) + char.charCodeAt(0) >>> 0;
+  let other = candidates[hash % candidates.length];
+  if (!other) {
+    const person = q.units.filter((u) => ["person-determiner", "person"].includes(u.role)).map((u) => u.english).join(" ");
+    const subject = [...nextSubjects, ...people2].find((p) => p.word.toLowerCase() === person.toLowerCase());
+    const action = q.units.find((u) => u.role === "action").english.replace(/[?.!]$/, "");
+    const noun = q.units.find((u) => u.role === "object")?.english.replace(/[?.!]$/, "");
+    const object = objectsForAction(action, lessonThreeMatrixCatalogue).find((item) => item.noun === noun);
+    const owner = q.units.find((u) => u.role === "determiner")?.english;
+    const alternative = object && objectDeterminers(object).find((d) => d.word !== owner && !/^(a|an|the)$/.test(d.word));
+    if (!subject || !object || !alternative) throw new Error(`No matched picture alternative: ${q.id}`);
+    if (owner && /^(a|an|the)$/.test(owner)) {
+      const otherSubject = nextSubjects.find((p) => p.word === "They") ?? nextSubjects.find((p) => p.word === "they");
+      other = actionDialogue("they", action, { vocabulary: lessonThreeMatrixCatalogue, subject: otherSubject, object: object.word, determiner: owner }).answer;
+    } else other = actionDialogue("i", action, { vocabulary: lessonThreeMatrixCatalogue, subject, object: object.word, determiner: alternative.word }).answer;
+  }
+  if (!taughtActionLine(q.level, other.units) || structure(other.units) !== structure(q.units)) throw new Error(`Untaught picture alternative: ${q.id}`);
+  return { ...q, choices: [q.thai, other.thai], correct: 0, distractorUnits: other.units, questionVersion: 2 };
+}
+var pictureActionPracticeQuestions = actionPracticeQuestions.map(matchedPictureQuestion);
 
 // src/race/actionStarContent.ts
 var actionStarLesson = requestLesson(4);
@@ -1120,6 +1155,23 @@ function lessonPracticeQuestions(value) {
     return { ...q, document: { ...sentence, construction: "location-answer", units: sentence.units.map((unit, index) => ({ ...unit, role: roles[index] })) } };
   });
   const capability = actionCapabilities(lesson);
+  if (number === "5") {
+    const questions = [];
+    for (const [index, subject] of capability.subjects.entries()) {
+      const objects = capability.objects("going");
+      for (const [oi, object] of objects.entries()) {
+        const determiner = lesson.owners[(index + oi) % lesson.owners.length];
+        const pair = composeLessonAction(lesson, { subject: subject.word, action: "going", object: object.word, determiner });
+        const other = composeLessonAction(lesson, { subject: subject.word, action: "going", object: objects[(oi + 1) % objects.length].word, determiner });
+        for (const mode of oi === 0 ? ["question", "answer"] : ["answer"]) {
+          const sentence = pair[mode], id = `l5-${subject.word.toLowerCase()}-${oi}-${mode}`;
+          const distractor = mode === "answer" ? other.answer.thai : `${subject.thai}\u0E01\u0E33\u0E25\u0E31\u0E07\u0E17\u0E33\u0E2D\u0E30\u0E44\u0E23`;
+          questions.push({ id, english: sentence.english, skill: "race-lesson-five", correct: 0, audioUrl: `/audio/class-five/${id}.wav`, answers: [[{ text: sentence.thai, skill: "race-lesson-five" }], [{ text: distractor, skill: "race-lesson-five" }]], meaningDistractor: distractor, document: { ...sentence, construction: mode === "answer" ? "action-answer" : "action-question" }, distractorDocument: mode === "answer" ? { ...other.answer, construction: "action-answer" } : { english: sentence.units.map((u) => u.role === "question" ? "What" : u.role === "action" ? "doing?" : u.english).join(" "), thai: distractor, construction: "action-question", units: sentence.units.map((u) => u.role === "question" ? { ...u, english: "What" } : u.role === "action" ? { ...u, english: "doing?" } : u) } });
+        }
+      }
+    }
+    return questions;
+  }
   return actionStarTiers.flatMap((tier) => tier.questions).map((q) => {
     const action = q.units.find((u) => u.role === "action").english;
     const subject = q.units.find((u) => u.role === "person").english;
@@ -1131,7 +1183,7 @@ function lessonPracticeQuestions(value) {
     if (sentence.english !== q.english || sentence.thai !== q.thai) throw new Error(`Recorded lesson sentence differs from engine: ${q.id}`);
     if (q.correct !== 0 && q.correct !== 1) throw new Error(`Invalid answer index: ${q.id}`);
     const other = q.choices[1 - q.correct];
-    return { id: q.id, english: q.english, skill: "race-lesson-four", correct: q.correct, audioUrl: q.audioUrl, answers: [[{ text: q.choices[0], skill: "race-lesson-four" }], [{ text: q.choices[1], skill: "race-lesson-four" }]], meaningDistractor: other, document: { ...sentence, construction: "action-answer" } };
+    return { id: q.id, english: q.english, skill: "race-lesson-four", correct: q.correct, audioUrl: q.audioUrl, answers: [[{ text: q.choices[0], skill: "race-lesson-four" }], [{ text: q.choices[1], skill: "race-lesson-four" }]], meaningDistractor: other, document: { ...sentence, construction: "action-answer" }, distractorDocument: { english: q.distractorUnits.map((u) => u.english).join(" "), thai: other, units: q.distractorUnits, construction: "action-answer" } };
   });
 }
 
@@ -1225,6 +1277,7 @@ var classOneAudio = classOnePracticeQuestions.map((q) => ({ spokenText: q.englis
 
 // src/race/pools.ts
 var racePools = [
+  { id: "lesson-five-destinations", title: "Class 5 \xB7 Where are you going?", kind: "meaning", questions: lessonPracticeQuestions(5) },
   { id: "lesson-four-actions", title: "Lesson 4 \xB7 Actions and ownership", kind: "meaning", questions: lessonPracticeQuestions(4) },
   { id: "man-woman", title: "A man \xB7 A woman", questions: classOneVocabularyQuestions.slice(2, 4) },
   { id: "who-what", title: "Who \xB7 What", questions: classOneQuestions.slice(0, 2) },

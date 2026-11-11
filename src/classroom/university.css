@@ -5,3 +5,16 @@
 @media(max-width:700px){body:has(.su-classroom) .cw-language-switch{top:78px;right:12px}}
 
 .su-current-student{display:grid;gap:10px;margin:24px auto;padding:20px;max-width:340px;border-radius:24px;background:#edf4ff;color:#18385e}.su-current-student small{font-size:16px}.su-current-student strong{font-size:28px}
+
+/* The live classroom embeds the same practice screen, with host-owned navigation. */
+.su-student.phone-practice{padding:0}.su-student.phone-practice header{margin:0}.su-classroom-practice.phone-practice{min-height:0;background:#fff}.su-classroom-practice.phone-practice .practice-shell{min-height:calc(100dvh - 200px);width:100%;padding:0}.su-test-header{padding-right:100px;gap:20px}.su-test-header .su-crank{flex-shrink:0}.su-classroom .su-workspace:has(.su-classroom-practice){padding:24px 0 0}.su-classroom .su-test-header{padding-left:24px;margin-bottom:10px}
+@media(max-width:700px){.su-classroom .su-test-header{padding:24px 92px 10px 16px;min-height:110px}.su-test-header .su-crank{width:74px;height:76px;border-radius:18px}.su-crank strong{font-size:20px;bottom:12px;left:12px}.su-classroom-practice.phone-practice .practice-shell{min-height:calc(100dvh - 220px)}}
+
+/* The host has no practice header; its single stage fills the teaching area. */
+.su-classroom-practice.phone-practice.foundation-practice .practice-shell{display:block;min-height:0}
+.su-classroom-practice.phone-practice.foundation-practice .adaptive-practice-stage>.practice-question{padding:16px 20px 24px}
+.su-classroom-practice.phone-practice.foundation-practice .practice-answer-area{padding:12px 20px 20px}
+.su-classroom-practice.phone-practice.foundation-practice .practice-feedback.foundation-controls{max-width:none;width:100%}
+@media(min-width:900px){
+ .su-classroom-practice.phone-practice.foundation-practice .matrix-layout.example-matrix[data-density=content]{--matrix-art-height:clamp(120px,20dvh,240px)}
+}

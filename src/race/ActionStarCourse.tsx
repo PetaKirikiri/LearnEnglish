@@ -68,6 +68,6 @@ function StarRun({stars,userId,settings,onExit,exitLabel,onLevel,onFinish }:{sta
   setSaved(s=>({...s,index:s.index+1,picked:null,attemptId:crypto.randomUUID()}))
  }
  const reveal=saved.picked!==null
- return <main className="phone-practice foundation-practice" lang="th"><div className="practice-shell"><PracticeHeader level={6} onLevel={onLevel} value={saved.answers.length} total={50} userId={userId} onExit={onExit} exitLabel={exitLabel} onReplay={play}/><ActionPracticeStage question={q} scores={progress.scores} settings={settings} picked={saved.picked} disabled={!heard||reveal||!progress.ready} onChoose={choose} onNext={next} onHelp={()=>{if(!reveal)setSaved(s=>({...s,assisted:true}))}} review={reveal}>
- {!heard&&!reveal&&<p>🔊 Listen, then choose</p>}{audioError&&<button role="alert" onClick={play}>🔊 ↻ Tap to listen</button>}{(saveError||progress.error)&&<p role="alert">บันทึกคำตอบไม่ได้ กรุณาลองอีกครั้ง</p>}</ActionPracticeStage></div></main>
+ return <main className="phone-practice foundation-practice" lang="th"><div className="practice-shell"><PracticeHeader level={6} onLevel={onLevel} value={saved.answers.length} total={50} userId={userId} onExit={onExit} exitLabel={exitLabel}/><ActionPracticeStage onReplay={play} question={q} scores={progress.scores} settings={settings} picked={saved.picked} disabled={!heard||reveal||!progress.ready} onChoose={choose} onNext={next} onHelp={()=>{if(!reveal)setSaved(s=>({...s,assisted:true}))}} review={reveal}>
+ {audioError&&<button role="alert" onClick={play}>🔊 ↻ Tap to listen</button>}{(saveError||progress.error)&&<p role="alert">บันทึกคำตอบไม่ได้ กรุณาลองอีกครั้ง</p>}</ActionPracticeStage></div></main>
 }

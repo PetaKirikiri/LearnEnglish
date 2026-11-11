@@ -29,8 +29,12 @@ async function connect(register: boolean) {
   const liff = line ?? (await import('@line/liff')).default
   if (!line) await liff.init({ liffId: homeworkLiffId, withLoginOnExternalBrowser: false })
   const token = liff.getIDToken()
-  // Never invoke browser/password login or send learners through another site.
-  if (!token) throw new Error('กรุณาเปิดลิงก์บทเรียนจาก LINE')
+  if (!token && !liff.isInClient() && !liff.isLoggedIn()) {
+    // Keep the classroom and lesson query when Safari returns from LINE login.
+    liff.login({ redirectUri: window.location.href })
+    return null
+  }
+  if (!token) throw new Error('กรุณาเปิดลิงก์บทเรียนจาก LINEอีกครั้ง')
   const { data, error } = await supabase.functions.invoke(register ? 'line-liff-auth' : 'line-liff-recognize', {
     body: register ? { id_token: token, access_token: liff.getAccessToken() } : { id_token: token },
     signal: AbortSignal.timeout(15000),

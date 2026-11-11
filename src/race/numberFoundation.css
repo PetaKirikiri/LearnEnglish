@@ -185,3 +185,6 @@
 .foundation-practice .foundation-controls .foundation-next:disabled{display:none}
 .foundation-practice .foundation-controls .practice-answer-prompt{color:#294766;font-weight:700;text-align:right}
 .phone-practice.foundation-practice .foundation-controls .foundation-next{min-height:40px;height:40px;padding:5px 16px}
+
+/* A sentence is content, never another full-page classroom/sidebar shell. */
+.phone-practice.foundation-practice .foundation-noun.classroom{display:block;grid-template-columns:none;height:auto;min-height:0;overflow:visible}

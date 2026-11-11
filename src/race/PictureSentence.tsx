@@ -15,8 +15,8 @@ export function pictureChunks(units:readonly Unit[]){
  return chunks
 }
 /** Read-only answer artwork uses the same semantic icons as the classroom engine. */
-export default function PictureSentence({document}:{document:LanguageDocument}){
- return <span className="picture-sentence" lang="en" aria-label={document.english}>
+export default function PictureSentence({document,coloured=false}:{document:LanguageDocument;coloured?:boolean}){
+ return <span className="picture-sentence" data-coloured={coloured||undefined} lang="en" aria-label={document.english}>
   {pictureChunks(document.units).map((chunk,index)=><Fragment key={index}>
    {index>0&&<span className="picture-sentence-plus" aria-hidden="true">+</span>}
    <span className="picture-sentence-part" data-role={chunk.unit.role} data-action={chunk.unit.role==='action'?chunk.unit.english.replace(/[?.!]$/,''):undefined}>
