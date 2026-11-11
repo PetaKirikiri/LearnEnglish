@@ -1,3 +1,4 @@
+import {sentenceAudioPlugin} from './server/sentenceAudioPlugin'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
@@ -6,7 +7,7 @@ import { classroomRaceProxy } from './server/classroomRaceProxy'
 import { raceLessonPlugin } from './server/raceLessonPlugin'
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), classroomRaceProxy(), raceLessonPlugin(), cityPlugin()],
+  plugins: [sentenceAudioPlugin(), react(), tailwindcss(), classroomRaceProxy(), raceLessonPlugin(), cityPlugin()],
   build: {
     rollupOptions: { input: { app: 'index.html', classroom: 'classroom/index.html' } },
   },

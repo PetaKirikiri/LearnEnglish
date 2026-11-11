@@ -67,6 +67,9 @@
     },
     "api/city/*.js": {
       "maxDuration": 30
+    },
+    "api/sentence-audio.js": {
+      "maxDuration": 60
     }
   }
 }

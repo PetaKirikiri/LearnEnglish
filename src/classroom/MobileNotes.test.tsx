@@ -13,7 +13,7 @@ it('opens directly into the requested lesson and keeps the registered lesson con
  window.history.replaceState({}, '', '/english/notes?lesson=2')
  await act(async () => root.render(<MobileNotes/>))
  expect(host.querySelectorAll('nav')).toHaveLength(1)
- expect(host.querySelectorAll('nav button')).toHaveLength(4)
+ expect(host.querySelectorAll('nav button')).toHaveLength(6)
  expect(host.querySelectorAll('.tonight-slot')).toHaveLength(4)
  expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('Where are the shoes?')
  expect(host.querySelector('.index,.phases,.classroom-race')).toBeNull()

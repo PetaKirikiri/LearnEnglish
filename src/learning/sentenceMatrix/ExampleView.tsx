@@ -1,3 +1,4 @@
+import {wordOpacity,wordTokens} from '../wordProgress/model'
 import NounGroup from './NounGroup'
 import MatrixLayout, { type MatrixLayoutRequest } from './MatrixLayout'
 import VocabularyPicture from '../VocabularyPicture'
@@ -35,9 +36,10 @@ export default function ExampleLanguage({layout,english,thai,units,matrix=false,
       const slot = semanticSlots?.[index] ?? (word === 'where' ? 0 : ['is','are','was','were'].includes(word) ? 1 : ['the','my','your','his','her'].includes(word) ? 2 : 3)
       const action = settings.fadeMode || settings.explanations === false || !showEnglish ? undefined : unitActions?.find(action => action.index === index) ?? (unitAction?.index === index ? unitAction : undefined)
       const detail = slotDetails?.[index]
+      const pictureOpacity=settings.fadeMode?Math.max(...wordTokens(unit.english).map(word=>wordOpacity(word,scores,settings))):1
       const content = <>
-        {showIcons && detail?.icon !== undefined && <span className="cw-slot-role" aria-hidden={!showEnglish||settings.fadeMode||undefined}>{detail.icon}</span>}
-        {showIcons && matrix && slot === 3 && !detail?.icon && <VocabularyPicture word={unit.english}/>}
+        {showIcons && detail?.icon !== undefined && <span className="cw-slot-role" style={{opacity:pictureOpacity}} aria-hidden={!showEnglish||settings.fadeMode||undefined}>{detail.icon}</span>}
+        {showIcons && matrix && slot === 3 && !detail?.icon && <span style={{opacity:pictureOpacity}}><VocabularyPicture word={unit.english}/></span>}
         {showEnglish && <span className="example-source" aria-hidden={settings.fadeMode||undefined}>{settings.fadeMode ? <FadingWords text={unit.english} scores={scores} settings={settings}/> : spans.filter(span=>span.start<end&&span.end>start).map((span,i)=>{
           const text=span.text.slice(Math.max(start,span.start)-span.start,Math.min(end,span.end)-span.start)
           return span.marked?<strong key={i}><FadingWords text={text} scores={scores} settings={settings}/></strong>:<span key={i}><FadingWords text={text} scores={scores} settings={settings}/></span>

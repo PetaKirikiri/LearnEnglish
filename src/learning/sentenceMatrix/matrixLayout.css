@@ -226,6 +226,9 @@
 }
 .classroom .cw-sentence-board .matrix-layout[data-action-complement=true] .matrix-layout-leading .example-source{overflow-wrap:normal;word-break:normal}
 
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group[data-group-size="3"]{grid-template-columns:.7fr 1fr 1.4fr}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group[data-group-size="3"] .tonight-slot:nth-child(2){border-radius:0}
+
 /* Content assessments use the existing close-up art at readable phone size. */
 .phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content]{--matrix-art-height:clamp(72px,14dvh,150px);--matrix-gap:8px}
 .phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .tonight-slot{grid-template-columns:minmax(0,1fr);grid-template-rows:var(--matrix-art-height) auto auto;padding:6px 5px 10px;gap:4px;min-width:0;overflow:hidden}
@@ -257,3 +260,13 @@
 @container matrix-stage (min-width:640px){
  .phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content][data-action-complement=true]:has(.matrix-layout-leading>.cw-noun-group) .tonight-slots{grid-template-columns:minmax(0,3.2fr) minmax(0,2fr)}
 }
+
+/* Intrinsic text rows replace fixed-height slots. The shared component measures
+   columns for the whole sentence, retaining groups and readable picture sizes. */
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] :is(.tonight-slots,.matrix-layout-leading,.matrix-role-group,.cw-noun-group,.matrix-agreement-group){height:auto;min-height:0;align-items:stretch;row-gap:var(--matrix-gap)}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] .tonight-slot{height:auto;min-height:var(--matrix-card-height);grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;align-content:start;align-items:start;row-gap:10px;overflow:visible}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] .cw-slot-role{height:auto;min-height:var(--matrix-art-height);align-self:center;max-width:100%;margin:0}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] :is(.example-source,.example-gloss){height:auto;min-height:min-content;max-width:100%;white-space:normal;overflow-wrap:anywhere;word-break:normal;align-self:start;display:block}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] .cw-noun-group{grid-column:auto}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] .matrix-agreement-group{grid-column:auto}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] .matrix-layout-translation{min-height:64px;height:auto}

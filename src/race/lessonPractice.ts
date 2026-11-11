@@ -1,3 +1,4 @@
+import {identificationQuestions} from './identificationContent'
 import {tonightMeaningQuestions} from './tonightQuestions'
 import {lessonTwoReviewQuestions} from './lessonTwoQuestions'
 import {lessonThreeAnswerQuestions} from './lessonThreeQuestions'
@@ -11,6 +12,7 @@ import type {HotelQuestion} from '../hotel/course'
 export type LessonPracticeQuestion=HotelQuestion & {meaningDistractor:string;document?:LanguageDocument;distractorDocument?:LanguageDocument}
 export function lessonPracticeQuestions(value:unknown):LessonPracticeQuestion[] {
  const number=lessonNumber(value),lesson=requestLesson(number)
+ if(number==='6')return identificationQuestions.map(q=>({id:q.id,english:q.document.english,skill:'lesson-six-identification',correct:q.correct,audioUrl:q.audioUrl,document:q.document,meaningDistractor:q.choices[1],answers:[[{text:q.choices[0],skill:'lesson-six-identification'}],[{text:q.choices[1],skill:'lesson-six-identification'}]]}))
  if(number==='1')return [...tonightMeaningQuestions]
  if(number==='2')return [...tonightMeaningQuestions,...lessonTwoReviewQuestions.filter(q=>q.id.startsWith('l2-translation-')&&q.audioUrl?.startsWith('/audio/race-lesson-two/'))]
  if(number==='3')return lessonThreeAnswerQuestions.map(q=>{

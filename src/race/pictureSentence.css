@@ -25,6 +25,16 @@
 .phone-practice.foundation-practice .picture-sentence-part[data-role=action] .picture-sentence-art .cw-game-icon,
 .picture-sentence-part[data-role=action] .picture-sentence-art .cw-game-icon{width:100%;height:100%;max-width:100%;flex:1;object-fit:contain;transform:none}
 
+.picture-sentence-art .everyday-person{width:100%;height:100%;margin:0}.picture-sentence-part:has(.everyday-person) .picture-sentence-art{padding:0;overflow:hidden}.picture-sentence-art .everyday-person img{max-width:none}
+/* Small answer tiles give the meaning-bearing artwork most of the space. */
+.picture-sentence-art{height:84px;padding:2px}
+.picture-sentence-art .vocabulary-picture-art{width:78px;height:78px}
+.picture-sentence-art>img,.picture-sentence-art .cw-person-icon,.picture-sentence-art .cw-person-icon img{width:78px;height:78px}
+.picture-sentence-art .everyday-person{width:100%;height:100%}
+.everyday-person .person-copy>img{object-fit:contain}
+.picture-sentence-art .description-picture{max-height:80px}
+@media(max-width:380px){.picture-sentence-art{height:72px}.picture-sentence-art .vocabulary-picture-art{width:66px;height:66px}.picture-sentence-art .everyday-person{width:100%;height:100%}.picture-sentence-art>img,.picture-sentence-art .cw-person-icon,.picture-sentence-art .cw-person-icon img{width:66px;height:66px}}
+
 /* Let existing close-up artwork fill each answer tile. */
 .phone-practice.foundation-practice .picture-sentence{gap:4px}
 .phone-practice.foundation-practice .picture-sentence-part{min-width:0;max-width:none;flex:1 1 0}

@@ -24,7 +24,7 @@ it('shares supported lesson requests across URLs, LINE, classroom and engine; re
   expect(requestLesson(Number(number))).toBe(classroomMatrices[`lesson-${number}`])
   for(const stage of requestLesson(number).stages!)expect(racePools.find(p=>p.id===stage)?.questions.length).toBeGreaterThan(0)
  }
- for(const value of ['0','6','unknown','',NaN])expect(()=>requestLesson(value)).toThrow('Unsupported lesson')
+ for(const value of ['0','7','unknown','',NaN])expect(()=>requestLesson(value)).toThrow('Unsupported lesson')
  expect(()=>practiceDeck(99)).toThrow('Unsupported lesson')
  expect(()=>practiceModules(99)).toThrow('Unsupported lesson')
 })

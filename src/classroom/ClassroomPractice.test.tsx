@@ -3,7 +3,8 @@ import {createRoot} from 'react-dom/client'
 import {expect,it,vi} from 'vitest'
 const stage=vi.hoisted(()=>vi.fn())
 vi.mock('../race/ActionPracticeStage',()=>({default:(props:unknown)=>{stage(props);return null}}))
-import ClassroomPractice,{classroomPracticeQuestion} from './ClassroomPractice'
+import ClassroomPractice from './ClassroomPractice'
+import {classroomPracticeQuestion} from './testingQuestions'
 import {actionPracticeQuestions} from '../race/actionPracticeContent'
 import type {ClassTurn} from './session'
 const q=actionPracticeQuestions[0]

@@ -9,6 +9,7 @@ import type { HotelQuestion } from '../hotel/course'
 
 // Keep the teacher's selected vocabulary and question frame stable for a race.
 export const racePools: { id: string; title: string; kind?: 'judgement' | 'meaning'; questions: (HotelQuestion & { meaningDistractor?: string })[] }[] = [
+  {id:'lesson-six-identification',title:'Lesson 6 · What is this?',kind:'meaning',questions:lessonPracticeQuestions(6)},
   {id:'lesson-five-destinations',title:'Class 5 · Where are you going?',kind:'meaning',questions:lessonPracticeQuestions(5)},
   {id:'lesson-four-actions',title:'Lesson 4 · Actions and ownership',kind:'meaning',questions:lessonPracticeQuestions(4)},
   { id: 'man-woman', title: 'A man · A woman', questions: classOneVocabularyQuestions.slice(2, 4) },

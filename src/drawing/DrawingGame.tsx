@@ -1,23 +1,50 @@
+import DrawingSentence from './DrawingSentence'
+import DrawingFinishOrder from './DrawingFinishOrder'
 import {useEffect,useRef,useState,type PointerEvent,type CSSProperties} from 'react'
 import type {Drawing,Game} from './game'
 import {useDrawingGame} from './game'
 import './drawing.css'
-import DrawingJoin from './DrawingJoin'
-import {classroomJoinUrl} from '../classroom/session'
+import './drawingHost.css'
+import './drawingPresentation.css'
+import './drawingVoting.css'
 function Picture({drawing}:{drawing?:Drawing}){return drawing?.picture?<img className="dg-picture" src={drawing.picture} alt={`Drawing by ${drawing.name}`}/>:<div className="dg-picture dg-empty"><span aria-hidden="true">✎</span>No drawing submitted</div>}
 function Avatar({name,url}:{name:string;url?:string|null}){const [failed,setFailed]=useState(false);const hue=[...name].reduce((n,c)=>n+c.charCodeAt(0),0)%4;return <span className={`dg-avatar dg-avatar-${hue}`} aria-hidden="true">{url&&!failed?<img src={url} alt="" onError={()=>setFailed(true)}/>:name.trim().slice(0,1).toUpperCase()}</span>}
 function Coin({children}:{children:React.ReactNode}){return <span className="dg-coin"><i aria-hidden="true">★</i>{children}</span>}
 function Scores({game,userId}:{game:Game;userId?:string}){return <ol className="dg-scores">{[...game.scores].sort((a,b)=>b.points-a.points).map((p,i)=><li key={p.id} data-you={p.id===userId}><b className="dg-rank">{i+1}</b><Avatar name={p.name} url={p.avatar}/><strong>{p.name}{p.id===userId&&<small>YOU · คุณ</small>}</strong><Coin>{p.points}</Coin></li>)}</ol>}
-function Clock({game,offset}:{game:Game;offset:number}){const [now,setNow]=useState(Date.now());useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),200);return()=>clearInterval(t)},[]);const seconds=Math.max(0,Math.ceil((Date.parse(game.deadline??'')-now-offset)/1000))||0;return <strong className={`dg-clock${seconds<=10?' is-urgent':''}`} aria-label={`${seconds} seconds left`}><span aria-hidden="true">◷</span>{seconds}<small>s</small></strong>}
-export default function DrawingHost({sessionId}:{sessionId:string}){
- const {game,error,busy,act,offset}=useDrawingGame(sessionId,true),[seconds,setSeconds]=useState(60)
- if(!game)return <section className="dg"><h1>Game</h1><p role={error?'alert':'status'}>{error||'Opening game…'}</p></section>
+function Clock({game,offset}:{game:Game;offset:number}){const [now,setNow]=useState(()=>Date.now());useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),200);return()=>clearInterval(t)},[]);const seconds=Math.max(0,Math.ceil((Date.parse(game.deadline??'')-now-offset)/1000))||0;return <strong className={`dg-clock${seconds<=10?' is-urgent':''}`} aria-label={`${seconds} seconds left`}><span aria-hidden="true">◷</span>{seconds}<small>s</small></strong>}
+type HostPlayer={id:string;name:string;avatar?:string|null}
+type HostProps={game:Game;error:string;busy:boolean;act:(action:string,payload?:Record<string,unknown>)=>Promise<boolean>;offset:number;players?:HostPlayer[]}
+function GameMark({kind}:{kind:'draw'|'guess'|'vote'}){
+ return <svg viewBox="0 0 80 80" fill="none" aria-hidden="true" stroke="currentColor" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round">
+  {kind==='draw'?<><path d="m48 14 18 18-32 32-24 6 6-24 32-32Z" fill="currentColor" stroke="none"/><path d="m45 28 8 8M18 55l7 7" stroke="var(--mark-cutout,#1877ef)"/><path d="M12 20h14M19 13v14M51 65h17"/></>:kind==='guess'?<><path d="M18 13h44c8 0 12 5 12 13v22c0 8-4 13-12 13H38L19 73V61C9 61 6 56 6 48V26c0-8 4-13 12-13Z" fill="currentColor" stroke="none"/><path d="M31 30c0-13 24-13 24 0 0 8-12 7-12 15" stroke="var(--mark-cutout,#ea5365)"/><circle cx="43" cy="53" r="3" fill="var(--mark-cutout,#ea5365)" stroke="none"/></>:<><path d="M24 12h32v22c0 13-6 20-16 20S24 47 24 34V12Z" fill="currentColor" stroke="none"/><path d="M24 19H11v11c0 10 6 14 16 14M56 19h13v11c0 10-6 14-16 14M40 52v14M25 70h30"/></>}
+ </svg>
+}
+export default function DrawingHost({sessionId,players}:{sessionId:string;players?:HostPlayer[]}){
+ const {game,error,busy,act,offset}=useDrawingGame(sessionId,true)
+ if(!game)return <section className="dg dg-host"><div className="dg-loading"><GameMark kind="draw"/><h1>Draw & Guess</h1><p role={error?'alert':'status'}>{error||'Opening game…'}</p></div></section>
+ return <DrawingHostScreen game={game} error={error} busy={busy} act={act} offset={offset.current} players={players}/>
+}
+export function DrawingHostScreen({game,error,busy,act,offset,players}:HostProps){
  const current=game.drawings.find(d=>d.artist===game.artist),payload={round:game.round,artist:game.artist}
- return <section className="dg dg-host"><header><div><small>DRAW · GUESS · VOTE</small><h1>Game <span>{game.round?`Round ${game.round}`:''}</span></h1></div>{game.active?<button disabled={busy} onClick={()=>void act('close')}>Return phones to class</button>:<button disabled={busy} onClick={()=>void act('open')}>Open on students’ phones</button>}</header>{error&&<p role="alert">{error}</p>}
- {(game.phase==='lobby'||game.phase==='results')&&<><DrawingJoin url={classroomJoinUrl(sessionId)}/><div className="dg-start"><a className="dg-preview-link" href="/english/game/preview" target="_blank" rel="noreferrer">Try drawing on your phone ↗</a><label>Drawing time <select value={seconds} onChange={e=>setSeconds(Number(e.target.value))}>{[30,60,90,120].map(n=><option key={n} value={n}>{n} seconds</option>)}</select></label><button className="dg-primary" disabled={busy} onClick={()=>void act('start',{round:game.round,seconds})}>{game.round?'Start next round':'Start drawing'}</button></div><p>Draw your Thai word, then tap Ready. Finish bonuses: 1st +3, 2nd +2, 3rd +1. Answer aloud for 1 point. Best-picture vote: +3 points.</p></>}
- {game.phase==='drawing'&&<div className="dg-drawing-wait"><h2>Draw your secret word</h2><Clock game={game} offset={offset.current}/><p>{game.drawings.filter(d=>d.finishRank).length} / {game.drawings.length} finished</p><div className="dg-names">{game.drawings.map(d=><span key={d.artist}>{d.name} {d.finishRank?`#${d.finishRank} · +${d.finishBonus}`:'✎'}</span>)}</div></div>}
- {game.phase==='guessing'&&<><h2 className="dg-question">What is <em>this</em>?</h2><p className="dg-artist">By {current?.name}</p><Picture drawing={current}/><h3 className="dg-answer">{game.revealed?`That is ${current?.english}.`:'That is a / an …'}</h3>{current?.awarded&&<p>+1 · {game.scores.find(s=>s.id===current.awarded)?.name}</p>}<div className="dg-actions">{!game.revealed&&<button disabled={busy} onClick={()=>void act('reveal',payload)}>Reveal · no point</button>}<button className="dg-primary" disabled={busy} onClick={()=>void act('next',payload)}>Next picture →</button></div></>}
- {(game.phase==='voting'||game.phase==='results')&&<><h2>{game.phase==='voting'?'ใครวาดภาพได้ดีที่สุด?':'Best picture'}</h2>{game.phase==='voting'&&<div className="dg-actions"><p>{game.voteCount} / {game.drawings.length} votes · no self-votes</p><button disabled={busy} onClick={()=>void act('finish',{round:game.round})}>Finish voting</button></div>}<div className="dg-gallery">{game.drawings.map(d=><article key={d.artist}><Picture drawing={d}/><strong>{d.name}</strong>{d.winner&&<b>🏆 +3 points</b>}</article>)}</div>{game.phase==='results'&&<><p>Tied winners each receive 3 points.</p><Scores game={game}/></>}</>}
+ const lobby=game.phase==='lobby',finished=game.drawings.filter(d=>d.finishRank).length
+ const joined=players??(game.scores.length?game.scores:game.drawings.map(d=>({id:d.artist,name:d.name,avatar:d.avatar})))
+ const stage=game.phase==='drawing'?0:game.phase==='guessing'?1:2
+ const steps=[{kind:'draw',title:'Draw',caption:'Your word. Your picture.',reward:'Finish first · +3 / +2 / +1'},{kind:'guess',title:'Guess',caption:'Say it out loud.',reward:'Correct answer · +1'},{kind:'vote',title:'Vote',caption:'Pick your favourite.',reward:'Best picture · +3'}] as const
+ const setup=<div className="dg-launch-bar"><button className="dg-primary dg-launch" disabled={busy||joined.length===0} onClick={()=>void act('start',{round:game.round,seconds:60})}>{busy?'Starting…':game.round?'Start next round':'Start drawing'}<span aria-hidden="true">→</span></button></div>
+ return <section className={`dg dg-host dg-host-${game.phase}`}>
+  {game.phase!=='guessing'&&<header className="dg-game-header"><div><small>CLASSROOM PLAY</small><h1>Draw <span>&</span> Guess</h1></div><span className="dg-round-pill">{game.round?`Round ${String(game.round).padStart(2,'0')}`:'Let’s play'}</span></header>}
+  {error&&<p role="alert">{error}</p>}
+  {!lobby&&<DrawingFinishOrder drawings={game.drawings}/>}
+  {lobby?<>
+   <div className="dg-game-tiles">{steps.map((step,i)=><article className={`dg-game-tile dg-tile-${step.kind}`} key={step.kind}><div className="dg-tile-art"><span className="dg-tile-number">0{i+1}</span><GameMark kind={step.kind}/></div><div className="dg-tile-caption"><h2>{step.title}</h2><p>{step.caption}</p><small>{step.reward}</small></div></article>)}</div>
+   {joined.length>0&&<div className="dg-player-strip" aria-label="Class students">{joined.map(p=><span className="dg-player-chip" key={p.id}><Avatar name={p.name} url={p.avatar}/><strong>{p.name}</strong></span>)}</div>}
+   {setup}
+  </>:<>
+   {game.phase!=='guessing'&&<ol className="dg-host-stages" aria-label="Game progress">{steps.map((step,i)=><li key={step.kind} aria-current={stage===i?'step':undefined} data-done={stage>i}><GameMark kind={step.kind}/><span>{step.title}</span></li>)}</ol>}
+   {game.phase==='drawing'&&<section className="dg-round-stage dg-drawing-wait"><div className="dg-drawing-heading"><div><small>DRAW ON YOUR PHONE</small><h2>Make your word a picture.</h2></div><Clock game={game} offset={offset}/></div><div className="dg-finish-progress"><span><b>{finished}</b> / {game.drawings.length} finished</span><progress value={finished} max={Math.max(1,game.drawings.length)} aria-label="Finished drawings"/></div><div className="dg-drawing-players">{game.drawings.map(d=><article key={d.artist} data-finished={Boolean(d.finishRank)}><Avatar name={d.name} url={d.avatar}/><strong>{d.name}</strong><span>{d.finishRank?`#${d.finishRank} · Ready`:'Drawing…'}</span>{Boolean(d.finishBonus)&&<Coin>+{d.finishBonus}</Coin>}</article>)}</div></section>}
+   {game.phase==='guessing'&&<section className="dg-round-stage dg-host-guess"><div className="dg-guess-copy"><div className="dg-question"><DrawingSentence/></div><div className="dg-answer"><DrawingSentence answer={game.revealed?current?.english:null}/></div>{current?.awarded&&<p className="dg-host-award"><Coin>+1</Coin>{game.scores.find(s=>s.id===current.awarded)?.name}</p>}</div><figure className="dg-host-picture"><Picture drawing={current}/><figcaption>{current?.name}</figcaption></figure><div className="dg-actions">{!game.revealed&&<button disabled={busy} onClick={()=>void act('reveal',payload)}>Reveal</button>}<button className="dg-primary" disabled={busy} onClick={()=>void act('next',payload)}>Next →</button></div></section>}
+   {(game.phase==='voting'||game.phase==='results')&&<section className="dg-round-stage dg-host-gallery"><div className="dg-gallery-heading"><div><small>{game.phase==='voting'?'VOTE ON YOUR PHONE':'ROUND COMPLETE'}</small><h2>{game.phase==='voting'?'ใครวาดภาพได้ดีที่สุด?':'Best picture'}</h2></div>{game.phase==='voting'&&<div className="dg-actions"><strong>{game.voteCount} / {game.drawings.length} votes</strong><button disabled={busy} onClick={()=>void act('finish',{round:game.round})}>Finish voting</button></div>}</div><div className="dg-gallery">{game.drawings.map(d=><article key={d.artist} data-winner={d.winner}><Picture drawing={d}/><div className="dg-gallery-person"><Avatar name={d.name} url={d.avatar}/><strong>{d.name}</strong>{d.winner&&<Coin>+3</Coin>}</div></article>)}</div>{game.phase==='voting'?<></>:<><h2 className="dg-score-title">Leaderboard</h2><Scores game={game}/>{setup}</>}</section>}
+  </>}
  </section>
 }
 export function DrawingStudent({game,userId,busy,error,act,offset}:{game:Game;userId:string;busy:boolean;error:string;act:(a:string,p?:Record<string,unknown>)=>Promise<boolean>;offset:number}){

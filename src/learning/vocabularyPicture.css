@@ -16,3 +16,10 @@
 .classroom .example-matrix .cw-slot-role .vocabulary-picture-art{display:grid;height:80px;width:80px;flex-shrink:0;margin:0}
 
 @media(max-width:700px){.classroom .example-matrix .cw-slot-role .vocabulary-picture-art{width:56px;height:56px}}
+
+/* Tight upper-body portraits: use tile width, crop only surplus torso below. */
+.everyday-person{overflow:hidden}.everyday-person .person-copy{grid-area:1/1;width:100%;height:100%;position:relative;overflow:hidden;border-radius:6px}.everyday-person .person-copy>img{width:100%;height:100%;object-fit:cover;object-position:center top}.everyday-person:has(.person-copy:nth-child(2)) .person-copy{width:76%;height:84%}.everyday-person .person-copy:first-child{justify-self:end;align-self:start}.everyday-person .person-copy:nth-child(2){justify-self:start;align-self:end;filter:drop-shadow(2px 0 1px white)}
+.family-context{position:absolute;left:0;top:0;bottom:0;width:42%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:42% 15% 43%;opacity:.75}.family-context img{grid-area:auto;width:100%!important;height:100%!important;object-fit:cover;object-position:top}.family-context img:last-child{grid-column:1/3;width:60%!important;justify-self:center}.family-link{grid-column:1/3;border-top:2px solid #4f7189;margin:3px 5px;position:relative}.family-link:after{content:'';height:100%;border-left:2px solid #4f7189;position:absolute;left:50%}.everyday-person .person-copy>img.family-focus{position:absolute;right:0;width:65%;border-left:3px solid #efb922;border-radius:5px;background:white}
+.description-picture{width:100%;height:100%;max-width:90px;max-height:70px}
+
+.everyday-person.vocabulary-picture-art .person-copy>img:not(.family-focus){width:100%;height:100%}

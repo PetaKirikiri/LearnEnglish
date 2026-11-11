@@ -6,7 +6,7 @@ import {readFileSync,existsSync} from 'node:fs'
 import {actionStarTiers,actionStarLesson,actionStarDeck,actionStarTeachingExample,completeStar,starAvailable,type StarProgress} from './actionStarContent'
 import {composeLessonAction,actionCapabilities} from '../learning/sentenceRules/actionCapabilities'
 const record=vi.hoisted(()=>vi.fn())
-vi.mock('../learning/wordProgress/useWordProgress',()=>({useWordProgress:()=>({scores:{},ready:true,error:'',record,retry:vi.fn()})}))
+vi.mock('../learning/wordProgress/useWordProgress',()=>({useWordProgress:()=>({rows:[],scores:{},ready:true,error:'',record,retry:vi.fn()})}))
 vi.mock('./PracticeGold',()=>({default:()=>null,awardPracticeGold:vi.fn()}))
 import ActionStarCourse from './ActionStarCourse'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
@@ -85,7 +85,7 @@ it('starts the highest unlocked tier immediately and scores only after an answer
   try{
    await act(async()=>root.render(<ActionStarCourse/>))
    expect(host.querySelector('.action-stars-menu,.action-star-teaching')).toBeNull()
-   expect(localStorage.getItem(`englishsuccess:action-stars:v1:guest:run:${stars}`)).toBeTruthy()
+   expect(localStorage.getItem(`englishsuccess:composed-run:v3:guest:6:star-${stars}`)).toBeTruthy()
    expect(record).not.toHaveBeenCalled()
    expect(host.querySelector('.example-source')).not.toBeNull()
   expect(host.querySelector('.cw-slot-role')).not.toBeNull()

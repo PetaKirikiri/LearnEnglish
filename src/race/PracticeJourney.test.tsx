@@ -4,7 +4,7 @@ import {createRoot} from 'react-dom/client'
 import {beforeEach,expect,it,vi} from 'vitest'
 vi.mock('./PracticeGold',()=>({default:()=>null}))
 vi.mock('./JourneyPasses',()=>({useJourneyPasses:()=>({passes:[],unavailable:false}),JourneyPassNames:()=>null}))
-vi.mock('./NumberFoundationCourse',()=>({default:({initialLevel,onComplete,onExit}:{initialLevel:number;onComplete:(level:number,score:number,total:number,passed:boolean)=>void;onExit:()=>void})=><div><span>Run {initialLevel}</span><button onClick={()=>onComplete(initialLevel,30,30,true)}>Finish</button><button onClick={onExit}>Exit</button></div>}))
+vi.mock('./GeneratedPractice',()=>({default:({level,onComplete,onExit}:{level:number;onComplete:(level:number,score:number,total:number,passed:boolean)=>void;onExit:()=>void})=><div><span>Run {level}</span><button onClick={()=>onComplete(level,30,30,true)}>Finish</button><button onClick={onExit}>Exit</button></div>}))
 import PracticeJourney,{mergeRun,recordStars,runStars} from './PracticeJourney'
 import {actionStarKey,loadActionStarProgress} from './actionStarProgress'
 import {actionStarsVersion} from './actionStarContent'
@@ -20,7 +20,7 @@ it('starts the selected round in one tap and preserves assessed progress',async(
   for(const card of cards)expect(card.querySelectorAll('button')).toHaveLength(1)
   expect([...cards].map(card=>[...card.querySelectorAll('.tonight-slots')].map(matrix=>matrix.getAttribute('aria-label')))).toEqual([
    ['key','keys'],['Where is the key?'],['Where are the keys?'],
-   ['What are you doing?'],['I am eating an apple.'],['I am eating your apple.'],
+   ['What are you doing?'],['I am walking.'],['I am eating your apple.'],
   ])
   expect(host.querySelectorAll('[data-density="thumbnail"]')).toHaveLength(7)
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 1:"]')!.click())
@@ -39,7 +39,10 @@ it('awards performance stars only for complete rounds and keeps the gameplay pas
  expect(runStars({level:1,score:27,total:30,passed:false})).toBe(1) // unbalanced outcomes
  expect(runStars({level:1,score:27,total:30,passed:true})).toBe(2)
  expect(runStars({level:1,score:30,total:30,passed:true})).toBe(3)
- expect(runStars({level:4,score:9,total:9,passed:true})).toBe(3)
+ expect(runStars({level:4,score:9,total:9,passed:true})).toBe(0)
+ expect(runStars({level:4,score:30,total:30,passed:true})).toBe(3)
+ expect(recordStars(4,{best:9,total:9,cleared:true,stars:3})).toBe(0)
+ expect(mergeRun({4:{best:9,total:9,cleared:true,stars:3}},{level:4,score:27,total:30,passed:true})[4]).toEqual({best:27,total:30,cleared:true,stars:2})
  expect(runStars({level:2,score:1,total:1,passed:false})).toBe(0)
  const record=mergeRun({}, {level:1,score:28,total:30,passed:true})
  const retried=mergeRun(record,{level:1,score:2,total:30,passed:false})
@@ -56,11 +59,23 @@ it('opens the unlocked Level 6 round directly and keeps earlier star results', a
  try {
   await act(async () => root.render(<PracticeJourney userId="test"/>))
   await act(async () => host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 6:"]')!.click())
-  expect(host.querySelectorAll('.practice-answers button')).toHaveLength(2)
+  expect(host.textContent).toContain('Run 6')
   expect(host.querySelector('.action-stars-menu,.journey-guide,.action-star-teaching')).toBeNull()
-  expect(localStorage.getItem(actionStarKey('test') + ':run:2')).toBeTruthy()
-  expect(loadActionStarProgress('test').progress[1]).toEqual({passes: 2, best: 47})
-  await act(async () => host.querySelector<HTMLButtonElement>('[aria-label="กลับแผนที่"]')!.click())
+  expect(loadActionStarProgress('test').progress[2]?.passes).toBe(1)
+  expect(loadActionStarProgress('test').progress[1]).toEqual({passes: 2, best: 28})
+  await act(async () => host.querySelector<HTMLButtonElement>('button:last-child')!.click())
   expect(host.querySelectorAll('.journey-node')).toHaveLength(6)
  } finally { await act(async () => root.unmount()) }
+})
+
+it('browser Back from a round returns to the testing map',async()=>{
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<PracticeJourney/>))
+  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 6:"]')!.click())
+  expect(host.textContent).toContain('Run 6')
+  expect(history.state.englishPracticeRound).toBe(true)
+  await act(async()=>window.dispatchEvent(new PopStateEvent('popstate',{state:{}})))
+  expect(host.querySelectorAll('.journey-node')).toHaveLength(6)
+ }finally{await act(async()=>root.unmount())}
 })

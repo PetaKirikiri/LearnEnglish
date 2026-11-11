@@ -1,0 +1,36 @@
+.dg-host-guess>header,.dg-host-guess>.dg-host-stages{display:none}
+.dg-host .dg-guess-copy>small,.dg-host .dg-guess-copy>.dg-artist{display:none}
+.dg-host .dg-round-stage.dg-host-guess{display:grid;grid-template-columns:minmax(230px,1fr) minmax(280px,1.4fr);gap:20px;align-items:center}
+.dg-host .dg-guess-copy{display:flex;flex-direction:column;gap:20px;min-width:0}
+.dg-host .dg-host-picture .dg-picture{width:100%;max-height:52dvh;object-fit:contain;background:white;border:3px solid #1877ef;border-radius:22px}
+.dg-host .dg-host-picture{min-width:0}.dg-host .dg-host-picture figcaption{text-align:center;font:500 18px 'Fredoka',sans-serif;padding:6px}
+.dg-host .dg-actions{grid-column:1/-1}.dg-host .dg-answer{border:0;background:none;padding:0;margin:0;max-width:none}
+.dg-sentence-boxes{width:100%;min-width:0}.dg-sentence-boxes .cw-sentence-board{padding:0}.dg-sentence-boxes .example-unit{min-width:0}
+.dg-finish-order{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;list-style:none;padding:0;margin:10px 0 20px}
+.dg-finish-order li{display:flex;align-items:center;gap:10px;background:white;border:2px solid #c9d9ed;border-radius:16px;padding:8px 14px;font:500 18px 'Fredoka',sans-serif;color:#18395e}
+.dg-finish-order li[data-rank='1']{background:#ffdf49;border-color:#d9ab16}.dg-finish-order li[data-rank='2']{background:#e8eef6;border-color:#a9b9cf}.dg-finish-order li[data-rank='3']{background:#f8dfc6;border-color:#c99360}
+.dg-finish-place{display:grid;font-size:24px;line-height:1}.dg-finish-place small{font-size:12px;margin-top:4px}.dg-finish-points{font-size:15px}.dg-finish-order li[data-last=true]{border-style:dashed}
+.dg-host .dg-drawing-wait{padding:20px}.dg-host .dg-drawing-heading{justify-content:center}.dg-host .dg-drawing-heading>div{display:none}
+@media(max-width:700px){.dg-host .dg-round-stage.dg-host-guess{grid-template-columns:1fr}.dg-host .dg-guess-copy{gap:12px}.dg-host .dg-host-picture .dg-picture{max-height:40dvh}.dg-finish-order li{font-size:15px;padding:6px 10px}.dg-finish-place{font-size:20px}}
+.dg-sentence-boxes.classroom{display:block;height:auto;min-height:0;overflow:visible}
+.dg-sentence-boxes .cw-sentence-panel,.dg-sentence-boxes .cw-sentence-board{min-height:0;background:none}
+.dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout]{--matrix-card-height:96px;--matrix-art-height:0px;grid-template-rows:auto;gap:0;padding:0}
+.dg-sentence-boxes .matrix-layout-toolbar,.dg-sentence-boxes .matrix-layout-translation,.dg-sentence-boxes .matrix-layout-dock{display:none!important}
+.dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .tonight-slot{height:96px;display:flex;align-items:center;justify-content:center;padding:12px 8px;gap:0}
+.dg-sentence-boxes.classroom .cw-sentence-board .example-source{font-size:clamp(22px,3vw,38px);padding:0;border:0}
+.dg-sentence-boxes.classroom .cw-sentence-board .slot-heading,.dg-sentence-boxes.classroom .cw-sentence-board .slot-role-icon{display:none}
+.dg.dg-host.dg-host-guess{gap:12px;padding:20px}
+.dg-host .dg-guess-copy .dg-question{margin:0!important}.dg-host .dg-guess-copy .dg-answer{margin:0;padding:0}
+.dg-host .dg-round-stage.dg-host-guess{padding:20px}
+.dg-host .dg-host-picture{margin:0;padding:0;border:0;background:none}
+.dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .tonight-slots{grid-template-columns:minmax(0,2fr) minmax(0,1fr);height:auto;gap:8px;align-items:stretch}
+.dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout='identification-answer'] .tonight-slots{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}
+.dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-layout-leading{grid-column:auto;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group{grid-column:auto}
+.dg-host .dg-host-guess>.dg-actions{padding-top:12px;border:0}
+.dg-host .dg-guess-copy .dg-question,.dg-host .dg-guess-copy .dg-answer{margin:0!important;padding:0!important}
+.dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout]{height:102px!important;min-height:0;grid-template-rows:102px!important}
+.dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .tonight-slots{min-height:0!important;height:102px!important}
+.dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .example-source{font-size:clamp(18px,2.4vw,32px)!important;white-space:normal}
+.dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group[data-group-size='1']{grid-template-columns:minmax(0,1fr)!important}

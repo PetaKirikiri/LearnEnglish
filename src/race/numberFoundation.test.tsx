@@ -3,7 +3,7 @@ import {act} from 'react'
 import {createRoot} from 'react-dom/client'
 import {beforeEach,afterEach,expect,it,vi} from 'vitest'
 vi.mock('./numberRecallStore',async importOriginal=>({...await importOriginal<typeof import('./numberRecallStore')>(),syncRecall:vi.fn().mockResolvedValue(undefined)}))
-const wordProgress=vi.hoisted(()=>({scores:{} as Record<string,number>,ready:true,error:'',record:vi.fn(),retry:vi.fn()}))
+const wordProgress=vi.hoisted(()=>({rows:[],scores:{} as Record<string,number>,ready:true,error:'',record:vi.fn(),retry:vi.fn()}))
 vi.mock('../learning/wordProgress/useWordProgress',()=>({useWordProgress:()=>wordProgress}))
 import {readRecall,saveRecall} from './numberRecallStore'
 import {recallStates} from './numberRecall'

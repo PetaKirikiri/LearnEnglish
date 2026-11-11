@@ -18,3 +18,39 @@
 @media(min-width:900px){
  .su-classroom-practice.phone-practice.foundation-practice .matrix-layout.example-matrix[data-density=content]{--matrix-art-height:clamp(120px,20dvh,240px)}
 }
+
+/* Reuse the lesson header area for the whiteboard's word education view. */
+.su-classroom .su-workspace:has(>.su-whiteboard){padding:0;min-height:0;flex:1;display:flex;flex-direction:column}
+.su-whiteboard{min-width:0;width:100%}
+.su-classroom .su-whiteboard .su-structure-selector{margin:12px 20px;max-width:none}
+.su-whiteboard:has(.cw-word-explanation)>.su-structure-selector{display:none}
+.su-whiteboard .cw-word-explanation{width:100%}
+
+/* A quiet lesson line immediately above the cap, inside the existing brand area. */
+.su-classroom .rail-brand{gap:4px}
+.su-lesson-nav{display:flex;align-items:center;justify-content:center;gap:2px;width:100%;color:white;font:500 16px/1 'Fredoka','Nunito',sans-serif;white-space:nowrap}
+.su-lesson-nav button{display:grid;place-items:center;flex:none;width:28px;height:30px;padding:0;border:0;background:none;color:inherit;font:500 24px/1 'Fredoka','Nunito',sans-serif;cursor:pointer}
+.su-lesson-nav button:disabled{opacity:.3;cursor:default}.su-lesson-nav button:enabled:hover{color:#ffdc39}.su-lesson-nav button:focus-visible{outline:2px solid #ffdc39;outline-offset:0;border-radius:6px}
+@media(max-width:700px){
+ .su-classroom{height:100dvh;min-height:0;overflow:hidden}
+ .su-classroom .index{flex:none}
+ .su-classroom .rail-brand{display:flex;height:36px;padding:0;border:0}
+ .su-classroom .rail-brand>img,.su-classroom .rail-brand>strong{display:none}
+ .su-classroom main{height:auto;min-height:0;flex:1}
+ body:has(.su-classroom) .cw-language-switch{top:114px}
+}
+
+/* Rounded, filled navigation icons shared by every classroom lesson. */
+.su-classroom .phase-icon{width:64px;height:64px;border:0;border-radius:22px;background:transparent;color:#fff;box-shadow:none}
+.su-classroom .phase-icon svg{width:48px;height:48px}
+.su-classroom .phase.active .phase-icon{background:#1877ef;color:#fff;box-shadow:0 4px 0 #125ac0}
+@media(max-width:700px){
+ .su-classroom .phase-icon{width:36px;height:36px;border-radius:13px}
+ .su-classroom .phase-icon svg{width:28px;height:28px}
+ .su-classroom .phase.active .phase-icon{box-shadow:0 2px 0 #125ac0}
+}
+
+.su-member .su-presence{display:block;font:700 13px Nunito,sans-serif;color:#53708f}.su-member[data-online=true] .su-presence{color:#08783f}.su-member[data-online=false][data-active=true]{background:#f3f5f8}.su-disconnected{font-size:16px;color:#805500;max-width:520px}
+
+/* The classroom owns its header; activity screens occupy only the area below it. */
+.su-class-panel{width:100%;min-width:0}.su-class-panel>.cw-panel-header{flex:none}

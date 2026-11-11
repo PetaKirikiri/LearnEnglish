@@ -8,6 +8,7 @@ export type ObjectCategory = 'food' | 'drink' | 'readable' | 'destination' | 'ho
 export type Action = {level?:number;word:string;thai:string;complement:'object'|'destination'|'none';objects:readonly ObjectCategory[];categories:readonly VocabularyCategory[];icon:string}
 export type ActionObject = {word:string;thai:string;noun:string;phrase:NounPhrase;categories:readonly ObjectCategory[];icon?:string}
 export const actionVocabulary:readonly Action[] = [
+ ...[{word:'talking',thai:'พูด'},{word:'listening',thai:'ฟัง'},{word:'driving',thai:'ขับรถ'}].map(action=>({...action,categories:['everyday'] as const,icon:`/classroom/icons/everyday/${action.word}.webp`,complement:'none' as const,objects:[]})),
  {word:'eating',categories:['food'],icon:'/classroom/icons/actions/closeup/eating.png',thai:'กิน',complement:'object',objects:['food']},
  {word:'drinking',categories:['food'],icon:'/classroom/icons/actions/closeup/drinking.png',thai:'ดื่ม',complement:'object',objects:['drink']},
  {word:'sleeping',categories:['places'],icon:'/classroom/icons/actions/closeup/sleeping.png',thai:'นอน',complement:'none',objects:[]},
@@ -46,9 +47,12 @@ export function actionForFrame(word:string, question?:'activity'|'destination'):
  if(!action||!['going','walking','running'].includes(word))throw new Error('Destination questions require a movement verb.')
  return {...action,complement:'destination',objects:['destination']}
 }
+const objectCache=new WeakMap<readonly ClassroomWord[],Map<string,ActionObject[]>>()
 export function objectsForAction(word:string,catalogue:readonly ClassroomWord[],question?:'activity'|'destination'){
  const action=actionForFrame(word,question)
  if(!action||action.complement==='none')return []
+ const key=`${word}:${question??'activity'}`,cached=objectCache.get(catalogue)?.get(key)
+ if(cached)return [...cached]
  const candidates=catalogue.map(item=>{
   const contexts=actionContextsForWord(item)
   const plural=item.number==='plural'||item.pairOnly
@@ -57,9 +61,11 @@ export function objectsForAction(word:string,catalogue:readonly ClassroomWord[],
   const phrase:NounPhrase={noun:item.word,nounThai:item.thai,determiner,...(action.complement==='destination'?{preposition:{english:'to',thai:'ที่'}}:{})}
   return {noun:item.word,phrase,categories:contexts,word:nounPhraseUnits(phrase).map(unit=>unit.english).join(' '),thai:action.complement==='destination'?`ไปที่${item.thai}`:determiner&&['a','an'].includes(determiner.english)?`${item.thai}${determiner.thai}`:item.thai} satisfies ActionObject
  })
- return candidates.filter(object=>
+ const result=candidates.filter(object=>
   object.categories.includes('destination')===(action.complement==='destination')&&
   object.categories.some(category=>action.objects.includes(category)))
+ const cache=objectCache.get(catalogue)??new Map<string,ActionObject[]>();cache.set(key,result);objectCache.set(catalogue,cache)
+ return [...result]
 }
 export function objectDeterminers(object:ActionObject,allowed?:readonly Determiner[]){
  const article=object.phrase.determiner

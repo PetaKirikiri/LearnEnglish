@@ -10,6 +10,7 @@ import re
 import numpy as np
 import soundfile as sf
 from kokoro_onnx import Kokoro
+import onnxruntime as ort
 
 VOICE = 'af_heart'
 SPEED = 0.95
@@ -21,12 +22,17 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model-dir', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--threads', type=int, default=2)
     args = parser.parse_args()
     items = json.load(sys.stdin)
     args.output.mkdir(parents=True, exist_ok=True)
     manifest_path = args.output / 'voice-manifest.json'
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
-    engine = Kokoro(str(args.model_dir / 'kokoro-v1.0.onnx'), str(args.model_dir / 'voices-v1.0.bin'))
+    options = ort.SessionOptions()
+    options.intra_op_num_threads = max(1, args.threads)
+    options.inter_op_num_threads = 1
+    session = ort.InferenceSession(str(args.model_dir / 'kokoro-v1.0.onnx'), sess_options=options, providers=['CPUExecutionProvider'])
+    engine = Kokoro.from_session(session, str(args.model_dir / 'voices-v1.0.bin'))
     created = 0
     recordings = {entry.get('fingerprint'): args.output / name for name, entry in manifest.items()
                   if (args.output / name).exists()}

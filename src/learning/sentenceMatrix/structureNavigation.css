@@ -1,0 +1,7 @@
+.cw-structure-navigation{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:12px;margin:16px 20px 24px;background:#e9f2ff;border-radius:24px}
+.cw-structure-navigation button{display:flex;align-items:center;justify-content:center;min-height:96px;padding:18px 16px;border:2px solid transparent;border-radius:18px;background:white;color:#18385e;font:800 clamp(20px,1.8vw,28px)/1.25 Nunito,sans-serif;text-align:center;cursor:pointer;box-shadow:0 4px #ceddf1;overflow-wrap:normal}
+.cw-structure-navigation button[aria-pressed=true]{background:#1877ef;border-color:#1877ef;color:white;box-shadow:0 5px #1457ae}
+.cw-structure-navigation button:focus-visible{outline:3px solid #18385e;outline-offset:3px}
+.cw-sentence-panel:has(.cw-word-explanation)>.cw-structure-navigation,.cw-pattern-stage:has(.cw-word-explanation)>.cw-structure-navigation{display:none}
+@media(max-width:1100px){.cw-structure-navigation{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.cw-structure-navigation{margin:12px 12px 20px;gap:8px;padding:8px;border-radius:18px}.cw-structure-navigation button{min-height:76px;padding:12px 8px;font-size:19px;border-radius:14px}}

@@ -1,0 +1,34 @@
+import {ownerThai,type ClassroomWord,type Determiner} from '../sentenceMatrix/model'
+import type {LanguageDocument} from '../sentenceMatrix/LanguageQuadrant'
+
+export const references=[
+ {id:'this',word:'this',thai:'นี่',sentenceThai:'นี่คืออะไร',distance:0,plural:false,scene:'this'},
+ {id:'that',word:'that',thai:'นั่น',sentenceThai:'นั่นคืออะไร',distance:1,plural:false,scene:'that'},
+ {id:'over-there',word:'that over there',thai:'โน่น',sentenceThai:'โน่นคืออะไร',distance:2,plural:false,scene:'over-there'},
+ {id:'these',word:'these',thai:'พวกนี้',sentenceThai:'พวกนี้คืออะไร',distance:0,plural:true,scene:'this'},
+ {id:'those',word:'those',thai:'พวกนั้น',sentenceThai:'พวกนั้นคืออะไร',distance:1,plural:true,scene:'that'},
+] as const
+export type ReferenceId=typeof references[number]['id']
+export function referenceFor(id:ReferenceId){return references.find(item=>item.id===id)!}
+export function identificationQuestion(id:ReferenceId):LanguageDocument{
+ const reference=referenceFor(id),verb=reference.plural?'are':'is'
+ return {english:`What ${verb} ${reference.word}?`,thai:reference.sentenceThai,construction:'identification-question',units:[
+  {english:'What',thai:'อะไร',role:'question'},
+  {english:verb,thai:'คือ',role:'be'},
+  {english:`${reference.word}?`,thai:reference.thai,role:'reference'},
+ ]}
+}
+export const identificationAudio=(id:ReferenceId)=>`/audio/lesson-six/${id}.wav`
+
+/** Teaching answers use already-taught determiners; listening questions stay unchanged. */
+export function identificationAnswer(id:ReferenceId,object:ClassroomWord,owner:Determiner='the'):LanguageDocument{
+ const reference=referenceFor(id),subject=reference.word.charAt(0).toUpperCase()+reference.word.slice(1),verb=reference.plural?'are':'is'
+ const noun=reference.plural?object.plural:object.singular??object.word
+ if(!noun)throw new Error('Identification answers require an authored plural noun')
+ return {english:`${subject} ${verb} ${owner} ${noun}.`,thai:`${reference.thai}คือ${object.thai}${owner==='the'?'':ownerThai(owner)}`,construction:'identification-answer',units:[
+  {english:subject,thai:reference.thai,role:'reference'},
+  {english:verb,thai:'คือ',role:'be'},
+  {english:owner,thai:ownerThai(owner),role:'determiner'},
+  {english:`${noun}.`,thai:object.thai,role:'object'},
+ ]}
+}

@@ -4,6 +4,7 @@ declare sid uuid; a uuid; b uuid; j jsonb; g jsonb; artist uuid; other uuid; sec
 begin
  select id into a from public.profiles order by id limit 1;
  select id into b from public.profiles where id<>a order by id limit 1;
+ insert into public.english_word_progress(learner_id,word_id,attempts,last_practised) values(a,'en:book',1,now()),(b,'en:book',1,now()) on conflict(learner_id,word_id) do update set attempts=greatest(english_word_progress.attempts,1);
  j:=public.english_classroom('create',null,jsonb_build_object('hostSecret',secret));sid:=(j->>'id')::uuid;
  insert into public.english_class_members(session_id,learner_id) values(sid,a),(sid,b);
  g:=public.english_drawing_game('start',sid,jsonb_build_object('hostSecret',secret,'round',0,'seconds',60));
