@@ -6,6 +6,7 @@ import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 export {PracticeSession} from './PracticeSession'
 
 export default function PhonePractice(props:{userId?:string;tester?:boolean;settings?:MatrixSettings}){
+ // App assessment levels are independent of the classroom lesson/whiteboard query.
  const preview=import.meta.env.DEV&&new URLSearchParams(location.search).has('preview')
  if(!props.userId||preview)return <NumberFoundation {...props}/>
  return <AccountPractice key={props.userId} {...props} userId={props.userId}/>

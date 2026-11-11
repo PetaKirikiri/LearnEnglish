@@ -9,7 +9,10 @@ import { supabase } from '../lib/supabase'
 import { homeworkLineUrl, recogniseHomeworkAccount, homeworkDestination } from '../auth/homeworkLine'
 import './phonePractice.css'
 
-export default function HomeworkEntry() { return <LessonRequest>{()=> <ConnectedHomework/>}</LessonRequest> }
+export default function HomeworkEntry() {
+  // A class invitation validates its lesson; the independent app test has its own levels.
+  return classroomSessionId() ? <LessonRequest>{()=> <ConnectedHomework/>}</LessonRequest> : <ConnectedHomework/>
+}
 function ConnectedHomework() {
   const [tester,setTester] = useState(false)
   const [account, setAccount] = useState<string | null>(null)
@@ -54,7 +57,7 @@ function ConnectedHomework() {
   if(classId&&account)return <ClassroomStudent sessionId={classId} userId={account}/>
   if (local && !account && classId) return <main><button onClick={()=>void connect()}>Sign in with LINE</button><p>{error}</p></main>
   if (local || account) return homeworkDestination() === 'scoreboard' ? <CohortLeaderboard userId={account ?? undefined}/> : <PhonePractice key={account ?? 'local'} userId={account ?? undefined} tester={tester}/>
-  const link = homeworkLineUrl(Number(requestedLesson(location.search)))
+  const link = homeworkLineUrl(classId ? Number(requestedLesson(location.search)) : 1)
   return <main className="phone-practice" lang="th"><div className="practice-shell"><section className={`practice-complete${classId?' homework-join':''}`} aria-live="polite">
     {classId&&<div className="homework-join-brand"><img src="/brand/englishsuccess-cap.svg" alt="Success University"/><span>SUCCESS UNIVERSITY</span><h1>Join the class</h1><p>เข้าเรียน · แล้วมาเล่นกัน!</p></div>}
     
