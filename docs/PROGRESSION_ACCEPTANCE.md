@@ -45,3 +45,14 @@ background receipts, database scoring and sentence blueprints are unchanged by
 this acceptance-test change. Cold construction and warm selection are measured
 separately; a fast warm result does not establish that cold construction happens
 only once.
+
+## Local control page
+
+Run `npm run test:gui`, then use http://127.0.0.1:5200/practice-test.html.
+The page starts/stops the same local acceptance command and shows live output,
+counts, elapsed time and the final result. It is available only on this computer
+and is excluded from the production page entries.
+
+Edit `src/race/testing/progressionAcceptance.ts` for the long test,
+`src/race/testing/blueprintIntegrity.ts` for sentence assertions, or
+`practice-test.html` for the control page.

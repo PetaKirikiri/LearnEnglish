@@ -42,7 +42,7 @@ export async function runProgressionAcceptance(){
   const q=path==='casino'?classroomWordQuestion(lesson,user,[],events,answered,'full-progression-audit').question:nextPersonalQuestion(template.level,[],events,'full-progression-audit',answered,{...template.options,now:base+answered,familiar:curriculumBaseline([],events,user)})
   selectionTimes.push(performance.now()-selectionStarted)
   // Re-requesting with identical state exercises the existing warm cache only.
-  if(answered%100===0){const warmStart=performance.now();nextPersonalQuestion(template.level,[],events,'full-progression-audit',answered,{...template.options,now:base+answered,familiar:curriculumBaseline([],events,user)});warmTimes.push(performance.now()-warmStart)}
+  if(answered%20===0){const warmStart=performance.now();nextPersonalQuestion(template.level,[],events,'full-progression-audit',answered,{...template.options,now:base+answered,familiar:curriculumBaseline([],events,user)});warmTimes.push(performance.now()-warmStart)}
   paths[path]++;structures[q.document.construction??'unknown']=(structures[q.document.construction??'unknown']??0)+1
   expect(q,`no question at answer ${answered}, lesson ${lesson}`).toBeDefined()
   const constructions=lesson===1?['noun-phrase']:lesson===2?['question']:lesson===6?['identification-question','identification-answer']:['action-answer']
@@ -81,7 +81,7 @@ export async function runProgressionAcceptance(){
    expect(state.fadeScore,`answer ${answered}, ${word}`).toBe(Math.min(25,(before.get('en:'+word)?.fadeScore??0)+(focus.has(word)?3:1)))
    expect(!!state.provenAt,`Learnt differs from full fade: ${word}`).toBe(state.fadeScore===25)
   }
-  if(answered%100===0){
+  if(answered%20===0){
    console.log(JSON.stringify({answered,completed,paths,current:Object.fromEntries(hierarchyTypes.map(type=>[type,state[type].current]))}))
    mkdirSync('reports',{recursive:true});writeFileSync('reports/full-progression-audit-progress.json',JSON.stringify({answered,completed,paths,structures,seconds:Math.round((Date.now()-started)/1000),current:Object.fromEntries(hierarchyTypes.map(type=>[type,state[type].current])),learnt:Object.fromEntries(hierarchyTypes.map(type=>[type,state[type].completed.length]))},null,2))
    writeFileSync('reports/full-progression-earned-checkpoint.json',JSON.stringify({contract:'fresh-presentation-blueprint-v5',user,answered:answered+1,base,paths,structures,events:loadEvidence(user)}))
