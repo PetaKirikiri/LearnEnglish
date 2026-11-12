@@ -54,3 +54,11 @@ selection timings. A failure stops the command with a nonzero exit; a previous
 correctness result is not evidence that a different serving implementation passes.
 `npm run test:progression` runs just the guarded fresh walk. The full command first
 checks the architecture and focused regressions, then runs that same walk.
+
+## Mandatory landscape in LINE
+
+Phone practice reuses City’s gesture-triggered fullscreen/orientation request.
+When LINE keeps a portrait viewport, the actual practice canvas automatically
+rotates and swaps its dimensions. There is no portrait option or rotate prompt.
+Rotation preserves the mounted question and answer state; teacher screens stay
+unrotated. The existing help dialog retains teaching explanations and pronunciation.

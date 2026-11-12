@@ -43,15 +43,22 @@ export default function PracticeStage({question,prompt,answers,correct,onNext,ex
     return viewport.clientWidth&&viewport.clientHeight&&line.offsetHeight
      ?Math.min(viewport.clientWidth/Math.max(line.offsetWidth,line.scrollWidth),viewport.clientHeight/line.offsetHeight):1
    })
+   // Work in layout coordinates: a forced landscape frame can be rotated
+   // while the browser still reports a portrait viewport (e.g. LINE/iPhone).
+   const layoutBounds=(element:HTMLElement)=>{
+    let left=0,top=0,node:HTMLElement|null=element
+    while(node&&node!==root){left+=node.offsetLeft;top+=node.offsetTop;node=node.offsetParent as HTMLElement|null}
+    return {left,right:left+element.offsetWidth,top,bottom:top+element.offsetHeight}
+   }
    const questionViewport=viewports[0]
    if(questionViewport&&lines[0].offsetHeight>0){
-    const bounds=questionViewport.getBoundingClientRect(),line=lines[0]
+    const bounds=layoutBounds(questionViewport),line=lines[0]
     const cx=(bounds.left+bounds.right)/2,cy=(bounds.top+bounds.bottom)/2
     // Keep the centre fixed. Only reduce the fit when a visible control would
     // overlap it; controls on either side must never push the sentence sideways.
     for(const control of root.querySelectorAll<HTMLElement>('.foundation-controls button')){
      if(!control.getClientRects().length)continue
-     const box=control.getBoundingClientRect(),gap=8
+     const box=layoutBounds(control),gap=8
      const horizontal=box.left>=cx?2*(box.left-cx-gap):box.right<=cx?2*(cx-box.right-gap):0
      const vertical=box.top>=cy?2*(box.top-cy-gap):box.bottom<=cy?2*(cy-box.bottom-gap):0
      const clearance=Math.max(horizontal/Math.max(line.offsetWidth,line.scrollWidth),vertical/line.offsetHeight,0)

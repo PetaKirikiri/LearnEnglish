@@ -3,10 +3,10 @@
   "timings": {
     "selections": 1360,
     "coldOverOneSecond": 0,
-    "maxSelectionMs": 24.75495900000169,
+    "maxSelectionMs": 31.87129099999993,
     "warmSamples": 68,
-    "warmMedianMs": 6.871165999999903,
-    "warmMaxMs": 16.40612500000134
+    "warmMedianMs": 6.8796250000004875,
+    "warmMaxMs": 14.423541999996814
   },
   "answered": 1360,
   "resumedAt": 0,

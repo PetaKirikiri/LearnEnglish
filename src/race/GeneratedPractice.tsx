@@ -1,3 +1,4 @@
+import LandscapePractice from './LandscapePractice'
 import {useCallback,useEffect,useRef,useState} from 'react'
 import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'
 import type {MatrixSettings} from '../learning/sentenceMatrix/model'
@@ -10,7 +11,7 @@ import {audioPreparationPlan,nextPersonalQuestion} from './practiceForecast'
 import type {PracticeLevel} from './PracticeLevelPicker'
 import PracticeHeader from './PracticeHeader'
 import PracticeStage from './PracticeStage'
-import PracticeHelpDialog from './PracticeHelpDialog'
+import {AdaptivePracticeExplanation} from './PracticePatternExplanation'
 import DistanceScene from '../learning/sentenceMatrix/DistanceScene'
 import PictureSentence from './PictureSentence'
 import {PracticeAnswerIcon,type BinaryChoice} from './BinaryAnswerZone'
@@ -25,7 +26,7 @@ function loadRun(props:Props):Run|null{try{
  const s=JSON.parse(localStorage.getItem(runKey(props))??'null')
  if(s&&!s.done&&typeof s.id==='string'&&typeof s.attemptId==='string'&&Array.isArray(s.questions)&&s.questions.length===30&&Array.isArray(s.questionIds)&&s.questionIds.length===30&&s.questions.every((q:GeneratedQuestion|null,index:number)=>q===null||q&&q.id===s.questionIds[index]&&q.document?.english&&q.choices?.length===2&&[0,1].includes(q.correct))&&s.questions[s.index]&&Number.isInteger(s.index)&&s.index>=0&&s.index<30&&Array.isArray(s.answers)&&s.answers.every((b:unknown)=>typeof b==='boolean')&&[null,0,1].includes(s.picked)&&s.answers.length===s.index+(s.picked===null?0:1))return s
  }catch{/* A legacy bank-only or invalid run starts with a directly served question. */}return null}
-export default function GeneratedPractice(props:Props){return <LearnerPractice key={`${props.userId??'guest'}:${props.level}:${props.scope??'main'}`} {...props}/>}
+export default function GeneratedPractice(props:Props){return <LandscapePractice><LearnerPractice key={`${props.userId??'guest'}:${props.level}:${props.scope??'main'}`} {...props}/></LandscapePractice>}
 function LearnerPractice(props:Props){
  const progress=useWordProgress(props.userId)
  if(!progress.ready)return <main className="phone-practice foundation-practice"><div className="practice-shell"><PracticeHeader label={props.label} level={props.level} onLevel={props.onLevel} onExit={props.onExit} value={0} total={30}/>{progress.error?<button role="alert" onClick={()=>void progress.retry()}>Retry loading progress</button>:<p role="status">…</p>}</div></main>
@@ -124,6 +125,6 @@ function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scor
  const choices=q.choices.map((label,side)=>({id:String(side),label,content:q.sceneChoices?<span className="distance-answer"><DistanceScene {...q.sceneChoices[side]}/><strong>{label}</strong></span>:q.alternatives?<PictureSentence document={q.alternatives[side]}/>:label,icon:q.kind==='judgement'?<PracticeAnswerIcon kind="judgement" second={side===1}/>:undefined,state:picked!==null&&side===q.correct?'correct':picked===side?'incorrect':undefined})) as [BinaryChoice,BinaryChoice]
  function choose(side:number){if(locked.current||!heard)return;locked.current=true;const targets=q.listeningWords.flatMap(wordTokens);if(!onChoose(side,{heard,hidden:targets.length>0&&targets.every(w=>wordOpacity(w,snapshot,presentation)===0),assisted:assisted.current,plays:plays.current}))locked.current=false}
  return <><PracticeHeader label={courseLabel} level={q.level} onLevel={onLevel} onExit={onExit} value={index+(picked===null?0:1)} total={GENERATED_ROUND_SIZE} userId={userId}/><PracticeStage onReplay={play} prompt="Listen, then choose" correct={picked===null?null:picked===q.correct} onNext={onNext} onHelp={()=>{if(picked===null){assisted.current=true;saveSupport()}}} answers={{choices,selected:picked,disabled:!heard||picked!==null,onChoose:choose}}
- explanation={close=><PracticeHelpDialog onClose={close} title="Listen → choose the pictures"><PictureSentence document={q.document}/></PracticeHelpDialog>}
+ explanation={close=><AdaptivePracticeExplanation question={q} onClose={close}/>}
  question={<><div className="classroom foundation-noun"><div className="cw-sentence-board"><LanguageQuadrant scores={snapshot} request={{document:q.document,referenceObject:q.sceneChoices?.[q.correct].word,presentation:{...presentation,size:'phone',english:true,icons:true,keepIconsWhenFading:true,thaiMeanings:false,thaiTranslation:false,explanations:false,wordPicker:false}}}/></div></div>{audioError&&<button role="alert" onClick={play}>🔊 ↻ Tap to listen</button>}{saveError&&<button role="alert" onClick={retry}>Retry saving progress</button>}</>}/></>
 }

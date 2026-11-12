@@ -1,3 +1,5 @@
+import {AdaptivePracticeExplanation} from './PracticePatternExplanation'
+import LandscapePractice from './LandscapePractice'
 import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'
 import {actionDialogue} from '../learning/sentenceRules/actionDialogue'
 import {generatedNumberCatalogue} from './numberCatalogue'
@@ -16,7 +18,8 @@ function Sentence({full=false}:{full?:boolean}){
  return <div className="classroom foundation-noun"><div className="cw-sentence-board"><ExampleLanguage matrix semanticSlots={full?[3,1,0,2,3]:[2,3]} layout={{construction:full?'location-answer':'noun-phrase',noun:'phrase',}} settings={{explanations:false,wordPicker:false,explanationSelection:false,audio:false,layout:{density:'content',maxWidth:520}}} slotDetails={words.map((word)=>({label:word,count:0,icon:word==='hotel'?<VocabularyPicture word={word}/>:word==='I'?<PronounIcon word={word}/>:<WordSlotIcon slot={word==='am'?1:word==='at'?0:2}/>}))} english={words.join(' ')} thai="" units={words.map((word,i)=>({english:word,thai:meanings[i]}))}/></div></div>
 }
 /** Development-only fixtures use the real stage, engine and answer component. */
-export default function PracticeLayoutFixture(){
+export default function PracticeLayoutFixture(){return <LandscapePractice><LayoutFixture/></LandscapePractice>}
+function LayoutFixture(){
  const [picked,pick]=useState<number|null>(null)
  const matrix=new URLSearchParams(location.search).get('answers')==='matrix'
  if(new URLSearchParams(location.search).get('answers')==='people'){
@@ -34,7 +37,7 @@ export default function PracticeLayoutFixture(){
   const correct=make('a bag'),other=make('a phone')
   return <main className="phone-practice foundation-practice"><div className="practice-shell"><PracticeStage
    question={<div className="classroom foundation-noun"><div className="cw-sentence-board"><LanguageQuadrant request={{document:correct,presentation:{size:'phone',audio:false,wordPicker:false,explanations:false}}}/></div></div>}
-   explanation={close=><PracticeHelpDialog onClose={close} title="Listen"><PictureSentence document={correct}/></PracticeHelpDialog>}
+   explanation={close=><AdaptivePracticeExplanation question={{document:correct,level:6,targetWords:['bag'],credit:'bag'}} onClose={close}/>}
    prompt="Listen, then choose" correct={picked===null?null:picked===0} onNext={()=>pick(null)}
    answers={{disabled:false,selected:picked,onChoose:pick,choices:[{id:'correct',label:correct.english,content:<PictureSentence document={correct}/>},{id:'other',label:other.english,content:<PictureSentence document={other}/>}]}}/>
   </div></main>
@@ -49,7 +52,7 @@ export default function PracticeLayoutFixture(){
    const scores=Object.fromEntries(words.map(word=>['en:'+word,25]))
    return <main className="phone-practice foundation-practice"><div className="practice-shell"><PracticeStage
     question={<div className="classroom foundation-noun"><div className="cw-sentence-board"><LanguageQuadrant scores={scores} request={{document,presentation:{fadeMode:true,keepIconsWhenFading:true,audio:false,wordPicker:false,explanations:false,size:'phone'}}}/></div></div>}
-    explanation={close=><PracticeHelpDialog onClose={close} title="Listen"><PictureSentence document={document}/></PracticeHelpDialog>}
+    explanation={close=><AdaptivePracticeExplanation question={{document,level:6,targetWords:['bag'],credit:'bag'}} onClose={close}/>}
     prompt="Listen, then choose" correct={picked===null?null:picked===0} onNext={()=>pick(null)}
     answers={{disabled:false,selected:picked,onChoose:pick,choices:[{id:'correct',label:document.english,content:<PictureSentence document={document}/>},{id:'other',label:'the red bag',content:<PictureSentence document={{english:'the red bag',thai:'',construction:'noun-phrase',units:document.units.filter(u=>['determiner','description','object'].includes(u.role)&&u.english!=='tall')}}/>}]}}/>
    </div></main>

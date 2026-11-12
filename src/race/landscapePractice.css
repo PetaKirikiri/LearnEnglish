@@ -1,0 +1,26 @@
+/* A mandatory landscape canvas: no portrait alternative and no rotate prompt.
+   Dynamic viewport units track LINE's browser chrome without fullscreen access. */
+html:has(.practice-landscape-viewport),body:has(.practice-landscape-viewport){overflow:hidden;overscroll-behavior:none}
+.practice-landscape-viewport{position:fixed;inset:0;width:100vw;height:100vh;width:100dvw;height:100dvh;overflow:hidden;background:#f4f8ff;z-index:100;touch-action:manipulation}
+.practice-landscape-frame{position:absolute;left:50%;top:50%;width:100vw;height:100vh;width:100dvw;height:100dvh;transform:translate(-50%,-50%);transform-origin:center;container:forced-practice / size;--practice-safe-top:env(safe-area-inset-top);--practice-safe-right:env(safe-area-inset-right);--practice-safe-bottom:env(safe-area-inset-bottom);--practice-safe-left:env(safe-area-inset-left)}
+@media(orientation:portrait){
+ .practice-landscape-frame{width:100vh;height:100vw;width:100dvh;height:100dvw;transform:translate(-50%,-50%) rotate(90deg);--practice-safe-top:env(safe-area-inset-right);--practice-safe-right:env(safe-area-inset-bottom);--practice-safe-bottom:env(safe-area-inset-left);--practice-safe-left:env(safe-area-inset-top)}
+ /* Native dialog top-layer elements do not inherit an ancestor transform. */
+ body:has(.practice-landscape-viewport) .practice-pattern-dialog{position:fixed;inset:auto;left:50%;top:50%;margin:0;width:min(900px,calc(100dvh - 24px));max-width:none;max-height:calc(100dvw - 24px);transform:translate(-50%,-50%) rotate(90deg)}
+}
+.practice-landscape-frame>.phone-practice{width:100%;height:100%;min-height:0;overflow:hidden}
+.practice-landscape-frame .phone-practice.foundation-practice .practice-shell:has(.adaptive-practice-stage){width:100%;height:100%;min-height:0;max-width:none;padding:max(4px,var(--practice-safe-top)) max(12px,var(--practice-safe-right)) max(4px,var(--practice-safe-bottom)) max(12px,var(--practice-safe-left));box-sizing:border-box}
+/* Student classroom turns share the same screen; the teacher is never rotated. */
+.practice-landscape-frame>.practice-stage{height:100%;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) minmax(0,2fr);gap:6px;padding:8px 12px;box-sizing:border-box}
+.practice-landscape-frame>.practice-stage>.practice-answer-area{min-height:0;display:grid;grid-template-rows:40px minmax(0,1fr)}
+.practice-landscape-frame>.practice-stage .binary-answer-zone,.practice-landscape-frame>.practice-stage .practice-answers{height:100%;min-height:0;width:100%;max-width:none;margin:0}
+.practice-landscape-frame>.practice-stage .practice-answers{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:6px}
+.practice-landscape-frame>.practice-stage .binary-answer{height:100%;min-height:0;max-height:none;padding:4px 8px;overflow:hidden}
+/* Query the LOGICAL canvas height, not portrait browser orientation. */
+@container forced-practice (max-height:600px){
+ .phone-practice.foundation-practice .practice-shell .practice-stage.adaptive-practice-stage{grid-template-rows:minmax(0,1fr) minmax(0,2fr)}
+ .phone-practice.foundation-practice .practice-shell .adaptive-practice-stage .practice-answers{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:6px}
+ .phone-practice.foundation-practice .practice-shell .practice-feedback.foundation-controls{height:40px;min-height:0}
+ .phone-practice.foundation-practice .practice-shell:has(.adaptive-practice-stage)>header{padding:4px 16px;min-height:0}
+ .phone-practice.foundation-practice .practice-shell:has(.adaptive-practice-stage)>header .foundation-cap{width:28px;height:28px}
+}
