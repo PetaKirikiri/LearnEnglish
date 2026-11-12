@@ -32,9 +32,15 @@ end $$;
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
 values('english-learner-avatars','english-learner-avatars',false,5242880,array['image/png','image/jpeg','image/webp'])
 on conflict(id) do nothing;
+create or replace function public.english_can_view_learner_portraits() returns boolean
+language sql stable security definer set search_path='' as $$
+ select exists(select 1 from public.english_success_members where learner_id=(select auth.uid()))
+ or public.fifa_english_is_admin();
+$$;
+revoke all on function public.english_can_view_learner_portraits() from public, anon;
+grant execute on function public.english_can_view_learner_portraits() to authenticated;
 drop policy if exists english_learner_avatar_read on storage.objects;
 create policy english_learner_avatar_read on storage.objects for select to authenticated
 using(bucket_id='english-learner-avatars' and (
- exists(select 1 from public.english_success_members where learner_id=(select auth.uid()))
- or public.fifa_english_is_admin()
+ public.english_can_view_learner_portraits()
 ));
