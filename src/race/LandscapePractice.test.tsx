@@ -50,3 +50,25 @@ it('forces rotated portrait dimensions and applies compact fitting to the logica
  expect(css).toContain('@container forced-practice (max-height:600px)')
  expect(css).toContain('.practice-pattern-dialog')
 })
+
+it('uses City’s edge-to-edge iPhone viewport and restores it when leaving',async()=>{
+ const meta=document.createElement('meta');meta.name='viewport';meta.content='width=device-width, initial-scale=1.0';document.head.append(meta)
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<LandscapePractice><div>Question</div></LandscapePractice>))
+  expect(meta.content).toContain('viewport-fit=cover')
+  await act(async()=>root.render(<LandscapePractice enabled={false}><div>Teacher</div></LandscapePractice>))
+  expect(meta.content).toBe('width=device-width, initial-scale=1.0')
+ }finally{await act(async()=>root.unmount());meta.remove()}
+})
+it('retries native fullscreen on an upward swipe after the initial request was unavailable',async()=>{
+ native.enter.mockResolvedValue('unsupported')
+ const host=document.createElement('div'),root=createRoot(host)
+ const touch=(type:string,y:number)=>{const event=new Event(type,{bubbles:true});Object.defineProperty(event,type==='touchstart'?'touches':'changedTouches',{value:[{clientY:y}]});host.querySelector('.practice-landscape-viewport')!.dispatchEvent(event)}
+ try{
+  await act(async()=>root.render(<LandscapePractice><button>Answer</button></LandscapePractice>))
+  await act(async()=>host.querySelector('button')!.click());expect(native.enter).toHaveBeenCalledTimes(1)
+  await act(async()=>{touch('touchstart',200);touch('touchend',100)})
+  expect(native.enter).toHaveBeenCalledTimes(2)
+ }finally{await act(async()=>root.unmount())}
+})

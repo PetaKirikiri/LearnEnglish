@@ -45,6 +45,12 @@ it('advances on a screen tap only after answering, excluding replay and help',as
  await tap('.practice-question');expect(next).not.toHaveBeenCalled()
  await act(async()=>host.querySelector<HTMLButtonElement>('[role="dialog"] button')!.click())
  await tap('.binary-answer');expect(next).toHaveBeenCalledTimes(1)
+ await act(async()=>{
+  const question=host.querySelector('.practice-question')!
+  question.dispatchEvent(new MouseEvent('pointerdown',{bubbles:true,clientX:100,clientY:200}))
+  question.dispatchEvent(new MouseEvent('pointerup',{bubbles:true,clientX:100,clientY:100,button:0}))
+ })
+ expect(next).toHaveBeenCalledTimes(1)
  await render(false)
  await tap('.practice-question');expect(next).toHaveBeenCalledTimes(2)
  await render(true,true)
