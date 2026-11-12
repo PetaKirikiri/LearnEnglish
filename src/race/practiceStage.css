@@ -6,7 +6,7 @@
 /* Shared listening controls: the same replay action in every exercise host. */
 .phone-practice.foundation-practice .practice-shell .practice-feedback.foundation-controls{justify-content:flex-start;gap:10px;height:auto;min-height:60px;flex-wrap:wrap}
 .phone-practice.foundation-practice .foundation-controls .foundation-replay{display:grid;place-items:center;width:48px;height:48px;min-width:48px;min-height:48px;padding:10px;border:2px solid #d2a51c;border-radius:15px;background:#ffdc39;color:#18385e;box-shadow:0 3px #b98f19;cursor:pointer}
-.foundation-replay svg{width:28px;height:28px}.foundation-controls .practice-answer-prompt{font:700 14px/1.3 Nunito,system-ui,sans-serif;color:#18385e;flex:1}.foundation-controls .foundation-next{margin-left:auto}
+.foundation-replay svg{width:28px;height:28px}.foundation-controls .practice-answer-prompt{font:700 14px/1.3 Nunito,system-ui,sans-serif;color:#18385e;flex:1}
 
 /* Picture answers omit English captions while retaining the existing tile layout. */
 .practice-answer-area .picture-sentence-word,
@@ -75,7 +75,6 @@
 .phone-practice.foundation-practice .practice-shell .adaptive-practice-stage .foundation-controls{position:absolute;right:12px;top:8px;z-index:2;display:flex;align-items:center;gap:6px;height:40px;min-height:0;width:auto;max-width:92px;background:transparent;overflow:visible}
 .adaptive-practice-stage .foundation-controls .practice-answer-prompt{display:none}
 .phone-practice.foundation-practice .practice-shell .adaptive-practice-stage .foundation-controls :is(.foundation-help,.foundation-replay){width:40px;height:40px;min-width:40px;min-height:40px;padding:6px}
-.phone-practice.foundation-practice .practice-shell .adaptive-practice-stage .foundation-controls .foundation-next{position:absolute;right:0;top:48px;margin:0;min-width:70px}
 .phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .picture-sentence-art{height:100px;width:100%;aspect-ratio:auto}
 .phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .picture-sentence-art>*{max-height:100px}
 .phone-practice.foundation-practice .practice-shell .adaptive-practice-stage .binary-answer{padding:3px 6px}
@@ -89,3 +88,14 @@
 .phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] .tonight-slot{padding:4px;row-gap:3px;min-height:0}
 .phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] .matrix-layout-translation{min-height:0;height:auto;padding:4px 0 0}
 .phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .matrix-layout-translation p{margin:0;line-height:1.15}
+
+/* One word gets one share of the row, including words inside linked phrases.
+   Legacy phrase minimums otherwise squeeze standalone verb cards. */
+.phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .picture-sentence-group{flex:var(--picture-units,2) 1 0}
+.phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .picture-sentence-part{box-sizing:border-box;flex:1 1 0;min-width:0}
+/* Use the same square art canvas for every role, including nested clock art. */
+.phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .picture-sentence-art{width:100px;max-width:100%;height:100px;flex:none;aspect-ratio:1;align-self:center}
+.phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .picture-sentence-art .cw-time-icon .cw-game-icon{width:86px;height:86px;max-width:100%;flex:none}
+.phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-slot-role{width:100px;height:100px;max-width:100%;justify-self:center}
+.phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-time-icon .cw-game-icon{width:86px;height:86px;max-height:86px;max-width:100%;flex:none}
+.phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .picture-sentence[data-coloured=true] .picture-sentence-part{padding:0;border-left:0}

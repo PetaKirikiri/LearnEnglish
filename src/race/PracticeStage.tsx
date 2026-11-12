@@ -81,7 +81,12 @@ export default function PracticeStage({question,prompt,answers,correct,onNext,ex
  },[question,answers.choices])
  const fitChoice=(choice:typeof answers.choices[number])=>({...choice,icon:undefined,content:<AssessmentSentence>{choice.icon?<span className="assessment-choice-with-icon"><span className="binary-answer-icon" aria-hidden="true">{choice.icon}</span><span>{choice.content}</span></span>:choice.content}</AssessmentSentence>})
  const fittedAnswers={...answers,choices:[fitChoice(answers.choices[0]),fitChoice(answers.choices[1])] as const}
- return <div ref={stage} className="practice-stage adaptive-practice-stage"><AssessmentSentenceContext.Provider value={true}>
+ return <div ref={stage} className="practice-stage adaptive-practice-stage" onPointerUpCapture={event=>{
+  if(correct===null||teacherControlled||helpOpen||event.button!==0)return
+  if((event.target as Element).closest('.foundation-help,.foundation-replay,[role="dialog"]'))return
+  event.preventDefault()
+  onNext()
+ }}><AssessmentSentenceContext.Provider value={true}>
   <section className="practice-question" aria-label="Question"><AssessmentSentence>{question}</AssessmentSentence></section>
   <section className="practice-answer-area" aria-label="Answers">
    <div className="practice-feedback foundation-controls">
@@ -89,7 +94,6 @@ export default function PracticeStage({question,prompt,answers,correct,onNext,ex
     {onReplay&&<button type="button" className="foundation-replay" aria-label="Listen again · ฟังอีกครั้ง" onClick={onReplay}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg></button>}
     <span className="foundation-result-announcement" role="status">{correct===null?'':correct?'ถูกต้อง':'ยังไม่ถูก'}</span>
     {correct===null&&<span className="practice-answer-prompt">{onReplay?'Listen, then choose':prompt}</span>}
-    {!teacherControlled&&<button type="button" className="foundation-next" disabled={correct===null} onClick={onNext}>Next →</button>}
    </div>
    <BinaryAnswerZone {...fittedAnswers}/>
   </section>
