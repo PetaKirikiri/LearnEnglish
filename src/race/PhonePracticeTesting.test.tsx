@@ -1,3 +1,4 @@
+import './testing/forbidSentenceBanks'
 // @vitest-environment happy-dom
 import {act} from 'react'
 import {createRoot} from 'react-dom/client'
@@ -17,8 +18,6 @@ vi.mock('./PracticeCourse',()=>({default:()=>{throw new Error('The app test must
 vi.mock('../lib/supabase',()=>({supabase:{auth:{getUser:async()=>({data:{user:null}})}}}))
 import PhonePractice from './PhonePractice'
 import HomeworkEntry from './HomeworkEntry'
-import {practiceCandidates} from './generatedPracticeContent'
-import {eligiblePracticeActions} from './generatedPracticeProgress'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 
 it('opens the standalone test without the classroom lesson-template validator',async()=>{
@@ -43,7 +42,7 @@ it('runs and scores object questions from the app test even with a classroom les
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 6:"]')!.click())
   const runKey=Array.from({length:localStorage.length},(_,i)=>localStorage.key(i)!).find(key=>key.startsWith('englishsuccess:composed-run:')&&key.endsWith(':test-student:6:star-1'))!
   const saved=JSON.parse(localStorage.getItem(runKey)!)
-  const q=practiceCandidates(6,undefined,eligiblePracticeActions(state.rows,[])).find(q=>q.id===saved.questionIds[0])!
+  const q=saved.questions[0]
   expect(q.document.construction).toBe('action-answer')
   for(const document of [q.document,...q.alternatives??[]]){
    expect(document.units.some(u=>u.role==='object')).toBe(true)
@@ -54,7 +53,7 @@ it('runs and scores object questions from the app test even with a classroom les
   expect(host.querySelector('.example-gloss,.example-translation,.cw-word-picker')).toBeNull()
   expect(host.querySelector<HTMLButtonElement>('.binary-answer')!.disabled).toBe(true)
   await act(async()=>state.ended())
-  const correct=saved.flipped[0]?1:q.correct
+  const correct=q.correct
   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correct].click())
   expect(state.record.mock.calls.filter(([event])=>event.event!=='presented')).toHaveLength(1)
   expect(state.record.mock.calls.filter(([event])=>event.event==='presented')).toHaveLength(1)

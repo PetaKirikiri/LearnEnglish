@@ -13,6 +13,7 @@ const focused=[
  'src/race/testing/blueprintIntegrity.test.ts',
  'src/race/GeneratedPractice.test.tsx',
  'src/race/PhonePractice.test.tsx',
+ 'src/race/PhonePracticeTesting.test.tsx',
  'src/race/PracticeStage.test.tsx',
  'src/race/LandscapePractice.test.tsx',
  'src/race/PracticePatternExplanation.test.tsx',
