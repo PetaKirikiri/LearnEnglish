@@ -31,7 +31,7 @@ it('does not remount the question or reset its answer when the viewport rotates'
   await act(async()=>root.render(<LandscapePractice><Question/></LandscapePractice>))
   await act(async()=>host.querySelector('button')!.click())
   await act(async()=>{window.dispatchEvent(new Event('resize'));window.dispatchEvent(new Event('orientationchange'))})
-  expect(mounted).toHaveBeenCalledOnce();expect(host.textContent).toBe('Answered')
+  expect(mounted).toHaveBeenCalledOnce();expect(host.querySelector('button')?.textContent).toBe('Answered')
  }finally{await act(async()=>root.unmount())}
 })
 it('never rotates or enters fullscreen for the teacher screen',async()=>{
@@ -61,14 +61,22 @@ it('uses City’s edge-to-edge iPhone viewport and restores it when leaving',asy
   expect(meta.content).toBe('width=device-width, initial-scale=1.0')
  }finally{await act(async()=>root.unmount());meta.remove()}
 })
-it('retries native fullscreen on an upward swipe after the initial request was unavailable',async()=>{
+it('keeps swipes native, suppresses their clicks, and hides the hint after real scrolling',async()=>{
  native.enter.mockResolvedValue('unsupported')
- const host=document.createElement('div'),root=createRoot(host)
- const touch=(type:string,y:number)=>{const event=new Event(type,{bubbles:true});Object.defineProperty(event,type==='touchstart'?'touches':'changedTouches',{value:[{clientY:y}]});host.querySelector('.practice-landscape-viewport')!.dispatchEvent(event)}
+ const host=document.createElement('div'),root=createRoot(host),choose=vi.fn()
  try{
-  await act(async()=>root.render(<LandscapePractice><button>Answer</button></LandscapePractice>))
-  await act(async()=>host.querySelector('button')!.click());expect(native.enter).toHaveBeenCalledTimes(1)
-  await act(async()=>{touch('touchstart',200);touch('touchend',100)})
-  expect(native.enter).toHaveBeenCalledTimes(2)
- }finally{await act(async()=>root.unmount())}
+  await act(async()=>root.render(<LandscapePractice><button onClick={choose}>Answer</button></LandscapePractice>))
+  expect(host.querySelector('.practice-swipe-hint')).not.toBeNull()
+  const button=host.querySelector('button')!
+  await act(async()=>{
+   button.dispatchEvent(new MouseEvent('pointerdown',{bubbles:true,clientX:100,clientY:200}))
+   button.dispatchEvent(new MouseEvent('pointermove',{bubbles:true,clientX:100,clientY:100}))
+   button.click()
+  })
+  expect(choose).not.toHaveBeenCalled();expect(native.enter).not.toHaveBeenCalled()
+  await act(async()=>{vi.spyOn(window,'scrollY','get').mockReturnValue(80);window.dispatchEvent(new Event('scroll'))})
+  expect(host.querySelector('.practice-swipe-hint')).toBeNull()
+  await act(async()=>{button.dispatchEvent(new MouseEvent('pointerdown',{bubbles:true,clientX:100,clientY:100}));button.click()})
+  expect(choose).toHaveBeenCalledOnce()
+ }finally{await act(async()=>root.unmount());vi.restoreAllMocks()}
 })

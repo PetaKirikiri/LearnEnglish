@@ -1,4 +1,4 @@
-import {useEffect,useRef,type ReactNode,type SyntheticEvent} from 'react'
+import {useEffect,useRef,useState,type ReactNode,type SyntheticEvent} from 'react'
 import {controllerExpanded,enterControllerFullscreen} from '../city/fullscreen'
 import './landscapePractice.css'
 
@@ -6,7 +6,8 @@ import './landscapePractice.css'
  * landscape, even inside LINE when native locking/fullscreen is unavailable.
  * CSS rotates the viewport, not the children: rotating never remounts a question. */
 export default function LandscapePractice({children,enabled=true}:{children:ReactNode;enabled?:boolean}){
- const requested=useRef(false),owned=useRef(false),active=useRef(true),touchStart=useRef<number|null>(null)
+ const requested=useRef(false),owned=useRef(false),active=useRef(true),gesture=useRef<{x:number;y:number;moved:boolean}|null>(null)
+ const [showSwipeHint,setShowSwipeHint]=useState(true)
  const leave=()=>{
   const doc=document as Document&{webkitExitFullscreen?:()=>void}
   try{if(doc.fullscreenElement)void doc.exitFullscreen?.().catch(()=>{});else doc.webkitExitFullscreen?.()}catch{/* Leaving the page must remain possible. */}
@@ -15,7 +16,7 @@ export default function LandscapePractice({children,enabled=true}:{children:Reac
   if(!enabled||requested.current||(event.target as HTMLElement).closest('a,.practice-header-exit'))return
   requested.current=true
   const expanded=controllerExpanded()
-  void enterControllerFullscreen().then(result=>{if(result==='entered'&&!expanded){owned.current=true;if(!active.current)leave()}})
+  void enterControllerFullscreen().then(result=>{if(result==='entered'&&!expanded){owned.current=true;if(active.current)setShowSwipeHint(false);else leave()}})
  }
  useEffect(()=>{
   if(!enabled)return
@@ -23,18 +24,28 @@ export default function LandscapePractice({children,enabled=true}:{children:Reac
   if(meta)meta.content='width=device-width, initial-scale=1.0, viewport-fit=cover'
   return()=>{if(meta&&previous!==undefined)meta.content=previous}
  },[enabled])
+ useEffect(()=>{
+  if(!enabled)return
+  const update=()=>{if(window.scrollY>24||controllerExpanded())setShowSwipeHint(false)}
+  window.addEventListener('scroll',update,{passive:true})
+  document.addEventListener('fullscreenchange',update)
+  update()
+  return()=>{window.removeEventListener('scroll',update);document.removeEventListener('fullscreenchange',update)}
+ },[enabled])
  useEffect(()=>{active.current=true;return()=>{active.current=false;if(owned.current)leave()}},[])
  if(!enabled)return <>{children}</>
- return <div className="practice-landscape-viewport" onClickCapture={enter} onKeyDownCapture={enter}
-  onTouchStartCapture={event=>{touchStart.current=event.touches[0]?.clientY??null}}
-  onTouchEndCapture={event=>{
-   const start=touchStart.current,end=event.changedTouches[0]?.clientY
-   touchStart.current=null
-   if(start!==null&&end!==undefined&&start-end>40&&!controllerExpanded()){
-    requested.current=false
-    enter(event)
-   }
-  }}>
+ return <div className="practice-landscape-viewport"
+  onPointerDownCapture={event=>{gesture.current={x:event.clientX,y:event.clientY,moved:false}}}
+  onPointerMoveCapture={event=>{
+   const start=gesture.current
+   if(start&&Math.hypot(event.clientX-start.x,event.clientY-start.y)>12)start.moved=true
+  }}
+  onPointerCancelCapture={()=>{if(gesture.current)gesture.current.moved=true}}
+  onClickCapture={event=>{
+   if(gesture.current?.moved){event.preventDefault();event.stopPropagation();return}
+   enter(event)
+  }} onKeyDownCapture={event=>{gesture.current=null;enter(event)}}>
   <div className="practice-landscape-frame">{children}</div>
+  {showSwipeHint&&<p className="practice-swipe-hint" role="status">↑ Swipe up for more screen</p>}
  </div>
 }
