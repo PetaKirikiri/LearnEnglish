@@ -1,10 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import { AuthProvider } from './auth/AuthProvider.tsx'
+import StartupBoundary from './StartupBoundary'
 import './index.css'
 import './game-theme.css'
-import LanguageGate from './content/LanguageGate'
 import { lazy, Suspense } from 'react'
 import { isHotelLineEntry } from './hotel/lineEntry'
 import { isPadelLineEntry } from './padel/lineEntry'
@@ -14,6 +12,7 @@ import { isSuccessRoute } from './success/course'
 import { classroomNotesDestination } from './classroom/notesRoute'
 const classroomDestination = classroomNotesDestination(location.pathname, location.search, location.hash)
 if (classroomDestination) location.replace(classroomDestination)
+const AppEntry = lazy(() => import('./AppEntry'))
 const MobileNotes = lazy(() => import('./classroom/MobileNotes'))
 const isMobileNotes = window.location.pathname.replace(/\/$/, '') === '/english/notes'
 const SuccessPage = lazy(() => import('./success/SuccessPage'))
@@ -23,6 +22,8 @@ const PhonePractice = lazy(() => import('./race/HomeworkEntry'))
 const isPhonePractice = ['/english/practice', '/english/race/phone'].includes(window.location.pathname.replace(/\/$/, ''))
 const SentenceReviewPage = lazy(() => import('./review/SentenceReviewPage'))
 const isSentenceReview = window.location.pathname.replace(/\/$/, '') === '/english/content-review'
+const DrawingPreview = lazy(() => import('./drawing/DrawingPreview'))
+const isDrawingPreview = location.pathname.replace(/\/$/, '') === '/english/game/preview'
 const CityPage = lazy(() => import('./city/CityPage'))
 const isCity = /^\/english\/city(?:\/|$)/.test(location.pathname)
 const RacePage = lazy(() => import('./race/RacePage'))
@@ -44,11 +45,9 @@ const isHotel = /^\/hotel(?:\/|$)/.test(window.location.pathname) || isHotelLine
 const isEnglish = /^\/english(?:\/|$)/.test(window.location.pathname) || isEnglishLineEntry(window.location.search)
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    {classroomDestination ? null : isSentenceReview ? <Suspense fallback={<main>Opening…</main>}><SentenceReviewPage /></Suspense> : isCity ? <Suspense fallback={<main>Opening…</main>}><CityPage /></Suspense> : isMobileNotes ? <Suspense fallback={<main>Opening…</main>}><MobileNotes /></Suspense> : isPhonePractice ? <Suspense fallback={<main>Opening…</main>}><PhonePractice /></Suspense> : isRaceLesson ? <Suspense fallback={<main>Opening…</main>}><RaceLessonPage /></Suspense> : isRaceAdmin ? <Suspense fallback={<main>Opening…</main>}><RaceAdminPage /></Suspense> : isRaceDemo ? <Suspense fallback={<main>Opening…</main>}><RaceDemoPage /></Suspense> : isHorsePreview ? <Suspense fallback={<main>Opening…</main>}><HorsePreviewPage /></Suspense> : isRace ? <Suspense fallback={<main>Opening…</main>}><RacePage /></Suspense> : <>
-    {isSuccessRoute(window.location.pathname) ? <Suspense fallback={<main>Opening…</main>}><SuccessPage /></Suspense> : isFimoPreview ? <Suspense fallback={<main>Opening…</main>}><FimoPreviewPage /></Suspense> : isCoach ? <Suspense fallback={<main>Ouverture…</main>}><CoachPage /></Suspense> : isPadel ? <Suspense fallback={<main>Opening…</main>}><PadelPage /></Suspense> : isHotel || isEnglish ? <Suspense fallback={<main>Opening…</main>}><HotelPage courseId={isEnglish ? 'english' : 'hotel'} /></Suspense> : <LanguageGate><AuthProvider>
-      <App />
-    </AuthProvider></LanguageGate>}
+  <StrictMode><StartupBoundary>
+    {classroomDestination ? null : isDrawingPreview ? <Suspense fallback={<main>Opening…</main>}><DrawingPreview /></Suspense> : isSentenceReview ? <Suspense fallback={<main>Opening…</main>}><SentenceReviewPage /></Suspense> : isCity ? <Suspense fallback={<main>Opening…</main>}><CityPage /></Suspense> : isMobileNotes ? <Suspense fallback={<main>Opening…</main>}><MobileNotes /></Suspense> : isPhonePractice ? <Suspense fallback={<main>Opening…</main>}><PhonePractice /></Suspense> : isRaceLesson ? <Suspense fallback={<main>Opening…</main>}><RaceLessonPage /></Suspense> : isRaceAdmin ? <Suspense fallback={<main>Opening…</main>}><RaceAdminPage /></Suspense> : isRaceDemo ? <Suspense fallback={<main>Opening…</main>}><RaceDemoPage /></Suspense> : isHorsePreview ? <Suspense fallback={<main>Opening…</main>}><HorsePreviewPage /></Suspense> : isRace ? <Suspense fallback={<main>Opening…</main>}><RacePage /></Suspense> : <>
+    {isSuccessRoute(window.location.pathname) ? <Suspense fallback={<main>Opening…</main>}><SuccessPage /></Suspense> : isFimoPreview ? <Suspense fallback={<main>Opening…</main>}><FimoPreviewPage /></Suspense> : isCoach ? <Suspense fallback={<main>Ouverture…</main>}><CoachPage /></Suspense> : isPadel ? <Suspense fallback={<main>Opening…</main>}><PadelPage /></Suspense> : isHotel || isEnglish ? <Suspense fallback={<main>Opening…</main>}><HotelPage courseId={isEnglish ? 'english' : 'hotel'} /></Suspense> : <Suspense fallback={<main>Opening…</main>}><AppEntry /></Suspense>}
     </>}
-  </StrictMode>,
+  </StartupBoundary></StrictMode>,
 )

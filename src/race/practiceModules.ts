@@ -3,6 +3,7 @@ export type PracticeModule={id:string;title:string;questionIds:string[];number:n
 /** Small complete-sentence packs: four contexts, then a listening pass. */
 export function practiceModules(lesson:number):PracticeModule[]{
  const source=lessonPracticeQuestions(lesson)
+ if(lesson===6)return [{id:'lesson-six-identification',title:'What is this?',questionIds:source.map(q=>q.id),number:1,total:1}]
  const groups=new Map<string,typeof source>()
  for(const q of source){
   const match=q.english.match(/^Where (is|are) (the|my|your) /)

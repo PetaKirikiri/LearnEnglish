@@ -1,3 +1,5 @@
+import {vocabularyDiagnosticsPlugin} from './server/vocabularyDiagnosticsPlugin'
+import {sentenceAudioPlugin} from './server/sentenceAudioPlugin'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
@@ -6,9 +8,9 @@ import { classroomRaceProxy } from './server/classroomRaceProxy'
 import { raceLessonPlugin } from './server/raceLessonPlugin'
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), classroomRaceProxy(), raceLessonPlugin(), cityPlugin()],
+  plugins: [vocabularyDiagnosticsPlugin(),sentenceAudioPlugin(), react(), tailwindcss(), classroomRaceProxy(), raceLessonPlugin(), cityPlugin()],
   build: {
-    rollupOptions: { input: { app: 'index.html', classroom: 'classroom/index.html' } },
+    rollupOptions: { input: { app: 'index.html', classroom: 'classroom/index.html', vocabulary: 'vocabulary-review.html' } },
   },
   resolve: {
     dedupe: ['react', 'react-dom'],

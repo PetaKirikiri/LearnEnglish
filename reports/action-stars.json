@@ -2,12 +2,12 @@
   "review": {
     "method": "Blueprint validation plus row-by-row English/Thai and plausibility review",
     "questions": 150,
-    "audioListening": "PCM decode for every recording; browser samples separately"
+    "audioListening": "PCM decode for existing recordings; missing historical prompts listed separately; shared student speech tested separately"
   },
   "teachingExamples": [
     {
-      "english": "I am holding his cup.",
-      "thai": "ฉันกำลังถือถ้วยของเขา",
+      "english": "I am holding his shoe.",
+      "thai": "ฉันกำลังถือรองเท้าของเขา",
       "units": [
         {
           "english": "I",
@@ -30,19 +30,19 @@
           "role": "determiner"
         },
         {
-          "english": "cup.",
-          "thai": "ถ้วย",
+          "english": "shoe.",
+          "thai": "รองเท้า",
           "role": "object"
         }
       ],
-      "id": "action-l6-i-am-holding-his-cup",
+      "id": "action-l6-i-am-holding-his-shoe",
       "level": 6,
       "choices": [
-        "ฉันกำลังถือถ้วยของเขา",
-        "ฉันกำลังถือถ้วยของเธอ"
+        "ฉันกำลังถือรองเท้าของเขา",
+        "ฉันกำลังถือรองเท้าของเธอ"
       ],
       "correct": 0,
-      "audioUrl": "/audio/action-practice/action-l6-i-am-holding-his-cup.wav",
+      "audioUrl": "/audio/action-practice/action-l6-i-am-holding-his-shoe.wav",
       "distractorUnits": [
         {
           "english": "I",
@@ -65,8 +65,8 @@
           "role": "determiner"
         },
         {
-          "english": "cup.",
-          "thai": "ถ้วย",
+          "english": "shoe.",
+          "thai": "รองเท้า",
           "role": "object"
         }
       ],
@@ -75,23 +75,23 @@
         "lesson": "lesson-4",
         "subject": "I",
         "action": "holding",
-        "object": "a cup",
+        "object": "a shoe",
         "determiner": "his",
-        "noun": "cup",
-        "recordingQuestionId": "action-l6-i-am-holding-his-cup"
+        "noun": "shoe",
+        "recordingQuestionId": "action-l6-i-am-holding-his-shoe"
       }
     },
     {
-      "english": "We are opening his books.",
-      "thai": "พวกเรากำลังเปิดหนังสือของเขา",
+      "english": "I am opening their bottle.",
+      "thai": "ฉันกำลังเปิดขวดของพวกเขา",
       "units": [
         {
-          "english": "We",
-          "thai": "พวกเรา",
+          "english": "I",
+          "thai": "ฉัน",
           "role": "person"
         },
         {
-          "english": "are",
+          "english": "am",
           "thai": "กำลัง",
           "role": "be"
         },
@@ -101,32 +101,32 @@
           "role": "action"
         },
         {
-          "english": "his",
-          "thai": "ของเขา (ผู้ชาย)",
+          "english": "their",
+          "thai": "ของพวกเขา",
           "role": "determiner"
         },
         {
-          "english": "books.",
-          "thai": "หนังสือ",
+          "english": "bottle.",
+          "thai": "ขวด",
           "role": "object"
         }
       ],
-      "id": "action-l6-we-are-opening-his-books",
+      "id": "action-l6-i-am-opening-their-bottle",
       "level": 6,
       "choices": [
-        "พวกเรากำลังเปิดหนังสือของเขา",
-        "พวกเรากำลังเปิดหนังสือของเธอ"
+        "ฉันกำลังเปิดขวดของพวกเขา",
+        "ฉันกำลังเปิดขวดของพวกเรา"
       ],
       "correct": 0,
-      "audioUrl": "/audio/action-practice/action-l6-we-are-opening-his-books.wav",
+      "audioUrl": "/audio/action-practice/action-l6-i-am-opening-their-bottle.wav",
       "distractorUnits": [
         {
-          "english": "We",
-          "thai": "พวกเรา",
+          "english": "I",
+          "thai": "ฉัน",
           "role": "person"
         },
         {
-          "english": "are",
+          "english": "am",
           "thai": "กำลัง",
           "role": "be"
         },
@@ -136,30 +136,30 @@
           "role": "action"
         },
         {
-          "english": "her",
-          "thai": "ของเธอ (ผู้หญิง)",
+          "english": "our",
+          "thai": "ของพวกเรา",
           "role": "determiner"
         },
         {
-          "english": "books.",
-          "thai": "หนังสือ",
+          "english": "bottle.",
+          "thai": "ขวด",
           "role": "object"
         }
       ],
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
-        "subject": "we",
+        "subject": "I",
         "action": "opening",
-        "object": "the books",
-        "determiner": "his",
-        "noun": "books",
-        "recordingQuestionId": "action-l6-we-are-opening-his-books"
+        "object": "a bottle",
+        "determiner": "their",
+        "noun": "bottle",
+        "recordingQuestionId": "action-l6-i-am-opening-their-bottle"
       }
     },
     {
-      "english": "I am washing our apples.",
-      "thai": "ฉันกำลังล้างแอปเปิลของพวกเรา",
+      "english": "I am washing our socks.",
+      "thai": "ฉันกำลังล้างถุงเท้าของพวกเรา",
       "units": [
         {
           "english": "I",
@@ -182,19 +182,19 @@
           "role": "determiner"
         },
         {
-          "english": "apples.",
-          "thai": "แอปเปิล",
+          "english": "socks.",
+          "thai": "ถุงเท้า",
           "role": "object"
         }
       ],
-      "id": "action-l6-i-am-washing-our-apples",
+      "id": "action-l6-i-am-washing-our-socks",
       "level": 6,
       "choices": [
-        "ฉันกำลังล้างแอปเปิลของพวกเรา",
-        "ฉันกำลังล้างแอปเปิลของฉัน"
+        "ฉันกำลังล้างถุงเท้าของพวกเรา",
+        "ฉันกำลังล้างถุงเท้าของฉัน"
       ],
       "correct": 0,
-      "audioUrl": "/audio/action-practice/action-l6-i-am-washing-our-apples.wav",
+      "audioUrl": "/audio/action-practice/action-l6-i-am-washing-our-socks.wav",
       "distractorUnits": [
         {
           "english": "I",
@@ -217,8 +217,8 @@
           "role": "determiner"
         },
         {
-          "english": "apples.",
-          "thai": "แอปเปิล",
+          "english": "socks.",
+          "thai": "ถุงเท้า",
           "role": "object"
         }
       ],
@@ -227,10 +227,10 @@
         "lesson": "lesson-4",
         "subject": "I",
         "action": "washing",
-        "object": "the apples",
+        "object": "the socks",
         "determiner": "our",
-        "noun": "apples",
-        "recordingQuestionId": "action-l6-i-am-washing-our-apples"
+        "noun": "socks",
+        "recordingQuestionId": "action-l6-i-am-washing-our-socks"
       }
     }
   ],
@@ -266,7 +266,8 @@
         "noun": "apple",
         "recordingQuestionId": "action-l6-i-am-eating-my-apple"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -285,7 +286,8 @@
         "noun": "apple",
         "recordingQuestionId": "action-l6-you-are-eating-your-apple"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -304,7 +306,8 @@
         "noun": "apple",
         "recordingQuestionId": "action-l6-he-is-eating-his-apple"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -323,7 +326,8 @@
         "noun": "apple",
         "recordingQuestionId": "action-l6-she-is-eating-her-apple"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -342,7 +346,8 @@
         "noun": "apple",
         "recordingQuestionId": "action-l6-we-are-eating-our-apple"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -361,7 +366,8 @@
         "noun": "apple",
         "recordingQuestionId": "action-l6-they-are-eating-their-apple"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -380,7 +386,8 @@
         "noun": "apple",
         "recordingQuestionId": "action-l6-i-am-eating-your-apple"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -399,7 +406,8 @@
         "noun": "apples",
         "recordingQuestionId": "action-l6-you-are-eating-his-apples"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -418,7 +426,8 @@
         "noun": "apples",
         "recordingQuestionId": "action-l6-he-is-eating-her-apples"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -437,7 +446,8 @@
         "noun": "apples",
         "recordingQuestionId": "action-l6-she-is-eating-their-apples"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -456,7 +466,8 @@
         "noun": "apples",
         "recordingQuestionId": "action-l6-we-are-eating-my-apples"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -475,7 +486,8 @@
         "noun": "apples",
         "recordingQuestionId": "action-l6-they-are-eating-our-apples"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -494,7 +506,8 @@
         "noun": "apples",
         "recordingQuestionId": "action-l6-i-am-eating-your-apples"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -513,7 +526,8 @@
         "noun": "banana",
         "recordingQuestionId": "action-l6-you-are-eating-her-banana"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -532,7 +546,8 @@
         "noun": "banana",
         "recordingQuestionId": "action-l6-he-is-eating-their-banana"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -551,7 +566,8 @@
         "noun": "banana",
         "recordingQuestionId": "action-l6-she-is-eating-our-banana"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -570,7 +586,8 @@
         "noun": "banana",
         "recordingQuestionId": "action-l6-we-are-eating-your-banana"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -589,7 +606,8 @@
         "noun": "banana",
         "recordingQuestionId": "action-l6-they-are-eating-my-banana"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -608,7 +626,8 @@
         "noun": "banana",
         "recordingQuestionId": "action-l6-i-am-eating-his-banana"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -627,7 +646,8 @@
         "noun": "bananas",
         "recordingQuestionId": "action-l6-you-are-eating-their-bananas"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -646,7 +666,8 @@
         "noun": "bananas",
         "recordingQuestionId": "action-l6-he-is-eating-our-bananas"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -665,7 +686,8 @@
         "noun": "bananas",
         "recordingQuestionId": "action-l6-she-is-eating-my-bananas"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -684,7 +706,8 @@
         "noun": "bananas",
         "recordingQuestionId": "action-l6-we-are-eating-his-bananas"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -703,7 +726,8 @@
         "noun": "bananas",
         "recordingQuestionId": "action-l6-they-are-eating-your-bananas"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -722,7 +746,8 @@
         "noun": "bananas",
         "recordingQuestionId": "action-l6-i-am-eating-her-bananas"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -741,7 +766,8 @@
         "noun": "orange",
         "recordingQuestionId": "action-l6-you-are-eating-our-orange"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -760,7 +786,8 @@
         "noun": "orange",
         "recordingQuestionId": "action-l6-he-is-eating-my-orange"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -779,7 +806,8 @@
         "noun": "orange",
         "recordingQuestionId": "action-l6-she-is-eating-your-orange"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -798,7 +826,8 @@
         "noun": "orange",
         "recordingQuestionId": "action-l6-we-are-eating-her-orange"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -817,7 +846,8 @@
         "noun": "orange",
         "recordingQuestionId": "action-l6-they-are-eating-his-orange"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -836,7 +866,8 @@
         "noun": "orange",
         "recordingQuestionId": "action-l6-i-am-eating-their-orange"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -855,7 +886,8 @@
         "noun": "oranges",
         "recordingQuestionId": "action-l6-you-are-eating-my-oranges"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -874,7 +906,8 @@
         "noun": "oranges",
         "recordingQuestionId": "action-l6-he-is-eating-your-oranges"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -893,7 +926,8 @@
         "noun": "oranges",
         "recordingQuestionId": "action-l6-she-is-eating-his-oranges"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -912,7 +946,8 @@
         "noun": "oranges",
         "recordingQuestionId": "action-l6-we-are-eating-their-oranges"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -931,7 +966,8 @@
         "noun": "oranges",
         "recordingQuestionId": "action-l6-they-are-eating-her-oranges"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -950,7 +986,8 @@
         "noun": "oranges",
         "recordingQuestionId": "action-l6-i-am-eating-our-oranges"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -969,7 +1006,8 @@
         "noun": "sandwich",
         "recordingQuestionId": "action-l6-you-are-eating-your-sandwich"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -988,7 +1026,8 @@
         "noun": "book",
         "recordingQuestionId": "action-l6-i-am-reading-my-book"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -1007,7 +1046,8 @@
         "noun": "book",
         "recordingQuestionId": "action-l6-you-are-reading-your-book"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -1026,7 +1066,8 @@
         "noun": "book",
         "recordingQuestionId": "action-l6-he-is-reading-his-book"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -1045,7 +1086,8 @@
         "noun": "book",
         "recordingQuestionId": "action-l6-she-is-reading-her-book"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -1064,7 +1106,8 @@
         "noun": "book",
         "recordingQuestionId": "action-l6-we-are-reading-our-book"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -1083,7 +1126,8 @@
         "noun": "book",
         "recordingQuestionId": "action-l6-they-are-reading-their-book"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -1102,7 +1146,8 @@
         "noun": "books",
         "recordingQuestionId": "action-l6-i-am-reading-your-books"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -1121,7 +1166,8 @@
         "noun": "books",
         "recordingQuestionId": "action-l6-you-are-reading-his-books"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -1140,7 +1186,8 @@
         "noun": "water",
         "recordingQuestionId": "action-l6-i-am-drinking-my-water"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -1159,7 +1206,8 @@
         "noun": "water",
         "recordingQuestionId": "action-l6-you-are-drinking-your-water"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -1178,7 +1226,8 @@
         "noun": "water",
         "recordingQuestionId": "action-l6-he-is-drinking-his-water"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 1,
@@ -1197,406 +1246,470 @@
         "noun": "water",
         "recordingQuestionId": "action-l6-she-is-drinking-her-water"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
-      "id": "action-l6-i-am-holding-my-phone",
-      "english": "I am holding my phone.",
-      "thai": "ฉันกำลังถือโทรศัพท์ของฉัน",
-      "distractor": "ฉันกำลังถือโทรศัพท์ของคุณ",
-      "audio": "/audio/action-practice/action-l6-i-am-holding-my-phone.wav",
+      "id": "action-l6-i-am-holding-my-racket",
+      "english": "I am holding my racket.",
+      "thai": "ฉันกำลังถือไม้แร็กเกตของฉัน",
+      "distractor": "ฉันกำลังถือไม้แร็กเกตของคุณ",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-my-racket.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "holding",
-        "object": "a phone",
+        "object": "a racket",
         "determiner": "my",
-        "noun": "phone",
-        "recordingQuestionId": "action-l6-i-am-holding-my-phone"
+        "noun": "racket",
+        "recordingQuestionId": "action-l6-i-am-holding-my-racket"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-you-are-holding-your-phone",
-      "english": "You are holding your phone.",
-      "thai": "คุณกำลังถือโทรศัพท์ของคุณ",
-      "distractor": "คุณกำลังถือโทรศัพท์ของเขา",
-      "audio": "/audio/action-practice/action-l6-you-are-holding-your-phone.wav",
+      "id": "action-l6-you-are-holding-your-racket",
+      "english": "You are holding your racket.",
+      "thai": "คุณกำลังถือไม้แร็กเกตของคุณ",
+      "distractor": "คุณกำลังถือไม้แร็กเกตของเขา",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-your-racket.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "you",
         "action": "holding",
-        "object": "a phone",
+        "object": "a racket",
         "determiner": "your",
-        "noun": "phone",
-        "recordingQuestionId": "action-l6-you-are-holding-your-phone"
+        "noun": "racket",
+        "recordingQuestionId": "action-l6-you-are-holding-your-racket"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-he-is-holding-his-phone",
-      "english": "He is holding his phone.",
-      "thai": "เขากำลังถือโทรศัพท์ของเขา",
-      "distractor": "เขากำลังถือโทรศัพท์ของเธอ",
-      "audio": "/audio/action-practice/action-l6-he-is-holding-his-phone.wav",
+      "id": "action-l6-he-is-holding-his-racket",
+      "english": "He is holding his racket.",
+      "thai": "เขากำลังถือไม้แร็กเกตของเขา",
+      "distractor": "เขากำลังถือไม้แร็กเกตของเธอ",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-his-racket.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "he",
         "action": "holding",
-        "object": "a phone",
+        "object": "a racket",
         "determiner": "his",
-        "noun": "phone",
-        "recordingQuestionId": "action-l6-he-is-holding-his-phone"
+        "noun": "racket",
+        "recordingQuestionId": "action-l6-he-is-holding-his-racket"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-she-is-holding-her-phone",
-      "english": "She is holding her phone.",
-      "thai": "เธอกำลังถือโทรศัพท์ของเธอ",
-      "distractor": "เธอกำลังถือโทรศัพท์ของพวกเขา",
-      "audio": "/audio/action-practice/action-l6-she-is-holding-her-phone.wav",
+      "id": "action-l6-she-is-holding-her-racket",
+      "english": "She is holding her racket.",
+      "thai": "เธอกำลังถือไม้แร็กเกตของเธอ",
+      "distractor": "เธอกำลังถือไม้แร็กเกตของพวกเขา",
+      "audio": "/audio/action-practice/action-l6-she-is-holding-her-racket.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "she",
         "action": "holding",
-        "object": "a phone",
+        "object": "a racket",
         "determiner": "her",
-        "noun": "phone",
-        "recordingQuestionId": "action-l6-she-is-holding-her-phone"
+        "noun": "racket",
+        "recordingQuestionId": "action-l6-she-is-holding-her-racket"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-we-are-holding-our-phone",
-      "english": "We are holding our phone.",
-      "thai": "พวกเรากำลังถือโทรศัพท์ของพวกเรา",
-      "distractor": "พวกเรากำลังถือโทรศัพท์ของฉัน",
-      "audio": "/audio/action-practice/action-l6-we-are-holding-our-phone.wav",
+      "id": "action-l6-we-are-holding-our-racket",
+      "english": "We are holding our racket.",
+      "thai": "พวกเรากำลังถือไม้แร็กเกตของพวกเรา",
+      "distractor": "พวกเรากำลังถือไม้แร็กเกตของฉัน",
+      "audio": "/audio/action-practice/action-l6-we-are-holding-our-racket.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "we",
         "action": "holding",
-        "object": "a phone",
+        "object": "a racket",
         "determiner": "our",
-        "noun": "phone",
-        "recordingQuestionId": "action-l6-we-are-holding-our-phone"
+        "noun": "racket",
+        "recordingQuestionId": "action-l6-we-are-holding-our-racket"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-they-are-holding-their-phone",
-      "english": "They are holding their phone.",
-      "thai": "พวกเขากำลังถือโทรศัพท์ของพวกเขา",
-      "distractor": "พวกเขากำลังถือโทรศัพท์ของพวกเรา",
-      "audio": "/audio/action-practice/action-l6-they-are-holding-their-phone.wav",
+      "id": "action-l6-they-are-holding-their-racket",
+      "english": "They are holding their racket.",
+      "thai": "พวกเขากำลังถือไม้แร็กเกตของพวกเขา",
+      "distractor": "พวกเขากำลังถือไม้แร็กเกตของพวกเรา",
+      "audio": "/audio/action-practice/action-l6-they-are-holding-their-racket.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "they",
         "action": "holding",
-        "object": "a phone",
+        "object": "a racket",
         "determiner": "their",
-        "noun": "phone",
-        "recordingQuestionId": "action-l6-they-are-holding-their-phone"
+        "noun": "racket",
+        "recordingQuestionId": "action-l6-they-are-holding-their-racket"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-i-am-holding-your-phones",
-      "english": "I am holding your phones.",
+      "id": "action-l6-i-am-holding-your-phone",
+      "english": "I am holding your phone.",
       "thai": "ฉันกำลังถือโทรศัพท์ของคุณ",
       "distractor": "ฉันกำลังถือโทรศัพท์ของเขา",
-      "audio": "/audio/action-practice/action-l6-i-am-holding-your-phones.wav",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-your-phone.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "holding",
-        "object": "the phones",
+        "object": "a phone",
         "determiner": "your",
-        "noun": "phones",
-        "recordingQuestionId": "action-l6-i-am-holding-your-phones"
+        "noun": "phone",
+        "recordingQuestionId": "action-l6-i-am-holding-your-phone"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-you-are-holding-his-phones",
-      "english": "You are holding his phones.",
+      "id": "action-l6-you-are-holding-his-phone",
+      "english": "You are holding his phone.",
       "thai": "คุณกำลังถือโทรศัพท์ของเขา",
       "distractor": "คุณกำลังถือโทรศัพท์ของเธอ",
-      "audio": "/audio/action-practice/action-l6-you-are-holding-his-phones.wav",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-his-phone.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "you",
         "action": "holding",
-        "object": "the phones",
+        "object": "a phone",
         "determiner": "his",
-        "noun": "phones",
-        "recordingQuestionId": "action-l6-you-are-holding-his-phones"
+        "noun": "phone",
+        "recordingQuestionId": "action-l6-you-are-holding-his-phone"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-he-is-holding-her-phones",
-      "english": "He is holding her phones.",
+      "id": "action-l6-he-is-holding-her-phone",
+      "english": "He is holding her phone.",
       "thai": "เขากำลังถือโทรศัพท์ของเธอ",
       "distractor": "เขากำลังถือโทรศัพท์ของพวกเขา",
-      "audio": "/audio/action-practice/action-l6-he-is-holding-her-phones.wav",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-her-phone.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "he",
         "action": "holding",
-        "object": "the phones",
+        "object": "a phone",
         "determiner": "her",
-        "noun": "phones",
-        "recordingQuestionId": "action-l6-he-is-holding-her-phones"
+        "noun": "phone",
+        "recordingQuestionId": "action-l6-he-is-holding-her-phone"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-she-is-holding-their-phones",
-      "english": "She is holding their phones.",
+      "id": "action-l6-she-is-holding-their-phone",
+      "english": "She is holding their phone.",
       "thai": "เธอกำลังถือโทรศัพท์ของพวกเขา",
       "distractor": "เธอกำลังถือโทรศัพท์ของพวกเรา",
-      "audio": "/audio/action-practice/action-l6-she-is-holding-their-phones.wav",
+      "audio": "/audio/action-practice/action-l6-she-is-holding-their-phone.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "she",
         "action": "holding",
-        "object": "the phones",
+        "object": "a phone",
         "determiner": "their",
-        "noun": "phones",
-        "recordingQuestionId": "action-l6-she-is-holding-their-phones"
+        "noun": "phone",
+        "recordingQuestionId": "action-l6-she-is-holding-their-phone"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-we-are-holding-my-phones",
-      "english": "We are holding my phones.",
+      "id": "action-l6-we-are-holding-my-phone",
+      "english": "We are holding my phone.",
       "thai": "พวกเรากำลังถือโทรศัพท์ของฉัน",
       "distractor": "พวกเรากำลังถือโทรศัพท์ของคุณ",
-      "audio": "/audio/action-practice/action-l6-we-are-holding-my-phones.wav",
+      "audio": "/audio/action-practice/action-l6-we-are-holding-my-phone.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "we",
         "action": "holding",
-        "object": "the phones",
+        "object": "a phone",
         "determiner": "my",
-        "noun": "phones",
-        "recordingQuestionId": "action-l6-we-are-holding-my-phones"
+        "noun": "phone",
+        "recordingQuestionId": "action-l6-we-are-holding-my-phone"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-they-are-holding-our-phones",
-      "english": "They are holding our phones.",
+      "id": "action-l6-they-are-holding-our-phone",
+      "english": "They are holding our phone.",
       "thai": "พวกเขากำลังถือโทรศัพท์ของพวกเรา",
       "distractor": "พวกเขากำลังถือโทรศัพท์ของฉัน",
-      "audio": "/audio/action-practice/action-l6-they-are-holding-our-phones.wav",
+      "audio": "/audio/action-practice/action-l6-they-are-holding-our-phone.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "they",
         "action": "holding",
-        "object": "the phones",
+        "object": "a phone",
         "determiner": "our",
-        "noun": "phones",
-        "recordingQuestionId": "action-l6-they-are-holding-our-phones"
+        "noun": "phone",
+        "recordingQuestionId": "action-l6-they-are-holding-our-phone"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-i-am-holding-his-key",
-      "english": "I am holding his key.",
-      "thai": "ฉันกำลังถือกุญแจของเขา",
-      "distractor": "ฉันกำลังถือกุญแจของเธอ",
-      "audio": "/audio/action-practice/action-l6-i-am-holding-his-key.wav",
+      "id": "action-l6-i-am-holding-his-remote",
+      "english": "I am holding his remote.",
+      "thai": "ฉันกำลังถือรีโมตของเขา",
+      "distractor": "ฉันกำลังถือรีโมตของเธอ",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-his-remote.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "holding",
-        "object": "a key",
+        "object": "a remote",
         "determiner": "his",
-        "noun": "key",
-        "recordingQuestionId": "action-l6-i-am-holding-his-key"
+        "noun": "remote",
+        "recordingQuestionId": "action-l6-i-am-holding-his-remote"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-you-are-holding-her-key",
-      "english": "You are holding her key.",
-      "thai": "คุณกำลังถือกุญแจของเธอ",
-      "distractor": "คุณกำลังถือกุญแจของพวกเขา",
-      "audio": "/audio/action-practice/action-l6-you-are-holding-her-key.wav",
+      "id": "action-l6-you-are-holding-her-remote",
+      "english": "You are holding her remote.",
+      "thai": "คุณกำลังถือรีโมตของเธอ",
+      "distractor": "คุณกำลังถือรีโมตของพวกเขา",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-her-remote.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "you",
         "action": "holding",
-        "object": "a key",
+        "object": "a remote",
         "determiner": "her",
-        "noun": "key",
-        "recordingQuestionId": "action-l6-you-are-holding-her-key"
+        "noun": "remote",
+        "recordingQuestionId": "action-l6-you-are-holding-her-remote"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-he-is-holding-their-key",
-      "english": "He is holding their key.",
-      "thai": "เขากำลังถือกุญแจของพวกเขา",
-      "distractor": "เขากำลังถือกุญแจของพวกเรา",
-      "audio": "/audio/action-practice/action-l6-he-is-holding-their-key.wav",
+      "id": "action-l6-he-is-holding-their-remote",
+      "english": "He is holding their remote.",
+      "thai": "เขากำลังถือรีโมตของพวกเขา",
+      "distractor": "เขากำลังถือรีโมตของพวกเรา",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-their-remote.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "he",
         "action": "holding",
-        "object": "a key",
+        "object": "a remote",
         "determiner": "their",
-        "noun": "key",
-        "recordingQuestionId": "action-l6-he-is-holding-their-key"
+        "noun": "remote",
+        "recordingQuestionId": "action-l6-he-is-holding-their-remote"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-she-is-holding-our-key",
-      "english": "She is holding our key.",
-      "thai": "เธอกำลังถือกุญแจของพวกเรา",
-      "distractor": "เธอกำลังถือกุญแจของฉัน",
-      "audio": "/audio/action-practice/action-l6-she-is-holding-our-key.wav",
+      "id": "action-l6-she-is-holding-our-remote",
+      "english": "She is holding our remote.",
+      "thai": "เธอกำลังถือรีโมตของพวกเรา",
+      "distractor": "เธอกำลังถือรีโมตของฉัน",
+      "audio": "/audio/action-practice/action-l6-she-is-holding-our-remote.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "she",
         "action": "holding",
-        "object": "a key",
+        "object": "a remote",
         "determiner": "our",
-        "noun": "key",
-        "recordingQuestionId": "action-l6-she-is-holding-our-key"
+        "noun": "remote",
+        "recordingQuestionId": "action-l6-she-is-holding-our-remote"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-we-are-holding-your-key",
-      "english": "We are holding your key.",
-      "thai": "พวกเรากำลังถือกุญแจของคุณ",
-      "distractor": "พวกเรากำลังถือกุญแจของเขา",
-      "audio": "/audio/action-practice/action-l6-we-are-holding-your-key.wav",
+      "id": "action-l6-we-are-holding-your-remote",
+      "english": "We are holding your remote.",
+      "thai": "พวกเรากำลังถือรีโมตของคุณ",
+      "distractor": "พวกเรากำลังถือรีโมตของเขา",
+      "audio": "/audio/action-practice/action-l6-we-are-holding-your-remote.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "we",
         "action": "holding",
-        "object": "a key",
+        "object": "a remote",
         "determiner": "your",
-        "noun": "key",
-        "recordingQuestionId": "action-l6-we-are-holding-your-key"
+        "noun": "remote",
+        "recordingQuestionId": "action-l6-we-are-holding-your-remote"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-they-are-holding-my-key",
-      "english": "They are holding my key.",
-      "thai": "พวกเขากำลังถือกุญแจของฉัน",
-      "distractor": "พวกเขากำลังถือกุญแจของคุณ",
-      "audio": "/audio/action-practice/action-l6-they-are-holding-my-key.wav",
+      "id": "action-l6-they-are-holding-my-remote",
+      "english": "They are holding my remote.",
+      "thai": "พวกเขากำลังถือรีโมตของฉัน",
+      "distractor": "พวกเขากำลังถือรีโมตของคุณ",
+      "audio": "/audio/action-practice/action-l6-they-are-holding-my-remote.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "they",
         "action": "holding",
-        "object": "a key",
+        "object": "a remote",
         "determiner": "my",
-        "noun": "key",
-        "recordingQuestionId": "action-l6-they-are-holding-my-key"
+        "noun": "remote",
+        "recordingQuestionId": "action-l6-they-are-holding-my-remote"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-i-am-holding-her-keys",
-      "english": "I am holding her keys.",
-      "thai": "ฉันกำลังถือกุญแจของเธอ",
-      "distractor": "ฉันกำลังถือกุญแจของพวกเขา",
-      "audio": "/audio/action-practice/action-l6-i-am-holding-her-keys.wav",
+      "id": "action-l6-i-am-holding-her-watch",
+      "english": "I am holding her watch.",
+      "thai": "ฉันกำลังถือนาฬิกาข้อมือของเธอ",
+      "distractor": "ฉันกำลังถือนาฬิกาข้อมือของพวกเขา",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-her-watch.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "holding",
-        "object": "the keys",
+        "object": "a watch",
         "determiner": "her",
-        "noun": "keys",
-        "recordingQuestionId": "action-l6-i-am-holding-her-keys"
+        "noun": "watch",
+        "recordingQuestionId": "action-l6-i-am-holding-her-watch"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-you-are-holding-their-keys",
-      "english": "You are holding their keys.",
-      "thai": "คุณกำลังถือกุญแจของพวกเขา",
-      "distractor": "คุณกำลังถือกุญแจของพวกเรา",
-      "audio": "/audio/action-practice/action-l6-you-are-holding-their-keys.wav",
+      "id": "action-l6-you-are-holding-their-watch",
+      "english": "You are holding their watch.",
+      "thai": "คุณกำลังถือนาฬิกาข้อมือของพวกเขา",
+      "distractor": "คุณกำลังถือนาฬิกาข้อมือของพวกเรา",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-their-watch.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "you",
         "action": "holding",
-        "object": "the keys",
+        "object": "a watch",
         "determiner": "their",
-        "noun": "keys",
-        "recordingQuestionId": "action-l6-you-are-holding-their-keys"
+        "noun": "watch",
+        "recordingQuestionId": "action-l6-you-are-holding-their-watch"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-he-is-holding-our-keys",
-      "english": "He is holding our keys.",
-      "thai": "เขากำลังถือกุญแจของพวกเรา",
-      "distractor": "เขากำลังถือกุญแจของฉัน",
-      "audio": "/audio/action-practice/action-l6-he-is-holding-our-keys.wav",
+      "id": "action-l6-he-is-holding-our-watch",
+      "english": "He is holding our watch.",
+      "thai": "เขากำลังถือนาฬิกาข้อมือของพวกเรา",
+      "distractor": "เขากำลังถือนาฬิกาข้อมือของฉัน",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-our-watch.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "he",
         "action": "holding",
-        "object": "the keys",
+        "object": "a watch",
         "determiner": "our",
-        "noun": "keys",
-        "recordingQuestionId": "action-l6-he-is-holding-our-keys"
+        "noun": "watch",
+        "recordingQuestionId": "action-l6-he-is-holding-our-watch"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
@@ -1615,7 +1728,8 @@
         "noun": "bag",
         "recordingQuestionId": "action-l6-i-am-opening-my-bag"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
@@ -1634,7 +1748,8 @@
         "noun": "bag",
         "recordingQuestionId": "action-l6-you-are-opening-your-bag"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
@@ -1653,7 +1768,8 @@
         "noun": "bag",
         "recordingQuestionId": "action-l6-he-is-opening-his-bag"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
@@ -1672,7 +1788,8 @@
         "noun": "bag",
         "recordingQuestionId": "action-l6-she-is-opening-her-bag"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
@@ -1691,7 +1808,8 @@
         "noun": "bag",
         "recordingQuestionId": "action-l6-we-are-opening-our-bag"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
@@ -1710,7 +1828,8 @@
         "noun": "bag",
         "recordingQuestionId": "action-l6-they-are-opening-their-bag"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
@@ -1729,7 +1848,8 @@
         "noun": "bags",
         "recordingQuestionId": "action-l6-i-am-opening-your-bags"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
@@ -1748,7 +1868,8 @@
         "noun": "bags",
         "recordingQuestionId": "action-l6-you-are-opening-his-bags"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
@@ -1767,7 +1888,8 @@
         "noun": "bags",
         "recordingQuestionId": "action-l6-he-is-opening-her-bags"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
@@ -1786,7 +1908,8 @@
         "noun": "bags",
         "recordingQuestionId": "action-l6-she-is-opening-their-bags"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
@@ -1805,7 +1928,8 @@
         "noun": "bags",
         "recordingQuestionId": "action-l6-we-are-opening-my-bags"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
@@ -1824,235 +1948,272 @@
         "noun": "bags",
         "recordingQuestionId": "action-l6-they-are-opening-our-bags"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
-      "id": "action-l6-i-am-washing-my-cup",
-      "english": "I am washing my cup.",
-      "thai": "ฉันกำลังล้างถ้วยของฉัน",
-      "distractor": "ฉันกำลังล้างถ้วยของคุณ",
-      "audio": "/audio/action-practice/action-l6-i-am-washing-my-cup.wav",
+      "id": "action-l6-i-am-washing-my-motorbike",
+      "english": "I am washing my motorbike.",
+      "thai": "ฉันกำลังล้างรถมอเตอร์ไซค์ของฉัน",
+      "distractor": "ฉันกำลังล้างรถมอเตอร์ไซค์ของคุณ",
+      "audio": "/audio/action-practice/action-l6-i-am-washing-my-motorbike.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "washing",
-        "object": "a cup",
+        "object": "a motorbike",
         "determiner": "my",
-        "noun": "cup",
-        "recordingQuestionId": "action-l6-i-am-washing-my-cup"
+        "noun": "motorbike",
+        "recordingQuestionId": "action-l6-i-am-washing-my-motorbike"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-you-are-washing-your-cup",
-      "english": "You are washing your cup.",
-      "thai": "คุณกำลังล้างถ้วยของคุณ",
-      "distractor": "คุณกำลังล้างถ้วยของเขา",
-      "audio": "/audio/action-practice/action-l6-you-are-washing-your-cup.wav",
+      "id": "action-l6-you-are-washing-your-motorbike",
+      "english": "You are washing your motorbike.",
+      "thai": "คุณกำลังล้างรถมอเตอร์ไซค์ของคุณ",
+      "distractor": "คุณกำลังล้างรถมอเตอร์ไซค์ของเขา",
+      "audio": "/audio/action-practice/action-l6-you-are-washing-your-motorbike.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "you",
         "action": "washing",
-        "object": "a cup",
+        "object": "a motorbike",
         "determiner": "your",
-        "noun": "cup",
-        "recordingQuestionId": "action-l6-you-are-washing-your-cup"
+        "noun": "motorbike",
+        "recordingQuestionId": "action-l6-you-are-washing-your-motorbike"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-he-is-washing-his-cup",
-      "english": "He is washing his cup.",
-      "thai": "เขากำลังล้างถ้วยของเขา",
-      "distractor": "เขากำลังล้างถ้วยของเธอ",
-      "audio": "/audio/action-practice/action-l6-he-is-washing-his-cup.wav",
+      "id": "action-l6-he-is-washing-his-motorbike",
+      "english": "He is washing his motorbike.",
+      "thai": "เขากำลังล้างรถมอเตอร์ไซค์ของเขา",
+      "distractor": "เขากำลังล้างรถมอเตอร์ไซค์ของเธอ",
+      "audio": "/audio/action-practice/action-l6-he-is-washing-his-motorbike.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "he",
         "action": "washing",
-        "object": "a cup",
+        "object": "a motorbike",
         "determiner": "his",
-        "noun": "cup",
-        "recordingQuestionId": "action-l6-he-is-washing-his-cup"
+        "noun": "motorbike",
+        "recordingQuestionId": "action-l6-he-is-washing-his-motorbike"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-she-is-washing-her-cup",
-      "english": "She is washing her cup.",
-      "thai": "เธอกำลังล้างถ้วยของเธอ",
-      "distractor": "เธอกำลังล้างถ้วยของพวกเขา",
-      "audio": "/audio/action-practice/action-l6-she-is-washing-her-cup.wav",
+      "id": "action-l6-she-is-washing-her-motorbike",
+      "english": "She is washing her motorbike.",
+      "thai": "เธอกำลังล้างรถมอเตอร์ไซค์ของเธอ",
+      "distractor": "เธอกำลังล้างรถมอเตอร์ไซค์ของพวกเขา",
+      "audio": "/audio/action-practice/action-l6-she-is-washing-her-motorbike.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "she",
         "action": "washing",
-        "object": "a cup",
+        "object": "a motorbike",
         "determiner": "her",
-        "noun": "cup",
-        "recordingQuestionId": "action-l6-she-is-washing-her-cup"
+        "noun": "motorbike",
+        "recordingQuestionId": "action-l6-she-is-washing-her-motorbike"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-we-are-washing-our-cup",
-      "english": "We are washing our cup.",
-      "thai": "พวกเรากำลังล้างถ้วยของพวกเรา",
-      "distractor": "พวกเรากำลังล้างถ้วยของฉัน",
-      "audio": "/audio/action-practice/action-l6-we-are-washing-our-cup.wav",
+      "id": "action-l6-we-are-washing-our-motorbike",
+      "english": "We are washing our motorbike.",
+      "thai": "พวกเรากำลังล้างรถมอเตอร์ไซค์ของพวกเรา",
+      "distractor": "พวกเรากำลังล้างรถมอเตอร์ไซค์ของฉัน",
+      "audio": "/audio/action-practice/action-l6-we-are-washing-our-motorbike.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "we",
         "action": "washing",
-        "object": "a cup",
+        "object": "a motorbike",
         "determiner": "our",
-        "noun": "cup",
-        "recordingQuestionId": "action-l6-we-are-washing-our-cup"
+        "noun": "motorbike",
+        "recordingQuestionId": "action-l6-we-are-washing-our-motorbike"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-they-are-washing-their-cup",
-      "english": "They are washing their cup.",
-      "thai": "พวกเขากำลังล้างถ้วยของพวกเขา",
-      "distractor": "พวกเขากำลังล้างถ้วยของพวกเรา",
-      "audio": "/audio/action-practice/action-l6-they-are-washing-their-cup.wav",
+      "id": "action-l6-they-are-washing-their-motorbike",
+      "english": "They are washing their motorbike.",
+      "thai": "พวกเขากำลังล้างรถมอเตอร์ไซค์ของพวกเขา",
+      "distractor": "พวกเขากำลังล้างรถมอเตอร์ไซค์ของพวกเรา",
+      "audio": "/audio/action-practice/action-l6-they-are-washing-their-motorbike.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "they",
         "action": "washing",
-        "object": "a cup",
+        "object": "a motorbike",
         "determiner": "their",
-        "noun": "cup",
-        "recordingQuestionId": "action-l6-they-are-washing-their-cup"
+        "noun": "motorbike",
+        "recordingQuestionId": "action-l6-they-are-washing-their-motorbike"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-i-am-washing-your-cups",
-      "english": "I am washing your cups.",
-      "thai": "ฉันกำลังล้างถ้วยของคุณ",
-      "distractor": "ฉันกำลังล้างถ้วยของเขา",
-      "audio": "/audio/action-practice/action-l6-i-am-washing-your-cups.wav",
+      "id": "action-l6-i-am-washing-your-motorbikes",
+      "english": "I am washing your motorbikes.",
+      "thai": "ฉันกำลังล้างรถมอเตอร์ไซค์ของคุณ",
+      "distractor": "ฉันกำลังล้างรถมอเตอร์ไซค์ของเขา",
+      "audio": "/audio/action-practice/action-l6-i-am-washing-your-motorbikes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "washing",
-        "object": "the cups",
+        "object": "the motorbikes",
         "determiner": "your",
-        "noun": "cups",
-        "recordingQuestionId": "action-l6-i-am-washing-your-cups"
+        "noun": "motorbikes",
+        "recordingQuestionId": "action-l6-i-am-washing-your-motorbikes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-you-are-washing-his-cups",
-      "english": "You are washing his cups.",
-      "thai": "คุณกำลังล้างถ้วยของเขา",
-      "distractor": "คุณกำลังล้างถ้วยของเธอ",
-      "audio": "/audio/action-practice/action-l6-you-are-washing-his-cups.wav",
+      "id": "action-l6-you-are-washing-his-motorbikes",
+      "english": "You are washing his motorbikes.",
+      "thai": "คุณกำลังล้างรถมอเตอร์ไซค์ของเขา",
+      "distractor": "คุณกำลังล้างรถมอเตอร์ไซค์ของเธอ",
+      "audio": "/audio/action-practice/action-l6-you-are-washing-his-motorbikes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "you",
         "action": "washing",
-        "object": "the cups",
+        "object": "the motorbikes",
         "determiner": "his",
-        "noun": "cups",
-        "recordingQuestionId": "action-l6-you-are-washing-his-cups"
+        "noun": "motorbikes",
+        "recordingQuestionId": "action-l6-you-are-washing-his-motorbikes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-he-is-washing-her-cups",
-      "english": "He is washing her cups.",
-      "thai": "เขากำลังล้างถ้วยของเธอ",
-      "distractor": "เขากำลังล้างถ้วยของพวกเขา",
-      "audio": "/audio/action-practice/action-l6-he-is-washing-her-cups.wav",
+      "id": "action-l6-he-is-washing-her-motorbikes",
+      "english": "He is washing her motorbikes.",
+      "thai": "เขากำลังล้างรถมอเตอร์ไซค์ของเธอ",
+      "distractor": "เขากำลังล้างรถมอเตอร์ไซค์ของพวกเขา",
+      "audio": "/audio/action-practice/action-l6-he-is-washing-her-motorbikes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "he",
         "action": "washing",
-        "object": "the cups",
+        "object": "the motorbikes",
         "determiner": "her",
-        "noun": "cups",
-        "recordingQuestionId": "action-l6-he-is-washing-her-cups"
+        "noun": "motorbikes",
+        "recordingQuestionId": "action-l6-he-is-washing-her-motorbikes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-she-is-washing-their-cups",
-      "english": "She is washing their cups.",
-      "thai": "เธอกำลังล้างถ้วยของพวกเขา",
-      "distractor": "เธอกำลังล้างถ้วยของพวกเรา",
-      "audio": "/audio/action-practice/action-l6-she-is-washing-their-cups.wav",
+      "id": "action-l6-she-is-washing-their-motorbikes",
+      "english": "She is washing their motorbikes.",
+      "thai": "เธอกำลังล้างรถมอเตอร์ไซค์ของพวกเขา",
+      "distractor": "เธอกำลังล้างรถมอเตอร์ไซค์ของพวกเรา",
+      "audio": "/audio/action-practice/action-l6-she-is-washing-their-motorbikes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "she",
         "action": "washing",
-        "object": "the cups",
+        "object": "the motorbikes",
         "determiner": "their",
-        "noun": "cups",
-        "recordingQuestionId": "action-l6-she-is-washing-their-cups"
+        "noun": "motorbikes",
+        "recordingQuestionId": "action-l6-she-is-washing-their-motorbikes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-we-are-washing-my-cups",
-      "english": "We are washing my cups.",
-      "thai": "พวกเรากำลังล้างถ้วยของฉัน",
-      "distractor": "พวกเรากำลังล้างถ้วยของคุณ",
-      "audio": "/audio/action-practice/action-l6-we-are-washing-my-cups.wav",
+      "id": "action-l6-we-are-washing-my-motorbikes",
+      "english": "We are washing my motorbikes.",
+      "thai": "พวกเรากำลังล้างรถมอเตอร์ไซค์ของฉัน",
+      "distractor": "พวกเรากำลังล้างรถมอเตอร์ไซค์ของคุณ",
+      "audio": "/audio/action-practice/action-l6-we-are-washing-my-motorbikes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "we",
         "action": "washing",
-        "object": "the cups",
+        "object": "the motorbikes",
         "determiner": "my",
-        "noun": "cups",
-        "recordingQuestionId": "action-l6-we-are-washing-my-cups"
+        "noun": "motorbikes",
+        "recordingQuestionId": "action-l6-we-are-washing-my-motorbikes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
-      "id": "action-l6-they-are-washing-our-cups",
-      "english": "They are washing our cups.",
-      "thai": "พวกเขากำลังล้างถ้วยของพวกเรา",
-      "distractor": "พวกเขากำลังล้างถ้วยของฉัน",
-      "audio": "/audio/action-practice/action-l6-they-are-washing-our-cups.wav",
+      "id": "action-l6-they-are-washing-our-motorbikes",
+      "english": "They are washing our motorbikes.",
+      "thai": "พวกเขากำลังล้างรถมอเตอร์ไซค์ของพวกเรา",
+      "distractor": "พวกเขากำลังล้างรถมอเตอร์ไซค์ของฉัน",
+      "audio": "/audio/action-practice/action-l6-they-are-washing-our-motorbikes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "they",
         "action": "washing",
-        "object": "the cups",
+        "object": "the motorbikes",
         "determiner": "our",
-        "noun": "cups",
-        "recordingQuestionId": "action-l6-they-are-washing-our-cups"
+        "noun": "motorbikes",
+        "recordingQuestionId": "action-l6-they-are-washing-our-motorbikes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
@@ -2071,7 +2232,8 @@
         "noun": "sandwich",
         "recordingQuestionId": "action-l6-i-am-eating-my-sandwich"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
@@ -2090,45 +2252,52 @@
         "noun": "sandwiches",
         "recordingQuestionId": "action-l6-you-are-eating-his-sandwiches"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 2,
-      "id": "action-l6-he-is-reading-her-books",
-      "english": "He is reading her books.",
-      "thai": "เขากำลังอ่านหนังสือของเธอ",
-      "distractor": "เขากำลังอ่านหนังสือของพวกเขา",
-      "audio": "/audio/action-practice/action-l6-he-is-reading-her-books.wav",
+      "id": "action-l6-i-am-reading-his-ticket",
+      "english": "I am reading his ticket.",
+      "thai": "ฉันกำลังอ่านตั๋วของเขา",
+      "distractor": "ฉันกำลังอ่านตั๋วของเธอ",
+      "audio": "/audio/action-practice/action-l6-i-am-reading-his-ticket.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
-        "subject": "he",
+        "subject": "I",
         "action": "reading",
-        "object": "the books",
+        "object": "a ticket",
+        "determiner": "his",
+        "noun": "ticket",
+        "recordingQuestionId": "action-l6-i-am-reading-his-ticket"
+      },
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
+    },
+    {
+      "stars": 2,
+      "id": "action-l6-you-are-reading-her-ticket",
+      "english": "You are reading her ticket.",
+      "thai": "คุณกำลังอ่านตั๋วของเธอ",
+      "distractor": "คุณกำลังอ่านตั๋วของพวกเขา",
+      "audio": "/audio/action-practice/action-l6-you-are-reading-her-ticket.wav",
+      "provenance": {
+        "blueprint": "present-action-dialogue",
+        "lesson": "lesson-4",
+        "subject": "you",
+        "action": "reading",
+        "object": "a ticket",
         "determiner": "her",
-        "noun": "books",
-        "recordingQuestionId": "action-l6-he-is-reading-her-books"
+        "noun": "ticket",
+        "recordingQuestionId": "action-l6-you-are-reading-her-ticket"
       },
-      "issues": []
-    },
-    {
-      "stars": 2,
-      "id": "action-l6-she-is-reading-their-books",
-      "english": "She is reading their books.",
-      "thai": "เธอกำลังอ่านหนังสือของพวกเขา",
-      "distractor": "เธอกำลังอ่านหนังสือของพวกเรา",
-      "audio": "/audio/action-practice/action-l6-she-is-reading-their-books.wav",
-      "provenance": {
-        "blueprint": "present-action-dialogue",
-        "lesson": "lesson-4",
-        "subject": "she",
-        "action": "reading",
-        "object": "the books",
-        "determiner": "their",
-        "noun": "books",
-        "recordingQuestionId": "action-l6-she-is-reading-their-books"
-      },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 2,
@@ -2147,7 +2316,8 @@
         "noun": "water",
         "recordingQuestionId": "action-l6-we-are-drinking-our-water"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2166,7 +2336,8 @@
         "noun": "sandwiches",
         "recordingQuestionId": "action-l6-i-am-eating-your-sandwiches"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2185,7 +2356,8 @@
         "noun": "sandwich",
         "recordingQuestionId": "action-l6-he-is-eating-his-sandwich"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2204,7 +2376,8 @@
         "noun": "sandwich",
         "recordingQuestionId": "action-l6-she-is-eating-her-sandwich"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2223,45 +2396,52 @@
         "noun": "sandwich",
         "recordingQuestionId": "action-l6-we-are-eating-our-sandwich"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
-      "id": "action-l6-we-are-reading-my-books",
-      "english": "We are reading my books.",
-      "thai": "พวกเรากำลังอ่านหนังสือของฉัน",
-      "distractor": "พวกเรากำลังอ่านหนังสือของคุณ",
-      "audio": "/audio/action-practice/action-l6-we-are-reading-my-books.wav",
+      "id": "action-l6-i-am-reading-her-tickets",
+      "english": "I am reading her tickets.",
+      "thai": "ฉันกำลังอ่านตั๋วของเธอ",
+      "distractor": "ฉันกำลังอ่านตั๋วของพวกเขา",
+      "audio": "/audio/action-practice/action-l6-i-am-reading-her-tickets.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
-        "subject": "we",
+        "subject": "I",
         "action": "reading",
-        "object": "the books",
-        "determiner": "my",
-        "noun": "books",
-        "recordingQuestionId": "action-l6-we-are-reading-my-books"
+        "object": "the tickets",
+        "determiner": "her",
+        "noun": "tickets",
+        "recordingQuestionId": "action-l6-i-am-reading-her-tickets"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-they-are-reading-our-books",
-      "english": "They are reading our books.",
-      "thai": "พวกเขากำลังอ่านหนังสือของพวกเรา",
-      "distractor": "พวกเขากำลังอ่านหนังสือของฉัน",
-      "audio": "/audio/action-practice/action-l6-they-are-reading-our-books.wav",
+      "id": "action-l6-you-are-reading-their-tickets",
+      "english": "You are reading their tickets.",
+      "thai": "คุณกำลังอ่านตั๋วของพวกเขา",
+      "distractor": "คุณกำลังอ่านตั๋วของพวกเรา",
+      "audio": "/audio/action-practice/action-l6-you-are-reading-their-tickets.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
-        "subject": "they",
+        "subject": "you",
         "action": "reading",
-        "object": "the books",
-        "determiner": "our",
-        "noun": "books",
-        "recordingQuestionId": "action-l6-they-are-reading-our-books"
+        "object": "the tickets",
+        "determiner": "their",
+        "noun": "tickets",
+        "recordingQuestionId": "action-l6-you-are-reading-their-tickets"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
@@ -2280,387 +2460,448 @@
         "noun": "water",
         "recordingQuestionId": "action-l6-they-are-drinking-their-water"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
-      "id": "action-l6-i-am-holding-their-bag",
-      "english": "I am holding their bag.",
-      "thai": "ฉันกำลังถือกระเป๋าของพวกเขา",
-      "distractor": "ฉันกำลังถือกระเป๋าของพวกเรา",
-      "audio": "/audio/action-practice/action-l6-i-am-holding-their-bag.wav",
+      "id": "action-l6-i-am-holding-their-rackets",
+      "english": "I am holding their rackets.",
+      "thai": "ฉันกำลังถือไม้แร็กเกตของพวกเขา",
+      "distractor": "ฉันกำลังถือไม้แร็กเกตของพวกเรา",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-their-rackets.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "holding",
-        "object": "a bag",
+        "object": "the rackets",
         "determiner": "their",
-        "noun": "bag",
-        "recordingQuestionId": "action-l6-i-am-holding-their-bag"
+        "noun": "rackets",
+        "recordingQuestionId": "action-l6-i-am-holding-their-rackets"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-you-are-holding-our-bag",
-      "english": "You are holding our bag.",
-      "thai": "คุณกำลังถือกระเป๋าของพวกเรา",
-      "distractor": "คุณกำลังถือกระเป๋าของฉัน",
-      "audio": "/audio/action-practice/action-l6-you-are-holding-our-bag.wav",
+      "id": "action-l6-you-are-holding-our-rackets",
+      "english": "You are holding our rackets.",
+      "thai": "คุณกำลังถือไม้แร็กเกตของพวกเรา",
+      "distractor": "คุณกำลังถือไม้แร็กเกตของฉัน",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-our-rackets.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "you",
         "action": "holding",
-        "object": "a bag",
+        "object": "the rackets",
         "determiner": "our",
-        "noun": "bag",
-        "recordingQuestionId": "action-l6-you-are-holding-our-bag"
+        "noun": "rackets",
+        "recordingQuestionId": "action-l6-you-are-holding-our-rackets"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-he-is-holding-my-bag",
-      "english": "He is holding my bag.",
-      "thai": "เขากำลังถือกระเป๋าของฉัน",
-      "distractor": "เขากำลังถือกระเป๋าของคุณ",
-      "audio": "/audio/action-practice/action-l6-he-is-holding-my-bag.wav",
+      "id": "action-l6-he-is-holding-my-rackets",
+      "english": "He is holding my rackets.",
+      "thai": "เขากำลังถือไม้แร็กเกตของฉัน",
+      "distractor": "เขากำลังถือไม้แร็กเกตของคุณ",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-my-rackets.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "he",
         "action": "holding",
-        "object": "a bag",
+        "object": "the rackets",
         "determiner": "my",
-        "noun": "bag",
-        "recordingQuestionId": "action-l6-he-is-holding-my-bag"
+        "noun": "rackets",
+        "recordingQuestionId": "action-l6-he-is-holding-my-rackets"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-she-is-holding-my-keys",
-      "english": "She is holding my keys.",
-      "thai": "เธอกำลังถือกุญแจของฉัน",
-      "distractor": "เธอกำลังถือกุญแจของคุณ",
-      "audio": "/audio/action-practice/action-l6-she-is-holding-my-keys.wav",
+      "id": "action-l6-she-is-holding-my-watch",
+      "english": "She is holding my watch.",
+      "thai": "เธอกำลังถือนาฬิกาข้อมือของฉัน",
+      "distractor": "เธอกำลังถือนาฬิกาข้อมือของคุณ",
+      "audio": "/audio/action-practice/action-l6-she-is-holding-my-watch.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "she",
         "action": "holding",
-        "object": "the keys",
+        "object": "a watch",
         "determiner": "my",
-        "noun": "keys",
-        "recordingQuestionId": "action-l6-she-is-holding-my-keys"
+        "noun": "watch",
+        "recordingQuestionId": "action-l6-she-is-holding-my-watch"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-we-are-holding-his-keys",
-      "english": "We are holding his keys.",
-      "thai": "พวกเรากำลังถือกุญแจของเขา",
-      "distractor": "พวกเรากำลังถือกุญแจของเธอ",
-      "audio": "/audio/action-practice/action-l6-we-are-holding-his-keys.wav",
+      "id": "action-l6-we-are-holding-his-watch",
+      "english": "We are holding his watch.",
+      "thai": "พวกเรากำลังถือนาฬิกาข้อมือของเขา",
+      "distractor": "พวกเรากำลังถือนาฬิกาข้อมือของเธอ",
+      "audio": "/audio/action-practice/action-l6-we-are-holding-his-watch.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "we",
         "action": "holding",
-        "object": "the keys",
+        "object": "a watch",
         "determiner": "his",
-        "noun": "keys",
-        "recordingQuestionId": "action-l6-we-are-holding-his-keys"
+        "noun": "watch",
+        "recordingQuestionId": "action-l6-we-are-holding-his-watch"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-they-are-holding-your-keys",
-      "english": "They are holding your keys.",
-      "thai": "พวกเขากำลังถือกุญแจของคุณ",
-      "distractor": "พวกเขากำลังถือกุญแจของเขา",
-      "audio": "/audio/action-practice/action-l6-they-are-holding-your-keys.wav",
+      "id": "action-l6-they-are-holding-your-watch",
+      "english": "They are holding your watch.",
+      "thai": "พวกเขากำลังถือนาฬิกาข้อมือของคุณ",
+      "distractor": "พวกเขากำลังถือนาฬิกาข้อมือของเขา",
+      "audio": "/audio/action-practice/action-l6-they-are-holding-your-watch.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "they",
         "action": "holding",
-        "object": "the keys",
+        "object": "a watch",
         "determiner": "your",
-        "noun": "keys",
-        "recordingQuestionId": "action-l6-they-are-holding-your-keys"
+        "noun": "watch",
+        "recordingQuestionId": "action-l6-they-are-holding-your-watch"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-i-am-holding-our-bags",
-      "english": "I am holding our bags.",
-      "thai": "ฉันกำลังถือกระเป๋าของพวกเรา",
-      "distractor": "ฉันกำลังถือกระเป๋าของฉัน",
-      "audio": "/audio/action-practice/action-l6-i-am-holding-our-bags.wav",
+      "id": "action-l6-i-am-holding-our-phones",
+      "english": "I am holding our phones.",
+      "thai": "ฉันกำลังถือโทรศัพท์ของพวกเรา",
+      "distractor": "ฉันกำลังถือโทรศัพท์ของฉัน",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-our-phones.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "holding",
-        "object": "the bags",
+        "object": "the phones",
         "determiner": "our",
-        "noun": "bags",
-        "recordingQuestionId": "action-l6-i-am-holding-our-bags"
+        "noun": "phones",
+        "recordingQuestionId": "action-l6-i-am-holding-our-phones"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-you-are-holding-my-bags",
-      "english": "You are holding my bags.",
-      "thai": "คุณกำลังถือกระเป๋าของฉัน",
-      "distractor": "คุณกำลังถือกระเป๋าของคุณ",
-      "audio": "/audio/action-practice/action-l6-you-are-holding-my-bags.wav",
+      "id": "action-l6-you-are-holding-my-phones",
+      "english": "You are holding my phones.",
+      "thai": "คุณกำลังถือโทรศัพท์ของฉัน",
+      "distractor": "คุณกำลังถือโทรศัพท์ของคุณ",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-my-phones.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "you",
         "action": "holding",
-        "object": "the bags",
+        "object": "the phones",
         "determiner": "my",
-        "noun": "bags",
-        "recordingQuestionId": "action-l6-you-are-holding-my-bags"
+        "noun": "phones",
+        "recordingQuestionId": "action-l6-you-are-holding-my-phones"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-he-is-holding-your-bags",
-      "english": "He is holding your bags.",
-      "thai": "เขากำลังถือกระเป๋าของคุณ",
-      "distractor": "เขากำลังถือกระเป๋าของเขา",
-      "audio": "/audio/action-practice/action-l6-he-is-holding-your-bags.wav",
+      "id": "action-l6-he-is-holding-your-phones",
+      "english": "He is holding your phones.",
+      "thai": "เขากำลังถือโทรศัพท์ของคุณ",
+      "distractor": "เขากำลังถือโทรศัพท์ของเขา",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-your-phones.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "he",
         "action": "holding",
-        "object": "the bags",
+        "object": "the phones",
         "determiner": "your",
-        "noun": "bags",
-        "recordingQuestionId": "action-l6-he-is-holding-your-bags"
+        "noun": "phones",
+        "recordingQuestionId": "action-l6-he-is-holding-your-phones"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-she-is-holding-your-bag",
-      "english": "She is holding your bag.",
-      "thai": "เธอกำลังถือกระเป๋าของคุณ",
-      "distractor": "เธอกำลังถือกระเป๋าของเขา",
-      "audio": "/audio/action-practice/action-l6-she-is-holding-your-bag.wav",
+      "id": "action-l6-she-is-holding-your-rackets",
+      "english": "She is holding your rackets.",
+      "thai": "เธอกำลังถือไม้แร็กเกตของคุณ",
+      "distractor": "เธอกำลังถือไม้แร็กเกตของเขา",
+      "audio": "/audio/action-practice/action-l6-she-is-holding-your-rackets.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "she",
         "action": "holding",
-        "object": "a bag",
+        "object": "the rackets",
         "determiner": "your",
-        "noun": "bag",
-        "recordingQuestionId": "action-l6-she-is-holding-your-bag"
+        "noun": "rackets",
+        "recordingQuestionId": "action-l6-she-is-holding-your-rackets"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-we-are-holding-her-bag",
-      "english": "We are holding her bag.",
-      "thai": "พวกเรากำลังถือกระเป๋าของเธอ",
-      "distractor": "พวกเรากำลังถือกระเป๋าของพวกเขา",
-      "audio": "/audio/action-practice/action-l6-we-are-holding-her-bag.wav",
+      "id": "action-l6-we-are-holding-her-rackets",
+      "english": "We are holding her rackets.",
+      "thai": "พวกเรากำลังถือไม้แร็กเกตของเธอ",
+      "distractor": "พวกเรากำลังถือไม้แร็กเกตของพวกเขา",
+      "audio": "/audio/action-practice/action-l6-we-are-holding-her-rackets.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "we",
         "action": "holding",
-        "object": "a bag",
+        "object": "the rackets",
         "determiner": "her",
-        "noun": "bag",
-        "recordingQuestionId": "action-l6-we-are-holding-her-bag"
+        "noun": "rackets",
+        "recordingQuestionId": "action-l6-we-are-holding-her-rackets"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-they-are-holding-his-bag",
-      "english": "They are holding his bag.",
-      "thai": "พวกเขากำลังถือกระเป๋าของเขา",
-      "distractor": "พวกเขากำลังถือกระเป๋าของเธอ",
-      "audio": "/audio/action-practice/action-l6-they-are-holding-his-bag.wav",
+      "id": "action-l6-they-are-holding-his-rackets",
+      "english": "They are holding his rackets.",
+      "thai": "พวกเขากำลังถือไม้แร็กเกตของเขา",
+      "distractor": "พวกเขากำลังถือไม้แร็กเกตของเธอ",
+      "audio": "/audio/action-practice/action-l6-they-are-holding-his-rackets.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "they",
         "action": "holding",
-        "object": "a bag",
+        "object": "the rackets",
         "determiner": "his",
-        "noun": "bag",
-        "recordingQuestionId": "action-l6-they-are-holding-his-bag"
+        "noun": "rackets",
+        "recordingQuestionId": "action-l6-they-are-holding-his-rackets"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-i-am-holding-my-book",
-      "english": "I am holding my book.",
-      "thai": "ฉันกำลังถือหนังสือของฉัน",
-      "distractor": "ฉันกำลังถือหนังสือของคุณ",
-      "audio": "/audio/action-practice/action-l6-i-am-holding-my-book.wav",
+      "id": "action-l6-i-am-holding-my-remotes",
+      "english": "I am holding my remotes.",
+      "thai": "ฉันกำลังถือรีโมตของฉัน",
+      "distractor": "ฉันกำลังถือรีโมตของคุณ",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-my-remotes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "holding",
-        "object": "a book",
+        "object": "the remotes",
         "determiner": "my",
-        "noun": "book",
-        "recordingQuestionId": "action-l6-i-am-holding-my-book"
+        "noun": "remotes",
+        "recordingQuestionId": "action-l6-i-am-holding-my-remotes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-you-are-holding-your-book",
-      "english": "You are holding your book.",
-      "thai": "คุณกำลังถือหนังสือของคุณ",
-      "distractor": "คุณกำลังถือหนังสือของเขา",
-      "audio": "/audio/action-practice/action-l6-you-are-holding-your-book.wav",
+      "id": "action-l6-you-are-holding-your-remotes",
+      "english": "You are holding your remotes.",
+      "thai": "คุณกำลังถือรีโมตของคุณ",
+      "distractor": "คุณกำลังถือรีโมตของเขา",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-your-remotes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "you",
         "action": "holding",
-        "object": "a book",
+        "object": "the remotes",
         "determiner": "your",
-        "noun": "book",
-        "recordingQuestionId": "action-l6-you-are-holding-your-book"
+        "noun": "remotes",
+        "recordingQuestionId": "action-l6-you-are-holding-your-remotes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-he-is-holding-his-book",
-      "english": "He is holding his book.",
-      "thai": "เขากำลังถือหนังสือของเขา",
-      "distractor": "เขากำลังถือหนังสือของเธอ",
-      "audio": "/audio/action-practice/action-l6-he-is-holding-his-book.wav",
+      "id": "action-l6-he-is-holding-his-remotes",
+      "english": "He is holding his remotes.",
+      "thai": "เขากำลังถือรีโมตของเขา",
+      "distractor": "เขากำลังถือรีโมตของเธอ",
+      "audio": "/audio/action-practice/action-l6-he-is-holding-his-remotes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "he",
         "action": "holding",
-        "object": "a book",
+        "object": "the remotes",
         "determiner": "his",
-        "noun": "book",
-        "recordingQuestionId": "action-l6-he-is-holding-his-book"
+        "noun": "remotes",
+        "recordingQuestionId": "action-l6-he-is-holding-his-remotes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-she-is-holding-his-bags",
-      "english": "She is holding his bags.",
-      "thai": "เธอกำลังถือกระเป๋าของเขา",
-      "distractor": "เธอกำลังถือกระเป๋าของเธอ",
-      "audio": "/audio/action-practice/action-l6-she-is-holding-his-bags.wav",
+      "id": "action-l6-she-is-holding-his-phones",
+      "english": "She is holding his phones.",
+      "thai": "เธอกำลังถือโทรศัพท์ของเขา",
+      "distractor": "เธอกำลังถือโทรศัพท์ของเธอ",
+      "audio": "/audio/action-practice/action-l6-she-is-holding-his-phones.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "she",
         "action": "holding",
-        "object": "the bags",
+        "object": "the phones",
         "determiner": "his",
-        "noun": "bags",
-        "recordingQuestionId": "action-l6-she-is-holding-his-bags"
+        "noun": "phones",
+        "recordingQuestionId": "action-l6-she-is-holding-his-phones"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-we-are-holding-their-bags",
-      "english": "We are holding their bags.",
-      "thai": "พวกเรากำลังถือกระเป๋าของพวกเขา",
-      "distractor": "พวกเรากำลังถือกระเป๋าของพวกเรา",
-      "audio": "/audio/action-practice/action-l6-we-are-holding-their-bags.wav",
+      "id": "action-l6-we-are-holding-their-phones",
+      "english": "We are holding their phones.",
+      "thai": "พวกเรากำลังถือโทรศัพท์ของพวกเขา",
+      "distractor": "พวกเรากำลังถือโทรศัพท์ของพวกเรา",
+      "audio": "/audio/action-practice/action-l6-we-are-holding-their-phones.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "we",
         "action": "holding",
-        "object": "the bags",
+        "object": "the phones",
         "determiner": "their",
-        "noun": "bags",
-        "recordingQuestionId": "action-l6-we-are-holding-their-bags"
+        "noun": "phones",
+        "recordingQuestionId": "action-l6-we-are-holding-their-phones"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-they-are-holding-her-bags",
-      "english": "They are holding her bags.",
-      "thai": "พวกเขากำลังถือกระเป๋าของเธอ",
-      "distractor": "พวกเขากำลังถือกระเป๋าของพวกเขา",
-      "audio": "/audio/action-practice/action-l6-they-are-holding-her-bags.wav",
+      "id": "action-l6-they-are-holding-her-phones",
+      "english": "They are holding her phones.",
+      "thai": "พวกเขากำลังถือโทรศัพท์ของเธอ",
+      "distractor": "พวกเขากำลังถือโทรศัพท์ของพวกเขา",
+      "audio": "/audio/action-practice/action-l6-they-are-holding-her-phones.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "they",
         "action": "holding",
-        "object": "the bags",
+        "object": "the phones",
         "determiner": "her",
-        "noun": "bags",
-        "recordingQuestionId": "action-l6-they-are-holding-her-bags"
+        "noun": "phones",
+        "recordingQuestionId": "action-l6-they-are-holding-her-phones"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-i-am-holding-your-books",
-      "english": "I am holding your books.",
-      "thai": "ฉันกำลังถือหนังสือของคุณ",
-      "distractor": "ฉันกำลังถือหนังสือของเขา",
-      "audio": "/audio/action-practice/action-l6-i-am-holding-your-books.wav",
+      "id": "action-l6-i-am-holding-your-watches",
+      "english": "I am holding your watches.",
+      "thai": "ฉันกำลังถือนาฬิกาข้อมือของคุณ",
+      "distractor": "ฉันกำลังถือนาฬิกาข้อมือของเขา",
+      "audio": "/audio/action-practice/action-l6-i-am-holding-your-watches.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "holding",
-        "object": "the books",
+        "object": "the watches",
         "determiner": "your",
-        "noun": "books",
-        "recordingQuestionId": "action-l6-i-am-holding-your-books"
+        "noun": "watches",
+        "recordingQuestionId": "action-l6-i-am-holding-your-watches"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-you-are-holding-his-books",
-      "english": "You are holding his books.",
-      "thai": "คุณกำลังถือหนังสือของเขา",
-      "distractor": "คุณกำลังถือหนังสือของเธอ",
-      "audio": "/audio/action-practice/action-l6-you-are-holding-his-books.wav",
+      "id": "action-l6-you-are-holding-his-watches",
+      "english": "You are holding his watches.",
+      "thai": "คุณกำลังถือนาฬิกาข้อมือของเขา",
+      "distractor": "คุณกำลังถือนาฬิกาข้อมือของเธอ",
+      "audio": "/audio/action-practice/action-l6-you-are-holding-his-watches.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "you",
         "action": "holding",
-        "object": "the books",
+        "object": "the watches",
         "determiner": "his",
-        "noun": "books",
-        "recordingQuestionId": "action-l6-you-are-holding-his-books"
+        "noun": "watches",
+        "recordingQuestionId": "action-l6-you-are-holding-his-watches"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
@@ -2679,7 +2920,8 @@
         "noun": "book",
         "recordingQuestionId": "action-l6-i-am-opening-his-book"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2698,7 +2940,8 @@
         "noun": "book",
         "recordingQuestionId": "action-l6-you-are-opening-her-book"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2717,7 +2960,8 @@
         "noun": "book",
         "recordingQuestionId": "action-l6-he-is-opening-their-book"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2736,7 +2980,8 @@
         "noun": "book",
         "recordingQuestionId": "action-l6-she-is-opening-our-book"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2755,7 +3000,8 @@
         "noun": "book",
         "recordingQuestionId": "action-l6-we-are-opening-your-book"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2774,7 +3020,8 @@
         "noun": "book",
         "recordingQuestionId": "action-l6-they-are-opening-my-book"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2793,7 +3040,8 @@
         "noun": "books",
         "recordingQuestionId": "action-l6-i-am-opening-her-books"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2812,7 +3060,8 @@
         "noun": "books",
         "recordingQuestionId": "action-l6-you-are-opening-their-books"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2831,7 +3080,8 @@
         "noun": "books",
         "recordingQuestionId": "action-l6-he-is-opening-our-books"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
@@ -2850,254 +3100,294 @@
         "noun": "books",
         "recordingQuestionId": "action-l6-she-is-opening-my-books"
       },
-      "issues": []
+      "issues": [],
+      "warnings": []
     },
     {
       "stars": 3,
-      "id": "action-l6-i-am-washing-his-plate",
-      "english": "I am washing his plate.",
-      "thai": "ฉันกำลังล้างจานของเขา",
-      "distractor": "ฉันกำลังล้างจานของเธอ",
-      "audio": "/audio/action-practice/action-l6-i-am-washing-his-plate.wav",
+      "id": "action-l6-i-am-washing-his-shoe",
+      "english": "I am washing his shoe.",
+      "thai": "ฉันกำลังล้างรองเท้าของเขา",
+      "distractor": "ฉันกำลังล้างรองเท้าของเธอ",
+      "audio": "/audio/action-practice/action-l6-i-am-washing-his-shoe.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "washing",
-        "object": "a plate",
+        "object": "a shoe",
         "determiner": "his",
-        "noun": "plate",
-        "recordingQuestionId": "action-l6-i-am-washing-his-plate"
+        "noun": "shoe",
+        "recordingQuestionId": "action-l6-i-am-washing-his-shoe"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-you-are-washing-her-plate",
-      "english": "You are washing her plate.",
-      "thai": "คุณกำลังล้างจานของเธอ",
-      "distractor": "คุณกำลังล้างจานของพวกเขา",
-      "audio": "/audio/action-practice/action-l6-you-are-washing-her-plate.wav",
+      "id": "action-l6-you-are-washing-her-shoe",
+      "english": "You are washing her shoe.",
+      "thai": "คุณกำลังล้างรองเท้าของเธอ",
+      "distractor": "คุณกำลังล้างรองเท้าของพวกเขา",
+      "audio": "/audio/action-practice/action-l6-you-are-washing-her-shoe.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "you",
         "action": "washing",
-        "object": "a plate",
+        "object": "a shoe",
         "determiner": "her",
-        "noun": "plate",
-        "recordingQuestionId": "action-l6-you-are-washing-her-plate"
+        "noun": "shoe",
+        "recordingQuestionId": "action-l6-you-are-washing-her-shoe"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-he-is-washing-their-plate",
-      "english": "He is washing their plate.",
-      "thai": "เขากำลังล้างจานของพวกเขา",
-      "distractor": "เขากำลังล้างจานของพวกเรา",
-      "audio": "/audio/action-practice/action-l6-he-is-washing-their-plate.wav",
+      "id": "action-l6-he-is-washing-their-shoe",
+      "english": "He is washing their shoe.",
+      "thai": "เขากำลังล้างรองเท้าของพวกเขา",
+      "distractor": "เขากำลังล้างรองเท้าของพวกเรา",
+      "audio": "/audio/action-practice/action-l6-he-is-washing-their-shoe.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "he",
         "action": "washing",
-        "object": "a plate",
+        "object": "a shoe",
         "determiner": "their",
-        "noun": "plate",
-        "recordingQuestionId": "action-l6-he-is-washing-their-plate"
+        "noun": "shoe",
+        "recordingQuestionId": "action-l6-he-is-washing-their-shoe"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-she-is-washing-our-plate",
-      "english": "She is washing our plate.",
-      "thai": "เธอกำลังล้างจานของพวกเรา",
-      "distractor": "เธอกำลังล้างจานของฉัน",
-      "audio": "/audio/action-practice/action-l6-she-is-washing-our-plate.wav",
+      "id": "action-l6-she-is-washing-our-shoe",
+      "english": "She is washing our shoe.",
+      "thai": "เธอกำลังล้างรองเท้าของพวกเรา",
+      "distractor": "เธอกำลังล้างรองเท้าของฉัน",
+      "audio": "/audio/action-practice/action-l6-she-is-washing-our-shoe.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "she",
         "action": "washing",
-        "object": "a plate",
+        "object": "a shoe",
         "determiner": "our",
-        "noun": "plate",
-        "recordingQuestionId": "action-l6-she-is-washing-our-plate"
+        "noun": "shoe",
+        "recordingQuestionId": "action-l6-she-is-washing-our-shoe"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-we-are-washing-your-plate",
-      "english": "We are washing your plate.",
-      "thai": "พวกเรากำลังล้างจานของคุณ",
-      "distractor": "พวกเรากำลังล้างจานของเขา",
-      "audio": "/audio/action-practice/action-l6-we-are-washing-your-plate.wav",
+      "id": "action-l6-we-are-washing-your-shoe",
+      "english": "We are washing your shoe.",
+      "thai": "พวกเรากำลังล้างรองเท้าของคุณ",
+      "distractor": "พวกเรากำลังล้างรองเท้าของเขา",
+      "audio": "/audio/action-practice/action-l6-we-are-washing-your-shoe.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "we",
         "action": "washing",
-        "object": "a plate",
+        "object": "a shoe",
         "determiner": "your",
-        "noun": "plate",
-        "recordingQuestionId": "action-l6-we-are-washing-your-plate"
+        "noun": "shoe",
+        "recordingQuestionId": "action-l6-we-are-washing-your-shoe"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-they-are-washing-my-plate",
-      "english": "They are washing my plate.",
-      "thai": "พวกเขากำลังล้างจานของฉัน",
-      "distractor": "พวกเขากำลังล้างจานของคุณ",
-      "audio": "/audio/action-practice/action-l6-they-are-washing-my-plate.wav",
+      "id": "action-l6-they-are-washing-my-shoe",
+      "english": "They are washing my shoe.",
+      "thai": "พวกเขากำลังล้างรองเท้าของฉัน",
+      "distractor": "พวกเขากำลังล้างรองเท้าของคุณ",
+      "audio": "/audio/action-practice/action-l6-they-are-washing-my-shoe.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "they",
         "action": "washing",
-        "object": "a plate",
+        "object": "a shoe",
         "determiner": "my",
-        "noun": "plate",
-        "recordingQuestionId": "action-l6-they-are-washing-my-plate"
+        "noun": "shoe",
+        "recordingQuestionId": "action-l6-they-are-washing-my-shoe"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-i-am-washing-her-plates",
-      "english": "I am washing her plates.",
-      "thai": "ฉันกำลังล้างจานของเธอ",
-      "distractor": "ฉันกำลังล้างจานของพวกเขา",
-      "audio": "/audio/action-practice/action-l6-i-am-washing-her-plates.wav",
+      "id": "action-l6-i-am-washing-her-shoes",
+      "english": "I am washing her shoes.",
+      "thai": "ฉันกำลังล้างรองเท้าของเธอ",
+      "distractor": "ฉันกำลังล้างรองเท้าของพวกเขา",
+      "audio": "/audio/action-practice/action-l6-i-am-washing-her-shoes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "washing",
-        "object": "the plates",
+        "object": "the shoes",
         "determiner": "her",
-        "noun": "plates",
-        "recordingQuestionId": "action-l6-i-am-washing-her-plates"
+        "noun": "shoes",
+        "recordingQuestionId": "action-l6-i-am-washing-her-shoes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-you-are-washing-their-plates",
-      "english": "You are washing their plates.",
-      "thai": "คุณกำลังล้างจานของพวกเขา",
-      "distractor": "คุณกำลังล้างจานของพวกเรา",
-      "audio": "/audio/action-practice/action-l6-you-are-washing-their-plates.wav",
+      "id": "action-l6-you-are-washing-their-shoes",
+      "english": "You are washing their shoes.",
+      "thai": "คุณกำลังล้างรองเท้าของพวกเขา",
+      "distractor": "คุณกำลังล้างรองเท้าของพวกเรา",
+      "audio": "/audio/action-practice/action-l6-you-are-washing-their-shoes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "you",
         "action": "washing",
-        "object": "the plates",
+        "object": "the shoes",
         "determiner": "their",
-        "noun": "plates",
-        "recordingQuestionId": "action-l6-you-are-washing-their-plates"
+        "noun": "shoes",
+        "recordingQuestionId": "action-l6-you-are-washing-their-shoes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-he-is-washing-our-plates",
-      "english": "He is washing our plates.",
-      "thai": "เขากำลังล้างจานของพวกเรา",
-      "distractor": "เขากำลังล้างจานของฉัน",
-      "audio": "/audio/action-practice/action-l6-he-is-washing-our-plates.wav",
+      "id": "action-l6-he-is-washing-our-shoes",
+      "english": "He is washing our shoes.",
+      "thai": "เขากำลังล้างรองเท้าของพวกเรา",
+      "distractor": "เขากำลังล้างรองเท้าของฉัน",
+      "audio": "/audio/action-practice/action-l6-he-is-washing-our-shoes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "he",
         "action": "washing",
-        "object": "the plates",
+        "object": "the shoes",
         "determiner": "our",
-        "noun": "plates",
-        "recordingQuestionId": "action-l6-he-is-washing-our-plates"
+        "noun": "shoes",
+        "recordingQuestionId": "action-l6-he-is-washing-our-shoes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-she-is-washing-my-plates",
-      "english": "She is washing my plates.",
-      "thai": "เธอกำลังล้างจานของฉัน",
-      "distractor": "เธอกำลังล้างจานของคุณ",
-      "audio": "/audio/action-practice/action-l6-she-is-washing-my-plates.wav",
+      "id": "action-l6-she-is-washing-my-shoes",
+      "english": "She is washing my shoes.",
+      "thai": "เธอกำลังล้างรองเท้าของฉัน",
+      "distractor": "เธอกำลังล้างรองเท้าของคุณ",
+      "audio": "/audio/action-practice/action-l6-she-is-washing-my-shoes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "she",
         "action": "washing",
-        "object": "the plates",
+        "object": "the shoes",
         "determiner": "my",
-        "noun": "plates",
-        "recordingQuestionId": "action-l6-she-is-washing-my-plates"
+        "noun": "shoes",
+        "recordingQuestionId": "action-l6-she-is-washing-my-shoes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-we-are-washing-his-plates",
-      "english": "We are washing his plates.",
-      "thai": "พวกเรากำลังล้างจานของเขา",
-      "distractor": "พวกเรากำลังล้างจานของเธอ",
-      "audio": "/audio/action-practice/action-l6-we-are-washing-his-plates.wav",
+      "id": "action-l6-we-are-washing-his-shoes",
+      "english": "We are washing his shoes.",
+      "thai": "พวกเรากำลังล้างรองเท้าของเขา",
+      "distractor": "พวกเรากำลังล้างรองเท้าของเธอ",
+      "audio": "/audio/action-practice/action-l6-we-are-washing-his-shoes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "we",
         "action": "washing",
-        "object": "the plates",
+        "object": "the shoes",
         "determiner": "his",
-        "noun": "plates",
-        "recordingQuestionId": "action-l6-we-are-washing-his-plates"
+        "noun": "shoes",
+        "recordingQuestionId": "action-l6-we-are-washing-his-shoes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-they-are-washing-your-plates",
-      "english": "They are washing your plates.",
-      "thai": "พวกเขากำลังล้างจานของคุณ",
-      "distractor": "พวกเขากำลังล้างจานของเขา",
-      "audio": "/audio/action-practice/action-l6-they-are-washing-your-plates.wav",
+      "id": "action-l6-they-are-washing-your-shoes",
+      "english": "They are washing your shoes.",
+      "thai": "พวกเขากำลังล้างรองเท้าของคุณ",
+      "distractor": "พวกเขากำลังล้างรองเท้าของเขา",
+      "audio": "/audio/action-practice/action-l6-they-are-washing-your-shoes.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "they",
         "action": "washing",
-        "object": "the plates",
+        "object": "the shoes",
         "determiner": "your",
-        "noun": "plates",
-        "recordingQuestionId": "action-l6-they-are-washing-your-plates"
+        "noun": "shoes",
+        "recordingQuestionId": "action-l6-they-are-washing-your-shoes"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     },
     {
       "stars": 3,
-      "id": "action-l6-i-am-washing-their-apple",
-      "english": "I am washing their apple.",
-      "thai": "ฉันกำลังล้างแอปเปิลของพวกเขา",
-      "distractor": "ฉันกำลังล้างแอปเปิลของพวกเรา",
-      "audio": "/audio/action-practice/action-l6-i-am-washing-their-apple.wav",
+      "id": "action-l6-i-am-washing-their-sock",
+      "english": "I am washing their sock.",
+      "thai": "ฉันกำลังล้างถุงเท้าของพวกเขา",
+      "distractor": "ฉันกำลังล้างถุงเท้าของพวกเรา",
+      "audio": "/audio/action-practice/action-l6-i-am-washing-their-sock.wav",
       "provenance": {
         "blueprint": "present-action-dialogue",
         "lesson": "lesson-4",
         "subject": "I",
         "action": "washing",
-        "object": "an apple",
+        "object": "a sock",
         "determiner": "their",
-        "noun": "apple",
-        "recordingQuestionId": "action-l6-i-am-washing-their-apple"
+        "noun": "sock",
+        "recordingQuestionId": "action-l6-i-am-washing-their-sock"
       },
-      "issues": []
+      "issues": [],
+      "warnings": [
+        "unrecorded historical prompt; shared speech fallback required"
+      ]
     }
   ]
 }

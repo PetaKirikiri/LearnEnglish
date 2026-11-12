@@ -12,7 +12,7 @@ const flushing=new Map<string,Promise<void>>()
 export async function loadWordProgress(userId:string):Promise<WordProgress[]>{
  const rows:WordProgress[]=[]
  for(let offset=0;;offset+=1000){
-  const {data,error}=await supabase.from('english_word_progress').select('word_id,correct,attempts,listening_correct,direct_correct,last_practised,recent_results').eq('learner_id',userId).order('word_id').range(offset,offset+999)
+  const {data,error}=await supabase.from('english_word_progress').select('word_id,correct,attempts,listening_correct,direct_correct,last_practised,recent_results,fade_score,confirmation_count,proven_at,review_due_at,review_step,reviewed_at,lapsed_at,learning_updated_at,learning_version').eq('learner_id',userId).order('word_id').range(offset,offset+999)
   if(error)throw error
   rows.push(...(data??[]))
   if(!data || data.length<1000)return rows

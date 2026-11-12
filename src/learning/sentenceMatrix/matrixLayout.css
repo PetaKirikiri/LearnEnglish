@@ -81,10 +81,10 @@
 }
 
 /* An opt-in agreement pair: two editable pieces, one continuous outer shape. */
-.matrix-agreement-group{grid-column:span 2;display:grid;grid-template-columns:.65fr .55fr;min-width:0;position:relative;border-radius:24px;background:#ffda38;box-shadow:0 6px 0 #c4860c,0 10px 16px #18385e12}
-.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group .tonight-slot{box-shadow:none;border-color:#c4860c;transform:none}
+.matrix-agreement-group{grid-column:span 2;display:grid;grid-template-columns:.65fr .55fr;min-width:0;position:relative;border-radius:24px;background:var(--sentence-noun-fill);box-shadow:0 6px 0 var(--sentence-noun-edge),0 10px 16px #18385e12}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group .tonight-slot{box-shadow:none;transform:none}
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group .slot-3{border-radius:24px 0 0 24px;border-right:0}
-.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group .slot-1{--slot-fill:#ff9f1c;--slot-edge:#c4860c;--slot-ink:#18385e;border-radius:0 24px 24px 0;border-left:1px solid #bb790940}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group .slot-1{--slot-fill:var(--sentence-verb-fill);--slot-edge:var(--sentence-verb-edge);--slot-ink:var(--sentence-verb-ink);border-radius:0 24px 24px 0;border-left:1px solid var(--sentence-verb-edge)}
 @container matrix-stage (max-width:600px){.matrix-agreement-group{grid-template-columns:1fr 1fr}}
 /* Non-noun action slots use the normal independent card layout. */
 .matrix-role-group{display:grid;grid-template-columns:.8fr 1.4fr;gap:var(--matrix-gap);min-width:0;position:relative}
@@ -225,3 +225,63 @@
  .classroom .cw-sentence-board .matrix-layout.example-matrix[data-action-complement=true][data-card-count="6"] .tonight-slots{grid-template-columns:1fr}
 }
 .classroom .cw-sentence-board .matrix-layout[data-action-complement=true] .matrix-layout-leading .example-source{overflow-wrap:normal;word-break:normal}
+
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group[data-group-size="3"]{grid-template-columns:.7fr 1fr 1.4fr}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group[data-group-size="3"] .tonight-slot:nth-child(2){border-radius:0}
+
+/* Content assessments use the existing close-up art at readable phone size. */
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content]{--matrix-art-height:clamp(72px,14dvh,150px);--matrix-gap:8px}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .tonight-slot{grid-template-columns:minmax(0,1fr);grid-template-rows:var(--matrix-art-height) auto auto;padding:6px 5px 10px;gap:4px;min-width:0;overflow:hidden}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-role{display:flex;align-items:center;justify-content:center;width:var(--matrix-art-height);max-width:100%;height:var(--matrix-art-height);min-height:0;max-width:100%;margin:0}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-role>.cw-game-icon,
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-role>.cw-person-icon,
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-role>.vocabulary-picture-art{width:100%;height:100%;max-height:100%;min-width:0;flex-shrink:1;margin:0}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-role img{width:100%;height:100%;max-width:100%;object-fit:contain}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .example-source{font-size:clamp(19px,5.2cqw,32px);line-height:1.15;overflow-wrap:normal;word-break:normal;max-width:100%}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-fading-word{white-space:nowrap}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-role-group:has(>.cw-noun-group){grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-noun-group{min-width:0}
+
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-time-icon{width:100%;height:100%;max-height:none}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-time-icon .cw-game-icon{width:calc(var(--matrix-art-height) - 14px);max-width:100%;height:auto;aspect-ratio:1;max-height:calc(var(--matrix-art-height) - 14px);flex:0 1 auto}
+
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-role-group>.cw-noun-group{grid-column:auto}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .cw-slot-role>span.cw-game-icon{width:var(--matrix-art-height);max-width:100%;height:auto;aspect-ratio:1;max-height:var(--matrix-art-height);flex:0 1 auto}
+
+@container matrix-stage (min-width:640px){
+ .phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content]{max-width:100%}
+ .phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content]:not([data-matrix-layout=noun-phrase]) .tonight-slots{grid-template-columns:minmax(0,1.8fr) minmax(0,2.2fr)}
+ .phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content][data-action-complement=true] .tonight-slots{grid-template-columns:minmax(0,2.4fr) minmax(0,2fr)}
+}
+
+/* A noun subject contains two pictures and needs two cards' worth of space. */
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content][data-action-complement=true] .matrix-layout-leading:has(>.cw-noun-group){grid-template-columns:minmax(0,2fr) minmax(0,.8fr) minmax(0,1.4fr)}
+.phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content] .matrix-layout-leading>.cw-noun-group{grid-column:auto}
+@container matrix-stage (min-width:640px){
+ .phone-practice .classroom .cw-sentence-board .matrix-layout.example-matrix[data-density=content][data-action-complement=true]:has(.matrix-layout-leading>.cw-noun-group) .tonight-slots{grid-template-columns:minmax(0,3.2fr) minmax(0,2fr)}
+}
+
+/* Intrinsic text rows replace fixed-height slots. The shared component measures
+   columns for the whole sentence, retaining groups and readable picture sizes. */
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] :is(.tonight-slots,.matrix-layout-leading,.matrix-role-group,.cw-noun-group,.matrix-agreement-group){height:auto;min-height:0;align-items:stretch;row-gap:var(--matrix-gap)}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] .tonight-slot{height:auto;min-height:var(--matrix-card-height);grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;align-content:start;align-items:start;row-gap:10px;overflow:visible}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] .cw-slot-role{height:auto;min-height:var(--matrix-art-height);align-self:center;max-width:100%;margin:0}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] :is(.example-source,.example-gloss){height:auto;min-height:min-content;max-width:100%;white-space:normal;overflow-wrap:anywhere;word-break:normal;align-self:start;display:block}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] .cw-noun-group{grid-column:auto}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] .matrix-agreement-group{grid-column:auto}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout][data-adaptive=true] .matrix-layout-translation{min-height:64px;height:auto}
+
+/* Agreement links keep the same continuous outline in either word order. */
+.matrix-agreement-group{grid-column:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;min-width:0}
+.matrix-role-group{grid-template-columns:var(--matrix-role-columns,.8fr 1.4fr)}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group .tonight-slot{border-radius:0;box-shadow:none}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group>:first-child,
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group>:first-child .tonight-slot{border-radius:24px 0 0 24px}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group>:last-child,
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group>:last-child .tonight-slot{border-radius:0 24px 24px 0}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group .tonight-slot{border-radius:0}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group>:nth-child(1 of .tonight-slot,.cw-slot-shell),
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group>:nth-child(1 of .tonight-slot,.cw-slot-shell) .tonight-slot{border-radius:24px 0 0 24px}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group>:nth-last-child(1 of .tonight-slot,.cw-slot-shell),
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group>:nth-last-child(1 of .tonight-slot,.cw-slot-shell) .tonight-slot{border-radius:0 24px 24px 0}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group[data-group-size="1"] .tonight-slot{border-radius:24px}

@@ -1,0 +1,47 @@
+{
+  "tool": "Built-in image_gen; no CLI/API fallback or paid speed tier requested",
+  "meaning": {
+    "this": "Near me: beside the speaking boy in blue",
+    "that": "Near you: beside the listening girl in coral-orange",
+    "over-there": "Away from both speaker and listener"
+  },
+  "files": {
+    "this": {
+      "illustration": "this.png",
+      "runtimeScene": "this-scene.jpg"
+    },
+    "that": {
+      "illustration": "that.png",
+      "runtimeScene": "that-scene.jpg"
+    },
+    "over-there": {
+      "illustration": "over-there.png",
+      "runtimeScene": "over-there-scene.jpg"
+    }
+  },
+  "promptSet": [
+    {
+      "asset": "this.png",
+      "prompt": "Create ONE educational picture for the English demonstrative THIS: the object NEAR ME, the SPEAKER, contrasted later with THAT near YOU the listener and THAT OVER THERE away from BOTH. Meaning accuracy is critical. Premium polished friendly 3D cartoon illustration, tight landscape 3:2 composition made to be legible at 180 pixels wide. SAME TWO PEOPLE will recur in the series: left foreground a brown-haired boy in cobalt blue polo shirt, warm tan skin, turned three-quarter toward the right. He is the SPEAKER: mouth open speaking and index finger pointing. Right foreground a brown-haired girl in coral-orange shirt, hair tied back, warm tan skin, turned three-quarter toward the left. She is the LISTENER: mouth closed, attentive, hands resting at her own edge of the table. Both characters roughly equally large, faces occupy the outer left and right thirds. Between them a long pale cream rectangular table extends from broad foreground to a narrow far end in the rear center of a simple pale room, with one blue-framed window centered on the far wall. Camera front elevated three-quarter view, shows clear surface and distance, no fisheye. For THIS: ONE bright red apple sits at the NEAR LEFT corner of the table, immediately next to the BLUE-SHIRT BOY, within his reach and well away from the girl. The boy's pointing finger almost touches the apple. The girl looks at that apple attentively. Apple prominent about 20% of whole picture height; no objects near girl and no objects at the far end. Table center and far end remain empty. Two arms each, anatomically coherent hands, no extra people, no extra objects. No text, no labels, no letters, no arrows, no question marks or speech balloons, no collage. Tight framing with clear body/hand/apple relationships. The image should communicate 'THIS apple near ME (the boy who is speaking)' even without words. This is NOT a person pointing at the viewer."
+    },
+    {
+      "asset": "that.png",
+      "reference": "this.png",
+      "prompt": "Edit this exact illustration into THAT NEAR YOU (the listener). Keep the same boy in blue at LEFT as SPEAKER, same girl in coral-orange at RIGHT as LISTENER, same faces, same sizes and positions, same table, same room, same camera, same blue window. Move the ONE red apple from the boy's corner to the foreground RIGHT corner of the same table, immediately beside the girl's resting hands, about x76%, y87%. Same apple size, no second apple. It is clearly near HER and away from HIM. Change ONLY the boy's pointing arm/hand as needed: he points ACROSS the table toward the apple near the girl, extended index finger visibly aimed at it, with clear gap between his fingertip and apple (he cannot touch it). Keep his mouth open speaking and her mouth closed listening; both look toward the apple near her. Preserve other hand anatomy, avoid merged arms; exactly two arms per person. The apple is NOT in the middle and NOT near the boy. Empty tabletop near the boy and at far end. No text, arrows, icons or added objects. Same coherent polished 3D cartoon style, 3:2. Meaning must be 'THAT near YOU'."
+    },
+    {
+      "asset": "over-there.png",
+      "reference": "this.png",
+      "prompt": "Edit this exact illustration into THAT OVER THERE, AWAY FROM BOTH PEOPLE. Keep the boy in blue at LEFT as SPEAKER and girl in coral-orange at RIGHT as LISTENER, same identities, clothes, sizes and foreground positions, same long cream table, room, camera and blue window. Move the ONE red apple from the boy's foreground corner to the distant rear-center end of the table immediately below the blue window, clearly across the room and several arm lengths away from BOTH the boy and girl. Apple centered around x51%, with base around y43%; make it approximately 13% of total picture height so it stays visible in a small icon. No second apple. Foreground and middle of the table are empty, clearly showing the long distance. Boy has mouth open speaking and points diagonally backward toward the distant apple with one extended arm and index finger, NOT toward the girl or camera. Girl has mouth closed and looks toward the distant apple following his gesture, her hands remain at her foreground edge. Maintain exactly two anatomical arms per person. Do not move the people up beside the apple. Do not move the apple into foreground or between their hands. No text, arrows, symbols, extra objects, or panels. Same 3:2 polished 3D picture, only required gesture and apple location change. Meaning is 'THAT OVER THERE, away from both ME and YOU'."
+    },
+    {
+      "assets": [
+        "this-scene.jpg",
+        "that-scene.jpg",
+        "over-there-scene.jpg"
+      ],
+      "prompt": "Precise object removal for reusable educational illustration. Remove ONLY the single red apple, its leaf/stem and its contact shadow. Fill that small area with the cream tabletop. Preserve exactly the speaker boy in blue on the left, the listener girl in coral-orange on the right, their faces, gazes, every arm, every hand, pointing gesture, clothing, camera, long table, window and composition. No moving, resizing, reframing, or adding anything. The finger must still point at the now-empty target location. The app will insert the current vocabulary object in precisely that location; it is essential to keep the entire two-person relationship unchanged. No remnants, no placeholder. Same 3:2 opaque full scene."
+    }
+  ],
+  "integration": "The three purpose-generated scenes are used in DistanceScene. Existing noun assets are positioned at the depicted target locations, preserving the 10 object contexts and the 30 questions rather than repeating an apple-only icon for every item. JPEG transcodes retain the original composition. Over-there target is intentionally kept large enough to distinguish on a small screen."
+}

@@ -1,5 +1,5 @@
 import {diverseQuestions} from './diverseQuestions'
-import {taughtActionLine} from '../learning/sentenceRules/assessmentScope'
+import {taughtActionLine,recordedActionLine} from '../learning/sentenceRules/assessmentScope'
 import {subjectPronouns} from '../learning/sentenceMatrix/subjectEngine'
 import {lessonThreeMatrixCatalogue} from '../classroom/wordCatalogue'
 import {classroomMatrices} from '../classroom/matrixLessons'
@@ -23,7 +23,7 @@ const originalQuestions:ActionPracticeQuestion[]=subjects.flatMap((subject,index
  return [recordedQuestion(4,`action-l4-${subject}`,question,otherQuestion,`/audio/action-practice/question-${subject}.wav`),...actions.map((action,actionIndex)=>{
  const answer=actionDialogue(subject,action,{vocabulary}).answer
  const candidate=actionDialogue(subject,actions[(actionIndex+1)%actions.length],{vocabulary}).answer
- const replaceDistractor=!taughtActionLine(5,candidate.units)
+ const replaceDistractor=!recordedActionLine(5,candidate.units)
  const wrong=replaceDistractor?actionDialogue(subject,'sleeping',{vocabulary}).answer:candidate
  return recordedQuestion(5,`action-l5-${subject}-${action}${replaceDistractor?'-taught':''}`,answer,wrong,`/audio/action-practice/answer-${subject}-${action}.wav`)
  })]
@@ -46,10 +46,10 @@ function add(level:4|5|6,speaker:typeof speakers[number],action:string,object?:s
  if(expanded.some(q=>q.id===id)||originalQuestions.some(q=>q.level===level&&q.english===sentence.english))return
  expanded.push(recordedQuestion(level,id,sentence,alternative,`/audio/action-practice/${id}.wav`))
 }
-for(const speaker of speakers){add(4,speaker,'eating');for(const action of actionVocabulary.filter(a=>!a.level||a.level<=5))add(5,speaker,action.word)}
+for(const speaker of speakers){add(4,speaker,'eating');for(const action of actionVocabulary.filter(a=>actions.includes(a.word)))add(5,speaker,action.word)}
 // Cover every compatible noun and determiner without a huge subject x noun product.
 let rotation=0
-for(const action of actionVocabulary.filter(a=>!a.level||a.level<=5))for(const object of objectsForAction(action.word,lessonThreeMatrixCatalogue)){
+for(const action of actionVocabulary.filter(a=>actions.includes(a.word)))for(const object of objectsForAction(action.word,lessonThreeMatrixCatalogue)){
  for(const determiner of objectDeterminers(object))add(5,speakers[rotation++%speakers.length],action.word,object.word,determiner.word)
 }
 // Next level keeps the established frame; only reviewed verb/object combinations grow.
@@ -82,7 +82,7 @@ if(!nextLevel.some(q=>q.english===guide.english)){const id=`action-l6-${slug(gui
 const recordings=[...originalQuestions,...expanded,...nextLevel]
 /** Authoring inventory only; assessment callers must use actionPracticeQuestions. */
 export const actionPracticeRecordings:readonly ActionPracticeQuestion[]=recordings
-const approved=recordings.filter(q=>taughtActionLine(q.level,q.units)&&taughtActionLine(q.level,q.distractorUnits))
+const approved=recordings.filter(q=>recordedActionLine(q.level,q.units)&&recordedActionLine(q.level,q.distractorUnits))
 
 // If excluding a speaker removes the only example of a taught object/owner pair,
 // reuse its recorded sentence with a taught speaker and a familiar action contrast.
@@ -92,14 +92,16 @@ const reviewedPairs=new Set(expanded.filter(q=>q.level===5).map(complementKey))
 const replacements:ActionPracticeQuestion[]=[]
 for(const q of nextLevel){
  const pair=complementKey(q)
- if(!reviewedPairs.has(pair)||covered.has(pair)||!taughtActionLine(5,q.units))continue
+ if(!reviewedPairs.has(pair)||covered.has(pair)||!recordedActionLine(5,q.units))continue
  const subject=q.units.find(u=>u.role==='person')!.english
  const person=nextSubjects.find(p=>p.word.toLowerCase()===subject.toLowerCase())!
  const other=actionDialogue(person.word.toLowerCase() as ActionSubject,'sleeping',{vocabulary:lessonThreeMatrixCatalogue,subject:person}).answer
  replacements.push(recordedQuestion(5,`action-l5-taught-${slug(q.english)}`,q,other,q.audioUrl))
  covered.add(pair)
 }
-export const actionPracticeQuestions=[...approved,...replacements]
+const historicalQuestions=[...approved,...replacements]
+const taughtQuestion=(q:ActionPracticeQuestion)=>taughtActionLine(q.level,q.units)&&taughtActionLine(q.level,q.distractorUnits)
+export const actionPracticeQuestions=historicalQuestions.filter(taughtQuestion)
 /** Picture choices must have the same construction and differ in one meaning only.
  * Keep the historical bank for existing attempts; new contrasts get scoring version 2. */
 const structure=(units:ActionLine['units'])=>units.map(u=>u.role+(['determiner','person-determiner'].includes(u.role)?(/^(a|an|the)$/i.test(u.english)?':article':':owner'):'')).join(',')
@@ -107,7 +109,7 @@ const meaningParts=(units:ActionLine['units'])=>['person-determiner','person','a
 function matchedPictureQuestion(q:ActionPracticeQuestion):ActionPracticeQuestion{
  if(q.level===6)return q // Ownership alternatives already change exactly one equal-sized component.
  const parts=meaningParts(q.units)
- const candidates=actionPracticeQuestions.filter(other=>other.level===q.level&&structure(other.units)===structure(q.units)&&meaningParts(other.units).filter((value,index)=>value!==parts[index]).length===1)
+ const candidates=historicalQuestions.filter(other=>other.level===q.level&&structure(other.units)===structure(q.units)&&meaningParts(other.units).filter((value,index)=>value!==parts[index]).length===1)
  let hash=0;for(const char of q.id)hash=(Math.imul(hash,31)+char.charCodeAt(0))>>>0
  let other:ActionLine|undefined=candidates[hash%candidates.length]
  if(!other){
@@ -126,19 +128,31 @@ function matchedPictureQuestion(q:ActionPracticeQuestion):ActionPracticeQuestion
    other=actionDialogue('they',action,{vocabulary:lessonThreeMatrixCatalogue,subject:otherSubject,object:object.word,determiner:owner as 'the'|'a'|'an'}).answer
   }else other=actionDialogue('i',action,{vocabulary:lessonThreeMatrixCatalogue,subject,object:object.word,determiner:alternative.word}).answer
  }
- if(!taughtActionLine(q.level,other.units)||structure(other.units)!==structure(q.units))throw new Error(`Untaught picture alternative: ${q.id}`)
+ if(!recordedActionLine(q.level,other.units)||structure(other.units)!==structure(q.units))throw new Error(`Untaught picture alternative: ${q.id}`)
  return {...q,choices:[q.thai,other.thai],correct:0,distractorUnits:other.units,questionVersion:2}
 }
-export const pictureActionPracticeQuestions=actionPracticeQuestions.map(matchedPictureQuestion)
+// Match against the historical bank before filtering so existing question versions
+// keep the exact same answers registered in the scoring catalogue.
+export const pictureActionPracticeQuestions=historicalQuestions.map(matchedPictureQuestion).filter(taughtQuestion)
 function practiceGroups(question:ActionPracticeQuestion){
  const word=question.units.find(unit=>unit.role==='object')?.english.toLowerCase().replace(/[.!?]$/,'')
  const noun=lessonThreeMatrixCatalogue.find(item=>item.word===word)
  return [noun?.singular??word??'no-object',question.units.find(unit=>unit.role==='person')?.english??'',question.units.find(unit=>unit.role==='action')?.english??'',question.units.find(unit=>unit.role==='determiner')?.english??'']
 }
+export const ACTION_PRACTICE_ROUND_SIZE=30
+/** Legacy recorded fixture for the DEV layout preview. Learner rounds use generatedDeck. */
 export function actionPracticeDeck(level:4|5|6){
  const candidates=pictureActionPracticeQuestions.filter(question=>question.level===level)
  const selected=level===6
   ?['eating','reading','drinking','holding','opening','washing'].flatMap(action=>diverseQuestions(candidates.filter(question=>question.units.some(unit=>unit.role==='action'&&unit.english===action)),5,practiceGroups))
-  :diverseQuestions(candidates,30,practiceGroups)
+  :diverseQuestions(candidates,ACTION_PRACTICE_ROUND_SIZE,practiceGroups)
+ // A small taught bank still needs a full practice round. Revisit each form
+ // before repeating any one again, and avoid repeats across cycle boundaries.
+ if(!selected.length)throw new Error(`No approved questions for level ${level}`)
+ while(selected.length<ACTION_PRACTICE_ROUND_SIZE){
+  const cycle=diverseQuestions(candidates,candidates.length,practiceGroups)
+  if(cycle.length>1&&cycle[0].id===selected.at(-1)!.id)cycle.push(cycle.shift()!)
+  selected.push(...cycle.slice(0,ACTION_PRACTICE_ROUND_SIZE-selected.length))
+ }
  return selected.map(question=>Math.random()<.5?{...question,choices:[question.choices[1],question.choices[0]] as [string,string],correct:1}:{...question})
 }

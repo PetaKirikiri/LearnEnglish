@@ -1,3 +1,4 @@
+import '../sentencePalette.css'
 import LanguageQuadrant,{type LanguageDocument} from './LanguageQuadrant'
 import { useEffect, useState } from 'react'
 import VocabularyPicture from '../VocabularyPicture'

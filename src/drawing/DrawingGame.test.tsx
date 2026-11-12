@@ -1,0 +1,15 @@
+import {act} from 'react'
+import {createRoot} from 'react-dom/client'
+import {describe,it,expect,vi} from 'vitest'
+import {DrawingStudent} from './DrawingGame'
+import type {Game} from './game'
+const game:Game={active:true,round:1,phase:'guessing',deadline:null,serverNow:new Date().toISOString(),artist:'a',revealed:false,vote:null,voteCount:0,drawings:[{artist:'a',name:'Ann',thai:'แมว',english:null,picture:'',submitted:true,awarded:null,winner:false},{artist:'b',name:'Ben',thai:null,english:null,picture:'',submitted:true,awarded:null,winner:false}],scores:[]}
+async function render(g:Game,userId:string){const el=document.createElement('div'),root=createRoot(el),action=vi.fn().mockResolvedValue(true);await act(async()=>root.render(<DrawingStudent game={g} userId={userId} busy={false} error="" act={action} offset={0}/>));return{el,action,close:()=>act(()=>root.unmount())}}
+describe('class drawing game',()=>{
+ it('locks the phone after a confirmed finish and shows the awarded rank',async()=>{const v=await render({...game,phase:'drawing',drawings:game.drawings.map(d=>d.artist==='a'?{...d,finishRank:2,finishBonus:2}:d)},'a');expect(v.el.textContent).toContain('#2 · +2');expect(v.el.querySelector('canvas,button')).toBeNull();v.close()})
+ it('awards a point by tapping a name once',async()=>{const v=await render(game,'a');expect(v.el.textContent).toContain('Who got it right?');const button=v.el.querySelector<HTMLButtonElement>('.dg-name-buttons button')!;expect(button.textContent).toBe('Ben');await act(async()=>button.click());expect(v.action).toHaveBeenCalledWith('award',{round:1,artist:'a',learner:'b'});expect(v.el.querySelector('img,dialog,select')).toBeNull();v.close()})
+ it('keeps other students waiting without showing the private word or drawing',async()=>{const v=await render(game,'b');expect(v.el.textContent).toContain('Look at the screen');expect(v.el.textContent).not.toContain('แมว');expect(v.el.querySelector('button,img,canvas')).toBeNull();v.close()})
+ it('votes directly by name and excludes self and empty drawings',async()=>{const v=await render({...game,phase:'voting',drawings:[...game.drawings.map(d=>({...d,picture:'data:image/png;base64,AA'})),{...game.drawings[1],artist:'c',name:'No drawing'}]},'a');const buttons=v.el.querySelectorAll<HTMLButtonElement>('button');expect(buttons).toHaveLength(1);expect(buttons[0].textContent).toBe('Ben');expect(v.el.querySelector('img,dialog')).toBeNull();await act(async()=>buttons[0].click());expect(v.action).toHaveBeenCalledWith('vote',{round:1,artist:'b'});v.close()})
+ it('shows the chosen name after voting without allowing another vote',async()=>{const v=await render({...game,phase:'voting',vote:'b'},'a');expect(v.el.querySelector('[role=status]')?.textContent).toBe('✓ Ben');expect(v.el.querySelector('button,img')).toBeNull();v.close()})
+ it('waits for the host in lobby and results without phone menus or pictures',async()=>{for(const phase of ['lobby','results'] as const){const v=await render({...game,phase},'a');expect(v.el.textContent).toContain('Look at the screen');expect(v.el.querySelector('button,img,select,nav')).toBeNull();v.close()}})
+})

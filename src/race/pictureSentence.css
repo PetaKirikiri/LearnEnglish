@@ -2,7 +2,7 @@
 .picture-sentence-part{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:46px;max-width:125px;flex:1 1 46px;text-align:center}
 .picture-sentence-word{font:800 clamp(12px,3.1vw,18px)/1.2 'Nunito',system-ui,sans-serif;overflow-wrap:normal;word-break:normal}
 .picture-sentence-plus{flex:0 0 auto;font:700 18px/1 system-ui;opacity:.65}
-.picture-sentence-art{display:flex;align-items:center;justify-content:center;background:#fff;border-radius:12px;width:100%;height:66px;padding:3px;color:#18395e}
+.picture-sentence-art{display:flex;align-items:center;justify-content:center;background:#fff;border-radius:12px;width:100%;height:66px;padding:3px;color:inherit}
 .picture-sentence-art .vocabulary-picture-art{width:60px;height:60px;margin:0}
 .picture-sentence-art>img,.picture-sentence-art .cw-person-icon,.picture-sentence-art .cw-person-icon img{width:60px;height:60px;max-width:100%;object-fit:contain}
 .phone-practice .picture-sentence-art .cw-game-icon{width:58px;height:58px;max-width:100%;flex:0 1 58px;margin:0}
@@ -12,7 +12,7 @@
 .practice-answers button:has(.picture-sentence) .practice-choice-go{display:none}
 .practice-answers button:has(.picture-sentence) .practice-choice-label{min-width:0;width:100%}
 .practice-answers button:has(.picture-sentence) .practice-choice-number{width:24px;height:24px;font-size:13px}
-.practice-help-pictures{display:grid;gap:20px;padding:12px 0;color:#18395e}
+.practice-help-pictures{display:grid;gap:20px;padding:12px 0;color:inherit}
 .number-choice-picture{display:flex;align-items:center;gap:14px}
 .number-choice-picture>.vocabulary-picture-art{width:88px;height:70px;margin:0;flex:none}
 .number-choice-picture small{display:block;font-size:13px;font-weight:600}
@@ -24,3 +24,46 @@
 .picture-sentence-part[data-role=action] .picture-sentence-art{overflow:hidden;padding:2px}
 .phone-practice.foundation-practice .picture-sentence-part[data-role=action] .picture-sentence-art .cw-game-icon,
 .picture-sentence-part[data-role=action] .picture-sentence-art .cw-game-icon{width:100%;height:100%;max-width:100%;flex:1;object-fit:contain;transform:none}
+
+.picture-sentence-art .everyday-person{width:100%;height:100%;margin:0}.picture-sentence-part:has(.everyday-person) .picture-sentence-art{padding:0;overflow:hidden}.picture-sentence-art .everyday-person img{max-width:none}
+/* Small answer tiles give the meaning-bearing artwork most of the space. */
+.picture-sentence-art{height:84px;padding:2px}
+.picture-sentence-art .vocabulary-picture-art{width:78px;height:78px}
+.picture-sentence-art>img,.picture-sentence-art .cw-person-icon,.picture-sentence-art .cw-person-icon img{width:78px;height:78px}
+.picture-sentence-art .everyday-person{width:100%;height:100%}
+.everyday-person .person-copy>img{object-fit:contain}
+.picture-sentence-art .description-picture{max-height:80px}
+@media(max-width:380px){.picture-sentence-art{height:72px}.picture-sentence-art .vocabulary-picture-art{width:66px;height:66px}.picture-sentence-art .everyday-person{width:100%;height:100%}.picture-sentence-art>img,.picture-sentence-art .cw-person-icon,.picture-sentence-art .cw-person-icon img{width:66px;height:66px}}
+
+/* Let existing close-up artwork fill each answer tile. */
+.phone-practice.foundation-practice .picture-sentence{gap:4px}
+.phone-practice.foundation-practice .picture-sentence-part{min-width:0;max-width:none;flex:1 1 0}
+.phone-practice.foundation-practice .picture-sentence-art{width:100%;height:auto;aspect-ratio:1;padding:0;overflow:hidden}
+.phone-practice.foundation-practice .picture-sentence-art>.cw-game-icon,
+.phone-practice.foundation-practice .picture-sentence-art>.cw-person-icon,
+.phone-practice.foundation-practice .picture-sentence-art>.vocabulary-picture-art,
+.phone-practice.foundation-practice .picture-sentence-art>img{width:100%;height:100%;max-width:100%;flex:1;margin:0;object-fit:contain}
+.phone-practice.foundation-practice .picture-sentence-art .cw-person-icon img{width:100%;height:100%;object-fit:contain}
+.phone-practice.foundation-practice .picture-sentence-word{font-size:clamp(11px,3.2vw,18px);overflow-wrap:normal;word-break:normal}
+.phone-practice.foundation-practice .practice-answer-area .binary-answer:has(.picture-sentence){padding:10px 8px}
+
+.phone-practice.foundation-practice .practice-answer-area .picture-sentence-art>img.cw-game-icon{width:100%;height:100%;max-width:100%;flex:1;object-fit:contain}
+
+.phone-practice.foundation-practice .picture-sentence-art{width:min(100%,clamp(72px,18dvh,180px));height:auto;aspect-ratio:1}
+
+/* Match the sentence's semantic colours inside classroom answer choices. */
+.picture-sentence[data-coloured=true] .picture-sentence-part{background:var(--sentence-noun-fill);color:var(--sentence-noun-ink);border-radius:16px;padding:4px 4px 8px;align-self:stretch;justify-content:center}
+.picture-sentence[data-coloured=true] .picture-sentence-part:is([data-role=be],[data-role=action]){background:var(--sentence-verb-fill);color:#fff}
+.picture-sentence[data-coloured=true] .picture-sentence-part:is([data-role=question],[data-role=preposition]){background:var(--sentence-link-fill);color:#fff}
+.picture-sentence[data-coloured=true] .picture-sentence-art{background:transparent}
+
+/* A linked phrase is one outer shape, with a separate icon for every word. */
+.picture-sentence-group{display:flex;gap:0;align-items:stretch;flex:var(--picture-units,2) 1 100px;min-width:0;border-radius:16px;overflow:hidden}
+.picture-sentence-group .picture-sentence-part{flex:1 1 0;min-width:0;max-width:none}
+.picture-sentence[data-coloured=true] .picture-sentence-group .picture-sentence-part{border-radius:0}
+.picture-sentence-group .picture-sentence-part+.picture-sentence-part{border-left:1px solid #18385e30}
+.phone-practice.foundation-practice .picture-sentence-group{flex-basis:calc(var(--picture-units,2)*46px)}
+/* Sprite icons must stay square inside joined answer cells. */
+.phone-practice.foundation-practice .binary-answer-content .picture-sentence-art>.cw-game-icon:not(img){width:100%;height:100%;flex:0 0 auto;aspect-ratio:1}
+.phone-practice.foundation-practice .picture-sentence-art>.cw-time-icon{width:100%;height:100%;transform:none}
+.phone-practice.foundation-practice .binary-answer-content .picture-sentence-art .cw-time-icon .cw-game-icon{width:calc(100% - 12px);height:auto;aspect-ratio:1;flex:0 0 auto}

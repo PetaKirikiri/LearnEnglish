@@ -14,7 +14,8 @@
     "test": "vitest run",
     "audit:sentences": "tsx scripts/auditSentenceBlueprints.ts",
     "prebuild": "npm run audit:sentences && npm run audit:action-stars",
-    "audit:action-stars": "node --import tsx scripts/auditActionStars.ts && python3 scripts/auditActionStarAudio.py"
+    "audit:action-stars": "node --import tsx scripts/auditActionStars.ts && python3 scripts/auditActionStarAudio.py",
+    "diagnostics": "vite --host 127.0.0.1 --port 5197 --strictPort"
   },
   "dependencies": {
     "@line/liff": "^2.30.0",

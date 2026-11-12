@@ -1,0 +1,32 @@
+{
+  "over-there.wav": {
+    "fingerprint": "63f6ce6118c62cf61578cd6e0242037d16a41aef43d96faef080b2f904c10444",
+    "seconds": 1.485,
+    "text": "What is that over there?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "that.wav": {
+    "fingerprint": "a05f38307a2d87841251b2dd5466592cf2fb3916abfa3febee638569296d2881",
+    "seconds": 1.065,
+    "text": "What is that?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "these.wav": {
+    "fingerprint": "03d0a5390eece1cd58d040b791f9daa6babc532f627ff3a0eb7ebdcd5bc6df35",
+    "seconds": 1.118,
+    "text": "What are these?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "this.wav": {
+    "fingerprint": "771fc400bd0508df67489c0a7e4c9a0b9f5082470dea8ba0079a78fe1dd4e35f",
+    "seconds": 1.131,
+    "text": "What is this?",
+    "voice": "kokoro-1.0-heart-v1"
+  },
+  "those.wav": {
+    "fingerprint": "689e529a3e8ba79ea6b2ee4aec9a72a99368dccc9715ede283b2532f94ed153f",
+    "seconds": 1.215,
+    "text": "What are those?",
+    "voice": "kokoro-1.0-heart-v1"
+  }
+}

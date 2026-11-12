@@ -204,7 +204,9 @@ it('preserves explicitly configured advanced tense and ownership when nouns chan
  expect(words('.cw-word-chip')).toEqual(['is','are','was','were'])
  await choose('was')
  await click('[data-picker-slot="2"]')
- expect(words('.cw-word-chip')).toEqual(['the','my','your','his','her'])
+ expect(words('.cw-word-chip').filter(word=>!/[’']/.test(word))).toEqual(['the','my','your','his','her'])
+ expect(words('.cw-word-chip')).toContain('Bia’s')
+ expect(words('.cw-word-chip')).not.toContain('my doctor’s wife’s')
  await choose('her')
  expect(host.querySelector('.cw-sentence-board[aria-label]')?.getAttribute('aria-label')).toBe('Where was her phone?')
  await click('[data-picker-slot="1"]')
@@ -227,7 +229,8 @@ it('preserves explicitly configured advanced tense and ownership when nouns chan
  await click('[data-picker-slot="1"]')
  expect(words('.cw-word-chip')).toEqual(['is','are'])
  await click('[data-picker-slot="2"]')
- expect(words('.cw-word-chip')).toEqual(['the','my','your'])
+ expect(words('.cw-word-chip').filter(word=>!/[’']/.test(word))).toEqual(['the','my','your'])
+ expect(words('.cw-word-chip')).toContain('Bia’s')
 })
 
 it('keeps pair-only words plural in past tense and exposes new vocabulary categories',async()=>{

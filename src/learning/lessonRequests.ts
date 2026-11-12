@@ -1,9 +1,9 @@
 /** Course lessons are independent of practice-level numbers and saved progress. */
-export const lessonNumbers = ['1', '2', '3', '4', '5'] as const
+export const lessonNumbers = ['1', '2', '3', '4', '5', '6'] as const
 export type LessonNumber = typeof lessonNumbers[number]
 export type LessonId = `lesson-${LessonNumber}`
 export class UnsupportedLessonError extends Error {
-  constructor(value: unknown) { super(`Unsupported lesson: ${String(value)}. Choose Lesson 1–5.`); this.name = 'UnsupportedLessonError' }
+  constructor(value: unknown) { super(`Unsupported lesson: ${String(value)}. Choose Lesson 1–6.`); this.name = 'UnsupportedLessonError' }
 }
 export function lessonNumber(value: unknown): LessonNumber {
   if (value === null || value === undefined) return '1'

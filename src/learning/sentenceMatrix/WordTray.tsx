@@ -1,3 +1,4 @@
+import {rankWordChoices} from '../../race/wordHierarchy'
 import './wordTray.css'
 import type { ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
@@ -28,7 +29,8 @@ export default function WordTray({id,active,choices,selected,canChoose,onChoose,
     const word=vocabulary.find(word=>word.word===choice.word)
     return word && (!numberFilter || grammaticalNumber(word)===numberFilter) && (categoryFilter==='all' || categoriesForWord(word).some(category=>category===categoryFilter))
   }):categoryFilter==='all'?choices:choices.filter(choice=>groups.find(group=>group.id===categoryFilter)?.words.includes(choice.word))
-  const available=visibleChoices.filter(choice=>canChoose(choice.word))
+  const orderedChoices=rankWordChoices(visibleChoices)
+  const available=orderedChoices.filter(choice=>canChoose(choice.word))
   function resetScroll(){if(belt.current)belt.current.scrollLeft=0}
   const cursorIndex=Math.max(0,available.findIndex(choice=>choice.word===cursor))
   function reveal(button:HTMLButtonElement, smooth=false) {
@@ -77,7 +79,7 @@ export default function WordTray({id,active,choices,selected,canChoose,onChoose,
         if(event.key==='Home'||event.key==='End'){event.preventDefault();move(event.key==='Home'?-choices.length:choices.length)}
       }}>
         {visibleChoices.length===0&&<p role="status">{th?'ไม่มีคำในหมวดนี้':'No matching words'}</p>}
-        {visibleChoices.map(choice=><button type="button" className="cw-word-chip" key={choice.word} data-word={choice.word} onFocus={()=>setCursor(choice.word)} aria-pressed={selected===choice.word} disabled={!canChoose(choice.word)} onClick={()=>onChoose(choice.word)}>
+        {orderedChoices.map(choice=><button type="button" className="cw-word-chip" key={choice.word} data-word={choice.word} onFocus={()=>setCursor(choice.word)} aria-pressed={selected===choice.word} disabled={!canChoose(choice.word)} onClick={()=>onChoose(choice.word)}>
           <span className="cw-word-art">{renderIcon ? renderIcon(choice.word) : active===3 ? <VocabularyPicture word={choice.word}/> : <WordSlotIcon word={choice.word} slot={active??2} plural={choice.word==='are'||choice.word==='were'} past={choice.word==='was'||choice.word==='were'}/>}</span>
           <strong lang="en">{choice.word}</strong><span lang="th">{choice.thai}</span>
           {selected===choice.word && <span className="cw-choice-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 4 4 10-10"/></svg></span>}

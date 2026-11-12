@@ -30,7 +30,7 @@ export const earlierNounForms:readonly ClassroomWord[]=tonightWords.flatMap(([si
 })
 export const lessonTwoCatalogue=cumulativeCatalogue(lessonOneCatalogue,lessonTwoIntroducedCatalogue)
 
-export const lessonThreeIntroducedCatalogue:readonly ClassroomWord[]=[{word:'water',thai:'น้ำ',categories:['food'],meaning:{kind:'physical-object',countability:'mass',actionContexts:['drink']}},...lessonThreeWords.flatMap(item=>[
+export const lessonThreeIntroducedCatalogue:readonly ClassroomWord[]=[{word:'water',thai:'น้ำ',categories:['food'],meaning:{kind:'physical-object',countability:'mass',actionContexts:['drink','purchasable','usable']}},...lessonThreeWords.flatMap(item=>[
  {...item,word:item.singular,number:'singular' as const},
  {...item,word:item.plural,number:'plural' as const},
 ])]

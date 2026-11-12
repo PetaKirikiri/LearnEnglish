@@ -1,8 +1,13 @@
+import {personNames,objectPronouns,namedNouns,type NominalReference} from '../sentenceRules/nominalReferences'
+import {everydayPeopleCatalogue} from '../everydayVocabulary'
+import {sentenceRoleSlots} from './sentenceRoles'
+import DescriptionPicture from '../DescriptionPicture'
+import {subjectCanPerform} from '../sentenceRules/actionSemantics'
 import {actionCapabilities} from '../sentenceRules/actionCapabilities'
 import MatrixExplanation from './MatrixExplanation'
 import {vocabularyCategories} from './vocabularyCategories'
 import VocabularyCategoryIcon from './VocabularyCategoryIcon'
-import {type ClassroomWord,type Determiner} from './model'
+import {lessonDeterminers,type ClassroomWord,type Determiner} from './model'
 import {subjectVerb,nounBlock,type NounMode,type SubjectWord} from './subjectEngine'
 import {meaningForWord} from '../sentenceRules/blueprints'
 import ProperNounIcon from './ProperNounIcon'
@@ -26,14 +31,14 @@ import PatternNavigation from './PatternNavigation'
 import useMatrixEducation from './useMatrixEducation'
 import './peopleLocation.css'
 
-type Role='question'|'person'|'be'|'action'|'object'|'determiner'|'preposition'|'person-determiner'
+type Role='question'|'person'|'be'|'action'|'object'|'determiner'|'preposition'|'person-determiner'|'description'
 /** Construction data supplies roles; all cards, selectors and education use the shared engine. */
 export default function ActionMatrix({lesson,settings={},wordScores,initialAction}:SentenceMatrixProps){
  const capability=actionCapabilities(lesson)
- const allowedActions=capability.actions
- const actionGroups:WordChoiceGroup[]=vocabularyCategories.map(category=>({...category,words:allowedActions.filter(action=>action.categories.includes(category.id)).map(action=>action.word),icon:<VocabularyCategoryIcon category={category.id}/>})).filter(group=>group.words.length>0)
+ const baseActions=capability.actions
+
  const [subject,setSubject]=useState<ActionSubject>(initialAction?.subject??((lesson.subjectModes?.initialPronoun??capability.subjects.find(item=>item.word==='you')?.word??capability.subjects[0]?.word)?.toLowerCase() as ActionSubject|undefined)??'you')
- const [action,setAction]=useState(initialAction?.action??allowedActions[0].word)
+ const [chosenAction,setAction]=useState(initialAction?.action??baseActions.find(item=>item.word===lesson.initialWord)?.word??baseActions.find(item=>item.complement==='object')?.word??baseActions[0].word)
  const [mode,setMode]=useState<'question'|'answer'>(settings.initialPattern??'question')
  const [active,setActive]=useState<Role|null>(null)
  const [answerPronoun,setAnswerPronoun]=useState<SubjectWord|undefined>(()=>{if(!initialAction?.answerPronoun)return undefined;const selected=capability.subjects.find(item=>item.word.toLowerCase()===initialAction.answerPronoun!.toLowerCase());if(!selected)throw new Error('Saved answer subject outside lesson scope');return selected})
@@ -41,24 +46,35 @@ export default function ActionMatrix({lesson,settings={},wordScores,initialActio
  const [object,setObject]=useState<string|undefined>(initialAction?.object)
  const [personMode,setPersonMode]=useState<NounMode>(initialAction?.personMode??'pronoun'),[personWord,setPersonWord]=useState<string|undefined>(initialAction?.personWord)
  const [objectMode,setObjectMode]=useState<NounMode>('noun'),[destinationWord,setDestinationWord]=useState<string>()
- const subjectChoices=capability.subjects.map(item=>({...item,word:mode==='answer'?item.word.charAt(0).toUpperCase()+item.word.slice(1):item.word,kind:'person' as const}))
- const personBlock=nounBlock<SubjectWord>({pronoun:subjectChoices,name:lesson.subjectModes?.names.filter(item=>item.kind==='person'),noun:lesson.vocabulary.filter(item=>meaningForWord(item)?.kind==='person').map(item=>({...item,word:`the ${item.word}`,phrase:{noun:item.word,nounThai:item.thai,determiner:{english:'the',thai:'ที่กำลังพูดถึง'}},kind:'person' as const}))},personMode,personWord)
- const objectBlock=nounBlock({noun:capability.objects(action),name:allowedActions.find(item=>item.word===action)?.complement==='destination'?lesson.subjectModes?.names.filter(item=>item.kind==='place').map(item=>({...item,word:`to ${item.word}`,thai:`ไปที่${item.thai}`})):[]},objectMode,objectMode==='name'?destinationWord:object)
- const namedDestination=objectBlock.mode==='name'?lesson.subjectModes?.names.find(item=>`to ${item.word}`===objectBlock.selected?.word):undefined
+ const [semanticActorNoun,setSemanticActorNoun]=useState<string|undefined>(initialAction?.personMode==='noun'?initialAction.personWord?.replace(/^the /,''):undefined)
+ const subjectChoices=capability.subjects.map(item=>({...item,word:mode==='answer'?item.word.charAt(0).toUpperCase()+item.word.slice(1):item.word,kind:'person' as const,semanticNoun:semanticActorNoun}))
+ const personBlock=nounBlock<SubjectWord>({pronoun:subjectChoices,name:personNames(lesson.subjectModes).map(name=>({...name,semanticNoun:semanticActorNoun})),noun:[...new Map([...(lesson.subjectNouns??everydayPeopleCatalogue),...lesson.vocabulary.filter(item=>meaningForWord(item)?.kind==='person')].map(item=>[item.word,item])).values()].map(item=>({...item,word:`the ${item.word}`,phrase:{noun:item.word,nounThai:item.thai,determiner:{english:'the',thai:'ที่กำลังพูดถึง'}},kind:'person' as const}))},personMode,personWord)
+ const actor=personBlock.selected??{word:subject}
+ const allowedActions=baseActions.filter(item=>subjectCanPerform(actor,item.word)&&capability.objects(item.word).some(object=>subjectCanPerform(actor,item.word,object.noun)))
+ if(!allowedActions.length)throw new Error('This subject has no compatible action and noun in the selected blueprint.')
+ const action=allowedActions.some(item=>item.word===chosenAction)?chosenAction:allowedActions[0].word
+ const actionGroups:WordChoiceGroup[]=vocabularyCategories.map(category=>({...category,words:allowedActions.filter(action=>action.categories.includes(category.id)).map(action=>action.word),icon:<VocabularyCategoryIcon category={category.id}/>})).filter(group=>group.words.length>0)
+ const objectSources=capability.objects(action).filter(item=>subjectCanPerform(actor,action,item.noun))
+ const baseObject=objectSources.find(item=>item.word===object)??objectSources[0]
+ const baseNoun=lesson.vocabulary.find(item=>item.word===baseObject?.noun)
+
+ const refChoices=(type:'pronoun'|'name')=>!baseObject||!baseNoun?[]:(type==='pronoun'?objectPronouns(baseNoun):namedNouns(baseNoun,lesson.subjectModes).filter(choice=>meaningForWord(baseNoun)?.kind!=='person'||choice.word.toLowerCase()!==actor.word.toLowerCase())).map(choice=>({...baseObject,word:choice.word,thai:choice.thai,reference:choice.reference}))
+ type ObjectChoice=typeof objectSources[number]&{reference?:NominalReference}
+ const objectBlock=nounBlock<ObjectChoice>({noun:objectSources,pronoun:refChoices('pronoun'),name:refChoices('name')},objectMode,objectMode==='noun'?object:destinationWord)
  const id=useId(),th=getLanguage()==='th',board=useRef<HTMLElement>(null)
  const {explaining,explain}=useMatrixEducation(board,`${id}-explanation`,()=>setActive(null))
- if(determiner&&lesson.owners&&!lesson.owners.includes(determiner))throw new Error('Determiner outside lesson scope')
+ if(determiner&&lesson.owners&&!lessonDeterminers(lesson).some(item=>item.word===determiner))throw new Error('Determiner outside lesson scope')
  if(personBlock.mode==='pronoun'&&!capability.subjects.some(item=>item.word.toLowerCase()===subject))throw new Error('Subject outside lesson scope')
- const pair=actionDialogue(subject,action,{question:lesson.actionQuestion,vocabulary:lesson.vocabulary,object,determiner:determiner??(!initialAction&&objectBlock.mode==='noun'&&objectBlock.selected&&!objectBlock.selected.phrase?.determiner?'the':undefined),subject:personBlock.mode==='pronoun'?(mode==='answer'?answerPronoun??(lesson.actionReply==='same-subject'?capability.subjects.find(item=>item.word.toLowerCase()===subject):undefined):undefined):personBlock.selected,destination:namedDestination}),sentence=pair[mode]
+ const pair=actionDialogue(subject,action,{blueprint:capability.frame(action),question:lesson.actionQuestion,vocabulary:lesson.vocabulary,object:objectBlock.mode==='noun'?objectBlock.selected?.word:baseObject?.word,objectReference:objectBlock.selected?.reference,determiner:objectBlock.mode==='noun'?determiner??(!initialAction&&objectBlock.mode==='noun'&&objectBlock.selected&&!objectBlock.selected.phrase?.determiner?'the':undefined):undefined,subject:personBlock.mode==='pronoun'?(mode==='answer'?answerPronoun??(lesson.actionReply==='same-subject'?capability.subjects.find(item=>item.word.toLowerCase()===subject):undefined):undefined):personBlock.selected}),sentence=pair[mode]
  const roles:Role[]=sentence.units.map(unit=>unit.role)
- const slots=roles.map(role=>role==='question'||role==='preposition'?0:role==='be'||role==='action'?1:role.endsWith('determiner')?2:3)
- const objects=capability.objects(action)
+ const slots=roles.map(role=>sentenceRoleSlots[role])
+ const objects=capability.objects(action).filter(item=>subjectCanPerform(actor,action,item.noun))
  const nounCatalogue:ClassroomWord[]=objects.map(object=>lesson.vocabulary.find(item=>item.word===object.noun)!)
  const owners=objectBlock.mode==='noun'&&pair.object?capability.determiners(objects.find(item=>item.noun===pair.object!.noun)!):[]
  const choicesFor=(role:Role)=>role==='person'?personBlock.choices:role==='object'?(objectBlock.mode==='noun'?nounCatalogue:objectBlock.choices):role==='determiner'?owners:role==='action'&&(mode==='answer'||lesson.actionQuestion==='destination')?allowedActions:[]
  const valueFor=(role:Role)=>sentence.units[roles.indexOf(role)].english.replace(/[?.]$/,'')
- const iconFor=(role:Role,value=valueFor(role))=>role.endsWith('determiner')?<WordSlotIcon slot={2} word={value}/>:role==='preposition'?<WordSlotIcon slot={0}/>:role==='person'?(personBlock.mode==='name'?<ProperNounIcon word={value}/>:personBlock.mode==='noun'?<VocabularyPicture word={value.replace(/^the /,'')}/>:<PronounIcon word={value}/>):role==='object'?(objectBlock.mode==='name'?<ProperNounIcon word={value.replace(/^to /,'')}/>:<VocabularyPicture word={value}/>):role==='be'?<WordSlotIcon slot={1} plural={value==='are'}/>:lesson.actionQuestion==='destination'&&role==='question'?<WordSlotIcon slot={0}/>:lesson.actionQuestion==='destination'&&role==='action'?<ActionIcon word={value}/>:role==='question'||mode==='question'?<img className="cw-game-icon" src={`/classroom/icons/constructions/${role==='question'?'what':'doing'}.png`} alt="" draggable={false}/>:<ActionIcon word={value}/>
- const category=(role:Role)=>({'person-determiner':th?'คำนำหน้านาม':'Determiner',determiner:th?'คำนำหน้านาม':'Determiner',preposition:th?'คำบุพบท':'Preposition',question:th?'คำถาม':'Question',person:th?'ผู้กระทำ':'Person',be:th?'คำกริยา':'Verb',action:th?'การกระทำ':'Action',object:allowedActions.find(item=>item.word===action)?.complement==='destination'?(th?'สถานที่':'Place'):(th?'สิ่งที่กระทำต่อ':'Object')})[role]
+ const iconFor=(role:Role,value=valueFor(role))=>role.endsWith('determiner')?(/’s$/.test(value)?<ProperNounIcon word={value.slice(0,-2)}/>:<WordSlotIcon slot={2} word={value}/>):role==='description'?<DescriptionPicture word={value}/>:role==='preposition'?<WordSlotIcon slot={0}/>:role==='person'?(personBlock.mode==='name'?<ProperNounIcon word={value}/>:personBlock.mode==='noun'?<VocabularyPicture word={value.replace(/^the /,'')}/>:<PronounIcon word={value}/>):role==='object'?(objectBlock.mode==='pronoun'?<PronounIcon word={value}/>:objectBlock.mode==='name'?<ProperNounIcon word={value}/>:<VocabularyPicture word={value}/>):role==='be'?<WordSlotIcon slot={1} plural={value==='are'}/>:lesson.actionQuestion==='destination'&&role==='question'?<WordSlotIcon slot={0}/>:lesson.actionQuestion==='destination'&&role==='action'?<ActionIcon word={value}/>:role==='question'||mode==='question'?<img className="cw-game-icon" src={`/classroom/icons/constructions/${role==='question'?'what':'doing'}.png`} alt="" draggable={false}/>:<ActionIcon word={value}/>
+ const category=(role:Role)=>({description:th?'คำคุณศัพท์':'Description','person-determiner':th?'คำนำหน้านาม':'Determiner',determiner:th?'คำนำหน้านาม':'Determiner',preposition:th?'คำบุพบท':'Preposition',question:th?'คำถาม':'Question',person:th?'ผู้กระทำ':'Person',be:th?'กริยาช่วย':'Auxiliary verb',action:th?'กริยาหลัก':'Main verb',object:allowedActions.find(item=>item.word===action)?.complement==='destination'?(th?'สถานที่':'Place'):(th?'สิ่งที่กระทำต่อ':'Object')})[role]
  function groupsFor(role:Role):WordChoiceGroup[]{
   if(role==='action'&&(mode==='answer'||lesson.actionQuestion==='destination'))return actionGroups
   return []
@@ -69,11 +85,11 @@ export default function ActionMatrix({lesson,settings={},wordScores,initialActio
   board.current?.querySelector<HTMLButtonElement>(`[data-word-role="${active}"]`)?.focus({preventScroll:true})
  }
  function choose(role:Role,value:string){
-  if(role==='person'&&personBlock.mode!=='pronoun')setPersonWord(value)
+  if(role==='person'&&personBlock.mode!=='pronoun'){setPersonWord(value);if(personBlock.mode==='noun')setSemanticActorNoun(value.replace(/^the /,''))}
   else if(role==='person'){
    if(mode==='answer'){setAnswerPronoun(subjectChoices.find(item=>item.word===value));if(lesson.actionReply==='same-subject')setSubject(value.toLowerCase() as ActionSubject)}
    else {setSubject(value.toLowerCase() as ActionSubject);setAnswerPronoun(undefined)}
-  }else if(role==='object'){if(objectBlock.mode==='name')setDestinationWord(value);else {const next=objects.find(item=>item.noun===value)!;setObject(next.word);if(determiner&&['a','an'].includes(determiner)&&!capability.determiners(next).some(item=>['a','an'].includes(item.word)))setDeterminer(undefined)}}
+  }else if(role==='object'){if(objectBlock.mode!=='noun')setDestinationWord(value);else {const next=objects.find(item=>item.noun===value)!;setObject(next.word);if(determiner&&['a','an'].includes(determiner)&&!capability.determiners(next).some(item=>['a','an'].includes(item.word)))setDeterminer(undefined)}}
   else if(role==='determiner')setDeterminer(value as Determiner)
   else if(role==='action'){
    setDeterminer(undefined)
@@ -88,10 +104,10 @@ export default function ActionMatrix({lesson,settings={},wordScores,initialActio
   return <MatrixPicker role={role} label={`Change ${role}`} expanded={active===role} controls={`${id}-words`} onClick={()=>setActive(active===role?null:role)}/>
  }
  const details=roles.map(role=>({label:category(role),count:choicesFor(role).length||1,icon:iconFor(role),control:picker(role)}))
- const personSwapper={label:'Subject block mode',modes:personBlock.modes,mode:personBlock.mode,onChange:(next:NounMode)=>{setPersonMode(next);setActive(null)}}
+ const personSwapper={label:'Subject block mode',modes:personBlock.modes,mode:personBlock.mode,onChange:(next:NounMode)=>{if(personBlock.mode==='noun')setSemanticActorNoun(personBlock.selected?.phrase?.noun);setPersonMode(next);setActive(null)}}
  const objectSwapper={label:'Object block mode',modes:objectBlock.modes,mode:objectBlock.mode,onChange:(next:NounMode)=>{setObjectMode(next);setActive(null)}}
- const nounGroups=roles.flatMap((role,index)=>role==='person-determiner'?[{start:index,end:index+2}]:[])
- const layout={nounGroups,actionComplement:mode==='answer'&&!!pair.object,leadingCount:mode==='answer'&&pair.object?(roles.includes('preposition')?4:3):undefined,subjectSwapper:mode==='answer'?personSwapper:undefined,nounSwapper:mode==='question'?personSwapper:pair.object?objectSwapper:undefined,construction:mode==='question'?'action-question' as const:'action-answer' as const,noun:mode==='answer'&&roles.includes('determiner')?'phrase' as const:'single' as const}
+ const nounGroups=roles.flatMap((role,index)=>role==='person-determiner'?[{start:index,end:index+(roles[index+1]==='description'?3:2)}]:[])
+ const layout={nounGroups,nounSize:roles[roles.indexOf('object')-1]==='description'?3:undefined,actionComplement:mode==='answer'&&!!pair.object,leadingCount:mode==='answer'&&pair.object?(roles.includes('preposition')?4:3):undefined,subjectSwapper:mode==='answer'?personSwapper:undefined,nounSwapper:mode==='question'?personSwapper:pair.object?objectSwapper:undefined,construction:mode==='question'?'action-question' as const:'action-answer' as const,noun:mode==='answer'&&roles.includes('determiner')?'phrase' as const:'single' as const}
  if(explaining!==null&&settings.explanations!==false){
   const role=roles[explaining],selected=valueFor(role),slot=slots[explaining]
   if((role==='object'||role==='determiner')&&objectBlock.mode==='noun'&&pair.object)return <MatrixExplanation id={`${id}-explanation`} slot={role==='object'?3:2} value={(pair.object.phrase.determiner?.english??'the') as Determiner} onChange={setDeterminer} onBack={()=>explain(null)} word={pair.object.noun} thai={pair.object.phrase.nounThai} onWord={value=>choose('object',value)} catalogue={nounCatalogue} owners={owners} verbs={[]} allowSelection={settings.explanationSelection!==false}/>
@@ -99,7 +115,7 @@ export default function ActionMatrix({lesson,settings={},wordScores,initialActio
    <section className="cw-reference-word">
     <EducationSectionHeading icon="usage">{th?'การใช้คำนี้':'How it works'}</EducationSectionHeading>
     {(role==='person'||role==='be')&&<AgreementPairs question={mode==='question'} pairs={subjectChoices.map(item=>({person:item.word,verb:subjectVerb(item),icon:<PronounIcon word={item.word}/>,selected:valueFor('person').toLowerCase()===item.word.toLowerCase()}))}/>}
-    <div className="cw-sentence-board"><ExampleLanguage matrix {...sentence} layout={layout} semanticSlots={slots} slotDetails={details.map(({control,...detail})=>detail)} settings={{explanations:false,wordPicker:false,layout:{density:'compact'}}}/></div>
+    <div className="cw-sentence-board"><ExampleLanguage matrix {...sentence} layout={layout} semanticSlots={slots} slotDetails={details.map(detail=>({...detail,control:undefined}))} settings={{explanations:false,wordPicker:false,layout:{density:'compact'}}}/></div>
    </section>
    <PronunciationComparison word={selected}/>
    {settings.explanationSelection!==false&&choicesFor(role).length>1&&<section className="cw-vocabulary-section">

@@ -1,3 +1,8 @@
+import {possessiveFor} from '../sentenceRules/possessives'
+import {ownerThai,type Determiner} from './model'
+import type {LanguageRole} from './sentenceRoles'
+import {referencePhrase,type NominalReference} from '../sentenceRules/nominalReferences'
+import {nounPhraseUnits} from './nounPhrase'
 import { subjectPronouns, subjectVerb, type SubjectWord } from './subjectEngine'
 import type { ClassroomWord } from './model'
 import { nounsForSentence } from '../sentenceRules/choices'
@@ -27,10 +32,15 @@ export function peopleSentence(pattern:PeoplePattern,person:Person,place:Classro
 export const peopleAudio = (sentence:string) => `/audio/race-lesson-three/people-${sentence.toLowerCase().replace(/[^a-z]+/g,'-').replace(/-$/,'')}.wav`
 
 /** Names of places omit the article; verb agreement always belongs to the subject. */
-export function locationAnswer(subject:SubjectWord,place:ClassroomWord,namedPlace=false) {
- const verb=subjectVerb(subject),name=subject.word[0].toUpperCase()+subject.word.slice(1)
- assertSentence({blueprint:'person-at-place',subject,verb,noun:namedPlace?{...place,meaning:{kind:'place',locationPrepositions:['at']}}:place,determiner:namedPlace?undefined:'the',namedPlace})
- return {english:`${name} ${verb} at ${namedPlace?'':'the '}${place.word}.`,thai:`${subject.thai}${subject.kind?' ':''}อยู่ที่${place.thai}`,
-  units:[{english:name,thai:subject.thai},{english:verb,thai:'อยู่'},{english:'at',thai:'ที่'},
-   ...(!namedPlace?[{english:'the',thai:'ที่กำลังพูดถึง'}]:[]),{english:`${place.word}.`,thai:place.thai}]}
+export function locationAnswer(subject:SubjectWord,place:ClassroomWord,namedPlace=false,reference?:NominalReference,determiner:Determiner='the') {
+ const verb=subjectVerb(subject)
+ assertSentence({blueprint:'person-at-place',subject,verb,noun:namedPlace?{...place,meaning:{kind:'place',locationPrepositions:['at']}}:place,determiner:namedPlace?undefined:determiner,namedPlace})
+ const base={noun:place.word,nounThai:place.thai,...(!namedPlace?{determiner:possessiveFor(determiner)??{english:determiner,thai:ownerThai(determiner)}}:{}),preposition:{english:'at',thai:'ที่'}}
+ const phrase=reference?referencePhrase(place,base,reference,true):base
+ const first=subject.phrase?nounPhraseUnits(subject.phrase).map(unit=>({...unit,role:unit.role==='determiner'?'person-determiner' as const:unit.role==='description'?'description' as const:'person' as const})):[{english:subject.word,thai:subject.thai,role:'person' as const}]
+ const units:{english:string;thai:string;role:LanguageRole}[]=[...first,{english:verb,thai:'อยู่',role:'be' as const},...nounPhraseUnits(phrase).map(unit=>({...unit,role:unit.role==='noun'?'object' as const:unit.role}))]
+ units[0]={...units[0],english:units[0].english[0].toUpperCase()+units[0].english.slice(1)}
+ units[units.length-1]={...units[units.length-1],english:units[units.length-1].english+'.'}
+ const placeThai=phrase.nounThai+(!reference&&!namedPlace&&determiner!=='the'?ownerThai(determiner):'')
+ return {english:units.map(unit=>unit.english).join(' '),thai:`${subject.phrase?.nounThai??subject.thai}อยู่${reference?.mode==='pronoun'?'':'ที่'}${placeThai}`,units}
 }

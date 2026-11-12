@@ -32,3 +32,11 @@ it('restricts generated candidates by curriculum and ranks by familiar-word shar
  expect(ranked).toHaveLength(1);expect(ranked[0].familiarShare).toBe(.5)
  expect(()=>rankQuadrantCandidates(candidates,{vocabularyThroughLesson:2,allowedStructures:[],familiarWordShare:2})).toThrow()
 })
+it('renders a description as a separate fadeable card within the noun group',()=>{
+ const d:LanguageDocument={english:'the red bag',thai:'',construction:'noun-phrase',units:[{english:'the',thai:'',role:'determiner'},{english:'red',thai:'',role:'description'},{english:'bag',thai:'',role:'object'}]}
+ const html=renderToStaticMarkup(<LanguageQuadrant scores={{'en:red':25}} request={{document:d,presentation:{fadeMode:true,keepIconsWhenFading:true}}}/>)
+ expect(html).toContain('data-group-size="3"')
+ expect(html).toContain('description-picture')
+ expect(html).toContain('opacity:0')
+ expect(html).toContain('bag')
+})

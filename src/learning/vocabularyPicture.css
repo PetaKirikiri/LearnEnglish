@@ -16,3 +16,11 @@
 .classroom .example-matrix .cw-slot-role .vocabulary-picture-art{display:grid;height:80px;width:80px;flex-shrink:0;margin:0}
 
 @media(max-width:700px){.classroom .example-matrix .cw-slot-role .vocabulary-picture-art{width:56px;height:56px}}
+
+/* Tight upper-body portraits: use tile width, crop only surplus torso below. */
+.everyday-person{overflow:hidden}.everyday-person .person-copy{grid-area:1/1;width:100%;height:100%;position:relative;overflow:hidden;border-radius:6px}.everyday-person .person-copy>img{width:100%;height:100%;object-fit:cover;object-position:center top}.everyday-person:has(.person-copy:nth-child(2)) .person-copy{width:76%;height:84%}.everyday-person .person-copy:first-child{justify-self:end;align-self:start}.everyday-person .person-copy:nth-child(2){justify-self:start;align-self:end;filter:drop-shadow(2px 0 1px white)}
+.description-picture{width:100%;height:100%;max-width:90px;max-height:70px}
+
+.everyday-person.vocabulary-picture-art .person-copy>img:not(.family-focus){width:100%;height:100%}
+
+.family-person .person-copy>img{object-fit:contain;object-position:center}

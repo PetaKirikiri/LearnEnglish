@@ -1,0 +1,106 @@
+{
+  "tool": "built-in image generation",
+  "style": "Friendly 3D classroom vocabulary, transparent cutout, readable at 60 pixels",
+  "assets": [
+    {
+      "id": "using",
+      "prompt": "A brown-haired boy in a blue shirt actively taps a large smartphone with an extended finger, screen visible. Fingers interacting, not merely holding.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-780e8400-96c5-4753-8779-b83944f49ae9.png"
+    },
+    {
+      "id": "carrying",
+      "prompt": "A brown-haired boy in a blue shirt walking while carrying a large heavy school bag with both arms, body leaning under its weight.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-84e0c3a6-3262-4102-992a-cb49f788b42b.png"
+    },
+    {
+      "id": "finding",
+      "prompt": "A brown-haired boy in a blue shirt has just discovered a large shiny key under the edge of a cushion, lifting the cushion with one hand and reaching toward the visible key with the other, delighted surprised face.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-2042bd9f-5552-4fee-a611-0822860bb02b.png"
+    },
+    {
+      "id": "buying",
+      "prompt": "An adult man hands a large coin to a shopkeeper's outstretched hand while receiving one vivid red apple. Focus on exchange, coin and apple, faces secondary.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-1f62eb54-9f92-40c4-8415-f47ae49f8b89.png"
+    },
+    {
+      "id": "closing",
+      "prompt": "Close-up of a boy's blue shirt torso and hands pushing a large open book shut, covers almost together, obvious closing motion and a simple curved movement swoosh, no text.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-b443d72f-f178-4691-8e8f-b158664859e3.png"
+    },
+    {
+      "id": "wearing",
+      "prompt": "A smiling brown-haired boy already dressed in a vivid blue short-sleeved shirt, points with both index fingers at the shirt on his chest. Shirt dominates composition, fully dressed, no pulling fabric.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-83461d29-5b89-4ad5-b727-a0da893308e6.png"
+    },
+    {
+      "id": "putting-on",
+      "prompt": "A fully clothed brown-haired boy puts a bright blue overshirt on OVER a white T-shirt, one arm visibly sliding into a sleeve, overshirt still open. Hands and sleeve prominent.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-094db8bc-dfe7-4b39-9102-71b182098db8.png"
+    },
+    {
+      "id": "taking-off",
+      "prompt": "A fully clothed brown-haired boy removes a bright blue overshirt FROM OVER a white T-shirt. One arm pulls out of the sleeve, overshirt off one shoulder, white undershirt remains fully covering torso. Clear removal gesture.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-ff2909b5-1cb9-4b28-a205-e2d48b5f3bb1.png"
+    },
+    {
+      "id": "riding",
+      "prompt": "An adult man wearing a bicycle helmet actively rides a vivid red bicycle, both hands steering handlebars, feet on pedals. Tight compact three-quarter composition with bike and rider fully recognizable.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-7d7a5bb0-5927-4727-a354-434925722f57.png"
+    },
+    {
+      "id": "catching",
+      "prompt": "An adult man raises his hand to hail a large approaching blue city bus, front of bus with windshield and door close beside him. The waving gesture and bus dominate, no lettering or numbers.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-d232c892-fcc1-4bf1-80a5-b63fbf7ddeea.png"
+    },
+    {
+      "id": "getting-on",
+      "prompt": "An adult man stepping up into the open doorway of a large blue bus, one foot on the step and one hand holding the rail. Doorway and boarding action dominate.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-8c036a0e-cf91-498e-bedc-36dfa1172103.png"
+    },
+    {
+      "id": "helping",
+      "prompt": "A boy in a blue shirt gently helps another fully clothed child stand up by extending his hand and pulling them up. Two figures, visible linked hands, cooperative supportive gesture.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-c4f944d8-6f74-41b0-8577-8f23274a0b83.png"
+    },
+    {
+      "id": "watching",
+      "prompt": "A brown-haired boy in blue shirt attentively watches a small television showing a vivid red ball. Three-quarter side view, eyes clearly directed at the screen, no text.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-f8041bc2-a6b0-4a2d-8373-3f3019729c36.png"
+    },
+    {
+      "id": "teaching",
+      "prompt": "A friendly adult woman shows a child an open book, points at a large apple picture on its page while the child attentively follows. Book and pointing teaching gesture dominate, no text.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-ee5b6d46-fd5b-4d16-b58b-4a2b1b4a1393.png"
+    },
+    {
+      "id": "sitting",
+      "prompt": "A brown-haired boy in a blue shirt sits naturally on a simple chair, side three-quarter view, bent knees and hips clearly visible, feet on ground. Whole pose tightly fills square.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-6faf2e39-faab-4e8e-b711-3bdc0e0d109d.png"
+    },
+    {
+      "id": "standing",
+      "prompt": "A brown-haired boy in a blue shirt stands upright on both straight legs, both feet visible planted on ground, arms relaxed, head to toe, compact silhouette.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-f758065f-115a-412a-bc7d-dc2e6f1028e8.png"
+    },
+    {
+      "id": "waiting",
+      "prompt": "A brown-haired boy in a blue shirt stands waiting, looks down at an oversized wristwatch on his raised wrist, other hand on hip, patient slightly bored expression. Watch and face large.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-7320c9e4-855b-417f-954d-df663bc12887.png"
+    },
+    {
+      "id": "arriving",
+      "prompt": "An adult man carrying a blue bag steps INTO a simple open doorway toward the viewer from outside. Happy greeting raised hand, front view, one foot crossing the doorstep. Doorframe tightly surrounds figure.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-fcc6be41-bafa-4f9a-8b28-7c0aa929addd.png"
+    },
+    {
+      "id": "leaving",
+      "prompt": "An adult man carrying a blue bag steps OUT through an open doorway, back three-quarter view moving away, one hand waving goodbye over his shoulder. Doorframe tightly surrounds figure.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-f908badd-a658-4856-b33f-8c1dc730a0d2.png"
+    },
+    {
+      "id": "cleaning",
+      "prompt": "Close-up of an adult man's blue shirt torso and hands wiping a tabletop with a bright yellow cloth, a clear clean shiny patch and two small sparkles beside the wiping hand. No bucket or unrelated props.",
+      "path": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-44f37dde-9617-450a-87ba-9253862f848e.png"
+    }
+  ]
+}

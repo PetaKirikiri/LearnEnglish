@@ -11,9 +11,9 @@
 .classroom .example-matrix .tonight-slots{display:grid;grid-template-columns:1fr .72fr 1fr 1.4fr;grid-template-rows:auto;gap:clamp(8px,1.2cqw,20px);padding:0;margin:0}
 .classroom .example-matrix .tonight-slot{grid-row:1;min-height:clamp(155px,26cqh,260px);padding:38px 12px 24px;border-radius:14px;border:1px solid #bfd9e7;background:#e7f3fc;color:#285978;gap:12px;box-shadow:0 4px 0 #c5dce8}
 .classroom .example-matrix .slot-0{grid-column:1}
-.classroom .example-matrix .slot-1{grid-column:2;background:#eaf4e2;border-color:#c9ddbc;color:#45664a;box-shadow:0 4px 0 #c7d9bb}
-.classroom .example-matrix .slot-2{grid-column:3;background:#f0eafa;border-color:#d7cbea;color:#6b5588;box-shadow:0 4px 0 #d7cbe5}
-.classroom .example-matrix .slot-3{grid-column:4;background:#f0eafa;border-color:#d7cbea;color:#6b5588;box-shadow:0 4px 0 #d7cbe5}
+.classroom .example-matrix .slot-1{grid-column:2;background:var(--sentence-verb-fill);border-color:var(--sentence-verb-edge);color:var(--sentence-verb-ink);box-shadow:0 4px 0 #c7d9bb}
+.classroom .example-matrix .slot-2{grid-column:3;background:var(--sentence-noun-fill);border-color:var(--sentence-noun-edge);color:var(--sentence-noun-ink);box-shadow:0 4px 0 #d7cbe5}
+.classroom .example-matrix .slot-3{grid-column:4;background:var(--sentence-noun-fill);border-color:var(--sentence-noun-edge);color:var(--sentence-noun-ink);box-shadow:0 4px 0 #d7cbe5}
 .classroom .example-matrix .slot-heading{top:12px;left:14px;opacity:.55;font-size:12px}
 .classroom .example-matrix .slot-role-icon{width:27px;height:27px;flex:none;opacity:.75}
 .classroom .example-source{font-family:'Fredoka','Noto Sans Thai',sans-serif;font-size:clamp(26px,4cqw,58px);font-weight:500;line-height:1.15;letter-spacing:-.025em;overflow-wrap:anywhere}

@@ -2,6 +2,7 @@ import {useCallback,useEffect,useState} from 'react'
 import {JourneyPassNames,useJourneyPasses} from './JourneyPasses'
 import ActionStarCourse from './ActionStarCourse'
 import NumberFoundation from './NumberFoundationCourse'
+import GeneratedPractice from './GeneratedPractice'
 import PracticeGold from './PracticeGold'
 import type {PracticeLevel} from './PracticeLevelPicker'
 import type {MatrixSettings} from '../learning/sentenceMatrix/model'
@@ -24,21 +25,21 @@ export function runStars(result:RunResult){
  return result.score>=Math.ceil(result.total*.7)?1:0
 }
 export function recordStars(level:PracticeLevel,record?:RecordEntry){
- if(!record)return 0
+ if(!record||record.total!==(level===6?90:briefingFor(level).total))return 0
  return Math.max(record.stars??0,runStars({level,score:record.best,total:record.total,passed:record.cleared}))
 }
 export function mergeRun(record:JourneyRecord,result:RunResult):JourneyRecord{
- if(result.total!==(result.level===6?150:briefingFor(result.level).total))return record
+ if(result.total!==(result.level===6?90:briefingFor(result.level).total))return record
  if(!Number.isInteger(result.total)||result.total<=0||!Number.isInteger(result.score)||result.score<0||result.score>result.total)return record
- const old=record[result.level],better=!old||result.score/result.total>old.best/old.total
+ const previous=record[result.level],old=previous?.total===result.total?previous:undefined,better=!old||result.score/result.total>old.best/old.total
  return {...record,[result.level]:{best:better?result.score:old.best,total:better?result.total:old.total,cleared:!!old?.cleared||result.passed,stars:Math.max(recordStars(result.level,old),runStars(result))}}
 }
 function loadRecords(key:string):JourneyRecord{
  try{
   const data=JSON.parse(localStorage.getItem(key)??'{}')
-  return Object.fromEntries(Object.entries(data??{}).filter(([id,value])=>{
+  return Object.fromEntries(Object.entries(data??{}).map(([id,value])=>{const r=value as RecordEntry;return [id,Number(id)===6&&r?.total===150?{...r,best:Math.round(r.best*90/150),total:90,stars:r.cleared?3:r.stars}:r] as [string,RecordEntry]}).filter(([id,value])=>{
    const r=value as RecordEntry
-   return [1,2,3,4,5,6].includes(Number(id))&&r&&Number.isInteger(r.best)&&r.best>=0&&Number.isInteger(r.total)&&r.total>0&&r.best<=r.total&&typeof r.cleared==='boolean'&&(r.stars===undefined||(Number.isInteger(r.stars)&&r.stars>=0&&r.stars<=3))
+   return [1,2,3,4,5,6].includes(Number(id))&&r&&Number.isInteger(r.best)&&r.best>=0&&Number.isInteger(r.total)&&r.total===(Number(id)===6?90:briefingFor(Number(id) as PracticeLevel).total)&&r.best<=r.total&&typeof r.cleared==='boolean'&&(r.stars===undefined||(Number.isInteger(r.stars)&&r.stars>=0&&r.stars<=3))
   }))
  }catch{return {}}
 }
@@ -85,15 +86,27 @@ function Journey(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settin
  const {passes,unavailable}=useJourneyPasses(props.userId,records)
  const complete=useCallback((level:PracticeLevel,score:number,total:number,passed:boolean)=>{const next={level,score,total,passed};setRecords(old=>mergeRun(old,next));setResult(next);setScreen('result')},[])
  useEffect(()=>{try{localStorage.setItem(key,JSON.stringify(records))}catch{/* Practice keeps its own durable answer queue. */}},[key,records])
- function returnToMap(){setScreen('map')}
- const start=(value:PracticeLevel)=>{setLevel(value);setScreen('run')}
+ useEffect(()=>{
+  const back=()=>setScreen('map')
+  window.addEventListener('popstate',back)
+  return()=>window.removeEventListener('popstate',back)
+ },[])
+ function returnToMap(){
+  setScreen('map')
+  if(history.state?.englishPracticeRound)history.back()
+ }
+ const start=(value:PracticeLevel)=>{
+  if(screen==='map')history.pushState({...history.state,englishPracticeRound:true},'',location.href)
+  setLevel(value);setScreen('run')
+ }
  const nextLevel=journeyBriefings.find(item=>!records[item.id]?.cleared)?.id
  if(import.meta.env.DEV&&new URLSearchParams(location.search).has('preview'))return <NumberFoundation {...props}/>
  if(screen==='run'&&level===6)return <ActionStarCourse settings={props.settings} onLevel={start} userId={props.userId} onExit={returnToMap} onComplete={(score,total)=>complete(6,score,total,true)}/>
- if(screen==='run')return <NumberFoundation key={level} {...props} initialLevel={level} newRun onLevelRequest={start} onComplete={complete} onExit={returnToMap}/>
+ if(screen==='run')return <GeneratedPractice key={level} {...props} level={level} onLevel={start} onComplete={complete} onExit={returnToMap}/>
  return <main className="practice-journey" lang="th">
   <header className="journey-header">
    <img src="/brand/success-university-su.svg" alt="Success University"/>
+   <a className="vocab-account-link" href="/vocabulary-review.html">My words</a>
    <PracticeGold userId={props.userId}/>
   </header>
   {screen==='result'&&result?<section className="journey-result"><div className="journey-result-stars" aria-label={`${result.level===6&&result.passed?3:runStars(result)} ดาว`}>{[1,2,3].map(star=><span key={star} className={runStars(result)>=star||result.level===6&&result.passed?'earned':''}>★</span>)}</div><h1>{result.passed?'ผ่านแล้ว!':'ลองอีกครั้ง'}</h1><p>LEVEL {result.level}</p><strong>{result.score}<small> / {result.total}</small></strong><div className="journey-result-actions"><button className="journey-card-play" onClick={()=>start(result.passed&&level<6?(level+1) as PracticeLevel:level)}>{result.passed&&level<6?'ด่านต่อไป →':'เล่นอีกครั้ง ↻'}</button><button onClick={returnToMap}>เลือกด่าน</button></div></section>:<section className="journey-map" aria-label="เลือกด่าน">

@@ -1,17 +1,20 @@
+import {possessiveFor} from './possessives'
+import {adjectiveFitsNoun} from './adjectiveSemantics'
+import {determinerAgrees} from './determiners'
 import {meaningProfiles} from './meaningProfiles'
 import type {ClassroomWord} from '../sentenceMatrix/model'
 import {categoriesForWord} from '../sentenceMatrix/vocabularyCategories'
 import {subjectVerb,type SubjectWord} from '../sentenceMatrix/subjectEngine'
 export type MeaningKind='place'|'person'|'physical-object'|'abstract'
-export type WordMeaning={actionContexts?:readonly ('food'|'drink'|'readable'|'destination'|'holdable'|'openable'|'washable')[];kind:MeaningKind;countability?:'count'|'mass'|'plural-only';roles?:readonly 'destination'[];locationPrepositions?:readonly ('at'|'in'|'on')[]}
+export type WordMeaning={actionContexts?:readonly import('./actionDialogue').ObjectCategory[];kind:MeaningKind;countability?:'count'|'mass'|'plural-only';roles?:readonly 'destination'[];locationPrepositions?:readonly ('at'|'in'|'on')[]}
 export type BlueprintId='where-noun'|'where-person'|'person-at-place'
 export const sentenceBlueprints={
- 'where-noun':{pattern:'Where {be} {determiner} {noun}?',nounKinds:['place','person','physical-object'],agreement:'noun-number'},
- 'where-person':{pattern:'Where {be} {subject}?',nounKinds:[],agreement:'subject-person'},
- 'person-at-place':{pattern:'{subject} {be} at {determiner} {place}.',nounKinds:['place'],agreement:'subject-person'},
+ 'where-noun':{pattern:'Where {be} {determiner} {noun}?',nounKinds:['place','person','physical-object'],agreement:'noun-number',nounModes:['noun','pronoun','name']},
+ 'where-person':{pattern:'Where {be} {subject}?',nounKinds:[],agreement:'subject-person',nounModes:['noun','pronoun','name']},
+ 'person-at-place':{pattern:'{subject} {be} at {determiner} {place}.',nounKinds:['place'],agreement:'subject-person',nounModes:['noun','pronoun','name']},
 } as const
 export type RuleIssue={code:string;slot:string;word:string;message:string}
-export type SentenceRequest={blueprint:BlueprintId;noun?:ClassroomWord;subject?:SubjectWord;verb:string;determiner?:string;namedPlace?:boolean}
+export type SentenceRequest={description?:string;blueprint:BlueprintId;noun?:ClassroomWord;subject?:SubjectWord;verb:string;determiner?:string;namedPlace?:boolean}
 /** Authored meaning takes precedence; category mappings are explicit, never suffix guesses. */
 export function meaningForWord(word:ClassroomWord):WordMeaning|undefined{
  if(word.meaning)return word.meaning
@@ -34,6 +37,7 @@ export function validateSentence(request:SentenceRequest):RuleIssue[]{
   const noun=request.noun
   if(!noun)add('missing-noun','noun','','A noun is required.')
   else{
+   if(request.description&&!adjectiveFitsNoun(request.description,noun))add('incompatible-description','description',request.description,'This description does not fit this noun.')
    const meaning=meaningForWord(noun),allowed=sentenceBlueprints[request.blueprint].nounKinds as readonly string[]
    if(!meaning)add('unclassified-meaning','noun',noun.word,'Add a reviewed meaning category before using this word.')
    else if(!allowed.includes(meaning.kind)&&!(request.blueprint==='person-at-place'&&meaning.roles?.includes('destination')))add('incompatible-meaning','noun',noun.word,`${meaning.kind} does not fit ${request.blueprint}.`)
@@ -46,7 +50,8 @@ export function validateSentence(request:SentenceRequest):RuleIssue[]{
    }
   }
   if(request.namedPlace){if(request.determiner)add('proper-name-article','determiner',request.determiner,'This named place does not take a determiner in this blueprint.')}
-  else if(!['the','my','your','his','her','our','their'].includes(request.determiner??''))add('missing-determiner','determiner',request.determiner??'','Select an approved determiner.')
+  else if(!possessiveFor(request.determiner??'')&&!['the','my','your','his','her','our','their','this','that','these','those','some'].includes(request.determiner??''))add('missing-determiner','determiner',request.determiner??'','Select an approved determiner.')
+  else if(noun&&!determinerAgrees(request.determiner!,noun.number==='plural'||!!noun.pairOnly,meaningForWord(noun)?.countability==='mass'))add('determiner-agreement','determiner',request.determiner!,'The determiner must agree with this noun.')
  }
  return issues
 }

@@ -1,11 +1,13 @@
+import {composeLessonAction} from '../learning/sentenceRules/actionCapabilities'
+import {requestLesson} from '../learning/lessonRegistry'
 import type {PracticeLevel} from './PracticeLevelPicker'
 import type {LanguageDocument} from '../learning/sentenceMatrix/LanguageQuadrant'
-import {actionPracticeQuestions, type ActionPracticeQuestion} from './actionPracticeContent'
+import {ACTION_PRACTICE_ROUND_SIZE,actionPracticeQuestions, type ActionPracticeQuestion} from './actionPracticeContent'
 import {numberNounPool} from './numberFoundation'
 
 export type BriefingExample = {
  document:LanguageDocument
- audio:string
+ audio?:string
  switchLabel:string
  choices:readonly [string,string]
  correct:number
@@ -36,6 +38,12 @@ function actionExample(english:string,switchLabel:string,rule:string,focus:reado
  if(!q)throw new Error(`Missing recorded briefing example: ${english}`)
  return fromQuestion(q,switchLabel,rule,focus)
 }
+function destinationExample(subject:string,switchLabel:string,rule:string,focus:readonly string[]):BriefingExample{
+ const lesson=requestLesson(5)
+ const answer=composeLessonAction(lesson,{subject,action:'walking',object:'to the hotel',determiner:'the'}).answer
+ const other=composeLessonAction(lesson,{subject,action:'running',object:'to the hotel',determiner:'the'}).answer
+ return {document:{...answer,construction:'action-answer'},switchLabel,choices:[answer.thai,other.thai],correct:0,rule,focus}
+}
 function fromQuestion(q:ActionPracticeQuestion,switchLabel:string,rule:string,focus:readonly string[]):BriefingExample{
  return {document:{english:q.english,thai:q.thai,units:q.units,construction:q.level===4?'action-question':'action-answer'},audio:q.audioUrl,switchLabel,choices:q.choices,correct:q.correct,rule,focus}
 }
@@ -44,17 +52,17 @@ export const journeyBriefings:readonly LevelBriefing[]=[
  {id:1,title:'หนึ่งหรือหลาย',change:'new',changeText:'เสียงท้ายคำ',task:'ฟัง → เลือกจำนวน',total:30,examples:pair(1)},
  {id:2,title:'is หรือ are',change:'extend',changeText:'จากคำ → ทั้งประโยค',task:'ฟัง → เลือกจำนวน',total:30,examples:pair(2)},
  {id:3,title:'จับคู่ให้ถูก',change:'combine',changeText:'จำนวน + is / are',task:'ฟัง → เลือกถูก / ผิด',total:30,examples:pair(3)},
- {id:4,title:'ใครกำลังทำอะไร?',change:'new',changeText:'ถามถึงการกระทำ',task:'ฟัง → เลือกคำแปล',total:Math.min(30,actionPracticeQuestions.filter(q=>q.level===4).length),examples:[
+ {id:4,title:'ใครกำลังทำอะไร?',change:'new',changeText:'ถามถึงการกระทำ',task:'ฟัง → เลือกคำแปล',total:ACTION_PRACTICE_ROUND_SIZE,examples:[
   actionExample('What are you doing?','you','ถาม: is / are อยู่ก่อนคน · you ใช้ are',['are','you']),
   actionExample('What is he doing?','he / she','he / she ใช้ is · ถามว่าเขากำลังทำอะไร',['is','he']),
   actionExample('What are they doing?','we / they','we / they ใช้ are · หลายคน',['are','they']),
  ]},
  {id:5,title:'ตอบว่ากำลังทำอะไร',change:'extend',changeText:'จากถาม → ตอบ',task:'ฟัง → เลือกคำแปล',total:30,examples:[
-  actionExample('I am eating an apple.','I','ตอบ: I ใช้ am · eating = กำลังกิน',['I','am']),
-  actionExample('He is eating an apple.','he / she','he / she ใช้ is · กำลังกินเหมือนเดิม',['He','is']),
-  actionExample('They are eating an apple.','you / we / they','you / we / they ใช้ are · กำลังกินเหมือนเดิม',['They','are']),
+  destinationExample('I','I','ตอบ: I ใช้ am · walking = กำลังเดิน',['I','am']),
+  destinationExample('he','he / she','he / she ใช้ is · กำลังเดินเหมือนเดิม',['He','is']),
+  destinationExample('they','you / we / they','you / we / they ใช้ are · กำลังเดินเหมือนเดิม',['They','are']),
  ]},
- {id:6,title:'ใครทำอะไร · ของใคร',change:'combine',changeText:'คน + การกระทำ + เจ้าของ',task:'ฟัง → เลือกคำแปล',total:50,examples:[
+ {id:6,title:'ใครทำอะไร · ของใคร',change:'combine',changeText:'คน + การกระทำ + เจ้าของ',task:'ฟัง → เลือกคำแปล',total:30,examples:[
   actionExample('I am eating my apple.','my','my = ของฉัน · คนทำกับเจ้าของอาจไม่ใช่คนเดียวกัน',['my']),
   actionExample('I am eating your apple.','your','your = ของคุณ · ฉันกิน แต่แอปเปิลเป็นของคุณ',['your']),
  ]},

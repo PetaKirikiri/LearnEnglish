@@ -1,0 +1,38 @@
+begin;
+do $$
+declare sid uuid; a uuid; b uuid; j jsonb; g jsonb; artist uuid; other uuid; secret text:=repeat('d',64); pic text:='data:image/png;base64,iVBORw0KGgo=';
+begin
+ select id into a from public.profiles order by id limit 1;
+ select id into b from public.profiles where id<>a order by id limit 1;
+ insert into public.english_word_progress(learner_id,word_id,attempts,last_practised) values(a,'en:book',1,now()),(b,'en:book',1,now()) on conflict(learner_id,word_id) do update set attempts=greatest(english_word_progress.attempts,1);
+ j:=public.english_classroom('create',null,jsonb_build_object('hostSecret',secret));sid:=(j->>'id')::uuid;
+ insert into public.english_class_members(session_id,learner_id) values(sid,a),(sid,b);
+ g:=public.english_drawing_game('start',sid,jsonb_build_object('hostSecret',secret,'round',0,'seconds',60));
+ if g->>'phase'<>'drawing' or jsonb_array_length(g->'drawings')<>2 then raise exception 'Start failed';end if;
+ if exists(select 1 from jsonb_array_elements(g->'drawings') d where d->>'thai' is not null) then raise exception 'Host secret leak';end if;
+ perform set_config('request.jwt.claim.sub',a::text,true);
+ g:=public.english_drawing_game('state',sid);
+ if (select count(*) from jsonb_array_elements(g->'drawings') d where d->>'thai' is not null)<>1 then raise exception 'Prompt privacy failed';end if;
+ perform public.english_drawing_game('save',sid,jsonb_build_object('round',1,'picture',pic));
+ perform set_config('request.jwt.claim.sub',b::text,true);
+ perform public.english_drawing_game('save',sid,jsonb_build_object('round',1,'picture',pic));
+ begin perform public.english_drawing_game('next',sid,jsonb_build_object('round',1));raise exception 'Permission failure';exception when others then if sqlerrm='Permission failure' then raise;end if;end;
+ update public.english_drawing_games set deadline=now()-interval '1 second' where session_id=sid;
+ g:=public.english_drawing_game('state',sid);artist:=(g->>'artist')::uuid;other:=case when artist=a then b else a end;
+ if g->>'phase'<>'guessing' then raise exception 'Timer failed';end if;
+ perform set_config('request.jwt.claim.sub',artist::text,true);
+ g:=public.english_drawing_game('award',sid,jsonb_build_object('round',1,'artist',artist,'learner',other));
+ begin perform public.english_drawing_game('award',sid,jsonb_build_object('round',1,'artist',artist,'learner',other));raise exception 'Duplicate award accepted';exception when others then if sqlerrm='Duplicate award accepted' then raise;end if;end;
+ g:=public.english_drawing_game('next',sid,jsonb_build_object('hostSecret',secret,'round',1,'artist',artist));
+ g:=public.english_drawing_game('next',sid,jsonb_build_object('hostSecret',secret,'round',1,'artist',g->>'artist'));
+ if g->>'phase'<>'voting' then raise exception 'Voting failed';end if;
+ begin perform public.english_drawing_game('vote',sid,jsonb_build_object('round',1,'artist',artist));raise exception 'Self vote accepted';exception when others then if sqlerrm='Self vote accepted' then raise;end if;end;
+ perform public.english_drawing_game('vote',sid,jsonb_build_object('round',1,'artist',other));
+ perform public.english_drawing_game('vote',sid,jsonb_build_object('round',1,'artist',other));
+ g:=public.english_drawing_game('finish',sid,jsonb_build_object('hostSecret',secret,'round',1));
+ if g->>'voteCount'<>'1' then raise exception 'Vote count failed';end if;
+ if (select (v->>'points')::integer from jsonb_array_elements(g->'scores') v where v->>'id'=other::text)<>4 then raise exception 'Score failed';end if;
+ begin perform public.english_drawing_game('finish',sid,jsonb_build_object('hostSecret',secret,'round',1));raise exception 'Duplicate finish accepted';exception when others then if sqlerrm='Duplicate finish accepted' then raise;end if;end;
+end $$;
+rollback;
+select 'PASS: two-player round, privacy, permissions, timer, drawing saves, award, duplicate protection, voting and scores; test data rolled back' result;

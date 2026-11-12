@@ -1,3 +1,6 @@
+import {possessiveFor} from '../sentenceRules/possessives'
+import {nounSubjectModes} from '../sentenceRules/nominalReferences'
+import IdentificationMatrix from './IdentificationMatrix'
 import ActionMatrix from './ActionMatrix'
 import MatrixPicker from './MatrixPicker'
 import { subjectModes as availableSubjectModes } from './subjectEngine'
@@ -19,10 +22,11 @@ import '../../classroom/sentenceLine.css'
 
 export type SentenceMatrixProps = { initialAction?: {answerPronoun?:string;subject?:import('../sentenceRules/actionDialogue').ActionSubject;action?:string;object?:string;determiner?:import('./model').Determiner;personMode?:NounMode;personWord?:string}; lesson: MatrixLesson; settings?: MatrixSettings; wordScores?:import('../wordProgress/model').WordScores; word?:string; onWord?:(word:string)=>void; audio?:ReactNode }
 export default function SentenceMatrix(props: SentenceMatrixProps) {
-  if(props.lesson.pattern!==undefined&&!['people-location','present-action'].includes(props.lesson.pattern))throw new Error(`Unsupported sentence construction: ${props.lesson.pattern}`)
+  if(props.lesson.pattern!==undefined&&!['people-location','present-action','identification'].includes(props.lesson.pattern))throw new Error(`Unsupported sentence construction: ${props.lesson.pattern}`)
   const configured = {...props.lesson.settings,...props.settings}
   const settings = configured.fadeMode ? {...configured,explanations:false,wordPicker:false,explanationSelection:false} : configured
-  const scope = JSON.stringify([props.lesson.id,props.lesson.pattern,props.lesson.actions,props.lesson.actionReply,props.lesson.subjectModes,props.lesson.plural,props.lesson.initialOwner,props.lesson.past,props.lesson.owners,props.lesson.initialTense,props.lesson.initialWord,props.lesson.vocabulary,props.initialAction,settings])
+  const scope = JSON.stringify([props.lesson.id,props.lesson.pattern,props.lesson.actionGroup,props.lesson.actionQuestion,props.lesson.actions,props.lesson.actionBlueprints,props.lesson.actionReply,props.lesson.subjectModes,props.lesson.plural,props.lesson.initialOwner,props.lesson.past,props.lesson.owners,props.lesson.initialTense,props.lesson.initialWord,props.lesson.vocabulary,props.initialAction,settings])
+  if(props.lesson.pattern==='identification') return <IdentificationMatrix key={scope} {...props} settings={settings}/>
   if(props.lesson.pattern==='present-action') return <ActionMatrix key={scope} {...props} settings={settings}/>
   if(props.lesson.pattern==='people-location') return <PeopleLocationMatrix key={scope} {...props} settings={settings}/>
   return <LocationSentenceMatrix key={scope} {...props} settings={settings}/>
@@ -30,10 +34,10 @@ export default function SentenceMatrix(props: SentenceMatrixProps) {
 }
 export function LocationSentenceMatrix({lesson,settings={},word:controlledWord,onWord:notify,audio,wordScores}:SentenceMatrixProps) {
   const {catalogue,active,setActive,item,word,owner,verb,chooseWord:onWord,chooseOwner:setOwner,chooseVerb,canChooseVerb,sentence,owners,verbs,tense} = useLocationMatrix(lesson,controlledWord,notify)
-  const subjectModes=lesson.subjectModes
+  const subjectModes=nounSubjectModes(item,lesson.subjectModes)
   const [nounMode,setNounMode]=useState<NounMode>('noun')
   const nounSwapper:NounSwapperRequest={modes:subjectModes?availableSubjectModes(subjectModes):['noun'],mode:nounMode,onChange:mode=>{setActive(null);setNounMode(mode)}}
-  const audioSource=lesson.audio?.(word,owner,verb)
+  const audioSource=possessiveFor(owner)?undefined:lesson.audio?.(word,owner,verb)
   const open = settings.wordPicker !== false && active !== null
   const recording = useRef<HTMLAudioElement>(null)
   const [audioError, setAudioError] = useState(false)

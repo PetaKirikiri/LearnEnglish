@@ -12,9 +12,9 @@
 .classroom .cw-sentence-board .example-matrix .tonight-slots{display:grid;grid-template-columns:max-content max-content max-content minmax(0,max-content);justify-content:center;gap:clamp(8px,1.4cqw,22px);padding:0;margin:0;align-items:start;background:none}
 .classroom .cw-sentence-board .example-matrix .tonight-slot{position:relative;display:grid;grid-template-rows:auto auto;justify-content:stretch;justify-items:center;align-items:start;min-height:0;padding:8px 5px;gap:12px;border:0;border-radius:0;box-shadow:none;background:transparent;color:var(--sentence-ink)}
 .classroom .cw-sentence-board .example-matrix .slot-heading,.classroom .cw-sentence-board .example-matrix .slot-role-icon{display:none}
-.classroom .cw-sentence-board .example-matrix .slot-0{color:var(--sentence-red)}
-.classroom .cw-sentence-board .example-matrix .slot-1{color:var(--sentence-green)}
-.classroom .cw-sentence-board .example-matrix .slot-2{color:var(--sentence-blue)}
+.classroom .cw-sentence-board .example-matrix .slot-0{color:var(--sentence-link-ink)}
+.classroom .cw-sentence-board .example-matrix .slot-1{color:var(--sentence-verb-ink)}
+.classroom .cw-sentence-board .example-matrix .slot-2{color:var(--sentence-noun-ink)}
 .classroom .cw-sentence-board .example-source{grid-row:1;font-family:'Fredoka',sans-serif;font-size:clamp(36px,6.5cqw,82px);line-height:1.15;font-weight:500;letter-spacing:-.025em;overflow-wrap:normal;padding:0 0 6px;border-bottom:4px solid transparent}
 .classroom .cw-sentence-board .example-source strong{font-weight:500}
 .classroom .cw-sentence-board .example-gloss{grid-row:2;max-width:140px;font-size:clamp(15px,1.7cqw,22px);line-height:1.45;font-weight:400;opacity:1;color:#526d8c;text-align:center}
@@ -84,9 +84,9 @@
 .classroom .cw-sentence-board .example-matrix .tonight-slots{grid-template-columns:1fr .8fr 2.2fr;gap:14px;align-items:stretch;width:100%}
 .cw-noun-group{display:grid;grid-template-columns:.8fr 1.4fr;gap:0;min-width:0;position:relative;border-radius:24px;background:#ffd43b;box-shadow:0 6px 0 #bc8b0c,0 10px 16px #18385e12}
 .classroom .cw-sentence-board .example-matrix .tonight-slot{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:230px;padding:22px 16px 44px;border:2px solid var(--slot-edge);border-radius:24px;background:var(--slot-fill);box-shadow:0 6px 0 var(--slot-edge),0 10px 16px #18385e12;color:var(--slot-ink);min-width:0;cursor:pointer;transition:transform 160ms,box-shadow 160ms,filter 160ms}
-.classroom .cw-sentence-board .example-matrix .slot-0{--slot-fill:#df2944;--slot-edge:#ad1730;--slot-ink:#fff}
-.classroom .cw-sentence-board .example-matrix .slot-1{--slot-fill:#128247;--slot-edge:#086036;--slot-ink:#fff}
-.classroom .cw-sentence-board .example-matrix .slot-2,.classroom .cw-sentence-board .example-matrix .slot-3{--slot-fill:#ffd43b;--slot-edge:#bc8b0c;--slot-ink:#18385e}
+.classroom .cw-sentence-board .example-matrix .slot-0{--slot-fill:var(--sentence-link-fill);--slot-edge:var(--sentence-link-edge);--slot-ink:var(--sentence-link-ink)}
+.classroom .cw-sentence-board .example-matrix .slot-1{--slot-fill:var(--sentence-verb-fill);--slot-edge:var(--sentence-verb-edge);--slot-ink:var(--sentence-verb-ink)}
+.classroom .cw-sentence-board .example-matrix .slot-2,.classroom .cw-sentence-board .example-matrix .slot-3{--slot-fill:var(--sentence-noun-fill);--slot-edge:var(--sentence-noun-edge);--slot-ink:var(--sentence-noun-ink)}
 .classroom .cw-sentence-board .cw-noun-group .slot-2{border-radius:24px 0 0 24px;border-right:1px solid #bc8b0c80}
 .classroom .cw-sentence-board .cw-noun-group .slot-3{border-radius:0 24px 24px 0;border-left:0}
 .classroom .cw-sentence-board .example-matrix .slot-heading{display:none}

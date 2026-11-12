@@ -1,0 +1,54 @@
+{
+  "tool": "built-in image_gen",
+  "transparent_background": true,
+  "records": [
+    {
+      "word": "this",
+      "prompt": "One transparent-background square educational icon in polished friendly 3D animated classroom style. No text, no letters, no question marks, no room, no table, no rectangular background. Extremely close framing, bold simple silhouette readable at 48 pixels. Glossy red apple(s), green leaves and one human pointing hand. The apples must remain large, dominant and richly coloured; the hand/arm is secondary. Meaning THIS: exactly one huge red apple in the near foreground. One pointing index finger directly touches the apple from the side. The hand is close enough to touch it. No other apples. Apple fills 70 percent of frame. Soft rounded forms and transparent clean edges.",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-c1e0df72-eca5-4db6-aa64-de409915e2d2.png",
+      "projectPath": "public/classroom/icons/determiners/v1/this.png"
+    },
+    {
+      "word": "that",
+      "prompt": "One transparent-background square educational icon in polished friendly 3D animated classroom style. No text, no letters, no question marks, no room, no table, no rectangular background. Extremely close framing, bold simple silhouette readable at 48 pixels. Glossy red apple(s), green leaves and one human pointing hand. The apples must remain large, dominant and richly coloured; the hand/arm is secondary. Meaning THAT: exactly one large red apple on the right, with one index finger entering from the left pointing towards it but NOT touching. Leave a clear visible gap between fingertip and apple to communicate beyond immediate reach. Apple fills 60 percent of frame. No other apples. Hand and apple are both large and legible, with clean transparent space in between.",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-213f2db6-d02a-49ba-ad5c-c7568134efd7.png",
+      "projectPath": "public/classroom/icons/determiners/v1/that.png"
+    },
+    {
+      "word": "these",
+      "prompt": "One transparent-background square educational icon in polished friendly 3D animated classroom style. No text, no letters, no question marks, no room, no table, no rectangular background. Extremely close framing, bold simple silhouette readable at 48 pixels. Glossy red apple(s), green leaves and one human pointing hand. The apples must remain large, dominant and richly coloured; the hand/arm is secondary. Meaning THESE: exactly two very large red apples clustered together in the near foreground. One index finger reaches in and touches the nearer apple; both apples sit clearly within immediate reach. Apples together fill 80 percent of frame and remain individually countable. No other objects. Strong close-up composition.",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-16a974bd-13fe-406e-b04c-b2553cde1b62.png",
+      "projectPath": "public/classroom/icons/determiners/v1/these.png"
+    },
+    {
+      "word": "those",
+      "prompt": "One transparent-background square educational icon in polished friendly 3D animated classroom style. No text, no letters, no question marks, no room, no table, no rectangular background. Extremely close framing, bold simple silhouette readable at 48 pixels. Glossy red apple(s), green leaves and one human pointing hand. The apples must remain large, dominant and richly coloured; the hand/arm is secondary. Meaning THOSE: exactly two large red apples clustered on the right, with one index finger entering from the left pointing at the pair without touching either. Leave a clear visible gap between fingertip and apples for beyond immediate reach. Apples together fill 65 percent of frame and remain individually countable.",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-9afa71ef-2ab5-4304-a6f2-1ba533edc639.png",
+      "projectPath": "public/classroom/icons/determiners/v1/those.png"
+    },
+    {
+      "word": "over-there",
+      "prompt": "One transparent-background square educational icon in polished friendly 3D animated classroom style. No text, no letters, no question marks, no room, no table, no rectangular background. Extremely close framing, bold simple silhouette readable at 48 pixels. Glossy red apple(s), green leaves and one human pointing hand. The apples must remain large, dominant and richly coloured; the hand/arm is secondary. Meaning THAT OVER THERE: one large red apple at the upper right, one pointing hand in the lower left, clearly separated by a long diagonal transparent gap. Include only a subtle three-segment pale blue dashed direction cue across that gap to emphasize a more distant location; no words or numerals. Keep the apple at least half the icon width so it is still very readable. Only one apple.",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-ab0189c3-8895-40e2-be0c-944e21331b7d.png",
+      "projectPath": "public/classroom/icons/determiners/v1/over-there.png"
+    },
+    {
+      "word": "the",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-ebdb19c4-c21f-4404-b282-34e339616aa8.png",
+      "prompt": "Create one compact educational vocabulary icon for the English determiner THE (a particular known item), matching polished friendly 3D animated classroom vocabulary artwork. Transparent background, square composition, tightly framed, no text, no letters, no question marks, no room/table/panel/backdrop. The foreground is one very large glossy red apple with green leaf, taking up about 70 percent of the frame. A close-up friendly human index finger enters from upper right and clearly touches/points to this exact apple. Behind and to either side are two smaller identical red apples, heavily faded/desaturated and partially obscured, indicating this particular one has been singled out among possible apples. Only the selected apple is richly coloured and prominent. Clear silhouette legible at 48 pixels. Soft rounded high-quality 3D forms, clean edges, warm soft lighting, no surrounding background or cast floor shadow.",
+      "projectPath": "public/classroom/icons/determiners/v1/the.png"
+    },
+    {
+      "word": "a",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-0a07462f-94c0-4bcb-8460-c68e06dc32df.png",
+      "prompt": "Create one square transparent-background educational icon, matching friendly polished 3D animated classroom vocabulary assets. Very close crop, large simple shapes legible at 48 pixels, no text, letters, question marks, room, table, backdrop or floor shadow. Meaning: the English indefinite article A, one unspecified item. Show one large closed royal-blue book standing upright in front, with just two smaller identical books behind it, faded and partially obscured. The front single book is the main visual and fills most of the frame. No pointing, selection ring or marker. This is one book from several equivalent possibilities. Rounded substantial forms, warm soft lighting and clean alpha edges.",
+      "projectPath": "public/classroom/icons/determiners/v1/a.png"
+    },
+    {
+      "word": "an",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-cb7668fb-f743-45d5-94ae-a82ee2eace20.png",
+      "prompt": "Create one square transparent-background educational icon, matching friendly polished 3D animated classroom vocabulary assets. Very close crop, large simple shapes legible at 48 pixels, no text, letters, question marks, room, table, backdrop or floor shadow. Meaning: the English indefinite article AN, one unspecified item whose name begins with a vowel sound. Show one very large glossy red apple with a green leaf in front, and just two smaller identical apples behind, very faded and partially obscured. The front single apple fills most of the frame. No pointing, selection ring or marker. This is one apple from several equivalent possibilities. Soft rounded forms, warm lighting and clean alpha edges.",
+      "projectPath": "public/classroom/icons/determiners/v1/an.png"
+    }
+  ]
+}

@@ -1,7 +1,3 @@
-import ActionStarCourse from './ActionStarCourse'
-import {requestLesson} from '../learning/lessonRegistry'
-import PracticeCourse from './PracticeCourse'
-import {requestedLesson} from '../learning/lessonRequests'
 import {useEffect,useState} from 'react'
 import {syncRecall} from './numberRecallStore'
 import NumberFoundation from './PracticeJourney'
@@ -10,9 +6,7 @@ import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 export {PracticeSession} from './PracticeSession'
 
 export default function PhonePractice(props:{userId?:string;tester?:boolean;settings?:MatrixSettings}){
- const lesson=requestLesson(requestedLesson(location.search))
- if(lesson.practiceMode==='action-stars')return <ActionStarCourse {...props}/>
- if(lesson.practiceMode==='lesson')return <PracticeCourse {...props}/>
+ // App assessment levels are independent of the classroom lesson/whiteboard query.
  const preview=import.meta.env.DEV&&new URLSearchParams(location.search).has('preview')
  if(!props.userId||preview)return <NumberFoundation {...props}/>
  return <AccountPractice key={props.userId} {...props} userId={props.userId}/>

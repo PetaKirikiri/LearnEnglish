@@ -13,7 +13,7 @@ it.each(['tickets','visits','sitting','shirts','I am reading their book.'])('pre
  expect(hasUntaughtIt(english)).toBe(false)
 })
 it('rejects its inside any action slot, including bundled noun phrases',()=>{
- const units=actionDialogue('he','reading',{vocabulary:requestLesson(3).vocabulary}).answer.units
+ const units=actionDialogue('he','reading',{vocabulary:requestLesson(3).vocabulary,determiner:'the'}).answer.units
  expect(taughtActionLine(5,units)).toBe(true)
  for(const english of ['its','its book.','IT.']){
   expect(taughtActionLine(5,units.map(u=>u.role==='object'?{...u,english}:u))).toBe(false)

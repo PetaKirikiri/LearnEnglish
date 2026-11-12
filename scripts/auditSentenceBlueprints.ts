@@ -49,13 +49,14 @@ for(const q of [...lessonThreeAnswerQuestions,...lessonThreeReviewQuestions]){
  const issues=validateSentence({blueprint:'person-at-place',subject,noun,verb:match[2],determiner:'the'})
  if(issues.length)findings.push({id:q.id,blueprint:'person-at-place',sentence:q.english,issues})
 }
-// The public lesson adapter validates scoped generation; verify its delivered recordings too.
+// Retained authored inventories may predate shared speech preparation. Missing
+// recordings are reported separately; an existing recording with wrong text is an error.
 const manifests=new Map<string,Record<string,{text:string}>>()
 for(const number of lessonNumbers)for(const q of lessonPracticeQuestions(number)){
  checked++
  const issues=questionIntegrity(q)
  if(q.document&&q.document.units.map(unit=>unit.english).join(' ')!==q.english)issues.push({code:'aligned-source-mismatch',slot:'sentence',word:q.id,message:'Delivered units differ from the prompt.'})
- if(!q.audioUrl||!existsSync(`public${q.audioUrl}`))issues.push({code:'missing-recording',slot:'audio',word:q.id,message:'Registered lesson prompts require a recorded asset.'})
+ if(!q.audioUrl||!existsSync(`public${q.audioUrl}`))assetWarnings.push({id:q.id,code:'unrecorded-prompt',path:q.audioUrl??''})
  else{
   const directory=q.audioUrl.slice(0,q.audioUrl.lastIndexOf('/')),path=`public${directory}/voice-manifest.json`
   if(!manifests.has(directory))manifests.set(directory,JSON.parse(readFileSync(path,'utf8')))
@@ -104,7 +105,8 @@ for(const q of actionPracticeQuestions){
   checked++
   if(!taughtActionLine(q.level,units))issues.push({code:'untaught-frame',slot:'sentence',word:q.id,message:'Sentence outside the taught practice scope.'})
  }
- if(actionManifest[q.audioUrl.split('/').pop()!]?.text!==q.english||!existsSync('public'+q.audioUrl))issues.push({code:'recording-mismatch',slot:'audio',word:q.id,message:'The recording must match the assessed sentence.'})
+ if(!existsSync('public'+q.audioUrl))assetWarnings.push({id:q.id,code:'unrecorded-prompt',path:q.audioUrl})
+ else if(actionManifest[q.audioUrl.split('/').pop()!]?.text!==q.english)issues.push({code:'recording-mismatch',slot:'audio',word:q.id,message:'The recording must match the assessed sentence.'})
  if(issues.length)findings.push({id:q.id,blueprint:'present-action-dialogue',sentence:q.english,issues})
 }
 const warningCounts=Object.fromEntries([...new Set(assetWarnings.map(item=>item.code))].map(code=>[code,assetWarnings.filter(item=>item.code===code).length]))

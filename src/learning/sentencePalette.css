@@ -1,0 +1,12 @@
+/* Word-type colours are shared by lesson, practice and answer renderers. */
+:root{
+ --sentence-verb-fill:#128247;--sentence-verb-edge:#086036;--sentence-verb-ink:#fff;
+ --sentence-link-fill:#df2944;--sentence-link-edge:#ad1730;--sentence-link-ink:#fff;
+ --sentence-noun-fill:#ffd43b;--sentence-noun-edge:#bc8b0c;--sentence-noun-ink:#18385e;
+}
+.tonight-slot.slot-0{--slot-fill:var(--sentence-link-fill);--slot-edge:var(--sentence-link-edge);--slot-ink:var(--sentence-link-ink)}
+.tonight-slot.slot-1{--slot-fill:var(--sentence-verb-fill);--slot-edge:var(--sentence-verb-edge);--slot-ink:var(--sentence-verb-ink)}
+.tonight-slot.slot-2,.tonight-slot.slot-3{--slot-fill:var(--sentence-noun-fill);--slot-edge:var(--sentence-noun-edge);--slot-ink:var(--sentence-noun-ink)}
+
+/* Raster artwork owns its transparency; sprite backgrounds belong to span icons only. */
+img.cw-game-icon{background:none}

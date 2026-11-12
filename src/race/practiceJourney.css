@@ -83,3 +83,5 @@
 @media(prefers-reduced-motion:reduce){.practice-journey *{scroll-behavior:auto;transition:none}}
 
 .journey-cue .journey-picture-choice{display:block;width:32px;height:32px;max-width:100%;max-height:100%;object-fit:contain}
+
+.journey-header .vocab-account-link{color:inherit;font-size:14px;font-weight:700;text-decoration:none;padding:8px;border-radius:8px}.journey-header .vocab-account-link:hover{background:#ffffff20}.journey-header .vocab-account-link:focus-visible{outline:2px solid white;outline-offset:2px}

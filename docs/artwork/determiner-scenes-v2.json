@@ -1,0 +1,36 @@
+{
+  "tool": "Built-in image_gen edit",
+  "sourceScenes": "public/classroom/icons/deictic/v2",
+  "records": [
+    {
+      "word": "this",
+      "prompt": "Edit the provided existing educational scene, preserving the SAME TWO CHARACTERS and their identities, clothing, left/right positions, polished friendly 3D cartoon style and speaker/listener relationship. The speaking brown-haired boy in cobalt blue is on the LEFT; the listening brown-haired girl in coral-orange with a ponytail is on the RIGHT. Keep both humans clearly present. Do not replace them with isolated hands. Tighten the framing substantially: remove most empty room/window/table space, keep faces, indicating hand and apple relationships legible as a small icon. Make the red apple MUCH larger and clearer than in the source, roughly 35\u201340 percent of image height; it must remain the visual focus at small size. Keep a landscape 3:2 composition, no text, letters, labels, arrows, question marks, extra people or extra objects. THIS / near ME: keep the ONE apple at the near LEFT corner beside the boy and almost touching his indicating finger. Make the BOY and his pointing hand prominent, fully saturated and clear. Fade/desaturate the GIRL substantially, reducing her contrast and opacity-like visual prominence while still clearly recognisable. Keep the apple bright glossy red and foregrounded. The boy and nearby apple should read first; the girl remains secondary.",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-d8a5a537-7257-402c-b89c-57791c51ea56.png",
+      "projectPath": "public/classroom/icons/determiners/v2/this.png"
+    },
+    {
+      "word": "that",
+      "prompt": "Edit the provided existing educational scene, preserving the SAME TWO CHARACTERS and their identities, clothing, left/right positions, polished friendly 3D cartoon style and speaker/listener relationship. The speaking brown-haired boy in cobalt blue is on the LEFT; the listening brown-haired girl in coral-orange with a ponytail is on the RIGHT. Keep both humans clearly present. Do not replace them with isolated hands. Tighten the framing substantially: remove most empty room/window/table space, keep faces, indicating hand and apple relationships legible as a small icon. Make the red apple MUCH larger and clearer than in the source, roughly 35\u201340 percent of image height; it must remain the visual focus at small size. Keep a landscape 3:2 composition, no text, letters, labels, arrows, question marks, extra people or extra objects. THAT / near YOU: keep the ONE apple at the near RIGHT corner beside the girl. The boy on the left still clearly points across to it, but fade/desaturate the BOY substantially. Make the GIRL on the right fully saturated, clear and visually prominent, together with the large bright red apple next to her. The boy's pointing gesture must remain visible as context. The girl and apple should read first; the boy remains secondary.",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-979c7b0c-0788-4bfc-bbd8-9602d24579a2.png",
+      "projectPath": "public/classroom/icons/determiners/v2/that.png"
+    },
+    {
+      "word": "over-there",
+      "prompt": "Edit the provided existing educational scene, preserving the SAME TWO CHARACTERS and their identities, clothing, left/right positions, polished friendly 3D cartoon style and speaker/listener relationship. The speaking brown-haired boy in cobalt blue is on the LEFT; the listening brown-haired girl in coral-orange with a ponytail is on the RIGHT. Keep both humans clearly present. Do not replace them with isolated hands. Tighten the framing substantially: remove most empty room/window/table space, keep faces, indicating hand and apple relationships legible as a small icon. Make the red apple MUCH larger and clearer than in the source, roughly 35\u201340 percent of image height; it must remain the visual focus at small size. Keep a landscape 3:2 composition, no text, letters, labels, arrows, question marks, extra people or extra objects. THAT OVER THERE / away from BOTH: keep the ONE apple at the FAR CENTRAL end of the table, clearly away from both humans and not next to either person. Enlarge it enormously compared with the source so the apple is prominent and immediately readable. Use a tighter, compressed-perspective composition rather than a long empty table. Mute/desaturate BOTH the boy and girl equally and reduce their contrast, while keeping the boy's pointing gesture toward the central distant apple. The apple alone stays strongly saturated, bright red and sharply defined; both people remain clear but secondary. No dashed lines or arrows.",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-2e9273c9-2dea-4c6c-a297-e1fb3b16c881.png",
+      "projectPath": "public/classroom/icons/determiners/v2/over-there.png"
+    },
+    {
+      "word": "these",
+      "prompt": "Edit the provided existing scene into a tightly framed 3:2 educational word icon. Preserve EXACTLY the same two children and clothing: speaking brown-haired boy in cobalt blue at LEFT pointing; listening brown-haired girl with ponytail in coral-orange at RIGHT. Both people must remain visible and recognisable. Keep the friendly polished 3D style. Crop away most empty room/table/window space. Replace the single apple with exactly TWO very large bright glossy red apples together, clearly separate and countable, occupying around 40 percent of picture height. No text, arrows, badges, question marks, extra people or extra apples. THESE / near ME: apples beside the boy at the near LEFT corner, next to his indicating finger. Boy and pointing hand fully saturated and prominent. Girl on the right faded/desaturated and lower contrast. Apples vividly red; boy and apples read first.",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-459cad00-1ed3-4e71-9703-4901d53e4fe1.png",
+      "projectPath": "public/classroom/icons/determiners/v2/these.png"
+    },
+    {
+      "word": "those",
+      "prompt": "Edit the provided existing scene into a tightly framed 3:2 educational word icon. Preserve EXACTLY the same two children and clothing: speaking brown-haired boy in cobalt blue at LEFT pointing; listening brown-haired girl with ponytail in coral-orange at RIGHT. Both people must remain visible and recognisable. Keep the friendly polished 3D style. Crop away most empty room/table/window space. Replace the single apple with exactly TWO very large bright glossy red apples together, clearly separate and countable, occupying around 40 percent of picture height. No text, arrows, badges, question marks, extra people or extra apples. THOSE / near YOU: apples beside the girl at the near RIGHT corner, away from the boy. Girl fully saturated and prominent beside the apples. Boy still points across to the pair, but the boy is faded/desaturated and lower contrast. Apples vividly red; girl and apples read first.",
+      "sourcePath": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-904d4cf7-f20a-4157-8c8d-16f4e5e73533.png",
+      "projectPath": "public/classroom/icons/determiners/v2/those.png"
+    }
+  ]
+}

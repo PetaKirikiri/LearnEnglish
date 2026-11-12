@@ -45,9 +45,9 @@
 .lesson-workspace .tonight-tree{padding:4px 26px 20px;margin:0;max-width:none;background:transparent;border:0;box-shadow:none}
 .lesson-workspace .tonight-tree .tonight-slots{gap:12px;padding-top:49px;padding-bottom:28px}
 .lesson-workspace .tonight-tree .tonight-slot{--slot-glow:#2585a6;min-height:111px;padding:14px 8px 12px;border:1px solid #c5e2ed;border-bottom-width:3px;border-radius:12px;background:#e8f5fb;color:#24617e;box-shadow:none;transition:transform .16s,background .16s,border-color .16s,box-shadow .16s}
-.lesson-workspace .tonight-tree .tonight-slot.slot-1{--slot-glow:#4c9566;background:#eef7e9;border-color:#d1e5c9;color:#4a7755}
-.lesson-workspace .tonight-tree .tonight-slot.slot-2{--slot-glow:#8b6bae;background:#f4effa;border-color:#e3d6ef;color:#80619b}
-.lesson-workspace .tonight-tree .tonight-slot.slot-3{--slot-glow:#8b6bae;background:#eee6f7;border-color:#d9c8e9;color:#75538f}
+.lesson-workspace .tonight-tree .tonight-slot.slot-1{--slot-glow:#4c9566;background:var(--sentence-verb-fill);border-color:var(--sentence-verb-edge);color:var(--sentence-verb-ink)}
+.lesson-workspace .tonight-tree .tonight-slot.slot-2{--slot-glow:#8b6bae;background:var(--sentence-noun-fill);border-color:var(--sentence-noun-edge);color:var(--sentence-noun-ink)}
+.lesson-workspace .tonight-tree .tonight-slot.slot-3{--slot-glow:#8b6bae;background:var(--sentence-noun-fill);border-color:var(--sentence-noun-edge);color:var(--sentence-noun-ink)}
 .lesson-workspace .tonight-tree .tonight-slot>strong{font-family:'Avenir Next','Noto Sans Thai',system-ui,sans-serif;font-size:clamp(21px,2.7vw,31px);font-weight:750;text-shadow:none;letter-spacing:-.025em}
 .lesson-workspace .tonight-tree .tonight-slot>span[lang]{color:inherit;opacity:.8;font-size:11px;line-height:1.5}
 .lesson-workspace .tonight-tree .slot-role-icon{color:inherit;filter:none;width:20px;height:20px;margin-bottom:5px;opacity:.8}

@@ -1,0 +1,84 @@
+-- Explicit, locked drawing submissions with one-time finishing bonuses.
+begin;
+alter table public.english_drawings add column if not exists finish_rank integer;
+alter table public.english_drawings add column if not exists finish_bonus integer not null default 0;
+alter table public.english_drawings add column if not exists finished_at timestamptz;
+create unique index if not exists english_drawings_finish_rank on public.english_drawings(session_id,round,finish_rank) where finish_rank is not null;
+create or replace function public.english_drawing_game(p_action text,p_session uuid,p_payload jsonb default '{}') returns jsonb language plpgsql security definer set search_path='' as $$
+declare uid uuid:=auth.uid(); s public.english_class_sessions; g public.english_drawing_games; host boolean; member_row record; i integer:=0; words jsonb:='[{"word": "hotel", "thai": "โรงแรม", "english": "a hotel", "forms": ["hotel", "hotels"], "starter": false}, {"word": "toilet", "thai": "ห้องน้ำ", "english": "a toilet", "forms": ["toilet", "toilets"], "starter": false}, {"word": "gym", "thai": "ยิม", "english": "a gym", "forms": ["gym", "gyms"], "starter": false}, {"word": "padel court", "thai": "สนามพาเดล", "english": "a padel court", "forms": ["padel court", "padel courts"], "starter": false}, {"word": "racket", "thai": "ไม้แร็กเกต", "english": "a racket", "forms": ["racket", "rackets"], "starter": false}, {"word": "phone", "thai": "โทรศัพท์", "english": "a phone", "forms": ["phone", "phones"], "starter": false}, {"word": "air conditioner", "thai": "เครื่องปรับอากาศ", "english": "an air conditioner", "forms": ["air conditioner", "air conditioners"], "starter": false}, {"word": "fan", "thai": "พัดลม", "english": "a fan", "forms": ["fan", "fans"], "starter": false}, {"word": "remote", "thai": "รีโมต", "english": "a remote", "forms": ["remote", "remotes"], "starter": false}, {"word": "doctor", "thai": "หมอ", "english": "a doctor", "forms": ["doctor", "doctors"], "starter": false}, {"word": "clinic", "thai": "คลินิก", "english": "a clinic", "forms": ["clinic", "clinics"], "starter": false}, {"word": "school", "thai": "โรงเรียน", "english": "a school", "forms": ["school", "schools"], "starter": false}, {"word": "motorbike", "thai": "รถมอเตอร์ไซค์", "english": "a motorbike", "forms": ["motorbike", "motorbikes"], "starter": false}, {"word": "table", "thai": "โต๊ะ", "english": "a table", "forms": ["table", "tables"], "starter": false}, {"word": "chair", "thai": "เก้าอี้", "english": "a chair", "forms": ["chair", "chairs"], "starter": false}, {"word": "bank", "thai": "ธนาคาร", "english": "a bank", "forms": ["bank", "banks"], "starter": false}, {"word": "bookstore", "thai": "ร้านหนังสือ", "english": "a bookstore", "forms": ["bookstore", "bookstores"], "starter": false}, {"word": "watch", "thai": "นาฬิกาข้อมือ", "english": "a watch", "forms": ["watch", "watches"], "starter": false}, {"word": "clock", "thai": "นาฬิกา", "english": "a clock", "forms": ["clock", "clocks"], "starter": false}, {"word": "bedroom", "thai": "ห้องนอน", "english": "a bedroom", "forms": ["bedroom", "bedrooms"], "starter": false}, {"word": "shoe", "thai": "รองเท้า", "english": "a shoe", "forms": ["shoe", "shoes"], "starter": true}, {"word": "key", "thai": "กุญแจ", "english": "a key", "forms": ["key", "keys"], "starter": true}, {"word": "sock", "thai": "ถุงเท้า", "english": "a sock", "forms": ["sock", "socks"], "starter": true}, {"word": "bag", "thai": "กระเป๋า", "english": "a bag", "forms": ["bag", "bags"], "starter": true}, {"word": "book", "thai": "หนังสือ", "english": "a book", "forms": ["book", "books"], "starter": true}, {"word": "pen", "thai": "ปากกา", "english": "a pen", "forms": ["pen", "pens"], "starter": true}, {"word": "ticket", "thai": "ตั๋ว", "english": "a ticket", "forms": ["ticket", "tickets"], "starter": false}, {"word": "sandal", "thai": "รองเท้าแตะ", "english": "a sandal", "forms": ["sandal", "sandals"], "starter": false}, {"word": "boot", "thai": "รองเท้าบูต", "english": "a boot", "forms": ["boot", "boots"], "starter": false}, {"word": "shirt", "thai": "เสื้อเชิ้ต", "english": "a shirt", "forms": ["shirt", "shirts"], "starter": false}, {"word": "hat", "thai": "หมวก", "english": "a hat", "forms": ["hat", "hats"], "starter": false}, {"word": "pencil", "thai": "ดินสอ", "english": "a pencil", "forms": ["pencil", "pencils"], "starter": false}, {"word": "charger", "thai": "ที่ชาร์จ", "english": "a charger", "forms": ["charger", "chargers"], "starter": false}, {"word": "towel", "thai": "ผ้าขนหนู", "english": "a towel", "forms": ["towel", "towels"], "starter": false}, {"word": "bottle", "thai": "ขวด", "english": "a bottle", "forms": ["bottle", "bottles"], "starter": false}, {"word": "cup", "thai": "ถ้วย", "english": "a cup", "forms": ["cup", "cups"], "starter": false}, {"word": "plate", "thai": "จาน", "english": "a plate", "forms": ["plate", "plates"], "starter": false}, {"word": "apple", "thai": "แอปเปิล", "english": "an apple", "forms": ["apple", "apples"], "starter": false}, {"word": "banana", "thai": "กล้วย", "english": "a banana", "forms": ["banana", "bananas"], "starter": false}, {"word": "orange", "thai": "ส้ม", "english": "an orange", "forms": ["orange", "oranges"], "starter": false}, {"word": "sandwich", "thai": "แซนด์วิช", "english": "a sandwich", "forms": ["sandwich", "sandwiches"], "starter": false}, {"word": "umbrella", "thai": "ร่ม", "english": "an umbrella", "forms": ["umbrella", "umbrellas"], "starter": false}, {"word": "wallet", "thai": "กระเป๋าสตางค์", "english": "a wallet", "forms": ["wallet", "wallets"], "starter": false}, {"word": "passport", "thai": "หนังสือเดินทาง", "english": "a passport", "forms": ["passport", "passports"], "starter": false}, {"word": "laptop", "thai": "แล็ปท็อป", "english": "a laptop", "forms": ["laptop", "laptops"], "starter": false}, {"word": "camera", "thai": "กล้อง", "english": "a camera", "forms": ["camera", "cameras"], "starter": false}, {"word": "bicycle", "thai": "จักรยาน", "english": "a bicycle", "forms": ["bicycle", "bicycles"], "starter": false}, {"word": "bus", "thai": "รถบัส", "english": "a bus", "forms": ["bus", "buses"], "starter": false}, {"word": "restaurant", "thai": "ร้านอาหาร", "english": "a restaurant", "forms": ["restaurant", "restaurants"], "starter": false}]'; choice jsonb; target uuid; n integer;
+begin
+ select * into s from public.english_class_sessions where id=p_session and created_at>now()-interval '18 hours' for update;
+ if not found then raise exception 'Class has ended. Scan the current code.';end if;
+ host:=coalesce(s.host_secret_hash=md5(p_payload->>'hostSecret'),false);
+ if not host and (uid is null or not exists(select 1 from public.english_class_members where session_id=s.id and learner_id=uid and active)) then raise exception 'Join this class first';end if;
+ insert into public.english_drawing_games(session_id) values(s.id) on conflict do nothing;
+ select * into g from public.english_drawing_games where session_id=s.id;
+ if p_action in ('open','close','start','next','reveal','finish') and not host then raise exception 'Teacher controls only';end if;
+ if p_action not in ('state','open','close') and coalesce((p_payload->>'round')::integer,-1)<>g.round then raise exception 'The round changed. Try again.';end if;
+ if g.phase='drawing' and now()>=g.deadline then
+  select artist into target from public.english_drawings where session_id=s.id and round=g.round order by position limit 1;
+  update public.english_drawing_games set phase='guessing',artist=target where session_id=s.id returning * into g;
+ end if;
+ if p_action='open' then update public.english_drawing_games set active=true where session_id=s.id;
+ elsif p_action='close' then update public.english_drawing_games set active=false where session_id=s.id;
+ elsif p_action='start' then
+  if g.phase not in ('lobby','results') then raise exception 'Finish this round first';end if;
+  if (select count(*) from public.english_class_members where session_id=s.id and active)<1 then raise exception 'At least one student must join';end if;
+  n:=coalesce((p_payload->>'seconds')::integer,60);if n not in (30,60,90,120) then raise exception 'Choose a drawing time';end if;
+  for member_row in select learner_id from public.english_class_members where session_id=s.id and active order by random() loop
+   -- Prefer this learner's practised course nouns. New learners use the six core classroom nouns.
+   select v.value into choice from jsonb_array_elements(words) v
+   where exists(select 1 from public.english_word_progress p where p.learner_id=member_row.learner_id and p.attempts>0 and p.word_id in (select 'en:'||f from jsonb_array_elements_text(v.value->'forms') f))
+     or ((v.value->>'starter')::boolean and not exists(select 1 from public.english_word_progress p cross join jsonb_array_elements(words) known where p.learner_id=member_row.learner_id and p.attempts>0 and p.word_id in (select 'en:'||f from jsonb_array_elements_text(known->'forms') f)))
+   order by exists(select 1 from public.english_drawings d where d.session_id=s.id and d.round=g.round+1 and d.thai=v.value->>'thai'),
+     exists(select 1 from public.english_drawings d where d.session_id=s.id and d.artist=member_row.learner_id and d.round=g.round and d.thai=v.value->>'thai'),random() limit 1;
+   if choice is null then raise exception 'No course vocabulary available';end if;
+   insert into public.english_drawings(session_id,round,artist,position,thai,english) values(s.id,g.round+1,member_row.learner_id,i,choice->>'thai',choice->>'english');i:=i+1;
+  end loop;
+  update public.english_drawing_games set active=true,round=round+1,phase='drawing',deadline=now()+make_interval(secs=>n),artist=null,revealed=false where session_id=s.id;
+ elsif p_action in ('save','complete') then
+  -- The session row is locked above: concurrent finishes receive distinct ranks.
+  if exists(select 1 from public.english_drawings where session_id=s.id and round=g.round and artist=uid and finish_rank is not null) then
+   null; -- Safe retry; a finished drawing and its bonus cannot change.
+  else
+   if g.phase<>'drawing' then raise exception 'Drawing time has ended';end if;
+   if coalesce(p_payload->>'picture','') !~ '^data:image/png;base64,[A-Za-z0-9+/=]+$' or length(p_payload->>'picture')>150000 then raise exception 'Invalid drawing';end if;
+   if not exists(select 1 from public.english_drawings where session_id=s.id and round=g.round and artist=uid) then raise exception 'Join the next round';end if;
+   if p_action='complete' then
+    select coalesce(max(finish_rank),0)+1 into n from public.english_drawings where session_id=s.id and round=g.round;
+    update public.english_drawings set picture=p_payload->>'picture',finish_rank=n,finish_bonus=greatest(0,4-n),finished_at=clock_timestamp() where session_id=s.id and round=g.round and artist=uid;
+    if not exists(select 1 from public.english_drawings where session_id=s.id and round=g.round and finish_rank is null) then
+     select artist into target from public.english_drawings where session_id=s.id and round=g.round order by position limit 1;
+     update public.english_drawing_games set phase='guessing',artist=target where session_id=s.id;
+    end if;
+   else
+    update public.english_drawings set picture=p_payload->>'picture' where session_id=s.id and round=g.round and artist=uid;
+   end if;
+  end if;
+ elsif p_action='award' then
+  if g.phase<>'guessing' or g.artist is distinct from uid or g.revealed or g.artist::text is distinct from p_payload->>'artist' then raise exception 'Only the current artist can award this point';end if;
+  target:=(p_payload->>'learner')::uuid;
+  if target=uid or not exists(select 1 from public.english_drawings where session_id=s.id and round=g.round and artist=target) then raise exception 'Choose another player';end if;
+  update public.english_drawings set awarded=target where session_id=s.id and round=g.round and artist=uid and awarded is null;
+  update public.english_drawing_games set revealed=true where session_id=s.id;
+ elsif p_action='reveal' then
+  if g.phase<>'guessing' or g.artist::text is distinct from p_payload->>'artist' then raise exception 'Picture changed';end if;
+  update public.english_drawing_games set revealed=true where session_id=s.id;
+ elsif p_action='next' then
+  if g.phase<>'guessing' or g.artist::text is distinct from p_payload->>'artist' then raise exception 'Picture changed';end if;
+  update public.english_drawings set shown=true where session_id=s.id and round=g.round and artist=g.artist;
+  select artist into target from public.english_drawings where session_id=s.id and round=g.round and not shown order by position limit 1;
+  update public.english_drawing_games set artist=target,revealed=false,phase=case when target is null then 'voting' else 'guessing' end where session_id=s.id;
+ elsif p_action='vote' then
+  target:=(p_payload->>'artist')::uuid;
+  if g.phase<>'voting' or target=uid or not exists(select 1 from public.english_drawings where session_id=s.id and round=g.round and artist=uid) or not exists(select 1 from public.english_drawings where session_id=s.id and round=g.round and artist=target and picture<>'') then raise exception 'Choose another picture';end if;
+  insert into public.english_drawing_votes values(s.id,g.round,uid,target) on conflict do nothing;
+ elsif p_action='finish' then
+  if g.phase<>'voting' then raise exception 'Voting is not open';end if;
+  insert into public.english_drawing_bonus select s.id,g.round,artist from public.english_drawing_votes where session_id=s.id and round=g.round group by artist having count(*)=(select max(v.c) from (select count(*) c from public.english_drawing_votes where session_id=s.id and round=g.round group by artist) v) on conflict do nothing;
+  update public.english_drawing_games set phase='results' where session_id=s.id;
+ elsif p_action<>'state' then raise exception 'Unknown game action';end if;
+ select * into g from public.english_drawing_games where session_id=s.id;
+ return jsonb_build_object('active',g.active,'round',g.round,'phase',g.phase,'deadline',g.deadline,'serverNow',now(),'artist',g.artist,'revealed',g.revealed,'vote',(select artist from public.english_drawing_votes where session_id=s.id and round=g.round and voter=uid),'voteCount',(select count(*) from public.english_drawing_votes where session_id=s.id and round=g.round),'drawings',coalesce((select jsonb_agg(jsonb_build_object('artist',d.artist,'name',coalesce(p.display_name,'Student'),'thai',case when d.artist=uid then d.thai end,'english',case when d.artist=uid or (g.revealed and g.artist=d.artist) or g.phase in ('voting','results') then d.english end,'picture',case when d.artist=uid or (g.phase='guessing' and d.artist=g.artist) or g.phase in ('voting','results') then d.picture else '' end,'submitted',d.picture<>'','finishRank',d.finish_rank,'finishBonus',d.finish_bonus,'awarded',d.awarded,'winner',exists(select 1 from public.english_drawing_bonus b where b.session_id=s.id and b.round=g.round and b.artist=d.artist)) order by d.position) from public.english_drawings d join public.profiles p on p.id=d.artist where d.session_id=s.id and d.round=g.round),'[]'::jsonb),'scores',coalesce((select jsonb_agg(jsonb_build_object('id',m.learner_id,'name',coalesce(p.display_name,'Student'),'points',coalesce((select sum(d.finish_bonus) from public.english_drawings d where d.session_id=s.id and d.artist=m.learner_id),0)+(select count(*) from public.english_drawings d where d.session_id=s.id and d.awarded=m.learner_id)+3*(select count(*) from public.english_drawing_bonus b where b.session_id=s.id and b.artist=m.learner_id))) from public.english_class_members m join public.profiles p on p.id=m.learner_id where m.session_id=s.id),'[]'::jsonb));
+end;$$;
+commit;

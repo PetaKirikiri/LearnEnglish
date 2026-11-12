@@ -1,0 +1,12 @@
+.determiner-icon{position:relative;display:block;width:100%;height:100%;max-width:100%;overflow:hidden;background:transparent;isolation:isolate}
+.determiner-icon-art,.determiner-icon>svg{display:block;width:100%;height:100%;object-fit:contain;background:none}
+.cw-slot-role>.determiner-icon{width:var(--matrix-art-height,80px);height:var(--matrix-art-height,80px);max-width:100%;flex:none}
+.picture-sentence-art>.determiner-icon{width:100%;height:100%}
+.determiner-icon-apples{position:absolute;inset:0;display:grid;filter:drop-shadow(0 1px 1px #57371425)}
+.determiner-icon-apples img{grid-area:1/1;width:64%;height:64%;object-fit:contain;align-self:end;justify-self:start}
+.determiner-icon-apples img:first-child{justify-self:center;align-self:start}
+.determiner-icon-apples img:nth-child(3){justify-self:end}
+
+/* Keep both people and the apple visible in the shared relational scenes. */
+.cw-slot-role>.determiner-icon[data-scene]{width:calc(var(--matrix-art-height,80px)*1.5);max-width:100%}
+.determiner-icon[data-scene] .determiner-icon-art{object-fit:contain;border-radius:6px}

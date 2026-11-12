@@ -6,10 +6,11 @@ const objectsForAction=(word:string,catalogue=testVocabulary)=>compatibleObjects
 const actionObjects=actionVocabulary.flatMap(action=>objectsForAction(action.word))
 it('pairs every reviewed action and complement with agreeing subjects and aligned units',()=>{
  for(const subject of Object.keys(actionSubjects) as ActionSubject[])for(const action of actionVocabulary){
+  if(action.complement!=='none'&&!objectsForAction(action.word).length){expect(()=>actionDialogue(subject,action.word)).toThrow('requires a compatible');continue}
   for(const object of objectsForAction(action.word).length?objectsForAction(action.word):[undefined]){
    const pair=actionDialogue(subject,action.word,{object:object?.word}),p=actionSubjects[subject]
    expect(pair.question.english).toBe(`What ${p.questionBe} ${subject==='i'?'I':subject} doing?`)
-   expect(pair.answer.english.startsWith(`${p.answer} ${p.answerBe} ${action.word}`)).toBe(true)
+   expect(pair.answer.english.startsWith(`${p.answer} ${p.answerBe} ${action.spoken??action.word}`)).toBe(true)
    for(const sentence of [pair.question,pair.answer])expect(sentence.units.map(u=>u.english).join(' ')).toBe(sentence.english)
    expect(pair.answer.units.length).toBeLessThanOrEqual(6)
   }
@@ -61,7 +62,7 @@ it('uses all compatible cumulative words and rejects incompatible nouns and futu
  }
  expect(objectsForAction('eating',lessonThreeMatrixCatalogue).map(item=>item.noun)).toEqual(expect.arrayContaining(['apple','apples','orange','oranges','sandwiches']))
  expect(objectsForAction('going',lessonThreeMatrixCatalogue).map(item=>item.noun)).toEqual(expect.arrayContaining(['hotel','hotels','padel court','clinic','bookstore','restaurant','restaurants']))
- expect(objectsForAction('reading',lessonThreeMatrixCatalogue).map(item=>item.noun)).toEqual(['book','books'])
+ expect(objectsForAction('reading',lessonThreeMatrixCatalogue).map(item=>item.noun)).toEqual(['book','books','ticket','tickets','passport','passports'])
  expect(objectsForAction('drinking',lessonThreeMatrixCatalogue).map(item=>item.noun)).toEqual(['water'])
  expect(objectsForAction('eating',lessonThreeMatrixCatalogue).some(item=>['hotel','water','shoe'].includes(item.noun))).toBe(false)
  expect(objectsForAction('eating',[{word:'apple',thai:'แอปเปิล',categories:['food']}]).map(item=>item.noun)).toEqual(['apple'])

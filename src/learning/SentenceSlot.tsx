@@ -1,3 +1,4 @@
+import './sentencePalette.css'
 import type { ReactNode } from 'react'
 
 const symbols = [

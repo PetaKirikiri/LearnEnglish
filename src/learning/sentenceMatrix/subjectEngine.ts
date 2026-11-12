@@ -1,7 +1,7 @@
-import type {NounPhrase} from './nounPhrase'
+import {nounPhraseUnits,type NounPhrase} from './nounPhrase'
 /** Content and grammatical agreement for the subject block, independent of its host UI. */
 export type NounMode='noun'|'pronoun'|'name'
-export type SubjectWord={phrase?:NounPhrase;word:string;thai:string;person?:1|2|3;number?:'singular'|'plural';kind?:'person'|'place'}
+export type SubjectWord={semanticNoun?:string;phrase?:NounPhrase;word:string;thai:string;person?:1|2|3;number?:'singular'|'plural';kind?:'person'|'place'}
 export type SubjectModeConfig={
  pronouns:readonly SubjectWord[]
  names:readonly SubjectWord[]
@@ -32,8 +32,11 @@ export function subjectQuestion(config:SubjectModeConfig,mode:Exclude<NounMode,'
  const item=choices.find(item=>item.word===selected)??choices.find(item=>item.word===initial)??choices[0]
  if(!item)throw new Error(`No configured words for subject mode: ${mode}`)
  const verb=subjectVerb(item)
- return {item,verb,english:`Where ${verb} ${item.word}?`,thai:`${item.thai}${mode==='name'?' ':''}อยู่ที่ไหน`,
-  units:[{english:'Where',thai:'ที่ไหน'},{english:verb,thai:'อยู่'},{english:`${item.word}?`,thai:item.thai}]}
+ const tail=item.phrase?nounPhraseUnits(item.phrase).map(unit=>({...unit,role:unit.role==='noun'?'object' as const:unit.role})):[{english:item.word,thai:item.thai,role:'person' as const}]
+ tail[tail.length-1]={...tail[tail.length-1],english:tail[tail.length-1].english+'?'}
+ const units=[{english:'Where',thai:'ที่ไหน',role:'question' as const},{english:verb,thai:'อยู่',role:'be' as const},...tail]
+ return {item,verb,english:units.map(unit=>unit.english).join(' '),thai:`${item.thai}${mode==='name'?' ':''}อยู่ที่ไหน`,units}
+
 }
 
 /** Keep an agreeing selection; otherwise prefer the familiar beginner pronoun. */

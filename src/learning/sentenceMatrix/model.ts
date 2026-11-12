@@ -1,7 +1,8 @@
+import {possessiveChoices,possessiveFor,type PossessiveWord} from '../sentenceRules/possessives'
 import type { SubjectModeConfig } from './subjectEngine'
 import type { VocabularyCategory } from './vocabularyCategories'
 export type ClassroomWord = { indefiniteArticle?:'a'|'an'; classifierThai?:string; word:string; thai:string; singular?:string; plural?:string; number?:'singular'|'plural'; pairOnly?:boolean; categories?:readonly VocabularyCategory[]; meaning?:import('../sentenceRules/blueprints').WordMeaning }
-export type Determiner = 'a' | 'an' | 'the' | 'my' | 'your' | 'his' | 'her' | 'our' | 'their'
+export type Determiner = 'a' | 'an' | 'the' | 'my' | 'your' | 'his' | 'her' | 'our' | 'their' | 'this' | 'that' | 'these' | 'those' | 'some' | PossessiveWord
 export type BeVerb = 'is' | 'are' | 'was' | 'were'
 export type Tense = 'present' | 'past'
 export const isPluralVerb = (verb:BeVerb) => verb==='are'||verb==='were'
@@ -31,11 +32,14 @@ export type MatrixSettings = import('../wordProgress/model').FadeSettings & {
 export type MatrixLesson = {
   id: string
   stages?: readonly string[]
-  practiceMode?: 'journey' | 'lesson' | 'action-stars'
-  pattern?: 'people-location' | 'present-action'
+  practiceMode?: 'journey' | 'lesson' | 'action-stars' | 'identification'
+  pattern?: 'people-location' | 'present-action' | 'identification'
   subjectModes?: SubjectModeConfig
+  subjectNouns?:readonly ClassroomWord[]
   /** Allowed action words; omitted only for unrestricted reusable construction requests. */
   actions?: readonly string[]
+  actionBlueprints?:readonly import('../sentenceRules/actionBlueprints').ActionBlueprint[]
+  actionGroup?: import('../sentenceRules/verbGroups').VerbGroup
   actionQuestion?: 'activity' | 'destination'
   actionReply?: 'reciprocal' | 'same-subject'
   vocabulary: readonly ClassroomWord[]
@@ -51,21 +55,24 @@ export type MatrixLesson = {
 export const determiners = [
   {word:'the',thai:'ที่กำลังพูดถึง'}, {word:'my',thai:'ของฉัน'}, {word:'your',thai:'ของคุณ'},
 ] as const
-export const allDeterminers = [...determiners,{word:'a',thai:'หนึ่ง'},{word:'an',thai:'หนึ่ง'},{word:'his',thai:'ของเขา (ผู้ชาย)'},{word:'her',thai:'ของเธอ (ผู้หญิง)'},{word:'our',thai:'ของพวกเรา'},{word:'their',thai:'ของพวกเขา'}] as const
-export const lessonDeterminers = (lesson:MatrixLesson) => allDeterminers.filter(item=>(lesson.owners ?? ['the','my','your']).includes(item.word))
+export const allDeterminers = [...determiners,{word:'a',thai:'หนึ่ง'},{word:'an',thai:'หนึ่ง'},{word:'his',thai:'ของเขา (ผู้ชาย)'},{word:'her',thai:'ของเธอ (ผู้หญิง)'},{word:'our',thai:'ของพวกเรา'},{word:'their',thai:'ของพวกเขา'},{word:'this',thai:'นี้'},{word:'that',thai:'นั้น'},{word:'these',thai:'เหล่านี้'},{word:'those',thai:'เหล่านั้น'},{word:'some',thai:'จำนวนหนึ่ง'}] as const
+export const lessonDeterminers = (lesson:MatrixLesson):{word:Determiner;thai:string}[] => {
+ const available=new Set([...lesson.vocabulary,...(lesson.subjectNouns??[])].map(noun=>noun.word))
+ return [...allDeterminers.filter(item=>(lesson.owners ?? ['the','my','your']).includes(item.word)),...possessiveChoices.filter(choice=>choice.requires.every(word=>available.has(word))).map(choice=>({word:choice.value.english,thai:choice.value.thai}))]
+}
 export const lessonVerbs = (lesson:MatrixLesson):{word:BeVerb;thai:string}[] => [
  {word:'is' as const,thai:'หนึ่งสิ่ง · ตอนนี้'},
  ...(lesson.plural?[{word:'are' as const,thai:'หลายสิ่ง · ตอนนี้'}]:[]),
  ...(lesson.past?[{word:'was' as const,thai:'หนึ่งสิ่ง · ก่อนหน้านี้'},...(lesson.plural?[{word:'were' as const,thai:'หลายสิ่ง · ก่อนหน้านี้'}]:[])]:[]),
 ]
-export const ownerThai = (owner: Determiner) => allDeterminers.find(item=>item.word===owner)!.thai
+export const ownerThai = (owner: Determiner) => possessiveFor(owner)?.thai??allDeterminers.find(item=>item.word===owner)?.thai??(()=>{throw new Error('Unknown determiner')})()
 export const verbForWord = (word:ClassroomWord): 'is'|'are' => word.number === 'plural' || word.pairOnly ? 'are' : 'is'
 export function formForVerb(word:ClassroomWord,verb:BeVerb) {return (isPluralVerb(verb)?word.plural:word.singular) ?? word.word}
 export function locationSentence(item: ClassroomWord, owner: Determiner = 'the', count = '', tense:Tense='present') {
   const present = verbForWord(item)
   const verb:BeVerb = tense==='past'?(present==='are'?'were':'was'):present
   return { english: `Where ${verb} ${owner} ${item.word}?`, thai: `${tense==='past'?'ก่อนหน้านี้ ':''}${item.thai}${count}${owner==='the'?'':ownerThai(owner)}อยู่ที่ไหน`,
-    units: [{english:'Where',thai:'ที่ไหน'}, {english:verb,thai:tense==='past'?'อยู่ · ก่อนหน้านี้':'อยู่'}, {english:owner,thai:ownerThai(owner)}, {english:`${item.word}?`,thai:item.thai}], noun:item.word, verb }
+    units: [{english:'Where',thai:'ที่ไหน'}, {english:verb,thai:tense==='past'?'อยู่ · ก่อนหน้านี้':'อยู่'}, {english:owner,thai:ownerThai(owner),...(possessiveFor(owner)?{possessor:possessiveFor(owner)!.possessor}:{})}, {english:`${item.word}?`,thai:item.thai}], noun:item.word, verb }
 }
 
 export function compactLocationTranslation(parts: readonly (readonly [string,string])[]) {

@@ -1,3 +1,4 @@
+import {everydayPeople} from './everydayVocabulary'
 import { lessonThreeWords } from '../classroom/lessonThreeVocabulary'
 import { pluralVocabulary, pairVocabulary } from '../race/pluralVocabulary'
 import { tonightWords, tonightPluralForms } from '../race/tonightVocabulary'
@@ -31,6 +32,12 @@ const drawings: Record<string, ReactNode> = {
 const pluralForms: Record<string, string> = { shoes:'shoe', keys:'key', socks:'sock', bags:'bag', tickets:'ticket', books:'book', sandals:'sandal', boots:'boot', shirts:'shirt', hats:'hat', pens:'pen', pencils:'pencil', phones:'phone', chargers:'charger', towels:'towel', bottles:'bottle', cups:'cup', plates:'plate', shops:'shop' }
 export default function VocabularyPicture({ word, count }: { word: string; count?: number }) {
   const normalized = word.toLowerCase().replace(/[?!.,]/g, '').trim()
+  const person=everydayPeople.find(p=>p.singular===normalized||p.plural===normalized)
+  if(person){
+   const family=['mother','father','son','daughter'].includes(person.singular)
+   const identity=({mother:'woman',father:'man',son:'boy',daughter:'girl'} as Record<string,string>)[person.singular]??person.singular
+   return <span className={`vocabulary-picture vocabulary-picture-art everyday-person${family?' family-person':''}`} data-word={person.singular} aria-hidden="true">{Array.from({length:count??(person.plural===normalized?2:1)},(_,index)=><span className="person-copy" key={index}>{family?<img src={`/classroom/icons/everyday/family-v2-${person.singular}.png`} alt="" loading="lazy" decoding="async"/>:<img src={`/classroom/icons/everyday/${identity}.webp`} alt=""/>}</span>)}</span>
+  }
   if(normalized==='water')return <span className="vocabulary-picture vocabulary-picture-art" data-word="water" aria-hidden="true"><img src="/classroom/icons/actions/water.png" alt=""/></span>
   const addedWord=lessonThreeWords.find(item=>item.singular===normalized || item.plural===normalized)
   const earlierSingular = Object.entries(tonightPluralForms).find(([,plural])=>plural===normalized)?.[0]
