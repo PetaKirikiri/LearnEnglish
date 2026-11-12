@@ -1,0 +1,47 @@
+import {beforeEach,expect,it,vi} from 'vitest'
+const mocks=vi.hoisted(()=>({invoke:vi.fn(),setSession:vi.fn()}))
+vi.mock('../lib/supabase',()=>({supabase:{functions:{invoke:mocks.invoke},auth:{setSession:mocks.setSession}}}))
+import {connectEnglishLearnerAccount,copyLinkedLearnerCache} from './englishLearner'
+import {connectEnglishLearner} from '../../supabase/functions/english-learner-session/handler'
+beforeEach(()=>{localStorage.clear();vi.resetAllMocks()})
+it('links only the authenticated parent to the administrator-selected learner',async()=>{
+ const authenticate=vi.fn().mockResolvedValue('parent'),linkedLearner=vi.fn().mockResolvedValue('child'),issueSession=vi.fn().mockResolvedValue({access_token:'access',refresh_token:'refresh'})
+ const response=await connectEnglishLearner('verified-token',{authenticate,linkedLearner,issueSession})
+ expect(authenticate).toHaveBeenCalledWith('verified-token');expect(linkedLearner).toHaveBeenCalledWith('parent');expect(issueSession).toHaveBeenCalledWith('child')
+ expect(response).toEqual({status:200,body:{linked:true,learner_id:'child',access_token:'access',refresh_token:'refresh'}})
+})
+it('rejects unauthenticated requests and leaves unlinked members on their own account',async()=>{
+ const linkedLearner=vi.fn(),issueSession=vi.fn()
+ expect((await connectEnglishLearner('bad',{authenticate:async()=>null,linkedLearner,issueSession})).status).toBe(401)
+ expect(linkedLearner).not.toHaveBeenCalled();expect(issueSession).not.toHaveBeenCalled()
+ linkedLearner.mockResolvedValue(null)
+ expect((await connectEnglishLearner('valid',{authenticate:async()=> 'other',linkedLearner,issueSession})).body).toEqual({linked:false,learner_id:'other'})
+ expect(issueSession).not.toHaveBeenCalled()
+})
+it('fails safely if the linked learner cannot receive a session',async()=>{
+ const result=await connectEnglishLearner('valid',{authenticate:async()=> 'parent',linkedLearner:async()=> 'child',issueSession:async()=>null})
+ expect(result.status).toBe(503);expect(result.body).not.toHaveProperty('access_token')
+})
+it('preserves pending attempts, receipts and gold without duplicate credit or overwriting an active round',()=>{
+ localStorage.setItem('english-word-outbox:v1:parent',JSON.stringify([{id:'old'},{id:'shared'}]))
+ localStorage.setItem('english-word-outbox:v1:child',JSON.stringify([{id:'shared'},{id:'new'}]))
+ localStorage.setItem('english:gold-pending:parent',JSON.stringify({old:10,shared:10}))
+ localStorage.setItem('english:gold-pending:child',JSON.stringify({shared:10,new:10}))
+ localStorage.setItem('englishsuccess:composed-run:v5:parent:6:star-1',JSON.stringify({id:'parent-run'}))
+ localStorage.setItem('englishsuccess:composed-run:v5:child:6:star-1',JSON.stringify({id:'child-run'}))
+ localStorage.setItem('unrelated-account','unchanged')
+ copyLinkedLearnerCache('parent','child');copyLinkedLearnerCache('parent','child')
+ expect(JSON.parse(localStorage.getItem('english-word-outbox:v1:child')!)).toEqual([{id:'old'},{id:'shared'},{id:'new'}])
+ expect(JSON.parse(localStorage.getItem('english:gold-pending:child')!)).toEqual({old:10,shared:10,new:10})
+ expect(JSON.parse(localStorage.getItem('englishsuccess:composed-run:v5:child:6:star-1')!).id).toBe('child-run')
+ expect(localStorage.getItem('english-word-outbox:v1:parent')).not.toBeNull()
+ expect(localStorage.getItem('unrelated-account')).toBe('unchanged')
+})
+it('verifies the returned learner before continuing the test or leaderboard',async()=>{
+ mocks.invoke.mockResolvedValue({data:{linked:true,learner_id:'child',access_token:'a',refresh_token:'r'}})
+ mocks.setSession.mockResolvedValue({data:{user:{id:'child'}}})
+ expect(await connectEnglishLearnerAccount('parent')).toBe('child')
+ expect(mocks.setSession).toHaveBeenCalledWith({access_token:'a',refresh_token:'r'})
+ mocks.setSession.mockResolvedValue({data:{user:{id:'wrong-account'}}})
+ await expect(connectEnglishLearnerAccount('parent')).rejects.toThrow('learner account')
+})

@@ -39,7 +39,8 @@ it('runs and scores object questions from the app test even with a classroom les
   await act(async()=>root.render(<PhonePractice userId="test-student"/>))
   expect(host.querySelectorAll('.journey-node')).toHaveLength(6)
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 6:"]')!.click())
-  const saved=JSON.parse(localStorage.getItem('englishsuccess:composed-run:v16:test-student:6:star-1')!)
+  const runKey=Array.from({length:localStorage.length},(_,i)=>localStorage.key(i)!).find(key=>key.startsWith('englishsuccess:composed-run:')&&key.endsWith(':test-student:6:star-1'))!
+  const saved=JSON.parse(localStorage.getItem(runKey)!)
   const q=practiceCandidates(6,undefined,eligiblePracticeActions(state.rows,[])).find(q=>q.id===saved.questionIds[0])!
   expect(q.document.construction).toBe('action-answer')
   for(const document of [q.document,...q.alternatives??[]]){

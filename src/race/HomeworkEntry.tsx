@@ -1,3 +1,4 @@
+import {connectEnglishLearnerAccount} from '../auth/englishLearner'
 import LessonRequest from '../learning/LessonRequest'
 import {requestedLesson} from '../learning/lessonRequests'
 import ClassroomStudent from '../classroom/ClassroomStudent'
@@ -29,7 +30,7 @@ function ConnectedHomework() {
   }
   useEffect(() => {
     if (local) {
-      void supabase.auth.getUser().then(async ({data}) => { if(data.user) setAccount(data.user.id) })
+      void supabase.auth.getUser().then(async ({data}) => { if(data.user) setAccount(await connectEnglishLearnerAccount(data.user.id)) })
       return
     }
     let active = true

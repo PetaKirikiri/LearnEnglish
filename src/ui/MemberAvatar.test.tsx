@@ -1,14 +1,24 @@
 import { act } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
-import { beforeEach, afterEach, expect, it } from 'vitest'
+import { beforeEach, afterEach, expect, it, vi } from 'vitest'
+const storage=vi.hoisted(()=>({from:vi.fn(),createSignedUrl:vi.fn()}))
+vi.mock('../lib/supabase',()=>({supabase:{storage:{from:storage.from}}}))
 import MemberAvatar from './MemberAvatar'
 
 let root: Root
 let container: HTMLDivElement
 beforeEach(() => {
+  storage.from.mockReturnValue({createSignedUrl:storage.createSignedUrl})
+  storage.createSignedUrl.mockResolvedValue({data:{signedUrl:'https://example.com/private-portrait?token=short-lived'},error:null})
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
   container = document.createElement('div')
   root = createRoot(container)
+})
+it('requests a short-lived authenticated URL for a private learner portrait',async()=>{
+ await act(async()=>root.render(<MemberAvatar name="Learner" url="storage://english-learner-avatars/learner/photo.png"/>))
+ expect(storage.from).toHaveBeenCalledWith('english-learner-avatars')
+ expect(storage.createSignedUrl).toHaveBeenCalledWith('learner/photo.png',300)
+ expect(container.querySelector('img')!.src).toBe('https://example.com/private-portrait?token=short-lived')
 })
 afterEach(() => act(() => root.unmount()))
 it('shows the stored photo with fixed circular dimensions', () => {
