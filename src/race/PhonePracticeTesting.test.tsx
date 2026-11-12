@@ -15,7 +15,8 @@ vi.mock('./PracticeCourse',()=>({default:()=>{throw new Error('The app test must
 vi.mock('../lib/supabase',()=>({supabase:{auth:{getUser:async()=>({data:{user:null}})}}}))
 import PhonePractice from './PhonePractice'
 import HomeworkEntry from './HomeworkEntry'
-import {generatedCandidates} from './generatedPracticeContent'
+import {practiceCandidates} from './generatedPracticeContent'
+import {eligiblePracticeActions} from './generatedPracticeProgress'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 
 it('opens the standalone test without the classroom lesson-template validator',async()=>{
@@ -31,15 +32,15 @@ it('opens the standalone test without the classroom lesson-template validator',a
 it('runs and scores object questions from the app test even with a classroom lesson in the URL',async()=>{
  localStorage.clear();history.replaceState({},'','/english/practice?lesson=6')
  localStorage.setItem('classroom-notes','preserve these notes')
- state.rows=[...new Set(generatedCandidates(6).flatMap(q=>q.document.english.toLowerCase().match(/[a-z]+/g)??[]))].map(word=>({word_id:'en:'+word,correct:25,attempts:25,listening_correct:25,direct_correct:25,last_practised:'',recent_results:[true]}))
+ state.rows=[]
  state.record.mockClear();state.award.mockClear()
  const host=document.createElement('div'),root=createRoot(host)
  try{
   await act(async()=>root.render(<PhonePractice userId="test-student"/>))
   expect(host.querySelectorAll('.journey-node')).toHaveLength(6)
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 6:"]')!.click())
-  const saved=JSON.parse(localStorage.getItem('englishsuccess:composed-run:v5:test-student:6:star-1')!)
-  const q=generatedCandidates(6).find(q=>q.id===saved.questionIds[0])!
+  const saved=JSON.parse(localStorage.getItem('englishsuccess:composed-run:v16:test-student:6:star-1')!)
+  const q=practiceCandidates(6,undefined,eligiblePracticeActions(state.rows,[])).find(q=>q.id===saved.questionIds[0])!
   expect(q.document.construction).toBe('action-answer')
   for(const document of [q.document,...q.alternatives??[]]){
    expect(document.units.some(u=>u.role==='object')).toBe(true)

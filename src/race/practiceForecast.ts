@@ -1,7 +1,7 @@
 import {generatedDeck,evidenceScores,masteredWords,type ListeningEvidence,type DeckOptions} from './generatedPracticeProgress'
 import {wordOpacity,wordTokens,type WordProgress,type FadeSettings} from '../learning/wordProgress/model'
 import type {PracticeLevel} from './PracticeLevelPicker'
-import {allPracticeCandidates,practiceCandidates,type GeneratedQuestion} from './generatedPracticeContent'
+import {practiceCandidates,type GeneratedQuestion} from './generatedPracticeContent'
 import {hierarchyState,hierarchyTypes,hierarchyCompatible,targetsHierarchy} from './wordHierarchy'
 import {learningStates} from '../learning/wordProgress/learningLifecycle'
 import {verbGroupFor} from '../learning/sentenceRules/verbGroups'
@@ -39,7 +39,7 @@ export function queuedAudioCandidates(level:PracticeLevel,rows:WordProgress[],ev
   const future=hierarchyState(hypothetical)
   const fits=(q:GeneratedQuestion)=>targetsHierarchy(q,type,queued)&&hierarchyCompatible(q,future)
   const eligibleActions=new Set([...future.verb.allowed,...future.verb.queued])
-  const q=practiceCandidates(level,options.structure,eligibleActions).find(fits)??allPracticeCandidates(eligibleActions).find(fits)
+  const q=practiceCandidates(level,options.structure,eligibleActions).find(fits)
   if(q)result.push(q)
   }
  }
