@@ -3,7 +3,7 @@ import {allocateColumns,type SpaceDemand} from './matrixSizing'
 
 type Node={element:HTMLElement;children:Node[];demand:SpaceDemand;gap:number}
 /** Measure the rendered language/font, then allocate space through the actual group tree. */
-export default function useMatrixSizing(ref:RefObject<HTMLDivElement|null>,enabled:boolean,contentKey:string){
+export default function useMatrixSizing(ref:RefObject<HTMLDivElement|null>,enabled:boolean,contentKey:string,singleLine=false){
  useLayoutEffect(()=>{
   const root=ref.current
   if(!root||!enabled)return
@@ -44,7 +44,7 @@ export default function useMatrixSizing(ref:RefObject<HTMLDivElement|null>,enabl
     return {minimum:Math.max(...members.map(c=>c.demand.minimum)),preferred:Math.max(...members.map(c=>c.demand.preferred))}
    })
    const joined=node.element.matches('.cw-noun-group,.matrix-agreement-group')
-   while(!joined&&count>1&&demandsFor(count).reduce((sum,d)=>sum+d.minimum,0)+node.gap*(count-1)>width)count--
+   while(!singleLine&&!joined&&count>1&&demandsFor(count).reduce((sum,d)=>sum+d.minimum,0)+node.gap*(count-1)>width)count--
    const columns=allocateColumns(demandsFor(count),width,node.gap)
    node.element.style.gridTemplateColumns=columns.map(value=>`minmax(0,${Math.max(0,value).toFixed(2)}px)`).join(' ')
    styled.add(node.element)
@@ -52,7 +52,7 @@ export default function useMatrixSizing(ref:RefObject<HTMLDivElement|null>,enabl
   }
   const measure=()=>{
    if(disposed)return
-   const width=slots.getBoundingClientRect().width
+   const width=singleLine?slots.clientWidth:slots.getBoundingClientRect().width
    if(width<=0)return
    layout(read(slots),width)
    // Keep the controls on the same tracks as their sentence groups.
@@ -71,5 +71,5 @@ export default function useMatrixSizing(ref:RefObject<HTMLDivElement|null>,enabl
   void document.fonts?.ready.then(()=>{if(!disposed)schedule()})
   document.fonts?.addEventListener('loadingdone',schedule)
   return()=>{disposed=true;cancelAnimationFrame(frame);observer?.disconnect();document.fonts?.removeEventListener('loadingdone',schedule);styled.forEach(element=>element.style.removeProperty('grid-template-columns'))}
- },[ref,enabled,contentKey])
+ },[ref,enabled,contentKey,singleLine])
 }

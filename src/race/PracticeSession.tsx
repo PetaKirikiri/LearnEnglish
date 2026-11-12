@@ -49,6 +49,17 @@ export function PracticeSession({ module,onCompleteModule,onRestartModule,userId
   const [picked, setPicked] = useState<number | null>(saved?.picked ?? null)
   const [score, setScore] = useState<number>(saved?.score ?? 0)
   const question = deck[index]
+  const presented=useRef(new Set<string>()),presentTimes=useRef(new Map<string,string>()),reportPresentation=useRef((q:ReturnType<typeof practiceDeck>[number])=>{void q})
+  reportPresentation.current=q=>{
+    if(!progress.ready||picked!==null||presented.current.has(q.attemptId))return
+    try{
+      const at=presentTimes.current.get(q.attemptId)??new Date().toISOString();presentTimes.current.set(q.attemptId,at)
+      progress.record({event:'presented',id:q.attemptId,questionId:q.id,version:QUESTION_VERSION,answer:'',occurredAt:at,modality:'visible',replays:0,ruleVersion:WORD_RULE_VERSION})
+      presented.current.add(q.attemptId)
+    }catch{setAttemptError('Retry saving progress')}
+  }
+  useEffect(()=>{if(question&&progress.ready&&(settings.fadeMode||!question.audioOnly)&&wordTokens(question.english).some(word=>wordOpacity(word,presentationScores.current,settings)>0))reportPresentation.current(question)},[question,progress.ready,settings])
+
   const correct = picked !== null && picked === question?.correct
   const finished = index >= deck.length
   const nextButton = useRef<HTMLButtonElement>(null)
@@ -72,6 +83,7 @@ export function PracticeSession({ module,onCompleteModule,onRestartModule,userId
     audio.onerror = () => fail()
     void audio.play().then(() => {
       if (playbackRequest.current !== request) return
+      reportPresentation.current(q)
       replays.current += 1
       setStarted(true)
       setAudioError(null)

@@ -7,13 +7,18 @@ import PracticeHelpDialog from '../race/PracticeHelpDialog'
 import PictureSentence from '../race/PictureSentence'
 import DistanceScene from '../learning/sentenceMatrix/DistanceScene'
 import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'
+import {wordTokens,wordOpacity} from '../learning/wordProgress/model'
 import {playSentenceAudio} from '../audio/sentenceAudio'
 /** Host and phone render the same server-selected question and frozen learner support. */
-export default function GeneratedClassroomPractice({question:q,turn,onAnswer,busy=false}:{question:GeneratedQuestion;turn:ClassTurn;onAnswer?:(answer:string,evidence?:{heard:boolean;plays:number;assisted:boolean})=>void;busy?:boolean}){
+export default function GeneratedClassroomPractice({question:q,turn,onAnswer,onPresented,busy=false}:{question:GeneratedQuestion;turn:ClassTurn;onAnswer?:(answer:string,evidence?:{heard:boolean;plays:number;assisted:boolean})=>void;onPresented?:()=>boolean;busy?:boolean}){
  const [heard,setHeard]=useState(false),[audioError,setAudioError]=useState(false),audio=useRef<(()=>void)|null>(null)
  const plays=useRef(0),assisted=useRef(false)
  const studentView=Boolean(onAnswer)
- const play=useCallback(()=>{audio.current?.();audio.current=playSentenceAudio({id:q.id,document:{english:q.document.english},audioUrl:q.audioUrl},{started:()=>{setHeard(false);plays.current++;setAudioError(false)},ended:()=>setHeard(true),error:()=>setAudioError(true)})},[q])
+ const reported=useRef(false),presentCallback=useRef(onPresented),report=useRef(()=>{})
+ presentCallback.current=onPresented
+ report.current=()=>{if(studentView&&turn.answer===null&&!reported.current&&presentCallback.current?.())reported.current=true}
+ useEffect(()=>{if(wordTokens(q.document.english).some(word=>wordOpacity(word,turn.scores??{},{fadeMode:true})>0))report.current()})
+ const play=useCallback(()=>{audio.current?.();audio.current=playSentenceAudio({id:q.id,document:{english:q.document.english},audioUrl:q.audioUrl},{started:()=>{report.current();setHeard(false);plays.current++;setAudioError(false)},ended:()=>setHeard(true),error:()=>setAudioError(true)})},[q])
  useEffect(()=>{if(studentView)play();return()=>audio.current?.()},[play,turn.id,studentView])
  const picked=turn.answer===null?null:turn.choices.indexOf(turn.answer)
  const choices=turn.choices.map((label,side)=>{

@@ -23,3 +23,15 @@ it('shows the exact selected sentence on both screens and gates phone answers on
   expect(answer).toHaveBeenCalledWith('the man',{heard:true,plays:1,assisted:false})
  }finally{await act(async()=>{h.unmount();p.unmount()})}
 })
+it('counts only student presentation, including hidden audio, once per mounted turn',async()=>{
+ const host=document.createElement('div'),root=createRoot(host),present=vi.fn(()=>true)
+ const turn={id:'served',learner:'student',questionId:question.id,english:question.document.english,choices:question.choices,answer:null,correct:null,scores:{'en:the':25,'en:man':25}}
+ try{
+  await act(async()=>root.render(<GeneratedClassroomPractice question={question} turn={turn} onPresented={present}/>))
+  expect(present).not.toHaveBeenCalled()
+  await act(async()=>root.render(<GeneratedClassroomPractice question={question} turn={turn} onAnswer={()=>{}} onPresented={present}/>))
+  expect(present).toHaveBeenCalledOnce()
+  await act(async()=>playback.callbacks!.started())
+  expect(present).toHaveBeenCalledOnce()
+ }finally{await act(async()=>root.unmount())}
+})

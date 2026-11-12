@@ -62,13 +62,27 @@ function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof use
  // Forecast only when account evidence or the question changes, not audio playback state.
  // eslint-disable-next-line react-hooks/exhaustive-deps
  },[run?.index,run?.id,events,progress.rows])
+ function present(){
+  if(!run||run.picked!==null||!q)return false
+  try{
+   const old=loadEvidence(props.userId).find(event=>event.id===run.attemptId)
+   if(old&&old.phase!=='presented')return true
+   const at=new Date().toISOString()
+   const event:ListeningEvidence=old??{id:run.attemptId,questionId:q.id,level:props.level,sentence:q.document.english,targets:q.credit===null?[]:q.targetWords,vocabulary:q.vocabulary,correct:false,hidden:false,heard:false,assisted:false,plays:0,at,presentedAt:at,phase:'presented'}
+   const saved=saveEvidence(event,props.userId)
+   progress.record({event:'presented',id:event.id,questionId:q.id,version:q.version,answer:'',occurredAt:event.presentedAt??event.at,modality:'visible',replays:0,ruleVersion:WORD_RULE_VERSION})
+   if(!old)setEvents(saved)
+   return true
+  }catch{setSaveError(true);return false}
+ }
  function answer(side:number,evidence:Omit<ListeningEvidence,'id'|'questionId'|'level'|'sentence'|'targets'|'vocabulary'|'correct'|'at'>){
   if(!run||run.picked!==null||!q)return false
   const correct=side===q.correct,targets=q.credit===null?[]:q.targetWords
-  const event:ListeningEvidence={...evidence,id:run.attemptId,questionId:q.id,level:props.level,sentence:q.document.english,targets,vocabulary:q.vocabulary,correct,at:new Date().toISOString()}
+  const shown=loadEvidence(props.userId).find(event=>event.id===run.attemptId)
+  const event:ListeningEvidence={...evidence,phase:'answered',presentedAt:shown?.presentedAt,id:run.attemptId,questionId:q.id,level:props.level,sentence:q.document.english,targets,vocabulary:q.vocabulary,correct,at:new Date().toISOString()}
   try{
-   // Credit only the contrast being tested. A hidden noun elsewhere in the
-   // sentence is not evidence when the decision was about ownership.
+   // Save the complete encounter. The server credits sentence exposure;
+   // listening proof still requires the contrasted word to be hidden.
    progress.record({id:event.id,questionId:q.id,version:q.version,answer:q.choices[side],occurredAt:event.at,modality:event.hidden&&event.heard&&!event.assisted&&event.plays===1?'audio':'visible',replays:Math.max(0,event.plays-1),ruleVersion:WORD_RULE_VERSION})
    const saved=saveEvidence(event,props.userId)
    persist({...run,picked:side,answers:[...run.answers,correct],assisted:run.assisted||event.assisted})
@@ -81,19 +95,26 @@ function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof use
  persist({...run,questionIds,flipped,index,picked:null,attemptId:crypto.randomUUID()})
  }}catch{setSaveError(true)}}
  return <main className={`phone-practice foundation-practice${props.options?.structure==='identify'?' identification-practice':''}`} lang="en"><div className="practice-shell">
- {!run?<><PracticeHeader label={props.label} level={props.level} onLevel={props.onLevel} onExit={props.onExit} userId={props.userId} value={0} total={30}/>{progress.error?<button role="alert" onClick={()=>void progress.retry()}>Retry loading progress</button>:<p role="status">…</p>}{<button role="alert" onClick={start}>Retry saving this set</button>}</>:run.done?<><PracticeHeader label={props.label} level={props.level} onLevel={props.onLevel} onExit={props.onExit} userId={props.userId} value={30} total={30}/><section className="practice-complete"><h1>{run.answers.filter(Boolean).length} / 30</h1><button onClick={start}>↻</button></section></>:q&&<GeneratedQuestionView courseLabel={props.label} key={run.attemptId} attemptId={run.attemptId} supportKey={runKey(props)+':presentation'} question={q} scores={scores} settings={props.settings} picked={run.picked} onChoose={answer} onNext={next} userId={props.userId} onLevel={props.onLevel} onExit={props.onExit} index={run.index} saveError={saveError||!!progress.error} retry={()=>void progress.retry()}/>}
+ {!run?<><PracticeHeader label={props.label} level={props.level} onLevel={props.onLevel} onExit={props.onExit} userId={props.userId} value={0} total={30}/>{progress.error?<button role="alert" onClick={()=>void progress.retry()}>Retry loading progress</button>:<p role="status">…</p>}{<button role="alert" onClick={start}>Retry saving this set</button>}</>:run.done?<><PracticeHeader label={props.label} level={props.level} onLevel={props.onLevel} onExit={props.onExit} userId={props.userId} value={30} total={30}/><section className="practice-complete"><h1>{run.answers.filter(Boolean).length} / 30</h1><button onClick={start}>↻</button></section></>:q&&<GeneratedQuestionView courseLabel={props.label} key={run.attemptId} attemptId={run.attemptId} supportKey={runKey(props)+':presentation'} question={q} scores={scores} settings={props.settings} picked={run.picked} onPresented={present} onChoose={answer} onNext={next} userId={props.userId} onLevel={props.onLevel} onExit={props.onExit} index={run.index} saveError={saveError||!!progress.error} retry={()=>void progress.retry()}/>}
  </div></main>
 }
-type QuestionProps={courseLabel?:string;attemptId:string;supportKey:string;question:GeneratedQuestion;scores:WordScores;settings?:MatrixSettings;picked:number|null;onChoose:(side:number,evidence:Pick<ListeningEvidence,'heard'|'hidden'|'assisted'|'plays'>)=>boolean;onNext:()=>void;userId?:string;onLevel?:Props['onLevel'];onExit?:()=>void;index:number;saveError:boolean;retry:()=>void}
-function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scores,settings,picked,onChoose,onNext,userId,onLevel,onExit,index,saveError,retry}:QuestionProps){
+type QuestionProps={courseLabel?:string;attemptId:string;supportKey:string;question:GeneratedQuestion;scores:WordScores;settings?:MatrixSettings;picked:number|null;onPresented:()=>boolean;onChoose:(side:number,evidence:Pick<ListeningEvidence,'heard'|'hidden'|'assisted'|'plays'>)=>boolean;onNext:()=>void;userId?:string;onLevel?:Props['onLevel'];onExit?:()=>void;index:number;saveError:boolean;retry:()=>void}
+function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scores,settings,picked,onPresented,onChoose,onNext,userId,onLevel,onExit,index,saveError,retry}:QuestionProps){
  const [support]=useState(()=>{try{const old=JSON.parse(localStorage.getItem(supportKey)??'null');if(old?.id===attemptId&&old.scores&&typeof old.assisted==='boolean'&&Number.isInteger(old.plays)&&old.plays>=0&&Object.values(old.scores).every(v=>typeof v==='number'&&Number.isFinite(v)))return old as {id:string;scores:WordScores;plays:number;assisted:boolean}}catch{/* Retain fresh support when no presentation was saved. */}return {id:attemptId,scores:Object.fromEntries(wordTokens(q.document.english).map(w=>['en:'+w,scores['en:'+w]??0])),plays:0,assisted:false}})
  const snapshot=support.scores,[heard,setHeard]=useState(false),[audioError,setAudioError]=useState(false)
  const audio=useRef<(()=>void)|null>(null),plays=useRef(support.plays),assisted=useRef(support.assisted),locked=useRef(picked!==null)
  const saveSupport=useCallback(()=>{try{localStorage.setItem(supportKey,JSON.stringify({...support,plays:plays.current,assisted:assisted.current}))}catch{assisted.current=true}},[supportKey,support])
  const presentation={...settings,fadeMode:settings?.fadeMode??true}
+ const presented=useRef(false),presentCallback=useRef(onPresented),report=useRef(()=>{})
+ presentCallback.current=onPresented
+ report.current=()=>{if(!presented.current&&!locked.current&&presentCallback.current())presented.current=true}
+ // Visible words count when rendered; an entirely hidden question counts only
+ // when its audio actually starts. Preparation and failed playback earn nothing.
+ useEffect(()=>{if(wordTokens(q.document.english).some(word=>wordOpacity(word,snapshot,presentation)>0)){saveSupport();report.current()}})
+
  const play=useCallback(()=>{
   audio.current?.()
-  audio.current=playSentenceAudio({id:q.id,document:{english:q.document.english},audioUrl:q.audioUrl},{started:()=>{setAudioError(false);plays.current++;saveSupport()},ended:()=>setHeard(true),error:()=>setAudioError(true)})
+  audio.current=playSentenceAudio({id:q.id,document:{english:q.document.english},audioUrl:q.audioUrl},{started:()=>{report.current();setAudioError(false);plays.current++;saveSupport()},ended:()=>setHeard(true),error:()=>setAudioError(true)})
  },[q.id,q.document.english,q.audioUrl,saveSupport])
  useEffect(()=>{play();return()=>{audio.current?.();audio.current=null}},[play])
  useEffect(()=>{locked.current=picked!==null},[picked,saveError])

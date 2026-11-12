@@ -21579,13 +21579,12 @@ if (shouldShowDeprecationWarning()) console.warn("\u26A0\uFE0F  Node.js 20 and b
 // src/learning/wordProgress/learningLifecycle.ts
 var FADE_START = 5;
 var FADE_END = 25;
-var CONFIRMATIONS_REQUIRED = 3;
 var REVIEW_DAYS = [1, 3, 7, 14, 30];
 var emptyLearning = () => ({ fadeScore: 0, confirmations: 0, provenAt: null, reviewDueAt: null, reviewStep: 0, reviewedAt: null, lapsedAt: null, updatedAt: null });
 var fadingPercent = (score) => Math.round(Math.max(0, Math.min(1, (score - FADE_START) / (FADE_END - FADE_START))) * 100);
 var due = (at, step) => new Date(Date.parse(at) + REVIEW_DAYS[step] * 864e5).toISOString();
 function advanceLearning(previous, event) {
-  const state = { ...previous, updatedAt: event.at }, hiddenBefore = state.fadeScore >= FADE_END;
+  const state = { ...previous, updatedAt: event.at };
   if (!event.correct) {
     state.fadeScore = state.provenAt ? Math.min(FADE_START, state.fadeScore) : Math.max(0, state.fadeScore - 2);
     if (state.provenAt) state.lapsedAt = event.at;
@@ -21596,35 +21595,43 @@ function advanceLearning(previous, event) {
     state.reviewedAt = null;
     return state;
   }
-  state.fadeScore = Math.min(FADE_END, state.fadeScore + 1);
-  if (!event.independent || !hiddenBefore) return state;
-  if (state.provenAt) {
-    if (state.reviewDueAt && Date.parse(event.at) >= Date.parse(state.reviewDueAt)) {
-      state.reviewStep = Math.min(REVIEW_DAYS.length - 1, state.reviewStep + 1);
-      state.reviewedAt = event.at;
-      state.reviewDueAt = due(event.at, state.reviewStep);
-    }
-  } else {
-    state.confirmations = Math.min(CONFIRMATIONS_REQUIRED, state.confirmations + 1);
-    if (state.confirmations === CONFIRMATIONS_REQUIRED) {
-      state.provenAt = event.at;
-      state.reviewedAt = event.at;
-      state.lapsedAt = null;
-      state.reviewStep = 0;
-      state.reviewDueAt = due(event.at, 0);
-    }
+  state.fadeScore = Math.min(FADE_END, state.fadeScore + (event.weight ?? 1));
+  if (state.fadeScore < FADE_END) return state;
+  if (!state.provenAt) {
+    state.provenAt = event.at;
+    state.reviewedAt = event.at;
+    state.lapsedAt = null;
+    state.reviewStep = 0;
+    state.confirmations = 0;
+    state.reviewDueAt = due(event.at, 0);
+  } else if (event.independent && state.reviewDueAt && Date.parse(event.at) >= Date.parse(state.reviewDueAt)) {
+    state.reviewStep = Math.min(REVIEW_DAYS.length - 1, state.reviewStep + 1);
+    state.reviewedAt = event.at;
+    state.reviewDueAt = due(event.at, state.reviewStep);
   }
   return state;
 }
 function learningStates(rows, events = []) {
   const states = /* @__PURE__ */ new Map();
-  for (const row of rows) states.set(row.word_id, { fadeScore: row.fade_score ?? Math.min(FADE_END, row.correct), confirmations: row.confirmation_count ?? 0, provenAt: row.proven_at ?? null, reviewDueAt: row.review_due_at ?? null, reviewStep: row.review_step ?? 0, reviewedAt: row.reviewed_at ?? null, lapsedAt: row.lapsed_at ?? null, updatedAt: row.learning_updated_at ?? row.last_practised ?? null });
+  for (const row of rows) {
+    const fadeScore = row.fade_score ?? Math.min(FADE_END, row.correct);
+    const learned = fadeScore >= FADE_END ? (row.proven_at ?? row.learning_updated_at ?? row.last_practised) || "1970-01-01T00:00:00.000Z" : null;
+    states.set(row.word_id, { fadeScore, confirmations: 0, provenAt: learned, reviewDueAt: learned ? row.review_due_at ?? (Date.parse(learned) ? due(learned, 0) : null) : null, reviewStep: row.review_step ?? 0, reviewedAt: row.reviewed_at ?? learned, lapsedAt: row.lapsed_at ?? null, updatedAt: row.learning_updated_at ?? row.last_practised ?? null });
+  }
   const cutoff = new Map([...states].map(([id, s]) => [id, Date.parse(s.updatedAt ?? "") || 0]));
-  for (const event of [...new Map(events.map((e) => [e.id, e])).values()].sort((a, b) => Date.parse(a.at) - Date.parse(b.at))) {
-    for (const word of new Set(event.targets.flatMap(wordTokens))) {
+  const timeline = [...new Map(events.map((e) => [e.id, e])).values()].flatMap((event) => {
+    if (event.phase === "presented") return [{ ...event, kind: "exposure", at: event.presentedAt ?? event.at }];
+    if (event.presentedAt) return [{ ...event, kind: "exposure", at: event.presentedAt }, { ...event, kind: "answer" }];
+    return [{ ...event, kind: "legacy" }];
+  }).sort((a, b) => Date.parse(a.at) - Date.parse(b.at) || (a.kind === "exposure" ? -1 : b.kind === "exposure" ? 1 : 0));
+  for (const event of timeline) {
+    const tokens = event.targets.flatMap(wordTokens), lexical = tokens.filter((word) => !["am", "is", "are"].includes(word));
+    const targets = new Set(lexical.length ? lexical : tokens);
+    const words = event.kind === "exposure" ? new Set(wordTokens(event.sentence ?? "")) : event.kind === "answer" ? targets : /* @__PURE__ */ new Set([...targets, ...event.correct && targets.size ? wordTokens(event.sentence ?? "") : []]);
+    for (const word of words) {
       const id = "en:" + word;
       if (Date.parse(event.at) <= (cutoff.get(id) ?? 0)) continue;
-      states.set(id, advanceLearning(states.get(id) ?? emptyLearning(), { correct: event.correct, independent: event.hidden && event.heard && !event.assisted && event.plays === 1, at: event.at }));
+      states.set(id, advanceLearning(states.get(id) ?? emptyLearning(), { correct: event.kind === "exposure" || event.correct, weight: event.kind === "exposure" ? 1 : event.kind === "answer" ? 2 : targets.has(word) ? 3 : 1, independent: event.kind !== "exposure" && targets.has(word) && event.hidden && event.heard && !event.assisted && event.plays === 1, at: event.at }));
     }
   }
   return states;
@@ -22286,11 +22293,11 @@ var numberItem = (word) => byWord.get(word);
 function vocabularyLearning(type, word, states, now = Date.now()) {
   const forms = type === "noun" ? [word, numberItem(word)?.plural].filter((w) => !!w) : [word];
   const combined = forms.map((form) => {
-    const values = wordTokens(form).map((token) => states.get("en:" + token) ?? emptyLearning()), proven = values.every((v) => v.provenAt);
-    return { fadeScore: Math.min(...values.map((v) => v.fadeScore)), confirmations: Math.min(...values.map((v) => v.confirmations)), provenAt: proven ? values.map((v) => v.provenAt).sort().at(-1) : null, reviewDueAt: proven ? values.map((v) => v.reviewDueAt).filter((v) => !!v).sort()[0] ?? null : null, lapsed: values.some((v) => v.lapsedAt) };
+    const values = wordTokens(form).map((token) => states.get("en:" + token) ?? emptyLearning()), proven = values.every((v) => v.fadeScore >= 25);
+    return { fadeScore: Math.min(...values.map((v) => v.fadeScore)), confirmations: Math.min(...values.map((v) => v.confirmations)), provenAt: proven ? values.map((v) => (v.provenAt ?? v.updatedAt) || "1970-01-01T00:00:00.000Z").sort().at(-1) : null, reviewDueAt: proven ? values.map((v) => v.reviewDueAt).filter((v) => !!v).sort()[0] ?? null : null, lapsed: values.some((v) => v.lapsedAt) };
   });
   const best = combined.sort((a, b) => Number(!!b.provenAt) - Number(!!a.provenAt) || b.fadeScore - a.fadeScore || b.confirmations - a.confirmations)[0];
-  return { ...best, fadePercent: fadingPercent(best.fadeScore), due: !!best.reviewDueAt && Date.parse(best.reviewDueAt) <= now, stage: best.provenAt ? "proven" : best.fadeScore >= 25 ? "confirming" : best.lapsed ? "relearning" : "fading" };
+  return { ...best, fadePercent: fadingPercent(best.fadeScore), due: !!best.reviewDueAt && Date.parse(best.reviewDueAt) <= now, stage: best.provenAt ? "learnt" : best.lapsed ? "relearning" : "fading" };
 }
 
 // src/learning/sentenceRules/verbGroups.ts
@@ -22502,7 +22509,7 @@ function numberCandidates(level) {
       out.push(q);
     } else for (const wrong of [false, true]) {
       const document2 = where(item.word, owner, wrong);
-      out.push({ ...base(level, document2, where(item.word, owner, !wrong), meta, [item.word, verbForWord(item)]), kind: "judgement", choices: ["Correct", "Incorrect"], correct: wrong ? 1 : 0, alternatives: void 0, credit: wrong ? null : `${item.word} ${verbForWord(item)}` });
+      out.push({ ...base(level, document2, where(item.word, owner, !wrong), meta, [verbForWord(item)]), kind: "judgement", choices: ["Correct", "Incorrect"], correct: wrong ? 1 : 0, alternatives: void 0, credit: wrong ? null : verbForWord(item) });
     }
   }
   return out;
@@ -22572,7 +22579,7 @@ function actionAnswerCandidates(level, eligibleActions, determiners2 = owners.ma
       const document2 = actionDocument(subject, action, object.word, owner.word);
       let other, targetWords;
       const contrast = (si + oi + di) % 4;
-      const actionOptions = (objectActions.get(object.word) ?? []).filter((a) => a !== action && subjectCanPerform(subject, a, object.noun));
+      const actionOptions = (objectActions.get(object.word) ?? []).filter((a) => a !== action && frameFor(a).connection === frameFor(action).connection && subjectCanPerform(subject, a, object.noun));
       const nounOptions = objects.filter((o) => o.noun !== object.noun && subjectCanPerform(subject, action, o.noun) && ownersFor(o).some((d) => d.word === owner.word)).sort((a, b) => everydayNounOrder.indexOf(numberItem(a.noun)?.singular ?? a.noun) - everydayNounOrder.indexOf(numberItem(b.noun)?.singular ?? b.noun));
       if (contrast === 3 && actionOptions.length) {
         other = actionDocument(subject, actionOptions[(si + di) % actionOptions.length], object.word, owner.word);
@@ -22606,23 +22613,22 @@ function actionAnswerCandidates(level, eligibleActions, determiners2 = owners.ma
           out.push(base(level, document2, alternative, { ...meta, vocabulary: [.../* @__PURE__ */ new Set([...documentNouns, person.phrase.noun])] }, [subject.phrase.noun]));
         }
       }
-      const otherAction = actions.find((candidate) => candidate !== action && frameFor(candidate).connection === frameFor(action).connection && subjectCanPerform(subject, candidate) && objectMap.get(candidate).some((item) => subjectCanPerform(subject, candidate, item.noun)));
+      const otherAction = actions.find((candidate) => candidate !== action && frameFor(candidate).connection === frameFor(action).connection && subjectCanPerform(subject, candidate, object.noun) && objectMap.get(candidate).some((item) => item.word === object.word && ownersFor(item).some((d) => d.word === owner.word)));
       if (otherAction) {
-        const choices = objectMap.get(otherAction).filter((item) => subjectCanPerform(subject, otherAction, item.noun));
-        const contrast2 = choices.find((item) => item.noun === object.noun) ?? choices[0];
-        const contrastOwner = ownersFor(contrast2).some((item) => item.word === owner.word) ? owner.word : ownersFor(contrast2)[0].word;
-        const verbContrast = actionDocument(subject, otherAction, contrast2.word, contrastOwner);
-        out.push(base(level, document2, verbContrast, { ...meta, vocabulary: [.../* @__PURE__ */ new Set([...documentNouns, contrast2.noun])] }, [action]));
+        const verbContrast = actionDocument(subject, otherAction, object.word, owner.word);
+        out.push(base(level, document2, verbContrast, { ...meta, vocabulary: documentNouns }, [action]));
       }
     }
   }
   return [...new Map(out.map((q) => [q.id, q])).values()];
 }
-function descriptionCandidates(level, eligibleActions) {
-  const source = level <= 3 ? numberCandidates(level === 1 ? 1 : 2) : level === 4 ? [] : actionAnswerCandidates(level, eligibleActions);
-  const seen = /* @__PURE__ */ new Set(), result = [];
+function descriptionCandidates(level, eligibleActions, existingSource) {
+  const source = existingSource ?? (level <= 3 ? numberCandidates(level === 1 ? 1 : 2) : level === 4 ? [] : actionAnswerCandidates(level, eligibleActions));
+  const seen = /* @__PURE__ */ new Set(), seenSources = /* @__PURE__ */ new Set(), result = [];
   for (const q of source) {
     if (q.owner !== "the" || q.subject && !["I", "you"].includes(q.subject)) continue;
+    if (seenSources.has(q.document.english)) continue;
+    seenSources.add(q.document.english);
     const index = q.document.units.findIndex((u) => u.role === "object");
     if (index < 0 || q.document.units[index - 1]?.role !== "determiner") continue;
     const noun = q.document.units[index].english.replace(/[.!?]$/, "");
@@ -22669,7 +22675,8 @@ function generatedCandidates(level, eligibleActions) {
   const key = level + ":" + (eligibleActions && level >= 5 ? [...eligibleActions].sort().join("|") : "all");
   let bank = cache.get(key);
   if (!bank) {
-    bank = [...level <= 3 ? numberCandidates(level) : level === 4 ? actionQuestionCandidates() : actionAnswerCandidates(level, eligibleActions), ...descriptionCandidates(level, eligibleActions), ...level >= 5 ? vocabularyRecallCandidates(level) : []];
+    const primary = level <= 3 ? numberCandidates(level) : level === 4 ? actionQuestionCandidates() : actionAnswerCandidates(level, eligibleActions);
+    bank = [...primary, ...descriptionCandidates(level, eligibleActions, [1, 2, 5, 6].includes(level) ? primary : void 0), ...level >= 5 ? vocabularyRecallCandidates(level) : []];
     {
       const ids = /* @__PURE__ */ new Map();
       for (const q of bank) {
@@ -22756,8 +22763,8 @@ function determinerCandidates() {
       out.push(base(6, phrase(item.word, article), phrase(item.word, "the"), { family: item.singular ?? item.word, vocabulary: [item.word], action: "determiner", owner: article, subject: "", plural: false }, [article]));
     }
     if (item.pluralForm && item.singular) {
-      const q = base(6, phrase(item.word, "some"), phrase(item.singular, "this"), { family: item.singular, vocabulary: [item.word, item.singular], action: "determiner", owner: "some", subject: "", plural: true }, ["some"]);
-      out.push({ ...q, sceneChoices: [{ reference: "some", word: item.word }, { reference: "this", word: item.singular }] });
+      const q = base(6, phrase(item.word, "some"), phrase(item.word, "these"), { family: item.singular, vocabulary: [item.word], action: "determiner", owner: "some", subject: "", plural: true }, ["some"]);
+      out.push({ ...q, sceneChoices: [{ reference: "some", word: item.word }, { reference: "these", word: item.word }] });
     }
   }
   determinerBank = out;

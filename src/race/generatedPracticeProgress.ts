@@ -8,7 +8,7 @@ import {numberItem} from './numberCatalogue'
 import {readRecall} from './numberRecallStore'
 import type {PracticeLevel} from './PracticeLevelPicker'
 
-export type ListeningEvidence={id:string;questionId:string;level:PracticeLevel;sentence:string;targets:string[];vocabulary:string[];correct:boolean;hidden:boolean;heard:boolean;assisted:boolean;plays:number;at:string}
+export type ListeningEvidence={phase?:'presented'|'answered';presentedAt?:string;id:string;questionId:string;level:PracticeLevel;sentence:string;targets:string[];vocabulary:string[];correct:boolean;hidden:boolean;heard:boolean;assisted:boolean;plays:number;at:string}
 export const evidenceKey=(user?:string)=>`englishsuccess:composed-evidence:v1:${user??'guest'}`
 export function loadEvidence(user?:string):ListeningEvidence[]{
  let events:ListeningEvidence[]=[]
@@ -16,7 +16,13 @@ export function loadEvidence(user?:string):ListeningEvidence[]{
  const legacy:ListeningEvidence[]=readRecall(user).map(e=>({id:e.id,questionId:`legacy-number:${e.word}`,level:e.module,sentence:e.word,targets:[e.word],vocabulary:[e.word],correct:e.correct,hidden:e.support===3,heard:e.heard,assisted:e.assisted,plays:e.replays,at:new Date(e.at).toISOString()}))
  return [...new Map([...legacy,...events].map(e=>[e.id,e])).values()].sort((a,b)=>a.at.localeCompare(b.at))
 }
-export function saveEvidence(event:ListeningEvidence,user?:string){const old=loadEvidence(user);if(old.some(e=>e.id===event.id))return old;const next=[...old,event];localStorage.setItem(evidenceKey(user),JSON.stringify(next));return next}
+export function saveEvidence(event:ListeningEvidence,user?:string){
+ const old=loadEvidence(user),previous=old.find(e=>e.id===event.id)
+ if(previous&&!(previous.phase==='presented'&&event.phase!=='presented'))return old
+ const saved=previous?{...event,presentedAt:previous.presentedAt??previous.at}:event
+ const next=previous?old.map(e=>e.id===event.id?saved:e):[...old,saved]
+ localStorage.setItem(evidenceKey(user),JSON.stringify(next));return next
+}
 export function evidenceScores(rows:WordProgress[],events:ListeningEvidence[],settings:FadeSettings={}):WordScores{
  const start=Math.max(0,settings.fadeStart??5),end=Math.max(start+1,settings.fadeEnd??25)
  return Object.fromEntries([...learningStates(rows,events)].map(([id,state])=>[id,state.fadeScore<=5?Math.min(start,state.fadeScore):start+(end-start)*fadingPercent(state.fadeScore)/100]))

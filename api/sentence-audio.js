@@ -43,7 +43,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// node_modules/tslib/tslib.es6.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/tslib/tslib.es6.mjs
 var tslib_es6_exports = {};
 __export(tslib_es6_exports, {
   __addDisposableResource: () => __addDisposableResource,
@@ -482,7 +482,7 @@ function __rewriteRelativeImportExtension(path, preserveJsx) {
 }
 var extendStatics, __assign, __createBinding, __setModuleDefault, ownKeys, _SuppressedError, tslib_es6_default;
 var init_tslib_es6 = __esm({
-  "node_modules/tslib/tslib.es6.mjs"() {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/tslib/tslib.es6.mjs"() {
     extendStatics = function(d, b) {
       extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
         d2.__proto__ = b2;
@@ -568,9 +568,9 @@ var init_tslib_es6 = __esm({
   }
 });
 
-// node_modules/@supabase/functions-js/dist/main/helper.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/helper.js
 var require_helper = __commonJS({
-  "node_modules/@supabase/functions-js/dist/main/helper.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/helper.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.resolveFetch = void 0;
@@ -584,9 +584,9 @@ var require_helper = __commonJS({
   }
 });
 
-// node_modules/@supabase/functions-js/dist/main/types.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/types.js
 var require_types = __commonJS({
-  "node_modules/@supabase/functions-js/dist/main/types.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/types.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FunctionRegion = exports.FunctionsHttpError = exports.FunctionsRelayError = exports.FunctionsFetchError = exports.FunctionsError = void 0;
@@ -644,9 +644,9 @@ var require_types = __commonJS({
   }
 });
 
-// node_modules/@supabase/functions-js/dist/main/FunctionsClient.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/FunctionsClient.js
 var require_FunctionsClient = __commonJS({
-  "node_modules/@supabase/functions-js/dist/main/FunctionsClient.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/FunctionsClient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FunctionsClient = void 0;
@@ -930,9 +930,9 @@ var require_FunctionsClient = __commonJS({
   }
 });
 
-// node_modules/@supabase/functions-js/dist/main/index.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/index.js
 var require_main = __commonJS({
-  "node_modules/@supabase/functions-js/dist/main/index.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FunctionRegion = exports.FunctionsRelayError = exports.FunctionsHttpError = exports.FunctionsFetchError = exports.FunctionsError = exports.FunctionsClient = void 0;
@@ -959,9 +959,9 @@ var require_main = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/lib/websocket-factory.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/websocket-factory.js
 var require_websocket_factory = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/lib/websocket-factory.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/websocket-factory.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WebSocketFactory = void 0;
@@ -1070,9 +1070,9 @@ Suggested solution: ${env.workaround}`;
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/lib/version.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/version.js
 var require_version = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/lib/version.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/version.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.version = void 0;
@@ -1080,9 +1080,9 @@ var require_version = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/lib/constants.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/constants.js
 var require_constants = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/lib/constants.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/constants.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CONNECTION_STATE = exports.TRANSPORTS = exports.CHANNEL_EVENTS = exports.CHANNEL_STATES = exports.SOCKET_STATES = exports.MAX_PUSH_BUFFER_SIZE = exports.WS_CLOSE_NORMAL = exports.DEFAULT_TIMEOUT = exports.VERSION = exports.DEFAULT_VSN = exports.VSN_2_0_0 = exports.VSN_1_0_0 = exports.DEFAULT_VERSION = void 0;
@@ -1128,9 +1128,9 @@ var require_constants = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/lib/serializer.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/serializer.js
 var require_serializer = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/lib/serializer.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/serializer.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Serializer = class {
@@ -1282,9 +1282,9 @@ var require_serializer = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/lib/transformers.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/transformers.js
 var require_transformers = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/lib/transformers.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/transformers.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.httpEndpointURL = exports.toTimestampString = exports.toArray = exports.toJson = exports.toNumber = exports.toBoolean = exports.convertCell = exports.convertColumn = exports.convertChangeData = exports.PostgresTypes = void 0;
@@ -1461,9 +1461,9 @@ var require_transformers = __commonJS({
   }
 });
 
-// node_modules/@supabase/phoenix/priv/static/phoenix.cjs.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/phoenix/priv/static/phoenix.cjs.js
 var require_phoenix_cjs = __commonJS({
-  "node_modules/@supabase/phoenix/priv/static/phoenix.cjs.js"(exports, module) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/phoenix/priv/static/phoenix.cjs.js"(exports, module) {
     "use strict";
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
@@ -3313,9 +3313,9 @@ var require_phoenix_cjs = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/phoenix/presenceAdapter.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/phoenix/presenceAdapter.js
 var require_presenceAdapter = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/phoenix/presenceAdapter.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/phoenix/presenceAdapter.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var phoenix_1 = require_phoenix_cjs();
@@ -3413,9 +3413,9 @@ var require_presenceAdapter = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/RealtimePresence.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimePresence.js
 var require_RealtimePresence = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/RealtimePresence.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimePresence.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.REALTIME_PRESENCE_LISTEN_EVENTS = void 0;
@@ -3457,9 +3457,9 @@ var require_RealtimePresence = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/lib/normalizeChannelError.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/normalizeChannelError.js
 var require_normalizeChannelError = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/lib/normalizeChannelError.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/normalizeChannelError.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.normalizeChannelError = normalizeChannelError;
@@ -3483,9 +3483,9 @@ var require_normalizeChannelError = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/phoenix/channelAdapter.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/phoenix/channelAdapter.js
 var require_channelAdapter = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/phoenix/channelAdapter.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/phoenix/channelAdapter.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var constants_1 = require_constants();
@@ -3590,9 +3590,9 @@ var require_channelAdapter = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/RealtimePostgresFilterBuilder.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimePostgresFilterBuilder.js
 var require_RealtimePostgresFilterBuilder = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/RealtimePostgresFilterBuilder.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimePostgresFilterBuilder.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.postgresChangesFilter = exports.RealtimePostgresFilterBuilder = void 0;
@@ -3714,9 +3714,9 @@ var require_RealtimePostgresFilterBuilder = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js
 var require_RealtimeChannel = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.REALTIME_CHANNEL_STATES = exports.REALTIME_SUBSCRIBE_STATES = exports.REALTIME_LISTEN_TYPES = exports.REALTIME_POSTGRES_CHANGES_LISTEN_EVENT = exports.postgresChangesFilter = exports.RealtimePostgresFilterBuilder = void 0;
@@ -4468,9 +4468,9 @@ var require_RealtimeChannel = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/phoenix/socketAdapter.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/phoenix/socketAdapter.js
 var require_socketAdapter = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/phoenix/socketAdapter.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/phoenix/socketAdapter.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var phoenix_1 = require_phoenix_cjs();
@@ -4586,9 +4586,9 @@ var require_socketAdapter = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
 var require_RealtimeClient = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -5254,9 +5254,9 @@ var require_RealtimeClient = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/index.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/index.js
 var require_main2 = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/index.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WebSocketFactory = exports.REALTIME_CHANNEL_STATES = exports.REALTIME_SUBSCRIBE_STATES = exports.REALTIME_PRESENCE_LISTEN_EVENTS = exports.REALTIME_POSTGRES_CHANGES_LISTEN_EVENT = exports.REALTIME_LISTEN_TYPES = exports.postgresChangesFilter = exports.RealtimePostgresFilterBuilder = exports.RealtimeClient = exports.RealtimeChannel = exports.RealtimePresence = void 0;
@@ -5293,9 +5293,9 @@ var require_main2 = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/version.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/version.js
 var require_version2 = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/version.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/version.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.version = void 0;
@@ -5303,9 +5303,9 @@ var require_version2 = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/constants.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/constants.js
 var require_constants2 = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/constants.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/constants.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.JWKS_TTL = exports.PKCE_MAX_CONCURRENT_FLOWS = exports.PKCE_FLOW_ID_PARAM = exports.BASE64URL_REGEX = exports.API_VERSIONS = exports.API_VERSION_HEADER_NAME = exports.NETWORK_FAILURE = exports.DEFAULT_HEADERS = exports.AUDIENCE = exports.STORAGE_KEY = exports.GOTRUE_URL = exports.REFRESH_FAILURE_COOLDOWN_MS = exports.EXPIRY_MARGIN_MS = exports.AUTO_REFRESH_TICK_THRESHOLD = exports.AUTO_REFRESH_TICK_DURATION_MS = void 0;
@@ -5337,9 +5337,9 @@ var require_constants2 = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/errors.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/errors.js
 var require_errors = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/errors.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/errors.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AuthInvalidJwtError = exports.AuthWeakPasswordError = exports.AuthRefreshDiscardedError = exports.AuthRetryableFetchError = exports.AuthPKCECodeVerifierMissingError = exports.AuthPKCEGrantCodeExchangeError = exports.AuthImplicitGrantRedirectError = exports.AuthInvalidCredentialsError = exports.AuthInvalidTokenResponseError = exports.AuthSessionMissingError = exports.CustomAuthError = exports.AuthUnknownError = exports.AuthApiError = exports.AuthError = void 0;
@@ -5495,9 +5495,9 @@ var require_errors = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/base64url.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/base64url.js
 var require_base64url = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/base64url.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/base64url.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.byteToBase64URL = byteToBase64URL;
@@ -5685,9 +5685,9 @@ var require_base64url = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/helpers.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/helpers.js
 var require_helpers = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/helpers.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/helpers.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.pkceVerifierSlotKey = exports.Deferred = exports.removeItemAsync = exports.getItemAsync = exports.setItemAsync = exports.looksLikeFetchResponse = exports.resolveFetch = exports.supportsLocalStorage = exports.isBrowser = void 0;
@@ -6101,9 +6101,9 @@ var require_helpers = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/fetch.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/fetch.js
 var require_fetch = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/fetch.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/fetch.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.handleError = handleError2;
@@ -6288,9 +6288,9 @@ var require_fetch = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/types.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/types.js
 var require_types2 = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/types.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/types.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.SIGN_OUT_SCOPES = void 0;
@@ -6298,9 +6298,9 @@ var require_types2 = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/GoTrueAdminApi.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/GoTrueAdminApi.js
 var require_GoTrueAdminApi = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/GoTrueAdminApi.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/GoTrueAdminApi.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -7384,9 +7384,9 @@ var require_GoTrueAdminApi = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/local-storage.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/local-storage.js
 var require_local_storage = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/local-storage.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/local-storage.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.memoryLocalStorageAdapter = memoryLocalStorageAdapter;
@@ -7406,9 +7406,9 @@ var require_local_storage = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/locks.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/locks.js
 var require_locks = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/locks.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/locks.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ProcessLockAcquireTimeoutError = exports.NavigatorLockAcquireTimeoutError = exports.LockAcquireTimeoutError = exports.internals = void 0;
@@ -7584,9 +7584,9 @@ var require_locks = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/polyfills.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/polyfills.js
 var require_polyfills = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/polyfills.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/polyfills.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.polyfillGlobalThis = polyfillGlobalThis;
@@ -7611,9 +7611,9 @@ var require_polyfills = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/web3/ethereum.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/web3/ethereum.js
 var require_ethereum = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/web3/ethereum.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/web3/ethereum.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getAddress = getAddress;
@@ -7689,9 +7689,9 @@ ${suffix}`;
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/webauthn.errors.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/webauthn.errors.js
 var require_webauthn_errors = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/webauthn.errors.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/webauthn.errors.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WebAuthnUnknownError = exports.WebAuthnError = void 0;
@@ -7880,9 +7880,9 @@ var require_webauthn_errors = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/webauthn.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/webauthn.js
 var require_webauthn = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/webauthn.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/webauthn.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WebAuthnApi = exports.DEFAULT_REQUEST_OPTIONS = exports.DEFAULT_CREATION_OPTIONS = exports.webAuthnAbortService = exports.WebAuthnAbortService = exports.identifyAuthenticationError = exports.identifyRegistrationError = exports.isWebAuthnError = exports.WebAuthnError = void 0;
@@ -8439,9 +8439,9 @@ var require_webauthn = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/GoTrueClient.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/GoTrueClient.js
 var require_GoTrueClient = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/GoTrueClient.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/GoTrueClient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13648,9 +13648,9 @@ var require_GoTrueClient = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/AuthAdminApi.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/AuthAdminApi.js
 var require_AuthAdminApi = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/AuthAdminApi.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/AuthAdminApi.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13660,9 +13660,9 @@ var require_AuthAdminApi = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/AuthClient.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/AuthClient.js
 var require_AuthClient = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/AuthClient.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/AuthClient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13672,9 +13672,9 @@ var require_AuthClient = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/index.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/index.js
 var require_main3 = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/index.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.processLock = exports.lockInternals = exports.NavigatorLockAcquireTimeoutError = exports.navigatorLock = exports.AuthClient = exports.AuthAdminApi = exports.GoTrueClient = exports.GoTrueAdminApi = void 0;
@@ -13724,7 +13724,7 @@ async function registerPracticeQuestion(db, question) {
 // server/sentenceAudio.ts
 import { createHash, randomUUID } from "node:crypto";
 
-// node_modules/@supabase/supabase-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/supabase-js/dist/index.mjs
 var dist_exports = {};
 __export(dist_exports, {
   FunctionRegion: () => import_functions_js.FunctionRegion,
@@ -13738,16 +13738,16 @@ __export(dist_exports, {
   createClient: () => createClient
 });
 
-// node_modules/@supabase/supabase-js/dist/tracingRegistry.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/supabase-js/dist/tracingRegistry.mjs
 var EXTRACTOR_KEY = /* @__PURE__ */ Symbol.for("@supabase/supabase-js.traceContextExtractor");
 function getTraceContextExtractor() {
   return globalThis[EXTRACTOR_KEY];
 }
 
-// node_modules/@supabase/supabase-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/supabase-js/dist/index.mjs
 var import_functions_js = __toESM(require_main(), 1);
 
-// node_modules/@supabase/postgrest-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/postgrest-js/dist/index.mjs
 var DEFAULT_MAX_RETRIES = 3;
 var getRetryDelay = (attemptIndex) => Math.min(1e3 * 2 ** attemptIndex, 3e4);
 var RETRYABLE_STATUS_CODES = [520, 503];
@@ -17529,10 +17529,10 @@ var PostgrestClient = class PostgrestClient2 {
   }
 };
 
-// node_modules/@supabase/supabase-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/supabase-js/dist/index.mjs
 var import_realtime_js = __toESM(require_main2(), 1);
 
-// node_modules/iceberg-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/iceberg-js/dist/index.mjs
 var IcebergError = class extends Error {
   constructor(message, opts) {
     super(message);
@@ -18065,7 +18065,7 @@ var IcebergRestCatalog = class {
   }
 };
 
-// node_modules/@supabase/storage-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/storage-js/dist/index.mjs
 function _typeof2(o) {
   "@babel/helpers - typeof";
   return _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
@@ -20858,7 +20858,7 @@ var StorageClient = class extends StorageBucketApi {
   }
 };
 
-// node_modules/@supabase/supabase-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/supabase-js/dist/index.mjs
 var import_auth_js = __toESM(require_main3(), 1);
 __reExport(dist_exports, __toESM(require_main2(), 1));
 __reExport(dist_exports, __toESM(require_main3(), 1));
@@ -22346,7 +22346,7 @@ function numberCandidates(level) {
       out.push(q);
     } else for (const wrong of [false, true]) {
       const document2 = where(item.word, owner, wrong);
-      out.push({ ...base(level, document2, where(item.word, owner, !wrong), meta, [item.word, verbForWord(item)]), kind: "judgement", choices: ["Correct", "Incorrect"], correct: wrong ? 1 : 0, alternatives: void 0, credit: wrong ? null : `${item.word} ${verbForWord(item)}` });
+      out.push({ ...base(level, document2, where(item.word, owner, !wrong), meta, [verbForWord(item)]), kind: "judgement", choices: ["Correct", "Incorrect"], correct: wrong ? 1 : 0, alternatives: void 0, credit: wrong ? null : verbForWord(item) });
     }
   }
   return out;
@@ -22416,7 +22416,7 @@ function actionAnswerCandidates(level, eligibleActions, determiners2 = owners.ma
       const document2 = actionDocument(subject, action, object.word, owner.word);
       let other, targetWords;
       const contrast = (si + oi + di) % 4;
-      const actionOptions = (objectActions.get(object.word) ?? []).filter((a) => a !== action && subjectCanPerform(subject, a, object.noun));
+      const actionOptions = (objectActions.get(object.word) ?? []).filter((a) => a !== action && frameFor(a).connection === frameFor(action).connection && subjectCanPerform(subject, a, object.noun));
       const nounOptions = objects.filter((o) => o.noun !== object.noun && subjectCanPerform(subject, action, o.noun) && ownersFor(o).some((d) => d.word === owner.word)).sort((a, b) => everydayNounOrder.indexOf(numberItem(a.noun)?.singular ?? a.noun) - everydayNounOrder.indexOf(numberItem(b.noun)?.singular ?? b.noun));
       if (contrast === 3 && actionOptions.length) {
         other = actionDocument(subject, actionOptions[(si + di) % actionOptions.length], object.word, owner.word);
@@ -22450,23 +22450,22 @@ function actionAnswerCandidates(level, eligibleActions, determiners2 = owners.ma
           out.push(base(level, document2, alternative, { ...meta, vocabulary: [.../* @__PURE__ */ new Set([...documentNouns, person.phrase.noun])] }, [subject.phrase.noun]));
         }
       }
-      const otherAction = actions.find((candidate) => candidate !== action && frameFor(candidate).connection === frameFor(action).connection && subjectCanPerform(subject, candidate) && objectMap.get(candidate).some((item) => subjectCanPerform(subject, candidate, item.noun)));
+      const otherAction = actions.find((candidate) => candidate !== action && frameFor(candidate).connection === frameFor(action).connection && subjectCanPerform(subject, candidate, object.noun) && objectMap.get(candidate).some((item) => item.word === object.word && ownersFor(item).some((d) => d.word === owner.word)));
       if (otherAction) {
-        const choices = objectMap.get(otherAction).filter((item) => subjectCanPerform(subject, otherAction, item.noun));
-        const contrast2 = choices.find((item) => item.noun === object.noun) ?? choices[0];
-        const contrastOwner = ownersFor(contrast2).some((item) => item.word === owner.word) ? owner.word : ownersFor(contrast2)[0].word;
-        const verbContrast = actionDocument(subject, otherAction, contrast2.word, contrastOwner);
-        out.push(base(level, document2, verbContrast, { ...meta, vocabulary: [.../* @__PURE__ */ new Set([...documentNouns, contrast2.noun])] }, [action]));
+        const verbContrast = actionDocument(subject, otherAction, object.word, owner.word);
+        out.push(base(level, document2, verbContrast, { ...meta, vocabulary: documentNouns }, [action]));
       }
     }
   }
   return [...new Map(out.map((q) => [q.id, q])).values()];
 }
-function descriptionCandidates(level, eligibleActions) {
-  const source = level <= 3 ? numberCandidates(level === 1 ? 1 : 2) : level === 4 ? [] : actionAnswerCandidates(level, eligibleActions);
-  const seen = /* @__PURE__ */ new Set(), result = [];
+function descriptionCandidates(level, eligibleActions, existingSource) {
+  const source = existingSource ?? (level <= 3 ? numberCandidates(level === 1 ? 1 : 2) : level === 4 ? [] : actionAnswerCandidates(level, eligibleActions));
+  const seen = /* @__PURE__ */ new Set(), seenSources = /* @__PURE__ */ new Set(), result = [];
   for (const q of source) {
     if (q.owner !== "the" || q.subject && !["I", "you"].includes(q.subject)) continue;
+    if (seenSources.has(q.document.english)) continue;
+    seenSources.add(q.document.english);
     const index = q.document.units.findIndex((u) => u.role === "object");
     if (index < 0 || q.document.units[index - 1]?.role !== "determiner") continue;
     const noun = q.document.units[index].english.replace(/[.!?]$/, "");
@@ -22513,7 +22512,8 @@ function generatedCandidates(level, eligibleActions) {
   const key = level + ":" + (eligibleActions && level >= 5 ? [...eligibleActions].sort().join("|") : "all");
   let bank = cache.get(key);
   if (!bank) {
-    bank = [...level <= 3 ? numberCandidates(level) : level === 4 ? actionQuestionCandidates() : actionAnswerCandidates(level, eligibleActions), ...descriptionCandidates(level, eligibleActions), ...level >= 5 ? vocabularyRecallCandidates(level) : []];
+    const primary = level <= 3 ? numberCandidates(level) : level === 4 ? actionQuestionCandidates() : actionAnswerCandidates(level, eligibleActions);
+    bank = [...primary, ...descriptionCandidates(level, eligibleActions, [1, 2, 5, 6].includes(level) ? primary : void 0), ...level >= 5 ? vocabularyRecallCandidates(level) : []];
     {
       const ids = /* @__PURE__ */ new Map();
       for (const q of bank) {
@@ -22588,8 +22588,8 @@ function determinerCandidates() {
       out.push(base(6, phrase(item.word, article), phrase(item.word, "the"), { family: item.singular ?? item.word, vocabulary: [item.word], action: "determiner", owner: article, subject: "", plural: false }, [article]));
     }
     if (item.pluralForm && item.singular) {
-      const q = base(6, phrase(item.word, "some"), phrase(item.singular, "this"), { family: item.singular, vocabulary: [item.word, item.singular], action: "determiner", owner: "some", subject: "", plural: true }, ["some"]);
-      out.push({ ...q, sceneChoices: [{ reference: "some", word: item.word }, { reference: "this", word: item.singular }] });
+      const q = base(6, phrase(item.word, "some"), phrase(item.word, "these"), { family: item.singular, vocabulary: [item.word], action: "determiner", owner: "some", subject: "", plural: true }, ["some"]);
+      out.push({ ...q, sceneChoices: [{ reference: "some", word: item.word }, { reference: "these", word: item.word }] });
     }
   }
   determinerBank = out;

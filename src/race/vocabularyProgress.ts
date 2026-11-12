@@ -13,9 +13,9 @@ export function vocabularyScore(type:HierarchyType,word:string,rows:WordProgress
 export function vocabularyLearning(type:HierarchyType,word:string,states:ReadonlyMap<string,WordLearning>,now=Date.now()){
  const forms=type==='noun'?[word,numberItem(word)?.plural].filter((w):w is string=>!!w):[word]
  const combined=forms.map(form=>{
-  const values=wordTokens(form).map(token=>states.get('en:'+token)??emptyLearning()),proven=values.every(v=>v.provenAt)
-  return {fadeScore:Math.min(...values.map(v=>v.fadeScore)),confirmations:Math.min(...values.map(v=>v.confirmations)),provenAt:proven?values.map(v=>v.provenAt!).sort().at(-1)!:null,reviewDueAt:proven?values.map(v=>v.reviewDueAt).filter((v):v is string=>!!v).sort()[0]??null:null,lapsed:values.some(v=>v.lapsedAt)}
+  const values=wordTokens(form).map(token=>states.get('en:'+token)??emptyLearning()),proven=values.every(v=>v.fadeScore>=25)
+  return {fadeScore:Math.min(...values.map(v=>v.fadeScore)),confirmations:Math.min(...values.map(v=>v.confirmations)),provenAt:proven?values.map(v=>(v.provenAt??v.updatedAt)||'1970-01-01T00:00:00.000Z').sort().at(-1)!:null,reviewDueAt:proven?values.map(v=>v.reviewDueAt).filter((v):v is string=>!!v).sort()[0]??null:null,lapsed:values.some(v=>v.lapsedAt)}
  })
  const best=combined.sort((a,b)=>Number(!!b.provenAt)-Number(!!a.provenAt)||b.fadeScore-a.fadeScore||b.confirmations-a.confirmations)[0]
- return {...best,fadePercent:fadingPercent(best.fadeScore),due:!!best.reviewDueAt&&Date.parse(best.reviewDueAt)<=now,stage:best.provenAt?'proven':best.fadeScore>=25?'confirming':best.lapsed?'relearning':'fading'} as const
+ return {...best,fadePercent:fadingPercent(best.fadeScore),due:!!best.reviewDueAt&&Date.parse(best.reviewDueAt)<=now,stage:best.provenAt?'learnt':best.lapsed?'relearning':'fading'} as const
 }

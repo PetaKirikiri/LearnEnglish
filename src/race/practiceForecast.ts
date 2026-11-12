@@ -17,7 +17,10 @@ export function forecastPractice(level:PracticeLevel,rows:WordProgress[],events:
  let q=current
  for(let step=0;step<10;step++){
   const scores=evidenceScores(rows,simulated,settings),targets=q.credit===null?[]:q.targetWords
-  simulated.push({id:`forecast:${seed}:${index+step}`,questionId:q.id,level,sentence:q.document.english,targets,vocabulary:q.vocabulary,correct:true,hidden:q.listeningWords.length>0&&q.listeningWords.flatMap(wordTokens).every(w=>wordOpacity(w,scores,{...settings,fadeMode:settings.fadeMode??true})===0),heard:true,assisted:false,plays:1,at:new Date(now+step+1).toISOString()})
+  const pending=simulated.findIndex(event=>event.phase==='presented'&&event.questionId===q.id)
+  const shown=pending>=0?simulated[pending]:undefined
+  const event:ListeningEvidence={id:shown?.id??`forecast:${seed}:${index+step}`,phase:shown?'answered':undefined,presentedAt:shown?.presentedAt??shown?.at,questionId:q.id,level,sentence:q.document.english,targets,vocabulary:q.vocabulary,correct:true,hidden:q.listeningWords.length>0&&q.listeningWords.flatMap(wordTokens).every(w=>wordOpacity(w,scores,{...settings,fadeMode:settings.fadeMode??true})===0),heard:true,assisted:false,plays:1,at:new Date(now+step+1).toISOString()}
+  if(pending>=0)simulated[pending]=event;else simulated.push(event)
   q=nextPersonalQuestion(level,rows,simulated,seed,index+step+1,{...options,now});questions.push(q)
  }
  return questions
@@ -32,7 +35,7 @@ export function queuedAudioCandidates(level:PracticeLevel,rows:WordProgress[],ev
   const current=state[type].current.filter(word=>type==='noun'?nounGroupFor(word)===nounGroupFor(queued):type==='verb'?verbGroupFor(word)===verbGroupFor(queued):true)
   if(!current.length)continue
   const closest=[...current].sort((a,b)=>{
-   const score=(word:string)=>{const s=vocabularyLearning(type,word,learning);return s.fadePercent+s.confirmations*10}
+   const score=(word:string)=>{const s=vocabularyLearning(type,word,learning);return s.fadePercent}
    return score(b)-score(a)||state[type].current.indexOf(a)-state[type].current.indexOf(b)
   })[0]
   const hypothetical=new Set(mastered);for(const token of wordTokens(closest))hypothetical.add('en:'+token)

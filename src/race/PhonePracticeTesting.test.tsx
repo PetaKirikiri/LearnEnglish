@@ -5,6 +5,8 @@ import {expect,it,vi} from 'vitest'
 import type {WordProgress} from '../learning/wordProgress/model'
 const state=vi.hoisted(()=>({rows:[] as WordProgress[],record:vi.fn(),award:vi.fn(),ended:()=>{}}))
 vi.mock('../learning/wordProgress/useWordProgress',()=>({useWordProgress:()=>({rows:state.rows,scores:{},ready:true,error:'',record:state.record,retry:vi.fn()})}))
+// Audio look-ahead is verified separately; keep this test on navigation and saving.
+vi.mock('./practiceForecast',async original=>({...await original<typeof import('./practiceForecast')>(),audioPreparationPlan:vi.fn().mockReturnValue([])}))
 vi.mock('./PracticeGold',()=>({default:()=>null,awardPracticeGold:(...args:unknown[])=>state.award(...args)}))
 vi.mock('./JourneyPasses',()=>({useJourneyPasses:()=>({passes:[],unavailable:false}),JourneyPassNames:()=>null}))
 vi.mock('./practicePlacement',()=>({loadPracticeStartingRound:async()=>1}))
@@ -39,7 +41,8 @@ it('runs and scores object questions from the app test even with a classroom les
   await act(async()=>root.render(<PhonePractice userId="test-student"/>))
   expect(host.querySelectorAll('.journey-node')).toHaveLength(6)
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 6:"]')!.click())
-  const saved=JSON.parse(localStorage.getItem('englishsuccess:composed-run:v16:test-student:6:star-1')!)
+  const runKey=Array.from({length:localStorage.length},(_,i)=>localStorage.key(i)!).find(key=>key.startsWith('englishsuccess:composed-run:')&&key.endsWith(':test-student:6:star-1'))!
+  const saved=JSON.parse(localStorage.getItem(runKey)!)
   const q=practiceCandidates(6,undefined,eligiblePracticeActions(state.rows,[])).find(q=>q.id===saved.questionIds[0])!
   expect(q.document.construction).toBe('action-answer')
   for(const document of [q.document,...q.alternatives??[]]){
@@ -53,7 +56,8 @@ it('runs and scores object questions from the app test even with a classroom les
   await act(async()=>state.ended())
   const correct=saved.flipped[0]?1:q.correct
   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correct].click())
-  expect(state.record).toHaveBeenCalledOnce()
+  expect(state.record.mock.calls.filter(([event])=>event.event!=='presented')).toHaveLength(1)
+  expect(state.record.mock.calls.filter(([event])=>event.event==='presented')).toHaveLength(1)
   expect(state.award).toHaveBeenCalledWith(expect.any(String),true,'test-student')
   expect(localStorage.getItem('classroom-notes')).toBe('preserve these notes')
  }finally{await act(async()=>root.unmount())}

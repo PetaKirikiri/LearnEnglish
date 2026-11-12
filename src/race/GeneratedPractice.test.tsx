@@ -11,16 +11,19 @@ vi.mock('./PracticeGold',()=>({default:()=>null,awardPracticeGold:vi.fn()}))
 vi.mock('../audio/sentenceAudio',async original=>({...await original<typeof import('../audio/sentenceAudio')>(),prepareSentenceAudio:vi.fn().mockResolvedValue(undefined)}))
 import GeneratedPractice from './GeneratedPractice'
 import {practiceCandidates,generatedCandidates,structureCandidates} from './generatedPracticeContent'
+import {generatedNumberCatalogue} from './numberCatalogue'
 import {wordHierarchies} from './wordHierarchy'
-import {loadEvidence} from './generatedPracticeProgress'
+import {loadEvidence,eligiblePracticeActions} from './generatedPracticeProgress'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 let finishAudio=()=>{}
 beforeEach(()=>{
  vi.stubGlobal('SpeechSynthesisUtterance',class{onstart:(()=>void)|null=null;onend:(()=>void)|null=null;constructor(public text:string){}})
  vi.stubGlobal('speechSynthesis',{getVoices:()=>[{lang:'en-GB',localService:true}],cancel:vi.fn(),speak:(utterance:{onstart:()=>void;onend:()=>void})=>{utterance.onstart();finishAudio=()=>utterance.onend()}})
  localStorage.clear();mock.record.mockClear();mock.rows=[];mock.ready=true;vi.stubGlobal('Audio',class{onplaying:(()=>void)|null=null;onended:(()=>void)|null=null;onerror:(()=>void)|null=null;pause(){}play(){this.onplaying?.();finishAudio=()=>this.onended?.();return Promise.resolve()}})})
+const answers=()=>mock.record.mock.calls.map(([event])=>event).filter(event=>event.event!=='presented')
+const presentations=()=>mock.record.mock.calls.map(([event])=>event).filter(event=>event.event==='presented')
 const saved=(level:number,user='guest')=>JSON.parse(localStorage.getItem(`englishsuccess:composed-run:v16:${user}:${level}:main`)!)
-const correctSide=(level:number)=>{const s=saved(level);const q=practiceCandidates(level as 1).find(q=>q.id===s.questionIds[s.index])!;return s.flipped[s.index]?1:q.correct}
+const correctSide=(level:number)=>{const s=saved(level);const q=practiceCandidates(level as 1,undefined,eligiblePracticeActions(mock.rows,loadEvidence())).find(q=>q.id===s.questionIds[s.index])!;return s.flipped[s.index]?1:q.correct}
 it('finishes after exactly thirty independently scored questions and starts a fresh set',async()=>{
  const host=document.createElement('div'),root=createRoot(host),complete=vi.fn()
  try{
@@ -35,8 +38,8 @@ it('finishes after exactly thirty independently scored questions and starts a fr
    await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-next')!.click())
   }
   expect(complete).toHaveBeenCalledWith(4,30,30,true,first.id,true)
-  expect(mock.record).toHaveBeenCalledTimes(30)
-  expect(new Set(mock.record.mock.calls.map(([e])=>e.id)).size).toBe(30)
+  expect(answers()).toHaveLength(30);expect(new Set(presentations().map(event=>event.id)).size).toBe(30)
+  expect(new Set(answers().map(e=>e.id)).size).toBe(30)
   expect(loadEvidence()).toHaveLength(30)
   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
   expect(saved(4).id).not.toBe(first.id)
@@ -53,7 +56,7 @@ it('resumes the exact unanswered question and choices after refresh and isolates
   await act(async()=>root.unmount());root=createRoot(host);await act(async()=>root.render(<GeneratedPractice level={5}/>))
   expect(saved(5)).toEqual(prior);expect([...host.querySelectorAll('.binary-answer')].map(b=>b.getAttribute('aria-label'))).toEqual(labels)
   await act(async()=>root.render(<GeneratedPractice level={5} userId="another"/>))
-  expect(saved(5,'another').index).toBe(0);expect(saved(5,'another').id).not.toBe(prior.id);expect(loadEvidence('another')).toEqual([])
+  expect(saved(5,'another').index).toBe(0);expect(saved(5,'another').id).not.toBe(prior.id);expect(loadEvidence('another')).toHaveLength(1);expect(loadEvidence('another')[0].phase).toBe('presented');expect(loadEvidence('another')[0].id).not.toBe(prior.attemptId)
  }finally{await act(async()=>root.unmount())}
 })
 it('counts listening evidence only when both target text and pictures were hidden without help or replay',async()=>{
@@ -75,7 +78,7 @@ it('counts listening evidence only when both target text and pictures were hidde
    expect(answerPictures.length).toBeGreaterThan(0)
    expect(answerPictures.every(p=>p.getAttribute('data-coloured')==='true')).toBe(true)
    await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correctSide(1)].click())
-   expect(mock.record.mock.calls[0][0].modality).toBe(mode==='hidden'?'audio':'visible')
+   expect(answers()[0].modality).toBe(mode==='hidden'?'audio':'visible')
    const evidence=loadEvidence()[0];expect(evidence.hidden).toBe(mode!=='visible');expect(evidence.assisted).toBe(mode==='help');expect(evidence.plays).toBe(mode==='replay'?2:1)
   }finally{await act(async()=>root.unmount())}
  }
@@ -93,7 +96,7 @@ it('keeps help and replay history through refresh, so refreshing cannot turn an 
   await act(async()=>root.render(<GeneratedPractice level={1}/>));await act(async()=>finishAudio())
   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correctSide(1)].click())
   expect(loadEvidence()[0]).toMatchObject({assisted:true,plays:2})
-  expect(mock.record.mock.calls[0][0].modality).toBe('visible')
+  expect(answers()[0].modality).toBe('visible')
  }finally{await act(async()=>root.unmount())}
 })
 
@@ -107,7 +110,9 @@ it('runs Lesson 6 separately from action Level 6 and restores matched scene choi
   await act(async()=>root.render(<GeneratedPractice level={6} {...lessonPracticeTemplate(6)}/>))
   expect(host.querySelector('.practice-header')?.textContent??host.textContent).toContain('Lesson 6')
   const scenes=()=>[...host.querySelectorAll('.binary-answer [data-distance]')].map(n=>n.getAttribute('data-distance'))
-  const before=scenes();expect(before).toHaveLength(2);expect(before[0]).not.toBe(before[1])
+  const before=scenes();expect(before).toHaveLength(2)
+  const labels=[...host.querySelectorAll('.binary-answer')].map(n=>n.getAttribute('aria-label'))
+  expect(labels[0]).not.toBe(labels[1])
   await act(async()=>root.unmount());root=createRoot(host)
   await act(async()=>root.render(<GeneratedPractice level={6} {...lessonPracticeTemplate(6)}/>))
   expect(scenes()).toEqual(before)
@@ -119,8 +124,8 @@ it('runs Lesson 6 separately from action Level 6 and restores matched scene choi
    await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-next')!.click())
   }
   expect(host.textContent).toContain('30 / 30')
-  expect(mock.record).toHaveBeenCalledTimes(30)
-  expect(mock.record.mock.calls.every(([e])=>{const q=structureCandidates('identify').find(q=>q.id===e.questionId);return q&&['identification-question','identification-answer'].includes(q.document.construction)})).toBe(true)
+  expect(answers()).toHaveLength(30);expect(new Set(presentations().map(event=>event.id)).size).toBe(30)
+  expect(answers().every(e=>{const q=structureCandidates('identify').find(q=>q.id===e.questionId);return q&&['identification-question','identification-answer'].includes(q.document.construction)})).toBe(true)
   expect(localStorage.getItem('englishsuccess:composed-run:v16:guest:6:main')).toBe('untouched action course')
  }finally{await act(async()=>root.unmount())}
 },15000)
@@ -128,7 +133,7 @@ it('runs Lesson 6 separately from action Level 6 and restores matched scene choi
 it('fades the whole demonstrative picture and credits unassisted Lesson 6 listening only after it is hidden',async()=>{
  const {lessonPracticeTemplate}=await import('./lessonPracticeTemplate')
  mock.rows=Object.values(wordHierarchies).flat().filter(w=>!['this','that','that over there','these','those'].includes(w)).flatMap(word=>word.toLowerCase().match(/[a-z]+/g)??[]).map(word=>({word_id:'en:'+word,correct:25,attempts:25,listening_correct:3,direct_correct:0,last_practised:'',recent_results:[true,true,true],fade_score:25,confirmation_count:3,proven_at:'2026-01-01T00:00:00Z',review_due_at:'2040-01-01T00:00:00Z',learning_version:1}))
- mock.rows.push(...['what','is','are','this','that','over','there','these','those'].map(word=>({word_id:'en:'+word,correct:25,attempts:25,listening_correct:0,direct_correct:0,last_practised:'',recent_results:[true]})))
+ mock.rows.push(...[...generatedNumberCatalogue.map(item=>item.word),'what','is','are','this','that','over','there','these','those'].flatMap(word=>word.toLowerCase().match(/[a-z]+/g)??[]).map(word=>({word_id:'en:'+word,correct:25,attempts:25,listening_correct:0,direct_correct:0,last_practised:'',recent_results:[true]})))
  const host=document.createElement('div'),root=createRoot(host)
  try{
   await act(async()=>root.render(<GeneratedPractice level={6} {...lessonPracticeTemplate(6)}/>))
@@ -137,7 +142,7 @@ it('fades the whole demonstrative picture and credits unassisted Lesson 6 listen
   const run=JSON.parse(localStorage.getItem('englishsuccess:composed-run:v16:guest:6:lesson-6')!)
   await act(async()=>finishAudio())
   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[run.flipped[0]?1:0].click())
-  expect(mock.record.mock.calls[0][0].modality).toBe('audio')
+  expect(answers()[0].modality).toBe('audio')
   expect(loadEvidence()[0]).toMatchObject({heard:true,hidden:true,assisted:false,plays:1})
  }finally{await act(async()=>root.unmount())}
 })
@@ -167,8 +172,8 @@ it('advances a new phone learner through the shared tree while switching sentenc
    const state=hierarchyState(masteredWords([],events))
    if(state.noun.completed.length>=2&&state.noun.completed.includes('man')){
     expect(state.noun.current).not.toContain('man')
-    expect(mock.record).toHaveBeenCalledTimes(answered)
-    expect(new Set(mock.record.mock.calls.map(([attempt])=>attempt.id)).size).toBe(answered)
+    expect(answers()).toHaveLength(answered)
+    expect(new Set(answers().map(attempt=>attempt.id)).size).toBe(answered)
     expect(events.every(event=>event.heard&&event.plays===1&&!event.assisted)).toBe(true)
     console.log(JSON.stringify({phoneUIAnswers:answered,learntNouns:state.noun.completed,currentNouns:state.noun.current}))
     return
@@ -177,3 +182,23 @@ it('advances a new phone learner through the shared tree while switching sentenc
   throw new Error('Phone learner did not advance through the first noun frontier after 600 real UI answers')
  }finally{await act(async()=>root.unmount())}
 },180000)
+it('records presentation before an answer, survives refresh once, and merges the answer bonus into that encounter',async()=>{
+ const {learningStates}=await import('../learning/wordProgress/learningLifecycle')
+ const host=document.createElement('div');let root=createRoot(host)
+ try{
+  await act(async()=>root.render(<GeneratedPractice level={4}/>))
+  const first=saved(4),shown=loadEvidence()
+  expect(shown).toHaveLength(1);expect(shown[0].phase).toBe('presented')
+  expect(answers()).toHaveLength(0)
+  for(const word of shown[0].sentence.toLowerCase().match(/[a-z]+/g)??[])expect(learningStates([],shown).get('en:'+word)?.fadeScore).toBe(1)
+  await act(async()=>root.unmount());root=createRoot(host)
+  await act(async()=>root.render(<GeneratedPractice level={4}/>))
+  expect(saved(4).attemptId).toBe(first.attemptId)
+  expect(loadEvidence()).toEqual(shown)
+  await act(async()=>finishAudio())
+  await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correctSide(4)].click())
+  const completed=loadEvidence();expect(completed).toHaveLength(1);expect(completed[0].phase).toBe('answered')
+  const focus=completed[0].targets.flatMap(word=>word.toLowerCase().match(/[a-z]+/g)??[]).filter(word=>!['am','is','are'].includes(word))
+  for(const word of completed[0].sentence.toLowerCase().match(/[a-z]+/g)??[])expect(learningStates([],completed).get('en:'+word)?.fadeScore).toBe(focus.includes(word)?3:1)
+ }finally{await act(async()=>root.unmount())}
+},30000)

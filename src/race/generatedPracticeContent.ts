@@ -57,7 +57,7 @@ function numberCandidates(level:1|2|3):GeneratedQuestion[]{
    out.push(q)
   }else for(const wrong of [false,true]){
    const document=where(item.word,owner,wrong)
-   out.push({...base(level,document,where(item.word,owner,!wrong),meta,[item.word,verbForWord(item)]),kind:'judgement',choices:['Correct','Incorrect'],correct:wrong?1:0,alternatives:undefined,credit:wrong?null:`${item.word} ${verbForWord(item)}`})
+   out.push({...base(level,document,where(item.word,owner,!wrong),meta,[verbForWord(item)]),kind:'judgement',choices:['Correct','Incorrect'],correct:wrong?1:0,alternatives:undefined,credit:wrong?null:verbForWord(item)})
   }
  }
  return out
@@ -115,7 +115,7 @@ function actionAnswerCandidates(level:5|6,eligibleActions?:ReadonlySet<string>,d
    // Alternate the tested decision across noun, ownership and subject. Every
    // competitor has the same construction and changes one semantic component.
    const contrast=(si+oi+di)%4
-   const actionOptions=(objectActions.get(object.word)??[]).filter(a=>a!==action&&subjectCanPerform(subject,a,object.noun))
+   const actionOptions=(objectActions.get(object.word)??[]).filter(a=>a!==action&&frameFor(a).connection===frameFor(action).connection&&subjectCanPerform(subject,a,object.noun))
    const nounOptions=objects.filter(o=>o.noun!==object.noun&&subjectCanPerform(subject,action,o.noun)&&ownersFor(o).some(d=>d.word===owner.word)).sort((a,b)=>everydayNounOrder.indexOf((numberItem(a.noun)?.singular??a.noun) as typeof everydayNounOrder[number])-everydayNounOrder.indexOf((numberItem(b.noun)?.singular??b.noun) as typeof everydayNounOrder[number]))
    if(contrast===3&&actionOptions.length){
     other=actionDocument(subject,actionOptions[(si+di)%actionOptions.length],object.word,owner.word);targetWords=[action]
@@ -149,24 +149,23 @@ function actionAnswerCandidates(level:5|6,eligibleActions?:ReadonlySet<string>,d
    }
    // Keep the alternative inside the same blueprint. Never append a bare
    // action or invent a connection to make a word assessable.
-   const otherAction=actions.find(candidate=>candidate!==action&&frameFor(candidate).connection===frameFor(action).connection&&subjectCanPerform(subject,candidate)&&objectMap.get(candidate)!.some(item=>subjectCanPerform(subject,candidate,item.noun)))
+   const otherAction=actions.find(candidate=>candidate!==action&&frameFor(candidate).connection===frameFor(action).connection&&subjectCanPerform(subject,candidate,object.noun)&&objectMap.get(candidate)!.some(item=>item.word===object.word&&ownersFor(item).some(d=>d.word===owner.word)))
    if(otherAction){
-    const choices=objectMap.get(otherAction)!.filter(item=>subjectCanPerform(subject,otherAction,item.noun))
-    const contrast=choices.find(item=>item.noun===object.noun)??choices[0]
-    const contrastOwner=ownersFor(contrast).some(item=>item.word===owner.word)?owner.word:ownersFor(contrast)[0].word
-    const verbContrast=actionDocument(subject,otherAction,contrast.word,contrastOwner)
-    out.push(base(level,document,verbContrast,{...meta,vocabulary:[...new Set([...documentNouns,contrast.noun])]},[action]))
+    const verbContrast=actionDocument(subject,otherAction,object.word,owner.word)
+    out.push(base(level,document,verbContrast,{...meta,vocabulary:documentNouns},[action]))
    }
   }
  }
  return [...new Map(out.map(q=>[q.id,q])).values()]
 }
 
-function descriptionCandidates(level:PracticeLevel,eligibleActions?:ReadonlySet<string>):GeneratedQuestion[]{
- const source=level<=3?numberCandidates(level===1?1:2):level===4?[]:actionAnswerCandidates(level as 5|6,eligibleActions)
- const seen=new Set<string>(),result:GeneratedQuestion[]=[]
+function descriptionCandidates(level:PracticeLevel,eligibleActions?:ReadonlySet<string>,existingSource?:readonly GeneratedQuestion[]):GeneratedQuestion[]{
+ const source=existingSource??(level<=3?numberCandidates(level===1?1:2):level===4?[]:actionAnswerCandidates(level as 5|6,eligibleActions))
+ const seen=new Set<string>(),seenSources=new Set<string>(),result:GeneratedQuestion[]=[]
  for(const q of source){
   if(q.owner!=='the'||q.subject&&!['I','you'].includes(q.subject))continue
+  if(seenSources.has(q.document.english))continue
+  seenSources.add(q.document.english)
   const index=q.document.units.findIndex(u=>u.role==='object')
   if(index<0||q.document.units[index-1]?.role!=='determiner')continue
   const noun=q.document.units[index].english.replace(/[.!?]$/,'')
@@ -212,7 +211,7 @@ const cache=new Map<string,GeneratedQuestion[]>()
 export function generatedCandidates(level:PracticeLevel,eligibleActions?:ReadonlySet<string>){
  const key=level+':'+(eligibleActions&&level>=5?[...eligibleActions].sort().join('|'):'all')
  let bank=cache.get(key)
- if(!bank){bank=[...(level<=3?numberCandidates(level as 1|2|3):level===4?actionQuestionCandidates():actionAnswerCandidates(level as 5|6,eligibleActions)),...descriptionCandidates(level,eligibleActions),...(level>=5?vocabularyRecallCandidates(level as 5|6):[])];{const ids=new Map<string,GeneratedQuestion>();for(const q of bank){const previous=ids.get(q.id);if(previous)throw new Error('Generated question ID collision: '+JSON.stringify({id:q.id,previous:previous.choices,current:q.choices,previousCredit:previous.credit,currentCredit:q.credit}));ids.set(q.id,q)}}if(cache.size>=4)cache.delete(cache.keys().next().value!);cache.set(key,bank)}
+ if(!bank){const primary=level<=3?numberCandidates(level as 1|2|3):level===4?actionQuestionCandidates():actionAnswerCandidates(level as 5|6,eligibleActions);bank=[...primary,...descriptionCandidates(level,eligibleActions,[1,2,5,6].includes(level)?primary:undefined),...(level>=5?vocabularyRecallCandidates(level as 5|6):[])];{const ids=new Map<string,GeneratedQuestion>();for(const q of bank){const previous=ids.get(q.id);if(previous)throw new Error('Generated question ID collision: '+JSON.stringify({id:q.id,previous:previous.choices,current:q.choices,previousCredit:previous.credit,currentCredit:q.credit}));ids.set(q.id,q)}}if(cache.size>=4)cache.delete(cache.keys().next().value!);cache.set(key,bank)}
  return bank
 }
 
@@ -291,8 +290,8 @@ export function determinerCandidates(){
    out.push(base(6,phrase(item.word,article),phrase(item.word,'the'),{family:item.singular??item.word,vocabulary:[item.word],action:'determiner',owner:article,subject:'',plural:false},[article]))
   }
   if(item.pluralForm&&item.singular){
-   const q=base(6,phrase(item.word,'some'),phrase(item.singular,'this'),{family:item.singular,vocabulary:[item.word,item.singular],action:'determiner',owner:'some',subject:'',plural:true},['some'])
-   out.push({...q,sceneChoices:[{reference:'some',word:item.word},{reference:'this',word:item.singular}]})
+   const q=base(6,phrase(item.word,'some'),phrase(item.word,'these'),{family:item.singular,vocabulary:[item.word],action:'determiner',owner:'some',subject:'',plural:true},['some'])
+   out.push({...q,sceneChoices:[{reference:'some',word:item.word},{reference:'these',word:item.word}]})
   }
  }
  determinerBank=out;return out

@@ -5,8 +5,8 @@ import {generatedDeck,masteredWords,type ListeningEvidence} from './generatedPra
 import {generatedCandidates} from './generatedPracticeContent'
 import {forecastPractice} from './practiceForecast'
 import type {WordProgress} from '../learning/wordProgress/model'
-const row=(word:string,proved=false):WordProgress=>({word_id:'en:'+word,correct:99,attempts:99,listening_correct:proved?3:0,direct_correct:0,last_practised:'',recent_results:[true,true,true],fade_score:25,confirmation_count:proved?3:0,proven_at:proved?'2026-01-01T00:00:00Z':null,review_due_at:proved?'2040-01-01T00:00:00Z':null,learning_version:1})
-it('has five independent ordered hierarchies and exposure never advances a frontier',()=>{
+const row=(word:string,proved=false):WordProgress=>({word_id:'en:'+word,correct:99,attempts:99,listening_correct:proved?3:0,direct_correct:0,last_practised:'',recent_results:[true,true,true],fade_score:proved?25:24,confirmation_count:proved?3:0,proven_at:proved?'2026-01-01T00:00:00Z':null,review_due_at:proved?'2040-01-01T00:00:00Z':null,learning_version:1})
+it('has five independent ordered hierarchies and exposure below full fade never advances a frontier',()=>{
  expect(Object.keys(wordHierarchies)).toEqual(['noun','verb','adjective','pronoun','determiner'])
  const state=hierarchyState(masteredWords([row('banana'),row('eating'),row('my')],[]))
  expect(Object.fromEntries(Object.entries(state).map(([k,v])=>[k,v.current[0]]))).toEqual({noun:'man',verb:'holding',adjective:'red',pronoun:'I',determiner:'the'})
@@ -38,7 +38,7 @@ it('all rounds and structures use the same noun frontier without silently skippi
 })
 it('forecast advances to woman using simulated mastery without writing account progress',()=>{
  const evidence:ListeningEvidence[]=[]
- const rows=[{...row('man'),correct:27,fade_score:25,confirmation_count:2,learning_updated_at:'2026-01-01T00:00:00Z'}]
+ const rows=[{...row('man'),correct:27,fade_score:24,confirmation_count:0,learning_updated_at:'2026-01-01T00:00:00Z'}]
  const original=JSON.stringify(evidence),q=generatedDeck(1,rows,evidence,'forecast')[0]
  const forecast=forecastPractice(1,rows,evidence,'forecast',0,q,{}, {fadeStart:0,fadeEnd:1})
  expect(forecast.slice(1).some(q=>q.targetWords.some(w=>['woman','women'].includes(w)))).toBe(true)

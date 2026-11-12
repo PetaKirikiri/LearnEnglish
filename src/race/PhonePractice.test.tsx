@@ -103,7 +103,8 @@ it('uses account word scores for fading and queues the shown modality once', asy
   expect(host.querySelector<HTMLElement>('[data-word=where]')?.style.opacity).toBe('0')
   await listen(host)
   await act(async()=>{const answer=host.querySelector<HTMLButtonElement>('.practice-answers button')!;answer.click();answer.click()})
-  expect(queueAttempt).toHaveBeenCalledTimes(1)
+  expect(vi.mocked(queueAttempt).mock.calls.filter(([,event])=>event.event!=='presented')).toHaveLength(1)
+   expect(vi.mocked(queueAttempt).mock.calls.some(([,event])=>event.event==='presented')).toBe(true)
   expect(queueAttempt).toHaveBeenCalledWith('fade-student',expect.objectContaining({modality:'faded',version:1,replays:1}))
   expect(host.querySelector<HTMLElement>('[data-word=where]')?.style.opacity).toBe('0')
  }finally{await act(async()=>root.unmount());vi.restoreAllMocks()}
@@ -135,7 +136,8 @@ it('accepts an answer immediately without waiting for an audio-ended event', asy
   const buttons=[...host.querySelectorAll<HTMLButtonElement>('.practice-answers button')]
   expect(buttons.every(button=>!button.disabled)).toBe(true)
   await act(async()=>buttons[0].click())
-  expect(queueAttempt).toHaveBeenCalledTimes(1)
+  expect(vi.mocked(queueAttempt).mock.calls.filter(([,event])=>event.event!=='presented')).toHaveLength(1)
+   expect(vi.mocked(queueAttempt).mock.calls.some(([,event])=>event.event==='presented')).toBe(true)
   expect(host.querySelector<HTMLButtonElement>('.practice-feedback button')?.disabled).toBe(false)
  }finally{await act(async()=>root.unmount())}
 })
@@ -200,45 +202,31 @@ it('keeps picture answers and English labels when testers switch the interface l
  }finally{await act(async()=>root.unmount())}
 })
 
-it('ends a short module and requires an explicit continue before the next one',async()=>{
+it('uses the shared adaptive course rather than an authored eight-question module pack',async()=>{
  const {default:PracticeCourse}=await import('./PracticeCourse')
- vi.spyOn(Math,'random').mockReturnValue(.1)
- const host=document.createElement('div');const root=createRoot(host)
+ const host=document.createElement('div'),root=createRoot(host)
  try{
+  history.replaceState({},'','/english/practice?lesson=1')
   await act(async()=>root.render(<PracticeCourse/>))
-  expect(host.querySelector('header')?.textContent).toContain('1 / 8')
-  for(let i=0;i<8;i++){
-   await listen(host)
-   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.practice-answers button')[i<4?0:1].click())
-   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-feedback button')!.click())
-  }
-  expect(host.querySelector('.practice-complete h1')?.textContent).toBe('Module complete!')
-  expect(host.querySelector('.practice-complete')?.textContent).toContain('8 / 8')
-  expect(host.querySelector('.practice-module-break')).not.toBeNull()
-  expect(host.querySelector('.practice-answers')).toBeNull()
-  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
-  expect(host.querySelector('header')?.textContent).toContain('Module 2/')
-  expect(host.querySelector('header')?.textContent).toContain('1 / 8')
- }finally{await act(async()=>root.unmount());vi.restoreAllMocks()}
-})
+  expect(host.querySelectorAll('.binary-answer')).toHaveLength(2)
+  expect(host.querySelector('progress')?.max).toBe(30)
+  expect(host.querySelector('.practice-module-break')).toBeNull()
+  const key=Array.from({length:localStorage.length},(_,i)=>localStorage.key(i)!).find(key=>key.endsWith(':guest:1:lesson-1'))!
+  const run=JSON.parse(localStorage.getItem(key)!)
+  expect(run.questionIds).toHaveLength(30);expect(run.questionIds.every((id:string)=>id.startsWith('compose-v2-'))).toBe(true);expect(run.answers).toEqual([])
+ }finally{await act(async()=>root.unmount())}
+},30000)
 
-it('keeps an unsuccessful module finite and offers a replay without unlocking the next one',async()=>{
+it('opens a different sentence structure with a fresh adaptive run instead of a fixed module',async()=>{
  const {default:PracticeCourse}=await import('./PracticeCourse')
- vi.spyOn(Math,'random').mockReturnValue(.1)
- const host=document.createElement('div');const root=createRoot(host)
+ const host=document.createElement('div'),root=createRoot(host)
  try{
+  history.replaceState({},'','/english/practice?lesson=2')
   await act(async()=>root.render(<PracticeCourse/>))
-  for(let i=0;i<8;i++){
-   await listen(host)
-   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.practice-answers button')[i<4?1:0].click())
-   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-feedback button')!.click())
-  }
-  expect(host.querySelector('.practice-complete')?.textContent).toContain('0 / 8')
-  expect(host.querySelector('.practice-complete h1')?.textContent).not.toBe('Module complete!')
-  expect(host.querySelectorAll('.practice-complete button')).toHaveLength(1)
-  expect(host.querySelector('.practice-complete button')?.textContent).toBe('Replay this module')
-  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
-  expect(host.querySelector('header')?.textContent).toContain('1 / 8')
-  expect(host.querySelector('header')?.textContent).toContain('Module 1/')
- }finally{await act(async()=>root.unmount());vi.restoreAllMocks()}
-})
+  expect(host.querySelectorAll('.binary-answer')).toHaveLength(2)
+  expect(host.querySelector('[data-matrix-layout=question]')).not.toBeNull()
+  const key=Array.from({length:localStorage.length},(_,i)=>localStorage.key(i)!).find(key=>key.endsWith(':guest:2:lesson-2'))!
+  const run=JSON.parse(localStorage.getItem(key)!)
+  expect(run.index).toBe(0);expect(run.answers).toEqual([]);expect(run.questionIds).toHaveLength(30);expect(run.questionIds.every((id:string)=>id.startsWith('compose-v2-'))).toBe(true)
+ }finally{await act(async()=>root.unmount());history.replaceState({},'','/english/practice')}
+},30000)

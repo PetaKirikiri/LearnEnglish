@@ -37,3 +37,13 @@ it.each([null,{accepted:true},{accepted:true,receipt_id:'saved',client_id:'anoth
  await expect(flushWordAttempts('a')).rejects.toThrow('Answer receipt not confirmed')
  expect(pendingAttempts('a')).toEqual([attempt])
 })
+it('keeps presentation and answer receipts for the same attempt separate across retries',async()=>{
+ const view={...attempt,event:'presented' as const,answer:''}
+ queueAttempt('a',view);queueAttempt('a',attempt);queueAttempt('a',view)
+ expect(pendingAttempts('a')).toHaveLength(2)
+ mocks.rpc.mockResolvedValueOnce(receipt(attempt.id)).mockResolvedValueOnce({error:new Error('offline')})
+ await expect(flushWordAttempts('a')).rejects.toThrow('offline')
+ expect(pendingAttempts('a')).toEqual([attempt])
+ await flushWordAttempts('a');expect(pendingAttempts('a')).toEqual([])
+ expect(mocks.rpc.mock.calls.map(call=>call[1].p_payload.p_event??'answered')).toEqual(['presented','answered','answered'])
+})
