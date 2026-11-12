@@ -1,5 +1,6 @@
 import {lessonNumber} from '../learning/lessonRequests'
 import { supabase } from '../lib/supabase'
+import {connectEnglishLearnerAccount} from './englishLearner'
 
 export const homeworkLiffId = import.meta.env.VITE_ENGLISH_LIFF_ID?.trim() || '2010311582-ziuNvGjb'
 export function homeworkLineUrl(lesson: number) {
@@ -22,7 +23,7 @@ async function connect(register: boolean) {
   const { data: current } = await supabase.auth.getSession()
   if (current.session) {
     const { data, error } = await supabase.auth.getUser()
-    if (!error && data.user) return data.user.id
+    if (!error && data.user) return connectEnglishLearnerAccount(data.user.id)
     throw new Error('กรุณาเปิดลิงก์จาก LINE อีกครั้ง')
   }
   if (!homeworkLiffId) throw new Error('ยังเชื่อมต่อ LINE ไม่ได้ กรุณาลองอีกครั้งภายหลัง')
@@ -44,7 +45,7 @@ async function connect(register: boolean) {
   if (!data?.access_token || !data?.refresh_token) throw new Error('เข้าสู่ระบบไม่สำเร็จ กรุณาลองอีกครั้ง')
   const result = await supabase.auth.setSession({access_token:data.access_token,refresh_token:data.refresh_token})
   if (result.error || !result.data.user) throw new Error('เข้าสู่ระบบไม่สำเร็จ กรุณาลองอีกครั้ง')
-  return result.data.user.id
+  return connectEnglishLearnerAccount(result.data.user.id)
 }
 
 export function homeworkDestination(search = window.location.search) {

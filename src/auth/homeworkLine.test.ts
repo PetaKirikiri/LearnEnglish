@@ -1,11 +1,12 @@
 import { beforeEach, expect, it, vi } from 'vitest'
-const mocks = vi.hoisted(() => ({ getSession:vi.fn(), getUser:vi.fn(), setSession:vi.fn(), invoke:vi.fn(), init:vi.fn(), getIDToken:vi.fn(), getAccessToken:vi.fn(), isInClient:vi.fn(), isLoggedIn:vi.fn(), login:vi.fn() }))
-vi.mock('../lib/supabase', () => ({supabase:{auth:mocks,functions:{invoke:mocks.invoke}}}))
+const mocks = vi.hoisted(() => ({ getSession:vi.fn(), getUser:vi.fn(), setSession:vi.fn(), invoke:vi.fn(), learner:vi.fn(), init:vi.fn(), getIDToken:vi.fn(), getAccessToken:vi.fn(), isInClient:vi.fn(), isLoggedIn:vi.fn(), login:vi.fn() }))
+vi.mock('../lib/supabase', () => ({supabase:{auth:mocks,functions:{invoke:(name:string,options:unknown)=>name==='english-learner-session'?mocks.learner(options):mocks.invoke(name,options)}}}))
 vi.mock('@line/liff', () => ({default:mocks}))
 beforeEach(() => {
  vi.resetModules(); vi.resetAllMocks()
  window.history.replaceState({}, "", "/english/practice")
  mocks.getSession.mockResolvedValue({data:{session:null}})
+ mocks.learner.mockResolvedValue({data:{linked:false}})
  mocks.init.mockResolvedValue(undefined)
  mocks.getIDToken.mockReturnValue('verified-by-server')
  mocks.getAccessToken.mockReturnValue('line-access')
