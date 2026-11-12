@@ -1,3 +1,4 @@
+import {assertBlueprintQuestion} from '../src/race/testing/blueprintIntegrity'
 import {generatedCandidates,structureCandidates,determinerCandidates,sentenceKey} from '../src/race/generatedPracticeContent'
 import type {PracticeLevel} from '../src/race/PracticeLevelPicker'
 import {numberItem} from '../src/race/numberCatalogue'
@@ -11,6 +12,7 @@ let checked=0
 const failures:unknown[]=[]
 let agreementChecks=0
 for(const question of questions){
+ try{assertBlueprintQuestion(question)}catch(error){failures.push({question:question.id,sentence:question.document.english,reason:String(error)})}
  if(question.credit!==null)for(const doc of [question.document,...(question.alternatives??[])]){
   const units=doc.units
   for(let index=0;index<units.length;index++){

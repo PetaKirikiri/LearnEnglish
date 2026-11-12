@@ -13,7 +13,11 @@ const learned=(word:string):WordProgress=>({word_id:'en:'+word,correct:25,attemp
 beforeEach(()=>localStorage.clear())
 function answer(q:GeneratedQuestion,index:number,rows:WordProgress[]=[]){
  const event:ListeningEvidence={id:'regression-'+index,questionId:q.id,level:q.level,sentence:q.document.english,targets:q.credit===null?[]:q.targetWords,vocabulary:q.vocabulary,correct:true,hidden:true,heard:true,assisted:false,plays:1,at:new Date(base+index+1).toISOString()}
- const before=learningStates(rows,loadEvidence(user));saveEvidence(event,user);const after=learningStates(rows,loadEvidence(user))
+ const before=learningStates(rows,loadEvidence(user))
+ const presented={...event,phase:'presented' as const,correct:false,at:new Date(base+index*2).toISOString()}
+ saveEvidence(presented,user)
+ saveEvidence({...event,phase:'answered',presentedAt:presented.at,at:new Date(base+index*2+1).toISOString()},user)
+ const after=learningStates(rows,loadEvidence(user))
  const focus=wordTokens(q.credit??'').filter(word=>!['am','is','are'].includes(word));const targets=new Set(focus.length?focus:wordTokens(q.credit??''))
  if(q.credit!==null)for(const word of new Set([...wordTokens(q.document.english),...targets])){
   expect(after.get('en:'+word)?.fadeScore,`${q.document.english}: ${word}`).toBe(Math.min(25,(before.get('en:'+word)?.fadeScore??0)+(targets.has(word)?3:1)))
