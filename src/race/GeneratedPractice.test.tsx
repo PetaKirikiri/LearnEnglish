@@ -10,10 +10,11 @@ vi.mock('./practiceForecast',async original=>({...await original<typeof import('
 vi.mock('./PracticeGold',()=>({default:()=>null,awardPracticeGold:vi.fn()}))
 vi.mock('../audio/sentenceAudio',async original=>({...await original<typeof import('../audio/sentenceAudio')>(),prepareSentenceAudio:vi.fn().mockResolvedValue(undefined)}))
 import GeneratedPractice from './GeneratedPractice'
-import {practiceCandidates,generatedCandidates,structureCandidates} from './generatedPracticeContent'
+import './testing/forbidSentenceBanks'
+import {canonicalBlueprintQuestion} from './blueprintWordServer'
 import {generatedNumberCatalogue} from './numberCatalogue'
 import {wordHierarchies} from './wordHierarchy'
-import {loadEvidence,eligiblePracticeActions} from './generatedPracticeProgress'
+import {loadEvidence} from './generatedPracticeProgress'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 let finishAudio=()=>{}
 beforeEach(()=>{
@@ -23,7 +24,7 @@ beforeEach(()=>{
 const answers=()=>mock.record.mock.calls.map(([event])=>event).filter(event=>event.event!=='presented')
 const presentations=()=>mock.record.mock.calls.map(([event])=>event).filter(event=>event.event==='presented')
 const saved=(level:number,user='guest')=>JSON.parse(localStorage.getItem(`englishsuccess:composed-run:v16:${user}:${level}:main`)!)
-const correctSide=(level:number)=>{const s=saved(level);const q=practiceCandidates(level as 1,undefined,eligiblePracticeActions(mock.rows,loadEvidence())).find(q=>q.id===s.questionIds[s.index])!;return s.flipped[s.index]?1:q.correct}
+const correctSide=(level:number)=>{const s=saved(level);return s.questions[s.index].correct}
 it('finishes after exactly thirty independently scored questions and starts a fresh set',async()=>{
  const host=document.createElement('div'),root=createRoot(host),complete=vi.fn()
  try{
@@ -61,7 +62,7 @@ it('resumes the exact unanswered question and choices after refresh and isolates
 })
 it('counts listening evidence only when both target text and pictures were hidden without help or replay',async()=>{
  for(const mode of ['hidden','visible','help','replay'] as const){
-  localStorage.clear();mock.record.mockClear();mock.rows=generatedCandidates(1).flatMap(q=>q.targetWords.flatMap(w=>w.split(' '))).map(word=>({word_id:'en:'+word,correct:mode==='visible'?0:25,attempts:25,listening_correct:0,direct_correct:0,last_practised:'',recent_results:[true]}))
+  localStorage.clear();mock.record.mockClear();mock.rows=[...Object.values(wordHierarchies).flat(),...generatedNumberCatalogue.map(item=>item.word),'am','is','are'].flatMap(word=>word.toLowerCase().match(/[a-z]+/g)??[]).map(word=>({word_id:'en:'+word,correct:mode==='visible'?0:25,attempts:25,listening_correct:0,direct_correct:0,last_practised:'',recent_results:[true]}))
   const host=document.createElement('div'),root=createRoot(host)
   try{
    await act(async()=>root.render(<GeneratedPractice level={1}/>));await act(async()=>finishAudio())
@@ -120,12 +121,12 @@ it('runs Lesson 6 separately from action Level 6 and restores matched scene choi
    const run=JSON.parse(localStorage.getItem(key)!)
    expect(host.querySelector('progress')?.max).toBe(30)
    await act(async()=>finishAudio())
-   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[run.flipped[index]?1:0].click())
+   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[run.questions[index].correct].click())
    await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-next')!.click())
   }
   expect(host.textContent).toContain('30 / 30')
   expect(answers()).toHaveLength(30);expect(new Set(presentations().map(event=>event.id)).size).toBe(30)
-  expect(answers().every(e=>{const q=structureCandidates('identify').find(q=>q.id===e.questionId);return q&&['identification-question','identification-answer'].includes(q.document.construction)})).toBe(true)
+  expect(answers().every(e=>{const q=canonicalBlueprintQuestion(e.recipe);return q&&['identification-question','identification-answer'].includes(q.document.construction)})).toBe(true)
   expect(localStorage.getItem('englishsuccess:composed-run:v16:guest:6:main')).toBe('untouched action course')
  }finally{await act(async()=>root.unmount())}
 },15000)
@@ -141,7 +142,7 @@ it('fades the whole demonstrative picture and credits unassisted Lesson 6 listen
   expect(host.querySelector('.practice-question .example-gloss,.practice-question .example-translation')).toBeNull()
   const run=JSON.parse(localStorage.getItem('englishsuccess:composed-run:v16:guest:6:lesson-6')!)
   await act(async()=>finishAudio())
-  await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[run.flipped[0]?1:0].click())
+  await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[run.questions[0].correct].click())
   expect(answers()[0].modality).toBe('audio')
   expect(loadEvidence()[0]).toMatchObject({heard:true,hidden:true,assisted:false,plays:1})
  }finally{await act(async()=>root.unmount())}
@@ -158,10 +159,10 @@ it('advances a new phone learner through the shared tree while switching sentenc
    await act(async()=>root.render(<GeneratedPractice level={level} userId={user}/>))
    if(host.querySelector('.practice-complete button'))await act(async()=>host.querySelector<HTMLButtonElement>('.practice-complete button')!.click())
    for(let index=0;index<30;index++){
-    const run=saved(level,user),q=practiceCandidates(level).find(q=>q.id===run.questionIds[run.index])!
+    const run=saved(level,user),q=run.questions[run.index]
     expect(q).toBeDefined()
     await act(async()=>finishAudio())
-    const side=run.flipped[run.index]?1:q.correct
+    const side=q.correct
     expect(host.querySelectorAll<HTMLButtonElement>('.binary-answer')[side].disabled).toBe(false)
     await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[side].click())
     await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-next')!.click())

@@ -19,7 +19,7 @@ export type DistanceChoice={reference:ReferenceId|'some';word:string}
 export type PracticeStructure='identify'|'location'|'destination'
 
 export const GENERATED_ROUND_SIZE=30
-export type GeneratedQuestion={id:string;version:1;level:PracticeLevel;document:LanguageDocument;choices:[string,string];correct:0|1;audioUrl?:string;sceneChoices?:[DistanceChoice,DistanceChoice];alternatives?:[LanguageDocument,LanguageDocument];targetWords:string[];listeningWords:string[];family:string;vocabulary:string[];action:string;owner:string;subject:string;plural:boolean;kind:'number'|'judgement'|'meaning';credit:string|null}
+export type GeneratedQuestion={recipe?:unknown;id:string;version:1;level:PracticeLevel;document:LanguageDocument;choices:[string,string];correct:0|1;audioUrl?:string;sceneChoices?:[DistanceChoice,DistanceChoice];alternatives?:[LanguageDocument,LanguageDocument];targetWords:string[];listeningWords:string[];family:string;vocabulary:string[];action:string;owner:string;subject:string;plural:boolean;kind:'number'|'judgement'|'meaning';credit:string|null}
 const vocabulary=[...lessonThreeMatrixCatalogue,...everydayPeopleCatalogue]
 const owners=allDeterminers.filter(d=>['the','my','your','his','her','our','their'].includes(d.word))
 export function sentenceKey(text:string){return text.toLowerCase().replace(/[.!?]/g,'').replace(/\s+/g,' ').trim()}
@@ -33,7 +33,7 @@ function where(word:string,owner:Determiner,wrong=false):LanguageDocument{
  const units=line.units.map((unit,i)=>({...unit,role:roles[i],english:wrong&&i===1?(line.verb==='is'?'are':'is'):unit.english}))
  return {english:units.map(u=>u.english).join(' '),thai:line.thai,construction:'question',units}
 }
-function base(level:PracticeLevel,document:LanguageDocument,other:LanguageDocument,meta:Pick<GeneratedQuestion,'family'|'vocabulary'|'action'|'owner'|'subject'|'plural'>,targetWords:string[]):GeneratedQuestion{
+export function composeQuestion(level:PracticeLevel,document:LanguageDocument,other:LanguageDocument,meta:Pick<GeneratedQuestion,'family'|'vocabulary'|'action'|'owner'|'subject'|'plural'>,targetWords:string[]):GeneratedQuestion{
  if(document.english===other.english)throw new Error('Identical generated alternatives')
  // A changed person and its agreeing auxiliary form one tested contrast,
  // just as noun-number questions test the noun together with is/are.
@@ -52,12 +52,12 @@ function numberCandidates(level:1|2|3):GeneratedQuestion[]{
   const meta={family:singular,vocabulary:[item.word],action:'number',owner,subject:'',plural:isPlural}
   if(level<3){
    const document=level===1?phrase(item.word,owner):where(item.word,owner)
-   const q=base(level,document,level===1?phrase(isPlural?singular:plural,owner):where(isPlural?singular:plural,owner),meta,level===2?[item.word,verbForWord(item)]:[item.word])
+   const q=composeQuestion(level,document,level===1?phrase(isPlural?singular:plural,owner):where(isPlural?singular:plural,owner),meta,level===2?[item.word,verbForWord(item)]:[item.word])
    q.kind='number';q.alternatives=[phrase(singular,owner),phrase(plural,owner)];q.choices=[q.alternatives[0].english,q.alternatives[1].english];q.correct=isPlural?1:0
    out.push(q)
   }else for(const wrong of [false,true]){
    const document=where(item.word,owner,wrong)
-   out.push({...base(level,document,where(item.word,owner,!wrong),meta,[verbForWord(item)]),kind:'judgement',choices:['Correct','Incorrect'],correct:wrong?1:0,alternatives:undefined,credit:wrong?null:verbForWord(item)})
+   out.push({...composeQuestion(level,document,where(item.word,owner,!wrong),meta,[verbForWord(item)]),kind:'judgement',choices:['Correct','Incorrect'],correct:wrong?1:0,alternatives:undefined,credit:wrong?null:verbForWord(item)})
   }
  }
  return out
@@ -80,7 +80,7 @@ function actionQuestionCandidates():GeneratedQuestion[]{
   const matching=subjects.filter(p=>!!p.phrase===!!subject.phrase&&p.word!==subject.word&&(!p.phrase||p.phrase.determiner?.english===subject.phrase?.determiner?.english))
   const other=matching.find(p=>p.phrase&&subject.phrase&&(numberItem(p.phrase.noun)?.singular??p.phrase.noun)===(numberItem(subject.phrase.noun)?.singular??subject.phrase.noun))??matching[i%matching.length]
   const document=actionDocument(subject,'sleeping',undefined,undefined,true),alternative=actionDocument(other,'sleeping',undefined,undefined,true)
-  out.push(base(4,document,alternative,{family:subject.phrase?.noun.replace(/s$/,'')??'people',vocabulary:subject.phrase?[subject.phrase.noun,...(other.phrase?[other.phrase.noun]:[])]:[],action:'doing',owner:subject.phrase?.determiner?.english??'',subject:subject.word,plural:subject.number==='plural'},[subject.phrase?.noun??subject.word]))
+  out.push(composeQuestion(4,document,alternative,{family:subject.phrase?.noun.replace(/s$/,'')??'people',vocabulary:subject.phrase?[subject.phrase.noun,...(other.phrase?[other.phrase.noun]:[])]:[],action:'doing',owner:subject.phrase?.determiner?.english??'',subject:subject.word,plural:subject.number==='plural'},[subject.phrase?.noun??subject.word]))
  }
  // Earlier question patterns remain review; they provide meaningful variety
  // without inventing new human nouns or repeating the nine original prompts.
@@ -90,7 +90,7 @@ function actionQuestionCandidates():GeneratedQuestion[]{
   const otherOwner=owners.filter(o=>o.word!=='the'&&o.word!==owner.word)[i%5]
   const otherNoun=others[(i+oi)%others.length]
   const alternative=nounContrast?where(otherNoun.word,owner.word):where(item.word,otherOwner.word)
-  out.push(base(4,where(item.word,owner.word),alternative,{family:item.singular??item.word,vocabulary:nounContrast?[item.word,otherNoun.word]:[item.word],action:'where',owner:owner.word,subject:'',plural:item.pluralForm},[nounContrast?item.word:owner.word]))
+  out.push(composeQuestion(4,where(item.word,owner.word),alternative,{family:item.singular??item.word,vocabulary:nounContrast?[item.word,otherNoun.word]:[item.word],action:'where',owner:owner.word,subject:'',plural:item.pluralForm},[nounContrast?item.word:owner.word]))
  }
  return out
 }
@@ -132,19 +132,19 @@ function actionAnswerCandidates(level:5|6,eligibleActions?:ReadonlySet<string>,d
    }
    const nouns=[...document.units,...other.units].filter(u=>u.role==='object'||u.role==='person'&&!!numberItem(u.english.replace(/[?.!]$/,''))).map(u=>u.english.replace(/[?.!]$/,''))
    const meta={family:numberItem(object.noun)?.singular??object.noun,vocabulary:[...new Set(nouns)],action,owner:owner.word,subject:subject.word,plural:numberItem(object.noun)?.pluralForm??false}
-   out.push(base(level,document,other,meta,targetWords))
+   out.push(composeQuestion(level,document,other,meta,targetWords))
    const documentNouns=document.units.filter(u=>u.role==='object'||u.role==='person'&&!!numberItem(u.english.replace(/[?.!]$/,''))).map(u=>u.english.replace(/[?.!]$/,''))
    // Keep early nouns testable inside this construction. A single contrast
    // chosen from the whole catalogue can otherwise require a much later noun.
    for(const noun of nounOptions.slice(0,2)){
     const alternative=actionDocument(subject,action,noun.word,owner.word)
-    out.push(base(level,document,alternative,{...meta,vocabulary:[...new Set([...documentNouns,noun.noun])]},[object.noun]))
+    out.push(composeQuestion(level,document,alternative,{...meta,vocabulary:[...new Set([...documentNouns,noun.noun])]},[object.noun]))
    }
    if(subject.phrase){
     const person=subjects.find(p=>p.phrase&&p.number===subject.number&&p.phrase.noun!==subject.phrase?.noun&&subjectCanPerform(p,action,object.noun))
     if(person){
      const alternative=actionDocument(person,action,object.word,owner.word)
-     out.push(base(level,document,alternative,{...meta,vocabulary:[...new Set([...documentNouns,person.phrase!.noun])]},[subject.phrase.noun]))
+     out.push(composeQuestion(level,document,alternative,{...meta,vocabulary:[...new Set([...documentNouns,person.phrase!.noun])]},[subject.phrase.noun]))
     }
    }
    // Keep the alternative inside the same blueprint. Never append a bare
@@ -152,7 +152,7 @@ function actionAnswerCandidates(level:5|6,eligibleActions?:ReadonlySet<string>,d
    const otherAction=actions.find(candidate=>candidate!==action&&frameFor(candidate).connection===frameFor(action).connection&&subjectCanPerform(subject,candidate,object.noun)&&objectMap.get(candidate)!.some(item=>item.word===object.word&&ownersFor(item).some(d=>d.word===owner.word)))
    if(otherAction){
     const verbContrast=actionDocument(subject,otherAction,object.word,owner.word)
-    out.push(base(level,document,verbContrast,{...meta,vocabulary:documentNouns},[action]))
+    out.push(composeQuestion(level,document,verbContrast,{...meta,vocabulary:documentNouns},[action]))
    }
   }
  }
@@ -176,7 +176,7 @@ function descriptionCandidates(level:PracticeLevel,eligibleActions?:ReadonlySet<
    const document=withDescription(descriptor),other=withDescription(opposite)
    if(seen.has(document.english))continue
    seen.add(document.english)
-   result.push(base(level,document,other,{family:q.family,vocabulary:document.units.filter(u=>['person','object'].includes(u.role)&&numberItem(u.english.replace(/[.!?]$/,''))).map(u=>u.english.replace(/[.!?]$/,'')),action:q.action,owner:q.owner,subject:q.subject,plural:q.plural},[descriptor.word]))
+   result.push(composeQuestion(level,document,other,{family:q.family,vocabulary:document.units.filter(u=>['person','object'].includes(u.role)&&numberItem(u.english.replace(/[.!?]$/,''))).map(u=>u.english.replace(/[.!?]$/,'')),action:q.action,owner:q.owner,subject:q.subject,plural:q.plural},[descriptor.word]))
   }
  }
  if(level===4)for(const noun of humanNouns)for(const action of level===4?['sleeping']:['walking','talking','sleeping']){
@@ -188,7 +188,7 @@ function descriptionCandidates(level:PracticeLevel,eligibleActions?:ReadonlySet<
     return actionDocument(person,action,undefined,undefined,level===4)
    }
    const document=make(descriptor),other=make(opposite)
-   result.push(base(level,document,other,{family:noun.singular??noun.word,vocabulary:[noun.word],action:level===4?'doing':action,owner:'the',subject:`the ${noun.word}`,plural:noun.number==='plural'},[descriptor.word]))
+   result.push(composeQuestion(level,document,other,{family:noun.singular??noun.word,vocabulary:[noun.word],action:level===4?'doing':action,owner:'the',subject:`the ${noun.word}`,plural:noun.number==='plural'},[descriptor.word]))
   }
  }
  return result
@@ -203,7 +203,7 @@ function vocabularyRecallCandidates(level:5|6):GeneratedQuestion[]{
   const contrast=human?(family==='man'?'woman':'man'):(family==='bag'?'phone':family==='water'?'cup':'bag')
   const other=numberItem(item.pluralForm?numberItem(contrast)?.plural??contrast:contrast)
   if(!other)return []
-  return ['the','my','your'].map(owner=>base(level,phrase(item.word,owner as Determiner),phrase(other.word,owner as Determiner),{family,vocabulary:[item.word,other.word],action:'vocabulary',owner,subject:'',plural:item.pluralForm},[item.word]))
+  return ['the','my','your'].map(owner=>composeQuestion(level,phrase(item.word,owner as Determiner),phrase(other.word,owner as Determiner),{family,vocabulary:[item.word,other.word],action:'vocabulary',owner,subject:'',plural:item.pluralForm},[item.word]))
  })
 }
 
@@ -235,23 +235,23 @@ export function structureCandidates(structure:PracticeStructure):GeneratedQuesti
    for(const noun of nounOptions.slice(0,2)){
     if(!determinerAgrees(owner.word,noun.pluralForm,meaningForWord(noun)?.countability==='mass'))continue
     if(['a','an'].includes(owner.word)&&owner.word!==(noun.indefiniteArticle??(/^[aeiou]/i.test(noun.word)?'an':'a')))continue
-    out.push(base(6,document,identificationAnswer(reference,noun,owner.word),{...meta,vocabulary:[item.word,noun.word]},[item.word]))
+    out.push(composeQuestion(6,document,identificationAnswer(reference,noun,owner.word),{...meta,vocabulary:[item.word,noun.word]},[item.word]))
    }
    const other=owner.word==='the'?'my':'the'
-   out.push(base(6,document,identificationAnswer(reference,item,other),meta,[owner.word]))
+   out.push(composeQuestion(6,document,identificationAnswer(reference,item,other),meta,[owner.word]))
   }
  }
  if(structure==='location')for(const person of locationPeople)for(const place of locationWords(vocabulary)){
   const line=peopleSentence('answer',person.word,place),otherPerson=locationPeople.find(p=>p.word!==person.word)!,other=peopleSentence('answer',otherPerson.word,place)
   const roles=['person','be','preposition','determiner','object'] as const
   const doc=(l:typeof line):LanguageDocument=>({...l,construction:'location-answer',units:l.units.map((u,i)=>({...u,role:roles[i]}))})
-  out.push(base(3,doc(line),doc(other),{family:place.singular??place.word,vocabulary:[place.word],action:'location',owner:'the',subject:person.word,plural:false},[person.word]))
+  out.push(composeQuestion(3,doc(line),doc(other),{family:place.singular??place.word,vocabulary:[place.word],action:'location',owner:'the',subject:person.word,plural:false},[person.word]))
  }
  if(structure==='location')for(const subject of namedPeople.filter(person=>person.phrase.determiner.english==='the'))for(const place of defaultPlaceNames){
   const other=namedPeople.find(person=>person.phrase.determiner.english==='the'&&person.number===subject.number&&person.phrase.noun!==subject.phrase.noun)!
   const document={...locationAnswer(subject,place,true),construction:'location-answer' as const}
   const alternative={...locationAnswer(other,place,true),construction:'location-answer' as const}
-  out.push(base(3,document,alternative,{family:subject.phrase.noun,vocabulary:[subject.phrase.noun,other.phrase.noun],action:'location',owner:'the',subject:subject.word,plural:subject.number==='plural'},[subject.phrase.noun]))
+  out.push(composeQuestion(3,document,alternative,{family:subject.phrase.noun,vocabulary:[subject.phrase.noun,other.phrase.noun],action:'location',owner:'the',subject:subject.word,plural:subject.number==='plural'},[subject.phrase.noun]))
  }
  if(structure==='destination'){
   const movement=new Set(actionVocabulary.filter(action=>action.destination).map(action=>action.word))
@@ -283,14 +283,14 @@ export function determinerCandidates(){
   for(const det of ['this','that','these','those'] as const){
    if(!determinerAgrees(det,item.pluralForm,mass))continue
    const other=det==='this'?'that':det==='that'?'this':det==='these'?'those':'these'
-   out.push({...base(6,phrase(item.word,det),phrase(item.word,other),{family:item.singular??item.word,vocabulary:[item.word],action:'determiner',owner:det,subject:'',plural:item.pluralForm},[det]),sceneChoices:[{reference:det,word:item.word},{reference:other,word:item.word}]})
+   out.push({...composeQuestion(6,phrase(item.word,det),phrase(item.word,other),{family:item.singular??item.word,vocabulary:[item.word],action:'determiner',owner:det,subject:'',plural:item.pluralForm},[det]),sceneChoices:[{reference:det,word:item.word},{reference:other,word:item.word}]})
   }
   if(!item.pluralForm&&!mass&&item.plural){
    const article=item.indefiniteArticle??(/^[aeiou]/i.test(item.word)?'an':'a')
-   out.push(base(6,phrase(item.word,article),phrase(item.word,'the'),{family:item.singular??item.word,vocabulary:[item.word],action:'determiner',owner:article,subject:'',plural:false},[article]))
+   out.push(composeQuestion(6,phrase(item.word,article),phrase(item.word,'the'),{family:item.singular??item.word,vocabulary:[item.word],action:'determiner',owner:article,subject:'',plural:false},[article]))
   }
   if(item.pluralForm&&item.singular){
-   const q=base(6,phrase(item.word,'some'),phrase(item.word,'these'),{family:item.singular,vocabulary:[item.word],action:'determiner',owner:'some',subject:'',plural:true},['some'])
+   const q=composeQuestion(6,phrase(item.word,'some'),phrase(item.word,'these'),{family:item.singular,vocabulary:[item.word],action:'determiner',owner:'some',subject:'',plural:true},['some'])
    out.push({...q,sceneChoices:[{reference:'some',word:item.word},{reference:'these',word:item.word}]})
   }
  }

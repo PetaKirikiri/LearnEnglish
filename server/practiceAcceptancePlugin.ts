@@ -15,7 +15,7 @@ export function practiceAcceptancePlugin():Plugin{
    res.setHeader('Content-Type','application/json');res.setHeader('Cache-Control','no-store')
    if(req.url==='/start'&&req.method==='POST'){
     if(child){res.statusCode=409;res.end(JSON.stringify({error:'Already running'}));return}
-    state={status:'running',started:Date.now(),finished:null,stage:'Checking focused regressions',log:[],progress:null,result:null,exitCode:null}
+    state={status:'running',started:Date.now(),finished:null,stage:'Checking blueprint slot-serving architecture',log:[],progress:null,result:null,exitCode:null}
     const {PROGRESSION_CHECKPOINT: _checkpoint,...env}=process.env
     child=spawn(process.execPath,['scripts/runPracticeAcceptance.mjs'],{cwd:server.config.root,env,detached:true,stdio:['ignore','pipe','pipe']})
     let pending=''

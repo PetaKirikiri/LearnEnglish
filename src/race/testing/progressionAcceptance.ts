@@ -1,3 +1,6 @@
+import {vi} from 'vitest'
+import {composeQuestion} from '../generatedPracticeContent'
+import {canonicalPracticeQuestion} from '../../../server/practiceQuestionCatalogue'
 import {classroomWordQuestion} from '../../classroom/wordServer'
 // @vitest-environment happy-dom
 import {expect} from './testAssert'
@@ -38,9 +41,11 @@ export async function runProgressionAcceptance(){
   if(hierarchyTypes.every(type=>required[type].every(word=>state[type].completed.includes(word)))){reason='all active-blueprint words learnt';break}
   if(answered-lastAdvance>=900){reason='no newly learnt word in 900 answers';break}
   const path=Math.floor(answered/6)%2===0?'phone':'casino'
+  const pairsBefore=vi.mocked(composeQuestion).mock.calls.length
   const selectionStarted=performance.now()
   const q=path==='casino'?classroomWordQuestion(lesson,user,[],events,answered,'full-progression-audit').question:nextPersonalQuestion(template.level,[],events,'full-progression-audit',answered,{...template.options,now:base+answered,familiar:curriculumBaseline([],events,user)})
   selectionTimes.push(performance.now()-selectionStarted)
+  expect(vi.mocked(composeQuestion).mock.calls.length-pairsBefore,`Enumerated question pairs at ${answered}`).toBeLessThanOrEqual(1)
   // Re-requesting with identical state exercises the existing warm cache only.
   if(answered%20===0){const warmStart=performance.now();nextPersonalQuestion(template.level,[],events,'full-progression-audit',answered,{...template.options,now:base+answered,familiar:curriculumBaseline([],events,user)});warmTimes.push(performance.now()-warmStart)}
   paths[path]++;structures[q.document.construction??'unknown']=(structures[q.document.construction??'unknown']??0)+1
@@ -67,6 +72,11 @@ export async function runProgressionAcceptance(){
   distinctSentences.add(q.document.english)
   for(const type of hierarchyTypes)if(wordHierarchies[type].some(word=>targetsHierarchy(q,type,word)))focusCounts[type]++
   assertBlueprintQuestion(q)
+  const canonical=canonicalPracticeQuestion(q.id,q.recipe)
+  expect(canonical?.id,`Server cannot reconstruct ${q.document.english}`).toBe(q.id)
+  expect(canonical?.document.english).toBe(q.document.english)
+  expect(canonical?.choices[canonical.correct]).toBe(q.choices[q.correct])
+  expect(canonical?.credit).toBe(q.credit)
   const before=learningStates([],events)
   const scores=evidenceScores([],events)
   const event:ListeningEvidence={id:`audit-${answered}`,questionId:q.id,level:template.level,sentence:q.document.english,targets:q.credit===null?[]:q.targetWords,vocabulary:q.vocabulary,correct:true,heard:true,hidden:q.listeningWords.length>0&&q.listeningWords.flatMap(wordTokens).every(word=>wordOpacity(word,scores,{fadeMode:true})===0),assisted:false,plays:1,at:new Date(base+answered*2+1).toISOString()}
@@ -92,7 +102,7 @@ export async function runProgressionAcceptance(){
  const tracks=Object.fromEntries(hierarchyTypes.map(type=>[type,{total:wordHierarchies[type].length,compatible:required[type].length,learnt:state[type].completed.length,current:state[type].current,remaining:wordHierarchies[type].filter(word=>!state[type].completed.includes(word))}]))
  const sortedWarm=[...warmTimes].sort((a,b)=>a-b)
  const timings={selections:selectionTimes.length,coldOverOneSecond:selectionTimes.filter(ms=>ms>1000).length,maxSelectionMs:Math.max(...selectionTimes),warmSamples:warmTimes.length,warmMedianMs:sortedWarm[Math.floor(sortedWarm.length/2)],warmMaxMs:Math.max(...warmTimes)}
- const report={timings,answered,resumedAt,reason,distinctSentences:distinctSentences.size,focusCounts,auxiliaries:Object.fromEntries(['am','is','are'].map(word=>[word,learningStates([],events).get('en:'+word)?.fadeScore??0])),paths,structures,pendingBlueprints,seconds:Math.round((Date.now()-started)/1000),tracks,introductions,transitions}
+ const report={contract:'blueprint-word-drawers-v1',timings,answered,resumedAt,reason,distinctSentences:distinctSentences.size,focusCounts,auxiliaries:Object.fromEntries(['am','is','are'].map(word=>[word,learningStates([],events).get('en:'+word)?.fadeScore??0])),paths,structures,pendingBlueprints,seconds:Math.round((Date.now()-started)/1000),tracks,introductions,transitions}
  mkdirSync('reports',{recursive:true});writeFileSync('reports/full-progression-audit.json',JSON.stringify(report,null,2)+'\n')
  writeFileSync('reports/full-progression-audit-progress.json',JSON.stringify({...report,finished:true,completed:hierarchyTypes.reduce((count,type)=>count+state[type].completed.length,0)},null,2)+'\n')
  writeFileSync('reports/full-progression-earned-checkpoint.json',JSON.stringify({contract:'fresh-presentation-blueprint-v5',user,answered,base,paths,structures,events}))

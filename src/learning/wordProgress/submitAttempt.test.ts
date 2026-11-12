@@ -19,3 +19,10 @@ it('never requests registration or audio generation for an already-scored answer
  mock.rpc.mockResolvedValue(receipt('scored'));await submitAttempt('word',payload)
  expect(fetch).not.toHaveBeenCalled()
 })
+it('sends the ingredient recipe only for canonical registration, keeping receipt payloads unchanged',async()=>{
+ const recipe={version:1,example:'reviewed ingredients'}
+ mock.rpc.mockResolvedValueOnce(receipt('needs_review')).mockResolvedValueOnce(receipt('scored'))
+ await submitAttempt('word',payload,recipe)
+ expect(fetch).toHaveBeenCalledWith('/api/sentence-audio',expect.objectContaining({body:JSON.stringify({id:payload.p_question,registerOnly:true,recipe})}))
+ expect(mock.rpc.mock.calls.every(call=>call[1].p_payload===payload)).toBe(true)
+})

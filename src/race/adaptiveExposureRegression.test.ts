@@ -60,14 +60,15 @@ it('finishes drinking with water already Learnt, testing the verb against anothe
  console.log(JSON.stringify({case:'known-water-unfinished-drinking',answers:saved.length,drinkingContrasts:drinkingTests,waterRetested:0,drinkingFade:learningStates(rows,saved).get('en:drinking')?.fadeScore}))
 },120000)
 it('serves is/are judgement from the normal Round 3 path with the auxiliary as the only scored focus',()=>{
- const seen=new Set<string>()
+ const seen=new Set<string>(),judgements=new Set<number>()
  for(let i=0;i<60;i++){
   const events=loadEvidence(user),q=nextPersonalQuestion(3,[],events,'agreement',i,{now:base+i})
   tight(q)
+  if(q.kind==='judgement')judgements.add(q.correct)
   if(q.kind==='judgement'&&q.credit!==null){expect(q.targetWords).toHaveLength(1);expect(['is','are']).toContain(q.credit);seen.add(q.credit!)}
   answer(q,i)
  }
- expect(seen).toEqual(new Set(['is','are']))
+ expect(seen).toEqual(new Set(['is','are']));expect(judgements).toEqual(new Set([0,1]))
 },120000)
 
 it('starts every lesson with the same account-wide Current vocabulary before any answers exist',()=>{

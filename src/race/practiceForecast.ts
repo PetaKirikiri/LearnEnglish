@@ -1,7 +1,8 @@
+import {serveBlueprintDeck,NoCompatibleBlueprintChoice} from './blueprintWordServer'
 import {generatedDeck,evidenceScores,masteredWords,type ListeningEvidence,type DeckOptions} from './generatedPracticeProgress'
 import {wordOpacity,wordTokens,type WordProgress,type FadeSettings} from '../learning/wordProgress/model'
 import type {PracticeLevel} from './PracticeLevelPicker'
-import {practiceCandidates,type GeneratedQuestion} from './generatedPracticeContent'
+import {type GeneratedQuestion} from './generatedPracticeContent'
 import {hierarchyState,hierarchyTypes,hierarchyCompatible,targetsHierarchy} from './wordHierarchy'
 import {learningStates} from '../learning/wordProgress/learningLifecycle'
 import {verbGroupFor} from '../learning/sentenceRules/verbGroups'
@@ -41,9 +42,7 @@ export function queuedAudioCandidates(level:PracticeLevel,rows:WordProgress[],ev
   const hypothetical=new Set(mastered);for(const token of wordTokens(closest))hypothetical.add('en:'+token)
   const future=hierarchyState(hypothetical)
   const fits=(q:GeneratedQuestion)=>targetsHierarchy(q,type,queued)&&hierarchyCompatible(q,future)
-  const eligibleActions=new Set([...future.verb.allowed,...future.verb.queued])
-  const q=practiceCandidates(level,options.structure,eligibleActions).find(fits)
-  if(q)result.push(q)
+  try{const q=serveBlueprintDeck(level,future,learning,events,'queued-audio',{...options,limit:1,focus:{type,word:queued}})[0];if(q&&fits(q))result.push(q)}catch(error){if(!(error instanceof NoCompatibleBlueprintChoice))throw error}
   }
  }
  return result

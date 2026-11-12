@@ -1,22 +1,23 @@
 {
+  "contract": "blueprint-word-drawers-v1",
   "timings": {
-    "selections": 1408,
-    "coldOverOneSecond": 237,
-    "maxSelectionMs": 5739560.32375,
-    "warmSamples": 15,
-    "warmMedianMs": 12.94945899999584,
-    "warmMaxMs": 312.95766700059175
+    "selections": 1360,
+    "coldOverOneSecond": 0,
+    "maxSelectionMs": 24.75495900000169,
+    "warmSamples": 68,
+    "warmMedianMs": 6.871165999999903,
+    "warmMaxMs": 16.40612500000134
   },
-  "answered": 1408,
+  "answered": 1360,
   "resumedAt": 0,
   "reason": "all active-blueprint words learnt",
-  "distinctSentences": 1346,
+  "distinctSentences": 1068,
   "focusCounts": {
-    "noun": 870,
-    "verb": 188,
-    "adjective": 177,
-    "pronoun": 46,
-    "determiner": 127
+    "noun": 840,
+    "verb": 166,
+    "adjective": 141,
+    "pronoun": 50,
+    "determiner": 163
   },
   "auxiliaries": {
     "am": 25,
@@ -24,15 +25,15 @@
     "are": 25
   },
   "paths": {
-    "phone": 706,
-    "casino": 702
+    "phone": 682,
+    "casino": 678
   },
   "structures": {
-    "noun-phrase": 235,
-    "question": 235,
-    "action-answer": 704,
-    "identification-answer": 218,
-    "identification-question": 16
+    "noun-phrase": 227,
+    "question": 227,
+    "action-answer": 680,
+    "identification-answer": 203,
+    "identification-question": 23
   },
   "pendingBlueprints": [
     "sleeping",
@@ -45,7 +46,7 @@
     "waiting",
     "arriving"
   ],
-  "seconds": 7433,
+  "seconds": 25,
   "tracks": {
     "noun": {
       "total": 60,
@@ -95,186 +96,187 @@
   },
   "introductions": {
     "man": 0,
-    "women": 1,
-    "are": 1,
-    "the": 2,
-    "my": 3,
-    "your": 4,
-    "phones": 5,
-    "bags": 6,
-    "woman": 7,
-    "is": 7,
-    "his": 8,
-    "phone": 10,
-    "bag": 12,
+    "the": 1,
+    "my": 2,
+    "your": 3,
+    "his": 4,
+    "woman": 5,
+    "phones": 10,
+    "bags": 15,
     "walking": 16,
-    "men": 18,
-    "opening": 21,
-    "holding": 26,
-    "her": 38,
+    "is": 20,
+    "holding": 21,
+    "her": 24,
+    "women": 25,
+    "are": 25,
+    "opening": 26,
+    "bag": 35,
+    "men": 40,
+    "our": 43,
     "using": 51,
     "talking": 56,
-    "our": 58,
-    "their": 62,
-    "boys": 79,
-    "boy": 84,
+    "a": 57,
+    "their": 58,
+    "phone": 70,
+    "this": 77,
+    "boys": 80,
+    "that": 84,
+    "boy": 85,
     "listening": 86,
-    "you": 88,
-    "big": 91,
+    "that over there": 89,
+    "girl": 90,
     "he": 92,
     "she": 93,
-    "water": 95,
-    "small": 96,
-    "red": 97,
     "I": 98,
     "am": 98,
-    "cups": 100,
-    "blue": 102,
-    "girls": 103,
-    "running": 106,
-    "girl": 109,
-    "a": 113,
-    "that": 131,
-    "cup": 133,
-    "this": 137,
-    "that over there": 161,
-    "we": 178,
-    "key": 189,
-    "keys": 190,
-    "these": 191,
-    "they": 206,
-    "those": 221,
-    "drinking": 231,
-    "mothers": 245,
-    "mother": 248,
-    "some": 263,
-    "fathers": 270,
-    "father": 273,
-    "shirt": 289,
-    "shirts": 295,
+    "these": 99,
+    "you": 112,
+    "girls": 115,
+    "running": 116,
+    "some": 119,
+    "those": 121,
+    "big": 151,
+    "small": 152,
+    "cups": 155,
+    "red": 156,
+    "blue": 157,
+    "water": 159,
+    "cup": 160,
+    "mother": 184,
+    "mothers": 185,
+    "drinking": 206,
+    "keys": 209,
+    "key": 214,
+    "fathers": 228,
+    "father": 233,
+    "sons": 239,
+    "son": 240,
+    "we": 243,
+    "hot": 277,
+    "shirt": 279,
+    "shirts": 280,
     "green": 297,
-    "hot": 302,
-    "shoes": 315,
-    "shoe": 322,
-    "cold": 327,
-    "yellow": 332,
-    "table": 333,
-    "tables": 334,
-    "son": 353,
-    "sons": 354,
-    "daughter": 375,
-    "daughters": 376,
-    "doctor": 406,
-    "doctors": 407,
+    "cold": 301,
+    "shoe": 310,
+    "shoes": 311,
+    "daughter": 329,
+    "they": 333,
+    "daughters": 343,
+    "doctors": 347,
+    "doctor": 349,
+    "tables": 359,
+    "table": 360,
+    "yellow": 362,
+    "chair": 404,
+    "chairs": 407,
+    "washing": 416,
     "black": 417,
-    "chair": 430,
-    "chairs": 433,
-    "driving": 446,
-    "toilet": 448,
-    "toilets": 453,
-    "white": 462,
-    "schools": 467,
-    "school": 469,
-    "books": 484,
-    "book": 485,
-    "reading": 501,
-    "apples": 502,
-    "an": 503,
-    "eating": 506,
-    "tall": 517,
-    "bottle": 519,
+    "toilet": 425,
+    "toilets": 431,
+    "driving": 436,
+    "schools": 449,
+    "white": 452,
+    "school": 454,
+    "book": 467,
+    "books": 468,
+    "reading": 471,
+    "tall": 482,
+    "apples": 495,
+    "an": 497,
+    "apple": 500,
+    "eating": 501,
+    "short": 511,
+    "bottle": 525,
+    "plates": 527,
     "bottles": 530,
-    "washing": 531,
-    "plate": 553,
-    "plates": 555,
-    "buses": 562,
-    "bus": 565,
-    "short": 577,
-    "motorbike": 595,
-    "motorbikes": 609,
-    "restaurants": 611,
-    "restaurant": 613,
-    "going": 626,
-    "bedrooms": 628,
-    "bedroom": 630,
-    "wallet": 634,
-    "wallets": 635,
-    "bank": 654,
-    "banks": 655,
-    "clinics": 677,
-    "clinic": 678,
+    "plate": 545,
+    "bus": 557,
+    "buses": 558,
+    "going": 566,
+    "motorbike": 580,
+    "motorbikes": 583,
+    "restaurant": 598,
+    "restaurants": 600,
+    "bedroom": 610,
+    "bedrooms": 611,
+    "wallet": 637,
+    "wallets": 640,
+    "cleaning": 651,
+    "banks": 657,
+    "bank": 658,
+    "clinics": 673,
+    "clinic": 674,
+    "banana": 691,
     "bananas": 693,
-    "banana": 695,
-    "oranges": 709,
-    "orange": 714,
-    "sandwich": 727,
-    "sandwiches": 728,
-    "towel": 743,
-    "towels": 747,
-    "hat": 762,
-    "hats": 764,
-    "sock": 781,
-    "socks": 783,
-    "trousers": 794,
-    "glasses": 800,
-    "cleaning": 801,
-    "pen": 832,
-    "pens": 837,
-    "pencils": 843,
-    "pencil": 844,
-    "umbrella": 864,
-    "umbrellas": 865,
-    "watch": 877,
-    "watches": 878,
-    "clocks": 892,
-    "clock": 893,
-    "fan": 907,
-    "fans": 908,
-    "carrying": 926,
-    "charger": 927,
-    "chargers": 928,
-    "air conditioner": 939,
-    "air conditioners": 940,
-    "bicycles": 955,
-    "bicycle": 961,
-    "tickets": 971,
-    "ticket": 973,
-    "finding": 986,
-    "hotels": 988,
-    "hotel": 989,
-    "passports": 1004,
-    "passport": 1005,
-    "laptops": 1020,
-    "laptop": 1021,
-    "camera": 1031,
-    "cameras": 1032,
-    "buying": 1046,
-    "remotes": 1054,
-    "remote": 1056,
-    "sandal": 1070,
-    "sandals": 1072,
-    "boots": 1086,
-    "boot": 1087,
-    "bookstore": 1104,
-    "gym": 1107,
-    "gyms": 1108,
-    "bookstores": 1110,
+    "oranges": 703,
+    "orange": 704,
+    "sandwiches": 721,
+    "sandwich": 723,
+    "towel": 737,
+    "towels": 739,
+    "hat": 755,
+    "hats": 758,
+    "carrying": 771,
+    "socks": 773,
+    "sock": 775,
+    "trousers": 792,
+    "glasses": 793,
+    "pens": 812,
+    "pen": 813,
+    "pencils": 823,
+    "pencil": 824,
+    "umbrella": 846,
+    "umbrellas": 850,
+    "finding": 861,
+    "watches": 863,
+    "watch": 865,
+    "clocks": 878,
+    "clock": 881,
+    "buying": 891,
+    "fan": 897,
+    "fans": 899,
+    "chargers": 914,
+    "charger": 915,
+    "air conditioners": 932,
+    "air conditioner": 933,
+    "bicycle": 948,
+    "bicycles": 949,
+    "tickets": 966,
+    "ticket": 970,
+    "closing": 981,
+    "hotels": 984,
+    "hotel": 985,
+    "passports": 1002,
+    "passport": 1003,
+    "laptop": 1018,
+    "laptops": 1019,
+    "camera": 1034,
+    "cameras": 1035,
+    "remotes": 1052,
+    "remote": 1055,
+    "sandal": 1063,
+    "sandals": 1065,
+    "boots": 1081,
+    "boot": 1083,
+    "bookstore": 1097,
+    "bookstores": 1098,
+    "wearing": 1101,
+    "gyms": 1116,
+    "gym": 1117,
     "racket": 1130,
-    "rackets": 1134,
-    "padel court": 1144,
-    "padel courts": 1147,
-    "closing": 1178,
-    "wearing": 1197,
-    "riding": 1238,
-    "catching": 1269,
-    "helping": 1298,
-    "watching": 1323,
-    "teaching": 1352,
-    "leaving": 1377
+    "rackets": 1132,
+    "padel court": 1147,
+    "padel courts": 1148,
+    "riding": 1173,
+    "catching": 1203,
+    "helping": 1250,
+    "watching": 1275,
+    "teaching": 1304,
+    "leaving": 1329
   },
   "transitions": [
     {
-      "answer": 35,
+      "answer": 24,
       "completed": 1,
       "current": {
         "noun": [
@@ -312,7 +314,7 @@
       }
     },
     {
-      "answer": 58,
+      "answer": 43,
       "completed": 2,
       "current": {
         "noun": [
@@ -342,7 +344,7 @@
           "she"
         ],
         "determiner": [
-          "your",
+          "my",
           "his",
           "her",
           "our"
@@ -350,8 +352,46 @@
       }
     },
     {
-      "answer": 61,
+      "answer": 55,
       "completed": 3,
+      "current": {
+        "noun": [
+          "man",
+          "woman",
+          "phone",
+          "bag"
+        ],
+        "verb": [
+          "holding",
+          "opening",
+          "using",
+          "talking",
+          "listening",
+          "walking"
+        ],
+        "adjective": [
+          "red",
+          "blue",
+          "big",
+          "small"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "she"
+        ],
+        "determiner": [
+          "my",
+          "his",
+          "her",
+          "their"
+        ]
+      }
+    },
+    {
+      "answer": 56,
+      "completed": 4,
       "current": {
         "noun": [
           "man",
@@ -382,14 +422,52 @@
         "determiner": [
           "his",
           "her",
-          "our",
-          "their"
+          "their",
+          "a"
         ]
       }
     },
     {
-      "answer": 79,
-      "completed": 4,
+      "answer": 75,
+      "completed": 5,
+      "current": {
+        "noun": [
+          "man",
+          "woman",
+          "phone",
+          "bag"
+        ],
+        "verb": [
+          "holding",
+          "opening",
+          "using",
+          "talking",
+          "listening",
+          "walking"
+        ],
+        "adjective": [
+          "red",
+          "blue",
+          "big",
+          "small"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "she"
+        ],
+        "determiner": [
+          "her",
+          "their",
+          "a",
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 77,
+      "completed": 7,
       "current": {
         "noun": [
           "woman",
@@ -418,272 +496,6 @@
           "she"
         ],
         "determiner": [
-          "his",
-          "her",
-          "our",
-          "their"
-        ]
-      }
-    },
-    {
-      "answer": 88,
-      "completed": 5,
-      "current": {
-        "noun": [
-          "woman",
-          "boy",
-          "bag",
-          "water"
-        ],
-        "verb": [
-          "holding",
-          "opening",
-          "using",
-          "talking",
-          "listening",
-          "walking"
-        ],
-        "adjective": [
-          "red",
-          "blue",
-          "big",
-          "small"
-        ],
-        "pronoun": [
-          "I",
-          "you",
-          "he",
-          "she"
-        ],
-        "determiner": [
-          "his",
-          "her",
-          "our",
-          "their"
-        ]
-      }
-    },
-    {
-      "answer": 95,
-      "completed": 6,
-      "current": {
-        "noun": [
-          "boy",
-          "girl",
-          "bag",
-          "water"
-        ],
-        "verb": [
-          "holding",
-          "opening",
-          "using",
-          "talking",
-          "listening",
-          "walking"
-        ],
-        "adjective": [
-          "red",
-          "blue",
-          "big",
-          "small"
-        ],
-        "pronoun": [
-          "I",
-          "you",
-          "he",
-          "she"
-        ],
-        "determiner": [
-          "his",
-          "her",
-          "our",
-          "their"
-        ]
-      }
-    },
-    {
-      "answer": 100,
-      "completed": 7,
-      "current": {
-        "noun": [
-          "boy",
-          "girl",
-          "water",
-          "cup"
-        ],
-        "verb": [
-          "holding",
-          "opening",
-          "using",
-          "talking",
-          "listening",
-          "walking"
-        ],
-        "adjective": [
-          "red",
-          "blue",
-          "big",
-          "small"
-        ],
-        "pronoun": [
-          "I",
-          "you",
-          "he",
-          "she"
-        ],
-        "determiner": [
-          "his",
-          "her",
-          "our",
-          "their"
-        ]
-      }
-    },
-    {
-      "answer": 101,
-      "completed": 8,
-      "current": {
-        "noun": [
-          "boy",
-          "girl",
-          "water",
-          "cup"
-        ],
-        "verb": [
-          "holding",
-          "opening",
-          "using",
-          "talking",
-          "listening",
-          "running"
-        ],
-        "adjective": [
-          "red",
-          "blue",
-          "big",
-          "small"
-        ],
-        "pronoun": [
-          "I",
-          "you",
-          "he",
-          "she"
-        ],
-        "determiner": [
-          "his",
-          "her",
-          "our",
-          "their"
-        ]
-      }
-    },
-    {
-      "answer": 111,
-      "completed": 9,
-      "current": {
-        "noun": [
-          "boy",
-          "girl",
-          "water",
-          "cup"
-        ],
-        "verb": [
-          "holding",
-          "opening",
-          "using",
-          "talking",
-          "listening",
-          "running"
-        ],
-        "adjective": [
-          "red",
-          "blue",
-          "big",
-          "small"
-        ],
-        "pronoun": [
-          "I",
-          "you",
-          "he",
-          "she"
-        ],
-        "determiner": [
-          "her",
-          "our",
-          "their",
-          "a"
-        ]
-      }
-    },
-    {
-      "answer": 117,
-      "completed": 10,
-      "current": {
-        "noun": [
-          "boy",
-          "girl",
-          "water",
-          "cup"
-        ],
-        "verb": [
-          "holding",
-          "opening",
-          "using",
-          "talking",
-          "listening",
-          "running"
-        ],
-        "adjective": [
-          "red",
-          "blue",
-          "big",
-          "small"
-        ],
-        "pronoun": [
-          "I",
-          "you",
-          "he",
-          "she"
-        ],
-        "determiner": [
-          "her",
-          "their",
-          "a",
-          "an"
-        ]
-      }
-    },
-    {
-      "answer": 125,
-      "completed": 11,
-      "current": {
-        "noun": [
-          "boy",
-          "girl",
-          "water",
-          "cup"
-        ],
-        "verb": [
-          "holding",
-          "opening",
-          "using",
-          "talking",
-          "listening",
-          "running"
-        ],
-        "adjective": [
-          "red",
-          "blue",
-          "big",
-          "small"
-        ],
-        "pronoun": [
-          "I",
-          "you",
-          "he",
-          "she"
-        ],
-        "determiner": [
           "their",
           "a",
           "an",
@@ -692,14 +504,14 @@
       }
     },
     {
-      "answer": 130,
-      "completed": 12,
+      "answer": 84,
+      "completed": 8,
       "current": {
         "noun": [
+          "woman",
           "boy",
-          "girl",
-          "water",
-          "cup"
+          "phone",
+          "bag"
         ],
         "verb": [
           "holding",
@@ -707,7 +519,7 @@
           "using",
           "talking",
           "listening",
-          "running"
+          "walking"
         ],
         "adjective": [
           "red",
@@ -722,22 +534,136 @@
           "she"
         ],
         "determiner": [
+          "their",
           "a",
           "an",
-          "this",
           "that"
         ]
       }
     },
     {
-      "answer": 155,
-      "completed": 13,
+      "answer": 86,
+      "completed": 9,
+      "current": {
+        "noun": [
+          "woman",
+          "boy",
+          "phone",
+          "bag"
+        ],
+        "verb": [
+          "holding",
+          "opening",
+          "using",
+          "talking",
+          "listening",
+          "walking"
+        ],
+        "adjective": [
+          "red",
+          "blue",
+          "big",
+          "small"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "she"
+        ],
+        "determiner": [
+          "a",
+          "an",
+          "that",
+          "that over there"
+        ]
+      }
+    },
+    {
+      "answer": 89,
+      "completed": 10,
       "current": {
         "noun": [
           "boy",
           "girl",
-          "water",
-          "cup"
+          "phone",
+          "bag"
+        ],
+        "verb": [
+          "holding",
+          "opening",
+          "using",
+          "talking",
+          "listening",
+          "walking"
+        ],
+        "adjective": [
+          "red",
+          "blue",
+          "big",
+          "small"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "she"
+        ],
+        "determiner": [
+          "a",
+          "an",
+          "that",
+          "that over there"
+        ]
+      }
+    },
+    {
+      "answer": 98,
+      "completed": 11,
+      "current": {
+        "noun": [
+          "boy",
+          "girl",
+          "phone",
+          "bag"
+        ],
+        "verb": [
+          "holding",
+          "opening",
+          "using",
+          "talking",
+          "listening",
+          "walking"
+        ],
+        "adjective": [
+          "red",
+          "blue",
+          "big",
+          "small"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "she"
+        ],
+        "determiner": [
+          "a",
+          "an",
+          "that over there",
+          "these"
+        ]
+      }
+    },
+    {
+      "answer": 107,
+      "completed": 12,
+      "current": {
+        "noun": [
+          "boy",
+          "girl",
+          "phone",
+          "bag"
         ],
         "verb": [
           "holding",
@@ -762,25 +688,25 @@
         "determiner": [
           "a",
           "an",
-          "that",
-          "that over there"
+          "that over there",
+          "these"
         ]
       }
     },
     {
-      "answer": 166,
-      "completed": 14,
+      "answer": 115,
+      "completed": 13,
       "current": {
         "noun": [
           "boy",
           "girl",
-          "water",
-          "cup"
+          "phone",
+          "bag"
         ],
         "verb": [
           "holding",
           "opening",
-          "eating",
+          "using",
           "talking",
           "listening",
           "running"
@@ -800,24 +726,62 @@
         "determiner": [
           "a",
           "an",
-          "that",
-          "that over there"
+          "that over there",
+          "those"
         ]
       }
     },
     {
-      "answer": 177,
+      "answer": 118,
+      "completed": 14,
+      "current": {
+        "noun": [
+          "boy",
+          "girl",
+          "phone",
+          "bag"
+        ],
+        "verb": [
+          "holding",
+          "opening",
+          "using",
+          "talking",
+          "listening",
+          "running"
+        ],
+        "adjective": [
+          "red",
+          "blue",
+          "big",
+          "small"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "she"
+        ],
+        "determiner": [
+          "an",
+          "that over there",
+          "those",
+          "some"
+        ]
+      }
+    },
+    {
+      "answer": 130,
       "completed": 15,
       "current": {
         "noun": [
           "boy",
           "girl",
-          "water",
-          "cup"
+          "phone",
+          "bag"
         ],
         "verb": [
-          "holding",
           "opening",
+          "using",
           "eating",
           "talking",
           "listening",
@@ -831,31 +795,31 @@
         ],
         "pronoun": [
           "I",
+          "you",
           "he",
-          "she",
-          "we"
+          "she"
         ],
         "determiner": [
-          "a",
           "an",
-          "that",
-          "that over there"
+          "that over there",
+          "those",
+          "some"
         ]
       }
     },
     {
-      "answer": 185,
+      "answer": 151,
       "completed": 16,
       "current": {
         "noun": [
           "boy",
           "girl",
-          "water",
-          "cup"
+          "bag",
+          "water"
         ],
         "verb": [
-          "holding",
           "opening",
+          "using",
           "eating",
           "talking",
           "listening",
@@ -869,31 +833,31 @@
         ],
         "pronoun": [
           "I",
+          "you",
           "he",
-          "she",
-          "we"
+          "she"
         ],
         "determiner": [
-          "a",
           "an",
           "that over there",
-          "these"
+          "those",
+          "some"
         ]
       }
     },
     {
-      "answer": 186,
+      "answer": 154,
       "completed": 17,
       "current": {
         "noun": [
           "boy",
           "girl",
-          "cup",
-          "key"
+          "water",
+          "cup"
         ],
         "verb": [
-          "holding",
           "opening",
+          "using",
           "eating",
           "talking",
           "listening",
@@ -907,35 +871,35 @@
         ],
         "pronoun": [
           "I",
+          "you",
           "he",
-          "she",
-          "we"
+          "she"
         ],
         "determiner": [
-          "a",
           "an",
           "that over there",
-          "these"
+          "those",
+          "some"
         ]
       }
     },
     {
-      "answer": 197,
+      "answer": 155,
       "completed": 18,
       "current": {
         "noun": [
           "boy",
           "girl",
-          "cup",
-          "key"
+          "water",
+          "cup"
         ],
         "verb": [
-          "holding",
           "opening",
+          "using",
           "eating",
           "talking",
           "listening",
-          "driving"
+          "running"
         ],
         "adjective": [
           "red",
@@ -945,35 +909,34 @@
         ],
         "pronoun": [
           "I",
+          "you",
           "he",
-          "she",
-          "we"
+          "she"
         ],
         "determiner": [
-          "a",
           "an",
           "that over there",
-          "these"
+          "those"
         ]
       }
     },
     {
-      "answer": 203,
+      "answer": 156,
       "completed": 19,
       "current": {
         "noun": [
           "boy",
           "girl",
-          "cup",
-          "key"
+          "water",
+          "cup"
         ],
         "verb": [
-          "holding",
           "opening",
+          "using",
           "eating",
           "talking",
           "listening",
-          "driving"
+          "running"
         ],
         "adjective": [
           "red",
@@ -982,36 +945,34 @@
           "small"
         ],
         "pronoun": [
+          "I",
+          "you",
           "he",
-          "she",
-          "we",
-          "they"
+          "she"
         ],
         "determiner": [
-          "a",
           "an",
-          "that over there",
-          "these"
+          "that over there"
         ]
       }
     },
     {
-      "answer": 208,
+      "answer": 168,
       "completed": 20,
       "current": {
         "noun": [
           "boy",
           "girl",
-          "cup",
-          "key"
+          "water",
+          "cup"
         ],
         "verb": [
           "opening",
+          "using",
           "eating",
-          "drinking",
           "talking",
           "listening",
-          "driving"
+          "running"
         ],
         "adjective": [
           "red",
@@ -1020,36 +981,33 @@
           "small"
         ],
         "pronoun": [
+          "I",
+          "you",
           "he",
-          "she",
-          "we",
-          "they"
+          "she"
         ],
         "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "these"
+          "an"
         ]
       }
     },
     {
-      "answer": 215,
+      "answer": 181,
       "completed": 21,
       "current": {
         "noun": [
-          "boy",
           "girl",
-          "cup",
-          "key"
+          "mother",
+          "water",
+          "cup"
         ],
         "verb": [
           "opening",
+          "using",
           "eating",
-          "drinking",
           "talking",
           "listening",
-          "driving"
+          "running"
         ],
         "adjective": [
           "red",
@@ -1058,28 +1016,25 @@
           "small"
         ],
         "pronoun": [
+          "I",
+          "you",
           "he",
-          "she",
-          "we",
-          "they"
+          "she"
         ],
         "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "those"
+          "an"
         ]
       }
     },
     {
-      "answer": 237,
+      "answer": 202,
       "completed": 22,
       "current": {
         "noun": [
-          "boy",
           "girl",
-          "cup",
-          "key"
+          "mother",
+          "water",
+          "cup"
         ],
         "verb": [
           "opening",
@@ -1087,7 +1042,7 @@
           "drinking",
           "talking",
           "listening",
-          "driving"
+          "running"
         ],
         "adjective": [
           "red",
@@ -1096,25 +1051,23 @@
           "small"
         ],
         "pronoun": [
-          "she",
-          "we",
-          "they"
+          "I",
+          "you",
+          "he",
+          "she"
         ],
         "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "those"
+          "an"
         ]
       }
     },
     {
-      "answer": 239,
+      "answer": 207,
       "completed": 23,
       "current": {
         "noun": [
-          "boy",
           "girl",
+          "mother",
           "cup",
           "key"
         ],
@@ -1124,7 +1077,7 @@
           "drinking",
           "talking",
           "listening",
-          "driving"
+          "running"
         ],
         "adjective": [
           "red",
@@ -1133,19 +1086,18 @@
           "small"
         ],
         "pronoun": [
-          "she",
-          "we"
+          "I",
+          "you",
+          "he",
+          "she"
         ],
         "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "those"
+          "an"
         ]
       }
     },
     {
-      "answer": 241,
+      "answer": 213,
       "completed": 24,
       "current": {
         "noun": [
@@ -1169,24 +1121,23 @@
           "small"
         ],
         "pronoun": [
-          "she",
-          "we"
+          "I",
+          "you",
+          "he",
+          "she"
         ],
         "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "those"
+          "an"
         ]
       }
     },
     {
-      "answer": 243,
+      "answer": 228,
       "completed": 25,
       "current": {
         "noun": [
           "girl",
-          "mother",
+          "father",
           "cup",
           "key"
         ],
@@ -1205,347 +1156,233 @@
           "small"
         ],
         "pronoun": [
-          "we"
+          "I",
+          "you",
+          "he",
+          "she"
         ],
-        "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "those"
-        ]
-      }
-    },
-    {
-      "answer": 244,
-      "completed": 26,
-      "current": {
-        "noun": [
-          "girl",
-          "mother",
-          "cup",
-          "key"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "red",
-          "blue",
-          "big",
-          "small"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "those"
-        ]
-      }
-    },
-    {
-      "answer": 263,
-      "completed": 27,
-      "current": {
-        "noun": [
-          "girl",
-          "mother",
-          "cup",
-          "key"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "red",
-          "blue",
-          "big",
-          "small"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "some"
-        ]
-      }
-    },
-    {
-      "answer": 267,
-      "completed": 28,
-      "current": {
-        "noun": [
-          "mother",
-          "father",
-          "cup",
-          "key"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "red",
-          "blue",
-          "big",
-          "small"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "some"
-        ]
-      }
-    },
-    {
-      "answer": 273,
-      "completed": 29,
-      "current": {
-        "noun": [
-          "mother",
-          "father",
-          "cup",
-          "key"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "red",
-          "blue",
-          "small",
-          "hot"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "some"
-        ]
-      }
-    },
-    {
-      "answer": 278,
-      "completed": 30,
-      "current": {
-        "noun": [
-          "mother",
-          "father",
-          "cup",
-          "key"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "red",
-          "blue",
-          "hot",
-          "cold"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "some"
-        ]
-      }
-    },
-    {
-      "answer": 283,
-      "completed": 31,
-      "current": {
-        "noun": [
-          "mother",
-          "father",
-          "cup",
-          "key"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "blue",
-          "hot",
-          "cold",
-          "green"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "some"
-        ]
-      }
-    },
-    {
-      "answer": 286,
-      "completed": 32,
-      "current": {
-        "noun": [
-          "mother",
-          "father",
-          "key",
-          "shirt"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "blue",
-          "hot",
-          "cold",
-          "green"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "a",
-          "an",
-          "that over there",
-          "some"
-        ]
-      }
-    },
-    {
-      "answer": 293,
-      "completed": 33,
-      "current": {
-        "noun": [
-          "mother",
-          "father",
-          "key",
-          "shirt"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "blue",
-          "hot",
-          "cold",
-          "green"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "a",
-          "an",
-          "that over there"
-        ]
-      }
-    },
-    {
-      "answer": 295,
-      "completed": 34,
-      "current": {
-        "noun": [
-          "mother",
-          "father",
-          "key",
-          "shirt"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "blue",
-          "hot",
-          "cold",
-          "green"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "an",
-          "that over there"
-        ]
-      }
-    },
-    {
-      "answer": 312,
-      "completed": 35,
-      "current": {
-        "noun": [
-          "mother",
-          "father",
-          "key",
-          "shirt"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "blue",
-          "hot",
-          "cold",
-          "green"
-        ],
-        "pronoun": [],
         "determiner": [
           "an"
         ]
       }
     },
     {
-      "answer": 315,
-      "completed": 36,
+      "answer": 239,
+      "completed": 26,
       "current": {
         "noun": [
-          "mother",
           "father",
+          "son",
+          "cup",
+          "key"
+        ],
+        "verb": [
+          "opening",
+          "eating",
+          "drinking",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "red",
+          "blue",
+          "big",
+          "small"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "she"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 243,
+      "completed": 27,
+      "current": {
+        "noun": [
+          "father",
+          "son",
+          "cup",
+          "key"
+        ],
+        "verb": [
+          "opening",
+          "eating",
+          "drinking",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "red",
+          "blue",
+          "big",
+          "small"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "we"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 276,
+      "completed": 28,
+      "current": {
+        "noun": [
+          "father",
+          "son",
+          "cup",
+          "shirt"
+        ],
+        "verb": [
+          "opening",
+          "eating",
+          "drinking",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "red",
+          "blue",
+          "big",
+          "small"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "we"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 277,
+      "completed": 29,
+      "current": {
+        "noun": [
+          "father",
+          "son",
+          "cup",
+          "shirt"
+        ],
+        "verb": [
+          "opening",
+          "eating",
+          "drinking",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "red",
+          "blue",
+          "big",
+          "hot"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "we"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 287,
+      "completed": 30,
+      "current": {
+        "noun": [
+          "father",
+          "son",
+          "cup",
+          "shirt"
+        ],
+        "verb": [
+          "opening",
+          "eating",
+          "drinking",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "red",
+          "big",
+          "hot",
+          "cold"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "we"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 293,
+      "completed": 31,
+      "current": {
+        "noun": [
+          "father",
+          "son",
+          "cup",
+          "shirt"
+        ],
+        "verb": [
+          "opening",
+          "eating",
+          "drinking",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "big",
+          "hot",
+          "cold",
+          "green"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "we"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 310,
+      "completed": 32,
+      "current": {
+        "noun": [
+          "father",
+          "son",
           "shirt",
           "shoe"
         ],
@@ -1558,200 +1395,200 @@
           "driving"
         ],
         "adjective": [
-          "blue",
+          "big",
           "hot",
           "cold",
           "green"
         ],
-        "pronoun": [],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "we"
+        ],
         "determiner": [
           "an"
         ]
       }
     },
     {
-      "answer": 331,
+      "answer": 322,
+      "completed": 33,
+      "current": {
+        "noun": [
+          "father",
+          "son",
+          "shirt",
+          "shoe"
+        ],
+        "verb": [
+          "eating",
+          "drinking",
+          "reading",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "big",
+          "hot",
+          "cold",
+          "green"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "we"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 327,
+      "completed": 34,
+      "current": {
+        "noun": [
+          "son",
+          "daughter",
+          "shirt",
+          "shoe"
+        ],
+        "verb": [
+          "eating",
+          "drinking",
+          "reading",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "big",
+          "hot",
+          "cold",
+          "green"
+        ],
+        "pronoun": [
+          "I",
+          "you",
+          "he",
+          "we"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 329,
+      "completed": 35,
+      "current": {
+        "noun": [
+          "son",
+          "daughter",
+          "shirt",
+          "shoe"
+        ],
+        "verb": [
+          "eating",
+          "drinking",
+          "reading",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "big",
+          "hot",
+          "cold",
+          "green"
+        ],
+        "pronoun": [
+          "I",
+          "he",
+          "we",
+          "they"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 346,
+      "completed": 36,
+      "current": {
+        "noun": [
+          "son",
+          "doctor",
+          "shirt",
+          "shoe"
+        ],
+        "verb": [
+          "eating",
+          "drinking",
+          "reading",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "big",
+          "hot",
+          "cold",
+          "green"
+        ],
+        "pronoun": [
+          "I",
+          "he",
+          "we",
+          "they"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 359,
       "completed": 37,
       "current": {
         "noun": [
-          "mother",
-          "father",
+          "son",
+          "doctor",
           "shirt",
           "table"
         ],
         "verb": [
-          "opening",
           "eating",
           "drinking",
+          "reading",
           "talking",
           "listening",
           "driving"
         ],
         "adjective": [
-          "blue",
+          "big",
           "hot",
           "cold",
           "green"
         ],
-        "pronoun": [],
+        "pronoun": [
+          "I",
+          "he",
+          "we",
+          "they"
+        ],
         "determiner": [
           "an"
         ]
       }
     },
     {
-      "answer": 332,
+      "answer": 362,
       "completed": 38,
-      "current": {
-        "noun": [
-          "mother",
-          "father",
-          "shirt",
-          "table"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "green",
-          "yellow"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "an"
-        ]
-      }
-    },
-    {
-      "answer": 353,
-      "completed": 39,
-      "current": {
-        "noun": [
-          "father",
-          "son",
-          "shirt",
-          "table"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "green",
-          "yellow"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "an"
-        ]
-      }
-    },
-    {
-      "answer": 375,
-      "completed": 40,
-      "current": {
-        "noun": [
-          "son",
-          "daughter",
-          "shirt",
-          "table"
-        ],
-        "verb": [
-          "opening",
-          "eating",
-          "drinking",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "green",
-          "yellow"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "an"
-        ]
-      }
-    },
-    {
-      "answer": 400,
-      "completed": 41,
-      "current": {
-        "noun": [
-          "son",
-          "daughter",
-          "shirt",
-          "table"
-        ],
-        "verb": [
-          "eating",
-          "drinking",
-          "reading",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "green",
-          "yellow"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "an"
-        ]
-      }
-    },
-    {
-      "answer": 403,
-      "completed": 42,
-      "current": {
-        "noun": [
-          "son",
-          "daughter",
-          "shirt",
-          "table"
-        ],
-        "verb": [
-          "eating",
-          "drinking",
-          "reading",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "yellow",
-          "black"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "an"
-        ]
-      }
-    },
-    {
-      "answer": 406,
-      "completed": 43,
       "current": {
         "noun": [
           "son",
@@ -1770,21 +1607,27 @@
         "adjective": [
           "hot",
           "cold",
-          "yellow",
-          "black"
+          "green",
+          "yellow"
         ],
-        "pronoun": [],
+        "pronoun": [
+          "I",
+          "he",
+          "we",
+          "they"
+        ],
         "determiner": [
           "an"
         ]
       }
     },
     {
-      "answer": 429,
-      "completed": 44,
+      "answer": 364,
+      "completed": 39,
       "current": {
         "noun": [
           "son",
+          "doctor",
           "shirt",
           "table"
         ],
@@ -1799,21 +1642,120 @@
         "adjective": [
           "hot",
           "cold",
-          "yellow",
-          "black"
+          "green",
+          "yellow"
         ],
-        "pronoun": [],
+        "pronoun": [
+          "he",
+          "we",
+          "they"
+        ],
         "determiner": [
           "an"
         ]
       }
     },
     {
-      "answer": 430,
-      "completed": 45,
+      "answer": 394,
+      "completed": 40,
       "current": {
         "noun": [
           "son",
+          "doctor",
+          "shirt",
+          "table"
+        ],
+        "verb": [
+          "eating",
+          "drinking",
+          "reading",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "hot",
+          "cold",
+          "green",
+          "yellow"
+        ],
+        "pronoun": [
+          "we",
+          "they"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 400,
+      "completed": 41,
+      "current": {
+        "noun": [
+          "doctor",
+          "shirt",
+          "table"
+        ],
+        "verb": [
+          "eating",
+          "drinking",
+          "reading",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "hot",
+          "cold",
+          "green",
+          "yellow"
+        ],
+        "pronoun": [
+          "we",
+          "they"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 401,
+      "completed": 42,
+      "current": {
+        "noun": [
+          "shirt",
+          "table"
+        ],
+        "verb": [
+          "eating",
+          "drinking",
+          "reading",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "hot",
+          "cold",
+          "green",
+          "yellow"
+        ],
+        "pronoun": [
+          "we",
+          "they"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 404,
+      "completed": 43,
+      "current": {
+        "noun": [
           "table",
           "chair"
         ],
@@ -1828,10 +1770,136 @@
         "adjective": [
           "hot",
           "cold",
+          "green",
+          "yellow"
+        ],
+        "pronoun": [
+          "we",
+          "they"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 412,
+      "completed": 44,
+      "current": {
+        "noun": [
+          "table",
+          "chair"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "washing",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "hot",
+          "cold",
+          "green",
+          "yellow"
+        ],
+        "pronoun": [
+          "we",
+          "they"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 413,
+      "completed": 45,
+      "current": {
+        "noun": [
+          "table",
+          "chair"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "washing",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "hot",
+          "cold",
           "yellow",
           "black"
         ],
-        "pronoun": [],
+        "pronoun": [
+          "we",
+          "they"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 425,
+      "completed": 46,
+      "current": {
+        "noun": [
+          "table",
+          "toilet"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "washing",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "hot",
+          "cold",
+          "yellow",
+          "black"
+        ],
+        "pronoun": [
+          "we",
+          "they"
+        ],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 429,
+      "completed": 47,
+      "current": {
+        "noun": [
+          "table",
+          "toilet"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "washing",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "hot",
+          "cold",
+          "yellow",
+          "black"
+        ],
+        "pronoun": [
+          "they"
+        ],
         "determiner": [
           "an"
         ]
@@ -1839,17 +1907,16 @@
     },
     {
       "answer": 446,
-      "completed": 46,
+      "completed": 48,
       "current": {
         "noun": [
-          "son",
           "table",
-          "toilet"
+          "school"
         ],
         "verb": [
           "eating",
-          "drinking",
           "reading",
+          "washing",
           "talking",
           "listening",
           "driving"
@@ -1860,25 +1927,26 @@
           "yellow",
           "black"
         ],
-        "pronoun": [],
+        "pronoun": [
+          "they"
+        ],
         "determiner": [
           "an"
         ]
       }
     },
     {
-      "answer": 458,
-      "completed": 47,
+      "answer": 452,
+      "completed": 49,
       "current": {
         "noun": [
-          "son",
           "table",
-          "toilet"
+          "school"
         ],
         "verb": [
           "eating",
-          "drinking",
           "reading",
+          "washing",
           "talking",
           "listening",
           "driving"
@@ -1886,27 +1954,29 @@
         "adjective": [
           "hot",
           "cold",
-          "yellow",
+          "black",
           "white"
         ],
-        "pronoun": [],
+        "pronoun": [
+          "they"
+        ],
         "determiner": [
           "an"
         ]
       }
     },
     {
-      "answer": 461,
-      "completed": 48,
+      "answer": 454,
+      "completed": 50,
       "current": {
         "noun": [
           "table",
-          "toilet"
+          "school"
         ],
         "verb": [
           "eating",
-          "drinking",
           "reading",
+          "washing",
           "talking",
           "listening",
           "driving"
@@ -1914,7 +1984,7 @@
         "adjective": [
           "hot",
           "cold",
-          "yellow",
+          "black",
           "white"
         ],
         "pronoun": [],
@@ -1925,35 +1995,7 @@
     },
     {
       "answer": 466,
-      "completed": 49,
-      "current": {
-        "noun": [
-          "table",
-          "school"
-        ],
-        "verb": [
-          "eating",
-          "drinking",
-          "reading",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "yellow",
-          "white"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "an"
-        ]
-      }
-    },
-    {
-      "answer": 484,
-      "completed": 50,
+      "completed": 51,
       "current": {
         "noun": [
           "school",
@@ -1961,8 +2003,8 @@
         ],
         "verb": [
           "eating",
-          "drinking",
           "reading",
+          "washing",
           "talking",
           "listening",
           "driving"
@@ -1970,7 +2012,7 @@
         "adjective": [
           "hot",
           "cold",
-          "yellow",
+          "black",
           "white"
         ],
         "pronoun": [],
@@ -1980,40 +2022,12 @@
       }
     },
     {
-      "answer": 501,
-      "completed": 51,
-      "current": {
-        "noun": [
-          "book",
-          "apple"
-        ],
-        "verb": [
-          "eating",
-          "drinking",
-          "reading",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "yellow",
-          "white"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "an"
-        ]
-      }
-    },
-    {
-      "answer": 513,
+      "answer": 482,
       "completed": 52,
       "current": {
         "noun": [
-          "book",
-          "apple"
+          "school",
+          "book"
         ],
         "verb": [
           "eating",
@@ -2024,10 +2038,10 @@
           "driving"
         ],
         "adjective": [
-          "hot",
           "cold",
-          "yellow",
-          "white"
+          "black",
+          "white",
+          "tall"
         ],
         "pronoun": [],
         "determiner": [
@@ -2036,11 +2050,11 @@
       }
     },
     {
-      "answer": 517,
+      "answer": 495,
       "completed": 53,
       "current": {
         "noun": [
-          "book",
+          "school",
           "apple"
         ],
         "verb": [
@@ -2052,10 +2066,38 @@
           "driving"
         ],
         "adjective": [
-          "hot",
           "cold",
+          "black",
           "white",
           "tall"
+        ],
+        "pronoun": [],
+        "determiner": [
+          "an"
+        ]
+      }
+    },
+    {
+      "answer": 508,
+      "completed": 54,
+      "current": {
+        "noun": [
+          "school",
+          "apple"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "washing",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "black",
+          "white",
+          "tall",
+          "short"
         ],
         "pronoun": [],
         "determiner": [
@@ -2065,39 +2107,11 @@
     },
     {
       "answer": 519,
-      "completed": 54,
-      "current": {
-        "noun": [
-          "book",
-          "bottle"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "washing",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "white",
-          "tall"
-        ],
-        "pronoun": [],
-        "determiner": [
-          "an"
-        ]
-      }
-    },
-    {
-      "answer": 540,
       "completed": 55,
       "current": {
         "noun": [
-          "book",
-          "bottle"
+          "school",
+          "apple"
         ],
         "verb": [
           "eating",
@@ -2108,21 +2122,47 @@
           "driving"
         ],
         "adjective": [
-          "hot",
-          "cold",
+          "black",
           "white",
-          "tall"
+          "tall",
+          "short"
         ],
         "pronoun": [],
         "determiner": []
       }
     },
     {
-      "answer": 552,
+      "answer": 525,
       "completed": 56,
       "current": {
         "noun": [
-          "book",
+          "school",
+          "bottle"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "washing",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "black",
+          "white",
+          "tall",
+          "short"
+        ],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 527,
+      "completed": 57,
+      "current": {
+        "noun": [
+          "bottle",
           "plate"
         ],
         "verb": [
@@ -2134,61 +2174,9 @@
           "driving"
         ],
         "adjective": [
-          "hot",
-          "cold",
+          "black",
           "white",
-          "tall"
-        ],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 562,
-      "completed": 57,
-      "current": {
-        "noun": [
-          "plate",
-          "bus"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "washing",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "white",
-          "tall"
-        ],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 577,
-      "completed": 58,
-      "current": {
-        "noun": [
-          "plate",
-          "bus"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "washing",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "white",
+          "tall",
           "short"
         ],
         "pronoun": [],
@@ -2196,8 +2184,153 @@
       }
     },
     {
-      "answer": 595,
+      "answer": 556,
+      "completed": 58,
+      "current": {
+        "noun": [
+          "bottle",
+          "bus"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "washing",
+          "talking",
+          "listening",
+          "driving"
+        ],
+        "adjective": [
+          "black",
+          "white",
+          "tall",
+          "short"
+        ],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 557,
       "completed": 59,
+      "current": {
+        "noun": [
+          "bottle",
+          "bus"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "washing",
+          "talking",
+          "listening",
+          "going"
+        ],
+        "adjective": [
+          "black",
+          "white",
+          "tall",
+          "short"
+        ],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 568,
+      "completed": 60,
+      "current": {
+        "noun": [
+          "bottle",
+          "bus"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "washing",
+          "talking",
+          "listening",
+          "going"
+        ],
+        "adjective": [
+          "black",
+          "tall",
+          "short"
+        ],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 572,
+      "completed": 61,
+      "current": {
+        "noun": [
+          "bottle",
+          "bus"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "washing",
+          "talking",
+          "listening",
+          "going"
+        ],
+        "adjective": [
+          "tall",
+          "short"
+        ],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 573,
+      "completed": 62,
+      "current": {
+        "noun": [
+          "bottle",
+          "bus"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "washing",
+          "talking",
+          "listening",
+          "going"
+        ],
+        "adjective": [
+          "short"
+        ],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 577,
+      "completed": 63,
+      "current": {
+        "noun": [
+          "bottle",
+          "bus"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "washing",
+          "talking",
+          "listening",
+          "going"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 580,
+      "completed": 64,
       "current": {
         "noun": [
           "bus",
@@ -2209,50 +2342,19 @@
           "washing",
           "talking",
           "listening",
-          "driving"
+          "going"
         ],
-        "adjective": [
-          "hot",
-          "cold",
-          "white",
-          "short"
-        ],
+        "adjective": [],
         "pronoun": [],
         "determiner": []
       }
     },
     {
-      "answer": 611,
-      "completed": 60,
+      "answer": 598,
+      "completed": 65,
       "current": {
         "noun": [
-          "bus",
-          "restaurant"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "washing",
-          "talking",
-          "listening",
-          "driving"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "white",
-          "short"
-        ],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 617,
-      "completed": 61,
-      "current": {
-        "noun": [
-          "bus",
+          "motorbike",
           "restaurant"
         ],
         "verb": [
@@ -2263,22 +2365,17 @@
           "listening",
           "going"
         ],
-        "adjective": [
-          "hot",
-          "cold",
-          "white",
-          "short"
-        ],
+        "adjective": [],
         "pronoun": [],
         "determiner": []
       }
     },
     {
-      "answer": 626,
-      "completed": 62,
+      "answer": 610,
+      "completed": 66,
       "current": {
         "noun": [
-          "bus",
+          "restaurant",
           "bedroom"
         ],
         "verb": [
@@ -2289,151 +2386,23 @@
           "listening",
           "going"
         ],
-        "adjective": [
-          "hot",
-          "cold",
-          "white",
-          "short"
-        ],
+        "adjective": [],
         "pronoun": [],
         "determiner": []
       }
     },
     {
-      "answer": 634,
-      "completed": 63,
-      "current": {
-        "noun": [
-          "bedroom",
-          "wallet"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "washing",
-          "talking",
-          "listening",
-          "going"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "white",
-          "short"
-        ],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 637,
-      "completed": 64,
-      "current": {
-        "noun": [
-          "bedroom",
-          "wallet"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "washing",
-          "talking",
-          "listening",
-          "going"
-        ],
-        "adjective": [
-          "hot",
-          "cold",
-          "white"
-        ],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 638,
-      "completed": 65,
-      "current": {
-        "noun": [
-          "bedroom",
-          "wallet"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "washing",
-          "talking",
-          "listening",
-          "going"
-        ],
-        "adjective": [
-          "hot",
-          "cold"
-        ],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 654,
-      "completed": 66,
-      "current": {
-        "noun": [
-          "wallet",
-          "bank"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "washing",
-          "talking",
-          "listening",
-          "going"
-        ],
-        "adjective": [
-          "hot",
-          "cold"
-        ],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 658,
+      "answer": 627,
       "completed": 67,
       "current": {
         "noun": [
-          "wallet",
-          "bank"
+          "restaurant",
+          "bedroom"
         ],
         "verb": [
           "eating",
           "reading",
           "washing",
-          "talking",
-          "listening",
-          "going"
-        ],
-        "adjective": [
-          "hot"
-        ],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 663,
-      "completed": 68,
-      "current": {
-        "noun": [
-          "wallet",
-          "bank"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "washing",
-          "talking",
           "listening",
           "going"
         ],
@@ -2443,20 +2412,97 @@
       }
     },
     {
-      "answer": 676,
+      "answer": 628,
+      "completed": 68,
+      "current": {
+        "noun": [
+          "restaurant",
+          "bedroom"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "cleaning",
+          "listening",
+          "going"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 637,
       "completed": 69,
       "current": {
         "noun": [
-          "bank",
+          "bedroom",
+          "wallet"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "cleaning",
+          "listening",
+          "going"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 656,
+      "completed": 70,
+      "current": {
+        "noun": [
+          "bedroom",
+          "bank"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "cleaning",
+          "listening",
+          "going"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 671,
+      "completed": 71,
+      "current": {
+        "noun": [
+          "bedroom",
+          "bank"
+        ],
+        "verb": [
+          "eating",
+          "reading",
+          "cleaning",
+          "listening"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 673,
+      "completed": 72,
+      "current": {
+        "noun": [
+          "bedroom",
           "clinic"
         ],
         "verb": [
           "eating",
           "reading",
-          "washing",
-          "talking",
-          "listening",
-          "going"
+          "cleaning",
+          "listening"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2465,18 +2511,16 @@
     },
     {
       "answer": 687,
-      "completed": 70,
+      "completed": 73,
       "current": {
         "noun": [
-          "bank",
+          "bedroom",
           "clinic"
         ],
         "verb": [
           "eating",
           "reading",
-          "washing",
-          "listening",
-          "going"
+          "cleaning"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2484,19 +2528,17 @@
       }
     },
     {
-      "answer": 693,
-      "completed": 71,
+      "answer": 691,
+      "completed": 74,
       "current": {
         "noun": [
-          "bank",
+          "bedroom",
           "banana"
         ],
         "verb": [
           "eating",
           "reading",
-          "washing",
-          "listening",
-          "going"
+          "cleaning"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2504,19 +2546,17 @@
       }
     },
     {
-      "answer": 709,
-      "completed": 72,
+      "answer": 703,
+      "completed": 75,
       "current": {
         "noun": [
-          "banana",
+          "bedroom",
           "orange"
         ],
         "verb": [
           "eating",
           "reading",
-          "washing",
-          "listening",
-          "going"
+          "cleaning"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2524,19 +2564,17 @@
       }
     },
     {
-      "answer": 727,
-      "completed": 73,
+      "answer": 721,
+      "completed": 76,
       "current": {
         "noun": [
-          "orange",
+          "bedroom",
           "sandwich"
         ],
         "verb": [
           "eating",
           "reading",
-          "washing",
-          "listening",
-          "going"
+          "cleaning"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2545,36 +2583,16 @@
     },
     {
       "answer": 737,
-      "completed": 74,
+      "completed": 77,
       "current": {
         "noun": [
-          "orange",
-          "sandwich"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "washing",
-          "listening"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 743,
-      "completed": 75,
-      "current": {
-        "noun": [
-          "orange",
+          "bedroom",
           "towel"
         ],
         "verb": [
           "eating",
           "reading",
-          "washing",
-          "listening"
+          "cleaning"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2583,52 +2601,16 @@
     },
     {
       "answer": 747,
-      "completed": 76,
-      "current": {
-        "noun": [
-          "orange",
-          "towel"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "washing"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 762,
-      "completed": 77,
-      "current": {
-        "noun": [
-          "towel",
-          "hat"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "washing"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 781,
       "completed": 78,
       "current": {
         "noun": [
-          "hat",
-          "sock"
+          "bedroom",
+          "towel"
         ],
         "verb": [
-          "eating",
           "reading",
-          "washing"
+          "cleaning",
+          "carrying"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2636,17 +2618,17 @@
       }
     },
     {
-      "answer": 784,
+      "answer": 755,
       "completed": 79,
       "current": {
         "noun": [
-          "hat",
-          "sock"
+          "bedroom",
+          "hat"
         ],
         "verb": [
-          "eating",
           "reading",
-          "cleaning"
+          "cleaning",
+          "carrying"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2654,17 +2636,17 @@
       }
     },
     {
-      "answer": 794,
+      "answer": 773,
       "completed": 80,
       "current": {
         "noun": [
           "hat",
-          "trousers"
+          "sock"
         ],
         "verb": [
-          "eating",
           "reading",
-          "cleaning"
+          "cleaning",
+          "carrying"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2672,17 +2654,35 @@
       }
     },
     {
-      "answer": 798,
+      "answer": 791,
       "completed": 81,
+      "current": {
+        "noun": [
+          "sock",
+          "trousers"
+        ],
+        "verb": [
+          "reading",
+          "cleaning",
+          "carrying"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 792,
+      "completed": 82,
       "current": {
         "noun": [
           "trousers",
           "glasses"
         ],
         "verb": [
-          "eating",
           "reading",
-          "cleaning"
+          "cleaning",
+          "carrying"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2690,17 +2690,17 @@
       }
     },
     {
-      "answer": 831,
-      "completed": 82,
+      "answer": 812,
+      "completed": 83,
       "current": {
         "noun": [
           "glasses",
           "pen"
         ],
         "verb": [
-          "eating",
           "reading",
-          "cleaning"
+          "cleaning",
+          "carrying"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2708,17 +2708,17 @@
       }
     },
     {
-      "answer": 843,
-      "completed": 83,
+      "answer": 823,
+      "completed": 84,
       "current": {
         "noun": [
           "pen",
           "pencil"
         ],
         "verb": [
-          "eating",
           "reading",
-          "cleaning"
+          "cleaning",
+          "carrying"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2726,35 +2726,17 @@
       }
     },
     {
-      "answer": 864,
-      "completed": 84,
-      "current": {
-        "noun": [
-          "pencil",
-          "umbrella"
-        ],
-        "verb": [
-          "eating",
-          "reading",
-          "cleaning"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 877,
+      "answer": 846,
       "completed": 85,
       "current": {
         "noun": [
-          "pencil",
-          "watch"
+          "pen",
+          "umbrella"
         ],
         "verb": [
-          "eating",
           "reading",
-          "cleaning"
+          "cleaning",
+          "carrying"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2762,17 +2744,17 @@
       }
     },
     {
-      "answer": 891,
+      "answer": 856,
       "completed": 86,
       "current": {
         "noun": [
-          "pencil",
-          "clock"
+          "pen",
+          "umbrella"
         ],
         "verb": [
-          "eating",
           "reading",
-          "cleaning"
+          "cleaning",
+          "finding"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2780,17 +2762,17 @@
       }
     },
     {
-      "answer": 907,
+      "answer": 863,
       "completed": 87,
       "current": {
         "noun": [
-          "pencil",
-          "fan"
+          "umbrella",
+          "watch"
         ],
         "verb": [
-          "eating",
           "reading",
-          "cleaning"
+          "cleaning",
+          "finding"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2798,17 +2780,17 @@
       }
     },
     {
-      "answer": 922,
+      "answer": 878,
       "completed": 88,
       "current": {
         "noun": [
-          "pencil",
-          "fan"
+          "umbrella",
+          "clock"
         ],
         "verb": [
-          "eating",
+          "reading",
           "cleaning",
-          "carrying"
+          "finding"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2816,17 +2798,17 @@
       }
     },
     {
-      "answer": 926,
+      "answer": 886,
       "completed": 89,
       "current": {
         "noun": [
-          "pencil",
-          "charger"
+          "umbrella",
+          "clock"
         ],
         "verb": [
-          "eating",
-          "cleaning",
-          "carrying"
+          "reading",
+          "finding",
+          "buying"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2834,17 +2816,17 @@
       }
     },
     {
-      "answer": 939,
+      "answer": 896,
       "completed": 90,
       "current": {
         "noun": [
-          "pencil",
-          "air conditioner"
+          "umbrella",
+          "fan"
         ],
         "verb": [
-          "eating",
-          "cleaning",
-          "carrying"
+          "reading",
+          "finding",
+          "buying"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2852,17 +2834,17 @@
       }
     },
     {
-      "answer": 955,
+      "answer": 914,
       "completed": 91,
       "current": {
         "noun": [
-          "pencil",
-          "bicycle"
+          "fan",
+          "charger"
         ],
         "verb": [
-          "eating",
-          "cleaning",
-          "carrying"
+          "reading",
+          "finding",
+          "buying"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2870,17 +2852,17 @@
       }
     },
     {
-      "answer": 971,
+      "answer": 932,
       "completed": 92,
       "current": {
         "noun": [
-          "pencil",
-          "ticket"
+          "fan",
+          "air conditioner"
         ],
         "verb": [
-          "eating",
-          "cleaning",
-          "carrying"
+          "reading",
+          "finding",
+          "buying"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2888,17 +2870,17 @@
       }
     },
     {
-      "answer": 982,
+      "answer": 948,
       "completed": 93,
       "current": {
         "noun": [
-          "pencil",
-          "ticket"
+          "fan",
+          "bicycle"
         ],
         "verb": [
-          "cleaning",
-          "carrying",
-          "finding"
+          "reading",
+          "finding",
+          "buying"
         ],
         "adjective": [],
         "pronoun": [],
@@ -2906,258 +2888,13 @@
       }
     },
     {
-      "answer": 988,
+      "answer": 957,
       "completed": 94,
       "current": {
         "noun": [
-          "pencil",
-          "hotel"
+          "fan",
+          "bicycle"
         ],
-        "verb": [
-          "cleaning",
-          "carrying",
-          "finding"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1004,
-      "completed": 95,
-      "current": {
-        "noun": [
-          "pencil",
-          "passport"
-        ],
-        "verb": [
-          "cleaning",
-          "carrying",
-          "finding"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1020,
-      "completed": 96,
-      "current": {
-        "noun": [
-          "pencil",
-          "laptop"
-        ],
-        "verb": [
-          "cleaning",
-          "carrying",
-          "finding"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1031,
-      "completed": 97,
-      "current": {
-        "noun": [
-          "laptop",
-          "camera"
-        ],
-        "verb": [
-          "cleaning",
-          "carrying",
-          "finding"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1042,
-      "completed": 98,
-      "current": {
-        "noun": [
-          "laptop",
-          "camera"
-        ],
-        "verb": [
-          "carrying",
-          "finding",
-          "buying"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1054,
-      "completed": 99,
-      "current": {
-        "noun": [
-          "camera",
-          "remote"
-        ],
-        "verb": [
-          "carrying",
-          "finding",
-          "buying"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1070,
-      "completed": 100,
-      "current": {
-        "noun": [
-          "camera",
-          "sandal"
-        ],
-        "verb": [
-          "carrying",
-          "finding",
-          "buying"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1086,
-      "completed": 101,
-      "current": {
-        "noun": [
-          "camera",
-          "boot"
-        ],
-        "verb": [
-          "carrying",
-          "finding",
-          "buying"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1104,
-      "completed": 102,
-      "current": {
-        "noun": [
-          "camera",
-          "bookstore"
-        ],
-        "verb": [
-          "carrying",
-          "finding",
-          "buying"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1107,
-      "completed": 103,
-      "current": {
-        "noun": [
-          "bookstore",
-          "gym"
-        ],
-        "verb": [
-          "carrying",
-          "finding",
-          "buying"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1130,
-      "completed": 104,
-      "current": {
-        "noun": [
-          "bookstore",
-          "racket"
-        ],
-        "verb": [
-          "carrying",
-          "finding",
-          "buying"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1144,
-      "completed": 105,
-      "current": {
-        "noun": [
-          "bookstore",
-          "padel court"
-        ],
-        "verb": [
-          "carrying",
-          "finding",
-          "buying"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1159,
-      "completed": 106,
-      "current": {
-        "noun": [
-          "bookstore"
-        ],
-        "verb": [
-          "carrying",
-          "finding",
-          "buying"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1164,
-      "completed": 107,
-      "current": {
-        "noun": [],
-        "verb": [
-          "carrying",
-          "finding",
-          "buying"
-        ],
-        "adjective": [],
-        "pronoun": [],
-        "determiner": []
-      }
-    },
-    {
-      "answer": 1174,
-      "completed": 108,
-      "current": {
-        "noun": [],
         "verb": [
           "finding",
           "buying",
@@ -3169,7 +2906,258 @@
       }
     },
     {
-      "answer": 1197,
+      "answer": 966,
+      "completed": 95,
+      "current": {
+        "noun": [
+          "fan",
+          "ticket"
+        ],
+        "verb": [
+          "finding",
+          "buying",
+          "closing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 984,
+      "completed": 96,
+      "current": {
+        "noun": [
+          "ticket",
+          "hotel"
+        ],
+        "verb": [
+          "finding",
+          "buying",
+          "closing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1002,
+      "completed": 97,
+      "current": {
+        "noun": [
+          "hotel",
+          "passport"
+        ],
+        "verb": [
+          "finding",
+          "buying",
+          "closing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1018,
+      "completed": 98,
+      "current": {
+        "noun": [
+          "hotel",
+          "laptop"
+        ],
+        "verb": [
+          "finding",
+          "buying",
+          "closing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1034,
+      "completed": 99,
+      "current": {
+        "noun": [
+          "hotel",
+          "camera"
+        ],
+        "verb": [
+          "finding",
+          "buying",
+          "closing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1052,
+      "completed": 100,
+      "current": {
+        "noun": [
+          "hotel",
+          "remote"
+        ],
+        "verb": [
+          "finding",
+          "buying",
+          "closing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1063,
+      "completed": 101,
+      "current": {
+        "noun": [
+          "hotel",
+          "sandal"
+        ],
+        "verb": [
+          "finding",
+          "buying",
+          "closing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1081,
+      "completed": 102,
+      "current": {
+        "noun": [
+          "hotel",
+          "boot"
+        ],
+        "verb": [
+          "finding",
+          "buying",
+          "closing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1090,
+      "completed": 103,
+      "current": {
+        "noun": [
+          "hotel",
+          "boot"
+        ],
+        "verb": [
+          "buying",
+          "closing",
+          "wearing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1097,
+      "completed": 104,
+      "current": {
+        "noun": [
+          "hotel",
+          "bookstore"
+        ],
+        "verb": [
+          "buying",
+          "closing",
+          "wearing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1116,
+      "completed": 105,
+      "current": {
+        "noun": [
+          "hotel",
+          "gym"
+        ],
+        "verb": [
+          "buying",
+          "closing",
+          "wearing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1130,
+      "completed": 106,
+      "current": {
+        "noun": [
+          "hotel",
+          "racket"
+        ],
+        "verb": [
+          "buying",
+          "closing",
+          "wearing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1147,
+      "completed": 107,
+      "current": {
+        "noun": [
+          "hotel",
+          "padel court"
+        ],
+        "verb": [
+          "buying",
+          "closing",
+          "wearing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1164,
+      "completed": 108,
+      "current": {
+        "noun": [
+          "hotel"
+        ],
+        "verb": [
+          "buying",
+          "closing",
+          "wearing"
+        ],
+        "adjective": [],
+        "pronoun": [],
+        "determiner": []
+      }
+    },
+    {
+      "answer": 1165,
       "completed": 109,
       "current": {
         "noun": [],
@@ -3184,7 +3172,7 @@
       }
     },
     {
-      "answer": 1234,
+      "answer": 1173,
       "completed": 110,
       "current": {
         "noun": [],
@@ -3199,12 +3187,12 @@
       }
     },
     {
-      "answer": 1269,
+      "answer": 1203,
       "completed": 111,
       "current": {
         "noun": [],
         "verb": [
-          "closing",
+          "wearing",
           "riding",
           "catching"
         ],
@@ -3214,7 +3202,7 @@
       }
     },
     {
-      "answer": 1294,
+      "answer": 1246,
       "completed": 112,
       "current": {
         "noun": [],
@@ -3229,13 +3217,13 @@
       }
     },
     {
-      "answer": 1323,
+      "answer": 1275,
       "completed": 113,
       "current": {
         "noun": [],
         "verb": [
+          "riding",
           "catching",
-          "helping",
           "watching"
         ],
         "adjective": [],
@@ -3244,13 +3232,13 @@
       }
     },
     {
-      "answer": 1348,
+      "answer": 1300,
       "completed": 114,
       "current": {
         "noun": [],
         "verb": [
-          "catching",
-          "helping",
+          "riding",
+          "watching",
           "teaching"
         ],
         "adjective": [],
@@ -3259,13 +3247,13 @@
       }
     },
     {
-      "answer": 1377,
+      "answer": 1329,
       "completed": 115,
       "current": {
         "noun": [],
         "verb": [
-          "catching",
-          "helping",
+          "riding",
+          "teaching",
           "leaving"
         ],
         "adjective": [],
@@ -3274,12 +3262,12 @@
       }
     },
     {
-      "answer": 1402,
+      "answer": 1354,
       "completed": 116,
       "current": {
         "noun": [],
         "verb": [
-          "catching",
+          "teaching",
           "leaving"
         ],
         "adjective": [],
@@ -3288,12 +3276,12 @@
       }
     },
     {
-      "answer": 1407,
+      "answer": 1359,
       "completed": 117,
       "current": {
         "noun": [],
         "verb": [
-          "catching"
+          "teaching"
         ],
         "adjective": [],
         "pronoun": [],
@@ -3301,7 +3289,7 @@
       }
     },
     {
-      "answer": 1408,
+      "answer": 1360,
       "completed": 118,
       "current": {
         "noun": [],

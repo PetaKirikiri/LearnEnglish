@@ -12,7 +12,7 @@ export function wordOpacity(word:string,scores:WordScores={},settings:FadeSettin
  return Math.max(0,Math.min(1,1-((scores[wordId(word)]??0)-start)/(end-start)))
 }
 export function scoresFromProgress(rows:WordProgress[]):WordScores {return Object.fromEntries(rows.map(row=>[row.word_id,row.fade_score??row.correct]))}
-export type WordAttempt={event?:'presented';id:string;questionId:string;version:number;answer:string;occurredAt:string;modality:'visible'|'faded'|'audio';replays:number;ruleVersion:number}
+export type WordAttempt={recipe?:unknown;event?:'presented';id:string;questionId:string;version:number;answer:string;occurredAt:string;modality:'visible'|'faded'|'audio';replays:number;ruleVersion:number}
 
 export function sentenceModality(english:string,scores:WordScores,settings:FadeSettings):WordAttempt['modality']{
  const opacity=wordTokens(english).map(word=>wordOpacity(word,scores,settings))

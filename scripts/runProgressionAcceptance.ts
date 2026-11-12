@@ -1,9 +1,11 @@
+import {spawnSync} from 'node:child_process'
 import {rmSync} from 'node:fs'
-import {Window} from 'happy-dom'
+// Keep the same bank tripwire active throughout the REAL progression walk,
+// including later learner states. It throws before a bank can block the worker.
 rmSync('reports/full-progression-audit.json',{force:true})
-const window=new Window({url:'http://localhost'})
-Object.assign(globalThis,{window,localStorage:window.localStorage,document:window.document})
-// No Vitest worker/RPC: a cold catalogue build cannot time out the reporter.
-const {runProgressionAcceptance}=await import('../src/race/testing/progressionAcceptance')
-try{await runProgressionAcceptance();console.log('PASS: fresh shared-selector progression, presentation scoring and blueprint integrity')}catch(error){console.error(error);process.exitCode=1}
-finally{await window.happyDOM.abort();setTimeout(()=>process.exit(process.exitCode??0),50)}
+const {PROGRESSION_CHECKPOINT: _checkpoint,...env}=process.env
+const result=spawnSync(process.execPath,[
+ 'node_modules/vitest/vitest.mjs','run','src/race/fullProgressionAudit.test.ts','--maxWorkers=1',
+],{stdio:'inherit',env:{...env,RUN_FULL_PROGRESSION_AUDIT:'1'}})
+if(result.error)throw result.error
+process.exitCode=result.status??1

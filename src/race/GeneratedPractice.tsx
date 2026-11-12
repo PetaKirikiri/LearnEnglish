@@ -3,8 +3,8 @@ import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'
 import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 import {useWordProgress} from '../learning/wordProgress/useWordProgress'
 import {wordOpacity,wordTokens,WORD_RULE_VERSION,type WordScores} from '../learning/wordProgress/model'
-import {generatedDeck,eligiblePracticeActions,loadEvidence,saveEvidence,evidenceScores,curriculumBaseline,type DeckOptions,type ListeningEvidence} from './generatedPracticeProgress'
-import {practiceCandidates,GENERATED_ROUND_SIZE,type GeneratedQuestion} from './generatedPracticeContent'
+import {loadEvidence,saveEvidence,evidenceScores,curriculumBaseline,type DeckOptions,type ListeningEvidence} from './generatedPracticeProgress'
+import {GENERATED_ROUND_SIZE,type GeneratedQuestion} from './generatedPracticeContent'
 import {playSentenceAudio,prepareSentenceAudio} from '../audio/sentenceAudio'
 import {audioPreparationPlan,nextPersonalQuestion} from './practiceForecast'
 import type {PracticeLevel} from './PracticeLevelPicker'
@@ -18,11 +18,13 @@ import {awardPracticeGold} from './PracticeGold'
 import './phonePractice.css'
 import './numberFoundation.css'
 
-const bankFor=(props:Props,progress:ReturnType<typeof useWordProgress>,events:ListeningEvidence[])=>practiceCandidates(props.level,props.options?.structure,eligiblePracticeActions(progress.rows,events))
 type Props={label?:string;level:PracticeLevel;userId?:string;settings?:MatrixSettings;onLevel?:(level:PracticeLevel)=>void;onExit?:()=>void;onComplete?:(level:PracticeLevel,score:number,total:number,passed:boolean,runId:string,unassisted:boolean)=>void;options?:DeckOptions;scope?:string}
-type Run={id:string;questionIds:string[];flipped:boolean[];index:number;answers:boolean[];picked:number|null;attemptId:string;assisted:boolean;done:boolean}
+type Run={questions:(GeneratedQuestion|null)[];id:string;questionIds:string[];flipped:boolean[];index:number;answers:boolean[];picked:number|null;attemptId:string;assisted:boolean;done:boolean}
 const runKey=(props:Props)=>`englishsuccess:composed-run:v16:${props.userId??'guest'}:${props.level}:${props.scope??'main'}`
-function loadRun(props:Props,progress:ReturnType<typeof useWordProgress>,events:ListeningEvidence[]):Run|null{try{const s=JSON.parse(localStorage.getItem(runKey(props))??'null'),bank=bankFor(props,progress,events),validIds=new Set(bank.filter(q=>q.action==='vocabulary'||!props.options?.actions||[...props.options.actions,...(props.options.reviewActions??[])].includes(q.action)).map(q=>q.id));if(s&&!s.done&&typeof s.id==='string'&&typeof s.attemptId==='string'&&Array.isArray(s.questionIds)&&s.questionIds.length===30&&s.questionIds.every((id:string)=>validIds.has(id))&&Array.isArray(s.flipped)&&s.flipped.length===30&&s.flipped.every((b:unknown)=>typeof b==='boolean')&&Number.isInteger(s.index)&&s.index>=0&&s.index<30&&Array.isArray(s.answers)&&s.answers.every((b:unknown)=>typeof b==='boolean')&&[null,0,1].includes(s.picked)&&s.answers.length===s.index+(s.picked===null?0:1))return s}catch{/* An invalid or completed round starts afresh. */}return null}
+function loadRun(props:Props):Run|null{try{
+ const s=JSON.parse(localStorage.getItem(runKey(props))??'null')
+ if(s&&!s.done&&typeof s.id==='string'&&typeof s.attemptId==='string'&&Array.isArray(s.questions)&&s.questions.length===30&&Array.isArray(s.questionIds)&&s.questionIds.length===30&&s.questions.every((q:GeneratedQuestion|null,index:number)=>q===null||q&&q.id===s.questionIds[index]&&q.document?.english&&q.choices?.length===2&&[0,1].includes(q.correct))&&s.questions[s.index]&&Number.isInteger(s.index)&&s.index>=0&&s.index<30&&Array.isArray(s.answers)&&s.answers.every((b:unknown)=>typeof b==='boolean')&&[null,0,1].includes(s.picked)&&s.answers.length===s.index+(s.picked===null?0:1))return s
+ }catch{/* A legacy bank-only or invalid run starts with a directly served question. */}return null}
 export default function GeneratedPractice(props:Props){return <LearnerPractice key={`${props.userId??'guest'}:${props.level}:${props.scope??'main'}`} {...props}/>}
 function LearnerPractice(props:Props){
  const progress=useWordProgress(props.userId)
@@ -32,13 +34,14 @@ function LearnerPractice(props:Props){
 function createRun(props:Props,progress:ReturnType<typeof useWordProgress>):Run{
  const id=crypto.randomUUID(),history=loadEvidence(props.userId)
  const familiar=curriculumBaseline(progress.rows,history,props.userId)
- const deck=generatedDeck(props.level,progress.rows,history,`${id}:0`,{...props.options,familiar})
- deck[0]=nextPersonalQuestion(props.level,progress.rows,history,id,0,{...props.options,familiar})
- const next:Run={id,questionIds:deck.map(q=>q.id),flipped:deck.map(q=>q.kind==='meaning'&&q.correct===1),index:0,answers:[],picked:null,attemptId:crypto.randomUUID(),assisted:false,done:false}
+ const first=nextPersonalQuestion(props.level,progress.rows,history,id,0,{...props.options,familiar})
+ // Future positions are placeholders; only the current meal is ordered.
+ const deck:(GeneratedQuestion|null)[]=Array.from({length:30},(_,index)=>index===0?first:null)
+ const next:Run={questions:deck,id,questionIds:deck.map(q=>q?.id??''),flipped:deck.map(q=>q?.kind==='meaning'&&q.correct===1),index:0,answers:[],picked:null,attemptId:crypto.randomUUID(),assisted:false,done:false}
  localStorage.setItem(runKey(props),JSON.stringify(next));return next
 }
 function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof useWordProgress>}){
- const [events,setEvents]=useState(()=>loadEvidence(props.userId)),[run,setRun]=useState<Run|null>(()=>{try{return loadRun(props,progress,events)??createRun(props,progress)}catch{return null}}),[saveError,setSaveError]=useState(false)
+ const [events,setEvents]=useState(()=>loadEvidence(props.userId)),[run,setRun]=useState<Run|null>(()=>{try{return loadRun(props)??createRun(props,progress)}catch{return null}}),[saveError,setSaveError]=useState(false)
  const scores=evidenceScores(progress.rows,events,props.settings),finished=useRef(false)
  function start(){try{setRun(createRun(props,progress));setSaveError(false);finished.current=false}catch{setSaveError(true)}}
  const persist=(next:Run)=>{localStorage.setItem(runKey(props),JSON.stringify(next));setRun(next);setSaveError(false)}
@@ -48,9 +51,7 @@ function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof use
   const score=next.answers.filter(Boolean).length
   props.onComplete?.(props.level,score,30,score>=27,next.id,!next.assisted)
  }
- const stored=run?bankFor(props,progress,events).find(q=>q.id===run.questionIds[run.index]):undefined
- const original=stored?{...stored,level:props.level}:undefined
- const q=original&&run?.flipped[run.index]?{...original,choices:[original.choices[1],original.choices[0]] as [string,string],alternatives:original.alternatives?[original.alternatives[1],original.alternatives[0]] as typeof original.alternatives:undefined,sceneChoices:original.sceneChoices?[original.sceneChoices[1],original.sceneChoices[0]] as typeof original.sceneChoices:undefined,correct:1 as const}:original
+ const q=run?.questions[run.index]
  useEffect(()=>{
   if(!run||run.done||run.picked!==null||!q)return
   const timer=setTimeout(()=>{try{
@@ -70,7 +71,7 @@ function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof use
    const at=new Date().toISOString()
    const event:ListeningEvidence=old??{id:run.attemptId,questionId:q.id,level:props.level,sentence:q.document.english,targets:q.credit===null?[]:q.targetWords,vocabulary:q.vocabulary,correct:false,hidden:false,heard:false,assisted:false,plays:0,at,presentedAt:at,phase:'presented'}
    const saved=saveEvidence(event,props.userId)
-   progress.record({event:'presented',id:event.id,questionId:q.id,version:q.version,answer:'',occurredAt:event.presentedAt??event.at,modality:'visible',replays:0,ruleVersion:WORD_RULE_VERSION})
+   progress.record({event:'presented',id:event.id,questionId:q.id,recipe:q.recipe,version:q.version,answer:'',occurredAt:event.presentedAt??event.at,modality:'visible',replays:0,ruleVersion:WORD_RULE_VERSION})
    if(!old)setEvents(saved)
    return true
   }catch{setSaveError(true);return false}
@@ -83,16 +84,16 @@ function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof use
   try{
    // Save the complete encounter. The server credits sentence exposure;
    // listening proof still requires the contrasted word to be hidden.
-   progress.record({id:event.id,questionId:q.id,version:q.version,answer:q.choices[side],occurredAt:event.at,modality:event.hidden&&event.heard&&!event.assisted&&event.plays===1?'audio':'visible',replays:Math.max(0,event.plays-1),ruleVersion:WORD_RULE_VERSION})
+   progress.record({id:event.id,questionId:q.id,recipe:q.recipe,version:q.version,answer:q.choices[side],occurredAt:event.at,modality:event.hidden&&event.heard&&!event.assisted&&event.plays===1?'audio':'visible',replays:Math.max(0,event.plays-1),ruleVersion:WORD_RULE_VERSION})
    const saved=saveEvidence(event,props.userId)
    persist({...run,picked:side,answers:[...run.answers,correct],assisted:run.assisted||event.assisted})
    setEvents(saved);awardPracticeGold(event.id,correct,props.userId);return true
   }catch{setSaveError(true);return false}
  }
  function next(){if(!run||run.picked===null)return;try{if(run.index===29){const done={...run,done:true};persist(done);complete(done)}else {
- const index=run.index+1,questionIds=[...run.questionIds],flipped=[...run.flipped]
- {const question=nextPersonalQuestion(props.level,progress.rows,events,run.id,index,{...props.options,familiar:curriculumBaseline(progress.rows,events,props.userId)});questionIds[index]=question.id;flipped[index]=question.kind==='meaning'&&question.correct===1}
- persist({...run,questionIds,flipped,index,picked:null,attemptId:crypto.randomUUID()})
+ const index=run.index+1,questionIds=[...run.questionIds],flipped=[...run.flipped],questions=[...run.questions]
+ {const question=nextPersonalQuestion(props.level,progress.rows,events,run.id,index,{...props.options,familiar:curriculumBaseline(progress.rows,events,props.userId)});questions[index]=question;questionIds[index]=question.id;flipped[index]=question.kind==='meaning'&&question.correct===1}
+ persist({...run,questions,questionIds,flipped,index,picked:null,attemptId:crypto.randomUUID()})
  }}catch{setSaveError(true)}}
  return <main className={`phone-practice foundation-practice${props.options?.structure==='identify'?' identification-practice':''}`} lang="en"><div className="practice-shell">
  {!run?<><PracticeHeader label={props.label} level={props.level} onLevel={props.onLevel} onExit={props.onExit} userId={props.userId} value={0} total={30}/>{progress.error?<button role="alert" onClick={()=>void progress.retry()}>Retry loading progress</button>:<p role="status">…</p>}{<button role="alert" onClick={start}>Retry saving this set</button>}</>:run.done?<><PracticeHeader label={props.label} level={props.level} onLevel={props.onLevel} onExit={props.onExit} userId={props.userId} value={30} total={30}/><section className="practice-complete"><h1>{run.answers.filter(Boolean).length} / 30</h1><button onClick={start}>↻</button></section></>:q&&<GeneratedQuestionView courseLabel={props.label} key={run.attemptId} attemptId={run.attemptId} supportKey={runKey(props)+':presentation'} question={q} scores={scores} settings={props.settings} picked={run.picked} onPresented={present} onChoose={answer} onNext={next} userId={props.userId} onLevel={props.onLevel} onExit={props.onExit} index={run.index} saveError={saveError||!!progress.error} retry={()=>void progress.retry()}/>}
@@ -106,8 +107,10 @@ function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scor
  const saveSupport=useCallback(()=>{try{localStorage.setItem(supportKey,JSON.stringify({...support,plays:plays.current,assisted:assisted.current}))}catch{assisted.current=true}},[supportKey,support])
  const presentation={...settings,fadeMode:settings?.fadeMode??true}
  const presented=useRef(false),presentCallback=useRef(onPresented),report=useRef(()=>{})
- presentCallback.current=onPresented
- report.current=()=>{if(!presented.current&&!locked.current&&presentCallback.current())presented.current=true}
+ useEffect(()=>{
+  presentCallback.current=onPresented
+  report.current=()=>{if(!presented.current&&!locked.current&&presentCallback.current())presented.current=true}
+ })
  // Visible words count when rendered; an entirely hidden question counts only
  // when its audio actually starts. Preparation and failed playback earn nothing.
  useEffect(()=>{if(wordTokens(q.document.english).some(word=>wordOpacity(word,snapshot,presentation)>0)){saveSupport();report.current()}})

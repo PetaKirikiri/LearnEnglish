@@ -1,3 +1,4 @@
+import './testing/forbidSentenceBanks'
 // @vitest-environment happy-dom
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -213,7 +214,7 @@ it('uses the shared adaptive course rather than an authored eight-question modul
   expect(host.querySelector('.practice-module-break')).toBeNull()
   const key=Array.from({length:localStorage.length},(_,i)=>localStorage.key(i)!).find(key=>key.endsWith(':guest:1:lesson-1'))!
   const run=JSON.parse(localStorage.getItem(key)!)
-  expect(run.questionIds).toHaveLength(30);expect(run.questionIds.every((id:string)=>id.startsWith('compose-v2-'))).toBe(true);expect(run.answers).toEqual([])
+  expect(run.questionIds).toHaveLength(30);expect(run.questions[0].id.startsWith('compose-v2-')).toBe(true);expect(run.questions.slice(1).every((q:unknown)=>q===null)).toBe(true);expect(run.answers).toEqual([])
  }finally{await act(async()=>root.unmount())}
 },30000)
 
@@ -227,6 +228,6 @@ it('opens a different sentence structure with a fresh adaptive run instead of a 
   expect(host.querySelector('[data-matrix-layout=question]')).not.toBeNull()
   const key=Array.from({length:localStorage.length},(_,i)=>localStorage.key(i)!).find(key=>key.endsWith(':guest:2:lesson-2'))!
   const run=JSON.parse(localStorage.getItem(key)!)
-  expect(run.index).toBe(0);expect(run.answers).toEqual([]);expect(run.questionIds).toHaveLength(30);expect(run.questionIds.every((id:string)=>id.startsWith('compose-v2-'))).toBe(true)
+  expect(run.index).toBe(0);expect(run.answers).toEqual([]);expect(run.questionIds).toHaveLength(30);expect(run.questions[0].id.startsWith('compose-v2-')).toBe(true);expect(run.questions.slice(1).every((q:unknown)=>q===null)).toBe(true)
  }finally{await act(async()=>root.unmount());history.replaceState({},'','/english/practice')}
 },30000)

@@ -1,17 +1,17 @@
-import {references} from '../learning/sentenceRules/identification'
-import {structureCandidates,type GeneratedQuestion,type DistanceChoice} from './generatedPracticeContent'
+import {numberItem} from './numberCatalogue'
+import {references,identificationQuestion,identificationAudio} from '../learning/sentenceRules/identification'
+import {type GeneratedQuestion,type DistanceChoice} from './generatedPracticeContent'
 import {generatedDeck,type ListeningEvidence,type DeckOptions} from './generatedPracticeProgress'
 import type {WordProgress} from '../learning/wordProgress/model'
 export type {DistanceChoice} from './generatedPracticeContent'
 /** Compatibility resolver for classroom turns already stored with v1 IDs.
  * The shared lexicon supplies objects; this module never assigns a learner deck. */
 const legacyObjects=['phone','bag','cup','key','bottle','plate','book','shoe','hat','apple']
-export const identificationQuestions=structureCandidates('identify').filter(q=>q.document.construction==='identification-question'&&q.sceneChoices&&legacyObjects.includes(q.sceneChoices[0].word)).map(q=>{
- const reference=references.find(r=>r.id===q.sceneChoices![0].reference)!,index=legacyObjects.indexOf(q.sceneChoices![0].word)
+export const identificationQuestions=legacyObjects.flatMap((word,index)=>references.filter(reference=>!reference.plural||!!numberItem(word)?.plural).map(reference=>{
  const singular=references.filter(r=>!r.plural),ri=singular.findIndex(r=>r.id===reference.id)
  const other=reference.plural?references.find(r=>r.id===(reference.id==='these'?(index%2?'this':'those'):(index%2?'that':'these')))!:singular[(ri+1+index%2)%singular.length]
- return {...q,id:`identify-v1-${reference.id}-${q.sceneChoices![0].word}`,choices:[reference.word,other.word],sceneChoices:[q.sceneChoices![0],{reference:other.id,word:q.sceneChoices![0].word}]}
-}) as (GeneratedQuestion&{audioUrl:string;sceneChoices:[DistanceChoice,DistanceChoice]})[]
+ return {id:`identify-v1-${reference.id}-${word}`,version:1,level:6,document:identificationQuestion(reference.id),audioUrl:identificationAudio(reference.id),choices:[reference.word,other.word],correct:0,sceneChoices:[{reference:reference.id,word},{reference:other.id,word}],targetWords:[reference.word],listeningWords:[reference.word],family:word,vocabulary:[word],action:'identify',owner:'',subject:'',plural:reference.plural,kind:'meaning',credit:reference.word}
+})) as (GeneratedQuestion&{audioUrl:string;sceneChoices:[DistanceChoice,DistanceChoice]})[]
 
 export function identificationDeck(seed:string,rows:WordProgress[]=[],events:ListeningEvidence[]=[],options:DeckOptions={}){
  return generatedDeck(6,rows,events,seed,{...options,structure:'identify'})

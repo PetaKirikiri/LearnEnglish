@@ -1,15 +1,16 @@
+import '../src/race/testing/forbidSentenceBanks'
 import {beforeEach,expect,it,vi} from 'vitest'
 import type {IncomingMessage,ServerResponse} from 'node:http'
 const mock=vi.hoisted(()=>({getUser:vi.fn(),rpc:vi.fn(),download:vi.fn(),upload:vi.fn(),upsert:vi.fn()}))
 vi.mock('@supabase/supabase-js',()=>({createClient:()=>({auth:{getUser:mock.getUser},rpc:mock.rpc,from:()=>({upsert:mock.upsert}),storage:{from:()=>({download:mock.download,upload:mock.upload,getPublicUrl:(p:string)=>({data:{publicUrl:`https://audio.invalid/${p}`}})})}})}))
 vi.mock('../src/race/generatedPracticeAudio.json',()=>({default:{}}))
 import handler,{audioIdentity} from './sentenceAudio'
-import {generatedCandidates,sentenceKey} from '../src/race/generatedPracticeContent'
-import manifest from '../src/race/generatedPracticeAudio.json'
-const missing=generatedCandidates(6).find(q=>!q.audioUrl&&!(manifest as Record<string,string>)[sentenceKey(q.document.english)])!
+import {nextPersonalQuestion} from '../src/race/practiceForecast'
+const missing=nextPersonalQuestion(6,[],[],'audio-api-recipe',0)
 async function request(body:unknown,token='test'){
  let status=0,result:unknown
  const res={set statusCode(n:number){status=n},setHeader:vi.fn(),end:(s:string)=>{result=JSON.parse(s)}} as unknown as ServerResponse
+ if(body&&typeof body==='object'&&(body as {id?:string}).id===missing.id)body={...body,recipe:missing.recipe}
  await handler({method:'POST',headers:{authorization:token?`Bearer ${token}`:undefined},body} as IncomingMessage&{body:unknown},res)
  return {status,result}
 }

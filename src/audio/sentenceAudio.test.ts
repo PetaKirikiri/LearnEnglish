@@ -20,3 +20,10 @@ it('deduplicates concurrent preparation and reuses generated audio',async()=>{
  await Promise.all([prepareSentenceAudio([q,q]),prepareSentenceAudio([q])]);expect(fetch).toHaveBeenCalledTimes(1)
  await prepareSentenceAudio([q]);expect(fetch).toHaveBeenCalledTimes(1)
 })
+
+it('passes the ingredient recipe to background preparation without changing playback',async()=>{
+ const recipe={version:1,ingredients:'reviewed fixture'},question={id:'recipe-audio',document:{english:'Recipe transport test.'},recipe}
+ const fetch=vi.fn().mockResolvedValue({ok:true,json:async()=>({status:'unavailable'})});vi.stubGlobal('fetch',fetch)
+ await prepareSentenceAudio([question])
+ expect(fetch).toHaveBeenCalledWith('/api/sentence-audio',expect.objectContaining({body:JSON.stringify({id:question.id,recipe})}))
+})

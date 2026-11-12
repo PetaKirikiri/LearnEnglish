@@ -17,12 +17,13 @@ it('uses the same vocabulary eligibility in all six structures',()=>{
  for(const level of [1,2,3,4,5,6] as const){const q=nextPersonalQuestion(level,[],[],'account',0);expect(q.vocabulary.every(word=>allowed.has(vocabularyFamily(word))||vocabularyFamily(word)==='woman')).toBe(true);expect(q.document.english).not.toMatch(/apple|banana/i)}
 })
 it('forecasts newly unlocked vocabulary while keeping earned evidence unchanged',()=>{
- const rows:WordProgress[]=[{word_id:'en:man',correct:27,attempts:27,listening_correct:2,direct_correct:0,last_practised:'2026-01-01T00:00:00Z',recent_results:[true,true],fade_score:25,confirmation_count:2,learning_updated_at:'2026-01-01T00:00:00Z'}]
- const events:ListeningEvidence[]=[]
- const q=nextPersonalQuestion(1,rows,events,'unlock',0)
- // Use a noun question whose next correct hidden contrast is the third proof.
- const current={...q,document:{...q.document,english:'the man'},targetWords:['man'],listeningWords:['man'],vocabulary:['man'],credit:'man'}
- const future=forecastPractice(1,rows,events,'unlock',0,current)
+ const rows:WordProgress[]=[{word_id:'en:man',correct:24,attempts:24,listening_correct:0,direct_correct:0,last_practised:'2026-01-01T00:00:00Z',recent_results:[true],fade_score:24,learning_updated_at:'2026-01-01T00:00:00Z'}]
+ const events:ListeningEvidence[]=[],before=JSON.stringify(rows),options={focus:{type:'noun' as const,word:'man'}}
+ let index=0,current=nextPersonalQuestion(1,rows,events,'unlock',index,options)
+ while(!current.targetWords.includes('man')&&index<10)current=nextPersonalQuestion(1,rows,events,'unlock',++index,options)
+ expect(current.targetWords).toContain('man')
+ expect(availableVocabulary(rows,events).has('boy')).toBe(false)
+ const future=forecastPractice(1,rows,events,'unlock',index,current)
  expect(future.slice(1).some(question=>question.vocabulary.includes('boy')||question.vocabulary.includes('boys'))).toBe(true)
- expect(events).toHaveLength(0);expect(availableVocabulary(rows,events).has('boy')).toBe(false)
+ expect(events).toHaveLength(0);expect(JSON.stringify(rows)).toBe(before);expect(availableVocabulary(rows,events).has('boy')).toBe(false)
 })

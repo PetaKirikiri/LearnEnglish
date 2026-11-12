@@ -1,7 +1,7 @@
 import {supabase} from '../lib/supabase'
 import manifest from '../race/generatedPracticeAudio.json'
 import {sentenceKey} from '../race/generatedPracticeContent'
-export type AudioSentence={id:string;document:{english:string};audioUrl?:string}
+export type AudioSentence={recipe?:unknown;id:string;document:{english:string};audioUrl?:string}
 const spokenKey=(text:string)=>text.normalize('NFC').trim().replace(/\s+/g,' ')
 const ready=new Map<string,string>(),pending=new Map<string,Promise<void>>(),retryAfter=new Map<string,number>()
 let activeRequests=0
@@ -20,7 +20,7 @@ export async function prepareSentenceAudio(questions:readonly AudioSentence[]){
   const old=pending.get(key);if(old){await old;continue}
   const id=q.id
   const work=(async()=>{await acquire();try{
-   const response=await fetch('/api/sentence-audio',{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify({id}),signal:AbortSignal.timeout(55000)})
+   const response=await fetch('/api/sentence-audio',{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify({id,...(q.recipe?{recipe:q.recipe}:{})}),signal:AbortSignal.timeout(55000)})
    if(!response.ok)throw new Error('Audio unavailable')
    const result=await response.json() as {url?:string}
    if(result.url)ready.set(key,result.url);else retryAfter.set(key,Date.now()+30000)

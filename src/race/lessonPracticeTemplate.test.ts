@@ -2,7 +2,7 @@
 import {beforeEach,expect,it} from 'vitest'
 import {lessonPracticeTemplate} from './lessonPracticeTemplate'
 import {generatedDeck,sharedStarterVocabulary} from './generatedPracticeProgress'
-import {structureCandidates} from './generatedPracticeContent'
+import {canonicalBlueprintQuestion} from './blueprintWordServer'
 import {forecastPractice,nextPersonalQuestion} from './practiceForecast'
 beforeEach(()=>localStorage.clear())
 it('every lesson specifies structure without owning questions, vocabulary or a deck',()=>{
@@ -26,6 +26,6 @@ it('identification pictures use account vocabulary rather than the old object li
 it('identification alternatives preserve matching pictures when flipped and forecast follows live selection',()=>{
  const options={...lessonPracticeTemplate(6).options,familiar:[...sharedStarterVocabulary]}
  const q=nextPersonalQuestion(6,[],[],'run',0,options)
- for(const item of generatedDeck(6,[],[],'run',options).filter(q=>q.sceneChoices))expect(item.sceneChoices?.[item.correct].reference).toBe(structureCandidates('identify').find(x=>x.id===item.id)?.sceneChoices?.[0].reference)
+ for(const item of generatedDeck(6,[],[],'run',options).filter(q=>q.sceneChoices))expect(item.sceneChoices?.[item.correct].reference).toBe(canonicalBlueprintQuestion(item.recipe)?.sceneChoices?.[0].reference)
  expect(forecastPractice(6,[],[],'run',0,q,options)).toHaveLength(11)
 })

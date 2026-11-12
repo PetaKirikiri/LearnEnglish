@@ -18,9 +18,9 @@ export default async function handler(req:IncomingMessage&{body?:unknown},res:Se
  if(authError||!user.user)return send(401,{error:'Sign in required'})
  try{
   let body=req.body
-  if(body===undefined){let raw='';for await(const chunk of req){raw+=chunk;if(raw.length>2048)return send(413,{error:'Request too large'})}body=JSON.parse(raw)}
+  if(body===undefined){let raw='';for await(const chunk of req){raw+=chunk;if(raw.length>8192)return send(413,{error:'Request too large'})}body=JSON.parse(raw)}
   if(typeof body==='string')body=JSON.parse(body)
-  const q=canonicalPracticeQuestion((body as {id?:string})?.id??'')
+  const q=canonicalPracticeQuestion((body as {id?:string})?.id??'',(body as {recipe?:unknown})?.recipe)
   if(!q)return send(400,{error:'Unknown lesson sentence'})
   if((body as {registerOnly?:boolean}).registerOnly===true){await registerPracticeQuestion(db,q);return send(200,{registered:q.id})}
   const recording=q.audioUrl||(manifest as Record<string,string>)[sentenceKey(q.document.english)]

@@ -1,6 +1,6 @@
 import {useCallback,useEffect,useRef} from 'react'
 import type {ClassTurn} from './session'
-import {identificationQuestions} from '../race/identificationContent'
+import type {identificationQuestions} from '../race/identificationContent'
 import PracticeStage from '../race/PracticeStage'
 import type {BinaryChoice} from '../race/BinaryAnswerZone'
 import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'

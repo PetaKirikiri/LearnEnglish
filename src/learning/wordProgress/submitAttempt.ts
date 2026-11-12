@@ -1,7 +1,7 @@
 import {supabase} from '../../lib/supabase'
 
 /** Only a durable database receipt permits removing an answer from the outbox. */
-export async function submitAttempt(source:'word'|'number',payload:Record<string,unknown>){
+export async function submitAttempt(source:'word'|'number',payload:Record<string,unknown>,recipe?:unknown){
  const first=await supabase.rpc('submit_english_attempt',{p_source:source,p_payload:payload})
  let data=first.data
  const error=first.error
@@ -13,7 +13,7 @@ export async function submitAttempt(source:'word'|'number',payload:Record<string
  if(source==='word'&&data.status!=='scored'&&typeof payload.p_question==='string'&&/^(compose-v2-|identify-v2-)/.test(payload.p_question)){
   const session=await supabase.auth.getSession(),token=session.data.session?.access_token
   if(!token)throw new Error('Sign in to finish saving progress')
-  const response=await fetch('/api/sentence-audio',{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify({id:payload.p_question,registerOnly:true}),signal:AbortSignal.timeout(55000)})
+  const response=await fetch('/api/sentence-audio',{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify({id:payload.p_question,registerOnly:true,...(recipe?{recipe}:{})}),signal:AbortSignal.timeout(55000)})
   if(!response.ok||(await response.json()).registered!==payload.p_question)throw new Error('Could not register the practice question')
   const scored=await supabase.rpc('submit_english_attempt',{p_source:source,p_payload:payload})
   if(scored.error)throw scored.error

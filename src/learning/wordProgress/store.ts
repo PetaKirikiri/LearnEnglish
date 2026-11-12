@@ -25,7 +25,7 @@ export function flushWordAttempts(userId:string):Promise<void>{
   if(data.user?.id!==userId)throw new Error('Account changed')
   let rejected:unknown
   for(const attempt of pendingAttempts(userId)){
-   try{await submitAttempt('word',{p_id:attempt.id,p_question:attempt.questionId,p_version:attempt.version,p_answer:attempt.answer,p_occurred:attempt.occurredAt,p_modality:attempt.modality,p_replays:attempt.replays,p_rule:attempt.ruleVersion,...(attempt.event?{p_event:attempt.event}:{})})}
+   try{await submitAttempt('word',{p_id:attempt.id,p_question:attempt.questionId,p_version:attempt.version,p_answer:attempt.answer,p_occurred:attempt.occurredAt,p_modality:attempt.modality,p_replays:attempt.replays,p_rule:attempt.ruleVersion,...(attempt.event?{p_event:attempt.event}:{})},attempt.recipe)}
    catch(error){if(!isRejectedAnswer(error))throw error;rejected??=error;continue}
    // Re-read, so answers queued while this request was in flight are preserved.
    localStorage.setItem(key(userId),JSON.stringify(pendingAttempts(userId).filter(item=>item.id!==attempt.id||(item.event??'answered')!==(attempt.event??'answered'))))

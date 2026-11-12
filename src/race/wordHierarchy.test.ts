@@ -2,8 +2,8 @@
 import {expect,it} from 'vitest'
 import {hierarchyState,wordHierarchies,hierarchyCompatible} from './wordHierarchy'
 import {generatedDeck,masteredWords,type ListeningEvidence} from './generatedPracticeProgress'
-import {generatedCandidates} from './generatedPracticeContent'
-import {forecastPractice} from './practiceForecast'
+import {canonicalBlueprintQuestion} from './blueprintWordServer'
+import {forecastPractice,nextPersonalQuestion} from './practiceForecast'
 import type {WordProgress} from '../learning/wordProgress/model'
 const row=(word:string,proved=false):WordProgress=>({word_id:'en:'+word,correct:99,attempts:99,listening_correct:proved?3:0,direct_correct:0,last_practised:'',recent_results:[true,true,true],fade_score:proved?25:24,confirmation_count:proved?3:0,proven_at:proved?'2026-01-01T00:00:00Z':null,review_due_at:proved?'2040-01-01T00:00:00Z':null,learning_version:1})
 it('has five independent ordered hierarchies and exposure below full fade never advances a frontier',()=>{
@@ -33,20 +33,22 @@ it('all rounds and structures use the same noun frontier without silently skippi
   const deck=(()=>{try{return generatedDeck(level,rows,[],'same',{structure})}catch(error){throw new Error(`Level ${level}, ${structure??'default'}: ${String(error)}`)}})()
   expect(deck).toHaveLength(30)
   expect(deck.every(q=>hierarchyCompatible(q,state))).toBe(true)
-  expect(deck.some(q=>q.targetWords.some(w=>['woman','women'].includes(w))||q.sceneChoices?.[q.correct].word==='woman')).toBe(true)
+  expect(deck.some(q=>q.targetWords.some(w=>['woman','women'].includes(w))||q.sceneChoices?.[q.correct].word==='woman'||q.kind==='judgement'&&q.vocabulary.some(w=>['woman','women'].includes(w))),`level ${level}, ${structure}`).toBe(true)
  }
 })
-it('forecast advances to woman using simulated mastery without writing account progress',()=>{
- const evidence:ListeningEvidence[]=[]
- const rows=[{...row('man'),correct:27,fade_score:24,confirmation_count:0,learning_updated_at:'2026-01-01T00:00:00Z'}]
- const original=JSON.stringify(evidence),q=generatedDeck(1,rows,evidence,'forecast')[0]
- const forecast=forecastPractice(1,rows,evidence,'forecast',0,q,{}, {fadeStart:0,fadeEnd:1})
- expect(forecast.slice(1).some(q=>q.targetWords.some(w=>['woman','women'].includes(w)))).toBe(true)
- expect(JSON.stringify(evidence)).toBe(original)
+it('forecast refills a noun slot at full fade without writing account progress',()=>{
+ const evidence:ListeningEvidence[]=[],rows=[{...row('man'),correct:24,fade_score:24,confirmation_count:0,learning_updated_at:'2026-01-01T00:00:00Z'}]
+ const original=JSON.stringify({rows,evidence}),options={focus:{type:'noun' as const,word:'man'}}
+ let index=0,q=nextPersonalQuestion(1,rows,evidence,'forecast',index,options)
+ while(!q.targetWords.includes('man')&&index<20)q=nextPersonalQuestion(1,rows,evidence,'forecast',++index,options)
+ expect(q.targetWords).toContain('man')
+ const forecast=forecastPractice(1,rows,evidence,'forecast',index,q)
+ expect(forecast.slice(1).some(q=>q.vocabulary.some(w=>['boy','boys'].includes(w)))).toBe(true)
+ expect(JSON.stringify({rows,evidence})).toBe(original)
 })
 
 it('introduces the next adjective only with an already completed noun',()=>{
- const q=generatedCandidates(1).find(q=>q.document.english==='the red phone')!
+ const q=canonicalBlueprintQuestion({version:1,level:1,anchor:{type:'adjective',word:'red'},a:{construction:'noun-phrase',noun:'phone',owner:'the',description:'red'},b:{construction:'noun-phrase',noun:'phone',owner:'the',description:'blue'}})!
  expect(q).toBeDefined()
  const before=wordHierarchies.noun.slice(0,wordHierarchies.noun.indexOf('phone')).map(w=>row(w,true))
  expect(hierarchyCompatible(q,hierarchyState(masteredWords(before,[])))).toBe(false)
@@ -84,7 +86,7 @@ it('refills subjects and objects independently, including lapses and exhausted g
 })
 
 it('checks possessive determiners in the subject block against the same word frontier',()=>{
- const q=generatedCandidates(4).find(q=>q.subject==='her man')!
+ const q=canonicalBlueprintQuestion({version:1,level:4,anchor:{type:'noun',word:'man'},a:{construction:'action-question',person:'man',personOwner:'her',verb:'doing'},b:{construction:'action-question',person:'woman',personOwner:'her',verb:'doing'}})!
  expect(q).toBeDefined()
  expect(q.document.units.some(unit=>unit.role==='person-determiner'&&unit.english==='her')).toBe(true)
  expect(hierarchyCompatible(q,hierarchyState(new Set()))).toBe(false)

@@ -1,3 +1,8 @@
+import './testing/forbidSentenceBanks'
+import {nextPersonalQuestion} from './practiceForecast'
+import {lessonPracticeTemplate} from './lessonPracticeTemplate'
+import {saveEvidence,loadEvidence,masteredWords} from './generatedPracticeProgress'
+import {hierarchyState,hierarchyCompatible} from './wordHierarchy'
 // @vitest-environment happy-dom
 import {act} from 'react'
 import {createRoot} from 'react-dom/client'
@@ -9,22 +14,37 @@ import SentenceMatrix from '../learning/sentenceMatrix/SentenceMatrix'
 import {requestLesson} from '../learning/lessonRegistry'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 
-it('keeps thirty matched scene decisions, balanced answer positions and all five taught sentence forms',()=>{
+it('serves account-eligible identification first, then all five reference forms when earned',()=>{
+ localStorage.clear()
+ const initial=hierarchyState(new Set())
  for(const seed of ['tonight','repeat','student']){
   const deck=identificationDeck(seed)
-  expect(deck).toHaveLength(30);expect(new Set(deck.map(q=>q.id)).size).toBe(30)
-  expect(deck.filter(q=>q.correct===0)).toHaveLength(15)
-  expect(new Set(deck.map(q=>q.document.english)).size).toBeGreaterThan(1)
-  for(const q of deck){
-   const scenes=q.sceneChoices!
-   expect(scenes[0].word).toBe(scenes[1].word)
-   expect(scenes[0].reference).not.toBe(scenes[1].reference)
-   expect(q.choices[q.correct]).toBe(referenceFor(scenes[q.correct].reference).word)
-   expect(q.document.english).toBe(identificationQuestion(scenes[q.correct].reference).english)
-   expect(q.document.english).not.toMatch(/\b(a|an|it|to)\b/i)
-  }
+  expect(deck).toHaveLength(30)
+  expect(deck.every(q=>hierarchyCompatible(q,initial))).toBe(true)
+  expect(deck.every(q=>q.vocabulary.every(word=>!['apple','banana'].includes(word)))).toBe(true)
  }
- expect(identificationDeck('tonight').map(q=>q.id)).not.toEqual(identificationDeck('repeat').map(q=>q.id))
+ // Earn the reference words through the actual shared path; no prefilled scores.
+ const user='reference-earned-walk',base=Date.now()
+ let index=0
+ for(;index<1000;index++){
+  const events=loadEvidence(user),state=hierarchyState(masteredWords([],events))
+  if(references.every(reference=>state.determiner.allowed.includes(reference.word)))break
+  const template=lessonPracticeTemplate(index%6+1),q=nextPersonalQuestion(template.level,[],events,'reference-walk',index,template.options),at=new Date(base+index*2).toISOString()
+  const event={id:`reference-${index}`,questionId:q.id,level:q.level,sentence:q.document.english,targets:q.credit===null?[]:q.targetWords,vocabulary:q.vocabulary,correct:false,heard:true,hidden:true,assisted:false,plays:1,at,phase:'presented' as const}
+  saveEvidence(event,user);saveEvidence({...event,phase:'answered',correct:true,presentedAt:at,at:new Date(base+index*2+1).toISOString()},user)
+ }
+ expect(index).toBeLessThan(1000)
+ const events=loadEvidence(user),sides=new Set<number>()
+ for(const reference of references)for(let turn=0;turn<4;turn++){
+  const q=nextPersonalQuestion(6,[],events,'matched-scenes',turn,{structure:'identify',focus:{type:'determiner',word:reference.word}}),scenes=q.sceneChoices!
+  expect(scenes).toHaveLength(2);expect(scenes[0].word).toBe(scenes[1].word)
+  expect(scenes[0].reference).not.toBe(scenes[1].reference)
+  expect(q.choices[q.correct]).toBe(reference.word)
+  expect(q.document.english).toBe(identificationQuestion(reference.id).english)
+  expect(q.document.english).not.toMatch(/\b(a|an|it|to)\b/i)
+  sides.add(q.correct)
+ }
+ expect(sides).toEqual(new Set([0,1]))
 })
 it('ships a matching playable PCM recording for each taught sentence',()=>{
  const manifest=JSON.parse(readFileSync('public/audio/lesson-six/voice-manifest.json','utf8'))

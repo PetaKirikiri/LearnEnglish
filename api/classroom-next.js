@@ -5976,16 +5976,16 @@ var require_helpers = __commonJS({
     }
     function appendFlowIdToRedirectTo(redirectTo, flowId) {
       const hashIndex = redirectTo.indexOf("#");
-      let base2 = hashIndex === -1 ? redirectTo : redirectTo.slice(0, hashIndex);
+      let base = hashIndex === -1 ? redirectTo : redirectTo.slice(0, hashIndex);
       const fragment = hashIndex === -1 ? "" : redirectTo.slice(hashIndex);
-      const queryIndex = base2.indexOf("?");
+      const queryIndex = base.indexOf("?");
       if (queryIndex !== -1) {
-        const path = base2.slice(0, queryIndex);
-        const remaining = base2.slice(queryIndex + 1).split("&").filter((pair) => pair !== "" && pair !== constants_1.PKCE_FLOW_ID_PARAM && !pair.startsWith(`${constants_1.PKCE_FLOW_ID_PARAM}=`));
-        base2 = remaining.length > 0 ? `${path}?${remaining.join("&")}` : path;
+        const path = base.slice(0, queryIndex);
+        const remaining = base.slice(queryIndex + 1).split("&").filter((pair2) => pair2 !== "" && pair2 !== constants_1.PKCE_FLOW_ID_PARAM && !pair2.startsWith(`${constants_1.PKCE_FLOW_ID_PARAM}=`));
+        base = remaining.length > 0 ? `${path}?${remaining.join("&")}` : path;
       }
-      const separator = base2.includes("?") ? "&" : "?";
-      return `${base2}${separator}${constants_1.PKCE_FLOW_ID_PARAM}=${encodeURIComponent(flowId)}${fragment}`;
+      const separator = base.includes("?") ? "&" : "?";
+      return `${base}${separator}${constants_1.PKCE_FLOW_ID_PARAM}=${encodeURIComponent(flowId)}${fragment}`;
     }
     async function getCodeChallengeAndMethod(storage, storageKey, isPasswordRecovery = false, onEvictFlow) {
       const codeVerifier = generatePKCEVerifier();
@@ -21576,67 +21576,6 @@ function shouldShowDeprecationWarning() {
 }
 if (shouldShowDeprecationWarning()) console.warn("\u26A0\uFE0F  Node.js 20 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 22 or later. For more information, visit: https://github.com/orgs/supabase/discussions/45715");
 
-// src/learning/wordProgress/learningLifecycle.ts
-var FADE_START = 5;
-var FADE_END = 25;
-var REVIEW_DAYS = [1, 3, 7, 14, 30];
-var emptyLearning = () => ({ fadeScore: 0, confirmations: 0, provenAt: null, reviewDueAt: null, reviewStep: 0, reviewedAt: null, lapsedAt: null, updatedAt: null });
-var fadingPercent = (score) => Math.round(Math.max(0, Math.min(1, (score - FADE_START) / (FADE_END - FADE_START))) * 100);
-var due = (at, step) => new Date(Date.parse(at) + REVIEW_DAYS[step] * 864e5).toISOString();
-function advanceLearning(previous, event) {
-  const state = { ...previous, updatedAt: event.at };
-  if (!event.correct) {
-    state.fadeScore = state.provenAt ? Math.min(FADE_START, state.fadeScore) : Math.max(0, state.fadeScore - 2);
-    if (state.provenAt) state.lapsedAt = event.at;
-    state.confirmations = 0;
-    state.provenAt = null;
-    state.reviewDueAt = null;
-    state.reviewStep = 0;
-    state.reviewedAt = null;
-    return state;
-  }
-  state.fadeScore = Math.min(FADE_END, state.fadeScore + (event.weight ?? 1));
-  if (state.fadeScore < FADE_END) return state;
-  if (!state.provenAt) {
-    state.provenAt = event.at;
-    state.reviewedAt = event.at;
-    state.lapsedAt = null;
-    state.reviewStep = 0;
-    state.confirmations = 0;
-    state.reviewDueAt = due(event.at, 0);
-  } else if (event.independent && state.reviewDueAt && Date.parse(event.at) >= Date.parse(state.reviewDueAt)) {
-    state.reviewStep = Math.min(REVIEW_DAYS.length - 1, state.reviewStep + 1);
-    state.reviewedAt = event.at;
-    state.reviewDueAt = due(event.at, state.reviewStep);
-  }
-  return state;
-}
-function learningStates(rows, events = []) {
-  const states = /* @__PURE__ */ new Map();
-  for (const row of rows) {
-    const fadeScore = row.fade_score ?? Math.min(FADE_END, row.correct);
-    const learned = fadeScore >= FADE_END ? (row.proven_at ?? row.learning_updated_at ?? row.last_practised) || "1970-01-01T00:00:00.000Z" : null;
-    states.set(row.word_id, { fadeScore, confirmations: 0, provenAt: learned, reviewDueAt: learned ? row.review_due_at ?? (Date.parse(learned) ? due(learned, 0) : null) : null, reviewStep: row.review_step ?? 0, reviewedAt: row.reviewed_at ?? learned, lapsedAt: row.lapsed_at ?? null, updatedAt: row.learning_updated_at ?? row.last_practised ?? null });
-  }
-  const cutoff = new Map([...states].map(([id, s]) => [id, Date.parse(s.updatedAt ?? "") || 0]));
-  const timeline = [...new Map(events.map((e) => [e.id, e])).values()].flatMap((event) => {
-    if (event.phase === "presented") return [{ ...event, kind: "exposure", at: event.presentedAt ?? event.at }];
-    if (event.presentedAt) return [{ ...event, kind: "exposure", at: event.presentedAt }, { ...event, kind: "answer" }];
-    return [{ ...event, kind: "legacy" }];
-  }).sort((a, b) => Date.parse(a.at) - Date.parse(b.at) || (a.kind === "exposure" ? -1 : b.kind === "exposure" ? 1 : 0));
-  for (const event of timeline) {
-    const tokens = event.targets.flatMap(wordTokens), lexical = tokens.filter((word) => !["am", "is", "are"].includes(word));
-    const targets = new Set(lexical.length ? lexical : tokens);
-    const words = event.kind === "exposure" ? new Set(wordTokens(event.sentence ?? "")) : event.kind === "answer" ? targets : /* @__PURE__ */ new Set([...targets, ...event.correct && targets.size ? wordTokens(event.sentence ?? "") : []]);
-    for (const word of words) {
-      const id = "en:" + word;
-      if (Date.parse(event.at) <= (cutoff.get(id) ?? 0)) continue;
-      states.set(id, advanceLearning(states.get(id) ?? emptyLearning(), { correct: event.kind === "exposure" || event.correct, weight: event.kind === "exposure" ? 1 : event.kind === "answer" ? 2 : targets.has(word) ? 3 : 1, independent: event.kind !== "exposure" && targets.has(word) && event.hidden && event.heard && !event.assisted && event.plays === 1, at: event.at }));
-    }
-  }
-  return states;
-}
-
 // src/learning/everydayVocabulary.ts
 var everydayPeople = [
   { singular: "man", plural: "men", thai: "\u0E1C\u0E39\u0E49\u0E0A\u0E32\u0E22" },
@@ -21731,6 +21670,496 @@ var descriptions = [
 ];
 var descriptionStages = [["red", "blue"], ["big", "small"], ["hot", "cold"], ["green", "yellow"], ["black", "white"], ["tall", "short"]];
 
+// src/learning/sentenceRules/adjectiveSemantics.ts
+function adjectiveFitsNoun(adjective, noun) {
+  const description = descriptions.find((item) => item.word === adjective.toLowerCase());
+  if (!description) return false;
+  const word = (typeof noun === "string" ? noun : noun.singular ?? noun.word).toLowerCase().replace(/[?.!]$/, "");
+  const person = everydayPeople.find((person2) => person2.singular === word || person2.plural === word);
+  const forms = [word, person?.singular, word.endsWith("s") ? word.slice(0, -1) : "", word.endsWith("es") ? word.slice(0, -2) : "", word.endsWith("ies") ? word.slice(0, -3) + "y" : ""];
+  return forms.some((form) => !!form && description.nouns.includes(form));
+}
+function adjectiveThaiForNoun(adjective, noun) {
+  const description = descriptions.find((item) => item.word === adjective);
+  if (!description) return "";
+  const word = typeof noun === "string" ? noun : noun.singular ?? noun.word;
+  return description.group === "height" ? (word.startsWith("bottle") ? "\u0E17\u0E23\u0E07" : "\u0E15\u0E31\u0E27") + description.thai : description.thai;
+}
+
+// src/learning/sentenceMatrix/nounPhrase.ts
+function nounPhraseUnits(phrase) {
+  if (/^(?:a|an|the|my|your|his|her|our|their|this|that|these|those|some|to)\s/i.test(phrase.noun)) throw new Error("Keep determiners and prepositions separate from the noun.");
+  if (phrase.description && !adjectiveFitsNoun(phrase.description.english, phrase.noun)) throw new Error("This adjective does not fit the noun.");
+  return [
+    ...phrase.preposition ? [{ ...phrase.preposition, role: "preposition" }] : [],
+    ...phrase.determiner ? [{ ...phrase.determiner, role: "determiner" }] : [],
+    ...phrase.description ? [{ ...phrase.description, role: "description" }] : [],
+    { english: phrase.noun, thai: phrase.nounThai, role: "noun" }
+  ];
+}
+
+// src/learning/sentenceRules/possessives.ts
+function possessiveDeterminer(possessor) {
+  const english = possessor.kind === "name" ? possessor.word : nounPhraseUnits(possessor.phrase).map((unit) => unit.english).join(" ");
+  if (!english.trim() || /[.!?]/.test(english) || possessor.kind === "phrase" && possessor.phrase.preposition) throw new Error("A possessor must be a name or noun phrase, without a sentence or preposition.");
+  const plural2 = possessor.kind === "phrase" && possessor.phrase.number === "plural";
+  const suffix = plural2 && /s$/i.test(english) ? "\u2019" : "\u2019s";
+  const meaning = possessor.kind === "name" ? possessor.thai : possessor.phrase.nounThai + (possessor.phrase.description?.thai ?? "") + (possessor.phrase.determiner?.thai.startsWith("\u0E02\u0E2D\u0E07") ? possessor.phrase.determiner.thai : "");
+  return { english: `${english}${suffix}`, thai: `\u0E02\u0E2D\u0E07${meaning}`, possessor };
+}
+var definiteNounPhrase = (word, thai, number = "singular") => ({ noun: word, nounThai: thai, number, determiner: { english: "the", thai: "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07" } });
+var doctor = { noun: "doctor", nounThai: "\u0E2B\u0E21\u0E2D", determiner: { english: "my", thai: "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19" } };
+var doctorsWife = { noun: "wife", nounThai: "\u0E20\u0E23\u0E23\u0E22\u0E32", determiner: possessiveDeterminer({ kind: "phrase", phrase: doctor }) };
+var possessiveChoices = [
+  { value: possessiveDeterminer({ kind: "name", word: "Bia", thai: "\u0E40\u0E1A\u0E35\u0E22" }), requires: [] },
+  ...everydayPeople.flatMap((person) => [
+    { value: possessiveDeterminer({ kind: "phrase", phrase: definiteNounPhrase(person.singular, person.thai) }), requires: [person.singular] },
+    { value: possessiveDeterminer({ kind: "phrase", phrase: definiteNounPhrase(person.plural, person.thai, "plural") }), requires: [person.plural] }
+  ]),
+  { value: possessiveDeterminer({ kind: "phrase", phrase: doctor }), requires: ["doctor"] },
+  { value: possessiveDeterminer({ kind: "phrase", phrase: doctorsWife }), requires: ["doctor", "wife"] }
+];
+var possessiveFor = (word) => possessiveChoices.find((choice) => choice.value.english === word)?.value;
+
+// src/learning/sentenceMatrix/model.ts
+var determiners = [
+  { word: "the", thai: "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07" },
+  { word: "my", thai: "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19" },
+  { word: "your", thai: "\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13" }
+];
+var allDeterminers = [...determiners, { word: "a", thai: "\u0E2B\u0E19\u0E36\u0E48\u0E07" }, { word: "an", thai: "\u0E2B\u0E19\u0E36\u0E48\u0E07" }, { word: "his", thai: "\u0E02\u0E2D\u0E07\u0E40\u0E02\u0E32 (\u0E1C\u0E39\u0E49\u0E0A\u0E32\u0E22)" }, { word: "her", thai: "\u0E02\u0E2D\u0E07\u0E40\u0E18\u0E2D (\u0E1C\u0E39\u0E49\u0E2B\u0E0D\u0E34\u0E07)" }, { word: "our", thai: "\u0E02\u0E2D\u0E07\u0E1E\u0E27\u0E01\u0E40\u0E23\u0E32" }, { word: "their", thai: "\u0E02\u0E2D\u0E07\u0E1E\u0E27\u0E01\u0E40\u0E02\u0E32" }, { word: "this", thai: "\u0E19\u0E35\u0E49" }, { word: "that", thai: "\u0E19\u0E31\u0E49\u0E19" }, { word: "these", thai: "\u0E40\u0E2B\u0E25\u0E48\u0E32\u0E19\u0E35\u0E49" }, { word: "those", thai: "\u0E40\u0E2B\u0E25\u0E48\u0E32\u0E19\u0E31\u0E49\u0E19" }, { word: "some", thai: "\u0E08\u0E33\u0E19\u0E27\u0E19\u0E2B\u0E19\u0E36\u0E48\u0E07" }];
+var ownerThai = (owner) => possessiveFor(owner)?.thai ?? allDeterminers.find((item) => item.word === owner)?.thai ?? (() => {
+  throw new Error("Unknown determiner");
+})();
+var verbForWord = (word) => word.number === "plural" || word.pairOnly ? "are" : "is";
+function locationSentence(item, owner = "the", count = "", tense = "present") {
+  const present = verbForWord(item);
+  const verb = tense === "past" ? present === "are" ? "were" : "was" : present;
+  return {
+    english: `Where ${verb} ${owner} ${item.word}?`,
+    thai: `${tense === "past" ? "\u0E01\u0E48\u0E2D\u0E19\u0E2B\u0E19\u0E49\u0E32\u0E19\u0E35\u0E49 " : ""}${item.thai}${count}${owner === "the" ? "" : ownerThai(owner)}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`,
+    units: [{ english: "Where", thai: "\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19" }, { english: verb, thai: tense === "past" ? "\u0E2D\u0E22\u0E39\u0E48 \xB7 \u0E01\u0E48\u0E2D\u0E19\u0E2B\u0E19\u0E49\u0E32\u0E19\u0E35\u0E49" : "\u0E2D\u0E22\u0E39\u0E48" }, { english: owner, thai: ownerThai(owner), ...possessiveFor(owner) ? { possessor: possessiveFor(owner).possessor } : {} }, { english: `${item.word}?`, thai: item.thai }],
+    noun: item.word,
+    verb
+  };
+}
+
+// src/learning/sentenceMatrix/subjectEngine.ts
+var subjectPronouns = [
+  { word: "I", thai: "\u0E09\u0E31\u0E19", person: 1 },
+  { word: "you", thai: "\u0E04\u0E38\u0E13", person: 2 },
+  { word: "he", thai: "\u0E40\u0E02\u0E32", person: 3 },
+  { word: "she", thai: "\u0E40\u0E18\u0E2D", person: 3 },
+  { word: "we", thai: "\u0E1E\u0E27\u0E01\u0E40\u0E23\u0E32", person: 1, number: "plural" },
+  { word: "they", thai: "\u0E1E\u0E27\u0E01\u0E40\u0E02\u0E32", person: 3, number: "plural" },
+  { word: "it", thai: "\u0E21\u0E31\u0E19", person: 3 }
+];
+function subjectVerb(subject2) {
+  if (subject2.number === "plural" || subject2.person === 2) return "are";
+  return subject2.person === 1 ? "am" : "is";
+}
+
+// src/learning/sentenceRules/determiners.ts
+function determinerAgrees(word, plural2, mass = false) {
+  if (["this", "that"].includes(word)) return !plural2;
+  if (["these", "those"].includes(word)) return plural2 && !mass;
+  if (word === "some") return plural2 || mass;
+  if (["a", "an"].includes(word)) return !plural2 && !mass;
+  return !!possessiveFor(word) || ["the", "my", "your", "his", "her", "our", "their"].includes(word);
+}
+
+// src/learning/sentenceRules/meaningProfiles.ts
+var meaningProfiles = {
+  thought: { kind: "abstract" },
+  idea: { kind: "abstract" },
+  happiness: { kind: "abstract" },
+  advice: { kind: "abstract", countability: "mass" },
+  taxi: { kind: "physical-object" },
+  beach: { kind: "place", locationPrepositions: ["at", "on"] },
+  airport: { kind: "place", locationPrepositions: ["at", "in"] },
+  shop: { kind: "place", locationPrepositions: ["at", "in"] },
+  pharmacy: { kind: "place", locationPrepositions: ["at", "in"] },
+  hospital: { kind: "place", locationPrepositions: ["at", "in"] },
+  supermarket: { kind: "place", locationPrepositions: ["at", "in"] },
+  market: { kind: "place", locationPrepositions: ["at", "in"] },
+  cafe: { kind: "place", locationPrepositions: ["at", "in"] },
+  "bus stop": { kind: "place", locationPrepositions: ["at"] },
+  "car park": { kind: "place", locationPrepositions: ["at", "in"] },
+  entrance: { kind: "place", locationPrepositions: ["at"] },
+  exit: { kind: "place", locationPrepositions: ["at"] },
+  atm: { kind: "physical-object", roles: ["destination"], locationPrepositions: ["at"] },
+  lift: { kind: "physical-object", roles: ["destination"], locationPrepositions: ["at", "in"] },
+  "swimming pool": { kind: "place", locationPrepositions: ["at", "in"] }
+};
+
+// src/learning/sentenceMatrix/vocabularyCategories.ts
+var vocabularyCategories = [
+  { id: "clothing", en: "Clothing", th: "\u0E40\u0E2A\u0E37\u0E49\u0E2D\u0E1C\u0E49\u0E32" },
+  { id: "food", en: "Food", th: "\u0E2D\u0E32\u0E2B\u0E32\u0E23" },
+  { id: "places", en: "Places", th: "\u0E2A\u0E16\u0E32\u0E19\u0E17\u0E35\u0E48" },
+  { id: "buildings", en: "Buildings", th: "\u0E2D\u0E32\u0E04\u0E32\u0E23" },
+  { id: "everyday", en: "Everyday objects", th: "\u0E02\u0E2D\u0E07\u0E43\u0E0A\u0E49" },
+  { id: "furniture", en: "Furniture", th: "\u0E40\u0E1F\u0E2D\u0E23\u0E4C\u0E19\u0E34\u0E40\u0E08\u0E2D\u0E23\u0E4C" },
+  { id: "sports", en: "Sports", th: "\u0E01\u0E35\u0E2C\u0E32" },
+  { id: "transport", en: "Transport", th: "\u0E22\u0E32\u0E19\u0E1E\u0E32\u0E2B\u0E19\u0E30" },
+  { id: "people", en: "People", th: "\u0E1C\u0E39\u0E49\u0E04\u0E19" }
+];
+var groups = {
+  clothing: ["shoe", "sock", "sandal", "boot", "shirt", "hat", "trousers", "glasses", "bag", "watch"],
+  food: [],
+  places: ["hotel", "toilet", "gym", "padel court", "clinic", "school", "bank", "bookstore", "bedroom"],
+  buildings: ["hotel", "clinic", "school", "bank", "bookstore"],
+  everyday: ["key", "bag", "ticket", "book", "pen", "pencil", "phone", "charger", "towel", "bottle", "cup", "plate", "watch", "clock", "remote", "fan", "air conditioner", "glasses"],
+  furniture: ["table", "chair"],
+  sports: ["gym", "padel court", "racket"],
+  transport: ["motorbike"],
+  people: ["doctor"]
+};
+function categoriesForWord(item) {
+  if (item.categories) return item.categories;
+  const base = (item.singular ?? item.word).toLowerCase();
+  return vocabularyCategories.filter((category) => groups[category.id].includes(base)).map((category) => category.id);
+}
+
+// src/learning/sentenceRules/blueprints.ts
+var sentenceBlueprints = {
+  "where-noun": { pattern: "Where {be} {determiner} {noun}?", nounKinds: ["place", "person", "physical-object"], agreement: "noun-number", nounModes: ["noun", "pronoun", "name"] },
+  "where-person": { pattern: "Where {be} {subject}?", nounKinds: [], agreement: "subject-person", nounModes: ["noun", "pronoun", "name"] },
+  "person-at-place": { pattern: "{subject} {be} at {determiner} {place}.", nounKinds: ["place"], agreement: "subject-person", nounModes: ["noun", "pronoun", "name"] }
+};
+function meaningForWord(word) {
+  if (word.meaning) return word.meaning;
+  const reviewed = meaningProfiles[(word.singular ?? word.word).toLowerCase()];
+  if (reviewed) return reviewed;
+  const categories = categoriesForWord(word);
+  if (categories.includes("places") || categories.includes("buildings")) return { kind: "place", locationPrepositions: (word.singular ?? word.word) === "bedroom" ? ["in"] : ["at", "in"] };
+  if (categories.includes("people")) return { kind: "person" };
+  if (categories.some((c) => ["clothing", "food", "buildings", "everyday", "furniture", "sports", "transport"].includes(c))) return { kind: "physical-object" };
+  return void 0;
+}
+function validateSentence(request) {
+  const issues = [];
+  const add = (code, slot, word, message) => issues.push({ code, slot, word, message });
+  if (request.blueprint === "where-person" || request.blueprint === "person-at-place") {
+    if (!request.subject) add("missing-subject", "subject", "", "A subject is required.");
+    else if (subjectVerb(request.subject) !== request.verb) add("subject-agreement", "verb", request.verb, `${request.subject.word} requires ${subjectVerb(request.subject)}.`);
+  }
+  if (request.blueprint !== "where-person") {
+    const noun = request.noun;
+    if (!noun) add("missing-noun", "noun", "", "A noun is required.");
+    else {
+      if (request.description && !adjectiveFitsNoun(request.description, noun)) add("incompatible-description", "description", request.description, "This description does not fit this noun.");
+      const meaning = meaningForWord(noun), allowed = sentenceBlueprints[request.blueprint].nounKinds;
+      if (!meaning) add("unclassified-meaning", "noun", noun.word, "Add a reviewed meaning category before using this word.");
+      else if (!allowed.includes(meaning.kind) && !(request.blueprint === "person-at-place" && meaning.roles?.includes("destination"))) add("incompatible-meaning", "noun", noun.word, `${meaning.kind} does not fit ${request.blueprint}.`);
+      else if (request.blueprint === "person-at-place" && !meaning.locationPrepositions?.includes("at")) add("preposition-review", "noun", noun.word, "This destination is not approved with at; review its preposition.");
+      if (meaning?.countability === "mass" && (noun.number === "plural" || noun.pairOnly)) add("mass-noun-number", "noun", noun.word, "This sense is a mass noun; do not create a plural form.");
+      if (meaning?.countability === "plural-only" && noun.number !== "plural" && !noun.pairOnly) add("plural-only-number", "noun", noun.word, "This sense requires plural agreement.");
+      if (request.blueprint === "where-noun") {
+        const plural2 = noun.number === "plural" || Boolean(noun.pairOnly);
+        if (!["is", "are", "was", "were"].includes(request.verb) || plural2 !== ["are", "were"].includes(request.verb)) add("noun-agreement", "verb", request.verb, `${noun.word} requires a ${plural2 ? "plural" : "singular"} verb.`);
+      }
+    }
+    if (request.namedPlace) {
+      if (request.determiner) add("proper-name-article", "determiner", request.determiner, "This named place does not take a determiner in this blueprint.");
+    } else if (!possessiveFor(request.determiner ?? "") && !["the", "my", "your", "his", "her", "our", "their", "this", "that", "these", "those", "some"].includes(request.determiner ?? "")) add("missing-determiner", "determiner", request.determiner ?? "", "Select an approved determiner.");
+    else if (noun && !determinerAgrees(request.determiner, noun.number === "plural" || !!noun.pairOnly, meaningForWord(noun)?.countability === "mass")) add("determiner-agreement", "determiner", request.determiner, "The determiner must agree with this noun.");
+  }
+  return issues;
+}
+function assertSentence(request) {
+  const issues = validateSentence(request);
+  if (issues.length) throw new Error(`${request.blueprint}: ${issues.map((i) => `${i.code} (${i.word}): ${i.message}`).join("; ")}`);
+}
+
+// src/learning/sentenceRules/nominalReferences.ts
+var defaultPlaceNames = [{ word: "Central", thai: "\u0E40\u0E0B\u0E47\u0E19\u0E17\u0E23\u0E31\u0E25", kind: "place" }, { word: "Success", thai: "Success", kind: "place" }];
+var plural = (noun) => noun.number === "plural" || !!noun.pairOnly;
+function objectPronouns(noun, location2 = false) {
+  const words = location2 ? ["here", "there"] : plural(noun) ? ["them"] : meaningForWord(noun)?.kind !== "person" ? ["it"] : /^(woman|girl|mother|daughter)$/.test(noun.singular ?? noun.word) ? ["her"] : /^(man|boy|father|son)$/.test(noun.singular ?? noun.word) ? ["him"] : ["him", "her"];
+  const meanings = { it: "\u0E21\u0E31\u0E19", them: "\u0E1E\u0E27\u0E01\u0E40\u0E02\u0E32 / \u0E2A\u0E34\u0E48\u0E07\u0E40\u0E2B\u0E25\u0E48\u0E32\u0E19\u0E31\u0E49\u0E19", him: "\u0E40\u0E02\u0E32", her: "\u0E40\u0E18\u0E2D", here: "\u0E17\u0E35\u0E48\u0E19\u0E35\u0E48", there: "\u0E17\u0E35\u0E48\u0E19\u0E31\u0E48\u0E19" };
+  return words.map((word) => ({ ...noun, word, thai: meanings[word], reference: { mode: "pronoun", word } }));
+}
+function referencePhrase(noun, phrase, reference, location2 = false) {
+  if (reference.mode === "name") {
+    const kind = meaningForWord(noun)?.kind;
+    if (!["person", "place"].includes(kind ?? "") || reference.name.kind !== kind || !reference.name.word.trim() || reference.name.phrase || /['’]s\b/.test(reference.name.word)) throw new Error("A proper noun must name a compatible person or place directly.");
+    return { noun: reference.name.word, nounThai: reference.name.thai, ...phrase.preposition ? { preposition: phrase.preposition } : {} };
+  }
+  const chosen = objectPronouns(noun, location2).find((p) => p.word === reference.word);
+  if (!chosen) throw new Error("This pronoun does not fit the noun or its grammatical role.");
+  return { noun: chosen.word, nounThai: chosen.thai, ...!location2 && phrase.preposition ? { preposition: phrase.preposition } : {} };
+}
+
+// src/learning/sentenceRules/choices.ts
+var nounVerb = (noun) => noun.number === "plural" || noun.pairOnly ? "are" : "is";
+function nounsForSentence(request, words) {
+  return words.filter((noun) => !validateSentence({ ...request, noun, verb: request.verb ?? nounVerb(noun) }).length);
+}
+
+// src/learning/sentenceMatrix/peopleLocation.ts
+var people = subjectPronouns.map((item) => ({ ...item, verb: subjectVerb(item) }));
+var locationWords = (words) => nounsForSentence({ blueprint: "person-at-place", subject: subjectPronouns[0], verb: "am", determiner: "the" }, words).filter((noun) => noun.number !== "plural" && !noun.pairOnly);
+function locationAnswer(subject2, place, namedPlace = false, reference, determiner = "the") {
+  const verb = subjectVerb(subject2);
+  assertSentence({ blueprint: "person-at-place", subject: subject2, verb, noun: namedPlace ? { ...place, meaning: { kind: "place", locationPrepositions: ["at"] } } : place, determiner: namedPlace ? void 0 : determiner, namedPlace });
+  const base = { noun: place.word, nounThai: place.thai, ...!namedPlace ? { determiner: possessiveFor(determiner) ?? { english: determiner, thai: ownerThai(determiner) } } : {}, preposition: { english: "at", thai: "\u0E17\u0E35\u0E48" } };
+  const phrase = reference ? referencePhrase(place, base, reference, true) : base;
+  const first = subject2.phrase ? nounPhraseUnits(subject2.phrase).map((unit) => ({ ...unit, role: unit.role === "determiner" ? "person-determiner" : unit.role === "description" ? "description" : "person" })) : [{ english: subject2.word, thai: subject2.thai, role: "person" }];
+  const units = [...first, { english: verb, thai: "\u0E2D\u0E22\u0E39\u0E48", role: "be" }, ...nounPhraseUnits(phrase).map((unit) => ({ ...unit, role: unit.role === "noun" ? "object" : unit.role }))];
+  units[0] = { ...units[0], english: units[0].english[0].toUpperCase() + units[0].english.slice(1) };
+  units[units.length - 1] = { ...units[units.length - 1], english: units[units.length - 1].english + "." };
+  const placeThai = phrase.nounThai + (!reference && !namedPlace && determiner !== "the" ? ownerThai(determiner) : "");
+  return { english: units.map((unit) => unit.english).join(" "), thai: `${subject2.phrase?.nounThai ?? subject2.thai}\u0E2D\u0E22\u0E39\u0E48${reference?.mode === "pronoun" ? "" : "\u0E17\u0E35\u0E48"}${placeThai}`, units };
+}
+
+// src/learning/sentenceRules/actionBlueprints.ts
+var activeActionBlueprints = [
+  { id: "transitive-object", connection: "direct" },
+  { id: "intransitive-to-object", connection: "to" }
+];
+function potentialActionUses(action) {
+  if (action.uses) return action.uses;
+  if (action.complement === "object") return { direct: { objects: action.objects } };
+  if (action.destination) return { to: { objects: ["destination"] } };
+  if (action.preposition) return { [action.preposition.english]: { objects: action.objects, thai: action.preposition.thai } };
+  return action.complement === "none" ? { bare: { objects: [] } } : {};
+}
+function actionInBlueprint(action, blueprint) {
+  const use = potentialActionUses(action)[blueprint.connection];
+  if (!use) return void 0;
+  return {
+    ...action,
+    objects: use.objects,
+    spoken: use.spoken ?? action.spoken,
+    sentenceThai: use.sentenceThai ?? action.sentenceThai,
+    complement: blueprint.connection === "bare" ? "none" : blueprint.connection === "direct" ? "object" : blueprint.connection === "to" && action.destination ? "destination" : "prepositional",
+    preposition: ["bare", "direct"].includes(blueprint.connection) ? void 0 : { english: blueprint.connection, thai: use.thai ?? (blueprint.connection === "to" ? "\u0E17\u0E35\u0E48" : "\u2014") }
+  };
+}
+function matchingActionBlueprint(action, blueprints = activeActionBlueprints) {
+  return blueprints.find((blueprint) => !!actionInBlueprint(action, blueprint));
+}
+
+// src/learning/sentenceRules/practiceBlueprintRequest.ts
+var requests = /* @__PURE__ */ new Map();
+function createRequest(level, structure) {
+  const construction = structure === "identify" ? "identify" : structure === "location" ? "location" : structure === "destination" ? "action" : level <= 3 ? "noun" : level === 4 ? "activity-question" : "action";
+  const frames = activeActionBlueprints.filter((frame) => structure === "destination" ? frame.connection === "to" : level === 6 ? frame.connection === "direct" : true);
+  const anchors = construction === "action" ? ["noun", "verb", "adjective", "pronoun", "determiner"] : construction === "activity-question" ? ["noun", "adjective", "pronoun", "determiner"] : construction === "identify" ? ["noun", "determiner"] : construction === "location" ? ["noun", "pronoun", "determiner"] : ["noun", "adjective", "determiner"];
+  return {
+    construction,
+    frames,
+    anchors,
+    movementOnly: structure === "destination",
+    level,
+    subjectGroup: "subjects",
+    // Connections/categories come from the existing verb uses; never add a
+    // preposition merely because a chosen ingredient cannot fit this blueprint.
+    objectPolicy: "verb-frame",
+    agreement: "subject-person-and-noun-number"
+  };
+}
+function practiceBlueprintRequest(level, structure) {
+  const key = `${level}:${structure ?? "default"}`;
+  let request = requests.get(key);
+  if (!request) {
+    request = createRequest(level, structure);
+    requests.set(key, request);
+  }
+  return request;
+}
+
+// src/learning/sentenceRules/expandedActions.ts
+var icon = (id) => `/classroom/icons/actions/expanded/${id}.png`;
+var expandedActions = [
+  { word: "using", thai: "\u0E43\u0E0A\u0E49", complement: "object", objects: ["usable"], categories: ["everyday"], icon: icon("using") },
+  { word: "carrying", thai: "\u0E16\u0E37\u0E2D\u0E44\u0E1B", complement: "object", objects: ["carryable"], categories: ["everyday"], icon: icon("carrying") },
+  { word: "finding", thai: "\u0E1E\u0E1A", complement: "object", objects: ["findable"], categories: ["everyday"], icon: icon("finding") },
+  { word: "buying", thai: "\u0E0B\u0E37\u0E49\u0E2D", complement: "object", objects: ["purchasable"], categories: ["everyday"], icon: icon("buying") },
+  { word: "closing", thai: "\u0E1B\u0E34\u0E14", complement: "object", objects: ["openable"], categories: ["everyday"], icon: icon("closing") },
+  { word: "wearing", thai: "\u0E2A\u0E27\u0E21", complement: "object", objects: ["wearable"], categories: ["clothing"], icon: icon("wearing") },
+  { word: "putting on", uses: { on: { objects: ["wearable"], spoken: "putting", thai: "\u2014" } }, thai: "\u0E2A\u0E27\u0E21\u0E43\u0E2A\u0E48", complement: "object", objects: ["wearable"], categories: ["clothing"], icon: icon("putting-on") },
+  { word: "taking off", uses: { off: { objects: ["wearable"], spoken: "taking", thai: "\u2014" } }, thai: "\u0E16\u0E2D\u0E14", complement: "object", objects: ["wearable"], categories: ["clothing"], icon: icon("taking-off") },
+  { word: "riding", thai: "\u0E02\u0E35\u0E48", complement: "object", objects: ["rideable"], categories: ["transport"], icon: icon("riding") },
+  { word: "catching", thai: "\u0E02\u0E36\u0E49\u0E19\u0E43\u0E2B\u0E49\u0E17\u0E31\u0E19", complement: "object", objects: ["public-transport"], categories: ["transport"], icon: icon("catching") },
+  { word: "getting on", spoken: "getting", preposition: { english: "on", thai: "\u0E02\u0E36\u0E49\u0E19" }, thai: "\u0E40\u0E04\u0E25\u0E37\u0E48\u0E2D\u0E19\u0E15\u0E31\u0E27", sentenceThai: "\u0E02\u0E36\u0E49\u0E19", complement: "prepositional", objects: ["public-transport"], categories: ["transport"], icon: icon("getting-on") },
+  { word: "helping", thai: "\u0E0A\u0E48\u0E27\u0E22", complement: "object", objects: ["person"], categories: ["people"], icon: icon("helping") },
+  { word: "watching", thai: "\u0E14\u0E39", complement: "object", objects: ["watchable", "person"], categories: ["everyday"], icon: icon("watching") },
+  { word: "teaching", thai: "\u0E2A\u0E2D\u0E19", complement: "object", objects: ["person"], categories: ["people"], icon: icon("teaching") },
+  { word: "sitting", thai: "\u0E19\u0E31\u0E48\u0E07", complement: "none", objects: [], categories: ["everyday"], icon: icon("sitting") },
+  { word: "standing", thai: "\u0E22\u0E37\u0E19", complement: "none", objects: [], categories: ["everyday"], icon: icon("standing") },
+  { word: "waiting", thai: "\u0E23\u0E2D", complement: "none", objects: [], categories: ["everyday"], icon: icon("waiting") },
+  { word: "arriving", preposition: { english: "at", thai: "\u0E17\u0E35\u0E48" }, thai: "\u0E21\u0E32\u0E16\u0E36\u0E07", complement: "prepositional", objects: ["destination"], categories: ["places"], icon: icon("arriving") },
+  { word: "leaving", thai: "\u0E2D\u0E2D\u0E01\u0E08\u0E32\u0E01", complement: "object", objects: ["destination"], categories: ["places"], icon: icon("leaving") }
+];
+
+// src/learning/sentenceRules/actionSemantics.ts
+var childSubjects = /* @__PURE__ */ new Set(["boy", "boys", "girl", "girls", "son", "sons", "daughter", "daughters"]);
+function subjectCanPerform(subject2, action, object) {
+  const noun = (subject2.phrase?.noun ?? subject2.semanticNoun ?? subject2.word.replace(/^(?:the|my|your|his|her|our|their) /i, "")).toLowerCase();
+  const child = childSubjects.has(noun);
+  const target = object?.toLowerCase().replace(/[?.!]$/, "").replace(/^(?:to |on |at )?(?:the |a |an |my |your |his |her |our |their )?/, "").replace(/buses$/, "bus").replace(/motorbikes$/, "motorbike");
+  if (["helping", "teaching", "watching", "talking", "listening", "walking", "running", "going"].includes(action) && target === noun) return false;
+  return !(child && (action === "driving" || action === "riding" && target === "motorbike" || action === "buying" && ["bus", "motorbike", "air conditioner"].includes(target ?? "")));
+}
+var nounActionAffordances = {
+  "sleep-inside": /* @__PURE__ */ new Set(["bedroom", "hotel"]),
+  "sleep-surface": /* @__PURE__ */ new Set(["bed"]),
+  holdable: /* @__PURE__ */ new Set(["phone", "bag", "cup", "key", "shirt", "shoe", "book", "apple", "bottle", "plate", "wallet", "banana", "orange", "sandwich", "towel", "hat", "sock", "trousers", "glasses", "pen", "pencil", "umbrella", "watch", "charger", "ticket", "passport", "laptop", "camera", "remote", "sandal", "boot", "racket"]),
+  openable: /* @__PURE__ */ new Set(["book", "bag", "bottle", "wallet", "umbrella", "laptop", "door", "window", "passport"]),
+  washable: /* @__PURE__ */ new Set(["cup", "plate", "apple", "banana", "orange", "bottle", "shirt", "shoe", "towel", "hat", "sock", "trousers", "glasses", "sandal", "boot", "bus", "motorbike", "bicycle"]),
+  cleanable: /* @__PURE__ */ new Set(["table", "chair", "toilet", "school", "phone", "key", "bottle", "plate", "bus", "motorbike", "restaurant", "bedroom", "wallet", "bank", "clinic", "glasses", "watch", "clock", "fan", "charger", "air conditioner", "bicycle", "hotel", "laptop", "camera", "remote", "bookstore", "gym", "racket", "padel court"]),
+  usable: /* @__PURE__ */ new Set(["water", "phone", "bag", "cup", "key", "table", "chair", "toilet", "bottle", "plate", "bus", "motorbike", "wallet", "towel", "glasses", "pen", "pencil", "umbrella", "watch", "clock", "fan", "charger", "air conditioner", "bicycle", "ticket", "passport", "laptop", "camera", "remote", "racket"]),
+  carryable: /* @__PURE__ */ new Set(["phone", "bag", "cup", "key", "shirt", "shoe", "book", "apple", "bottle", "plate", "wallet", "banana", "orange", "sandwich", "towel", "hat", "sock", "trousers", "glasses", "pen", "pencil", "umbrella", "watch", "charger", "ticket", "passport", "laptop", "camera", "remote", "sandal", "boot", "racket"]),
+  findable: /* @__PURE__ */ new Set(["phone", "bag", "key", "shirt", "shoe", "book", "wallet", "hat", "sock", "glasses", "pen", "pencil", "umbrella", "watch", "charger", "ticket", "passport", "laptop", "camera", "remote", "sandal", "boot", "racket"]),
+  purchasable: /* @__PURE__ */ new Set(["phone", "bag", "cup", "key", "shirt", "shoe", "table", "chair", "book", "apple", "bottle", "plate", "bus", "motorbike", "wallet", "banana", "orange", "sandwich", "towel", "hat", "sock", "trousers", "glasses", "pen", "pencil", "umbrella", "watch", "clock", "fan", "charger", "air conditioner", "bicycle", "ticket", "laptop", "camera", "remote", "sandal", "boot", "racket"]),
+  wearable: /* @__PURE__ */ new Set(["shirt", "shoe", "hat", "sock", "trousers", "glasses", "watch", "sandal", "boot"]),
+  rideable: /* @__PURE__ */ new Set(["bicycle", "motorbike"]),
+  "public-transport": /* @__PURE__ */ new Set(["bus"]),
+  watchable: /* @__PURE__ */ new Set(["bus", "motorbike", "bicycle"]),
+  readable: /* @__PURE__ */ new Set(["book", "ticket", "passport"])
+};
+
+// src/learning/sentenceRules/actionDialogue.ts
+var actionVocabulary = [
+  ...[{ word: "talking", thai: "\u0E1E\u0E39\u0E14" }, { word: "listening", thai: "\u0E1F\u0E31\u0E07" }, { word: "driving", thai: "\u0E02\u0E31\u0E1A\u0E23\u0E16" }].map((action) => ({ ...action, ...action.word === "driving" ? { destination: true } : { uses: { to: { objects: ["person"], thai: action.word === "talking" ? "\u0E01\u0E31\u0E1A" : "\u2014", sentenceThai: action.word === "talking" ? "\u0E1E\u0E39\u0E14\u0E01\u0E31\u0E1A" : "\u0E1F\u0E31\u0E07" } } }, categories: ["everyday"], icon: `/classroom/icons/everyday/${action.word}.webp`, complement: "none", objects: [] })),
+  { word: "eating", categories: ["food"], icon: "/classroom/icons/actions/closeup/eating.png", thai: "\u0E01\u0E34\u0E19", complement: "object", objects: ["food"] },
+  { word: "drinking", categories: ["food"], icon: "/classroom/icons/actions/closeup/drinking.png", thai: "\u0E14\u0E37\u0E48\u0E21", complement: "object", objects: ["drink"] },
+  { word: "sleeping", uses: { bare: { objects: [] }, in: { objects: ["sleep-inside"], thai: "\u0E43\u0E19", sentenceThai: "\u0E19\u0E2D\u0E19\u0E43\u0E19" }, on: { objects: ["sleep-surface"], thai: "\u0E1A\u0E19", sentenceThai: "\u0E19\u0E2D\u0E19\u0E1A\u0E19" } }, categories: ["places"], icon: "/classroom/icons/actions/closeup/sleeping.png", thai: "\u0E19\u0E2D\u0E19", complement: "none", objects: [] },
+  { word: "running", uses: { to: { objects: ["destination", "person", "spatial-target"] } }, destination: true, categories: ["sports"], icon: "/classroom/icons/actions/closeup/running.png", thai: "\u0E27\u0E34\u0E48\u0E07", complement: "none", objects: [] },
+  { word: "walking", uses: { to: { objects: ["destination", "person", "spatial-target"] } }, destination: true, categories: ["places", "sports"], icon: "/classroom/icons/actions/closeup/walking.png", thai: "\u0E40\u0E14\u0E34\u0E19", complement: "none", objects: [] },
+  { word: "playing", categories: ["sports"], icon: "/classroom/icons/actions/closeup/playing.png", thai: "\u0E40\u0E25\u0E48\u0E19", complement: "none", objects: [] },
+  { word: "reading", categories: ["everyday"], icon: "/classroom/icons/actions/closeup/reading.png", thai: "\u0E2D\u0E48\u0E32\u0E19", complement: "object", objects: ["readable"] },
+  { word: "going", uses: { to: { objects: ["destination", "person", "spatial-target"] } }, destination: true, categories: ["places", "transport"], icon: "/classroom/icons/actions/closeup/walking.png", thai: "\u0E44\u0E1B", complement: "destination", objects: ["destination"] },
+  { word: "holding", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/closeup/holding.png", thai: "\u0E16\u0E37\u0E2D", complement: "object", objects: ["holdable"] },
+  { word: "opening", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/closeup/opening.png", thai: "\u0E40\u0E1B\u0E34\u0E14", complement: "object", objects: ["openable"] },
+  { word: "cleaning", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/expanded/cleaning.png", thai: "\u0E17\u0E33\u0E04\u0E27\u0E32\u0E21\u0E2A\u0E30\u0E2D\u0E32\u0E14", complement: "object", objects: ["cleanable"] },
+  ...expandedActions,
+  { word: "washing", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/closeup/washing.png", thai: "\u0E25\u0E49\u0E32\u0E07", complement: "object", objects: ["washable"] }
+];
+var actionSubjects = Object.fromEntries(subjectPronouns.map((subject2) => {
+  const reply = subject2.word === "you" ? subjectPronouns.find((item) => item.word === "I") : subject2;
+  return [subject2.word.toLowerCase(), { questionBe: subjectVerb(subject2), answer: reply.word.charAt(0).toUpperCase() + reply.word.slice(1), answerBe: subjectVerb(reply), thai: subject2.thai, answerThai: reply.thai }];
+}));
+function actionContextsForWord(word) {
+  const categories = categoriesForWord(word), meaning = meaningForWord(word), base = word.singular ?? word.word;
+  if (meaning?.actionContexts) return [...meaning.actionContexts];
+  return [
+    ...Object.entries(nounActionAffordances).flatMap(([context, nouns2]) => nouns2.has(base) ? [context] : []),
+    ...meaning?.kind === "person" ? ["person"] : [],
+    ...meaning?.kind === "physical-object" && meaning.countability !== "mass" ? ["spatial-target"] : [],
+    ...categories.includes("food") ? ["food"] : [],
+    ...meaning?.kind === "place" || meaning?.roles?.includes("destination") ? ["destination"] : []
+  ];
+}
+function actionForFrame(word, question, blueprint) {
+  const lexical = actionVocabulary.find((item) => item.word === word);
+  const action = lexical && blueprint ? actionInBlueprint(lexical, blueprint) : lexical;
+  if (question !== "destination") return action;
+  if (!action || !action.destination) throw new Error("Destination questions require a movement verb.");
+  return blueprint ? action : { ...action, complement: "destination", objects: ["destination"] };
+}
+var objectCache = /* @__PURE__ */ new WeakMap();
+function objectsForAction(word, catalogue, question, blueprint) {
+  const action = actionForFrame(word, question, blueprint);
+  if (!action || action.complement === "none") return [];
+  const key = `${word}:${question ?? "activity"}:${JSON.stringify(blueprint ?? null)}`, cached = objectCache.get(catalogue)?.get(key);
+  if (cached) return [...cached];
+  const candidates = catalogue.map((item) => {
+    const contexts = actionContextsForWord(item);
+    const plural2 = item.number === "plural" || item.pairOnly;
+    const mass = meaningForWord(item)?.countability === "mass";
+    const determiner = action.complement === "destination" || action.complement === "prepositional" || plural2 ? { english: "the", thai: "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07" } : mass ? void 0 : { english: item.indefiniteArticle ?? (/^[aeiou]/i.test(item.word) ? "an" : "a"), thai: `\u0E2B\u0E19\u0E36\u0E48\u0E07${item.classifierThai ?? ""}` };
+    const phrase = { noun: item.word, nounThai: item.thai, determiner, ...action.complement === "destination" ? { preposition: { english: "to", thai: contexts.includes("person") ? "\u0E2B\u0E32" : "\u0E17\u0E35\u0E48" } } : action.preposition ? { preposition: action.preposition } : {} };
+    return { noun: item.word, phrase, categories: contexts, plural: !!plural2, mass, word: nounPhraseUnits(phrase).map((unit) => unit.english).join(" "), thai: action.complement === "destination" ? `\u0E44\u0E1B${contexts.includes("person") ? "\u0E2B\u0E32" : "\u0E17\u0E35\u0E48"}${item.thai}` : determiner && ["a", "an"].includes(determiner.english) ? `${item.thai}${determiner.thai}` : item.thai };
+  });
+  const result = candidates.filter((object) => (!!blueprint || action.complement !== "destination" || object.categories.includes("destination")) && object.categories.some((category) => action.objects.includes(category)) && (!blueprint?.nounCategories || object.categories.some((category) => blueprint.nounCategories.includes(category)))).sort((a, b) => action.complement === "destination" ? Number(b.categories.includes("destination")) - Number(a.categories.includes("destination")) : 0);
+  const cache = objectCache.get(catalogue) ?? /* @__PURE__ */ new Map();
+  cache.set(key, result);
+  objectCache.set(catalogue, cache);
+  return [...result];
+}
+function objectDeterminers(object, allowed) {
+  const article = object.phrase.determiner;
+  return [...article && ["a", "an"].includes(article.english) ? [{ word: article.english, thai: article.thai }] : [], ...allDeterminers.filter((item) => !["a", "an"].includes(item.word)), ...possessiveChoices.map((choice) => ({ word: choice.value.english, thai: choice.value.thai }))].filter((item) => determinerAgrees(item.word, !!object.plural, !!object.mass)).filter((item) => !allowed || allowed.includes(item.word));
+}
+function actionDialogue(subject2, word, selection) {
+  const person = actionSubjects[subject2], action = actionForFrame(word, selection.question, selection.blueprint);
+  if (!person || !action) throw new Error("Choose a reviewed person and action.");
+  if (!subjectCanPerform(selection.subject ?? { word: subject2 }, word, selection.object)) throw new Error("This action does not fit the depicted subject.");
+  if (selection.subject && selection.subject.kind !== "person") throw new Error("This action needs a person.");
+  if (selection.destination && (action.complement !== "destination" || selection.destination.kind !== "place")) throw new Error("This action does not accept a named place.");
+  const destinationQuestion = selection.question === "destination";
+  const speaker = selection.subject;
+  const questionSubject = speaker?.phrase ? nounPhraseUnits(speaker.phrase).map((unit) => unit.english).join(" ") : speaker?.word ?? (subject2 === "i" ? "I" : subject2);
+  const subjectMeaning = speaker?.phrase ? speaker.phrase.nounThai + (speaker.phrase.description?.thai ?? "") + (speaker.phrase.determiner && speaker.phrase.determiner.english !== "the" ? speaker.phrase.determiner.thai.replace(/ \(.*\)/, "") : "") : speaker?.thai;
+  const answerWord = speaker?.word ?? person.answer;
+  const answerSubject = answerWord.charAt(0).toUpperCase() + answerWord.slice(1);
+  const be = speaker ? subjectVerb(speaker) : person.answerBe;
+  const questionBe = speaker ? subjectVerb(speaker) : person.questionBe;
+  const objects = objectsForAction(word, selection.vocabulary, selection.question, selection.blueprint);
+  const chosenObject = selection.object === void 0 ? objects[0] : objects.find((item) => item.word === selection.object);
+  if (action.complement !== "none" && !chosenObject && !selection.destination) throw new Error("This verb frame requires a compatible object or place.");
+  if (selection.object !== void 0 && !chosenObject) throw new Error("This object does not fit the action.");
+  const baseObject = selection.destination ? { word: `to ${selection.destination.word}`, thai: `\u0E44\u0E1B\u0E17\u0E35\u0E48${selection.destination.thai}`, noun: selection.destination.word, phrase: { noun: selection.destination.word, nounThai: selection.destination.thai, preposition: { english: "to", thai: "\u0E17\u0E35\u0E48" } }, categories: ["destination"] } : chosenObject;
+  const selectedDeterminer = selection.determiner && chosenObject ? objectDeterminers(chosenObject).find((item) => item.word === selection.determiner || ["a", "an"].includes(item.word) && ["a", "an"].includes(selection.determiner)) : void 0;
+  if (selection.determiner && !selection.destination && !selectedDeterminer) throw new Error("This determiner does not fit the noun.");
+  const describedObject = baseObject && selection.description ? { ...baseObject, phrase: { ...baseObject.phrase, description: selection.description } } : baseObject;
+  const determinedObject = describedObject && selectedDeterminer && !selection.destination ? { ...describedObject, phrase: { ...describedObject.phrase, determiner: possessiveFor(selectedDeterminer.word) ?? { english: selectedDeterminer.word, thai: selectedDeterminer.thai } } } : describedObject;
+  const referenceNoun = chosenObject && selection.vocabulary.find((noun) => noun.word === chosenObject.noun);
+  const isLocation = !selection.blueprint && (action.complement === "destination" || !!action.preposition && chosenObject?.categories.includes("destination"));
+  if (selection.objectReference && (!determinedObject || !referenceNoun)) throw new Error("A reference requires a compatible source noun.");
+  const object = selection.objectReference && determinedObject && referenceNoun ? { ...determinedObject, phrase: referencePhrase(referenceNoun, determinedObject.phrase, selection.objectReference, !!isLocation) } : determinedObject;
+  const subjectParts = (answer) => speaker?.phrase ? nounPhraseUnits(speaker.phrase).map((unit, index) => ({ ...unit, english: answer && index === 0 ? unit.english.charAt(0).toUpperCase() + unit.english.slice(1) : unit.english, role: unit.role === "determiner" ? "person-determiner" : unit.role === "description" ? "description" : "person" })) : [{ english: answer ? answerSubject : questionSubject, thai: speaker?.thai ?? (answer ? person.answerThai : person.thai), role: "person" }];
+  const units = [
+    ...subjectParts(true),
+    { english: be, thai: "\u0E01\u0E33\u0E25\u0E31\u0E07", role: "be" },
+    { english: action.spoken ?? action.word, thai: action.thai, role: "action" },
+    ...object ? nounPhraseUnits(object.phrase).map((unit) => ({ ...unit, role: unit.role === "noun" ? "object" : unit.role })) : []
+  ];
+  units[units.length - 1] = { ...units[units.length - 1], english: units[units.length - 1].english + "." };
+  const nounMeaning = object ? object.phrase.nounThai + (object.phrase.description?.thai ?? "") : "";
+  const objectMeaning = selection.objectReference ? object?.phrase.nounThai : object ? selectedDeterminer && (possessiveFor(selectedDeterminer.word) || ["the", "my", "your", "his", "her", "our", "their", "this", "that", "these", "those", "some"].includes(selectedDeterminer.word)) ? nounMeaning + (selectedDeterminer.word === "the" ? "" : selectedDeterminer.thai.replace(/ \(.*\)/, "")) : object.thai.replace(/^ไป(?:ที่|หา)/, "").replace(object.phrase.nounThai, nounMeaning) : "";
+  const movementToPerson = action.complement === "destination" && chosenObject?.categories.includes("person");
+  const meaning = selection.objectReference?.mode === "pronoun" && isLocation ? `${action.thai}${objectMeaning}` : action.complement === "destination" ? `${action.thai}${movementToPerson ? word === "going" ? "\u0E2B\u0E32" : "\u0E44\u0E1B\u0E2B\u0E32" : word === "going" ? "\u0E17\u0E35\u0E48" : "\u0E44\u0E1B\u0E17\u0E35\u0E48"}${objectMeaning}` : `${action.sentenceThai ?? action.thai}${objectMeaning}`;
+  return {
+    question: { english: `${destinationQuestion ? "Where" : "What"} ${questionBe} ${questionSubject} ${destinationQuestion ? action.word : "doing"}?`, thai: `${subjectMeaning ?? person.thai}\u0E01\u0E33\u0E25\u0E31\u0E07${destinationQuestion ? `${action.thai}${word === "going" ? "\u0E44\u0E2B\u0E19" : "\u0E44\u0E1B\u0E44\u0E2B\u0E19"}` : "\u0E17\u0E33\u0E2D\u0E30\u0E44\u0E23"}`, units: [{ english: destinationQuestion ? "Where" : "What", thai: destinationQuestion ? "\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19" : "\u0E2D\u0E30\u0E44\u0E23", role: "question" }, { english: questionBe, thai: "\u2014", role: "be" }, ...subjectParts(false), { english: destinationQuestion ? `${action.word}?` : "doing?", thai: destinationQuestion ? action.thai : "\u0E01\u0E33\u0E25\u0E31\u0E07\u0E17\u0E33", role: "action" }] },
+    answer: { english: units.map((unit) => unit.english).join(" "), thai: `${subjectMeaning ?? person.answerThai}\u0E01\u0E33\u0E25\u0E31\u0E07${meaning}`, units },
+    object
+  };
+}
+
+// src/learning/sentenceRules/identification.ts
+var references = [
+  { id: "this", word: "this", thai: "\u0E19\u0E35\u0E48", sentenceThai: "\u0E19\u0E35\u0E48\u0E04\u0E37\u0E2D\u0E2D\u0E30\u0E44\u0E23", distance: 0, plural: false, scene: "this" },
+  { id: "that", word: "that", thai: "\u0E19\u0E31\u0E48\u0E19", sentenceThai: "\u0E19\u0E31\u0E48\u0E19\u0E04\u0E37\u0E2D\u0E2D\u0E30\u0E44\u0E23", distance: 1, plural: false, scene: "that" },
+  { id: "over-there", word: "that over there", thai: "\u0E42\u0E19\u0E48\u0E19", sentenceThai: "\u0E42\u0E19\u0E48\u0E19\u0E04\u0E37\u0E2D\u0E2D\u0E30\u0E44\u0E23", distance: 2, plural: false, scene: "over-there" },
+  { id: "these", word: "these", thai: "\u0E1E\u0E27\u0E01\u0E19\u0E35\u0E49", sentenceThai: "\u0E1E\u0E27\u0E01\u0E19\u0E35\u0E49\u0E04\u0E37\u0E2D\u0E2D\u0E30\u0E44\u0E23", distance: 0, plural: true, scene: "this" },
+  { id: "those", word: "those", thai: "\u0E1E\u0E27\u0E01\u0E19\u0E31\u0E49\u0E19", sentenceThai: "\u0E1E\u0E27\u0E01\u0E19\u0E31\u0E49\u0E19\u0E04\u0E37\u0E2D\u0E2D\u0E30\u0E44\u0E23", distance: 1, plural: true, scene: "that" }
+];
+function referenceFor(id) {
+  return references.find((item) => item.id === id);
+}
+function identificationQuestion(id) {
+  const reference = referenceFor(id), verb = reference.plural ? "are" : "is";
+  return { english: `What ${verb} ${reference.word}?`, thai: reference.sentenceThai, construction: "identification-question", units: [
+    { english: "What", thai: "\u0E2D\u0E30\u0E44\u0E23", role: "question" },
+    { english: verb, thai: "\u0E04\u0E37\u0E2D", role: "be" },
+    { english: `${reference.word}?`, thai: reference.thai, role: "reference" }
+  ] };
+}
+var identificationAudio = (id) => `/audio/lesson-six/${id}.wav`;
+function identificationAnswer(id, object, owner = "the", objectReference) {
+  const reference = referenceFor(id), subject2 = reference.word.charAt(0).toUpperCase() + reference.word.slice(1), verb = reference.plural ? "are" : "is";
+  const noun = reference.plural ? object.plural : object.singular ?? object.word;
+  if (!noun) throw new Error("Identification answers require an authored plural noun");
+  const phrase = objectReference ? referencePhrase({ ...object, word: noun, number: reference.plural ? "plural" : "singular" }, { noun, nounThai: object.thai, determiner: possessiveFor(owner) ?? { english: owner, thai: ownerThai(owner) } }, objectReference) : { noun, nounThai: object.thai, determiner: possessiveFor(owner) ?? { english: owner, thai: ownerThai(owner) } };
+  const units = [{ english: subject2, thai: reference.thai, role: "reference" }, { english: verb, thai: "\u0E04\u0E37\u0E2D", role: "be" }, ...nounPhraseUnits(phrase).map((unit) => ({ ...unit, role: unit.role === "noun" ? "object" : unit.role }))];
+  units[units.length - 1] = { ...units[units.length - 1], english: units[units.length - 1].english + "." };
+  return { english: units.map((unit) => unit.english).join(" "), thai: `${reference.thai}\u0E04\u0E37\u0E2D${phrase.nounThai}${objectReference || owner === "the" ? "" : ownerThai(owner)}`, construction: "identification-answer", units };
+}
+
 // src/classroom/lessonThreeVocabulary.ts
 var lessonThreeWords = [
   { indefiniteArticle: "an", classifierThai: "\u0E25\u0E39\u0E01", singular: "apple", plural: "apples", thai: "\u0E41\u0E2D\u0E1B\u0E40\u0E1B\u0E34\u0E25", categories: ["food"] },
@@ -21792,83 +22221,6 @@ var tonightPluralForms = {
   clock: "clocks",
   bedroom: "bedrooms"
 };
-
-// src/learning/sentenceRules/adjectiveSemantics.ts
-function adjectiveFitsNoun(adjective, noun) {
-  const description = descriptions.find((item) => item.word === adjective.toLowerCase());
-  if (!description) return false;
-  const word = (typeof noun === "string" ? noun : noun.singular ?? noun.word).toLowerCase().replace(/[?.!]$/, "");
-  const person = everydayPeople.find((person2) => person2.singular === word || person2.plural === word);
-  const forms = [word, person?.singular, word.endsWith("s") ? word.slice(0, -1) : "", word.endsWith("es") ? word.slice(0, -2) : "", word.endsWith("ies") ? word.slice(0, -3) + "y" : ""];
-  return forms.some((form) => !!form && description.nouns.includes(form));
-}
-function adjectivesForNoun(noun) {
-  return descriptions.filter((description) => adjectiveFitsNoun(description.word, noun));
-}
-function adjectiveThaiForNoun(adjective, noun) {
-  const description = descriptions.find((item) => item.word === adjective);
-  if (!description) return "";
-  const word = typeof noun === "string" ? noun : noun.singular ?? noun.word;
-  return description.group === "height" ? (word.startsWith("bottle") ? "\u0E17\u0E23\u0E07" : "\u0E15\u0E31\u0E27") + description.thai : description.thai;
-}
-
-// src/learning/sentenceMatrix/nounPhrase.ts
-function nounPhraseUnits(phrase2) {
-  if (/^(?:a|an|the|my|your|his|her|our|their|this|that|these|those|some|to)\s/i.test(phrase2.noun)) throw new Error("Keep determiners and prepositions separate from the noun.");
-  if (phrase2.description && !adjectiveFitsNoun(phrase2.description.english, phrase2.noun)) throw new Error("This adjective does not fit the noun.");
-  return [
-    ...phrase2.preposition ? [{ ...phrase2.preposition, role: "preposition" }] : [],
-    ...phrase2.determiner ? [{ ...phrase2.determiner, role: "determiner" }] : [],
-    ...phrase2.description ? [{ ...phrase2.description, role: "description" }] : [],
-    { english: phrase2.noun, thai: phrase2.nounThai, role: "noun" }
-  ];
-}
-
-// src/learning/sentenceRules/possessives.ts
-function possessiveDeterminer(possessor) {
-  const english = possessor.kind === "name" ? possessor.word : nounPhraseUnits(possessor.phrase).map((unit) => unit.english).join(" ");
-  if (!english.trim() || /[.!?]/.test(english) || possessor.kind === "phrase" && possessor.phrase.preposition) throw new Error("A possessor must be a name or noun phrase, without a sentence or preposition.");
-  const plural2 = possessor.kind === "phrase" && possessor.phrase.number === "plural";
-  const suffix = plural2 && /s$/i.test(english) ? "\u2019" : "\u2019s";
-  const meaning = possessor.kind === "name" ? possessor.thai : possessor.phrase.nounThai + (possessor.phrase.description?.thai ?? "") + (possessor.phrase.determiner?.thai.startsWith("\u0E02\u0E2D\u0E07") ? possessor.phrase.determiner.thai : "");
-  return { english: `${english}${suffix}`, thai: `\u0E02\u0E2D\u0E07${meaning}`, possessor };
-}
-var definiteNounPhrase = (word, thai, number = "singular") => ({ noun: word, nounThai: thai, number, determiner: { english: "the", thai: "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07" } });
-var doctor = { noun: "doctor", nounThai: "\u0E2B\u0E21\u0E2D", determiner: { english: "my", thai: "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19" } };
-var doctorsWife = { noun: "wife", nounThai: "\u0E20\u0E23\u0E23\u0E22\u0E32", determiner: possessiveDeterminer({ kind: "phrase", phrase: doctor }) };
-var possessiveChoices = [
-  { value: possessiveDeterminer({ kind: "name", word: "Bia", thai: "\u0E40\u0E1A\u0E35\u0E22" }), requires: [] },
-  ...everydayPeople.flatMap((person) => [
-    { value: possessiveDeterminer({ kind: "phrase", phrase: definiteNounPhrase(person.singular, person.thai) }), requires: [person.singular] },
-    { value: possessiveDeterminer({ kind: "phrase", phrase: definiteNounPhrase(person.plural, person.thai, "plural") }), requires: [person.plural] }
-  ]),
-  { value: possessiveDeterminer({ kind: "phrase", phrase: doctor }), requires: ["doctor"] },
-  { value: possessiveDeterminer({ kind: "phrase", phrase: doctorsWife }), requires: ["doctor", "wife"] }
-];
-var possessiveFor = (word) => possessiveChoices.find((choice) => choice.value.english === word)?.value;
-
-// src/learning/sentenceMatrix/model.ts
-var determiners = [
-  { word: "the", thai: "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07" },
-  { word: "my", thai: "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19" },
-  { word: "your", thai: "\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13" }
-];
-var allDeterminers = [...determiners, { word: "a", thai: "\u0E2B\u0E19\u0E36\u0E48\u0E07" }, { word: "an", thai: "\u0E2B\u0E19\u0E36\u0E48\u0E07" }, { word: "his", thai: "\u0E02\u0E2D\u0E07\u0E40\u0E02\u0E32 (\u0E1C\u0E39\u0E49\u0E0A\u0E32\u0E22)" }, { word: "her", thai: "\u0E02\u0E2D\u0E07\u0E40\u0E18\u0E2D (\u0E1C\u0E39\u0E49\u0E2B\u0E0D\u0E34\u0E07)" }, { word: "our", thai: "\u0E02\u0E2D\u0E07\u0E1E\u0E27\u0E01\u0E40\u0E23\u0E32" }, { word: "their", thai: "\u0E02\u0E2D\u0E07\u0E1E\u0E27\u0E01\u0E40\u0E02\u0E32" }, { word: "this", thai: "\u0E19\u0E35\u0E49" }, { word: "that", thai: "\u0E19\u0E31\u0E49\u0E19" }, { word: "these", thai: "\u0E40\u0E2B\u0E25\u0E48\u0E32\u0E19\u0E35\u0E49" }, { word: "those", thai: "\u0E40\u0E2B\u0E25\u0E48\u0E32\u0E19\u0E31\u0E49\u0E19" }, { word: "some", thai: "\u0E08\u0E33\u0E19\u0E27\u0E19\u0E2B\u0E19\u0E36\u0E48\u0E07" }];
-var ownerThai = (owner) => possessiveFor(owner)?.thai ?? allDeterminers.find((item) => item.word === owner)?.thai ?? (() => {
-  throw new Error("Unknown determiner");
-})();
-var verbForWord = (word) => word.number === "plural" || word.pairOnly ? "are" : "is";
-function locationSentence(item, owner = "the", count = "", tense = "present") {
-  const present = verbForWord(item);
-  const verb = tense === "past" ? present === "are" ? "were" : "was" : present;
-  return {
-    english: `Where ${verb} ${owner} ${item.word}?`,
-    thai: `${tense === "past" ? "\u0E01\u0E48\u0E2D\u0E19\u0E2B\u0E19\u0E49\u0E32\u0E19\u0E35\u0E49 " : ""}${item.thai}${count}${owner === "the" ? "" : ownerThai(owner)}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`,
-    units: [{ english: "Where", thai: "\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19" }, { english: verb, thai: tense === "past" ? "\u0E2D\u0E22\u0E39\u0E48 \xB7 \u0E01\u0E48\u0E2D\u0E19\u0E2B\u0E19\u0E49\u0E32\u0E19\u0E35\u0E49" : "\u0E2D\u0E22\u0E39\u0E48" }, { english: owner, thai: ownerThai(owner), ...possessiveFor(owner) ? { possessor: possessiveFor(owner).possessor } : {} }, { english: `${item.word}?`, thai: item.thai }],
-    noun: item.word,
-    verb
-  };
-}
 
 // src/race/pluralVocabulary.ts
 var pluralVocabulary = [
@@ -21937,341 +22289,6 @@ var lessonThreeCatalogue = cumulativeCatalogue(lessonTwoCatalogue, lessonThreeIn
 var lessonTwoMatrixCatalogue = cumulativeCatalogue(lessonOneCatalogue, earlierNounForms, lessonTwoIntroducedCatalogue);
 var lessonThreeMatrixCatalogue = cumulativeCatalogue(lessonTwoMatrixCatalogue, lessonThreeIntroducedCatalogue);
 
-// src/learning/sentenceRules/actionBlueprints.ts
-var activeActionBlueprints = [
-  { id: "transitive-object", connection: "direct" },
-  { id: "intransitive-to-object", connection: "to" }
-];
-function potentialActionUses(action) {
-  if (action.uses) return action.uses;
-  if (action.complement === "object") return { direct: { objects: action.objects } };
-  if (action.destination) return { to: { objects: ["destination"] } };
-  if (action.preposition) return { [action.preposition.english]: { objects: action.objects, thai: action.preposition.thai } };
-  return action.complement === "none" ? { bare: { objects: [] } } : {};
-}
-function actionInBlueprint(action, blueprint) {
-  const use = potentialActionUses(action)[blueprint.connection];
-  if (!use) return void 0;
-  return {
-    ...action,
-    objects: use.objects,
-    spoken: use.spoken ?? action.spoken,
-    sentenceThai: use.sentenceThai ?? action.sentenceThai,
-    complement: blueprint.connection === "bare" ? "none" : blueprint.connection === "direct" ? "object" : blueprint.connection === "to" && action.destination ? "destination" : "prepositional",
-    preposition: ["bare", "direct"].includes(blueprint.connection) ? void 0 : { english: blueprint.connection, thai: use.thai ?? (blueprint.connection === "to" ? "\u0E17\u0E35\u0E48" : "\u2014") }
-  };
-}
-function matchingActionBlueprint(action, blueprints = activeActionBlueprints) {
-  return blueprints.find((blueprint) => !!actionInBlueprint(action, blueprint));
-}
-
-// src/learning/sentenceMatrix/subjectEngine.ts
-var subjectPronouns = [
-  { word: "I", thai: "\u0E09\u0E31\u0E19", person: 1 },
-  { word: "you", thai: "\u0E04\u0E38\u0E13", person: 2 },
-  { word: "he", thai: "\u0E40\u0E02\u0E32", person: 3 },
-  { word: "she", thai: "\u0E40\u0E18\u0E2D", person: 3 },
-  { word: "we", thai: "\u0E1E\u0E27\u0E01\u0E40\u0E23\u0E32", person: 1, number: "plural" },
-  { word: "they", thai: "\u0E1E\u0E27\u0E01\u0E40\u0E02\u0E32", person: 3, number: "plural" },
-  { word: "it", thai: "\u0E21\u0E31\u0E19", person: 3 }
-];
-function subjectVerb(subject) {
-  if (subject.number === "plural" || subject.person === 2) return "are";
-  return subject.person === 1 ? "am" : "is";
-}
-
-// src/learning/sentenceRules/determiners.ts
-function determinerAgrees(word, plural2, mass = false) {
-  if (["this", "that"].includes(word)) return !plural2;
-  if (["these", "those"].includes(word)) return plural2 && !mass;
-  if (word === "some") return plural2 || mass;
-  if (["a", "an"].includes(word)) return !plural2 && !mass;
-  return !!possessiveFor(word) || ["the", "my", "your", "his", "her", "our", "their"].includes(word);
-}
-
-// src/learning/sentenceRules/meaningProfiles.ts
-var meaningProfiles = {
-  thought: { kind: "abstract" },
-  idea: { kind: "abstract" },
-  happiness: { kind: "abstract" },
-  advice: { kind: "abstract", countability: "mass" },
-  taxi: { kind: "physical-object" },
-  beach: { kind: "place", locationPrepositions: ["at", "on"] },
-  airport: { kind: "place", locationPrepositions: ["at", "in"] },
-  shop: { kind: "place", locationPrepositions: ["at", "in"] },
-  pharmacy: { kind: "place", locationPrepositions: ["at", "in"] },
-  hospital: { kind: "place", locationPrepositions: ["at", "in"] },
-  supermarket: { kind: "place", locationPrepositions: ["at", "in"] },
-  market: { kind: "place", locationPrepositions: ["at", "in"] },
-  cafe: { kind: "place", locationPrepositions: ["at", "in"] },
-  "bus stop": { kind: "place", locationPrepositions: ["at"] },
-  "car park": { kind: "place", locationPrepositions: ["at", "in"] },
-  entrance: { kind: "place", locationPrepositions: ["at"] },
-  exit: { kind: "place", locationPrepositions: ["at"] },
-  atm: { kind: "physical-object", roles: ["destination"], locationPrepositions: ["at"] },
-  lift: { kind: "physical-object", roles: ["destination"], locationPrepositions: ["at", "in"] },
-  "swimming pool": { kind: "place", locationPrepositions: ["at", "in"] }
-};
-
-// src/learning/sentenceMatrix/vocabularyCategories.ts
-var vocabularyCategories = [
-  { id: "clothing", en: "Clothing", th: "\u0E40\u0E2A\u0E37\u0E49\u0E2D\u0E1C\u0E49\u0E32" },
-  { id: "food", en: "Food", th: "\u0E2D\u0E32\u0E2B\u0E32\u0E23" },
-  { id: "places", en: "Places", th: "\u0E2A\u0E16\u0E32\u0E19\u0E17\u0E35\u0E48" },
-  { id: "buildings", en: "Buildings", th: "\u0E2D\u0E32\u0E04\u0E32\u0E23" },
-  { id: "everyday", en: "Everyday objects", th: "\u0E02\u0E2D\u0E07\u0E43\u0E0A\u0E49" },
-  { id: "furniture", en: "Furniture", th: "\u0E40\u0E1F\u0E2D\u0E23\u0E4C\u0E19\u0E34\u0E40\u0E08\u0E2D\u0E23\u0E4C" },
-  { id: "sports", en: "Sports", th: "\u0E01\u0E35\u0E2C\u0E32" },
-  { id: "transport", en: "Transport", th: "\u0E22\u0E32\u0E19\u0E1E\u0E32\u0E2B\u0E19\u0E30" },
-  { id: "people", en: "People", th: "\u0E1C\u0E39\u0E49\u0E04\u0E19" }
-];
-var groups = {
-  clothing: ["shoe", "sock", "sandal", "boot", "shirt", "hat", "trousers", "glasses", "bag", "watch"],
-  food: [],
-  places: ["hotel", "toilet", "gym", "padel court", "clinic", "school", "bank", "bookstore", "bedroom"],
-  buildings: ["hotel", "clinic", "school", "bank", "bookstore"],
-  everyday: ["key", "bag", "ticket", "book", "pen", "pencil", "phone", "charger", "towel", "bottle", "cup", "plate", "watch", "clock", "remote", "fan", "air conditioner", "glasses"],
-  furniture: ["table", "chair"],
-  sports: ["gym", "padel court", "racket"],
-  transport: ["motorbike"],
-  people: ["doctor"]
-};
-function categoriesForWord(item) {
-  if (item.categories) return item.categories;
-  const base2 = (item.singular ?? item.word).toLowerCase();
-  return vocabularyCategories.filter((category) => groups[category.id].includes(base2)).map((category) => category.id);
-}
-
-// src/learning/sentenceRules/blueprints.ts
-var sentenceBlueprints = {
-  "where-noun": { pattern: "Where {be} {determiner} {noun}?", nounKinds: ["place", "person", "physical-object"], agreement: "noun-number", nounModes: ["noun", "pronoun", "name"] },
-  "where-person": { pattern: "Where {be} {subject}?", nounKinds: [], agreement: "subject-person", nounModes: ["noun", "pronoun", "name"] },
-  "person-at-place": { pattern: "{subject} {be} at {determiner} {place}.", nounKinds: ["place"], agreement: "subject-person", nounModes: ["noun", "pronoun", "name"] }
-};
-function meaningForWord(word) {
-  if (word.meaning) return word.meaning;
-  const reviewed = meaningProfiles[(word.singular ?? word.word).toLowerCase()];
-  if (reviewed) return reviewed;
-  const categories = categoriesForWord(word);
-  if (categories.includes("places") || categories.includes("buildings")) return { kind: "place", locationPrepositions: (word.singular ?? word.word) === "bedroom" ? ["in"] : ["at", "in"] };
-  if (categories.includes("people")) return { kind: "person" };
-  if (categories.some((c) => ["clothing", "food", "buildings", "everyday", "furniture", "sports", "transport"].includes(c))) return { kind: "physical-object" };
-  return void 0;
-}
-function validateSentence(request) {
-  const issues = [];
-  const add = (code, slot, word, message) => issues.push({ code, slot, word, message });
-  if (request.blueprint === "where-person" || request.blueprint === "person-at-place") {
-    if (!request.subject) add("missing-subject", "subject", "", "A subject is required.");
-    else if (subjectVerb(request.subject) !== request.verb) add("subject-agreement", "verb", request.verb, `${request.subject.word} requires ${subjectVerb(request.subject)}.`);
-  }
-  if (request.blueprint !== "where-person") {
-    const noun = request.noun;
-    if (!noun) add("missing-noun", "noun", "", "A noun is required.");
-    else {
-      if (request.description && !adjectiveFitsNoun(request.description, noun)) add("incompatible-description", "description", request.description, "This description does not fit this noun.");
-      const meaning = meaningForWord(noun), allowed = sentenceBlueprints[request.blueprint].nounKinds;
-      if (!meaning) add("unclassified-meaning", "noun", noun.word, "Add a reviewed meaning category before using this word.");
-      else if (!allowed.includes(meaning.kind) && !(request.blueprint === "person-at-place" && meaning.roles?.includes("destination"))) add("incompatible-meaning", "noun", noun.word, `${meaning.kind} does not fit ${request.blueprint}.`);
-      else if (request.blueprint === "person-at-place" && !meaning.locationPrepositions?.includes("at")) add("preposition-review", "noun", noun.word, "This destination is not approved with at; review its preposition.");
-      if (meaning?.countability === "mass" && (noun.number === "plural" || noun.pairOnly)) add("mass-noun-number", "noun", noun.word, "This sense is a mass noun; do not create a plural form.");
-      if (meaning?.countability === "plural-only" && noun.number !== "plural" && !noun.pairOnly) add("plural-only-number", "noun", noun.word, "This sense requires plural agreement.");
-      if (request.blueprint === "where-noun") {
-        const plural2 = noun.number === "plural" || Boolean(noun.pairOnly);
-        if (!["is", "are", "was", "were"].includes(request.verb) || plural2 !== ["are", "were"].includes(request.verb)) add("noun-agreement", "verb", request.verb, `${noun.word} requires a ${plural2 ? "plural" : "singular"} verb.`);
-      }
-    }
-    if (request.namedPlace) {
-      if (request.determiner) add("proper-name-article", "determiner", request.determiner, "This named place does not take a determiner in this blueprint.");
-    } else if (!possessiveFor(request.determiner ?? "") && !["the", "my", "your", "his", "her", "our", "their", "this", "that", "these", "those", "some"].includes(request.determiner ?? "")) add("missing-determiner", "determiner", request.determiner ?? "", "Select an approved determiner.");
-    else if (noun && !determinerAgrees(request.determiner, noun.number === "plural" || !!noun.pairOnly, meaningForWord(noun)?.countability === "mass")) add("determiner-agreement", "determiner", request.determiner, "The determiner must agree with this noun.");
-  }
-  return issues;
-}
-function assertSentence(request) {
-  const issues = validateSentence(request);
-  if (issues.length) throw new Error(`${request.blueprint}: ${issues.map((i) => `${i.code} (${i.word}): ${i.message}`).join("; ")}`);
-}
-
-// src/learning/sentenceRules/nominalReferences.ts
-var defaultPlaceNames = [{ word: "Central", thai: "\u0E40\u0E0B\u0E47\u0E19\u0E17\u0E23\u0E31\u0E25", kind: "place" }, { word: "Success", thai: "Success", kind: "place" }];
-var plural = (noun) => noun.number === "plural" || !!noun.pairOnly;
-function objectPronouns(noun, location2 = false) {
-  const words = location2 ? ["here", "there"] : plural(noun) ? ["them"] : meaningForWord(noun)?.kind !== "person" ? ["it"] : /^(woman|girl|mother|daughter)$/.test(noun.singular ?? noun.word) ? ["her"] : /^(man|boy|father|son)$/.test(noun.singular ?? noun.word) ? ["him"] : ["him", "her"];
-  const meanings = { it: "\u0E21\u0E31\u0E19", them: "\u0E1E\u0E27\u0E01\u0E40\u0E02\u0E32 / \u0E2A\u0E34\u0E48\u0E07\u0E40\u0E2B\u0E25\u0E48\u0E32\u0E19\u0E31\u0E49\u0E19", him: "\u0E40\u0E02\u0E32", her: "\u0E40\u0E18\u0E2D", here: "\u0E17\u0E35\u0E48\u0E19\u0E35\u0E48", there: "\u0E17\u0E35\u0E48\u0E19\u0E31\u0E48\u0E19" };
-  return words.map((word) => ({ ...noun, word, thai: meanings[word], reference: { mode: "pronoun", word } }));
-}
-function referencePhrase(noun, phrase2, reference, location2 = false) {
-  if (reference.mode === "name") {
-    const kind = meaningForWord(noun)?.kind;
-    if (!["person", "place"].includes(kind ?? "") || reference.name.kind !== kind || !reference.name.word.trim() || reference.name.phrase || /['’]s\b/.test(reference.name.word)) throw new Error("A proper noun must name a compatible person or place directly.");
-    return { noun: reference.name.word, nounThai: reference.name.thai, ...phrase2.preposition ? { preposition: phrase2.preposition } : {} };
-  }
-  const chosen = objectPronouns(noun, location2).find((p) => p.word === reference.word);
-  if (!chosen) throw new Error("This pronoun does not fit the noun or its grammatical role.");
-  return { noun: chosen.word, nounThai: chosen.thai, ...!location2 && phrase2.preposition ? { preposition: phrase2.preposition } : {} };
-}
-
-// src/learning/sentenceRules/expandedActions.ts
-var icon = (id) => `/classroom/icons/actions/expanded/${id}.png`;
-var expandedActions = [
-  { word: "using", thai: "\u0E43\u0E0A\u0E49", complement: "object", objects: ["usable"], categories: ["everyday"], icon: icon("using") },
-  { word: "carrying", thai: "\u0E16\u0E37\u0E2D\u0E44\u0E1B", complement: "object", objects: ["carryable"], categories: ["everyday"], icon: icon("carrying") },
-  { word: "finding", thai: "\u0E1E\u0E1A", complement: "object", objects: ["findable"], categories: ["everyday"], icon: icon("finding") },
-  { word: "buying", thai: "\u0E0B\u0E37\u0E49\u0E2D", complement: "object", objects: ["purchasable"], categories: ["everyday"], icon: icon("buying") },
-  { word: "closing", thai: "\u0E1B\u0E34\u0E14", complement: "object", objects: ["openable"], categories: ["everyday"], icon: icon("closing") },
-  { word: "wearing", thai: "\u0E2A\u0E27\u0E21", complement: "object", objects: ["wearable"], categories: ["clothing"], icon: icon("wearing") },
-  { word: "putting on", uses: { on: { objects: ["wearable"], spoken: "putting", thai: "\u2014" } }, thai: "\u0E2A\u0E27\u0E21\u0E43\u0E2A\u0E48", complement: "object", objects: ["wearable"], categories: ["clothing"], icon: icon("putting-on") },
-  { word: "taking off", uses: { off: { objects: ["wearable"], spoken: "taking", thai: "\u2014" } }, thai: "\u0E16\u0E2D\u0E14", complement: "object", objects: ["wearable"], categories: ["clothing"], icon: icon("taking-off") },
-  { word: "riding", thai: "\u0E02\u0E35\u0E48", complement: "object", objects: ["rideable"], categories: ["transport"], icon: icon("riding") },
-  { word: "catching", thai: "\u0E02\u0E36\u0E49\u0E19\u0E43\u0E2B\u0E49\u0E17\u0E31\u0E19", complement: "object", objects: ["public-transport"], categories: ["transport"], icon: icon("catching") },
-  { word: "getting on", spoken: "getting", preposition: { english: "on", thai: "\u0E02\u0E36\u0E49\u0E19" }, thai: "\u0E40\u0E04\u0E25\u0E37\u0E48\u0E2D\u0E19\u0E15\u0E31\u0E27", sentenceThai: "\u0E02\u0E36\u0E49\u0E19", complement: "prepositional", objects: ["public-transport"], categories: ["transport"], icon: icon("getting-on") },
-  { word: "helping", thai: "\u0E0A\u0E48\u0E27\u0E22", complement: "object", objects: ["person"], categories: ["people"], icon: icon("helping") },
-  { word: "watching", thai: "\u0E14\u0E39", complement: "object", objects: ["watchable", "person"], categories: ["everyday"], icon: icon("watching") },
-  { word: "teaching", thai: "\u0E2A\u0E2D\u0E19", complement: "object", objects: ["person"], categories: ["people"], icon: icon("teaching") },
-  { word: "sitting", thai: "\u0E19\u0E31\u0E48\u0E07", complement: "none", objects: [], categories: ["everyday"], icon: icon("sitting") },
-  { word: "standing", thai: "\u0E22\u0E37\u0E19", complement: "none", objects: [], categories: ["everyday"], icon: icon("standing") },
-  { word: "waiting", thai: "\u0E23\u0E2D", complement: "none", objects: [], categories: ["everyday"], icon: icon("waiting") },
-  { word: "arriving", preposition: { english: "at", thai: "\u0E17\u0E35\u0E48" }, thai: "\u0E21\u0E32\u0E16\u0E36\u0E07", complement: "prepositional", objects: ["destination"], categories: ["places"], icon: icon("arriving") },
-  { word: "leaving", thai: "\u0E2D\u0E2D\u0E01\u0E08\u0E32\u0E01", complement: "object", objects: ["destination"], categories: ["places"], icon: icon("leaving") }
-];
-
-// src/learning/sentenceRules/actionSemantics.ts
-var childSubjects = /* @__PURE__ */ new Set(["boy", "boys", "girl", "girls", "son", "sons", "daughter", "daughters"]);
-function subjectCanPerform(subject, action, object) {
-  const noun = (subject.phrase?.noun ?? subject.semanticNoun ?? subject.word.replace(/^(?:the|my|your|his|her|our|their) /i, "")).toLowerCase();
-  const child = childSubjects.has(noun);
-  const target = object?.toLowerCase().replace(/[?.!]$/, "").replace(/^(?:to |on |at )?(?:the |a |an |my |your |his |her |our |their )?/, "").replace(/buses$/, "bus").replace(/motorbikes$/, "motorbike");
-  if (["helping", "teaching", "watching", "talking", "listening", "walking", "running", "going"].includes(action) && target === noun) return false;
-  return !(child && (action === "driving" || action === "riding" && target === "motorbike" || action === "buying" && ["bus", "motorbike", "air conditioner"].includes(target ?? "")));
-}
-var nounActionAffordances = {
-  "sleep-inside": /* @__PURE__ */ new Set(["bedroom", "hotel"]),
-  "sleep-surface": /* @__PURE__ */ new Set(["bed"]),
-  holdable: /* @__PURE__ */ new Set(["phone", "bag", "cup", "key", "shirt", "shoe", "book", "apple", "bottle", "plate", "wallet", "banana", "orange", "sandwich", "towel", "hat", "sock", "trousers", "glasses", "pen", "pencil", "umbrella", "watch", "charger", "ticket", "passport", "laptop", "camera", "remote", "sandal", "boot", "racket"]),
-  openable: /* @__PURE__ */ new Set(["book", "bag", "bottle", "wallet", "umbrella", "laptop", "door", "window", "passport"]),
-  washable: /* @__PURE__ */ new Set(["cup", "plate", "apple", "banana", "orange", "bottle", "shirt", "shoe", "towel", "hat", "sock", "trousers", "glasses", "sandal", "boot", "bus", "motorbike", "bicycle"]),
-  cleanable: /* @__PURE__ */ new Set(["table", "chair", "toilet", "school", "phone", "key", "bottle", "plate", "bus", "motorbike", "restaurant", "bedroom", "wallet", "bank", "clinic", "glasses", "watch", "clock", "fan", "charger", "air conditioner", "bicycle", "hotel", "laptop", "camera", "remote", "bookstore", "gym", "racket", "padel court"]),
-  usable: /* @__PURE__ */ new Set(["water", "phone", "bag", "cup", "key", "table", "chair", "toilet", "bottle", "plate", "bus", "motorbike", "wallet", "towel", "glasses", "pen", "pencil", "umbrella", "watch", "clock", "fan", "charger", "air conditioner", "bicycle", "ticket", "passport", "laptop", "camera", "remote", "racket"]),
-  carryable: /* @__PURE__ */ new Set(["phone", "bag", "cup", "key", "shirt", "shoe", "book", "apple", "bottle", "plate", "wallet", "banana", "orange", "sandwich", "towel", "hat", "sock", "trousers", "glasses", "pen", "pencil", "umbrella", "watch", "charger", "ticket", "passport", "laptop", "camera", "remote", "sandal", "boot", "racket"]),
-  findable: /* @__PURE__ */ new Set(["phone", "bag", "key", "shirt", "shoe", "book", "wallet", "hat", "sock", "glasses", "pen", "pencil", "umbrella", "watch", "charger", "ticket", "passport", "laptop", "camera", "remote", "sandal", "boot", "racket"]),
-  purchasable: /* @__PURE__ */ new Set(["phone", "bag", "cup", "key", "shirt", "shoe", "table", "chair", "book", "apple", "bottle", "plate", "bus", "motorbike", "wallet", "banana", "orange", "sandwich", "towel", "hat", "sock", "trousers", "glasses", "pen", "pencil", "umbrella", "watch", "clock", "fan", "charger", "air conditioner", "bicycle", "ticket", "laptop", "camera", "remote", "sandal", "boot", "racket"]),
-  wearable: /* @__PURE__ */ new Set(["shirt", "shoe", "hat", "sock", "trousers", "glasses", "watch", "sandal", "boot"]),
-  rideable: /* @__PURE__ */ new Set(["bicycle", "motorbike"]),
-  "public-transport": /* @__PURE__ */ new Set(["bus"]),
-  watchable: /* @__PURE__ */ new Set(["bus", "motorbike", "bicycle"]),
-  readable: /* @__PURE__ */ new Set(["book", "ticket", "passport"])
-};
-
-// src/learning/sentenceRules/actionDialogue.ts
-var actionVocabulary = [
-  ...[{ word: "talking", thai: "\u0E1E\u0E39\u0E14" }, { word: "listening", thai: "\u0E1F\u0E31\u0E07" }, { word: "driving", thai: "\u0E02\u0E31\u0E1A\u0E23\u0E16" }].map((action) => ({ ...action, ...action.word === "driving" ? { destination: true } : { uses: { to: { objects: ["person"], thai: action.word === "talking" ? "\u0E01\u0E31\u0E1A" : "\u2014", sentenceThai: action.word === "talking" ? "\u0E1E\u0E39\u0E14\u0E01\u0E31\u0E1A" : "\u0E1F\u0E31\u0E07" } } }, categories: ["everyday"], icon: `/classroom/icons/everyday/${action.word}.webp`, complement: "none", objects: [] })),
-  { word: "eating", categories: ["food"], icon: "/classroom/icons/actions/closeup/eating.png", thai: "\u0E01\u0E34\u0E19", complement: "object", objects: ["food"] },
-  { word: "drinking", categories: ["food"], icon: "/classroom/icons/actions/closeup/drinking.png", thai: "\u0E14\u0E37\u0E48\u0E21", complement: "object", objects: ["drink"] },
-  { word: "sleeping", uses: { bare: { objects: [] }, in: { objects: ["sleep-inside"], thai: "\u0E43\u0E19", sentenceThai: "\u0E19\u0E2D\u0E19\u0E43\u0E19" }, on: { objects: ["sleep-surface"], thai: "\u0E1A\u0E19", sentenceThai: "\u0E19\u0E2D\u0E19\u0E1A\u0E19" } }, categories: ["places"], icon: "/classroom/icons/actions/closeup/sleeping.png", thai: "\u0E19\u0E2D\u0E19", complement: "none", objects: [] },
-  { word: "running", uses: { to: { objects: ["destination", "person", "spatial-target"] } }, destination: true, categories: ["sports"], icon: "/classroom/icons/actions/closeup/running.png", thai: "\u0E27\u0E34\u0E48\u0E07", complement: "none", objects: [] },
-  { word: "walking", uses: { to: { objects: ["destination", "person", "spatial-target"] } }, destination: true, categories: ["places", "sports"], icon: "/classroom/icons/actions/closeup/walking.png", thai: "\u0E40\u0E14\u0E34\u0E19", complement: "none", objects: [] },
-  { word: "playing", categories: ["sports"], icon: "/classroom/icons/actions/closeup/playing.png", thai: "\u0E40\u0E25\u0E48\u0E19", complement: "none", objects: [] },
-  { word: "reading", categories: ["everyday"], icon: "/classroom/icons/actions/closeup/reading.png", thai: "\u0E2D\u0E48\u0E32\u0E19", complement: "object", objects: ["readable"] },
-  { word: "going", uses: { to: { objects: ["destination", "person", "spatial-target"] } }, destination: true, categories: ["places", "transport"], icon: "/classroom/icons/actions/closeup/walking.png", thai: "\u0E44\u0E1B", complement: "destination", objects: ["destination"] },
-  { word: "holding", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/closeup/holding.png", thai: "\u0E16\u0E37\u0E2D", complement: "object", objects: ["holdable"] },
-  { word: "opening", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/closeup/opening.png", thai: "\u0E40\u0E1B\u0E34\u0E14", complement: "object", objects: ["openable"] },
-  { word: "cleaning", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/expanded/cleaning.png", thai: "\u0E17\u0E33\u0E04\u0E27\u0E32\u0E21\u0E2A\u0E30\u0E2D\u0E32\u0E14", complement: "object", objects: ["cleanable"] },
-  ...expandedActions,
-  { word: "washing", level: 6, categories: ["everyday"], icon: "/classroom/icons/actions/closeup/washing.png", thai: "\u0E25\u0E49\u0E32\u0E07", complement: "object", objects: ["washable"] }
-];
-var actionSubjects = Object.fromEntries(subjectPronouns.map((subject) => {
-  const reply = subject.word === "you" ? subjectPronouns.find((item) => item.word === "I") : subject;
-  return [subject.word.toLowerCase(), { questionBe: subjectVerb(subject), answer: reply.word.charAt(0).toUpperCase() + reply.word.slice(1), answerBe: subjectVerb(reply), thai: subject.thai, answerThai: reply.thai }];
-}));
-function actionContextsForWord(word) {
-  const categories = categoriesForWord(word), meaning = meaningForWord(word), base2 = word.singular ?? word.word;
-  if (meaning?.actionContexts) return [...meaning.actionContexts];
-  return [
-    ...Object.entries(nounActionAffordances).flatMap(([context, nouns]) => nouns.has(base2) ? [context] : []),
-    ...meaning?.kind === "person" ? ["person"] : [],
-    ...meaning?.kind === "physical-object" && meaning.countability !== "mass" ? ["spatial-target"] : [],
-    ...categories.includes("food") ? ["food"] : [],
-    ...meaning?.kind === "place" || meaning?.roles?.includes("destination") ? ["destination"] : []
-  ];
-}
-function actionForFrame(word, question, blueprint) {
-  const lexical = actionVocabulary.find((item) => item.word === word);
-  const action = lexical && blueprint ? actionInBlueprint(lexical, blueprint) : lexical;
-  if (question !== "destination") return action;
-  if (!action || !action.destination) throw new Error("Destination questions require a movement verb.");
-  return blueprint ? action : { ...action, complement: "destination", objects: ["destination"] };
-}
-var objectCache = /* @__PURE__ */ new WeakMap();
-function objectsForAction(word, catalogue, question, blueprint) {
-  const action = actionForFrame(word, question, blueprint);
-  if (!action || action.complement === "none") return [];
-  const key = `${word}:${question ?? "activity"}:${JSON.stringify(blueprint ?? null)}`, cached = objectCache.get(catalogue)?.get(key);
-  if (cached) return [...cached];
-  const candidates = catalogue.map((item) => {
-    const contexts = actionContextsForWord(item);
-    const plural2 = item.number === "plural" || item.pairOnly;
-    const mass = meaningForWord(item)?.countability === "mass";
-    const determiner = action.complement === "destination" || action.complement === "prepositional" || plural2 ? { english: "the", thai: "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07" } : mass ? void 0 : { english: item.indefiniteArticle ?? (/^[aeiou]/i.test(item.word) ? "an" : "a"), thai: `\u0E2B\u0E19\u0E36\u0E48\u0E07${item.classifierThai ?? ""}` };
-    const phrase2 = { noun: item.word, nounThai: item.thai, determiner, ...action.complement === "destination" ? { preposition: { english: "to", thai: contexts.includes("person") ? "\u0E2B\u0E32" : "\u0E17\u0E35\u0E48" } } : action.preposition ? { preposition: action.preposition } : {} };
-    return { noun: item.word, phrase: phrase2, categories: contexts, plural: !!plural2, mass, word: nounPhraseUnits(phrase2).map((unit) => unit.english).join(" "), thai: action.complement === "destination" ? `\u0E44\u0E1B${contexts.includes("person") ? "\u0E2B\u0E32" : "\u0E17\u0E35\u0E48"}${item.thai}` : determiner && ["a", "an"].includes(determiner.english) ? `${item.thai}${determiner.thai}` : item.thai };
-  });
-  const result = candidates.filter((object) => (!!blueprint || action.complement !== "destination" || object.categories.includes("destination")) && object.categories.some((category) => action.objects.includes(category)) && (!blueprint?.nounCategories || object.categories.some((category) => blueprint.nounCategories.includes(category)))).sort((a, b) => action.complement === "destination" ? Number(b.categories.includes("destination")) - Number(a.categories.includes("destination")) : 0);
-  const cache2 = objectCache.get(catalogue) ?? /* @__PURE__ */ new Map();
-  cache2.set(key, result);
-  objectCache.set(catalogue, cache2);
-  return [...result];
-}
-function objectDeterminers(object, allowed) {
-  const article = object.phrase.determiner;
-  return [...article && ["a", "an"].includes(article.english) ? [{ word: article.english, thai: article.thai }] : [], ...allDeterminers.filter((item) => !["a", "an"].includes(item.word)), ...possessiveChoices.map((choice) => ({ word: choice.value.english, thai: choice.value.thai }))].filter((item) => determinerAgrees(item.word, !!object.plural, !!object.mass)).filter((item) => !allowed || allowed.includes(item.word));
-}
-function actionDialogue(subject, word, selection) {
-  const person = actionSubjects[subject], action = actionForFrame(word, selection.question, selection.blueprint);
-  if (!person || !action) throw new Error("Choose a reviewed person and action.");
-  if (!subjectCanPerform(selection.subject ?? { word: subject }, word, selection.object)) throw new Error("This action does not fit the depicted subject.");
-  if (selection.subject && selection.subject.kind !== "person") throw new Error("This action needs a person.");
-  if (selection.destination && (action.complement !== "destination" || selection.destination.kind !== "place")) throw new Error("This action does not accept a named place.");
-  const destinationQuestion = selection.question === "destination";
-  const speaker = selection.subject;
-  const questionSubject = speaker?.phrase ? nounPhraseUnits(speaker.phrase).map((unit) => unit.english).join(" ") : speaker?.word ?? (subject === "i" ? "I" : subject);
-  const subjectMeaning = speaker?.phrase ? speaker.phrase.nounThai + (speaker.phrase.description?.thai ?? "") + (speaker.phrase.determiner && speaker.phrase.determiner.english !== "the" ? speaker.phrase.determiner.thai.replace(/ \(.*\)/, "") : "") : speaker?.thai;
-  const answerWord = speaker?.word ?? person.answer;
-  const answerSubject = answerWord.charAt(0).toUpperCase() + answerWord.slice(1);
-  const be = speaker ? subjectVerb(speaker) : person.answerBe;
-  const questionBe = speaker ? subjectVerb(speaker) : person.questionBe;
-  const objects = objectsForAction(word, selection.vocabulary, selection.question, selection.blueprint);
-  const chosenObject = selection.object === void 0 ? objects[0] : objects.find((item) => item.word === selection.object);
-  if (action.complement !== "none" && !chosenObject && !selection.destination) throw new Error("This verb frame requires a compatible object or place.");
-  if (selection.object !== void 0 && !chosenObject) throw new Error("This object does not fit the action.");
-  const baseObject = selection.destination ? { word: `to ${selection.destination.word}`, thai: `\u0E44\u0E1B\u0E17\u0E35\u0E48${selection.destination.thai}`, noun: selection.destination.word, phrase: { noun: selection.destination.word, nounThai: selection.destination.thai, preposition: { english: "to", thai: "\u0E17\u0E35\u0E48" } }, categories: ["destination"] } : chosenObject;
-  const selectedDeterminer = selection.determiner && chosenObject ? objectDeterminers(chosenObject).find((item) => item.word === selection.determiner || ["a", "an"].includes(item.word) && ["a", "an"].includes(selection.determiner)) : void 0;
-  if (selection.determiner && !selection.destination && !selectedDeterminer) throw new Error("This determiner does not fit the noun.");
-  const describedObject = baseObject && selection.description ? { ...baseObject, phrase: { ...baseObject.phrase, description: selection.description } } : baseObject;
-  const determinedObject = describedObject && selectedDeterminer && !selection.destination ? { ...describedObject, phrase: { ...describedObject.phrase, determiner: possessiveFor(selectedDeterminer.word) ?? { english: selectedDeterminer.word, thai: selectedDeterminer.thai } } } : describedObject;
-  const referenceNoun = chosenObject && selection.vocabulary.find((noun) => noun.word === chosenObject.noun);
-  const isLocation = !selection.blueprint && (action.complement === "destination" || !!action.preposition && chosenObject?.categories.includes("destination"));
-  if (selection.objectReference && (!determinedObject || !referenceNoun)) throw new Error("A reference requires a compatible source noun.");
-  const object = selection.objectReference && determinedObject && referenceNoun ? { ...determinedObject, phrase: referencePhrase(referenceNoun, determinedObject.phrase, selection.objectReference, !!isLocation) } : determinedObject;
-  const subjectParts = (answer) => speaker?.phrase ? nounPhraseUnits(speaker.phrase).map((unit, index) => ({ ...unit, english: answer && index === 0 ? unit.english.charAt(0).toUpperCase() + unit.english.slice(1) : unit.english, role: unit.role === "determiner" ? "person-determiner" : unit.role === "description" ? "description" : "person" })) : [{ english: answer ? answerSubject : questionSubject, thai: speaker?.thai ?? (answer ? person.answerThai : person.thai), role: "person" }];
-  const units = [
-    ...subjectParts(true),
-    { english: be, thai: "\u0E01\u0E33\u0E25\u0E31\u0E07", role: "be" },
-    { english: action.spoken ?? action.word, thai: action.thai, role: "action" },
-    ...object ? nounPhraseUnits(object.phrase).map((unit) => ({ ...unit, role: unit.role === "noun" ? "object" : unit.role })) : []
-  ];
-  units[units.length - 1] = { ...units[units.length - 1], english: units[units.length - 1].english + "." };
-  const nounMeaning = object ? object.phrase.nounThai + (object.phrase.description?.thai ?? "") : "";
-  const objectMeaning = selection.objectReference ? object?.phrase.nounThai : object ? selectedDeterminer && (possessiveFor(selectedDeterminer.word) || ["the", "my", "your", "his", "her", "our", "their", "this", "that", "these", "those", "some"].includes(selectedDeterminer.word)) ? nounMeaning + (selectedDeterminer.word === "the" ? "" : selectedDeterminer.thai.replace(/ \(.*\)/, "")) : object.thai.replace(/^ไป(?:ที่|หา)/, "").replace(object.phrase.nounThai, nounMeaning) : "";
-  const movementToPerson = action.complement === "destination" && chosenObject?.categories.includes("person");
-  const meaning = selection.objectReference?.mode === "pronoun" && isLocation ? `${action.thai}${objectMeaning}` : action.complement === "destination" ? `${action.thai}${movementToPerson ? word === "going" ? "\u0E2B\u0E32" : "\u0E44\u0E1B\u0E2B\u0E32" : word === "going" ? "\u0E17\u0E35\u0E48" : "\u0E44\u0E1B\u0E17\u0E35\u0E48"}${objectMeaning}` : `${action.sentenceThai ?? action.thai}${objectMeaning}`;
-  return {
-    question: { english: `${destinationQuestion ? "Where" : "What"} ${questionBe} ${questionSubject} ${destinationQuestion ? action.word : "doing"}?`, thai: `${subjectMeaning ?? person.thai}\u0E01\u0E33\u0E25\u0E31\u0E07${destinationQuestion ? `${action.thai}${word === "going" ? "\u0E44\u0E2B\u0E19" : "\u0E44\u0E1B\u0E44\u0E2B\u0E19"}` : "\u0E17\u0E33\u0E2D\u0E30\u0E44\u0E23"}`, units: [{ english: destinationQuestion ? "Where" : "What", thai: destinationQuestion ? "\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19" : "\u0E2D\u0E30\u0E44\u0E23", role: "question" }, { english: questionBe, thai: "\u2014", role: "be" }, ...subjectParts(false), { english: destinationQuestion ? `${action.word}?` : "doing?", thai: destinationQuestion ? action.thai : "\u0E01\u0E33\u0E25\u0E31\u0E07\u0E17\u0E33", role: "action" }] },
-    answer: { english: units.map((unit) => unit.english).join(" "), thai: `${subjectMeaning ?? person.answerThai}\u0E01\u0E33\u0E25\u0E31\u0E07${meaning}`, units },
-    object
-  };
-}
-
 // src/learning/sentenceRules/assessmentScope.ts
 var knownPronouns = new Set(subjectPronouns.map((person) => person.word.toLowerCase()));
 var taughtPronouns = /* @__PURE__ */ new Set(["i", "you", "he", "she", "we", "they"]);
@@ -22288,17 +22305,6 @@ var numberCatalogue = lessonThreeMatrixCatalogue.map((word) => ({
 var generatedNumberCatalogue = [...numberCatalogue, ...everydayPeopleCatalogue.map((word) => ({ ...word, id: word.word, pluralForm: word.number === "plural", lesson: 1 }))];
 var byWord = new Map(generatedNumberCatalogue.map((item) => [item.word, item]));
 var numberItem = (word) => byWord.get(word);
-
-// src/race/vocabularyProgress.ts
-function vocabularyLearning(type, word, states, now = Date.now()) {
-  const forms = type === "noun" ? [word, numberItem(word)?.plural].filter((w) => !!w) : [word];
-  const combined = forms.map((form) => {
-    const values = wordTokens(form).map((token) => states.get("en:" + token) ?? emptyLearning()), proven = values.every((v) => v.fadeScore >= 25);
-    return { fadeScore: Math.min(...values.map((v) => v.fadeScore)), confirmations: Math.min(...values.map((v) => v.confirmations)), provenAt: proven ? values.map((v) => (v.provenAt ?? v.updatedAt) || "1970-01-01T00:00:00.000Z").sort().at(-1) : null, reviewDueAt: proven ? values.map((v) => v.reviewDueAt).filter((v) => !!v).sort()[0] ?? null : null, lapsed: values.some((v) => v.lapsedAt) };
-  });
-  const best = combined.sort((a, b) => Number(!!b.provenAt) - Number(!!a.provenAt) || b.fadeScore - a.fadeScore || b.confirmations - a.confirmations)[0];
-  return { ...best, fadePercent: fadingPercent(best.fadeScore), due: !!best.reviewDueAt && Date.parse(best.reviewDueAt) <= now, stage: best.provenAt ? "learnt" : best.lapsed ? "relearning" : "fading" };
-}
 
 // src/learning/sentenceRules/verbGroups.ts
 var verbGroupForAction = (action) => action.complement === "object" ? "transitive" : "intransitive";
@@ -22371,8 +22377,8 @@ function typedWords(q, alternative = false) {
 }
 function hierarchyCompatible(q, state) {
   if (q.credit !== null && q.targetWords.some((target) => hierarchyTypes.some((type) => {
-    const family = type === "noun" ? nounFamily(clean(target)) : clean(target);
-    return wordHierarchies[type].some((word) => clean(word) === family) && !state[type].allowed.some((word) => clean(word) === family);
+    const family2 = type === "noun" ? nounFamily(clean(target)) : clean(target);
+    return wordHierarchies[type].some((word) => clean(word) === family2) && !state[type].allowed.some((word) => clean(word) === family2);
   }))) return false;
   if (trackedVerbs.has(q.action) && !state.verb.allowed.includes(q.action)) return false;
   const pronouns = new Set(wordHierarchies.pronoun.map((word) => word.toLowerCase()));
@@ -22391,77 +22397,7 @@ function targetsHierarchy(q, type, word) {
   return q.targetWords.some((target) => type === "noun" ? nounFamily(clean(target)) === word : clean(target) === clean(word));
 }
 
-// src/learning/sentenceRules/identification.ts
-var references = [
-  { id: "this", word: "this", thai: "\u0E19\u0E35\u0E48", sentenceThai: "\u0E19\u0E35\u0E48\u0E04\u0E37\u0E2D\u0E2D\u0E30\u0E44\u0E23", distance: 0, plural: false, scene: "this" },
-  { id: "that", word: "that", thai: "\u0E19\u0E31\u0E48\u0E19", sentenceThai: "\u0E19\u0E31\u0E48\u0E19\u0E04\u0E37\u0E2D\u0E2D\u0E30\u0E44\u0E23", distance: 1, plural: false, scene: "that" },
-  { id: "over-there", word: "that over there", thai: "\u0E42\u0E19\u0E48\u0E19", sentenceThai: "\u0E42\u0E19\u0E48\u0E19\u0E04\u0E37\u0E2D\u0E2D\u0E30\u0E44\u0E23", distance: 2, plural: false, scene: "over-there" },
-  { id: "these", word: "these", thai: "\u0E1E\u0E27\u0E01\u0E19\u0E35\u0E49", sentenceThai: "\u0E1E\u0E27\u0E01\u0E19\u0E35\u0E49\u0E04\u0E37\u0E2D\u0E2D\u0E30\u0E44\u0E23", distance: 0, plural: true, scene: "this" },
-  { id: "those", word: "those", thai: "\u0E1E\u0E27\u0E01\u0E19\u0E31\u0E49\u0E19", sentenceThai: "\u0E1E\u0E27\u0E01\u0E19\u0E31\u0E49\u0E19\u0E04\u0E37\u0E2D\u0E2D\u0E30\u0E44\u0E23", distance: 1, plural: true, scene: "that" }
-];
-function referenceFor(id) {
-  return references.find((item) => item.id === id);
-}
-function identificationQuestion(id) {
-  const reference = referenceFor(id), verb = reference.plural ? "are" : "is";
-  return { english: `What ${verb} ${reference.word}?`, thai: reference.sentenceThai, construction: "identification-question", units: [
-    { english: "What", thai: "\u0E2D\u0E30\u0E44\u0E23", role: "question" },
-    { english: verb, thai: "\u0E04\u0E37\u0E2D", role: "be" },
-    { english: `${reference.word}?`, thai: reference.thai, role: "reference" }
-  ] };
-}
-var identificationAudio = (id) => `/audio/lesson-six/${id}.wav`;
-function identificationAnswer(id, object, owner = "the", objectReference) {
-  const reference = referenceFor(id), subject = reference.word.charAt(0).toUpperCase() + reference.word.slice(1), verb = reference.plural ? "are" : "is";
-  const noun = reference.plural ? object.plural : object.singular ?? object.word;
-  if (!noun) throw new Error("Identification answers require an authored plural noun");
-  const phrase2 = objectReference ? referencePhrase({ ...object, word: noun, number: reference.plural ? "plural" : "singular" }, { noun, nounThai: object.thai, determiner: possessiveFor(owner) ?? { english: owner, thai: ownerThai(owner) } }, objectReference) : { noun, nounThai: object.thai, determiner: possessiveFor(owner) ?? { english: owner, thai: ownerThai(owner) } };
-  const units = [{ english: subject, thai: reference.thai, role: "reference" }, { english: verb, thai: "\u0E04\u0E37\u0E2D", role: "be" }, ...nounPhraseUnits(phrase2).map((unit) => ({ ...unit, role: unit.role === "noun" ? "object" : unit.role }))];
-  units[units.length - 1] = { ...units[units.length - 1], english: units[units.length - 1].english + "." };
-  return { english: units.map((unit) => unit.english).join(" "), thai: `${reference.thai}\u0E04\u0E37\u0E2D${phrase2.nounThai}${objectReference || owner === "the" ? "" : ownerThai(owner)}`, construction: "identification-answer", units };
-}
-
-// src/learning/sentenceRules/choices.ts
-var nounVerb = (noun) => noun.number === "plural" || noun.pairOnly ? "are" : "is";
-function nounsForSentence(request, words) {
-  return words.filter((noun) => !validateSentence({ ...request, noun, verb: request.verb ?? nounVerb(noun) }).length);
-}
-
-// src/learning/sentenceMatrix/peopleLocation.ts
-var people = subjectPronouns.map((item) => ({ ...item, verb: subjectVerb(item) }));
-var personDetail = (person) => people.find((item) => item.word === person);
-var locationWords = (words) => nounsForSentence({ blueprint: "person-at-place", subject: subjectPronouns[0], verb: "am", determiner: "the" }, words).filter((noun) => noun.number !== "plural" && !noun.pairOnly);
-function peopleSentence(pattern, person, place) {
-  const detail = personDetail(person);
-  assertSentence({ blueprint: pattern === "question" ? "where-person" : "person-at-place", subject: detail, verb: detail.verb, noun: place, determiner: "the" });
-  const name = person === "I" ? "I" : person[0].toUpperCase() + person.slice(1);
-  return pattern === "question" ? { english: `Where ${detail.verb} ${person}?`, thai: `${detail.thai}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19`, units: [
-    { english: "Where", thai: "\u0E17\u0E35\u0E48\u0E44\u0E2B\u0E19" },
-    { english: detail.verb, thai: "\u0E2D\u0E22\u0E39\u0E48" },
-    { english: `${person}?`, thai: detail.thai }
-  ] } : { english: `${name} ${detail.verb} at the ${place.word}.`, thai: `${detail.thai}\u0E2D\u0E22\u0E39\u0E48\u0E17\u0E35\u0E48${place.thai}`, units: [
-    { english: name, thai: detail.thai },
-    { english: detail.verb, thai: "\u0E2D\u0E22\u0E39\u0E48" },
-    { english: "at", thai: "\u0E17\u0E35\u0E48" },
-    { english: "the", thai: "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07" },
-    { english: `${place.word}.`, thai: place.thai }
-  ] };
-}
-function locationAnswer(subject, place, namedPlace = false, reference, determiner = "the") {
-  const verb = subjectVerb(subject);
-  assertSentence({ blueprint: "person-at-place", subject, verb, noun: namedPlace ? { ...place, meaning: { kind: "place", locationPrepositions: ["at"] } } : place, determiner: namedPlace ? void 0 : determiner, namedPlace });
-  const base2 = { noun: place.word, nounThai: place.thai, ...!namedPlace ? { determiner: possessiveFor(determiner) ?? { english: determiner, thai: ownerThai(determiner) } } : {}, preposition: { english: "at", thai: "\u0E17\u0E35\u0E48" } };
-  const phrase2 = reference ? referencePhrase(place, base2, reference, true) : base2;
-  const first = subject.phrase ? nounPhraseUnits(subject.phrase).map((unit) => ({ ...unit, role: unit.role === "determiner" ? "person-determiner" : unit.role === "description" ? "description" : "person" })) : [{ english: subject.word, thai: subject.thai, role: "person" }];
-  const units = [...first, { english: verb, thai: "\u0E2D\u0E22\u0E39\u0E48", role: "be" }, ...nounPhraseUnits(phrase2).map((unit) => ({ ...unit, role: unit.role === "noun" ? "object" : unit.role }))];
-  units[0] = { ...units[0], english: units[0].english[0].toUpperCase() + units[0].english.slice(1) };
-  units[units.length - 1] = { ...units[units.length - 1], english: units[units.length - 1].english + "." };
-  const placeThai = phrase2.nounThai + (!reference && !namedPlace && determiner !== "the" ? ownerThai(determiner) : "");
-  return { english: units.map((unit) => unit.english).join(" "), thai: `${subject.phrase?.nounThai ?? subject.thai}\u0E2D\u0E22\u0E39\u0E48${reference?.mode === "pronoun" ? "" : "\u0E17\u0E35\u0E48"}${placeThai}`, units };
-}
-
 // src/race/generatedPracticeContent.ts
-var GENERATED_ROUND_SIZE = 30;
 var vocabulary = [...lessonThreeMatrixCatalogue, ...everydayPeopleCatalogue];
 var owners = allDeterminers.filter((d) => ["the", "my", "your", "his", "her", "our", "their"].includes(d.word));
 function sentenceKey(text) {
@@ -22477,14 +22413,7 @@ function questionHash(text) {
   for (const c of text) second = Math.imul(second, 33) ^ c.charCodeAt(0);
   return sentenceHash(text) + "-" + (second >>> 0).toString(36);
 }
-var phrase = (word, owner) => ({ english: `${owner} ${word}`, thai: "", construction: "noun-phrase", units: [{ english: owner, thai: "", role: "determiner" }, { english: word, thai: "", role: "object" }] });
-function where(word, owner, wrong = false) {
-  const item = numberItem(word), line = locationSentence(item, owner);
-  const roles = ["question", "be", "determiner", "object"];
-  const units = line.units.map((unit, i) => ({ ...unit, role: roles[i], english: wrong && i === 1 ? line.verb === "is" ? "are" : "is" : unit.english }));
-  return { english: units.map((u) => u.english).join(" "), thai: line.thai, construction: "question", units };
-}
-function base(level, document2, other, meta, targetWords) {
+function composeQuestion(level, document2, other, meta, targetWords) {
   if (document2.english === other.english) throw new Error("Identical generated alternatives");
   const person = document2.units.find((unit) => unit.role === "person");
   if (person && targetWords.includes(person.english.replace(/[?.!]$/, ""))) {
@@ -22493,282 +22422,341 @@ function base(level, document2, other, meta, targetWords) {
   }
   return { id: `compose-v2-l${level}-${questionHash(document2.english + "|" + other.english + "|" + targetWords.join("|"))}`, version: 1, level, document: document2, choices: [document2.english, other.english], correct: 0, alternatives: [document2, other], targetWords, listeningWords: [.../* @__PURE__ */ new Set([...targetWords, ...document2.units.filter((unit, i) => unit.english !== other.units[i]?.english).map((unit) => unit.english)])], ...meta, kind: "meaning", credit: targetWords.join(" ") };
 }
-function numberCandidates(level) {
-  const out = [];
-  for (const item of generatedNumberCatalogue.filter((n) => !n.pairOnly && n.singular && n.plural)) for (const { word: owner } of owners.filter((d) => ["the", "my", "your"].includes(d.word))) {
-    const singular = item.singular, plural2 = item.plural, isPlural = item.pluralForm;
-    if (!numberItem(singular) || !numberItem(plural2)) continue;
-    const meta = { family: singular, vocabulary: [item.word], action: "number", owner, subject: "", plural: isPlural };
-    if (level < 3) {
-      const document2 = level === 1 ? phrase(item.word, owner) : where(item.word, owner);
-      const q = base(level, document2, level === 1 ? phrase(isPlural ? singular : plural2, owner) : where(isPlural ? singular : plural2, owner), meta, level === 2 ? [item.word, verbForWord(item)] : [item.word]);
-      q.kind = "number";
-      q.alternatives = [phrase(singular, owner), phrase(plural2, owner)];
-      q.choices = [q.alternatives[0].english, q.alternatives[1].english];
-      q.correct = isPlural ? 1 : 0;
-      out.push(q);
-    } else for (const wrong of [false, true]) {
-      const document2 = where(item.word, owner, wrong);
-      out.push({ ...base(level, document2, where(item.word, owner, !wrong), meta, [verbForWord(item)]), kind: "judgement", choices: ["Correct", "Incorrect"], correct: wrong ? 1 : 0, alternatives: void 0, credit: wrong ? null : verbForWord(item) });
-    }
-  }
-  return out;
-}
 var people2 = [...assessedSubjectPronouns.map((p) => ({ ...p, kind: "person" })), { word: "Bia", thai: "Bia", kind: "person" }];
 var humanNouns = vocabulary.filter((w) => meaningForWord(w)?.kind === "person").sort((a, b) => everydayNounOrder.indexOf(a.singular ?? a.word) - everydayNounOrder.indexOf(b.singular ?? b.word));
 var namedPeople = humanNouns.flatMap((noun) => owners.map((owner) => ({ word: `${owner.word} ${noun.word}`, thai: `${noun.thai}${owner.word === "the" ? "" : owner.thai.replace(/ \(.*\)/, "")}`, number: noun.number, kind: "person", phrase: { noun: noun.word, nounThai: noun.thai, determiner: { english: owner.word, thai: owner.thai } } })));
-var documentCache = /* @__PURE__ */ new Map();
-function actionDocument(subject, action, object, owner, question = false) {
-  const key = JSON.stringify([subject.word, subject.phrase, action, object, owner, question]);
-  const cached = documentCache.get(key);
-  if (cached) return cached;
-  const lexical = actionVocabulary.find((word) => word.word === action);
-  const blueprint = question ? void 0 : matchingActionBlueprint(lexical);
-  if (!question && !blueprint) throw new Error("The action has no compatible active blueprint.");
-  const line = actionDialogue("i", action, { blueprint, vocabulary, subject, object, determiner: owner })[question ? "question" : "answer"];
-  const document2 = { ...line, construction: question ? "action-question" : "action-answer" };
-  documentCache.set(key, document2);
-  return document2;
+
+// src/learning/wordProgress/learningLifecycle.ts
+var FADE_START = 5;
+var FADE_END = 25;
+var REVIEW_DAYS = [1, 3, 7, 14, 30];
+var emptyLearning = () => ({ fadeScore: 0, confirmations: 0, provenAt: null, reviewDueAt: null, reviewStep: 0, reviewedAt: null, lapsedAt: null, updatedAt: null });
+var fadingPercent = (score) => Math.round(Math.max(0, Math.min(1, (score - FADE_START) / (FADE_END - FADE_START))) * 100);
+var due = (at, step) => new Date(Date.parse(at) + REVIEW_DAYS[step] * 864e5).toISOString();
+function advanceLearning(previous, event) {
+  const state = { ...previous, updatedAt: event.at };
+  if (!event.correct) {
+    state.fadeScore = state.provenAt ? Math.min(FADE_START, state.fadeScore) : Math.max(0, state.fadeScore - 2);
+    if (state.provenAt) state.lapsedAt = event.at;
+    state.confirmations = 0;
+    state.provenAt = null;
+    state.reviewDueAt = null;
+    state.reviewStep = 0;
+    state.reviewedAt = null;
+    return state;
+  }
+  state.fadeScore = Math.min(FADE_END, state.fadeScore + (event.weight ?? 1));
+  if (state.fadeScore < FADE_END) return state;
+  if (!state.provenAt) {
+    state.provenAt = event.at;
+    state.reviewedAt = event.at;
+    state.lapsedAt = null;
+    state.reviewStep = 0;
+    state.confirmations = 0;
+    state.reviewDueAt = due(event.at, 0);
+  } else if (event.independent && state.reviewDueAt && Date.parse(event.at) >= Date.parse(state.reviewDueAt)) {
+    state.reviewStep = Math.min(REVIEW_DAYS.length - 1, state.reviewStep + 1);
+    state.reviewedAt = event.at;
+    state.reviewDueAt = due(event.at, state.reviewStep);
+  }
+  return state;
 }
-function actionQuestionCandidates() {
-  const subjects = [...people2, ...namedPeople], out = [];
-  for (const [i, subject] of subjects.entries()) {
-    const matching = subjects.filter((p) => !!p.phrase === !!subject.phrase && p.word !== subject.word && (!p.phrase || p.phrase.determiner?.english === subject.phrase?.determiner?.english));
-    const other = matching.find((p) => p.phrase && subject.phrase && (numberItem(p.phrase.noun)?.singular ?? p.phrase.noun) === (numberItem(subject.phrase.noun)?.singular ?? subject.phrase.noun)) ?? matching[i % matching.length];
-    const document2 = actionDocument(subject, "sleeping", void 0, void 0, true), alternative = actionDocument(other, "sleeping", void 0, void 0, true);
-    out.push(base(4, document2, alternative, { family: subject.phrase?.noun.replace(/s$/, "") ?? "people", vocabulary: subject.phrase ? [subject.phrase.noun, ...other.phrase ? [other.phrase.noun] : []] : [], action: "doing", owner: subject.phrase?.determiner?.english ?? "", subject: subject.word, plural: subject.number === "plural" }, [subject.phrase?.noun ?? subject.word]));
+function learningStates(rows, events = []) {
+  const states = /* @__PURE__ */ new Map();
+  for (const row of rows) {
+    const fadeScore = row.fade_score ?? Math.min(FADE_END, row.correct);
+    const learned = fadeScore >= FADE_END ? (row.proven_at ?? row.learning_updated_at ?? row.last_practised) || "1970-01-01T00:00:00.000Z" : null;
+    states.set(row.word_id, { fadeScore, confirmations: 0, provenAt: learned, reviewDueAt: learned ? row.review_due_at ?? (Date.parse(learned) ? due(learned, 0) : null) : null, reviewStep: row.review_step ?? 0, reviewedAt: row.reviewed_at ?? learned, lapsedAt: row.lapsed_at ?? null, updatedAt: row.learning_updated_at ?? row.last_practised ?? null });
   }
-  for (const [i, item] of generatedNumberCatalogue.entries()) for (const [oi, owner] of owners.entries()) {
-    const others = generatedNumberCatalogue.filter((n) => n.pluralForm === item.pluralForm && n.word !== item.word);
-    const nounContrast = oi % 2 === 0;
-    const otherOwner = owners.filter((o) => o.word !== "the" && o.word !== owner.word)[i % 5];
-    const otherNoun = others[(i + oi) % others.length];
-    const alternative = nounContrast ? where(otherNoun.word, owner.word) : where(item.word, otherOwner.word);
-    out.push(base(4, where(item.word, owner.word), alternative, { family: item.singular ?? item.word, vocabulary: nounContrast ? [item.word, otherNoun.word] : [item.word], action: "where", owner: owner.word, subject: "", plural: item.pluralForm }, [nounContrast ? item.word : owner.word]));
-  }
-  return out;
-}
-function actionAnswerCandidates(level, eligibleActions, determiners2 = owners.map((owner) => owner.word)) {
-  const frames = activeActionBlueprints.filter((frame) => level === 5 || frame.connection === "direct");
-  const actions = actionVocabulary.filter((action) => !!matchingActionBlueprint(action, frames)).map((action) => action.word), out = [];
-  const frameFor = (word) => matchingActionBlueprint(actionVocabulary.find((action) => action.word === word), frames);
-  const objectMap = new Map(actions.map((action) => [action, objectsForAction(action, vocabulary, void 0, frameFor(action))]));
-  const objectActions = /* @__PURE__ */ new Map();
-  for (const action of actions) for (const object of objectMap.get(action)) {
-    const key = object.word;
-    const values = objectActions.get(key) ?? [];
-    if (!values.includes(action)) values.push(action);
-    objectActions.set(key, values);
-  }
-  const ownerCache = /* @__PURE__ */ new Map();
-  const ownersFor = (object) => {
-    let values = ownerCache.get(object);
-    if (!values) {
-      values = objectDeterminers(object).filter((d) => determiners2.includes(d.word));
-      ownerCache.set(object, values);
+  const cutoff = new Map([...states].map(([id, s]) => [id, Date.parse(s.updatedAt ?? "") || 0]));
+  const timeline = [...new Map(events.map((e) => [e.id, e])).values()].flatMap((event) => {
+    if (event.phase === "presented") return [{ ...event, kind: "exposure", at: event.presentedAt ?? event.at }];
+    if (event.presentedAt) return [{ ...event, kind: "exposure", at: event.presentedAt }, { ...event, kind: "answer" }];
+    return [{ ...event, kind: "legacy" }];
+  }).sort((a, b) => Date.parse(a.at) - Date.parse(b.at) || (a.kind === "exposure" ? -1 : b.kind === "exposure" ? 1 : 0));
+  for (const event of timeline) {
+    const tokens = event.targets.flatMap(wordTokens), lexical = tokens.filter((word) => !["am", "is", "are"].includes(word));
+    const targets = new Set(lexical.length ? lexical : tokens);
+    const words = event.kind === "exposure" ? new Set(wordTokens(event.sentence ?? "")) : event.kind === "answer" ? targets : /* @__PURE__ */ new Set([...targets, ...event.correct && targets.size ? wordTokens(event.sentence ?? "") : []]);
+    for (const word of words) {
+      const id = "en:" + word;
+      if (Date.parse(event.at) <= (cutoff.get(id) ?? 0)) continue;
+      states.set(id, advanceLearning(states.get(id) ?? emptyLearning(), { correct: event.kind === "exposure" || event.correct, weight: event.kind === "exposure" ? 1 : event.kind === "answer" ? 2 : targets.has(word) ? 3 : 1, independent: event.kind !== "exposure" && targets.has(word) && event.hidden && event.heard && !event.assisted && event.plays === 1, at: event.at }));
     }
-    return values;
-  };
-  const subjects = [...people2, ...namedPeople.filter((p) => p.phrase.determiner.english === "the")];
-  for (const [si, subject] of subjects.entries()) for (const action of actions) {
-    if (eligibleActions && !eligibleActions.has(action)) continue;
-    if (!subjectCanPerform(subject, action)) continue;
-    const objects = objectMap.get(action);
-    if (!objects.length) continue;
-    for (const [oi, object] of objects.filter((object2) => subjectCanPerform(subject, action, object2.noun)).entries()) for (const [di, owner] of ownersFor(object).filter((d) => !subject.phrase || subject.phrase.noun.startsWith("doctor") || ["the", "my", "your"].includes(d.word)).entries()) {
-      const document2 = actionDocument(subject, action, object.word, owner.word);
-      let other, targetWords;
-      const contrast = (si + oi + di) % 4;
-      const actionOptions = (objectActions.get(object.word) ?? []).filter((a) => a !== action && frameFor(a).connection === frameFor(action).connection && subjectCanPerform(subject, a, object.noun));
-      const nounOptions = objects.filter((o) => o.noun !== object.noun && subjectCanPerform(subject, action, o.noun) && ownersFor(o).some((d) => d.word === owner.word)).sort((a, b) => everydayNounOrder.indexOf(numberItem(a.noun)?.singular ?? a.noun) - everydayNounOrder.indexOf(numberItem(b.noun)?.singular ?? b.noun));
-      if (contrast === 3 && actionOptions.length) {
-        other = actionDocument(subject, actionOptions[(si + di) % actionOptions.length], object.word, owner.word);
-        targetWords = [action];
-      } else if (contrast === 0 && nounOptions.length) {
-        const noun = nounOptions[(si + di) % nounOptions.length];
-        other = actionDocument(subject, action, noun.word, owner.word);
-        targetWords = [object.noun];
-      } else if (contrast === 1) {
-        const options = ownersFor(object).filter((d) => d.word !== owner.word);
-        other = actionDocument(subject, action, object.word, options[(si + oi) % options.length].word);
-        targetWords = [owner.word];
-      } else {
-        const options = subjects.filter((p) => !!p.phrase === !!subject.phrase && p.word !== subject.word && subjectCanPerform(p, action, object.noun));
-        const person = options.find((p) => p.phrase && subject.phrase && (numberItem(p.phrase.noun)?.singular ?? p.phrase.noun) === (numberItem(subject.phrase.noun)?.singular ?? subject.phrase.noun)) ?? options[(oi + di) % options.length];
-        other = actionDocument(person, action, object.word, owner.word);
-        targetWords = [subject.phrase?.noun ?? subject.word];
-      }
-      const nouns = [...document2.units, ...other.units].filter((u) => u.role === "object" || u.role === "person" && !!numberItem(u.english.replace(/[?.!]$/, ""))).map((u) => u.english.replace(/[?.!]$/, ""));
-      const meta = { family: numberItem(object.noun)?.singular ?? object.noun, vocabulary: [...new Set(nouns)], action, owner: owner.word, subject: subject.word, plural: numberItem(object.noun)?.pluralForm ?? false };
-      out.push(base(level, document2, other, meta, targetWords));
-      const documentNouns = document2.units.filter((u) => u.role === "object" || u.role === "person" && !!numberItem(u.english.replace(/[?.!]$/, ""))).map((u) => u.english.replace(/[?.!]$/, ""));
-      for (const noun of nounOptions.slice(0, 2)) {
-        const alternative = actionDocument(subject, action, noun.word, owner.word);
-        out.push(base(level, document2, alternative, { ...meta, vocabulary: [.../* @__PURE__ */ new Set([...documentNouns, noun.noun])] }, [object.noun]));
-      }
-      if (subject.phrase) {
-        const person = subjects.find((p) => p.phrase && p.number === subject.number && p.phrase.noun !== subject.phrase?.noun && subjectCanPerform(p, action, object.noun));
-        if (person) {
-          const alternative = actionDocument(person, action, object.word, owner.word);
-          out.push(base(level, document2, alternative, { ...meta, vocabulary: [.../* @__PURE__ */ new Set([...documentNouns, person.phrase.noun])] }, [subject.phrase.noun]));
+  }
+  return states;
+}
+
+// src/race/vocabularyProgress.ts
+function vocabularyLearning(type, word, states, now = Date.now()) {
+  const forms = type === "noun" ? [word, numberItem(word)?.plural].filter((w) => !!w) : [word];
+  const combined = forms.map((form) => {
+    const values = wordTokens(form).map((token) => states.get("en:" + token) ?? emptyLearning()), proven = values.every((v) => v.fadeScore >= 25);
+    return { fadeScore: Math.min(...values.map((v) => v.fadeScore)), confirmations: Math.min(...values.map((v) => v.confirmations)), provenAt: proven ? values.map((v) => (v.provenAt ?? v.updatedAt) || "1970-01-01T00:00:00.000Z").sort().at(-1) : null, reviewDueAt: proven ? values.map((v) => v.reviewDueAt).filter((v) => !!v).sort()[0] ?? null : null, lapsed: values.some((v) => v.lapsedAt) };
+  });
+  const best = combined.sort((a, b) => Number(!!b.provenAt) - Number(!!a.provenAt) || b.fadeScore - a.fadeScore || b.confirmations - a.confirmations)[0];
+  return { ...best, fadePercent: fadingPercent(best.fadeScore), due: !!best.reviewDueAt && Date.parse(best.reviewDueAt) <= now, stage: best.provenAt ? "learnt" : best.lapsed ? "relearning" : "fading" };
+}
+
+// src/race/blueprintWordServer.ts
+var NoCompatibleBlueprintChoice = class extends Error {
+};
+var clean2 = sentenceKey;
+var nouns = generatedNumberCatalogue;
+var family = (word) => nounFamily(clean2(word));
+var nounWord = (subject2) => subject2.phrase?.noun ?? subject2.word;
+var subject = (item) => ({ word: `the ${item.word}`, thai: item.thai, kind: "person", number: item.number, phrase: { noun: item.word, nounThai: item.thai, determiner: { english: "the", thai: "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07" } } });
+var rotate = (items, turn) => {
+  const n = items.length;
+  if (!n) return [];
+  const offset = (turn % n + n) % n;
+  return [...items.slice(offset), ...items.slice(0, offset)];
+};
+var eligible = (state, type, word, foil = false) => [...state[type].allowed, ...foil ? state[type].queued : []].some((w) => clean2(w) === (type === "noun" ? family(word) : clean2(word)));
+var agrees = (owner, item) => determinerAgrees(owner, item.pluralForm, meaningForWord(item)?.countability === "mass") && (!["a", "an"].includes(owner) || owner === (item.indefiniteArticle ?? (/^[aeiou]/i.test(item.word) ? "an" : "a")));
+function descriptions2(doc, word) {
+  if (!word) return doc;
+  const index = doc.units.findIndex((unit) => unit.role === "object"), noun = clean2(doc.units[index].english);
+  const units = [...doc.units];
+  units.splice(index, 0, { role: "description", english: word, thai: adjectiveThaiForNoun(word, noun) });
+  return { ...doc, units, english: units.map((unit) => unit.english).join(" "), thai: doc.thai.replace(doc.units[index].thai, doc.units[index].thai + adjectiveThaiForNoun(word, noun)) };
+}
+function nounDocument(level, item, owner, identify = false, description) {
+  if (identify) return identificationAnswer(item.pluralForm ? "these" : "this", item, owner);
+  const line = level === 1 ? { english: `${owner} ${item.word}`, thai: "", units: [{ english: owner, thai: "", role: "determiner" }, { english: item.word, thai: item.thai, role: "object" }] } : locationSentence(item, owner);
+  const roles = ["question", "be", "determiner", "object"];
+  const doc = level === 1 ? { ...line, construction: "noun-phrase", units: line.units } : { ...line, construction: "question", units: line.units.map((unit, index) => ({ ...unit, role: roles[index] })) };
+  return descriptions2(doc, description);
+}
+function pair(level, a, b, anchor, action, owner) {
+  const words = [...new Set([...a.units, ...b.units].filter((unit) => ["person", "object"].includes(unit.role) && numberItem(clean2(unit.english))).map((unit) => clean2(unit.english)))];
+  const item = a.units.find((unit) => unit.role === "object");
+  const changedNoun = a.units.find((unit, index) => ["person", "object"].includes(unit.role) && family(unit.english) === anchor.word && unit.english !== b.units[index]?.english);
+  const target = anchor.type === "noun" && changedNoun ? clean2(changedNoun.english) : anchor.word;
+  const question = composeQuestion(level, a, b, { family: item ? family(item.english) : anchor.word, vocabulary: words, action, owner, subject: a.units.find((unit) => unit.role === "person")?.english ?? "", plural: !!numberItem(clean2(item?.english ?? ""))?.pluralForm }, [target]);
+  return { ...question, recipe: { version: 1, level, anchor, a: documentRecipe(a), b: documentRecipe(b) } };
+}
+function chooseOwner(item, state, turn, required, foil = false, compatible) {
+  const list = required ? [required] : rotate(state.determiner.current, turn).concat(state.determiner.completed);
+  return list.find((word) => (!compatible || compatible.includes(word)) && eligible(state, "determiner", word, foil) && agrees(word, item));
+}
+function sceneQuestion(level, reference, foil, item) {
+  const doc = identificationQuestion(reference.id);
+  return { id: `identify-v2-${reference.id}-${sentenceHash(item.word + "|" + foil.id)}`, version: 1, level, document: doc, audioUrl: identificationAudio(reference.id), choices: [reference.word, foil.word], correct: 0, sceneChoices: [{ reference: reference.id, word: item.word }, { reference: foil.id, word: item.word }], targetWords: [reference.word], listeningWords: [reference.word], family: family(item.word), vocabulary: [item.word], action: "identify", owner: "", subject: "", plural: reference.plural, kind: "meaning", credit: reference.word, recipe: { version: 1, level, scene: { reference: reference.id, foil: foil.id, noun: item.word } } };
+}
+function nounQuestion(level, state, anchor, turn, identify) {
+  if (identify && anchor.type === "determiner") {
+    const reference = references.find((item2) => item2.word === anchor.word);
+    const foil = reference && rotate(references, turn).find((item2) => item2.word !== reference.word && item2.plural === reference.plural && eligible(state, "determiner", item2.word, true));
+    const item = reference && rotate(nouns, turn).find((item2) => !item2.pluralForm && !item2.pairOnly && eligible(state, "noun", item2.word) && (!reference.plural || !!item2.plural));
+    if (reference && foil && item) return sceneQuestion(level, reference, foil, item);
+  }
+  if (!["noun", "determiner", "adjective"].includes(anchor.type)) return;
+  if (identify && anchor.type === "adjective") return;
+  const available = nouns.filter((item) => eligible(state, "noun", item.word) && (!identify || !item.pairOnly) && (anchor.type !== "noun" || family(item.word) === anchor.word));
+  for (const item of rotate(available, turn)) {
+    if (anchor.type === "adjective" && (!state.noun.completed.includes(family(item.word)) || !adjectiveFitsNoun(anchor.word, item))) continue;
+    const owner = chooseOwner(item, state, turn, anchor.type === "determiner" ? anchor.word : void 0);
+    if (!owner) continue;
+    let otherItem = item, otherOwner = owner, otherDescription;
+    if (anchor.type === "noun") {
+      const candidates = nouns.filter((other3) => other3.word !== item.word && eligible(state, "noun", other3.word, true) && agrees(owner, other3) && (!identify || other3.pluralForm === item.pluralForm));
+      const same = candidates.filter((other3) => family(other3.word) === family(item.word));
+      const other2 = rotate(same.length ? same : candidates, turn)[0];
+      if (!other2) continue;
+      otherItem = other2;
+    } else if (anchor.type === "determiner") {
+      const other2 = rotate([...state.determiner.allowed, ...state.determiner.queued], turn).find((word) => word !== owner && agrees(word, item));
+      if (!other2) continue;
+      otherOwner = other2;
+    } else {
+      const other2 = rotate([...state.adjective.allowed, ...state.adjective.queued], turn).find((word) => word !== anchor.word && adjectiveFitsNoun(word, item));
+      if (!other2) continue;
+      otherDescription = other2;
+    }
+    const doc = nounDocument(level, item, owner, identify, anchor.type === "adjective" ? anchor.word : void 0), other = nounDocument(level, otherItem, otherOwner, identify, otherDescription);
+    let question = pair(level, doc, other, anchor, identify ? "identify" : "number", owner);
+    if (!identify && anchor.type === "noun" && family(item.word) === family(otherItem.word)) {
+      const singular = numberItem(item.singular ?? item.word), plural2 = numberItem(item.plural ?? "");
+      if (singular && plural2) {
+        const choices = [nounDocument(1, singular, owner), nounDocument(1, plural2, owner)];
+        question = { ...question, kind: "number", alternatives: choices, choices: [choices[0].english, choices[1].english], correct: item.pluralForm ? 1 : 0 };
+        if (level === 2) {
+          question.targetWords = [item.word, item.pluralForm ? "are" : "is"];
+          question.credit = question.targetWords.join(" ");
         }
       }
-      const otherAction = actions.find((candidate) => candidate !== action && frameFor(candidate).connection === frameFor(action).connection && subjectCanPerform(subject, candidate, object.noun) && objectMap.get(candidate).some((item) => item.word === object.word && ownersFor(item).some((d) => d.word === owner.word)));
-      if (otherAction) {
-        const verbContrast = actionDocument(subject, otherAction, object.word, owner.word);
-        out.push(base(level, document2, verbContrast, { ...meta, vocabulary: documentNouns }, [action]));
+    }
+    if (level === 3 && !identify) question = answerMode(question, Math.floor(turn / 2) % 2 ? "judgement-wrong" : "judgement");
+    question.recipe = { ...question.recipe, mode: level === 3 && !identify ? Math.floor(turn / 2) % 2 ? "judgement-wrong" : "judgement" : question.kind === "number" ? "number" : void 0 };
+    if (hierarchyCompatible(question, state)) return question;
+  }
+}
+function locationQuestion(level, state, anchor, turn) {
+  const people3 = [...nouns.filter((item) => eligible(state, "noun", item.word) && nounGroupFor(item) === "subjects").map(subject), ...pronounsReady(state) ? subjectPronouns.filter((item) => item.word !== "it" && eligible(state, "pronoun", item.word)).map((item) => ({ ...item, kind: "person" })) : []];
+  const places = [...locationWords(nouns).filter((item) => eligible(state, "noun", item.word)).map((place) => ({ place, named: false })), ...defaultPlaceNames.map((place) => ({ place, named: true }))];
+  const make = (person, place, owner = "the") => ({ ...locationAnswer(person, place.place, place.named, void 0, owner), construction: "location-answer" });
+  for (const person of rotate(people3, turn)) for (const place of rotate(places, turn)) {
+    const nounRole = anchor.type === "noun" && !!person.phrase && family(nounWord(person)) === anchor.word ? "subject" : "object";
+    if (anchor.type === "noun" && (nounRole === "subject" ? false : !numberItem(place.place.word) || family(place.place.word) !== anchor.word)) continue;
+    if (anchor.type === "pronoun" && (person.phrase || clean2(person.word) !== clean2(anchor.word))) continue;
+    let first = person, second = person, otherPlace = place, owner = "the", otherOwner = "the";
+    if (anchor.type === "noun" && nounRole === "object") {
+      const other = rotate(places, turn).find((candidate) => !candidate.named && candidate.place.word !== place.place.word && eligible(state, "noun", candidate.place.word, true));
+      if (!other) continue;
+      otherPlace = other;
+    } else if (anchor.type === "noun" || anchor.type === "pronoun") {
+      const other = rotate(people3, turn).find((candidate) => !!candidate.phrase === !!person.phrase && candidate.word !== person.word);
+      if (!other) continue;
+      second = other;
+    } else if (anchor.type === "determiner") {
+      if (place.named) {
+        const item = person.phrase && numberItem(nounWord(person));
+        if (!item || !agrees(anchor.word, item)) continue;
+        const other = rotate([...state.determiner.allowed, ...state.determiner.queued], turn).find((word) => word !== anchor.word && agrees(word, item));
+        if (!other) continue;
+        first = { ...person, phrase: { ...person.phrase, determiner: { english: anchor.word, thai: allDeterminers.find((item2) => item2.word === anchor.word)?.thai ?? "" } } };
+        second = { ...person, phrase: { ...person.phrase, determiner: { english: other, thai: allDeterminers.find((item2) => item2.word === other)?.thai ?? "" } } };
+      } else {
+        const item = numberItem(place.place.word);
+        if (!agrees(anchor.word, item)) continue;
+        const other = rotate([...state.determiner.allowed, ...state.determiner.queued], turn).find((word) => word !== anchor.word && agrees(word, item));
+        if (!other) continue;
+        owner = anchor.word;
+        otherOwner = other;
+      }
+    } else continue;
+    const question = pair(level, make(first, place, owner), make(second, otherPlace, otherOwner), anchor, "location", owner);
+    if (question.recipe) question.recipe = { ...question.recipe, structure: "location" };
+    if (hierarchyCompatible(question, state)) return question;
+  }
+}
+function activityQuestion(level, state, anchor, turn) {
+  const available = [...nouns.filter((item) => eligible(state, "noun", item.word) && nounGroupFor(item) === "subjects").map(subject), ...pronounsReady(state) ? subjectPronouns.filter((item) => item.word !== "it" && eligible(state, "pronoun", item.word)).map((item) => ({ ...item, kind: "person" })) : []];
+  const foils = [...nouns.filter((item) => eligible(state, "noun", item.word, true) && nounGroupFor(item) === "subjects").map(subject), ...pronounsReady(state) ? subjectPronouns.filter((item) => item.word !== "it" && eligible(state, "pronoun", item.word, true)).map((item) => ({ ...item, kind: "person" })) : []];
+  const make = (person) => ({ ...actionDialogue("i", "holding", { subject: person, vocabulary: nouns }).question, construction: "action-question" });
+  for (const person of rotate(available, turn)) {
+    if (anchor.type === "noun" && (!person.phrase || family(nounWord(person)) !== anchor.word) || anchor.type === "pronoun" && (person.phrase || clean2(person.word) !== clean2(anchor.word))) continue;
+    if (anchor.type === "adjective") {
+      if (!person.phrase || !state.noun.completed.includes(family(nounWord(person))) || !adjectiveFitsNoun(anchor.word, nounWord(person))) continue;
+      const other = rotate([...state.adjective.allowed, ...state.adjective.queued], turn).find((word) => word !== anchor.word && adjectiveFitsNoun(word, nounWord(person)));
+      if (!other) continue;
+      const described = (word) => ({ ...person, phrase: { ...person.phrase, description: { english: word, thai: adjectiveThaiForNoun(word, nounWord(person)) } } });
+      const question = pair(level, make(described(anchor.word)), make(described(other)), anchor, "doing", "the");
+      if (hierarchyCompatible(question, state)) return question;
+    } else if (anchor.type === "noun" || anchor.type === "pronoun") {
+      const other = rotate(foils, turn).find((item) => !!item.phrase === !!person.phrase && item.word !== person.word);
+      if (other) {
+        const question = pair(level, make(person), make(other), anchor, "doing", "the");
+        if (hierarchyCompatible(question, state)) return question;
       }
     }
   }
-  return [...new Map(out.map((q) => [q.id, q])).values()];
+  return nounQuestion(2, state, anchor, turn, false);
 }
-function descriptionCandidates(level, eligibleActions, existingSource) {
-  const source = existingSource ?? (level <= 3 ? numberCandidates(level === 1 ? 1 : 2) : level === 4 ? [] : actionAnswerCandidates(level, eligibleActions));
-  const seen = /* @__PURE__ */ new Set(), seenSources = /* @__PURE__ */ new Set(), result = [];
-  for (const q of source) {
-    if (q.owner !== "the" || q.subject && !["I", "you"].includes(q.subject)) continue;
-    if (seenSources.has(q.document.english)) continue;
-    seenSources.add(q.document.english);
-    const index = q.document.units.findIndex((u) => u.role === "object");
-    if (index < 0 || q.document.units[index - 1]?.role !== "determiner") continue;
-    const noun = q.document.units[index].english.replace(/[.!?]$/, "");
-    for (const descriptor of adjectivesForNoun(noun)) {
-      const opposite = descriptions.find((d) => d.word === descriptor.opposite && adjectiveFitsNoun(d.word, noun)) ?? descriptions.find((d) => d.group === descriptor.group && d.word !== descriptor.word && adjectiveFitsNoun(d.word, noun));
-      if (!opposite) continue;
-      const withDescription = (d) => {
-        const units = [...q.document.units];
-        units.splice(index, 0, { english: d.word, thai: adjectiveThaiForNoun(d.word, noun), role: "description" });
-        return { ...q.document, units, english: units.map((u) => u.english).join(" "), thai: q.document.thai.replace(q.document.units[index].thai, q.document.units[index].thai + adjectiveThaiForNoun(d.word, noun)) };
-      };
-      const document2 = withDescription(descriptor), other = withDescription(opposite);
-      if (seen.has(document2.english)) continue;
-      seen.add(document2.english);
-      result.push(base(level, document2, other, { family: q.family, vocabulary: document2.units.filter((u) => ["person", "object"].includes(u.role) && numberItem(u.english.replace(/[.!?]$/, ""))).map((u) => u.english.replace(/[.!?]$/, "")), action: q.action, owner: q.owner, subject: q.subject, plural: q.plural }, [descriptor.word]));
+function actionDocument(meal) {
+  const line = actionDialogue("i", meal.verb, { blueprint: meal.frame, vocabulary: nouns, subject: meal.subject, object: meal.object.word, determiner: meal.owner, description: meal.description ? { english: meal.description, thai: adjectiveThaiForNoun(meal.description, meal.object.noun) } : void 0 }).answer;
+  return { ...line, construction: "action-answer" };
+}
+function fitsSubject(person, verb, object) {
+  return subjectCanPerform(person, verb, object.noun);
+}
+function actionQuestion(level, state, anchor, turn, request) {
+  const primarySubjects = [...nouns.filter((item) => eligible(state, "noun", item.word) && nounGroupFor(item) === request.subjectGroup).map(subject), ...pronounsReady(state) ? subjectPronouns.filter((item) => item.word !== "it" && eligible(state, "pronoun", item.word)).map((item) => ({ ...item, kind: "person" })) : []];
+  const foilSubjects = [...nouns.filter((item) => eligible(state, "noun", item.word, true) && nounGroupFor(item) === request.subjectGroup).map(subject), ...pronounsReady(state) ? subjectPronouns.filter((item) => item.word !== "it" && eligible(state, "pronoun", item.word, true)).map((item) => ({ ...item, kind: "person" })) : []];
+  const verbs = rotate([...state.verb.current, ...state.verb.completed], turn).filter((word) => request.frames.some((frame) => !!actionInBlueprint(actionVocabulary.find((action) => action.word === word), frame)) && (!request.movementOnly || actionVocabulary.find((action) => action.word === word)?.destination));
+  const frameFor = (word) => matchingActionBlueprint(actionVocabulary.find((action) => action.word === word), request.frames);
+  const allVerbs = [...state.verb.allowed, ...state.verb.queued].filter((word) => !!frameFor(word) && (!request.movementOnly || actionVocabulary.find((action) => action.word === word)?.destination));
+  const objects = (verb) => objectsForAction(verb, nouns, void 0, frameFor(verb));
+  const roles = anchor.type === "noun" && nouns.some((item) => family(item.word) === anchor.word && nounGroupFor(item) === request.subjectGroup) ? ["subject", "object"] : ["object"];
+  for (const role of roles) {
+    const people3 = rotate(primarySubjects, turn).filter((person) => anchor.type === "pronoun" ? !person.phrase && clean2(person.word) === clean2(anchor.word) : anchor.type === "noun" && role === "subject" ? !!person.phrase && family(nounWord(person)) === anchor.word : true);
+    const actions = verbs.filter((word) => (anchor.type !== "verb" || word === anchor.word) && people3.some((person) => subjectCanPerform(person, word)) && objects(word).some((object) => eligible(state, "noun", object.noun) && (anchor.type !== "noun" || role !== "object" || family(object.noun) === anchor.word) && (anchor.type !== "determiner" || agrees(anchor.word, numberItem(object.noun)) && objectDeterminers(object).some((item) => item.word === anchor.word)) && (anchor.type !== "adjective" || adjectiveFitsNoun(anchor.word, object.noun))));
+    for (const verb of actions) {
+      const frame = frameFor(verb);
+      const objectOptions = objects(verb).filter((object) => eligible(state, "noun", object.noun) && (anchor.type !== "noun" || role !== "object" || family(object.noun) === anchor.word) && (anchor.type !== "adjective" || state.noun.completed.includes(family(object.noun)) && adjectiveFitsNoun(anchor.word, object.noun)));
+      for (const object of rotate(objectOptions, turn)) {
+        const item = numberItem(object.noun), owner = chooseOwner(item, state, turn, anchor.type === "determiner" ? anchor.word : void 0, false, objectDeterminers(object).map((item2) => item2.word));
+        if (!owner) continue;
+        for (const person of people3) {
+          if (!fitsSubject(person, verb, object) || person.phrase && !eligible(state, "determiner", "the")) continue;
+          if (anchor.type === "adjective" && person.phrase && !state.noun.completed.includes(family(nounWord(person)))) continue;
+          const meal = { subject: person, verb, frame, object, owner, ...anchor.type === "adjective" ? { description: anchor.word } : {} };
+          let other;
+          if (anchor.type === "verb") {
+            const alternative = rotate(allVerbs, turn).find((word) => word !== verb && frameFor(word)?.connection === frame.connection && fitsSubject(person, word, object) && objects(word).some((candidate) => candidate.noun === object.noun && objectDeterminers(candidate).some((item2) => item2.word === owner)));
+            if (alternative) other = { ...meal, verb: alternative, frame: frameFor(alternative), object: objects(alternative).find((candidate) => candidate.noun === object.noun) };
+          } else if (anchor.type === "noun" && role === "object") {
+            const alternative = rotate(objects(verb), turn).find((candidate) => candidate.noun !== object.noun && eligible(state, "noun", candidate.noun, true) && agrees(owner, numberItem(candidate.noun)) && objectDeterminers(candidate).some((item2) => item2.word === owner) && fitsSubject(person, verb, candidate));
+            if (alternative) other = { ...meal, object: alternative };
+          } else if (anchor.type === "noun" || anchor.type === "pronoun") {
+            const alternative = rotate(foilSubjects, turn).find((candidate) => !!candidate.phrase === !!person.phrase && candidate.word !== person.word && fitsSubject(candidate, verb, object));
+            if (alternative) other = { ...meal, subject: alternative };
+          } else if (anchor.type === "determiner") {
+            const alternative = rotate([...state.determiner.allowed, ...state.determiner.queued], turn).find((word) => word !== owner && agrees(word, item) && objectDeterminers(object).some((item2) => item2.word === word));
+            if (alternative) other = { ...meal, owner: alternative };
+          } else {
+            const alternative = rotate([...state.adjective.allowed, ...state.adjective.queued], turn).find((word) => word !== anchor.word && adjectiveFitsNoun(word, object.noun));
+            if (alternative) other = { ...meal, description: alternative };
+          }
+          if (!other) continue;
+          const question = pair(level, actionDocument(meal), actionDocument(other), anchor, verb, owner);
+          if (hierarchyCompatible(question, state)) return question;
+        }
+      }
     }
   }
-  if (level === 4) for (const noun of humanNouns) for (const action of level === 4 ? ["sleeping"] : ["walking", "talking", "sleeping"]) {
-    if (level !== 4 && eligibleActions && !eligibleActions.has(action)) continue;
-    for (const descriptor of adjectivesForNoun(noun)) {
-      const opposite = descriptions.find((d) => d.word === descriptor.opposite && adjectiveFitsNoun(d.word, noun));
-      if (!opposite) continue;
-      const make = (d) => {
-        const person = { word: `the ${noun.word}`, thai: noun.thai, kind: "person", number: noun.number, phrase: { noun: noun.word, nounThai: noun.thai, determiner: { english: "the", thai: "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07" }, description: { english: d.word, thai: adjectiveThaiForNoun(d.word, noun) } } };
-        return actionDocument(person, action, void 0, void 0, level === 4);
-      };
-      const document2 = make(descriptor), other = make(opposite);
-      result.push(base(level, document2, other, { family: noun.singular ?? noun.word, vocabulary: [noun.word], action: level === 4 ? "doing" : action, owner: "the", subject: `the ${noun.word}`, plural: noun.number === "plural" }, [descriptor.word]));
+}
+function serveBlueprintDeck(level, state, learning, events, seed, options) {
+  const request = practiceBlueprintRequest(level, options.structure), result = [], now = options.now ?? Date.now();
+  const counts = /* @__PURE__ */ new Map();
+  for (const event of events.slice(-180)) {
+    for (const type of hierarchyTypes) for (const word of state[type].current) if (targetsHierarchy({ credit: event.targets.length ? "answer" : null, targetWords: event.targets }, type, word)) counts.set(type + ":" + word, (counts.get(type + ":" + word) ?? 0) + 1);
+  }
+  const length = Math.min(30, options.limit ?? 30), salt = parseInt(sentenceHash(seed), 36);
+  for (let index = 0; index < length; index++) {
+    const turn = options.selectionIndex ?? index, rotation = turn + (salt >>> 8);
+    const types = [...hierarchyTypes.slice(turn % hierarchyTypes.length), ...hierarchyTypes.slice(0, turn % hierarchyTypes.length)];
+    const due2 = hierarchyTypes.flatMap((type) => state[type].completed.filter((word) => vocabularyLearning(type, word, learning, now).due).map((word) => ({ type, word })));
+    const anchors = options.focus ? [options.focus] : [...due2, ...types.flatMap((type) => rotate(state[type].current, Math.floor(turn / 5)).map((word) => ({ type, word })).sort((a, b) => (counts.get(type + ":" + a.word) ?? 0) - (counts.get(type + ":" + b.word) ?? 0)))];
+    if (!options.focus) for (const type of types) for (const word of rotate(state[type].completed, rotation)) anchors.push({ type, word });
+    let selected;
+    for (const anchor of anchors) {
+      if (!request.anchors.includes(anchor.type)) continue;
+      selected = request.construction === "action" ? actionQuestion(level, state, anchor, rotation, request) : request.construction === "activity-question" ? activityQuestion(level, state, anchor, rotation) : request.construction === "location" ? locationQuestion(level, state, anchor, rotation) : nounQuestion(level, state, anchor, rotation, request.construction === "identify");
+      if (selected) {
+        counts.set(anchor.type + ":" + anchor.word, (counts.get(anchor.type + ":" + anchor.word) ?? 0) + 1);
+        break;
+      }
     }
+    if (selected && selected.recipe) selected.recipe = { ...selected.recipe, structure: options.structure };
+    if (!selected) throw new NoCompatibleBlueprintChoice(`Blueprint ${request.construction} has no compatible single-word contrast in the learner's eligible drawers`);
+    const flip = selected.kind === "meaning" && ((salt >>> 16) + (options.selectionIndex ?? index)) % 2 === 1;
+    result.push(flip ? { ...selected, choices: [selected.choices[1], selected.choices[0]], alternatives: selected.alternatives ? [selected.alternatives[1], selected.alternatives[0]] : void 0, sceneChoices: selected.sceneChoices ? [selected.sceneChoices[1], selected.sceneChoices[0]] : void 0, correct: selected.correct === 0 ? 1 : 0 } : selected);
   }
   return result;
 }
-function vocabularyRecallCandidates(level) {
-  return generatedNumberCatalogue.filter((n) => !n.pairOnly).flatMap((item) => {
-    const family = item.singular ?? item.word, human = meaningForWord(item)?.kind === "person";
-    const contrast = human ? family === "man" ? "woman" : "man" : family === "bag" ? "phone" : family === "water" ? "cup" : "bag";
-    const other = numberItem(item.pluralForm ? numberItem(contrast)?.plural ?? contrast : contrast);
-    if (!other) return [];
-    return ["the", "my", "your"].map((owner) => base(level, phrase(item.word, owner), phrase(other.word, owner), { family, vocabulary: [item.word, other.word], action: "vocabulary", owner, subject: "", plural: item.pluralForm }, [item.word]));
-  });
+function documentRecipe(doc) {
+  const word = (role) => {
+    const value = doc.units.find((unit) => unit.role === role)?.english;
+    return value?.replace(/[.!?]$/, "");
+  };
+  const objectIndex = doc.units.findIndex((unit) => unit.role === "object"), personIndex = doc.units.findIndex((unit) => unit.role === "person");
+  return { construction: doc.construction, noun: word("object"), owner: word("determiner"), person: word("person"), personOwner: word("person-determiner")?.toLowerCase(), verb: word("action"), connection: word("preposition"), reference: word("reference"), description: objectIndex > 0 && doc.units[objectIndex - 1].role === "description" ? doc.units[objectIndex - 1].english : void 0, personDescription: personIndex > 0 && doc.units[personIndex - 1].role === "description" ? doc.units[personIndex - 1].english : void 0 };
 }
-var cache = /* @__PURE__ */ new Map();
-function generatedCandidates(level, eligibleActions) {
-  const key = level + ":" + (eligibleActions && level >= 5 ? [...eligibleActions].sort().join("|") : "all");
-  let bank = cache.get(key);
-  if (!bank) {
-    const primary = level <= 3 ? numberCandidates(level) : level === 4 ? actionQuestionCandidates() : actionAnswerCandidates(level, eligibleActions);
-    bank = [...primary, ...descriptionCandidates(level, eligibleActions, [1, 2, 5, 6].includes(level) ? primary : void 0), ...level >= 5 ? vocabularyRecallCandidates(level) : []];
-    {
-      const ids = /* @__PURE__ */ new Map();
-      for (const q of bank) {
-        const previous = ids.get(q.id);
-        if (previous) throw new Error("Generated question ID collision: " + JSON.stringify({ id: q.id, previous: previous.choices, current: q.choices, previousCredit: previous.credit, currentCredit: q.credit }));
-        ids.set(q.id, q);
-      }
-    }
-    if (cache.size >= 4) cache.delete(cache.keys().next().value);
-    cache.set(key, bank);
+function answerMode(question, mode) {
+  if (!mode) return question;
+  const noun = question.document.units.find((unit) => unit.role === "object"), owner = question.document.units.find((unit) => unit.role === "determiner")?.english, item = noun && numberItem(clean2(noun.english));
+  if (!item || !owner) throw new Error("Answer mode requires a noun");
+  if (mode === "judgement" || mode === "judgement-wrong") {
+    if (question.level !== 3 || question.document.construction !== "question") throw new Error("Invalid judgement blueprint");
+    const verb = item.pluralForm ? "are" : "is", wrong = mode === "judgement-wrong", units = question.document.units.map((unit) => unit.role === "be" && wrong ? { ...unit, english: verb === "is" ? "are" : "is" } : unit), document2 = { ...question.document, units, english: units.map((unit) => unit.english).join(" ") };
+    return { ...question, id: question.id + (wrong ? "-grammar-error" : ""), document: document2, kind: "judgement", choices: ["Correct", "Incorrect"], alternatives: void 0, correct: wrong ? 1 : 0, targetWords: [verb], listeningWords: [verb, ...wrong ? [verb === "is" ? "are" : "is"] : []], credit: wrong ? null : verb };
   }
-  return bank;
-}
-var structureCache = /* @__PURE__ */ new Map();
-function structureCandidates(structure) {
-  const cached = structureCache.get(structure);
-  if (cached) return cached;
-  const out = [];
-  if (structure === "identify") for (const item of generatedNumberCatalogue.filter((n) => !n.pluralForm && !n.pairOnly)) for (const reference of references) {
-    if (reference.plural && !item.plural) continue;
-    const other = references.find((r) => r.plural === reference.plural && r.id !== reference.id);
-    out.push({ id: `identify-v2-${reference.id}-${sentenceHash(item.word)}`, version: 1, level: 6, document: identificationQuestion(reference.id), audioUrl: identificationAudio(reference.id), choices: [reference.word, other.word], correct: 0, sceneChoices: [{ reference: reference.id, word: item.word }, { reference: other.id, word: item.word }], targetWords: [reference.word], listeningWords: [reference.word], family: item.singular ?? item.word, vocabulary: [item.word], action: "identify", owner: "", subject: "", plural: reference.plural, kind: "meaning", credit: reference.word });
-  }
-  if (structure === "identify") for (const item of generatedNumberCatalogue.filter((noun) => !noun.pairOnly)) {
-    const reference = item.pluralForm ? "these" : "this";
-    const nounOptions = generatedNumberCatalogue.filter((other) => !other.pairOnly && other.pluralForm === item.pluralForm && other.word !== item.word).sort((a, b) => everydayNounOrder.indexOf(a.singular ?? a.word) - everydayNounOrder.indexOf(b.singular ?? b.word));
-    const mass = meaningForWord(item)?.countability === "mass";
-    for (const owner of allDeterminers.filter((owner2) => determinerAgrees(owner2.word, item.pluralForm, mass) && (!["a", "an"].includes(owner2.word) || owner2.word === (item.indefiniteArticle ?? (/^[aeiou]/i.test(item.word) ? "an" : "a"))))) {
-      const document2 = identificationAnswer(reference, item, owner.word);
-      const meta = { family: item.singular ?? item.word, vocabulary: [item.word], action: "identify", owner: owner.word, subject: "", plural: item.pluralForm };
-      for (const noun of nounOptions.slice(0, 2)) {
-        if (!determinerAgrees(owner.word, noun.pluralForm, meaningForWord(noun)?.countability === "mass")) continue;
-        if (["a", "an"].includes(owner.word) && owner.word !== (noun.indefiniteArticle ?? (/^[aeiou]/i.test(noun.word) ? "an" : "a"))) continue;
-        out.push(base(6, document2, identificationAnswer(reference, noun, owner.word), { ...meta, vocabulary: [item.word, noun.word] }, [item.word]));
-      }
-      const other = owner.word === "the" ? "my" : "the";
-      out.push(base(6, document2, identificationAnswer(reference, item, other), meta, [owner.word]));
-    }
-  }
-  if (structure === "location") for (const person of people) for (const place of locationWords(vocabulary)) {
-    const line = peopleSentence("answer", person.word, place), otherPerson = people.find((p) => p.word !== person.word), other = peopleSentence("answer", otherPerson.word, place);
-    const roles = ["person", "be", "preposition", "determiner", "object"];
-    const doc = (l) => ({ ...l, construction: "location-answer", units: l.units.map((u, i) => ({ ...u, role: roles[i] })) });
-    out.push(base(3, doc(line), doc(other), { family: place.singular ?? place.word, vocabulary: [place.word], action: "location", owner: "the", subject: person.word, plural: false }, [person.word]));
-  }
-  if (structure === "location") for (const subject of namedPeople.filter((person) => person.phrase.determiner.english === "the")) for (const place of defaultPlaceNames) {
-    const other = namedPeople.find((person) => person.phrase.determiner.english === "the" && person.number === subject.number && person.phrase.noun !== subject.phrase.noun);
-    const document2 = { ...locationAnswer(subject, place, true), construction: "location-answer" };
-    const alternative = { ...locationAnswer(other, place, true), construction: "location-answer" };
-    out.push(base(3, document2, alternative, { family: subject.phrase.noun, vocabulary: [subject.phrase.noun, other.phrase.noun], action: "location", owner: "the", subject: subject.word, plural: subject.number === "plural" }, [subject.phrase.noun]));
-  }
-  if (structure === "destination") {
-    const movement = new Set(actionVocabulary.filter((action) => action.destination).map((action) => action.word));
-    for (const q of actionAnswerCandidates(5, movement, allDeterminers.map((item) => item.word))) if (q.document.units.some((unit) => unit.role === "preposition" && unit.english === "to")) out.push(q);
-  }
-  structureCache.set(structure, out);
-  return out;
-}
-var practiceBankCache = /* @__PURE__ */ new Map();
-function practiceCandidates(level, structure, eligibleActions) {
-  const key = level + ":" + (structure ?? "main") + ":" + (eligibleActions && level >= 5 && !structure ? [...eligibleActions].sort().join("|") : "all");
-  const saved = practiceBankCache.get(key);
-  if (saved) return saved;
-  const bank = structure ? structureCandidates(structure) : generatedCandidates(level, eligibleActions);
-  const construction = structure === "identify" ? ["identification-question", "identification-answer"] : structure === "destination" ? ["action-answer"] : structure === "location" ? ["location-answer"] : level === 1 ? ["noun-phrase"] : level <= 3 ? ["question"] : level === 4 ? ["action-question"] : ["action-answer"];
-  const result = [...new Map([...bank, ...!structure && level === 1 ? determinerCandidates() : []].filter((q) => construction.includes(q.document.construction)).map((q) => [q.id, q])).values()];
-  if (practiceBankCache.size >= 12) practiceBankCache.delete(practiceBankCache.keys().next().value);
-  practiceBankCache.set(key, result);
-  return result;
-}
-var determinerBank;
-function determinerCandidates() {
-  if (determinerBank) return determinerBank;
-  const out = [];
-  for (const item of generatedNumberCatalogue.filter((n) => !n.pairOnly)) {
-    const mass = meaningForWord(item)?.countability === "mass";
-    for (const det of ["this", "that", "these", "those"]) {
-      if (!determinerAgrees(det, item.pluralForm, mass)) continue;
-      const other = det === "this" ? "that" : det === "that" ? "this" : det === "these" ? "those" : "these";
-      out.push({ ...base(6, phrase(item.word, det), phrase(item.word, other), { family: item.singular ?? item.word, vocabulary: [item.word], action: "determiner", owner: det, subject: "", plural: item.pluralForm }, [det]), sceneChoices: [{ reference: det, word: item.word }, { reference: other, word: item.word }] });
-    }
-    if (!item.pluralForm && !mass && item.plural) {
-      const article = item.indefiniteArticle ?? (/^[aeiou]/i.test(item.word) ? "an" : "a");
-      out.push(base(6, phrase(item.word, article), phrase(item.word, "the"), { family: item.singular ?? item.word, vocabulary: [item.word], action: "determiner", owner: article, subject: "", plural: false }, [article]));
-    }
-    if (item.pluralForm && item.singular) {
-      const q = base(6, phrase(item.word, "some"), phrase(item.word, "these"), { family: item.singular, vocabulary: [item.word], action: "determiner", owner: "some", subject: "", plural: true }, ["some"]);
-      out.push({ ...q, sceneChoices: [{ reference: "some", word: item.word }, { reference: "these", word: item.word }] });
-    }
-  }
-  determinerBank = out;
-  return out;
+  const singular = numberItem(item.singular ?? item.word), plural2 = numberItem(item.plural ?? "");
+  if (!singular || !plural2 || !agrees(owner, singular) || !agrees(owner, plural2) || question.level > 2) throw new Error("Invalid number contrast");
+  const choices = [nounDocument(1, singular, owner), nounDocument(1, plural2, owner)];
+  return { ...question, kind: "number", alternatives: choices, choices: [choices[0].english, choices[1].english], correct: item.pluralForm ? 1 : 0, ...question.level === 2 ? { targetWords: [item.word, item.pluralForm ? "are" : "is"], credit: [item.word, item.pluralForm ? "are" : "is"].join(" ") } : {} };
 }
 
 // src/lib/supabase.ts
@@ -22796,106 +22784,8 @@ function masteredWords(rows, events) {
   return new Set([...learningStates(rows, events)].filter(([, state]) => state.provenAt !== null).map(([id]) => id));
 }
 var sharedVocabularyOrder = [...everydayNounOrder];
-var targetPoolCache = /* @__PURE__ */ new WeakMap();
-var sentenceKeyCache = /* @__PURE__ */ new WeakMap();
-var primaryCache = /* @__PURE__ */ new WeakMap();
-var eligibilityCache = /* @__PURE__ */ new WeakMap();
 function generatedDeck(level, rows, events, seed, options = {}) {
-  const learning = learningStates(rows, events), mastered = masteredWords(rows, events), hierarchy = hierarchyState(mastered), now = options.now ?? Date.now();
-  const bank = practiceCandidates(level, options.structure, /* @__PURE__ */ new Set([...hierarchy.verb.allowed, ...hierarchy.verb.queued]));
-  const eligibilityKey = hierarchyTypes.map((type) => [...hierarchy[type].allowed, ">", ...hierarchy[type].queued].join(",")).join("|") + "|" + pronounsReady(hierarchy);
-  const bankCache = eligibilityCache.get(bank) ?? /* @__PURE__ */ new Map();
-  let pool = bankCache.get(eligibilityKey);
-  if (!pool) {
-    pool = bank.filter((q) => hierarchyCompatible(q, hierarchy));
-    if (bankCache.size >= 16) bankCache.delete(bankCache.keys().next().value);
-    bankCache.set(eligibilityKey, pool);
-    eligibilityCache.set(bank, bankCache);
-  }
-  let primaryIds = primaryCache.get(bank);
-  if (!primaryIds) {
-    primaryIds = new Set((options.structure ? structureCandidates(options.structure) : generatedCandidates(level, /* @__PURE__ */ new Set([...hierarchy.verb.allowed, ...hierarchy.verb.queued]))).map((q) => q.id));
-    primaryCache.set(bank, primaryIds);
-  }
-  const preferPrimary = (questions) => {
-    const primary = questions.filter((q) => primaryIds.has(q.id) && (options.structure || level < 4 || q.document.construction !== "noun-phrase"));
-    return primary.length ? primary : questions;
-  };
-  const reviewable = (q) => q.listeningWords.length > 0 && q.listeningWords.flatMap(wordTokens).every((word) => (learning.get("en:" + word)?.fadeScore ?? 0) >= 25);
-  const due2 = hierarchyTypes.flatMap((type) => hierarchy[type].completed.map((word) => ({ type, word, state: vocabularyLearning(type, word, learning, now) }))).filter((item) => item.state.due && pool.some((q) => targetsHierarchy(q, item.type, item.word) && reviewable(q))).sort((a, b) => Date.parse(a.state.reviewDueAt) - Date.parse(b.state.reviewDueAt))[0];
-  const targetKey = hierarchyTypes.map((type) => hierarchy[type].current.join(",")).join("|");
-  const targetCache = targetPoolCache.get(pool) ?? /* @__PURE__ */ new Map();
-  let currentPools = targetCache.get(targetKey);
-  if (!currentPools) {
-    currentPools = new Map(hierarchyTypes.map((type) => [type, hierarchy[type].current.map((word) => ({ word, questions: preferPrimary(pool.filter((q) => targetsHierarchy(q, type, word))) })).filter((item) => item.questions.length)]));
-    if (targetCache.size >= 8) targetCache.delete(targetCache.keys().next().value);
-    targetCache.set(targetKey, currentPools);
-    targetPoolCache.set(pool, targetCache);
-  }
-  const recent = /* @__PURE__ */ new Map();
-  for (const [i, e] of events.slice(-180).entries()) recent.set(sentenceKey(e.sentence), i);
-  const used = /* @__PURE__ */ new Set(), counts = /* @__PURE__ */ new Map(), deck = [];
-  let randomState = parseInt(sentenceHash(seed), 36) || 1;
-  const random = () => {
-    randomState ^= randomState << 13;
-    randomState ^= randomState >>> 17;
-    randomState ^= randomState << 5;
-    return (randomState >>> 0) / 4294967296;
-  };
-  const shuffle = (list) => {
-    for (let i = list.length - 1; i > 0; i--) {
-      const j = Math.floor(random() * (i + 1));
-      [list[i], list[j]] = [list[j], list[i]];
-    }
-    return list;
-  };
-  const sides = shuffle(Array.from({ length: 30 }, (_, i) => i < 15));
-  if (options.selectionIndex !== void 0) for (const type of hierarchyTypes) for (const word of hierarchy[type].current) {
-    counts.set("focus:" + type + ":" + word, events.slice(-180).filter((event) => targetsHierarchy({ credit: event.targets.length ? "answer" : null, targetWords: event.targets }, type, word)).length);
-  }
-  const count = (key) => counts.get(key) ?? 0;
-  for (let index = 0; index < Math.min(GENERATED_ROUND_SIZE, options.limit ?? GENERATED_ROUND_SIZE); index++) {
-    const identity = (q2) => q2.id;
-    const turn = options.selectionIndex ?? index;
-    const focusOrder = [...hierarchyTypes.slice(turn % hierarchyTypes.length), ...hierarchyTypes.slice(0, turn % hierarchyTypes.length)];
-    const focus = pronounsReady(hierarchy) && turn % 3 === 2 && currentPools.get("pronoun").length ? "pronoun" : focusOrder.find((type) => currentPools.get(type).length);
-    const choices = focus ? currentPools.get(focus) : [];
-    const rotation = options.selectionIndex === void 0 ? 0 : Math.floor(turn / hierarchyTypes.length) % Math.max(1, choices.length);
-    const position = (word) => (choices.findIndex((item) => item.word === word) - rotation + choices.length) % choices.length;
-    const option = focus ? [...choices].sort((a, b) => count("focus:" + focus + ":" + a.word) - count("focus:" + focus + ":" + b.word) || position(a.word) - position(b.word))[0] : void 0;
-    if (focus && option && !due2) counts.set("focus:" + focus + ":" + option.word, count("focus:" + focus + ":" + option.word) + 1);
-    let focused = due2 ? preferPrimary(pool.filter((q2) => targetsHierarchy(q2, due2.type, due2.word) && reviewable(q2))) : option?.questions ?? preferPrimary(pool);
-    if (!due2) {
-      const confirming = focused.filter(reviewable);
-      if (confirming.length) focused = confirming;
-    }
-    let candidates = focused.filter((q2) => !used.has(identity(q2)));
-    if (!candidates.length) {
-      used.clear();
-      candidates = [...focused];
-    }
-    if (!candidates.length) throw new Error(`Not enough taught, distinct questions for Level ${level}`);
-    const rank = (q2) => {
-      const key = sentenceKeyCache.get(q2) ?? sentenceKey(q2.document.english);
-      sentenceKeyCache.set(q2, key);
-      const proved = q2.targetWords.flatMap(wordTokens).every((w) => mastered.has(wordId(w)));
-      const hash = parseInt(sentenceHash(seed + "|" + index + "|" + q2.id), 36) / 4294967295;
-      return (recent.has(key) ? 1e3 + (recent.get(key) ?? 0) : 0) + count("f:" + q2.family) * 12 + count("a:" + q2.action) * 4 + count("o:" + q2.owner) * 3 + count("s:" + q2.subject) * 2 + count("t:" + q2.targetWords.join(" ")) * 3 + (proved && index % 5 !== 0 ? 8 : 0) + hash * 6;
-    };
-    let q = candidates[0], best = rank(q);
-    for (let candidate = 1; candidate < candidates.length; candidate++) {
-      const value = rank(candidates[candidate]);
-      if (value < best) {
-        q = candidates[candidate];
-        best = value;
-      }
-    }
-    used.add(identity(q));
-    for (const key of ["f:" + q.family, "a:" + q.action, "o:" + q.owner, "s:" + q.subject, "t:" + q.targetWords.join(" ")]) counts.set(key, count(key) + 1);
-    const flip = q.kind === "meaning" && sides[index];
-    deck.push(flip ? { ...q, choices: [q.choices[1], q.choices[0]], alternatives: q.alternatives ? [q.alternatives[1], q.alternatives[0]] : void 0, sceneChoices: q.sceneChoices ? [q.sceneChoices[1], q.sceneChoices[0]] : void 0, correct: q.correct === 0 ? 1 : 0 } : q);
-  }
-  return deck;
+  return serveBlueprintDeck(level, hierarchyState(masteredWords(rows, events)), learningStates(rows, events), events, seed, options);
 }
 
 // src/race/practiceForecast.ts

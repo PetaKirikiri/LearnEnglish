@@ -1,7 +1,7 @@
 import GeneratedClassroomPractice from './GeneratedClassroomPractice'
 import type {GeneratedQuestion} from '../race/generatedPracticeContent'
 import {classroomPracticeQuestion} from './testingQuestions'
-import {identificationQuestions} from '../race/identificationContent'
+import type {identificationQuestions} from '../race/identificationContent'
 import {wordTokens,wordOpacity} from '../learning/wordProgress/model'
 import {useCallback,useEffect,useRef} from 'react'
 import ActionPracticeStage from '../race/ActionPracticeStage'

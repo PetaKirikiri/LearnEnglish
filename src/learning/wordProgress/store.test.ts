@@ -47,3 +47,13 @@ it('keeps presentation and answer receipts for the same attempt separate across 
  await flushWordAttempts('a');expect(pendingAttempts('a')).toEqual([])
  expect(mocks.rpc.mock.calls.map(call=>call[1].p_payload.p_event??'answered')).toEqual(['presented','answered','answered'])
 })
+
+it('retains the ingredient recipe with an offline attempt until the same receipt is acknowledged',async()=>{
+ const recipe={version:1,ingredients:'reviewed fixture'}
+ queueAttempt('a',{...attempt,recipe})
+ mocks.rpc.mockResolvedValueOnce({error:new Error('offline')})
+ await expect(flushWordAttempts('a')).rejects.toThrow('offline')
+ expect(pendingAttempts('a')[0].recipe).toEqual(recipe)
+ await flushWordAttempts('a')
+ expect(pendingAttempts('a')).toEqual([])
+})
