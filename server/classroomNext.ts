@@ -1,4 +1,4 @@
-import {registerPracticeQuestion} from '../server/registerPracticeQuestion'
+import {registerPracticeQuestion} from './registerPracticeQuestion'
 import {createClient} from '@supabase/supabase-js'
 import type {IncomingMessage,ServerResponse} from 'node:http'
 import type {ListeningEvidence} from '../src/race/generatedPracticeProgress'

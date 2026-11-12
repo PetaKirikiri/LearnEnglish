@@ -1,7 +1,7 @@
 import {beforeEach,expect,it,vi} from 'vitest'
 const mock=vi.hoisted(()=>({rpc:vi.fn(),from:vi.fn(),upsert:vi.fn(),rows:[] as unknown[],history:[] as unknown[]}))
 vi.mock('@supabase/supabase-js',()=>({createClient:()=>({rpc:mock.rpc,from:mock.from})}))
-import handler from '../../api/classroom-next'
+import handler from '../../server/classroomNext'
 const secret='a'.repeat(64)
 beforeEach(()=>{
  vi.stubEnv('SUPABASE_URL','https://database.invalid');vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY','server-only')

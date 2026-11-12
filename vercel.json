@@ -71,7 +71,7 @@
     "api/sentence-audio.js": {
       "maxDuration": 60
     },
-    "api/classroom-next.ts": {
+    "api/classroom-next.js": {
       "maxDuration": 60
     }
   }
