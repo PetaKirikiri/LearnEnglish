@@ -17,7 +17,6 @@ type StageProps={
 export default function PracticeStage({question,prompt,answers,correct,onNext,explanation,onHelp,onReplay,teacherControlled=false}:StageProps){
  const [helpOpen,setHelpOpen]=useState(false)
  const stage=useRef<HTMLDivElement>(null)
- const tapStart=useRef<{x:number;y:number}|null>(null)
  useLayoutEffect(()=>{
   const root=stage.current
   if(!root)return
@@ -82,15 +81,7 @@ export default function PracticeStage({question,prompt,answers,correct,onNext,ex
  },[question,answers.choices])
  const fitChoice=(choice:typeof answers.choices[number])=>({...choice,icon:undefined,content:<AssessmentSentence>{choice.icon?<span className="assessment-choice-with-icon"><span className="binary-answer-icon" aria-hidden="true">{choice.icon}</span><span>{choice.content}</span></span>:choice.content}</AssessmentSentence>})
  const fittedAnswers={...answers,choices:[fitChoice(answers.choices[0]),fitChoice(answers.choices[1])] as const}
- return <div ref={stage} className="practice-stage adaptive-practice-stage" onPointerDownCapture={event=>{tapStart.current={x:event.clientX,y:event.clientY}}} onPointerUpCapture={event=>{
-  const start=tapStart.current
-  tapStart.current=null
-  if(start&&Math.hypot(event.clientX-start.x,event.clientY-start.y)>12)return
-  if(correct===null||teacherControlled||helpOpen||event.button!==0)return
-  if((event.target as Element).closest('.foundation-help,.foundation-replay,[role="dialog"]'))return
-  event.preventDefault()
-  onNext()
- }}><AssessmentSentenceContext.Provider value={true}>
+ return <div ref={stage} className="practice-stage adaptive-practice-stage"><AssessmentSentenceContext.Provider value={true}>
   <section className="practice-question" aria-label="Question"><AssessmentSentence>{question}</AssessmentSentence></section>
   <section className="practice-answer-area" aria-label="Answers">
    <div className="practice-feedback foundation-controls">
@@ -101,6 +92,7 @@ export default function PracticeStage({question,prompt,answers,correct,onNext,ex
    </div>
    <BinaryAnswerZone {...fittedAnswers}/>
   </section>
+  {!teacherControlled&&correct!==null&&!helpOpen&&<button type="button" className="practice-continue-surface" aria-label="Continue to next question" onClick={event=>{event.preventDefault();event.stopPropagation();onNext()}}/>}
   </AssessmentSentenceContext.Provider>
   {helpOpen&&explanation(()=>setHelpOpen(false))}
  </div>

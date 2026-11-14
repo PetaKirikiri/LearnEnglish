@@ -7,6 +7,14 @@ export function homeworkLineUrl(lesson: number) {
   if (!homeworkLiffId) return null
   return `https://liff.line.me/${homeworkLiffId}?lesson=${lessonNumber(lesson)}`
 }
+let lineReady:Promise<(typeof import('@line/liff'))['default']>|null=null
+function initialiseLine(){
+ if(!lineReady)lineReady=import('@line/liff').then(async({default:liff})=>{
+  await liff.init({liffId:homeworkLiffId,withLoginOnExternalBrowser:false})
+  return liff
+ }).catch(error=>{lineReady=null;throw error})
+ return lineReady
+}
 let pending: Promise<string | null> | null = null
 export function recogniseHomeworkAccount(register = false): Promise<string | null> {
   if (pending) return pending
@@ -17,18 +25,17 @@ async function connect(register: boolean) {
   // LINE restores deep-link parameters during init, even for signed-in learners.
   let line: (typeof import('@line/liff'))['default'] | undefined
   if (new URLSearchParams(window.location.search).has('liff.state')) {
-    line = (await import('@line/liff')).default
-    await line.init({ liffId: homeworkLiffId, withLoginOnExternalBrowser: false })
+    line = await initialiseLine()
   }
   const { data: current } = await supabase.auth.getSession()
   if (current.session) {
-    const { data, error } = await supabase.auth.getUser()
-    if (!error && data.user) return connectEnglishLearnerAccount(data.user.id)
+    // The learner-session endpoint verifies the saved bearer token and account
+    // link. A separate getUser network request repeats that verification.
+    if (current.session.user?.id) return connectEnglishLearnerAccount(current.session.user.id)
     throw new Error('กรุณาเปิดลิงก์จาก LINE อีกครั้ง')
   }
   if (!homeworkLiffId) throw new Error('ยังเชื่อมต่อ LINE ไม่ได้ กรุณาลองอีกครั้งภายหลัง')
-  const liff = line ?? (await import('@line/liff')).default
-  if (!line) await liff.init({ liffId: homeworkLiffId, withLoginOnExternalBrowser: false })
+  const liff = line ?? await initialiseLine()
   const token = liff.getIDToken()
   if (!token && !liff.isInClient() && !liff.isLoggedIn()) {
     // Keep the classroom and lesson query when Safari returns from LINE login.

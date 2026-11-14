@@ -62,7 +62,7 @@ function ConnectedHomework() {
   return <main className="phone-practice" lang="th"><div className="practice-shell"><section className={`practice-complete${classId?' homework-join':''}`} aria-live="polite">
     {classId&&<div className="homework-join-brand"><img src="/brand/englishsuccess-cap.svg" alt="Success University"/><span>SUCCESS UNIVERSITY</span><h1>Join the class</h1><p>เข้าเรียน · แล้วมาเล่นกัน!</p></div>}
     
-    {state === 'loading' ? <><p>กำลังเชื่อมต่อ LINE…</p><span role="status" aria-label="กำลังเชื่อมต่อ" style={{display:'block',width:28,height:28,border:'3px solid #dbe8ff',borderTopColor:'#1877ef',borderRadius:'50%'}}/></> : <><p role="alert" style={{fontSize:20}}>{error}</p><button onClick={() => void connect()}>ลองอีกครั้ง</button></>}
+    {state === 'loading' ? <><p>กำลังเปิด…</p><span role="status" aria-label="กำลังเชื่อมต่อ" style={{display:'block',width:28,height:28,border:'3px solid #dbe8ff',borderTopColor:'#1877ef',borderRadius:'50%'}}/></> : <><p role="alert" style={{fontSize:20}}>{error}</p><button onClick={() => void connect()}>ลองอีกครั้ง</button></>}
     {link && <a className="homework-line-open" href={link + (classId ? '&class='+encodeURIComponent(classId) : '') + (homeworkDestination() === 'scoreboard' ? '&view=scoreboard' : '')}>เปิดใน LINE · Continue in LINE</a>}
 
   </section></div></main>

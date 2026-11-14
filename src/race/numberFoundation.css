@@ -17,8 +17,8 @@
 .foundation-practice .practice-answers button{flex-direction:column;gap:12px;background:#fff;color:#18385e;border:2px solid #dce5f1;border-radius:24px;box-shadow:0 5px 0 #dce5f1;padding:20px 14px;min-height:160px;font-size:25px}
 .foundation-practice .practice-answers button:disabled:not(.correct):not(.incorrect){opacity:1;background:#fff;color:#18385e;box-shadow:0 5px 0 #dce5f1}
 .foundation-practice .practice-answers .cw-game-icon{display:block;width:72px;height:72px;flex:none}
-.foundation-practice .practice-answers button:not(:disabled):hover{background:#fff8d8;border-color:#f0c427;box-shadow:0 5px 0 #d7b02b;transform:none}
-.foundation-practice .practice-answers button.correct{background:#ffdc39;border-color:#e5b92d;color:#18385e;box-shadow:0 5px 0 #bd9413;outline:none}
+@media(hover:hover){.foundation-practice .practice-answers button:not(:disabled):hover{background:#fff8d8;border-color:#f0c427;box-shadow:0 5px 0 #d7b02b;transform:none}}
+.foundation-practice .practice-answers button.correct{background:#148a51;border-color:#2fa868;color:white;box-shadow:0 5px 0 #096637;outline:none}
 .foundation-practice .practice-answers button:not(:disabled):active{transform:translateY(3px);box-shadow:0 2px 0 #d7b02b}
 .foundation-practice .practice-stage{justify-content:flex-start;padding-top:24px}
 .foundation-listen h1{font-size:23px}
@@ -119,7 +119,7 @@
 .foundation-practice .practice-answer-area .binary-answer:disabled:not(.correct):not(.incorrect){background:#1976f3;color:#fff;border-color:#1265da;box-shadow:0 4px 0 #1056bd;opacity:1}
 @media(hover:hover){.foundation-practice .practice-answer-area .binary-answer:not(:disabled):hover{background:#116ce8;color:#fff;border-color:#1056bd;box-shadow:0 4px 0 #1056bd}}
 .foundation-practice .practice-answer-area .binary-answer:not(:disabled):active{transform:translateY(3px);box-shadow:0 1px 0 #1056bd}
-.foundation-practice .practice-answer-area .binary-answer.correct{background:#ffdc39;color:#18385e;border-color:#d7ac17;box-shadow:0 4px 0 #bd9413}
+.foundation-practice .practice-answer-area .binary-answer.correct{background:#148a51;color:white;border-color:#2fa868;box-shadow:0 4px 0 #096637}
 .foundation-practice .practice-answer-area .binary-answer.incorrect{background:#e92345;color:#fff;border-color:#bd1735;box-shadow:0 4px 0 #a41630}
 
 /* One alignment contract for icons, wrapped labels and sentence-matrix answers. */

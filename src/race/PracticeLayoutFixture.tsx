@@ -32,9 +32,11 @@ function LayoutFixture(){
   return <main className="phone-practice foundation-practice"><div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(110px,1fr))',gap:16,padding:24}}>{words.map(word=><figure key={word} style={{margin:0,display:'grid',justifyItems:'center',gap:12,padding:16,borderRadius:18,background:'var(--sentence-noun-fill)',color:'var(--sentence-noun-ink)'}}><span style={{width:48,height:48}}><WordSlotIcon slot={2} word={word}/></span><figcaption>{word}</figcaption></figure>)}</div></main>
  }
 
- if(new URLSearchParams(location.search).get('answers')==='linked'){
+ if(['linked','framing'].includes(new URLSearchParams(location.search).get('answers')??'')){
+  const framing=new URLSearchParams(location.search).get('answers')==='framing'
   const make=(object:string)=>({...actionDialogue('i','holding',{vocabulary:generatedNumberCatalogue,object,determiner:'the'}).answer,construction:'action-answer' as const})
-  const correct=make('a bag'),other=make('a phone')
+  const frame=(determiner:'the'|'that')=>({...actionDialogue('they','drinking',{vocabulary:generatedNumberCatalogue,object:'water',determiner,subject:{word:'the girls',thai:'เด็กผู้หญิง',kind:'person',number:'plural',phrase:{noun:'girls',nounThai:'เด็กผู้หญิง',number:'plural',determiner:{english:'the',thai:'ที่กำลังพูดถึง'}}}}).answer,construction:'action-answer' as const})
+  const correct=framing?frame('that'):make('a bag'),other=framing?frame('the'):make('a phone')
   return <main className="phone-practice foundation-practice"><div className="practice-shell"><PracticeStage
    question={<div className="classroom foundation-noun"><div className="cw-sentence-board"><LanguageQuadrant request={{document:correct,presentation:{size:'phone',audio:false,wordPicker:false,explanations:false}}}/></div></div>}
    explanation={close=><AdaptivePracticeExplanation question={{document:correct,level:6,targetWords:['bag'],credit:'bag'}} onClose={close}/>}

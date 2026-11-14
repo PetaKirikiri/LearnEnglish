@@ -25,14 +25,17 @@ it('automatically connects a new learner without a welcome step', async()=>{
  mocks.invoke.mockResolvedValueOnce({data:{recognised:false}}).mockResolvedValueOnce({data:{access_token:'a',refresh_token:'r'}})
  const {recogniseHomeworkAccount}=await import('./homeworkLine')
  expect(await recogniseHomeworkAccount()).toBe('member')
+ expect(mocks.init).toHaveBeenCalledTimes(1)
  expect(mocks.invoke).toHaveBeenLastCalledWith('line-liff-auth',expect.objectContaining({body:{id_token:'verified-by-server',access_token:'line-access'}}))
 })
 it('uses a validated existing session',async()=>{
- mocks.getSession.mockResolvedValue({data:{session:{}}})
+ mocks.getSession.mockResolvedValue({data:{session:{user:{id:'existing'}}}})
  mocks.getUser.mockResolvedValue({data:{user:{id:'existing'}},error:null})
  const {recogniseHomeworkAccount}=await import('./homeworkLine')
  expect(await recogniseHomeworkAccount()).toBe('existing')
  expect(mocks.init).not.toHaveBeenCalled()
+ expect(mocks.getUser).not.toHaveBeenCalled()
+ expect(mocks.learner).toHaveBeenCalledOnce()
 })
 it('does not call the account service without a LINE token',async()=>{
  mocks.getIDToken.mockReturnValue(null)
@@ -43,7 +46,7 @@ it('does not call the account service without a LINE token',async()=>{
 
 it('initialises LINE deep links even with an existing account',async()=>{
  window.history.replaceState({}, '', '/english/practice?liff.state=%3Fview%3Dscoreboard')
- mocks.getSession.mockResolvedValue({data:{session:{}}})
+ mocks.getSession.mockResolvedValue({data:{session:{user:{id:'existing'}}}})
  mocks.getUser.mockResolvedValue({data:{user:{id:'existing'}},error:null})
  const {recogniseHomeworkAccount,homeworkDestination}=await import('./homeworkLine')
  expect(await recogniseHomeworkAccount()).toBe('existing')
@@ -62,4 +65,14 @@ it('starts LINE login from Safari and preserves the class link',async()=>{
  expect(await recogniseHomeworkAccount()).toBeNull()
  expect(mocks.login).toHaveBeenCalledWith({redirectUri:window.location.href})
  expect(mocks.invoke).not.toHaveBeenCalled()
+})
+
+it('shares one verification for concurrent entry requests and propagates verification failures',async()=>{
+ mocks.getSession.mockResolvedValue({data:{session:{user:{id:'existing'}}}})
+ mocks.learner.mockResolvedValue({data:{linked:false}})
+ const {recogniseHomeworkAccount}=await import('./homeworkLine')
+ expect(await Promise.all([recogniseHomeworkAccount(),recogniseHomeworkAccount()])).toEqual(['existing','existing'])
+ expect(mocks.learner).toHaveBeenCalledOnce()
+ mocks.learner.mockResolvedValue({error:new Error('expired')})
+ await expect(recogniseHomeworkAccount()).rejects.toThrow()
 })

@@ -24,3 +24,12 @@
 .everyday-person.vocabulary-picture-art .person-copy>img:not(.family-focus){width:100%;height:100%}
 
 .family-person .person-copy>img{object-fit:contain;object-position:center}
+
+/* Position portrait copies inside a real square, independent of image/grid
+   intrinsic sizing. A plural pair stays centred as one complete silhouette. */
+.everyday-person.vocabulary-picture-art{position:relative;display:block;aspect-ratio:1}
+.everyday-person.vocabulary-picture-art .person-copy{position:absolute;inset:0;width:100%;height:100%;border-radius:0}
+.everyday-person.vocabulary-picture-art:has(.person-copy:nth-child(2)) .person-copy{inset:auto;width:76%;height:76%}
+.everyday-person.vocabulary-picture-art:has(.person-copy:nth-child(2)) .person-copy:first-child{top:0;right:0}
+.everyday-person.vocabulary-picture-art:has(.person-copy:nth-child(2)) .person-copy:nth-child(2){bottom:0;left:0}
+.everyday-person.vocabulary-picture-art .person-copy>img{object-fit:contain;object-position:center}

@@ -35,8 +35,11 @@ it('finishes after exactly thirty independently scored questions and starts a fr
    expect(complete).not.toHaveBeenCalled();expect(host.querySelector('progress')?.max).toBe(30)
    expect(host.querySelector<HTMLButtonElement>('.binary-answer')?.disabled).toBe(true)
    await act(async()=>finishAudio())
+   expect(host.querySelector('.binary-answer.correct,.binary-answer.incorrect')).toBeNull()
+   expect(host.querySelector('.practice-continue-surface')).toBeNull()
+   expect(saved(4).picked).toBeNull()
    await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correctSide(4)].click())
-   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-next')!.click())
+   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-continue-surface')!.click())
   }
   expect(complete).toHaveBeenCalledWith(4,30,30,true,first.id,true)
   expect(answers()).toHaveLength(30);expect(new Set(presentations().map(event=>event.id)).size).toBe(30)
@@ -52,7 +55,7 @@ it('resumes the exact unanswered question and choices after refresh and isolates
  try{
   await act(async()=>root.render(<GeneratedPractice level={5}/>));await act(async()=>finishAudio())
   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correctSide(5)].click())
-  await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-next')!.click())
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-continue-surface')!.click())
   const prior=saved(5),labels=[...host.querySelectorAll('.binary-answer')].map(b=>b.getAttribute('aria-label'))
   await act(async()=>root.unmount());root=createRoot(host);await act(async()=>root.render(<GeneratedPractice level={5}/>))
   expect(saved(5)).toEqual(prior);expect([...host.querySelectorAll('.binary-answer')].map(b=>b.getAttribute('aria-label'))).toEqual(labels)
@@ -122,7 +125,7 @@ it('runs Lesson 6 separately from action Level 6 and restores matched scene choi
    expect(host.querySelector('progress')?.max).toBe(30)
    await act(async()=>finishAudio())
    await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[run.questions[index].correct].click())
-   await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-next')!.click())
+   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-continue-surface')!.click())
   }
   expect(host.textContent).toContain('30 / 30')
   expect(answers()).toHaveLength(30);expect(new Set(presentations().map(event=>event.id)).size).toBe(30)
@@ -165,7 +168,7 @@ it('advances a new phone learner through the shared tree while switching sentenc
     const side=q.correct
     expect(host.querySelectorAll<HTMLButtonElement>('.binary-answer')[side].disabled).toBe(false)
     await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[side].click())
-    await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-next')!.click())
+    await act(async()=>host.querySelector<HTMLButtonElement>('.practice-continue-surface')!.click())
     answered++
    }
    const events=loadEvidence(user)
