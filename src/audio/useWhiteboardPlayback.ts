@@ -1,5 +1,5 @@
 import {useEffect,useRef,useState} from 'react'
-import {playTimedSentence,prepareSentenceAudio,type AudioSentence} from './sentenceAudio'
+import {playTimedSentence,type AudioSentence} from './sentenceAudio'
 import type {SpokenWord} from './sentenceTiming'
 import type {LanguageDocument} from '../learning/sentenceMatrix/LanguageQuadrant'
 
@@ -11,7 +11,6 @@ export function useWhiteboardPlayback(document:LanguageDocument|undefined){
  const sentence:AudioSentence|undefined=document?{id:'whiteboard-timed',document,whiteboard:document}:undefined
  useEffect(()=>{
   setWord(null);setError('');setLoading(false);wave.current.level=0;wave.current.time=0
-  if(sentence)void prepareSentenceAudio([sentence])
   return()=>{stop.current?.();stop.current=undefined}
   // Sentence selection, not playback frames, owns preparation and cancellation.
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -15,16 +15,17 @@ export default async function handler(req:IncomingMessage&{body?:unknown},res:Se
  if(!url||!key)return send(503,{error:'Audio unavailable'})
  const db=createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}})
  const token=req.headers.authorization?.replace(/^Bearer /,'')
- if(!token&&!context?.localDevelopment)return send(401,{error:'Sign in required'})
- const auth=token?await db.auth.getUser(token):{data:{user:{id:'00000000-0000-4000-8000-000000000005'}},error:null}
- const user=auth.data
- if(auth.error||!user.user)return send(401,{error:'Sign in required'})
  try{
   let body=req.body
   if(body===undefined){let raw='';for await(const chunk of req){raw+=chunk;if(raw.length>8192)return send(413,{error:'Request too large'})}body=JSON.parse(raw)}
   if(typeof body==='string')body=JSON.parse(body)
+  const whiteboard=canonicalWhiteboardSentence((body as {whiteboard?:unknown})?.whiteboard)
+  if(!token&&(!whiteboard&&!context?.localDevelopment||(body as {registerOnly?:boolean})?.registerOnly))return send(401,{error:'Sign in required'})
+  const auth=token?await db.auth.getUser(token):{data:{user:{id:'00000000-0000-4000-8000-000000000005'}},error:null}
+  const user=auth.data
+  if(auth.error||!user.user)return send(401,{error:'Sign in required'})
   const question=canonicalPracticeQuestion((body as {id?:string})?.id??'',(body as {recipe?:unknown})?.recipe)
-  const document=question?.document??canonicalWhiteboardSentence((body as {whiteboard?:unknown})?.whiteboard)
+  const document=question?.document??whiteboard
   if(!document)return send(400,{error:'Unknown lesson sentence'})
   const q={document,audioUrl:question?.audioUrl}
   if((body as {registerOnly?:boolean}).registerOnly===true){if(!question)return send(400,{error:'Unknown practice question'});await registerPracticeQuestion(db,question);return send(200,{registered:question.id})}
@@ -35,7 +36,7 @@ export default async function handler(req:IncomingMessage&{body?:unknown},res:Se
   const path=`${hash}.mp3`,publicUrl=db.storage.from('sentence-audio').getPublicUrl(path).data.publicUrl
   const timingPath=`${hash}.timing.json`,timingUrl=db.storage.from('sentence-audio').getPublicUrl(timingPath).data.publicUrl
   const bucket=db.storage.from('sentence-audio')
-  if(!apiKey){const cached=await db.from('english_sentence_audio').select('status').eq('key',hash).maybeSingle();return send(200,cached.data?.status==='ready'?{url:publicUrl,timingUrl}:{status:'unavailable'})}
+  if(!apiKey||!token&&!context?.localDevelopment){const cached=await db.from('english_sentence_audio').select('status').eq('key',hash).maybeSingle();return send(200,cached.data?.status==='ready'?{url:publicUrl,timingUrl}:{status:'unavailable'})}
   const {data:claim,error}=await db.rpc('claim_sentence_audio',{p_key:hash,p_text:q.document.english,p_owner:owner,p_learner:user.user.id})
   if(error)throw error
   if(claim==='ready')return send(200,{url:publicUrl,timingUrl})

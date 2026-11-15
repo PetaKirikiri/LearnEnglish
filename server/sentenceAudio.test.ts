@@ -1,7 +1,7 @@
 import {beforeEach,expect,it,vi} from 'vitest'
 import type {IncomingMessage,ServerResponse} from 'node:http'
-const mock=vi.hoisted(()=>({getUser:vi.fn(),rpc:vi.fn(),download:vi.fn(),upload:vi.fn(),upsert:vi.fn(),recordings:{} as Record<string,string>}))
-vi.mock('@supabase/supabase-js',()=>({createClient:()=>({auth:{getUser:mock.getUser},rpc:mock.rpc,from:()=>({upsert:mock.upsert}),storage:{from:()=>({download:mock.download,upload:mock.upload,getPublicUrl:(p:string)=>({data:{publicUrl:`https://audio.invalid/${p}`}})})}})}))
+const mock=vi.hoisted(()=>({getUser:vi.fn(),rpc:vi.fn(),download:vi.fn(),upload:vi.fn(),upsert:vi.fn(),cache:vi.fn(),recordings:{} as Record<string,string>}))
+vi.mock('@supabase/supabase-js',()=>({createClient:()=>({auth:{getUser:mock.getUser},rpc:mock.rpc,from:()=>({upsert:mock.upsert,select:()=>({eq:()=>({maybeSingle:mock.cache})})}),storage:{from:()=>({download:mock.download,upload:mock.upload,getPublicUrl:(p:string)=>({data:{publicUrl:`https://audio.invalid/${p}`}})})}})}))
 vi.mock('../src/race/generatedPracticeAudio.json',()=>({default:mock.recordings}))
 import handler,{audioIdentity} from './sentenceAudio'
 import {sentenceKey} from '../src/race/generatedPracticeContent'
@@ -61,14 +61,17 @@ it('serves the whiteboard through the same timed ElevenLabs path',async()=>{
  expect(response.result).toEqual({url:expect.stringMatching(/\.mp3$/),timingUrl:expect.stringMatching(/\.timing\.json$/)})
  expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/with-timestamps?'),expect.any(Object))
 })
-it('uses server configuration for trusted local development without a learner login',async()=>{
- const response=await request({id:missing.id},'',true)
- expect(response.status).toBe(200)
- expect(response.result).toEqual({url:expect.stringMatching(/\.mp3$/),timingUrl:expect.stringMatching(/\.timing\.json$/)})
- expect(mock.getUser).not.toHaveBeenCalled()
- expect(mock.rpc).toHaveBeenCalledWith('claim_sentence_audio',expect.objectContaining({p_learner:'00000000-0000-4000-8000-000000000005'}))
+it('reuses public whiteboard cache without authorizing paid generation',async()=>{
+ const whiteboard={english:text,thai:'',construction:'noun-phrase',units:[{english:text.split(' ')[0],thai:'',role:'determiner'},{english:text.split(' ').slice(1).join(' '),thai:'',role:'object'}]}
+ mock.cache.mockResolvedValueOnce({data:{status:'ready'}})
+ expect((await request({id:'whiteboard-timed',whiteboard},'')).result).toEqual({url:expect.stringMatching(/\.mp3$/),timingUrl:expect.stringMatching(/\.timing\.json$/)})
+ mock.cache.mockResolvedValueOnce({data:null})
+ expect((await request({id:'whiteboard-timed',whiteboard},'')).result).toEqual({status:'unavailable'})
+ expect(fetch).not.toHaveBeenCalled();expect(mock.rpc).not.toHaveBeenCalled()
+ expect((await request({whiteboard,registerOnly:true},'')).status).toBe(401)
 })
-it('cannot enable local development access through a browser request body',async()=>{
- expect((await request({id:missing.id,localDevelopment:true},'')).status).toBe(401)
- expect(fetch).not.toHaveBeenCalled()
+it('retains configured local development generation',async()=>{
+ expect((await request({id:missing.id},'',true)).status).toBe(200)
+ expect(mock.getUser).not.toHaveBeenCalled()
+ expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/with-timestamps?'),expect.any(Object))
 })

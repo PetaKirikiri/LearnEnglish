@@ -43,7 +43,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// node_modules/tslib/tslib.es6.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/tslib/tslib.es6.mjs
 var tslib_es6_exports = {};
 __export(tslib_es6_exports, {
   __addDisposableResource: () => __addDisposableResource,
@@ -482,7 +482,7 @@ function __rewriteRelativeImportExtension(path, preserveJsx) {
 }
 var extendStatics, __assign, __createBinding, __setModuleDefault, ownKeys, _SuppressedError, tslib_es6_default;
 var init_tslib_es6 = __esm({
-  "node_modules/tslib/tslib.es6.mjs"() {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/tslib/tslib.es6.mjs"() {
     extendStatics = function(d, b) {
       extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
         d2.__proto__ = b2;
@@ -568,9 +568,9 @@ var init_tslib_es6 = __esm({
   }
 });
 
-// node_modules/@supabase/functions-js/dist/main/helper.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/helper.js
 var require_helper = __commonJS({
-  "node_modules/@supabase/functions-js/dist/main/helper.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/helper.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.resolveFetch = void 0;
@@ -584,9 +584,9 @@ var require_helper = __commonJS({
   }
 });
 
-// node_modules/@supabase/functions-js/dist/main/types.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/types.js
 var require_types = __commonJS({
-  "node_modules/@supabase/functions-js/dist/main/types.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/types.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FunctionRegion = exports.FunctionsHttpError = exports.FunctionsRelayError = exports.FunctionsFetchError = exports.FunctionsError = void 0;
@@ -644,9 +644,9 @@ var require_types = __commonJS({
   }
 });
 
-// node_modules/@supabase/functions-js/dist/main/FunctionsClient.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/FunctionsClient.js
 var require_FunctionsClient = __commonJS({
-  "node_modules/@supabase/functions-js/dist/main/FunctionsClient.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/FunctionsClient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FunctionsClient = void 0;
@@ -930,9 +930,9 @@ var require_FunctionsClient = __commonJS({
   }
 });
 
-// node_modules/@supabase/functions-js/dist/main/index.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/index.js
 var require_main = __commonJS({
-  "node_modules/@supabase/functions-js/dist/main/index.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/functions-js/dist/main/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FunctionRegion = exports.FunctionsRelayError = exports.FunctionsHttpError = exports.FunctionsFetchError = exports.FunctionsError = exports.FunctionsClient = void 0;
@@ -959,9 +959,9 @@ var require_main = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/lib/websocket-factory.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/websocket-factory.js
 var require_websocket_factory = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/lib/websocket-factory.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/websocket-factory.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WebSocketFactory = void 0;
@@ -1070,9 +1070,9 @@ Suggested solution: ${env.workaround}`;
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/lib/version.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/version.js
 var require_version = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/lib/version.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/version.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.version = void 0;
@@ -1080,9 +1080,9 @@ var require_version = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/lib/constants.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/constants.js
 var require_constants = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/lib/constants.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/constants.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CONNECTION_STATE = exports.TRANSPORTS = exports.CHANNEL_EVENTS = exports.CHANNEL_STATES = exports.SOCKET_STATES = exports.MAX_PUSH_BUFFER_SIZE = exports.WS_CLOSE_NORMAL = exports.DEFAULT_TIMEOUT = exports.VERSION = exports.DEFAULT_VSN = exports.VSN_2_0_0 = exports.VSN_1_0_0 = exports.DEFAULT_VERSION = void 0;
@@ -1128,9 +1128,9 @@ var require_constants = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/lib/serializer.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/serializer.js
 var require_serializer = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/lib/serializer.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/serializer.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Serializer = class {
@@ -1282,9 +1282,9 @@ var require_serializer = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/lib/transformers.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/transformers.js
 var require_transformers = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/lib/transformers.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/transformers.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.httpEndpointURL = exports.toTimestampString = exports.toArray = exports.toJson = exports.toNumber = exports.toBoolean = exports.convertCell = exports.convertColumn = exports.convertChangeData = exports.PostgresTypes = void 0;
@@ -1461,9 +1461,9 @@ var require_transformers = __commonJS({
   }
 });
 
-// node_modules/@supabase/phoenix/priv/static/phoenix.cjs.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/phoenix/priv/static/phoenix.cjs.js
 var require_phoenix_cjs = __commonJS({
-  "node_modules/@supabase/phoenix/priv/static/phoenix.cjs.js"(exports, module) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/phoenix/priv/static/phoenix.cjs.js"(exports, module) {
     "use strict";
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
@@ -3313,9 +3313,9 @@ var require_phoenix_cjs = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/phoenix/presenceAdapter.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/phoenix/presenceAdapter.js
 var require_presenceAdapter = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/phoenix/presenceAdapter.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/phoenix/presenceAdapter.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var phoenix_1 = require_phoenix_cjs();
@@ -3413,9 +3413,9 @@ var require_presenceAdapter = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/RealtimePresence.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimePresence.js
 var require_RealtimePresence = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/RealtimePresence.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimePresence.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.REALTIME_PRESENCE_LISTEN_EVENTS = void 0;
@@ -3457,9 +3457,9 @@ var require_RealtimePresence = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/lib/normalizeChannelError.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/normalizeChannelError.js
 var require_normalizeChannelError = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/lib/normalizeChannelError.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/lib/normalizeChannelError.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.normalizeChannelError = normalizeChannelError;
@@ -3483,9 +3483,9 @@ var require_normalizeChannelError = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/phoenix/channelAdapter.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/phoenix/channelAdapter.js
 var require_channelAdapter = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/phoenix/channelAdapter.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/phoenix/channelAdapter.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var constants_1 = require_constants();
@@ -3590,9 +3590,9 @@ var require_channelAdapter = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/RealtimePostgresFilterBuilder.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimePostgresFilterBuilder.js
 var require_RealtimePostgresFilterBuilder = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/RealtimePostgresFilterBuilder.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimePostgresFilterBuilder.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.postgresChangesFilter = exports.RealtimePostgresFilterBuilder = void 0;
@@ -3714,9 +3714,9 @@ var require_RealtimePostgresFilterBuilder = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js
 var require_RealtimeChannel = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.REALTIME_CHANNEL_STATES = exports.REALTIME_SUBSCRIBE_STATES = exports.REALTIME_LISTEN_TYPES = exports.REALTIME_POSTGRES_CHANGES_LISTEN_EVENT = exports.postgresChangesFilter = exports.RealtimePostgresFilterBuilder = void 0;
@@ -4468,9 +4468,9 @@ var require_RealtimeChannel = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/phoenix/socketAdapter.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/phoenix/socketAdapter.js
 var require_socketAdapter = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/phoenix/socketAdapter.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/phoenix/socketAdapter.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var phoenix_1 = require_phoenix_cjs();
@@ -4586,9 +4586,9 @@ var require_socketAdapter = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
 var require_RealtimeClient = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -5254,9 +5254,9 @@ var require_RealtimeClient = __commonJS({
   }
 });
 
-// node_modules/@supabase/realtime-js/dist/main/index.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/index.js
 var require_main2 = __commonJS({
-  "node_modules/@supabase/realtime-js/dist/main/index.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/realtime-js/dist/main/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WebSocketFactory = exports.REALTIME_CHANNEL_STATES = exports.REALTIME_SUBSCRIBE_STATES = exports.REALTIME_PRESENCE_LISTEN_EVENTS = exports.REALTIME_POSTGRES_CHANGES_LISTEN_EVENT = exports.REALTIME_LISTEN_TYPES = exports.postgresChangesFilter = exports.RealtimePostgresFilterBuilder = exports.RealtimeClient = exports.RealtimeChannel = exports.RealtimePresence = void 0;
@@ -5293,9 +5293,9 @@ var require_main2 = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/version.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/version.js
 var require_version2 = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/version.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/version.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.version = void 0;
@@ -5303,9 +5303,9 @@ var require_version2 = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/constants.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/constants.js
 var require_constants2 = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/constants.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/constants.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.JWKS_TTL = exports.PKCE_MAX_CONCURRENT_FLOWS = exports.PKCE_FLOW_ID_PARAM = exports.BASE64URL_REGEX = exports.API_VERSIONS = exports.API_VERSION_HEADER_NAME = exports.NETWORK_FAILURE = exports.DEFAULT_HEADERS = exports.AUDIENCE = exports.STORAGE_KEY = exports.GOTRUE_URL = exports.REFRESH_FAILURE_COOLDOWN_MS = exports.EXPIRY_MARGIN_MS = exports.AUTO_REFRESH_TICK_THRESHOLD = exports.AUTO_REFRESH_TICK_DURATION_MS = void 0;
@@ -5337,9 +5337,9 @@ var require_constants2 = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/errors.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/errors.js
 var require_errors = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/errors.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/errors.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AuthInvalidJwtError = exports.AuthWeakPasswordError = exports.AuthRefreshDiscardedError = exports.AuthRetryableFetchError = exports.AuthPKCECodeVerifierMissingError = exports.AuthPKCEGrantCodeExchangeError = exports.AuthImplicitGrantRedirectError = exports.AuthInvalidCredentialsError = exports.AuthInvalidTokenResponseError = exports.AuthSessionMissingError = exports.CustomAuthError = exports.AuthUnknownError = exports.AuthApiError = exports.AuthError = void 0;
@@ -5495,9 +5495,9 @@ var require_errors = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/base64url.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/base64url.js
 var require_base64url = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/base64url.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/base64url.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.byteToBase64URL = byteToBase64URL;
@@ -5685,9 +5685,9 @@ var require_base64url = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/helpers.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/helpers.js
 var require_helpers = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/helpers.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/helpers.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.pkceVerifierSlotKey = exports.Deferred = exports.removeItemAsync = exports.getItemAsync = exports.setItemAsync = exports.looksLikeFetchResponse = exports.resolveFetch = exports.supportsLocalStorage = exports.isBrowser = void 0;
@@ -6101,9 +6101,9 @@ var require_helpers = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/fetch.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/fetch.js
 var require_fetch = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/fetch.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/fetch.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.handleError = handleError2;
@@ -6288,9 +6288,9 @@ var require_fetch = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/types.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/types.js
 var require_types2 = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/types.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/types.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.SIGN_OUT_SCOPES = void 0;
@@ -6298,9 +6298,9 @@ var require_types2 = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/GoTrueAdminApi.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/GoTrueAdminApi.js
 var require_GoTrueAdminApi = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/GoTrueAdminApi.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/GoTrueAdminApi.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -7384,9 +7384,9 @@ var require_GoTrueAdminApi = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/local-storage.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/local-storage.js
 var require_local_storage = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/local-storage.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/local-storage.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.memoryLocalStorageAdapter = memoryLocalStorageAdapter;
@@ -7406,9 +7406,9 @@ var require_local_storage = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/locks.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/locks.js
 var require_locks = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/locks.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/locks.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ProcessLockAcquireTimeoutError = exports.NavigatorLockAcquireTimeoutError = exports.LockAcquireTimeoutError = exports.internals = void 0;
@@ -7584,9 +7584,9 @@ var require_locks = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/polyfills.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/polyfills.js
 var require_polyfills = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/polyfills.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/polyfills.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.polyfillGlobalThis = polyfillGlobalThis;
@@ -7611,9 +7611,9 @@ var require_polyfills = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/web3/ethereum.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/web3/ethereum.js
 var require_ethereum = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/web3/ethereum.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/web3/ethereum.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getAddress = getAddress;
@@ -7689,9 +7689,9 @@ ${suffix}`;
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/webauthn.errors.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/webauthn.errors.js
 var require_webauthn_errors = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/webauthn.errors.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/webauthn.errors.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WebAuthnUnknownError = exports.WebAuthnError = void 0;
@@ -7880,9 +7880,9 @@ var require_webauthn_errors = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/lib/webauthn.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/webauthn.js
 var require_webauthn = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/lib/webauthn.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/lib/webauthn.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WebAuthnApi = exports.DEFAULT_REQUEST_OPTIONS = exports.DEFAULT_CREATION_OPTIONS = exports.webAuthnAbortService = exports.WebAuthnAbortService = exports.identifyAuthenticationError = exports.identifyRegistrationError = exports.isWebAuthnError = exports.WebAuthnError = void 0;
@@ -8439,9 +8439,9 @@ var require_webauthn = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/GoTrueClient.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/GoTrueClient.js
 var require_GoTrueClient = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/GoTrueClient.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/GoTrueClient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13648,9 +13648,9 @@ var require_GoTrueClient = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/AuthAdminApi.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/AuthAdminApi.js
 var require_AuthAdminApi = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/AuthAdminApi.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/AuthAdminApi.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13660,9 +13660,9 @@ var require_AuthAdminApi = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/AuthClient.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/AuthClient.js
 var require_AuthClient = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/AuthClient.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/AuthClient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13672,9 +13672,9 @@ var require_AuthClient = __commonJS({
   }
 });
 
-// node_modules/@supabase/auth-js/dist/main/index.js
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/index.js
 var require_main3 = __commonJS({
-  "node_modules/@supabase/auth-js/dist/main/index.js"(exports) {
+  "../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/auth-js/dist/main/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.processLock = exports.lockInternals = exports.NavigatorLockAcquireTimeoutError = exports.navigatorLock = exports.AuthClient = exports.AuthAdminApi = exports.GoTrueClient = exports.GoTrueAdminApi = void 0;
@@ -13705,7 +13705,7 @@ var require_main3 = __commonJS({
   }
 });
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceMatrix/sentenceRoles.ts
+// src/learning/sentenceMatrix/sentenceRoles.ts
 var sentenceRoleSlots = {
   question: 0,
   preposition: 0,
@@ -13719,10 +13719,10 @@ var sentenceRoleSlots = {
   reference: 3
 };
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/actionArtwork.ts
+// src/learning/sentenceRules/actionArtwork.ts
 var actionArtwork = (word) => `/classroom/icons/actions/focused/${word.replaceAll(" ", "-")}.png`;
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/everydayActions.ts
+// src/learning/sentenceRules/everydayActions.ts
 var everydayActions = [
   { word: "cooking", thai: "\u0E1B\u0E23\u0E38\u0E07", thaiByObject: { rice: "\u0E2B\u0E38\u0E07" }, complement: "object", objects: ["cookable"], categories: ["food"], icon: actionArtwork("cooking") },
   { word: "taking", thai: "\u0E2B\u0E22\u0E34\u0E1A", complement: "object", objects: ["carryable"], categories: ["everyday"], icon: actionArtwork("taking") },
@@ -13740,7 +13740,7 @@ var everydayActions = [
   { word: "coming", thai: "\u0E21\u0E32", destination: true, complement: "destination", objects: ["destination", "person"], uses: { to: { objects: ["destination", "person"] } }, categories: ["places"], icon: actionArtwork("coming") }
 ];
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/expandedEverydayVocabulary.ts
+// src/learning/expandedEverydayVocabulary.ts
 var establishedObjects = [
   { singular: "home", plural: "homes", thai: "\u0E1A\u0E49\u0E32\u0E19", classifierThai: "\u0E2B\u0E25\u0E31\u0E07", categories: ["places", "buildings"], meaning: { kind: "place", countability: "count", locationPrepositions: ["at", "in"], actionContexts: ["destination", "cleanable", "sleep-inside", "paintable", "depictable", "visitable"] } },
   { singular: "room", plural: "rooms", thai: "\u0E2B\u0E49\u0E2D\u0E07", classifierThai: "\u0E2B\u0E49\u0E2D\u0E07", categories: ["places"], meaning: { kind: "place", countability: "count", locationPrepositions: ["in"], actionContexts: ["destination", "cleanable", "sleep-inside", "paintable"] } },
@@ -13796,7 +13796,7 @@ var establishedPeopleWords = ["brother", "sister", "friend", "child", "person", 
 var expandedPeopleWords = [...establishedPeopleWords, ...additionalPeople.map((person) => person.singular)];
 var expandedVocabularyOrder = [...establishedPeopleWords, ...establishedObjects.map((item) => item.singular), ...additionalPeople.map((person) => person.singular), ...additionalObjects.map((item) => item.singular)];
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/everydayVocabulary.ts
+// src/learning/everydayVocabulary.ts
 var everydayPeople = [
   { singular: "man", plural: "men", thai: "\u0E1C\u0E39\u0E49\u0E0A\u0E32\u0E22" },
   { singular: "woman", plural: "women", thai: "\u0E1C\u0E39\u0E49\u0E2B\u0E0D\u0E34\u0E07" },
@@ -13926,7 +13926,7 @@ var descriptions = [
 ];
 var descriptionStages = [["red", "blue"], ["big", "small"], ["hot", "cold"], ["green", "yellow"], ["black", "white"], ["tall", "short"], ["clean", "dirty"], ["wet", "dry"], ["new", "old"], ["full", "empty"], ["open", "closed"], ["heavy", "light"], ["happy", "sad"], ["fast", "slow"], ["soft", "hard"], ["thick", "thin"], ["pink", "purple"], ["orange", "brown"]];
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/adjectiveSemantics.ts
+// src/learning/sentenceRules/adjectiveSemantics.ts
 function adjectiveFitsNoun(adjective, noun) {
   const description = descriptions.find((item) => item.word === adjective.toLowerCase());
   if (!description) return false;
@@ -13945,7 +13945,7 @@ function adjectiveThaiForNoun(adjective, noun) {
   return description.group === "height" ? (word.startsWith("bottle") ? "\u0E17\u0E23\u0E07" : "\u0E15\u0E31\u0E27") + description.thai : description.thai;
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceMatrix/nounPhrase.ts
+// src/learning/sentenceMatrix/nounPhrase.ts
 function nounPhraseUnits(phrase2) {
   if (/^(?:a|an|the|my|your|his|her|our|their|this|that|these|those|some|to)\s/i.test(phrase2.noun)) throw new Error("Keep determiners and prepositions separate from the noun.");
   if (phrase2.description && !adjectiveFitsNoun(phrase2.description.english, phrase2.noun)) throw new Error("This adjective does not fit the noun.");
@@ -13957,7 +13957,7 @@ function nounPhraseUnits(phrase2) {
   ];
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/possessives.ts
+// src/learning/sentenceRules/possessives.ts
 function possessiveDeterminer(possessor) {
   const english = possessor.kind === "name" ? possessor.word : nounPhraseUnits(possessor.phrase).map((unit) => unit.english).join(" ");
   if (!english.trim() || /[.!?]/.test(english) || possessor.kind === "phrase" && possessor.phrase.preposition) throw new Error("A possessor must be a name or noun phrase, without a sentence or preposition.");
@@ -13980,7 +13980,7 @@ var possessiveChoices = [
 ];
 var possessiveFor = (word) => possessiveChoices.find((choice) => choice.value.english === word)?.value;
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceMatrix/subjectEngine.ts
+// src/learning/sentenceMatrix/subjectEngine.ts
 var subjectPronouns = [
   { word: "I", thai: "\u0E09\u0E31\u0E19", person: 1 },
   { word: "you", thai: "\u0E04\u0E38\u0E13", person: 2 },
@@ -13995,7 +13995,7 @@ function subjectVerb(subject2) {
   return subject2.person === 1 ? "am" : "is";
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/determiners.ts
+// src/learning/sentenceRules/determiners.ts
 function determinerAgrees(word, plural2, mass = false) {
   if (["this", "that"].includes(word)) return !plural2;
   if (["these", "those"].includes(word)) return plural2 && !mass;
@@ -14004,7 +14004,7 @@ function determinerAgrees(word, plural2, mass = false) {
   return !!possessiveFor(word) || ["the", "my", "your", "his", "her", "our", "their"].includes(word);
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/meaningProfiles.ts
+// src/learning/sentenceRules/meaningProfiles.ts
 var meaningProfiles = {
   thought: { kind: "abstract" },
   idea: { kind: "abstract" },
@@ -14028,7 +14028,7 @@ var meaningProfiles = {
   "swimming pool": { kind: "place", locationPrepositions: ["at", "in"] }
 };
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceMatrix/vocabularyCategories.ts
+// src/learning/sentenceMatrix/vocabularyCategories.ts
 var vocabularyCategories = [
   { id: "clothing", en: "Clothing", th: "\u0E40\u0E2A\u0E37\u0E49\u0E2D\u0E1C\u0E49\u0E32" },
   { id: "food", en: "Food", th: "\u0E2D\u0E32\u0E2B\u0E32\u0E23" },
@@ -14057,7 +14057,7 @@ function categoriesForWord(item) {
   return vocabularyCategories.filter((category) => groups[category.id].includes(base)).map((category) => category.id);
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/blueprints.ts
+// src/learning/sentenceRules/blueprints.ts
 var sentenceBlueprints = {
   "where-noun": { pattern: "Where {be} {determiner} {noun}?", nounKinds: ["place", "person", "physical-object"], agreement: "noun-number", nounModes: ["noun", "pronoun", "name"] },
   "where-person": { pattern: "Where {be} {subject}?", nounKinds: [], agreement: "subject-person", nounModes: ["noun", "pronoun", "name"] },
@@ -14108,7 +14108,7 @@ function assertSentence(request) {
   if (issues.length) throw new Error(`${request.blueprint}: ${issues.map((i) => `${i.code} (${i.word}): ${i.message}`).join("; ")}`);
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/nominalReferences.ts
+// src/learning/sentenceRules/nominalReferences.ts
 var defaultPersonNames = [{ word: "Bia", thai: "Bia", kind: "person", person: 3 }, { word: "May", thai: "\u0E40\u0E21\u0E22\u0E4C", kind: "person", person: 3 }];
 var defaultPlaceNames = [{ word: "Central", thai: "\u0E40\u0E0B\u0E47\u0E19\u0E17\u0E23\u0E31\u0E25", kind: "place" }, { word: "Success", thai: "Success", kind: "place" }];
 var plural = (noun) => noun.number === "plural" || !!noun.pairOnly;
@@ -14128,7 +14128,7 @@ function referencePhrase(noun, phrase2, reference, location2 = false) {
   return { noun: chosen.word, nounThai: chosen.thai, ...!location2 && phrase2.preposition ? { preposition: phrase2.preposition } : {} };
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceMatrix/model.ts
+// src/learning/sentenceMatrix/model.ts
 var determiners = [
   { word: "the", thai: "\u0E17\u0E35\u0E48\u0E01\u0E33\u0E25\u0E31\u0E07\u0E1E\u0E39\u0E14\u0E16\u0E36\u0E07" },
   { word: "my", thai: "\u0E02\u0E2D\u0E07\u0E09\u0E31\u0E19" },
@@ -14151,7 +14151,7 @@ function locationSentence(item, owner = "the", count = "", tense = "present") {
   };
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/identification.ts
+// src/learning/sentenceRules/identification.ts
 var references = [
   { id: "this", word: "this", thai: "\u0E19\u0E35\u0E48", sentenceThai: "\u0E19\u0E35\u0E48\u0E04\u0E37\u0E2D\u0E2D\u0E30\u0E44\u0E23", distance: 0, plural: false, scene: "this" },
   { id: "that", word: "that", thai: "\u0E19\u0E31\u0E48\u0E19", sentenceThai: "\u0E19\u0E31\u0E48\u0E19\u0E04\u0E37\u0E2D\u0E2D\u0E30\u0E44\u0E23", distance: 1, plural: false, scene: "that" },
@@ -14181,7 +14181,7 @@ function identificationAnswer(id, object, owner = "the", objectReference) {
   return { english: units.map((unit) => unit.english).join(" "), thai: `${reference.thai}\u0E04\u0E37\u0E2D${phrase2.nounThai}${objectReference || owner === "the" ? "" : ownerThai(owner)}`, construction: "identification-answer", units };
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceMatrix/quadrantLayout.ts
+// src/learning/sentenceMatrix/quadrantLayout.ts
 function quadrantLayout(document2) {
   const { construction, units } = document2;
   if (!units.length || units.map((u) => u.english).join(" ") !== document2.english) throw new Error("Quadrant source and aligned units must match");
@@ -14231,7 +14231,7 @@ function quadrantLayout(document2) {
   };
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/classroom/lessonThreeVocabulary.ts
+// src/classroom/lessonThreeVocabulary.ts
 var lessonThreeWords = [
   { indefiniteArticle: "an", classifierThai: "\u0E25\u0E39\u0E01", singular: "apple", plural: "apples", thai: "\u0E41\u0E2D\u0E1B\u0E40\u0E1B\u0E34\u0E25", categories: ["food"] },
   { indefiniteArticle: "a", classifierThai: "\u0E25\u0E39\u0E01", singular: "banana", plural: "bananas", thai: "\u0E01\u0E25\u0E49\u0E27\u0E22", categories: ["food"] },
@@ -14247,7 +14247,7 @@ var lessonThreeWords = [
   { singular: "restaurant", plural: "restaurants", thai: "\u0E23\u0E49\u0E32\u0E19\u0E2D\u0E32\u0E2B\u0E32\u0E23", categories: ["places", "buildings"] }
 ];
 
-// ../../../../../../private/tmp/english-audio-publish/src/race/tonightVocabulary.ts
+// src/race/tonightVocabulary.ts
 var tonightWords = [
   ["hotel", "\u0E42\u0E23\u0E07\u0E41\u0E23\u0E21"],
   ["toilet", "\u0E2B\u0E49\u0E2D\u0E07\u0E19\u0E49\u0E33"],
@@ -14293,7 +14293,7 @@ var tonightPluralForms = {
   bedroom: "bedrooms"
 };
 
-// ../../../../../../private/tmp/english-audio-publish/src/race/pluralVocabulary.ts
+// src/race/pluralVocabulary.ts
 var pluralVocabulary = [
   { singular: "shoe", group: "wear", classifier: "\u0E02\u0E49\u0E32\u0E07", plural: "shoes", thai: "\u0E23\u0E2D\u0E07\u0E40\u0E17\u0E49\u0E32" },
   { singular: "key", group: "carry", classifier: "\u0E14\u0E2D\u0E01", plural: "keys", thai: "\u0E01\u0E38\u0E0D\u0E41\u0E08" },
@@ -14319,7 +14319,7 @@ var pairVocabulary = [
   { plural: "trousers", thai: "\u0E01\u0E32\u0E07\u0E40\u0E01\u0E07\u0E02\u0E32\u0E22\u0E32\u0E27" }
 ];
 
-// ../../../../../../private/tmp/english-audio-publish/src/classroom/lessonTwoContent.ts
+// src/classroom/lessonTwoContent.ts
 var lessonTwoCore = ["shoe", "key", "sock", "bag", "book", "pen"];
 var lessonTwoWords = [...pluralVocabulary].sort((a, b) => {
   const rank = (word) => {
@@ -14330,7 +14330,7 @@ var lessonTwoWords = [...pluralVocabulary].sort((a, b) => {
 });
 var lessonTwoPairs = pairVocabulary;
 
-// ../../../../../../private/tmp/english-audio-publish/src/classroom/wordCatalogue.ts
+// src/classroom/wordCatalogue.ts
 var lessonOneCatalogue = tonightWords.map(([word, thai]) => ({ word, thai }));
 var lessonTwoIntroducedCatalogue = [
   ...lessonTwoWords.flatMap((item) => [
@@ -14360,14 +14360,14 @@ var lessonThreeCatalogue = cumulativeCatalogue(lessonTwoCatalogue, lessonThreeIn
 var lessonTwoMatrixCatalogue = cumulativeCatalogue(lessonOneCatalogue, earlierNounForms, lessonTwoIntroducedCatalogue);
 var lessonThreeMatrixCatalogue = cumulativeCatalogue(lessonTwoMatrixCatalogue, lessonThreeIntroducedCatalogue);
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/universityVocabulary.ts
+// src/learning/universityVocabulary.ts
 var universityVocabulary = cumulativeCatalogue(lessonThreeMatrixCatalogue, everydayPeopleCatalogue, expandedEverydayCatalogue);
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/sentenceGrammar.ts
+// src/learning/sentenceRules/sentenceGrammar.ts
 var presentContinuousGrammar = { tense: "present", aspect: "continuous", finiteVerb: { role: "auxiliary-verb", tense: "present", forms: ["am", "is", "are"] }, mainVerb: { role: "main-verb", form: "present-participle", ending: "ing" } };
 var presentSimpleBeGrammar = { tense: "present", aspect: "simple", finiteVerb: { role: "linking-verb", tense: "present", forms: ["am", "is", "are"] } };
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/actionBlueprints.ts
+// src/learning/sentenceRules/actionBlueprints.ts
 var activeActionBlueprints = [
   { id: "transitive-object", connection: "direct", grammar: presentContinuousGrammar },
   { id: "intransitive-to-object", connection: "to", grammar: presentContinuousGrammar }
@@ -14395,7 +14395,7 @@ function matchingActionBlueprint(action, blueprints = activeActionBlueprints) {
   return blueprints.find((blueprint) => !!actionInBlueprint(action, blueprint));
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/expandedActions.ts
+// src/learning/sentenceRules/expandedActions.ts
 var expandedActions = [
   { word: "using", thai: "\u0E43\u0E0A\u0E49", complement: "object", objects: ["usable"], categories: ["everyday"], icon: actionArtwork("using") },
   { word: "carrying", thai: "\u0E16\u0E37\u0E2D\u0E44\u0E1B", complement: "object", objects: ["carryable"], categories: ["everyday"], icon: actionArtwork("carrying") },
@@ -14418,7 +14418,7 @@ var expandedActions = [
   { word: "leaving", thai: "\u0E2D\u0E2D\u0E01\u0E08\u0E32\u0E01", complement: "object", objects: ["destination"], categories: ["places"], icon: actionArtwork("leaving") }
 ];
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/actionSemantics.ts
+// src/learning/sentenceRules/actionSemantics.ts
 var childSubjects = /* @__PURE__ */ new Set(["boy", "boys", "girl", "girls", "son", "sons", "daughter", "daughters", "brother", "brothers", "sister", "sisters", "child", "children", "student", "students", "baby", "babies"]);
 function subjectCanPerform(subject2, action, object) {
   const noun = (subject2.phrase?.noun ?? subject2.semanticNoun ?? subject2.word.replace(/^(?:the|my|your|his|her|our|their) /i, "")).toLowerCase();
@@ -14457,7 +14457,7 @@ var nounActionAffordances = {
   readable: /* @__PURE__ */ new Set(["book", "ticket", "passport"])
 };
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/actionDialogue.ts
+// src/learning/sentenceRules/actionDialogue.ts
 var actionVocabulary = [
   ...[{ word: "talking", thai: "\u0E1E\u0E39\u0E14" }, { word: "listening", thai: "\u0E1F\u0E31\u0E07" }, { word: "driving", thai: "\u0E02\u0E31\u0E1A\u0E23\u0E16" }].map((action) => ({ ...action, ...action.word === "driving" ? { destination: true, uses: { direct: { objects: ["drivable"] }, to: { objects: ["destination"] } } } : { uses: { to: { objects: ["person"], thai: action.word === "talking" ? "\u0E01\u0E31\u0E1A" : "\u2014", sentenceThai: action.word === "talking" ? "\u0E1E\u0E39\u0E14\u0E01\u0E31\u0E1A" : "\u0E1F\u0E31\u0E07" } } }, categories: ["everyday"], icon: actionArtwork(action.word), complement: "none", objects: [] })),
   { word: "eating", categories: ["food"], icon: actionArtwork("eating"), thai: "\u0E01\u0E34\u0E19", complement: "object", objects: ["food"] },
@@ -14568,13 +14568,13 @@ function actionDialogue(subject2, word, selection) {
   };
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/assessmentScope.ts
+// src/learning/sentenceRules/assessmentScope.ts
 var knownPronouns = new Set(subjectPronouns.map((person) => person.word.toLowerCase()));
 var taughtPronouns = /* @__PURE__ */ new Set(["i", "you", "he", "she", "we", "they"]);
 var assessedSubjectPronouns = subjectPronouns.filter((person) => taughtPronouns.has(person.word.toLowerCase()));
 var hasUntaughtIt = (english) => /\b(?:it|its)\b/i.test(english);
 
-// ../../../../../../private/tmp/english-audio-publish/src/race/numberCatalogue.ts
+// src/race/numberCatalogue.ts
 var numberCatalogue = lessonThreeMatrixCatalogue.map((word) => ({
   ...word,
   id: word.word,
@@ -14585,12 +14585,12 @@ var generatedNumberCatalogue = universityVocabulary.map((word) => ({ ...word, id
 var byWord = new Map(generatedNumberCatalogue.map((item) => [item.word, item]));
 var numberItem = (word) => byWord.get(word);
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/wordProgress/model.ts
+// src/learning/wordProgress/model.ts
 function wordTokens(text) {
   return text.toLowerCase().replaceAll("\u2019", "'").match(/[a-z]+(?:'[a-z]+)*/g) ?? [];
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/audio/whiteboardSentence.ts
+// src/audio/whiteboardSentence.ts
 var vocabulary = new Set([
   ...generatedNumberCatalogue,
   ...actionVocabulary,
@@ -14615,7 +14615,7 @@ function canonicalWhiteboardSentence(input) {
   }
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/audio/sentenceTiming.ts
+// src/audio/sentenceTiming.ts
 var wordsIn = (text) => [...text.matchAll(/[\p{L}\p{N}]+(?:[’'][\p{L}\p{N}]+)*/gu)];
 var seconds = (value) => typeof value === "number" && Number.isFinite(value) && value >= 0;
 function parseSentenceTiming(value, text) {
@@ -14652,7 +14652,7 @@ function timingFromAlignment(text, value) {
   })) }, text);
 }
 
-// ../../../../../../private/tmp/english-audio-publish/server/registerPracticeQuestion.ts
+// server/registerPracticeQuestion.ts
 async function registerPracticeQuestion(db, question) {
   const forms = [...new Set(wordTokens(question.credit ?? ""))].map((form) => ({ id: "en:" + form, form }));
   if (forms.length) {
@@ -14663,10 +14663,10 @@ async function registerPracticeQuestion(db, question) {
   if (result.error) throw result.error;
 }
 
-// ../../../../../../private/tmp/english-audio-publish/server/sentenceAudio.ts
+// server/sentenceAudio.ts
 import { createHash, randomUUID } from "node:crypto";
 
-// node_modules/@supabase/supabase-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/supabase-js/dist/index.mjs
 var dist_exports = {};
 __export(dist_exports, {
   FunctionRegion: () => import_functions_js.FunctionRegion,
@@ -14680,16 +14680,16 @@ __export(dist_exports, {
   createClient: () => createClient
 });
 
-// node_modules/@supabase/supabase-js/dist/tracingRegistry.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/supabase-js/dist/tracingRegistry.mjs
 var EXTRACTOR_KEY = /* @__PURE__ */ Symbol.for("@supabase/supabase-js.traceContextExtractor");
 function getTraceContextExtractor() {
   return globalThis[EXTRACTOR_KEY];
 }
 
-// node_modules/@supabase/supabase-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/supabase-js/dist/index.mjs
 var import_functions_js = __toESM(require_main(), 1);
 
-// node_modules/@supabase/postgrest-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/postgrest-js/dist/index.mjs
 var DEFAULT_MAX_RETRIES = 3;
 var getRetryDelay = (attemptIndex) => Math.min(1e3 * 2 ** attemptIndex, 3e4);
 var RETRYABLE_STATUS_CODES = [520, 503];
@@ -18471,10 +18471,10 @@ var PostgrestClient = class PostgrestClient2 {
   }
 };
 
-// node_modules/@supabase/supabase-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/supabase-js/dist/index.mjs
 var import_realtime_js = __toESM(require_main2(), 1);
 
-// node_modules/iceberg-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/iceberg-js/dist/index.mjs
 var IcebergError = class extends Error {
   constructor(message, opts) {
     super(message);
@@ -19007,7 +19007,7 @@ var IcebergRestCatalog = class {
   }
 };
 
-// node_modules/@supabase/storage-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/storage-js/dist/index.mjs
 function _typeof2(o) {
   "@babel/helpers - typeof";
   return _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
@@ -21800,7 +21800,7 @@ var StorageClient = class extends StorageBucketApi {
   }
 };
 
-// node_modules/@supabase/supabase-js/dist/index.mjs
+// ../../../Users/petakirikiri/Documents/ChatGPT/English Class/picture-practice/node_modules/@supabase/supabase-js/dist/index.mjs
 var import_auth_js = __toESM(require_main3(), 1);
 __reExport(dist_exports, __toESM(require_main2(), 1));
 __reExport(dist_exports, __toESM(require_main3(), 1));
@@ -22520,13 +22520,13 @@ function shouldShowDeprecationWarning() {
 }
 if (shouldShowDeprecationWarning()) console.warn("\u26A0\uFE0F  Node.js 20 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 22 or later. For more information, visit: https://github.com/orgs/supabase/discussions/45715");
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/choices.ts
+// src/learning/sentenceRules/choices.ts
 var nounVerb = (noun) => noun.number === "plural" || noun.pairOnly ? "are" : "is";
 function nounsForSentence(request, words) {
   return words.filter((noun) => !validateSentence({ ...request, noun, verb: request.verb ?? nounVerb(noun) }).length);
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceMatrix/peopleLocation.ts
+// src/learning/sentenceMatrix/peopleLocation.ts
 var people = subjectPronouns.map((item) => ({ ...item, verb: subjectVerb(item) }));
 var personDetail = (person) => people.find((item) => item.word === person);
 var locationWords = (words) => nounsForSentence({ blueprint: "person-at-place", subject: subjectPronouns[0], verb: "am", determiner: "the" }, words).filter((noun) => noun.number !== "plural" && !noun.pairOnly);
@@ -22559,7 +22559,7 @@ function locationAnswer(subject2, place, namedPlace = false, reference, determin
   return { english: units.map((unit) => unit.english).join(" "), thai: `${subject2.phrase?.nounThai ?? subject2.thai}\u0E2D\u0E22\u0E39\u0E48${reference?.mode === "pronoun" ? "" : "\u0E17\u0E35\u0E48"}${placeThai}`, units };
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/blueprintCatalogue.ts
+// src/learning/sentenceRules/blueprintCatalogue.ts
 var nounBlock = (role, accepts) => ({ label: "noun block", kind: "noun", role, accepts, binding: { type: "noun-block", role, accepts } });
 var verb = (label) => ({ label, kind: "verb", binding: label === "AV:present" ? { type: "present-av" } : label === "verb:ing" ? { type: "action" } : { type: "literal", word: "doing" } });
 var presentAV = () => verb("AV:present");
@@ -22574,7 +22574,7 @@ var blueprintFrames = [
   { id: "identify-answer", title: "Present simple \xB7 Identification statement", grammar: presentSimpleBeGrammar, parts: [nounBlock("subject", "det:deictic"), presentAV(), nounBlock("complement")] }
 ];
 
-// ../../../../../../private/tmp/english-audio-publish/src/learning/sentenceRules/practiceBlueprintRequest.ts
+// src/learning/sentenceRules/practiceBlueprintRequest.ts
 var requests = /* @__PURE__ */ new Map();
 function createRequest(level, structure) {
   const construction = structure === "identify" ? "identify" : structure === "location" ? "location" : structure === "destination" ? "action" : level <= 3 ? "noun" : level === 4 ? "activity-question" : "action";
@@ -22608,7 +22608,7 @@ function practiceBlueprintRequest(level, structure) {
   return request;
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/race/nounGroups.ts
+// src/race/nounGroups.ts
 var animals = /* @__PURE__ */ new Set(["cat", "cats", "dog", "dogs", "bird", "birds", "horse", "horses", "cow", "cows", "pig", "pigs", "chicken", "chickens", "fish", "elephant", "elephants", "monkey", "monkeys"]);
 function nounGroupFor(word) {
   const item = typeof word === "string" ? numberItem(word) ?? { word, thai: "" } : word;
@@ -22616,7 +22616,7 @@ function nounGroupFor(word) {
   return item.meaning?.kind === "person" || categories.includes("people") || animals.has((item.singular ?? item.word).toLowerCase()) ? "subjects" : "objects";
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/race/wordHierarchy.ts
+// src/race/wordHierarchy.ts
 var wordHierarchies = {
   noun: [...everydayNounOrder],
   verb: [...everydayActionOrder],
@@ -22628,7 +22628,7 @@ var hierarchyTypes = Object.keys(wordHierarchies);
 var nounFamily = (word) => numberItem(word)?.singular ?? word;
 var trackedVerbs = new Set(wordHierarchies.verb);
 
-// ../../../../../../private/tmp/english-audio-publish/src/race/generatedPracticeContent.ts
+// src/race/generatedPracticeContent.ts
 var vocabulary2 = [...universityVocabulary];
 var owners = allDeterminers.filter((d) => ["the", "my", "your", "his", "her", "our", "their"].includes(d.word));
 function sentenceKey(text) {
@@ -22926,7 +22926,7 @@ function determinerCandidates() {
   return out;
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/race/blueprintWordServer.ts
+// src/race/blueprintWordServer.ts
 var clean = sentenceKey;
 var nouns = generatedNumberCatalogue;
 var family = (word) => nounFamily(clean(word));
@@ -23051,7 +23051,7 @@ function canonicalBlueprintQuestion(input) {
   }
 }
 
-// ../../../../../../private/tmp/english-audio-publish/server/practiceQuestionCatalogue.ts
+// server/practiceQuestionCatalogue.ts
 var indexes = /* @__PURE__ */ new Map();
 function lookup(key, id, create) {
   let index = indexes.get(key);
@@ -23078,7 +23078,7 @@ function canonicalPracticeQuestion(id, recipe) {
   return generated ?? (level === 3 ? lookup("location", id, () => structureCandidates("location")) : void 0);
 }
 
-// ../../../../../../private/tmp/english-audio-publish/src/race/generatedPracticeAudio.json
+// src/race/generatedPracticeAudio.json
 var generatedPracticeAudio_default = {
   "the hotel": "/audio/number-foundation/the-hotel.wav",
   "my hotel": "/audio/generated-practice/wclbwp.wav",
@@ -29447,7 +29447,7 @@ var generatedPracticeAudio_default = {
   "you are washing the small plates": "/audio/generated-practice/99ax5w.wav"
 };
 
-// ../../../../../../private/tmp/english-audio-publish/server/sentenceAudio.ts
+// server/sentenceAudio.ts
 function audioIdentity(text, voice, model) {
   return createHash("sha256").update(JSON.stringify({ text: text.normalize("NFC").trim().replace(/\s+/g, " "), voice, model, language: "en", format: "mp3_44100_128", settings: { stability: 0.5, similarity_boost: 0.75, speed: 1 }, timingVersion: 1 })).digest("hex");
 }
@@ -29463,10 +29463,6 @@ async function handler(req, res, context) {
   if (!url || !key) return send(503, { error: "Audio unavailable" });
   const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
   const token = req.headers.authorization?.replace(/^Bearer /, "");
-  if (!token && !context?.localDevelopment) return send(401, { error: "Sign in required" });
-  const auth = token ? await db.auth.getUser(token) : { data: { user: { id: "00000000-0000-4000-8000-000000000005" } }, error: null };
-  const user = auth.data;
-  if (auth.error || !user.user) return send(401, { error: "Sign in required" });
   try {
     let body = req.body;
     if (body === void 0) {
@@ -29478,8 +29474,13 @@ async function handler(req, res, context) {
       body = JSON.parse(raw);
     }
     if (typeof body === "string") body = JSON.parse(body);
+    const whiteboard = canonicalWhiteboardSentence(body?.whiteboard);
+    if (!token && (!whiteboard && !context?.localDevelopment || body?.registerOnly)) return send(401, { error: "Sign in required" });
+    const auth = token ? await db.auth.getUser(token) : { data: { user: { id: "00000000-0000-4000-8000-000000000005" } }, error: null };
+    const user = auth.data;
+    if (auth.error || !user.user) return send(401, { error: "Sign in required" });
     const question = canonicalPracticeQuestion(body?.id ?? "", body?.recipe);
-    const document2 = question?.document ?? canonicalWhiteboardSentence(body?.whiteboard);
+    const document2 = question?.document ?? whiteboard;
     if (!document2) return send(400, { error: "Unknown lesson sentence" });
     const q = { document: document2, audioUrl: question?.audioUrl };
     if (body.registerOnly === true) {
@@ -29494,7 +29495,7 @@ async function handler(req, res, context) {
     const path = `${hash}.mp3`, publicUrl = db.storage.from("sentence-audio").getPublicUrl(path).data.publicUrl;
     const timingPath = `${hash}.timing.json`, timingUrl = db.storage.from("sentence-audio").getPublicUrl(timingPath).data.publicUrl;
     const bucket = db.storage.from("sentence-audio");
-    if (!apiKey) {
+    if (!apiKey || !token && !context?.localDevelopment) {
       const cached = await db.from("english_sentence_audio").select("status").eq("key", hash).maybeSingle();
       return send(200, cached.data?.status === "ready" ? { url: publicUrl, timingUrl } : { status: "unavailable" });
     }

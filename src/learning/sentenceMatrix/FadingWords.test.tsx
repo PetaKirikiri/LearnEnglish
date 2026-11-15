@@ -25,7 +25,7 @@ it('pulses the active tile for each spoken word while words and icons remain fad
   expect(active.dataset.waveDistance).toBe('0')
   expect(active.style.filter).toMatch(/^url\(#speech-wave-/)
   const filter=host.querySelector(active.style.filter.slice(4,-1))!
-  expect(filter.querySelector('feDisplacementMap')?.getAttribute('scale')).toBe('0')
+  expect(Number(filter.querySelector('feDisplacementMap')?.getAttribute('scale'))).toBeGreaterThan(.03)
   frames.forEach(callback=>callback(performance.now()+300))
   expect(Number(filter.querySelector('feDisplacementMap')?.getAttribute('scale'))).toBeGreaterThan(.03)
   expect(filter.querySelector('feImage')?.getAttribute('href')).toContain('data:image/svg+xml,')
@@ -52,6 +52,9 @@ it('deforms only the speaking tile, with independent depth inside a joined phras
   await act(async()=>root.render(<ExampleLanguage matrix english="the man" thai="" units={[{english:'the',thai:''},{english:'man',thai:''}]} semanticSlots={[2,3]} layout={{construction:'noun-phrase',noun:'phrase'}} settings={{fadeMode:true,spokenWord:{start:0,end:3},audioWave:{level:1,time:.1}}}/>))
   const surface=host.querySelector<HTMLElement>('.cw-noun-group')!
   expect(surface.style.filter).toBe('')
+  expect(surface.querySelector(':scope > svg')).toBeNull()
+  expect(surface.firstElementChild?.classList.contains('tonight-slot')).toBe(true)
+  expect(surface.lastElementChild?.classList.contains('tonight-slot')).toBe(true)
   expect(host.querySelector<HTMLElement>('.tonight-slot[data-speaking=true]')?.style.filter).toMatch(/^url\(#speech-wave-/)
   expect(host.querySelectorAll('.tonight-slot[style*="filter"]')).toHaveLength(1)
   expect(host.querySelector('[data-audio-wave=true]')).not.toBeNull()

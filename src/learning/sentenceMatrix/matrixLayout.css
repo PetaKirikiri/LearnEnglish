@@ -285,3 +285,8 @@
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group>:nth-last-child(1 of .tonight-slot,.cw-slot-shell),
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group>:nth-last-child(1 of .tonight-slot,.cw-slot-shell) .tonight-slot{border-radius:0 24px 24px 0}
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group[data-group-size="1"] .tonight-slot{border-radius:24px}
+
+/* One physical surface per word, with identical depth before and during playback.
+   Linked groups only arrange cards; their backgrounds never duplicate a tile. */
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] :is(.cw-noun-group,.matrix-agreement-group){background:transparent;box-shadow:none}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] :is(.cw-noun-group,.matrix-agreement-group) .tonight-slot{box-shadow:0 6px 0 var(--slot-edge),0 10px 16px #18385e12}

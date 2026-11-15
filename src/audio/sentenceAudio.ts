@@ -5,7 +5,6 @@ import manifest from '../race/generatedPracticeAudio.json'
 import {sentenceKey} from '../race/generatedPracticeContent'
 import {parseSentenceTiming,wordAtTime,type SentenceTiming,type SpokenWord} from './sentenceTiming'
 export type AudioSentence={whiteboard?:import('../learning/sentenceMatrix/LanguageQuadrant').LanguageDocument;recipe?:unknown;id:string;document:{english:string};audioUrl?:string}
-const localPreview=()=>import.meta.env.DEV&&import.meta.env.MODE!=='test'&&['localhost','127.0.0.1','[::1]'].includes(window.location.hostname)
 const spokenKey=(text:string)=>text.normalize('NFC').trim().replace(/\s+/g,' ')
 const ready=new Map<string,{url:string;timing:SentenceTiming;waveform:AudioWaveform|null}>(),pending=new Map<string,Promise<void>>(),retryAfter=new Map<string,number>()
 let activeRequests=0
@@ -17,8 +16,9 @@ const existing=(q:AudioSentence)=>q.audioUrl||(manifest as Record<string,string>
 export async function prepareSentenceAudio(questions:readonly AudioSentence[]){
  const queue=[...new Map(questions.slice(0,16).map(q=>[spokenKey(q.document.english),q])).values()]
  const {data}=await supabase.auth.getSession();const token=data.session?.access_token
- if(!token&&!localPreview())return
+ if(!token&&!queue.some(q=>q.whiteboard))return
  async function worker(){for(let q;(q=queue.shift());){
+  if(!token&&!q.whiteboard)continue
   const key=spokenKey(q.document.english)
   if(ready.has(key)||(retryAfter.get(key)??0)>Date.now())continue
   const old=pending.get(key);if(old){await old;continue}
@@ -64,8 +64,12 @@ export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mo
   player.preservesPitch=true
   const sync=()=>{
    if(stopped)return
-   if(cached)highlight(wordAtTime(cached.timing,player!.currentTime))
-   callbacks.waveform?.(cached?.waveform?waveformAtTime(cached.waveform,player!.currentTime):0,player!.currentTime)
+   // Present the next visible frame ahead of the media clock: SVG rasterization
+   // and React's word-boundary commit otherwise make the cue trail the sound.
+   // Scale media time by playback rate to keep the same 80ms lead in slow mode.
+   const visualTime=player!.currentTime+.08*player!.playbackRate
+   callbacks.waveform?.(cached?.waveform?waveformAtTime(cached.waveform,visualTime):0,visualTime)
+   if(cached)highlight(wordAtTime(cached.timing,visualTime))
   }
   const resume=()=>{void player!.play().catch(()=>{if(!stopped)failed()})}
   const tick=()=>{
@@ -86,7 +90,7 @@ export function playTimedSentence(q:AudioSentence,callbacks:PlaybackCallbacks,mo
  let stopped=false,stop:(()=>void)|undefined
  void supabase.auth.getSession().then(async({data})=>{
   if(stopped)return
-  if(!data.session&&!localPreview()){callbacks.error('sign-in');return}
+  if(!data.session&&!q.whiteboard){callbacks.error('sign-in');return}
   await prepareSentenceAudio([q])
   if(stopped)return
   if(!ready.has(spokenKey(q.document.english))){callbacks.error();return}

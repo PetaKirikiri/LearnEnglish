@@ -1,7 +1,7 @@
 import {act} from 'react'
 import {createRoot} from 'react-dom/client'
 import {expect,it,vi} from 'vitest'
-vi.mock('../lib/supabase',()=>({supabase:{auth:{getSession:async()=>({data:{session:{access_token:'test'}}})}}}))
+vi.mock('../lib/supabase',()=>({supabase:{auth:{getSession:async()=>({data:{session:null}})}}}))
 vi.mock('./audioWaveform',()=>({loadAudioWaveform:async()=>({interval:1,levels:[.8,.8,.8,.8]}),waveformAtTime:()=>.8}))
 import {quadrantLayout} from '../learning/sentenceMatrix/LanguageQuadrant'
 import ExampleView from '../learning/sentenceMatrix/ExampleView'

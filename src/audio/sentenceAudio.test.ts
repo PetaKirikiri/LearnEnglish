@@ -49,7 +49,7 @@ it('replaces untimed recordings and follows playback time, seeking, pause, repla
  const stop=playSentenceAudio(question,callbacks)
  expect(player.src).toBe('/new.mp3')
  const repeated=timing.words[5]
- player.currentTime=repeated.startTime;player.ontimeupdate()
+ player.currentTime=repeated.startTime-.06;player.ontimeupdate()
  expect(callbacks.word).toHaveBeenLastCalledWith({start:repeated.start,end:repeated.end})
  player.currentTime=0;player.onseeked()
  expect(callbacks.word).toHaveBeenLastCalledWith({start:0,end:1})

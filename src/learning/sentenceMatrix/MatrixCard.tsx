@@ -1,4 +1,4 @@
-import {useCallback,useEffect,useId,useRef,type ReactNode} from 'react'
+import {useCallback,useLayoutEffect,useId,useRef,type ReactNode} from 'react'
 import './matrixPlayback.css'
 import type {AudioWaveState} from '../../audio/audioWaveform'
 import SentenceSlot from '../SentenceSlot'
@@ -18,7 +18,7 @@ export default function MatrixCard({slot,children,action,control,affordance,clas
   const filterId='speech-wave-'+useId().replace(/[^a-zA-Z0-9-]/g,'')
   const displacement=useRef<SVGFEDisplacementMapElement|null>(null)
   const map=useRef<SVGFEImageElement|null>(null)
-  useEffect(()=>{
+  useLayoutEffect(()=>{
     const card=cardRef.current
     const distance=waveDistance===undefined?Infinity:Math.abs(waveDistance)
     if(!card||!audioWave||distance!==0||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return
@@ -29,13 +29,13 @@ export default function MatrixCard({slot,children,action,control,affordance,clas
     surface.style.filter=`url(#${filterId})`
     function ripple(){
       const target=Math.min(1,audioWave!.level*1.4)
-      energy+=(target-energy)*.25
+      energy=target>=energy?target:energy+(target-energy)*.25
       // Real syllable energy drives how far the tile bends. Silence settles it.
       displacement.current?.setAttribute('scale',String(maximumDisplacement*energy))
       map.current?.setAttribute('x',String(-1-(audioWave!.time*1.4)%1))
       frame=requestAnimationFrame(ripple)
     }
-    frame=requestAnimationFrame(ripple)
+    ripple()
     return()=>{
       cancelAnimationFrame(frame)
       surface.style.removeProperty('filter')
@@ -49,6 +49,6 @@ export default function MatrixCard({slot,children,action,control,affordance,clas
     </filter></defs>
   </svg>
   const content=<SentenceSlot slot={slot}>{children}</SentenceSlot>
-  const card=action ? <button ref={setCard} data-wave-distance={waveDistance} data-speaking={spokenWord!==undefined||undefined} data-spoken-word={spokenWord} type="button" data-word-type={wordType} title={typeLabel} data-unit-index={unitIndex} className={`tonight-slot slot-${slot}${className ? ` ${className}`:''}`} disabled={disabled} aria-label={action.label} aria-expanded={action.expanded} aria-controls={action.controls} onClick={action.onClick}>{content}{affordance}</button> : <span ref={setCard} data-wave-distance={waveDistance} data-speaking={spokenWord!==undefined||undefined} data-spoken-word={spokenWord} data-unit-index={unitIndex} data-word-type={wordType} title={typeLabel} className={`tonight-slot slot-${slot}`}>{content}</span>
-  return <>{distortion}{control ? <span className={`cw-slot-shell cw-slot-shell-${slot}`}>{card}{control}</span> : card}</>
+  const card=action ? <button ref={setCard} data-wave-distance={waveDistance} data-speaking={spokenWord!==undefined||undefined} data-spoken-word={spokenWord} type="button" data-word-type={wordType} title={typeLabel} data-unit-index={unitIndex} className={`tonight-slot slot-${slot}${className ? ` ${className}`:''}`} disabled={disabled} aria-label={action.label} aria-expanded={action.expanded} aria-controls={action.controls} onClick={action.onClick}>{distortion}{content}{affordance}</button> : <span ref={setCard} data-wave-distance={waveDistance} data-speaking={spokenWord!==undefined||undefined} data-spoken-word={spokenWord} data-unit-index={unitIndex} data-word-type={wordType} title={typeLabel} className={`tonight-slot slot-${slot}`}>{distortion}{content}</span>
+  return <>{control ? <span className={`cw-slot-shell cw-slot-shell-${slot}`}>{card}{control}</span> : card}</>
 }
