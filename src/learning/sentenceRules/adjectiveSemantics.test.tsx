@@ -12,7 +12,7 @@ const vocabulary=[...lessonThreeMatrixCatalogue,...everydayPeopleCatalogue]
 it('uses reviewed adjective meanings, including both noun subgroups and irregular plurals',()=>{
  for(const [adjective,noun] of [['tall','man'],['short','woman'],['tall','men'],['short','daughters'],['red','bag'],['big','phone'],['small','school'],['hot','water'],['cold','sandwich'],['green','apple'],['yellow','banana']])expect(adjectiveFitsNoun(adjective,noun),`${adjective} ${noun}`).toBe(true)
  for(const [adjective,noun] of [['red','man'],['blue','woman'],['green','girl'],['hot','doctor'],['big','water'],['cold','shoe'],['blue','apple'],['red','banana'],['tall','apple']])expect(adjectiveFitsNoun(adjective,noun),`${adjective} ${noun}`).toBe(false)
- expect(adjectivesForNoun('son').map(d=>d.word)).toEqual(['tall','short'])
+ expect(adjectivesForNoun('son').map(d=>d.word)).toEqual(['tall','short','happy','sad'])
  expect(()=>nounPhraseUnits({noun:'man',nounThai:'ผู้ชาย',description:{english:'red',thai:'สีแดง'}})).toThrow('adjective')
 })
 it('composes and renders descriptions on the subject and object together without bundling cards',()=>{

@@ -2,7 +2,7 @@ import {reviewVocabulary} from './reviewVocabulary'
 import type {StructureScores} from './blueprintScores'
 import BlueprintsPanel from './BlueprintsPanel'
 type VocabularyTab=HierarchyType|'blueprints'
-import {adjectivesForNoun} from '../learning/sentenceRules/adjectiveSemantics'
+import {adjectiveFitsNoun,adjectivesForNoun} from '../learning/sentenceRules/adjectiveSemantics'
 import {useEffect,useState} from 'react'
 import type {User} from '@supabase/supabase-js'
 import {supabase} from '../lib/supabase'
@@ -68,7 +68,7 @@ export function VocabularyLists({userId,rows=[],structureScores,state,learning,a
   const parentTrack=state?.[list.type],groupTrack=list.type==='noun'?parentTrack?.nounGroups?.[nounGroup]:list.type==='verb'?parentTrack?.verbGroups?.[verbGroup]:undefined,track=parentTrack&&groupTrack?{...parentTrack,...groupTrack}:parentTrack,words:readonly string[]=list.type==='pronoun'?pronounGroups[pronounGroup]:reviewVocabulary[list.type].filter(word=>list.type==='noun'?nounGroupFor(word)===nounGroup:list.type==='verb'?verbGroupFor(word)===verbGroup:true),verified=words.filter(word=>vocabularyLearning(list.type,word,progress).provenAt).length
   return <section key={list.type} role="tabpanel" id={`vocab-panel-${list.type}`} aria-labelledby={`vocab-tab-${list.type}`}><h2>{list.title}{track&&<small>{words.length?Math.round(verified/words.length*100):0}% learnt</small>}</h2>{list.type==='noun'&&<div className="vocab-subgroups" role="group" aria-label="Noun groups">{(['subjects','objects'] as const).map(group=><button key={group} type="button" aria-pressed={nounGroup===group} onClick={()=>setNounGroup(group)}>{group==='subjects'?'Subjects':'Objects'}</button>)}</div>}{list.type==='verb'&&<div className="vocab-subgroups" role="group" aria-label="Verb groups">{(['transitive','intransitive'] as const).map(group=><button key={group} type="button" aria-pressed={verbGroup===group} onClick={()=>setVerbGroup(group)}>{group==='transitive'?'Transitive':'Intransitive'}</button>)}</div>}{list.type==='pronoun'&&<div className="vocab-subgroups" role="group" aria-label="Pronoun groups">{(['subjects','objects'] as const).map(group=><button key={group} type="button" aria-pressed={pronounGroup===group} onClick={()=>setPronounGroup(group)}>{group==='subjects'?'Subjects':'Objects'}</button>)}</div>}{track&&<div className="vocab-pool"><p><strong>Current:</strong> {track.current.filter(word=>words.includes(word)).length?track.current.filter(word=>words.includes(word)).join(', '):verified===words.length?'All learnt':'—'}</p>{track.next&&words.includes(track.next)&&<p className="vocab-queued">Next: {track.next}</p>}</div>}<ol>{words.map(word=>{
    const score=vocabularyLearning(list.type,word,progress),status=track?(score.provenAt?'learnt':track.current.includes(word)?'current':track.next===word?'next':'later'):null
-   return <li key={word} data-word={word} data-status={status??undefined}><span className="vocab-review-row">{list.icon&&<span className="vocab-review-icon" aria-hidden="true"><list.icon word={word}/></span>}<span className="vocab-word"><span>{word}</span>{userId&&<><small>{score.provenAt?`${score.due?'Review due':'Review'} ${score.reviewDueAt?new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',timeZone:'Asia/Bangkok'}).format(new Date(score.reviewDueAt)):''}`:`${score.stage==='relearning'?'Relearning':'Fading'} ${score.fadePercent}%`}</small><progress max={100} value={score.fadePercent} aria-label={`${word}: ${score.fadePercent}% faded`}/></>}</span>{status&&<span className={`vocab-status vocab-status-${score.due?'review':status}`}>{score.provenAt?(score.due?'Review due':'✓ Learnt'):status==='current'?'Current':status==='next'?'Next':'Later'}</span>}</span>{list.type==='noun'&&<><NounVerbs word={word}/><NounDescriptions word={word}/></>}</li>
+   return <li key={word} data-word={word} data-status={status??undefined}><span className="vocab-review-row">{list.icon&&<span className="vocab-review-icon" aria-hidden="true"><list.icon word={word}/></span>}<span className="vocab-word"><span>{word}</span>{userId&&<><small>{score.provenAt?`${score.due?'Review due':'Review'} ${score.reviewDueAt?new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',timeZone:'Asia/Bangkok'}).format(new Date(score.reviewDueAt)):''}`:`${score.stage==='relearning'?'Relearning':'Fading'} ${score.fadePercent}%`}</small><progress max={100} value={score.fadePercent} aria-label={`${word}: ${score.fadePercent}% faded`}/></>}</span>{status&&<span className={`vocab-status vocab-status-${score.due?'review':status}`}>{score.provenAt?(score.due?'Review due':'✓ Learnt'):status==='current'?'Current':status==='next'?'Next':'Later'}</span>}</span>{list.type==='noun'&&<><NounVerbs word={word}/><NounDescriptions word={word}/></>}{list.type==='adjective'&&<AdjectiveNouns word={word}/>}</li>
   })}</ol></section>
  })}</div></>
 }
@@ -84,4 +84,12 @@ function NounVerbs({word}:{word:string}){
 function NounDescriptions({word}:{word:string}){
  const matches=adjectivesForNoun(word)
  return <details className="vocab-noun-verbs"><summary>Adjectives <span>{matches.length}</span></summary><div className="vocab-verb-matches"><div><div>{matches.map(match=><span className="vocab-verb-match" key={match.word}><DescriptionPicture word={match.word}/>{match.word}</span>)}</div></div></div></details>
+}
+
+function AdjectiveNouns({word}:{word:string}){
+ const matches=reviewVocabulary.noun.filter(noun=>adjectiveFitsNoun(word,noun))
+ return <details className="vocab-noun-verbs"><summary>Nouns <span>{matches.length}</span></summary><div className="vocab-verb-matches">{(['subjects','objects'] as const).map(group=>{
+  const nouns=matches.filter(noun=>nounGroupFor(noun)===group)
+  return nouns.length?<div key={group}><small>{group==='subjects'?'Subjects':'Objects'}</small><div>{nouns.map(noun=><span className="vocab-verb-match" key={noun}><VocabularyPicture word={noun}/>{noun}</span>)}</div></div>:null
+ })}</div></details>
 }

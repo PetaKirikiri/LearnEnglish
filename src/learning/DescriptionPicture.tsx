@@ -1,8 +1,10 @@
+import AdditionalDescriptionPicture from './AdditionalDescriptionPicture'
 import {descriptions} from './everydayVocabulary'
 /** Simple semantic marks remain legible at the same size as vocabulary artwork. */
 export default function DescriptionPicture({word}:{word:string}){
  const d=descriptions.find(item=>item.word===word)
  if(!d)return null
+ if(!['colour','size','height','temperature'].includes(d.group))return <AdditionalDescriptionPicture word={word} group={d.group}/>
  return <svg className="description-picture" viewBox="0 0 100 70" aria-hidden="true">
   {d.group==='colour'?<rect x="12" y="6" width="76" height="58" rx="14" fill={d.colour} stroke="#41556c" strokeWidth="3"/>:
    d.group==='size'?<><rect x="8" y="7" width="53" height="53" rx="8" fill={word==='big'?'#2477df':'#d4deea'} stroke={word==='big'?'#163d6b':'#bdcad8'} strokeWidth="3"/><rect x="73" y="39" width="20" height="20" rx="4" fill={word==='small'?'#2477df':'#d4deea'} stroke={word==='small'?'#163d6b':'#bdcad8'} strokeWidth="3"/></>:

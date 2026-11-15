@@ -43,6 +43,10 @@ export const introductoryActions=everydayActionOrder.filter(word=>!['holding','o
 const colouredObjects=['bag','cup','phone','book','shirt','shoe','bottle','plate','bus','motorbike','wallet','towel','hat','sock','trousers','glasses','pen','pencil','umbrella','watch','fan','charger','bicycle','laptop','camera','remote','sandal','boot','racket','chair','table','car','door','window','bed','ball','computer','television']
 const sizedObjects=everydayNounOrder.filter(word=>!['water','food','rice','bread','milk','money','juice','coffee'].includes(word)&&word!=='doctor'&&!everydayPeople.some(person=>person.singular===word))
 const heightNouns=[...everydayPeople.filter(person=>person.singular!=='family').map(person=>person.singular),'doctor','bottle']
+const washableObjects=['shirt','shoe','sock','trousers','towel','plate','cup','bottle','window','floor','table','car','hand','bag']
+const solidObjects=['bag','book','phone','chair','table','bed','box','bottle','cup','laptop','computer','ball','racket','door']
+const possessions=[...colouredObjects,'house','school','hotel']
+const feelingPeople=[...everydayPeople.filter(person=>person.singular!=='family').map(person=>person.singular),'doctor']
 export const descriptions=[
  {word:'red',thai:'สีแดง',group:'colour',opposite:'blue',nouns:[...colouredObjects,'apple'],colour:'#e32938'},
  {word:'blue',thai:'สีน้ำเงิน',group:'colour',opposite:'red',nouns:colouredObjects,colour:'#246fe0'},
@@ -56,5 +60,29 @@ export const descriptions=[
  {word:'white',thai:'สีขาว',group:'colour',opposite:'black',nouns:colouredObjects,colour:'#ffffff'},
  {word:'tall',thai:'สูง',group:'height',opposite:'short',nouns:heightNouns,colour:''},
  {word:'short',thai:'เตี้ย',group:'height',opposite:'tall',nouns:heightNouns,colour:''},
+ {word:'clean',thai:'สะอาด',group:'cleanliness',opposite:'dirty',nouns:washableObjects,colour:''},
+ {word:'dirty',thai:'สกปรก',group:'cleanliness',opposite:'clean',nouns:washableObjects,colour:''},
+ {word:'wet',thai:'เปียก',group:'moisture',opposite:'dry',nouns:['shirt','shoe','sock','trousers','towel','floor','hair','bag','umbrella'],colour:''},
+ {word:'dry',thai:'แห้ง',group:'moisture',opposite:'wet',nouns:['shirt','shoe','sock','trousers','towel','floor','hair','bag','umbrella'],colour:''},
+ {word:'new',thai:'ใหม่',group:'condition',opposite:'old',nouns:possessions,colour:''},
+ {word:'old',thai:'เก่า',group:'condition',opposite:'new',nouns:possessions,colour:''},
+ {word:'full',thai:'เต็ม',group:'capacity',opposite:'empty',nouns:['cup','bottle','bag','box','bus','glass'],colour:''},
+ {word:'empty',thai:'ว่างเปล่า',group:'capacity',opposite:'full',nouns:['cup','bottle','bag','box','bus','glass'],colour:''},
+ {word:'open',thai:'เปิดอยู่',group:'openness',opposite:'closed',nouns:['door','window','book','box','bag','umbrella'],colour:''},
+ {word:'closed',thai:'ปิดอยู่',group:'openness',opposite:'open',nouns:['door','window','book','box','bag','umbrella'],colour:''},
+ {word:'heavy',thai:'หนัก',group:'weight',opposite:'light',nouns:solidObjects,colour:''},
+ {word:'light',thai:'เบา',group:'weight',opposite:'heavy',nouns:solidObjects,colour:''},
+ {word:'happy',thai:'มีความสุข',group:'feeling',opposite:'sad',nouns:feelingPeople,colour:''},
+ {word:'sad',thai:'เศร้า',group:'feeling',opposite:'happy',nouns:feelingPeople,colour:''},
+ {word:'fast',thai:'เร็ว',group:'speed',opposite:'slow',nouns:['car','bus','motorbike','bicycle','train','boat','computer'],colour:''},
+ {word:'slow',thai:'ช้า',group:'speed',opposite:'fast',nouns:['car','bus','motorbike','bicycle','train','boat','computer'],colour:''},
+ {word:'soft',thai:'นุ่ม',group:'texture',opposite:'hard',nouns:['bed','chair','bread','ball','shoe'],colour:''},
+ {word:'hard',thai:'แข็ง',group:'texture',opposite:'soft',nouns:['bed','chair','bread','ball','shoe'],colour:''},
+ {word:'thick',thai:'หนา',group:'thickness',opposite:'thin',nouns:['book','towel','shirt','sock','bread','blanket'],colour:''},
+ {word:'thin',thai:'บาง',group:'thickness',opposite:'thick',nouns:['book','towel','shirt','sock','bread','blanket'],colour:''},
+ {word:'pink',thai:'สีชมพู',group:'colour',opposite:'purple',nouns:colouredObjects,colour:'#ed72af'},
+ {word:'purple',thai:'สีม่วง',group:'colour',opposite:'pink',nouns:colouredObjects,colour:'#9254c8'},
+ {word:'orange',thai:'สีส้ม',group:'colour',opposite:'brown',nouns:colouredObjects,colour:'#ef8b28'},
+ {word:'brown',thai:'สีน้ำตาล',group:'colour',opposite:'orange',nouns:colouredObjects,colour:'#945d38'},
 ] as const
-export const descriptionStages=[['red','blue'],['big','small'],['hot','cold'],['green','yellow'],['black','white'],['tall','short']] as const
+export const descriptionStages=[['red','blue'],['big','small'],['hot','cold'],['green','yellow'],['black','white'],['tall','short'],['clean','dirty'],['wet','dry'],['new','old'],['full','empty'],['open','closed'],['heavy','light'],['happy','sad'],['fast','slow'],['soft','hard'],['thick','thin'],['pink','purple'],['orange','brown']] as const
