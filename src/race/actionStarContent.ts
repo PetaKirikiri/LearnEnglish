@@ -1,5 +1,5 @@
 import {requestLesson} from '../learning/lessonRegistry'
-import {actionCapabilities,composeLessonAction} from '../learning/sentenceRules/actionCapabilities'
+import {actionCapabilities,lessonActionComposer} from '../learning/sentenceRules/actionCapabilities'
 import {actionPracticeQuestions,type ActionPracticeQuestion} from './actionPracticeContent'
 import type {Determiner} from '../learning/sentenceMatrix/model'
 export type ActionStar=1|2|3
@@ -14,10 +14,17 @@ const quota:Record<ActionStar,Record<string,number>>={
 export function generatedActionCandidates():ActionStarQuestion[]{
  const capability=actionCapabilities(actionStarLesson)
  const recordings=new Map(actionPracticeQuestions.filter(q=>q.level===6).map(q=>[q.english,q]))
+ const recordedActions=new Set([...recordings.values()].flatMap(q=>q.units.filter(unit=>unit.role==='action').map(unit=>unit.english)))
+ // Skip requests with no recording before composing; the full vocabulary grows
+ // independently of this archived audio bank. Exact sentence validation remains below.
+ const recordingKey=(parts:string[])=>JSON.stringify(parts.map(part=>part.toLowerCase().replace(/[.!?]$/, '')))
+ const recordedRequests=new Set([...recordings.values()].map(q=>recordingKey(['person','action','object','determiner'].map(role=>q.units.filter(unit=>unit.role===role).map(unit=>unit.english).join(' ')))))
+ const compose=lessonActionComposer(actionStarLesson)
  const candidates:ActionStarQuestion[]=[]
- for(const subject of capability.subjects)for(const action of capability.actions)for(const object of capability.objects(action.word))for(const owner of capability.determiners(object)){
+ for(const subject of capability.subjects)for(const action of capability.actions.filter(action=>recordedActions.has(action.word)))for(const object of capability.objects(action.word))for(const owner of capability.determiners(object)){
   const request={subject:subject.word,action:action.word,object:object.word,determiner:owner.word}
-  const answer=composeLessonAction(actionStarLesson,request).answer,recording=recordings.get(answer.english)
+  if(!recordedRequests.has(recordingKey([request.subject,request.action,object.noun,request.determiner])))continue
+  const answer=compose(request).answer,recording=recordings.get(answer.english)
   if(!recording)continue
   if(recording.thai!==answer.thai||JSON.stringify(recording.units)!==JSON.stringify(answer.units))throw new Error(`Recording differs from blueprint: ${recording.id}`)
   if(recording.correct!==0||recording.choices[0]!==answer.thai||recording.choices[0]===recording.choices[1])throw new Error(`Ambiguous recording choices: ${recording.id}`)

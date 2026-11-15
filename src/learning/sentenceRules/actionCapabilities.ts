@@ -25,14 +25,22 @@ export function actionCapabilities(lesson: MatrixLesson) {
   return objectsForAction(action,lesson.vocabulary,lesson.actionQuestion,frameFor(action))
  }, determiners:(object:ReturnType<typeof objectsForAction>[number]) => objectDeterminers(object,lessonDeterminers(lesson).map(item=>item.word).concat(lesson.owners??[]))}
 }
-export function composeLessonAction(lesson:MatrixLesson, request:{subject:string; action:string; object?:string; description?:{english:string;thai:string}; determiner?:Determiner}) {
+type LessonActionRequest={subject:string; action:string; object?:string; description?:{english:string;thai:string}; determiner?:Determiner}
+/** Prepare scoped choices once for a batch; retain the same validation for every request. */
+export function lessonActionComposer(lesson:MatrixLesson) {
  const capability=actionCapabilities(lesson)
+ const choices=new Map<string,ReturnType<typeof capability.objects>>()
+ return (request:LessonActionRequest)=>{
  const subject=capability.subjects.find(item=>item.word.toLowerCase()===request.subject.toLowerCase())
  if(!subject)throw new Error(`Subject outside lesson ${lesson.id}: ${request.subject}`)
- const objects=capability.objects(request.action)
+ let objects=choices.get(request.action)
+ if(!objects){objects=capability.objects(request.action);choices.set(request.action,objects)}
  const object=request.object===undefined?objects[0]:objects.find(item=>item.word===request.object)
  if(request.object!==undefined&&!object)throw new Error('Object outside lesson action scope')
  const determiner=request.determiner ?? (object ? capability.determiners(object)[0]?.word : undefined)
  if(determiner&&(!object||!capability.determiners(object).some(item=>item.word===determiner)))throw new Error('Determiner outside lesson scope')
  return actionDialogue(subject.word.toLowerCase() as ActionSubject,request.action,{blueprint:capability.frame(request.action),question:lesson.actionQuestion,vocabulary:lesson.vocabulary,subject:{...subject,kind:'person'},object:object?.word,description:request.description,determiner})
 }
+
+}
+export function composeLessonAction(lesson:MatrixLesson,request:LessonActionRequest){return lessonActionComposer(lesson)(request)}
