@@ -1,5 +1,5 @@
 import {everydayActions} from './sentenceRules/everydayActions'
-import {expandedVocabularyOrder} from './expandedEverydayVocabulary'
+import {additionalPeople,expandedVocabularyOrder} from './expandedEverydayVocabulary'
 import type {ClassroomWord} from './sentenceMatrix/model'
 
 /** One authored curriculum, independent of the sentence level a learner opens.
@@ -20,6 +20,7 @@ export const everydayPeople=[
  {singular:'child',plural:'children',thai:'เด็ก'},
  {singular:'person',plural:'people',thai:'คน'},
  {singular:'family',plural:'families',thai:'ครอบครัว'},
+ ...additionalPeople,
 ] as const
 export const everydayPeopleCatalogue:readonly ClassroomWord[]=everydayPeople.flatMap(p=>[
  {...p,word:p.singular,number:'singular' as const,categories:['people' as const],meaning:{kind:'person' as const,countability:'count' as const,...(p.singular==='family'?{collective:true}:{})}},
@@ -39,16 +40,16 @@ export const everydayNounOrder=[...starterNouns,
 export const everydayActionOrder=['holding','opening','using','eating','drinking','talking','listening','walking','running','sleeping','reading','playing','driving','going','washing','cleaning','carrying','finding','buying','closing','wearing','putting on','taking off','riding','catching','getting on','helping','watching','teaching','sitting','standing','waiting','arriving','leaving',...everydayActions.map(action=>action.word)] as const
 export const starterActions=['eating','drinking','talking','listening','walking','running'] as const
 export const introductoryActions=everydayActionOrder.filter(word=>!['holding','opening','washing'].includes(word))
-const colouredObjects=['bag','cup','phone','book','shirt','shoe','bottle','plate','bus','motorbike','wallet','towel','hat','sock','trousers','glasses','pen','pencil','umbrella','watch','fan','charger','bicycle','laptop','camera','remote','sandal','boot','racket','chair','table','car']
-const sizedObjects=everydayNounOrder.filter(word=>!['water','food','rice','bread','milk','money'].includes(word)&&word!=='doctor'&&!everydayPeople.some(person=>person.singular===word))
+const colouredObjects=['bag','cup','phone','book','shirt','shoe','bottle','plate','bus','motorbike','wallet','towel','hat','sock','trousers','glasses','pen','pencil','umbrella','watch','fan','charger','bicycle','laptop','camera','remote','sandal','boot','racket','chair','table','car','door','window','bed','ball','computer','television']
+const sizedObjects=everydayNounOrder.filter(word=>!['water','food','rice','bread','milk','money','juice','coffee'].includes(word)&&word!=='doctor'&&!everydayPeople.some(person=>person.singular===word))
 const heightNouns=[...everydayPeople.filter(person=>person.singular!=='family').map(person=>person.singular),'doctor','bottle']
 export const descriptions=[
  {word:'red',thai:'สีแดง',group:'colour',opposite:'blue',nouns:[...colouredObjects,'apple'],colour:'#e32938'},
  {word:'blue',thai:'สีน้ำเงิน',group:'colour',opposite:'red',nouns:colouredObjects,colour:'#246fe0'},
  {word:'big',thai:'ใหญ่',group:'size',opposite:'small',nouns:sizedObjects,colour:''},
  {word:'small',thai:'เล็ก',group:'size',opposite:'big',nouns:sizedObjects,colour:''},
- {word:'hot',thai:'ร้อน',group:'temperature',opposite:'cold',nouns:['water','sandwich','food','rice','bread','milk'],colour:''},
- {word:'cold',thai:'เย็น',group:'temperature',opposite:'hot',nouns:['water','sandwich','food','rice','bread','milk'],colour:''},
+ {word:'hot',thai:'ร้อน',group:'temperature',opposite:'cold',nouns:['water','sandwich','food','rice','bread','milk','coffee'],colour:''},
+ {word:'cold',thai:'เย็น',group:'temperature',opposite:'hot',nouns:['water','sandwich','food','rice','bread','milk','juice','coffee'],colour:''},
  {word:'green',thai:'สีเขียว',group:'colour',opposite:'red',nouns:[...colouredObjects,'apple','banana'],colour:'#208550'},
  {word:'yellow',thai:'สีเหลือง',group:'colour',opposite:'blue',nouns:[...colouredObjects,'banana'],colour:'#f8cd37'},
  {word:'black',thai:'สีดำ',group:'colour',opposite:'white',nouns:colouredObjects,colour:'#202a35'},

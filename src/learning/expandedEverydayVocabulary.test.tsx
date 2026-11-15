@@ -22,7 +22,7 @@ const compatible=(verb:string,noun:string)=>objectsForAction(verb,universityVoca
 it('shares every new form, category, meaning and order across whiteboard, lookup and practice',()=>{
  expect(vocabularyIntegrity([...expandedEverydayCatalogue,...everydayPeopleCatalogue])).toEqual([])
  const board=whiteboardWords({id:'test',vocabulary:[],plural:true,initialWord:'phone'})
- expect(everydayNounOrder.slice(-14)).toEqual(expandedVocabularyOrder)
+ expect(everydayNounOrder.slice(-expandedVocabularyOrder.length)).toEqual(expandedVocabularyOrder)
  expect(rankWordChoices([...expandedVocabularyOrder].reverse().map(word=>({word}))).map(x=>x.word)).toEqual(expandedVocabularyOrder)
  for(const word of expandedVocabularyOrder){
   const item=find(word)

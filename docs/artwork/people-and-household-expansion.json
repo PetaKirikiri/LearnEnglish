@@ -1,0 +1,166 @@
+{
+  "mode": "built-in image_gen",
+  "style": "Tightly framed transparent polished 3D educational icons",
+  "assets": [
+    {
+      "name": "nurse",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-17ce43ce-fa43-4329-95fc-682e646d78a4.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"nurse\". Subject: adult nurse in teal medical scrubs, stethoscope and small medical badge; clearly healthcare worker. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "farmer",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-669ec7ed-b0b4-43b4-b307-2fcf9c881d75.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"farmer\". Subject: adult farmer wearing broad straw hat and green overalls, holding a small bunch of fresh carrots. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "teacher",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-fca58555-59a1-45d7-8220-3e3f898487af.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"teacher\". Subject: adult teacher wearing glasses, holding a large open book and pointing at it with one finger, smart casual purple shirt. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "chef",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-921de45a-17c6-4bea-a764-4d331951cc51.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"chef\". Subject: adult chef in tall white chef hat and white chef coat holding a wooden spoon. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "student",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-9bdf0a20-f42b-43c0-8bb6-5a218a6d117e.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"student\". Subject: school-age student in neat school uniform with visible backpack straps, hugging a school book. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "driver",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-23e6e18e-0307-4e0d-a409-fd1c8c3171e3.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"driver\". Subject: adult professional driver in light blue shirt and cap, hands on a large clearly visible steering wheel in foreground, no car scenery. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "firefighter",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-9a5fde70-012a-4730-b8e1-9fbef59c9b20.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"firefighter\". Subject: adult firefighter in bright yellow firefighter helmet and protective coat with reflective bands, no flames. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "dentist",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-1605ec18-5229-47cd-b8c1-a45b4b904f17.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"dentist\". Subject: adult dentist in pale blue scrubs holding a large tooth model, surgical mask lowered so face visible. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "waiter",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-57feefc8-3c07-4ce8-b60e-2afa59726a7d.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"waiter\". Subject: adult male waiter in black vest and white shirt, carrying a serving tray with a glass. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "waitress",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-8491af82-611d-4048-87f3-0b68459c7e35.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"waitress\". Subject: adult female waitress in black vest and white shirt, carrying a serving tray with a glass. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "vet",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-a94280bc-d56e-4156-8bae-87918017fa54.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"vet\". Subject: adult veterinarian in teal medical coat gently holding a small puppy; adult prominent and puppy supporting cue. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "cleaner",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-88ace5c3-d34c-4fee-a7e4-ce5d620bc11f.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"cleaner\". Subject: adult cleaner in green work shirt and rubber gloves holding a cleaning spray bottle and cloth. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "shopkeeper",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-b90a48de-14a8-43f6-976f-26ef54f0e08e.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"shopkeeper\". Subject: adult shopkeeper wearing a red apron behind a tiny simple checkout edge holding a shopping bag, no store scene. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "builder",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-8c48ecfb-1934-4ec5-9949-ec84e1f2b1a9.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"builder\". Subject: adult construction worker in yellow hard hat and orange safety vest, holding a brick. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "mechanic",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-e6482cec-c665-4bd4-b49b-e9ec01c25649.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"mechanic\". Subject: adult mechanic wearing blue work overalls holding a large silver wrench. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "pilot",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-9d4e8700-56a6-4cc4-b9e1-4939db251cdc.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"pilot\". Subject: adult pilot in navy uniform with gold shoulder stripes and pilot cap with wing insignia. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "dancer",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-3fbf001e-5372-4c4e-a80e-229a3b81c597.png",
+      "prompt": "Create one friendly educational vocabulary icon for the word dancer. A smiling adult dance instructor in a loose long-sleeved orange tracksuit, fully clothed, shown from waist up with one hand raised and the other arm extended in a simple dance-teaching gesture. Family-friendly school textbook illustration. Rounded polished 3D cartoon style, large figure filling square, transparent background. No text, scenery or other objects."
+    },
+    {
+      "name": "musician",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-3c76d679-dcfa-495f-ae1c-ad6eee1170e9.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"musician\". Subject: adult musician with large acoustic guitar held naturally across torso, teal shirt. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "artist",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-e734e63d-a667-4e6b-b69d-a4d65d5ba47d.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"artist\". Subject: adult artist in purple paint-stained apron holding a prominent paint palette and brush. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "baby",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-e0c08dc6-ed22-4f40-82af-d03c2284d593.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"baby\". Subject: one happy baby wearing yellow romper, sitting with baby proportions and tiny feet visible, no toy or adult. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "singer",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-45a00336-38a9-4ef1-9ca0-00ba38a57035.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"singer\". Subject: adult singer singing into large handheld microphone, expressive open mouth, purple top. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "grandfather",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-a711c0ad-1841-4d61-a622-fe597278d6e8.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"grandfather\". Subject: kind elderly grandfather with grey hair and beard, glasses, blue cardigan, small grandchild slightly muted behind shoulder to clarify grandparent; grandfather fills most frame. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "grandmother",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-ec768b47-4b0f-4dff-8cc0-d0b62b4eb718.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"grandmother\". Subject: kind elderly grandmother with grey hair and glasses, purple cardigan, small grandchild slightly muted behind shoulder to clarify grandparent; grandmother fills most frame. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Close waist-up portrait; head, role-specific clothing and key prop fill 90% of square. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "ball",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-74f1aa80-a301-4d60-bf3d-3b4b68ddba71.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"ball\". Subject: one large bright red and white football, no other objects. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Object fills 90% of square, clean three-quarter view. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "door",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-9814710c-8daf-44fa-86cf-b5586359c08b.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"door\". Subject: one wooden door slightly open in its simple frame, large handle. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Object fills 90% of square, clean three-quarter view. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "computer",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-f866477b-3b58-44c4-8241-9fece2ec08d2.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"computer\". Subject: one desktop computer with blue monitor, keyboard and mouse, all form one compact arrangement. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Object fills 90% of square, clean three-quarter view. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "window",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-4e8a60e3-5bed-437a-93a1-125264eae33a.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"window\". Subject: one blue-framed glass window with two panes, one pane open, no wall scene. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Object fills 90% of square, clean three-quarter view. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "juice",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-c47bbb96-0e0b-468b-8ca4-34e16943ab2e.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"juice\". Subject: one glass of orange juice beside one cut orange, glass dominant. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Object fills 90% of square, clean three-quarter view. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "television",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-25ff03d2-93a6-4518-a4d0-05ac9400ec03.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"television\". Subject: one flat-screen television on short feet, blue blank screen and small remote beside it. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Object fills 90% of square, clean three-quarter view. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "bed",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-0c86a4d8-6de3-408f-a688-773f938d70f7.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"bed\". Subject: one cozy bed with blue blanket and white pillow, complete bed in three-quarter view. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Object fills 90% of square, clean three-quarter view. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "coffee",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-859b37a1-5f4c-47ec-9a75-c840052baff4.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE English vocabulary icon for \"coffee\". Subject: one cup of dark coffee in white cup with visible dark liquid and gentle steam, no lettering. Polished friendly rounded 3D animated educational illustration, warm expressive features, saturated readable colours, clean silhouette. Object fills 90% of square, clean three-quarter view. Readable at 48 pixels, minimal detail, no extra scenery. Genuinely transparent background. No text, letters, numbers, logo, border, watermark or panel. Consistent English learning icon style. Create one icon, not a sheet."
+    },
+    {
+      "name": "police officer",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1c5bf-8fa5-72d2-8183-2445e622d4ea/exec-3d7c95da-ff55-4b36-b395-274793a38de6.png",
+      "prompt": "Friendly adult police officer in navy uniform, peaked police cap and shield badge; waist-up polished 3D educational icon on transparent background, no weapon or text."
+    }
+  ]
+}

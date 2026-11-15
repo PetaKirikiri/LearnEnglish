@@ -5,7 +5,7 @@ import {hierarchyState,wordHierarchies,hierarchyCompatible} from './wordHierarch
 import {generatedDeck,masteredWords,type ListeningEvidence} from './generatedPracticeProgress'
 import {canonicalBlueprintQuestion} from './blueprintWordServer'
 import {forecastPractice,nextPersonalQuestion} from './practiceForecast'
-import type {WordProgress} from '../learning/wordProgress/model'
+import {wordId,wordTokens,type WordProgress} from '../learning/wordProgress/model'
 const row=(word:string,proved=false):WordProgress=>({word_id:'en:'+word,correct:99,attempts:99,listening_correct:proved?3:0,direct_correct:0,last_practised:'',recent_results:[true,true,true],fade_score:proved?25:24,confirmation_count:proved?3:0,proven_at:proved?'2026-01-01T00:00:00Z':null,review_due_at:proved?'2040-01-01T00:00:00Z':null,learning_version:1})
 it('has five independent ordered hierarchies and exposure below full fade never advances a frontier',()=>{
  expect(Object.keys(wordHierarchies)).toEqual(['noun','verb','adjective','pronoun','determiner'])
@@ -81,7 +81,7 @@ it('refills subjects and objects independently, including lapses and exhausted g
  expect(object.nounGroups?.objects).toEqual({current:['phone','water'],next:'cup'})
  expect(object.nounGroups?.subjects).toEqual(initial.nounGroups?.subjects)
  const people=wordHierarchies.noun.filter(w=>nounGroupFor(w)==='subjects')
- const exhausted=hierarchyState(new Set(people.map(w=>'en:'+w))).noun
+ const exhausted=hierarchyState(new Set(people.flatMap(w=>wordTokens(w).map(wordId)))).noun
  expect(exhausted.current).toEqual(['phone','bag'])
  expect(hierarchyState(new Set()).noun.current).toEqual(initial.current)
 })

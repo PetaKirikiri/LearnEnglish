@@ -1,9 +1,10 @@
 import type {SubjectWord} from '../sentenceMatrix/subjectEngine'
 /** These nouns refer to the children depicted in the reviewed vocabulary artwork. */
-const childSubjects=new Set(['boy','boys','girl','girls','son','sons','daughter','daughters','brother','brothers','sister','sisters','child','children'])
+const childSubjects=new Set(['boy','boys','girl','girls','son','sons','daughter','daughters','brother','brothers','sister','sisters','child','children','student','students','baby','babies'])
 export function subjectCanPerform(subject:Pick<SubjectWord,'word'|'phrase'|'semanticNoun'>,action:string,object?:string){
  const noun=(subject.phrase?.noun??subject.semanticNoun??subject.word.replace(/^(?:the|my|your|his|her|our|their) /i,'')).toLowerCase()
  const child=childSubjects.has(noun)
+ if(['baby','babies'].includes(noun)&&!['sleeping','eating','drinking','sitting','holding','watching','listening'].includes(action))return false
  if(['family','families'].includes(noun)&&action==='driving')return false
  const target=object?.toLowerCase().replace(/[?.!]$/,'').replace(/^(?:to |on |at )?(?:the |a |an |my |your |his |her |our |their )?/,'').replace(/buses$/,'bus').replace(/motorbikes$/,'motorbike')
  if(['helping','teaching','watching','talking','listening','walking','running','going','visiting','coming'].includes(action)&&target===noun)return false

@@ -17,7 +17,7 @@ export function nounSubjectModes(noun:ClassroomWord,config?:SubjectModeConfig):S
  return {pronouns,names,initialPronoun:human?config?.initialPronoun:pronouns[0]?.word,initialName:names[0]?.word}
 }
 export function objectPronouns(noun:ClassroomWord,location=false):ReferenceChoice[]{
- const words=location?['here','there']:plural(noun)?['them']:meaningForWord(noun)?.kind!=='person'||meaningForWord(noun)?.collective?['it']:/^(woman|girl|mother|daughter|sister)$/.test(noun.singular??noun.word)?['her']:/^(man|boy|father|son|brother)$/.test(noun.singular??noun.word)?['him']:['him','her']
+ const words=location?['here','there']:plural(noun)?['them']:meaningForWord(noun)?.kind!=='person'||meaningForWord(noun)?.collective?['it']:/^(woman|girl|mother|daughter|sister|grandmother|waitress)$/.test(noun.singular??noun.word)?['her']:/^(man|boy|father|son|brother|grandfather|waiter)$/.test(noun.singular??noun.word)?['him']:['him','her']
  const meanings:Record<string,string>={it:'มัน',them:'พวกเขา / สิ่งเหล่านั้น',him:'เขา',her:'เธอ',here:'ที่นี่',there:'ที่นั่น'}
  return words.map(word=>({...noun,word,thai:meanings[word],reference:{mode:'pronoun',word}}))
 }
