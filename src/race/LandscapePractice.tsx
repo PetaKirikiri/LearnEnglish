@@ -40,9 +40,11 @@ export default function LandscapePractice({children,enabled=true}:{children:Reac
    const start=gesture.current
    if(start&&Math.hypot(event.clientX-start.x,event.clientY-start.y)>12)start.moved=true
   }}
-  onPointerCancelCapture={()=>{if(gesture.current)gesture.current.moved=true}}
+  onPointerCancelCapture={()=>{gesture.current=null}}
   onClickCapture={event=>{
-   if(gesture.current?.moved){event.preventDefault();event.stopPropagation();return}
+   const moved=gesture.current?.moved
+   gesture.current=null
+   if(moved){event.preventDefault();event.stopPropagation();return}
    enter(event)
   }} onKeyDownCapture={event=>{gesture.current=null;enter(event)}}>
   <div className="practice-landscape-frame">{children}</div>

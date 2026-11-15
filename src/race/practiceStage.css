@@ -107,8 +107,12 @@
 .adaptive-practice-stage .practice-continue-surface{position:absolute;inset:0;z-index:1;width:100%;height:100%;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;transform:none;cursor:pointer;touch-action:pan-y}
 .adaptive-practice-stage .practice-continue-surface:focus-visible{outline:3px solid #18385e;outline-offset:-4px}
 
-/* Wide source images use the same square framing as noun portraits. */
+/* Keep the complete action inside its tile, including wide hand/tool scenes. */
 .phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .picture-sentence-art>img.action-vocabulary-icon,
-.phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-slot-role>img.action-vocabulary-icon{object-fit:cover;object-position:center}
+.phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-slot-role>img.action-vocabulary-icon{object-fit:contain;object-position:center}
 /* Relational scenes must retain both people, the pointing hand and the apple. */
 .phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .determiner-icon[data-scene] .determiner-icon-art{object-fit:contain;object-position:center}
+
+/* Leave a small inset so rounded linked tiles never clip edge-to-edge artwork. */
+.phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .picture-sentence-art{box-sizing:border-box;padding:6px;min-width:0}
+.phone-practice.foundation-practice .adaptive-practice-stage .assessment-sentence-line .picture-sentence-art>*{min-width:0;max-width:100%;max-height:100%}

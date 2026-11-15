@@ -80,3 +80,25 @@ it('keeps swipes native, suppresses their clicks, and hides the hint after real 
   expect(choose).toHaveBeenCalledOnce()
  }finally{await act(async()=>root.unmount());vi.restoreAllMocks()}
 })
+
+it('does not leave taps blocked after a cancelled native scroll or a suppressed swipe click',async()=>{
+ native.enter.mockResolvedValue('unsupported')
+ const host=document.createElement('div'),root=createRoot(host),choose=vi.fn()
+ try{
+  await act(async()=>root.render(<LandscapePractice><button onClick={choose}>Answer</button></LandscapePractice>))
+  const button=host.querySelector('button')!
+  await act(async()=>{
+   button.dispatchEvent(new MouseEvent('pointerdown',{bubbles:true,clientX:10,clientY:100}))
+   button.dispatchEvent(new MouseEvent('pointercancel',{bubbles:true}))
+   button.click()
+  })
+  expect(choose).toHaveBeenCalledTimes(1)
+  await act(async()=>{
+   button.dispatchEvent(new MouseEvent('pointerdown',{bubbles:true,clientX:10,clientY:100}))
+   button.dispatchEvent(new MouseEvent('pointermove',{bubbles:true,clientX:10,clientY:10}))
+   button.click()
+   button.click()
+  })
+  expect(choose).toHaveBeenCalledTimes(2)
+ }finally{await act(async()=>root.unmount())}
+})
