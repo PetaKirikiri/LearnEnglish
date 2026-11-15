@@ -55,7 +55,7 @@ export default async function handler(req:IncomingMessage&{body?:unknown},res:Se
     }catch{/* Incomplete or invalid timing requires a new ElevenLabs recording. */}
    }
    const response=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voice)}/with-timestamps?output_format=mp3_44100_128`,{method:'POST',headers:{'xi-api-key':apiKey,'Content-Type':'application/json'},body:JSON.stringify({text:q.document.english,model_id:model,language_code:'en',voice_settings:{stability:.5,similarity_boost:.75,speed:1}}),signal:AbortSignal.timeout(40000)})
-   if(!response.ok){await db.rpc('finish_sentence_audio',{p_key:hash,p_owner:owner,p_success:false,p_quota:[401,402,403,429].includes(response.status)});return send(200,{status:'unavailable'})}
+   if(!response.ok){console.warn('ElevenLabs generation failed',{status:response.status});await db.rpc('finish_sentence_audio',{p_key:hash,p_owner:owner,p_success:false,p_quota:[401,402,403,429].includes(response.status)});return send(200,{status:'unavailable'})}
    const result=await response.json() as {audio_base64?:string;alignment?:unknown;normalized_alignment?:unknown}
    if(typeof result.audio_base64!=='string')throw new Error('Invalid audio')
    const bytes=Buffer.from(result.audio_base64,'base64');if(bytes.length<100)throw new Error('Empty audio')

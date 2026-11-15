@@ -53,3 +53,15 @@ it('waits for a separate complete tap after answering and clears the continuatio
  expect(host.querySelector('.practice-continue-surface')).toBeNull()
  await act(async()=>root.unmount())
 })
+
+it('hosts turtle, hare and help in the top header without a separate canvas toolbar row',async()=>{
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<div className="practice-shell"><header><span data-practice-toolbar-host className="practice-header-tools"/></header><PracticeStage question="Question" correct={null} onNext={()=>{}} onReplay={()=>{}} explanation={()=>null} answers={{choices:[{id:'a',label:'A',content:'A'},{id:'b',label:'B',content:'B'}],selected:null,disabled:false,onChoose:()=>{}}}/></div>))
+  const header=host.querySelector('header')!,stage=host.querySelector('.practice-stage')!
+  expect(header.querySelectorAll('[data-playback-animal]')).toHaveLength(2)
+  expect(header.querySelector('.foundation-help')).not.toBeNull()
+  expect(stage.querySelector('.foundation-controls')).toBeNull()
+  expect(stage.getAttribute('data-toolbar-in-header')).toBe('true')
+ }finally{await act(async()=>root.unmount())}
+})

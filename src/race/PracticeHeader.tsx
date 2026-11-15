@@ -22,6 +22,7 @@ export default function PracticeHeader({level,label,onLevel,value,total,userId,o
   {onExit?<button type="button" className="practice-header-exit" aria-label={exitLabel} onClick={onExit}>←</button>:exitHref?<a className="practice-header-exit" aria-label={exitLabel} href={exitHref}>←</a>:null}
   {onLevel?<PracticeLevelPicker level={level} onChange={onLevel}/>:<strong className="practice-header-level" aria-label={label??`Level ${level}`}>{label??String(level).padStart(2,'0')}</strong>}
   {value!==undefined&&total!==undefined?<progress className="foundation-progress" value={value} max={total} aria-label="ความคืบหน้าของบทฝึก" aria-valuetext={`ตอบแล้ว ${value} จาก ${total} ข้อ`}/>:<span className="practice-header-spacer"/>}
+  <span className="practice-header-tools" data-practice-toolbar-host/>
   <PracticeGold userId={userId}/>
   {onReplay&&<PlaybackButtons onPlay={onReplay}/>}
  </header>

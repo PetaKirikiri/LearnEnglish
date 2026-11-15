@@ -14,7 +14,7 @@ Configure these as server-only environment variables in Vercel and, for local us
 
 The old one-day Māori test key is not a production credential. Add a current key securely; do not paste it in chat. `vite` loads local secrets only into its server middleware. Vite exposes only its usual `VITE_` variables to client code.
 
-Apply `supabase/migrations/20261111010000_sentence_audio.sql`. The public `sentence-audio` bucket contains only authored lesson audio. The cache, spending counters and provider cooldown are service-role-only. `node scripts/buildRaceServer.mjs` bundles `api/sentence-audio.js`; the route has a 60-second Vercel timeout.
+Apply `supabase/migrations/20261111010000_sentence_audio.sql` and `supabase/migrations/20261115010000_remove_sentence_audio_daily_cap.sql`. The public `sentence-audio` bucket contains only authored lesson audio. The cache, spending counters and provider cooldown are service-role-only. `node scripts/buildRaceServer.mjs` bundles `api/sentence-audio.js`; the route has a 60-second Vercel timeout.
 
 ## Selection and forecast
 
@@ -26,7 +26,7 @@ Forecast work is deferred until after rendering and replenished on question/evid
 
 The server accepts a question ID from the shared authored/generated catalogue, not client-supplied arbitrary text. It authenticates the learner, resolves the sentence server-side, and hashes exact normalized text, punctuation, voice, model, language, output format voice settings (including natural speed 1.0) and timing format version. Account ID is not part of that identity.
 
-A database row lock gives one worker a two-minute lease. Ready audio is reused across users. A worker recovers an interrupted upload only when both its MP3 and validated timing JSON exist and the timing metadata matches the audio SHA-256 digest. Generation times out after 40 seconds. Failed requests back off for 15 minutes; quota/auth/rate failures pause generation for one hour. Three failed/abandoned attempts stop automatic retries for that sentence until an operator reviews it. A per-account cap of 100 new generation claims per UTC date limits speculative spending; cache hits are not charged against it.
+A database row lock gives one worker a two-minute lease. Ready audio is reused across users. A worker recovers an interrupted upload only when both its MP3 and validated timing JSON exist and the timing metadata matches the audio SHA-256 digest. Generation times out after 40 seconds. Failed requests back off for 15 minutes; quota/auth/rate failures pause generation for one hour. Three failed/abandoned attempts stop automatic retries for that sentence until an operator reviews it. There is no app-imposed per-account daily generation cap. Request counts are observational only and must not block generation. Do not reintroduce a daily cap without an explicit user request. Cache hits continue to reuse the shared recording.
 
 A provider success followed by a network/process failure before upload can still incur a duplicate provider charge on retry: ElevenLabs generation and our storage upload are not one atomic transaction. Leases and storage recovery reduce that risk but cannot promise exactly-once billing.
 

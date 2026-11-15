@@ -132,3 +132,21 @@
 .practice-audio-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 .phone-practice.foundation-practice .practice-shell .adaptive-practice-stage>.practice-question{padding:4px 12px;min-height:0}
 .phone-practice.foundation-practice .practice-shell .adaptive-practice-stage>.practice-answer-area{grid-template-rows:minmax(0,1fr);padding-top:4px}
+
+/* Header-hosted controls consume no question/answer canvas row. */
+.phone-practice.foundation-practice .practice-shell .practice-stage.adaptive-practice-stage[data-toolbar-in-header=true],
+.practice-landscape-frame>.practice-stage.adaptive-practice-stage[data-toolbar-in-header=true]{grid-template-rows:minmax(0,1fr) minmax(0,2fr)}
+.practice-header-tools{display:inline-flex;flex:none;align-items:center}.practice-header-tools:empty{display:none}
+.phone-practice.foundation-practice .practice-shell>.practice-header .practice-header-tools>.foundation-controls,
+.cw-panel-header .practice-header-tools>.foundation-controls{position:static;display:flex;align-items:center;flex-wrap:nowrap;gap:8px;height:40px;min-height:0;width:auto;max-width:none;margin:0;padding:0;background:transparent;overflow:visible}
+.phone-practice.foundation-practice .practice-shell>.practice-header .practice-header-tools .playback-speed-controls,
+.cw-panel-header .practice-header-tools .playback-speed-controls{display:flex;flex-wrap:nowrap;gap:6px;margin:0;padding:0}
+.phone-practice.foundation-practice .practice-shell>.practice-header .practice-header-tools .playback-buttons .playback-speed-controls>button,
+.cw-panel-header .practice-header-tools .playback-buttons .playback-speed-controls>button{position:static;flex:0 0 40px;display:grid;place-items:center;width:40px;height:40px;min-width:40px;min-height:40px;padding:0;border:1px solid #d9e5f3;border-radius:10px;background:#f2f6fb;box-shadow:0 2px 0 #c8d5e3}
+.phone-practice.foundation-practice .practice-shell>.practice-header .practice-header-tools .playback-buttons .playback-speed-controls>button[aria-pressed=true],
+.cw-panel-header .practice-header-tools .playback-buttons .playback-speed-controls>button[aria-pressed=true]{background:#ffd43b;border-color:#bc8b0c;box-shadow:0 2px 0 #bc8b0c}
+.phone-practice.foundation-practice .practice-shell>.practice-header .practice-header-tools .playback-speed-controls>button>.playback-art,
+.cw-panel-header .practice-header-tools .playback-speed-controls>button>.playback-art{width:38px;height:38px}
+.phone-practice.foundation-practice .practice-shell>.practice-header .practice-header-tools .foundation-help,
+.cw-panel-header .practice-header-tools .foundation-help{position:static;display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;min-width:36px;min-height:36px;margin:0;padding:0;border:1px solid #d2def0;border-radius:50%;background:white;color:#1877ef;font:800 24px/1 system-ui,sans-serif}
+.practice-header-tools .foundation-controls[data-audio-error=true] .playback-speed-controls>button{outline:1px solid #c82743;outline-offset:1px}

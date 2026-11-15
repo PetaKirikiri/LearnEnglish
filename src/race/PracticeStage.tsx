@@ -1,3 +1,4 @@
+import {createPortal} from 'react-dom'
 import PlaybackButtons from '../audio/PlaybackButtons'
 import {useLayoutEffect,useRef,useState,type ReactNode,type ComponentProps} from 'react'
 import {AssessmentSentence,AssessmentSentenceContext} from './AssessmentSentenceLayout'
@@ -19,6 +20,11 @@ type StageProps={
 export default function PracticeStage({question,answers,correct,onNext,explanation,onHelp,onReplay,playbackError=false,teacherControlled=false}:StageProps){
  const [helpOpen,setHelpOpen]=useState(false)
  const stage=useRef<HTMLDivElement>(null)
+ const [toolbarHost,setToolbarHost]=useState<HTMLElement|null>(null)
+ useLayoutEffect(()=>{
+  const root=stage.current
+  setToolbarHost(root?.closest('.practice-shell')?.querySelector<HTMLElement>('[data-practice-toolbar-host]')??root?.closest('.su-class-panel')?.querySelector<HTMLElement>('[data-practice-toolbar-host]')??null)
+ },[])
  useLayoutEffect(()=>{
   const root=stage.current
   if(!root)return
@@ -80,16 +86,17 @@ export default function PracticeStage({question,answers,correct,onNext,explanati
   let active=true
   void document.fonts?.ready.then(()=>{if(active)fit()})
   return ()=>{active=false;observer?.disconnect();window.removeEventListener('resize',fit)}
- },[question,answers.choices])
+ },[question,answers.choices,toolbarHost])
  const fitChoice=(choice:typeof answers.choices[number])=>({...choice,icon:undefined,content:<AssessmentSentence>{choice.icon?<span className="assessment-choice-with-icon"><span className="binary-answer-icon" aria-hidden="true">{choice.icon}</span><span>{choice.content}</span></span>:choice.content}</AssessmentSentence>})
  const fittedAnswers={...answers,choices:[fitChoice(answers.choices[0]),fitChoice(answers.choices[1])] as const}
- return <div ref={stage} className="practice-stage adaptive-practice-stage"><AssessmentSentenceContext.Provider value={true}>
-  <div className="practice-feedback foundation-controls" role="group" aria-label="Playback and help" data-audio-error={playbackError||undefined}>
+ const controls=(<div className="practice-feedback foundation-controls" role="group" aria-label="Playback and help" data-audio-error={playbackError||undefined}>
    {onReplay&&<PlaybackButtons onPlay={onReplay}/>}
    <button type="button" className="foundation-help" aria-label="อธิบายรูปแบบประโยค" aria-haspopup="dialog" onClick={()=>{onHelp?.();setHelpOpen(true)}}>?</button>
    <span className="foundation-result-announcement" role="status">{correct===null?'':correct?'ถูกต้อง':'ยังไม่ถูก'}</span>
    {playbackError&&<span className="practice-audio-status" role="alert">Audio unavailable. Use the turtle or hare to retry.</span>}
-  </div>
+  </div>)
+ return <div ref={stage} className="practice-stage adaptive-practice-stage" data-toolbar-in-header={!!toolbarHost||undefined}><AssessmentSentenceContext.Provider value={true}>
+  {toolbarHost?createPortal(controls,toolbarHost):controls}
   <section className="practice-question" aria-label="Question"><AssessmentSentence>{question}</AssessmentSentence></section>
   <section className="practice-answer-area" aria-label="Answers">
    <BinaryAnswerZone {...fittedAnswers}/>
