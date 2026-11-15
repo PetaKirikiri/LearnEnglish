@@ -8,7 +8,7 @@ import {useWordProgress} from '../learning/wordProgress/useWordProgress'
 import {wordOpacity,wordTokens,WORD_RULE_VERSION,type WordScores} from '../learning/wordProgress/model'
 import {loadEvidence,saveEvidence,evidenceScores,curriculumBaseline,type DeckOptions,type ListeningEvidence} from './generatedPracticeProgress'
 import {GENERATED_ROUND_SIZE,type GeneratedQuestion} from './generatedPracticeContent'
-import {playSentenceAudio,prepareSentenceAudio} from '../audio/sentenceAudio'
+import {playTimedSentence as playSentenceAudio,prepareSentenceAudio} from '../audio/sentenceAudio'
 import {audioPreparationPlan,nextPersonalQuestion} from './practiceForecast'
 import type {PracticeLevel} from './PracticeLevelPicker'
 import PracticeHeader from './PracticeHeader'
@@ -122,7 +122,7 @@ function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scor
 
  const play=useCallback((mode=getPlaybackMode())=>{
   audio.current?.()
-  audio.current=playSentenceAudio({id:q.id,document:{english:q.document.english},audioUrl:q.audioUrl},{waveform:(level,time)=>{audioWave.current.level=level;audioWave.current.time=time},word:setSpokenWord,started:()=>{report.current();setAudioError(false);plays.current++;saveSupport()},ended:()=>setHeard(true),error:()=>setAudioError(true)},mode)
+  audio.current=playSentenceAudio({id:q.id,recipe:q.recipe,document:{english:q.document.english},audioUrl:q.audioUrl},{waveform:(level,time)=>{audioWave.current.level=level;audioWave.current.time=time},word:setSpokenWord,started:()=>{report.current();setAudioError(false);plays.current++;saveSupport()},ended:()=>setHeard(true),error:()=>setAudioError(true)},mode)
  },[q.id,q.document.english,q.audioUrl,saveSupport])
  useEffect(()=>{play();return()=>{audio.current?.();audio.current=null}},[play])
  useEffect(()=>{locked.current=picked!==null},[picked,saveError])

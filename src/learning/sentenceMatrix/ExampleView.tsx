@@ -1,3 +1,6 @@
+import {useWhiteboardPlayback} from '../../audio/useWhiteboardPlayback'
+import PlaybackButtons from '../../audio/PlaybackButtons'
+import type {LanguageDocument} from './LanguageQuadrant'
 import {sentenceLinks} from './sentenceLinks'
 import {sentenceRoleSlots,sentenceUnitRole,sentenceVerbType,sentenceVerbLabels,type LanguageRole} from './sentenceRoles'
 import {wordOpacity,wordTokens} from '../wordProgress/model'
@@ -26,6 +29,13 @@ export default function ExampleLanguage({layout,english,thai,units,matrix=false,
     return {text,start,end:start+text.length,marked:index%2===1}
   })
   const plain=spans.map(span=>span.text).join('')
+  const sharedAudio=matrix&&settings.audio!==false&&!!translationControl&&!settings.audioWave
+  const playback=useWhiteboardPlayback(sharedAudio?{english:plain,thai,units:units.map((unit,index)=>({...unit,role:sentenceUnitRole(unit,semanticSlots?.[index])})),construction:(layout?.construction??'question') as LanguageDocument['construction']}:undefined)
+  if(sharedAudio){
+    settings={...settings,spokenWord:playback.spokenWord,audioWave:playback.audioWave}
+    translationControl=<span className="matrix-timed-playback"><PlaybackButtons onPlay={playback.play}/>{playback.loading&&<span role="status">Preparing audio…</span>}{playback.error&&<span role="alert">{playback.error}</span>}</span>
+  }
+
   if(units.map(unit=>unit.english).join(' ')!==plain) throw new Error(`Example alignment does not match: ${plain}`)
   const showIcons = settings.icons !== false && (!settings.fadeMode || settings.keepIconsWhenFading === true)
   const showEnglish = settings.english !== false

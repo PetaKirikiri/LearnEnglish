@@ -1,3 +1,4 @@
+import {supabase} from '../../lib/supabase'
 // @vitest-environment happy-dom
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -55,13 +56,13 @@ it('explains each answer piece and never makes the location noun control person 
  }
 })
 it('honors matrix help settings and plays the matching sentence recording',async()=>{
- const play=vi.spyOn(HTMLMediaElement.prototype,'play').mockResolvedValue()
+ vi.spyOn(supabase.auth,'getSession').mockResolvedValue({data:{session:{access_token:'fixture'}},error:null} as never)
+ const request=vi.spyOn(globalThis,'fetch').mockResolvedValue(new Response(JSON.stringify({status:'unavailable'})))
  await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-3']} settings={{explanations:false,wordPicker:false}}/>))
  expect(host.querySelector('.example-unit-trigger')).toBeNull()
  expect(host.querySelector('.cw-slot-picker')).toBeNull()
  await click('[aria-label="Next pattern"]');await click('[aria-label="Fast speaking speed"]')
- expect(host.querySelector('audio')?.getAttribute('src')).toBe(peopleAudio('I am at the hotel.'))
- expect(play).toHaveBeenCalledOnce()
+ expect(request).toHaveBeenCalledWith('/api/sentence-audio',expect.objectContaining({body:expect.stringContaining('I am at the hotel.')}))
 })
 it('enables independent yellow-block swappers through the layout request',async()=>{
  await render();await click('[aria-label="Next pattern"]')

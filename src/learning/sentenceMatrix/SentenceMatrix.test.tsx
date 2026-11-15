@@ -1,3 +1,4 @@
+import {supabase} from '../../lib/supabase'
 // @vitest-environment happy-dom
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -65,14 +66,14 @@ it('keeps two matrix instances independent with distinct explanation targets',as
  expect(host.querySelector('.cw-word-explanation')?.id).toBe(targets[0])
  expect(host.querySelector('.cw-sentence-board[aria-label]')?.getAttribute('aria-label')).toBe('Where are the shoes?')
 })
-it('uses the selected noun and owner for recorded audio',async()=>{
- const play=vi.spyOn(HTMLMediaElement.prototype,'play').mockResolvedValue()
+it('requests timed audio for the selected noun and owner',async()=>{
+ vi.spyOn(supabase.auth,'getSession').mockResolvedValue({data:{session:{access_token:'fixture'}},error:null} as never)
+ const request=vi.spyOn(globalThis,'fetch').mockResolvedValue(new Response(JSON.stringify({status:'unavailable'})))
  await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-2']}/>))
  await click('[data-picker-slot="2"]');await choose('your')
  await click('[data-picker-slot="3"]');await choose('keys')
  await click('[aria-label="Fast speaking speed"]')
- expect(host.querySelector('audio')?.getAttribute('src')).toBe(classroomMatrices['lesson-2'].audio('keys','your','are'))
- expect(play).toHaveBeenCalledOnce()
+ expect(request).toHaveBeenCalledWith('/api/sentence-audio',expect.objectContaining({body:expect.stringContaining('Where are your keys?')}))
 })
 it('leaves intentionally incorrect assessment sentences untouched and hides all help',async()=>{
  const slots=[{label:'Question',options:[['Where','ที่ไหน']]},{label:'Verb',options:[['is','อยู่']]},{label:'Owner',options:[['my','ของฉัน']]},{label:'Noun',options:[['shoe','รองเท้า']]}] as const

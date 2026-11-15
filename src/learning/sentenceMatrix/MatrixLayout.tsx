@@ -24,7 +24,8 @@ export default function MatrixLayout({request,settings={},cards:sourceCards,labe
   const root=useRef<HTMLDivElement>(null)
   const assessment=useContext(AssessmentSentenceContext)
   const adaptive=!['briefing','thumbnail'].includes(settings.layout?.density??'comfortable')
-  useMatrixSizing(root,adaptive,JSON.stringify([label,request,settings]),assessment)
+  const {spokenWord:_spokenWord,audioWave:_audioWave,...layoutSettings}=settings
+  useMatrixSizing(root,adaptive,JSON.stringify([label,request,layoutSettings]),assessment)
   const cards:ReactNode[]=[],ranges:{start:number;end:number}[]=[]
   for(let index=0;index<sourceCards.length;index++){
     const group=request.nounGroups?.find(group=>group.start===index)

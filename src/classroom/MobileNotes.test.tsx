@@ -1,3 +1,4 @@
+import {supabase} from '../lib/supabase'
 // @vitest-environment happy-dom
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -35,11 +36,11 @@ it('rejects unsupported requests instead of substituting Lesson 1', async () => 
  expect(host.querySelector('[role="alert"]')?.textContent).toContain('Unsupported lesson')
  expect(host.querySelector('.cw-sentence-board')).toBeNull()
 })
-it('keeps recorded Lesson 1 playback', async () => {
+it('requests timed Lesson 1 playback through the shared provider', async () => {
  window.history.replaceState({}, '', '/english/notes?lesson=1')
- const play=vi.spyOn(HTMLMediaElement.prototype,'play').mockResolvedValue()
+ vi.spyOn(supabase.auth,'getSession').mockResolvedValue({data:{session:{access_token:'fixture'}},error:null} as never)
+ const request=vi.spyOn(globalThis,'fetch').mockResolvedValue(new Response(JSON.stringify({status:'unavailable'})))
  await act(async()=>root.render(<MobileNotes/>))
  await click('[aria-label="Fast speaking speed"]')
- expect(play).toHaveBeenCalledOnce()
- expect(host.querySelector('audio')?.src).toContain('/audio/race-class-one/hotel-the.wav')
+ expect(request).toHaveBeenCalledWith('/api/sentence-audio',expect.objectContaining({body:expect.stringContaining('Where is the hotel?')}))
 })

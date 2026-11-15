@@ -10,11 +10,11 @@ const missing=nextPersonalQuestion(1,[],[],'audio-api-recipe',0)
 const text=missing.document.english
 const alignment={characters:[...text],character_start_times_seconds:[...text].map((_,i)=>i*.1),character_end_times_seconds:[...text].map((_,i)=>(i+1)*.1)}
 const generated=()=>new Response(JSON.stringify({audio_base64:Buffer.alloc(200).toString('base64'),alignment}),{headers:{'Content-Type':'application/json'}})
-async function request(body:unknown,token='test'){
+async function request(body:unknown,token='test',localDevelopment=false){
  let status=0,result:unknown
  const res={set statusCode(n:number){status=n},setHeader:vi.fn(),end:(s:string)=>{result=JSON.parse(s)}} as unknown as ServerResponse
  if(body&&typeof body==='object'&&(body as {id?:string}).id===missing.id)body={...body,recipe:missing.recipe}
- await handler({method:'POST',headers:{authorization:token?`Bearer ${token}`:undefined},body} as IncomingMessage&{body:unknown},res)
+ await handler({method:'POST',headers:{authorization:token?`Bearer ${token}`:undefined},body} as IncomingMessage&{body:unknown},res,{localDevelopment})
  return {status,result}
 }
 beforeEach(()=>{vi.resetAllMocks();vi.stubEnv('VITE_SUPABASE_URL','https://db.invalid');vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY','service');vi.stubEnv('ELEVENLABS_API_KEY','secret');vi.stubEnv('ELEVENLABS_VOICE_ID','voice');mock.getUser.mockResolvedValue({data:{user:{id:'learner'}}});mock.rpc.mockResolvedValue({data:'claimed'});mock.download.mockResolvedValue({error:{message:'missing'}});mock.upload.mockResolvedValue({});mock.upsert.mockResolvedValue({error:null});vi.stubGlobal('fetch',vi.fn().mockResolvedValue(generated()))})
@@ -53,4 +53,22 @@ it('does not publish a replacement without matching timings or when timing stora
  expect((await request({id:missing.id})).result).toEqual({status:'unavailable'})
  expect(mock.upload).toHaveBeenCalledTimes(1)
  expect(mock.rpc).toHaveBeenLastCalledWith('finish_sentence_audio',expect.objectContaining({p_success:false}))
+})
+it('serves the whiteboard through the same timed ElevenLabs path',async()=>{
+ const document={english:text,thai:'',construction:'noun-phrase',units:[{english:text.split(' ')[0],thai:'',role:'determiner'},{english:text.split(' ').slice(1).join(' '),thai:'',role:'object'}]}
+ const response=await request({id:'whiteboard-timed',whiteboard:document})
+ expect(response.status).toBe(200)
+ expect(response.result).toEqual({url:expect.stringMatching(/\.mp3$/),timingUrl:expect.stringMatching(/\.timing\.json$/)})
+ expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/with-timestamps?'),expect.any(Object))
+})
+it('uses server configuration for trusted local development without a learner login',async()=>{
+ const response=await request({id:missing.id},'',true)
+ expect(response.status).toBe(200)
+ expect(response.result).toEqual({url:expect.stringMatching(/\.mp3$/),timingUrl:expect.stringMatching(/\.timing\.json$/)})
+ expect(mock.getUser).not.toHaveBeenCalled()
+ expect(mock.rpc).toHaveBeenCalledWith('claim_sentence_audio',expect.objectContaining({p_learner:'00000000-0000-4000-8000-000000000005'}))
+})
+it('cannot enable local development access through a browser request body',async()=>{
+ expect((await request({id:missing.id,localDevelopment:true},'')).status).toBe(401)
+ expect(fetch).not.toHaveBeenCalled()
 })

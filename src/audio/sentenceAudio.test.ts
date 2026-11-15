@@ -2,7 +2,7 @@
 import {afterEach,expect,it,vi} from 'vitest'
 vi.mock('../lib/supabase',()=>({supabase:{auth:{getSession:vi.fn().mockResolvedValue({data:{session:{access_token:'test'}}})}}}))
 import {timingFromAlignment} from './sentenceTiming'
-import {playSentenceAudio,prepareSentenceAudio} from './sentenceAudio'
+import {playSentenceAudio,playTimedSentence,prepareSentenceAudio} from './sentenceAudio'
 afterEach(()=>vi.unstubAllGlobals())
 const q={id:'test-q',document:{english:'A test sentence not in the recordings.'}}
 it('uses recordings first and never requests generation during playback',()=>{
@@ -11,10 +11,11 @@ it('uses recordings first and never requests generation during playback',()=>{
  const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn()};playSentenceAudio({...q,audioUrl:'/audio/existing.wav'},callbacks);ended()
  expect(callbacks.started).toHaveBeenCalledOnce();expect(callbacks.ended).toHaveBeenCalledOnce();expect(speak).not.toHaveBeenCalled();expect(fetch).not.toHaveBeenCalled()
 })
-it('uses only a local English voice and cancels when leaving the question',()=>{
- const local={lang:'en-GB',localService:true},speak=vi.fn(),cancel=vi.fn()
- vi.stubGlobal('speechSynthesis',{getVoices:()=>[{lang:'en-US',localService:false},local],speak,cancel});vi.stubGlobal('SpeechSynthesisUtterance',class{text:string;constructor(text:string){this.text=text}})
- const stop=playSentenceAudio(q,{started:vi.fn(),ended:vi.fn(),error:vi.fn()});expect(speak.mock.calls[0][0].voice).toBe(local);stop();expect(cancel).toHaveBeenCalledTimes(2)
+it('reports unavailable audio without substituting a browser robot voice',()=>{
+ const speak=vi.fn();vi.stubGlobal('speechSynthesis',{getVoices:()=>[{lang:'en-GB',localService:true}],speak,cancel:vi.fn()})
+ const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn()}
+ playSentenceAudio(q,callbacks)
+ expect(callbacks.error).toHaveBeenCalledOnce();expect(speak).not.toHaveBeenCalled()
 })
 it('deduplicates concurrent preparation and reuses generated audio',async()=>{
  const timing=timingFromAlignment(q.document.english,{characters:[...q.document.english],character_start_times_seconds:[...q.document.english].map((_,i)=>i*.1),character_end_times_seconds:[...q.document.english].map((_,i)=>(i+1)*.1)})
@@ -58,18 +59,6 @@ it('replaces untimed recordings and follows playback time, seeking, pause, repla
  stop()
  expect(fetch).toHaveBeenCalledTimes(2)
 })
-it('uses native word boundaries for local speech and clears the last word on completion',()=>{
- let speech:any
- vi.stubGlobal('speechSynthesis',{getVoices:()=>[{lang:'en-US',localService:true}],cancel:vi.fn(),speak:(u:unknown)=>{speech=u}})
- vi.stubGlobal('SpeechSynthesisUtterance',class{text:string;constructor(text:string){this.text=text}})
- const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn(),word:vi.fn()}
- const stop=playSentenceAudio({id:'local-karaoke',document:{english:'Hello world.'}},callbacks)
- speech.onstart();speech.onboundary({name:'word',charIndex:6})
- expect(callbacks.word).toHaveBeenLastCalledWith({start:6,end:11})
- speech.onend();expect(callbacks.word).toHaveBeenLastCalledWith(null)
- stop()
-})
-
 it('plays the full slow sentence continuously without inserting pauses or changing pitch',async()=>{
  const question={id:'slow-playback',document:{english:'I am going to the hotel.'}}
  const text=question.document.english
@@ -100,4 +89,13 @@ it('plays the full slow sentence continuously without inserting pauses or changi
   expect(player.paused).toBe(true)
   expect(callbacks.ended).not.toHaveBeenCalled()
  }finally{vi.useRealTimers()}
+})
+
+it('waits for timed audio and cancels a pending playback without speaking',async()=>{
+ const speak=vi.fn();vi.stubGlobal('speechSynthesis',{speak})
+ vi.stubGlobal('fetch',vi.fn().mockResolvedValue({ok:true,json:async()=>({status:'unavailable'})}))
+ const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn()}
+ const stop=playTimedSentence({id:'waiting',document:{english:'Waiting for a timed file.'}},callbacks)
+ stop();await new Promise(resolve=>setTimeout(resolve,0))
+ expect(speak).not.toHaveBeenCalled();expect(callbacks.started).not.toHaveBeenCalled();expect(callbacks.error).not.toHaveBeenCalled()
 })

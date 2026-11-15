@@ -12,7 +12,7 @@ vi.mock('./PracticeGold',()=>({default:()=>null,awardPracticeGold:(...args:unkno
 vi.mock('./JourneyPasses',()=>({useJourneyPasses:()=>({passes:[],unavailable:false}),JourneyPassNames:()=>null}))
 vi.mock('./practicePlacement',()=>({loadPracticeStartingRound:async()=>1}))
 vi.mock('./numberRecallStore',async original=>({...await original<typeof import('./numberRecallStore')>(),syncRecall:async()=>undefined}))
-vi.mock('../audio/sentenceAudio',()=>({prepareSentenceAudio:async()=>undefined,playSentenceAudio:(_q:unknown,callbacks:{started:()=>void;ended:()=>void})=>{callbacks.started();state.ended=callbacks.ended;return()=>{}}}))
+vi.mock('../audio/sentenceAudio',()=>({prepareSentenceAudio:async()=>undefined,playTimedSentence:(_q:unknown,callbacks:{started:()=>void;ended:()=>void})=>{callbacks.started();state.ended=callbacks.ended;return()=>{}}}))
 vi.mock('../classroom/ClassroomPractice',()=>({default:()=>{throw new Error('The independent test must not render a classroom turn')}}))
 vi.mock('./PracticeCourse',()=>({default:()=>{throw new Error('The app test must not route into a lesson worksheet')}}))
 vi.mock('../lib/supabase',()=>({supabase:{auth:{getUser:async()=>({data:{user:null}})}}}))
