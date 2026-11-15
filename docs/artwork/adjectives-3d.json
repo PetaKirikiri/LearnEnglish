@@ -1,0 +1,222 @@
+{
+  "generator": "built-in image_gen",
+  "style": "Rounded tactile 3D cartoon, genuine transparent backgrounds; complete uncropped quality-focused scenes.",
+  "assets": [
+    {
+      "word": "red",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"red\". Reference image is STYLE ONLY: match its polished rounded 3D cartoon rendering, tactile materials, soft studio lighting, cheerful rich color and gentle shading. Do not copy its mug or hand unless requested below. Subject: One glossy rounded red artist's paint daub with a short chunky red crayon lying beside it. Strong pure red, not orange. Composition: square icon, entire subject fully visible with 8% transparent margin on every side; no cropped edges. The described quality must be instantly readable at 64px. Genuine transparent background, no ground rectangle, no frame, no text, no letters, no labels, no watermark. Rendered volumetric 3D artwork, NOT vector shapes, diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-3be6f271-9dc6-438d-a87b-694d951f70e2.png",
+      "output": "/classroom/icons/adjectives/3d/red.png"
+    },
+    {
+      "word": "blue",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"blue\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One glossy rounded blue artist's paint daub with a short chunky blue crayon lying beside it. Strong royal blue. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-0291f373-f27b-4eac-b6bf-e05a7b1ef838.png",
+      "output": "/classroom/icons/adjectives/3d/blue.png"
+    },
+    {
+      "word": "big",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"big\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: Two identical design blue toy balls side by side on the same baseline: one enormous richly colored blue ball occupying most of the icon, and one much smaller pale gray ball for scale. Emphasize BIG. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-fbea6adf-c24c-4c1b-a3ab-8f3291a26b3a.png",
+      "output": "/classroom/icons/adjectives/3d/big.png"
+    },
+    {
+      "word": "small",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"small\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: Two identical design toy balls side by side on the same baseline: one large pale gray ball and one very small richly colored blue ball. Emphasize SMALL blue ball, clear size contrast. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-caeaa2b2-2af6-43c1-becb-82f465c03653.png",
+      "output": "/classroom/icons/adjectives/3d/small.png"
+    },
+    {
+      "word": "hot",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"hot\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: A rounded blue ceramic mug filled with hot tea; three thick curling translucent steam wisps visibly rising. Mug and steam fill frame. No hands. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-5f8de612-3a16-4162-ac44-daa0d7892e7d.png",
+      "output": "/classroom/icons/adjectives/3d/hot.png"
+    },
+    {
+      "word": "cold",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"cold\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: A rounded blue glass tumbler of icy water, three large clear ice cubes, frosty condensation beads and a small crystalline snowflake beside it. No hands. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-2542a9ca-3e0d-4ee7-89f9-62e9eba97345.png",
+      "output": "/classroom/icons/adjectives/3d/cold.png"
+    },
+    {
+      "word": "green",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"green\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One glossy rounded green artist's paint daub with a short chunky green crayon lying beside it. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-f7a438fe-e361-44b5-9c1e-8f937dec7fcc.png",
+      "output": "/classroom/icons/adjectives/3d/green.png"
+    },
+    {
+      "word": "yellow",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"yellow\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One glossy rounded vivid yellow artist's paint daub with a short chunky yellow crayon lying beside it. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-9ee29959-0a10-4de2-9276-8e1d948da75b.png",
+      "output": "/classroom/icons/adjectives/3d/yellow.png"
+    },
+    {
+      "word": "black",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"black\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One glossy rounded black artist's paint daub with a short chunky black crayon lying beside it. Subtle highlights retain black appearance. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-2d8982b7-0d5c-47b8-a2b2-cfb97d847418.png",
+      "output": "/classroom/icons/adjectives/3d/black.png"
+    },
+    {
+      "word": "white",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"white\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One glossy rounded opaque white artist's paint daub with a short chunky white crayon lying beside it. Soft gray edge shading makes white visible on light backgrounds. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-bff7dd5b-b12d-4c45-b75c-b360fff1b79c.png",
+      "output": "/classroom/icons/adjectives/3d/white.png"
+    },
+    {
+      "word": "tall",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"tall\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: Two simple rounded 3D people standing side by side on same baseline, one tall richly colored blue-clothed figure and one much shorter pale gray figure. Similar heads, long body and legs make tall unmistakable. No portrait detail. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-55842e0f-3e49-4d31-92e2-12f23c9e76df.png",
+      "output": "/classroom/icons/adjectives/3d/tall.png"
+    },
+    {
+      "word": "short",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"short\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: Two simple rounded 3D people standing side by side on same baseline, one tall pale gray figure and one much shorter richly colored blue-clothed figure. Highlight short figure. No portrait detail. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-dda809d4-06b6-44f8-bcd1-c74a0a63430d.png",
+      "output": "/classroom/icons/adjectives/3d/short.png"
+    },
+    {
+      "word": "clean",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"clean\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One fresh spotless white T-shirt with blue collar, front view, two small golden 3D sparkle glints. No dirt, no person. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-67e52750-b02f-4053-a3ca-630bb795a8af.png",
+      "output": "/classroom/icons/adjectives/3d/clean.png"
+    },
+    {
+      "word": "dirty",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"dirty\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One white T-shirt with blue collar, front view, several large irregular brown mud stains across front. Clearly dirty, not patterned. No person. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-3a36a7eb-f3af-45cf-a3fe-92664f81f8ec.png",
+      "output": "/classroom/icons/adjectives/3d/dirty.png"
+    },
+    {
+      "word": "wet",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"wet\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One saturated blue folded towel, visibly dripping three large water droplets from its bottom edge with small clear puddle below. Focus wet fabric and drops. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-fae1a387-e876-4aaa-a1a8-fb4a5cc5aa39.png",
+      "output": "/classroom/icons/adjectives/3d/wet.png"
+    },
+    {
+      "word": "dry",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"dry\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One fluffy dry blue folded towel with visible soft terry texture and small warm golden sun hovering above beside it. No water, no droplets. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-b363d425-5bda-4203-b249-8432ed336673.png",
+      "output": "/classroom/icons/adjectives/3d/dry.png"
+    },
+    {
+      "word": "new",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"new\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One pristine royal-blue hardcover book at three-quarter view with flawless clean edges and two small golden sparkle glints. No text. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-4a82e17f-2aa4-4476-ad06-b461a4fab7c3.png",
+      "output": "/classroom/icons/adjectives/3d/new.png"
+    },
+    {
+      "word": "old",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"old\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One worn royal-blue hardcover book at three-quarter view with frayed yellowed page edges, scuffed cover, bent corners and visibly cracked spine. No text. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-7b5e102a-f7e8-43be-8951-413e9087536b.png",
+      "output": "/classroom/icons/adjectives/3d/old.png"
+    },
+    {
+      "word": "full",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"full\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One rounded clear drinking glass with blue-tinted rim filled almost to brim with orange juice. Clearly visible top surface and liquid volume. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-b84acbd7-41c4-4af4-a4df-8bf4c7ed656d.png",
+      "output": "/classroom/icons/adjectives/3d/full.png"
+    },
+    {
+      "word": "empty",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"empty\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One rounded clear drinking glass with blue-tinted rim, completely empty with clearly visible hollow interior and bottom. No liquid. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-7017cc87-4efb-424a-ac32-5383abd53c13.png",
+      "output": "/classroom/icons/adjectives/3d/empty.png"
+    },
+    {
+      "word": "open",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"open\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: A rounded blue door swung wide open within a small cream door frame, clearly visible gap and inner edge. Isolated freestanding miniature doorway, no wall or room. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-adc1a8bf-9a9d-4289-9fbe-e0a97da00a69.png",
+      "output": "/classroom/icons/adjectives/3d/open.png"
+    },
+    {
+      "word": "closed",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"closed\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: A rounded blue door completely shut within a small cream door frame, brass handle, no gap. Isolated freestanding miniature doorway, no wall or room. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-78b6fc15-a957-4682-8538-e6176b1d9669.png",
+      "output": "/classroom/icons/adjectives/3d/closed.png"
+    },
+    {
+      "word": "heavy",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"heavy\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: A chunky dark blue iron weight with a rounded loop handle weighing down a small simple cream platform scale, platform visibly compressed low. No digits, text or labels. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-ddb80d12-2b82-41ae-ba55-34136c067eac.png",
+      "output": "/classroom/icons/adjectives/3d/heavy.png"
+    },
+    {
+      "word": "light",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"light\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One airy pale-blue feather resting on a small simple cream platform scale, platform raised high with uncompressed spring. No digits, text or labels. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-a059556d-4bb8-43c7-b59a-8b68b0644174.png",
+      "output": "/classroom/icons/adjectives/3d/light.png"
+    },
+    {
+      "word": "happy",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"happy\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: Close-up of a friendly rounded 3D cartoon child's face with joyful open smile, raised cheeks and bright happy eyes, brown hair, small blue collar. The facial emotion is the entire focus. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-5903369b-68d8-40f9-a79e-3a788ed1b9e2.png",
+      "output": "/classroom/icons/adjectives/3d/happy.png"
+    },
+    {
+      "word": "sad",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"sad\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: Close-up of a friendly rounded 3D cartoon child's face with downturned mouth, sad raised inner eyebrows and a single clear tear, brown hair, small blue collar. The facial emotion is the entire focus. Gentle sadness. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-3b15b7d2-94cd-4ff8-bdfb-d3358141f770.png",
+      "output": "/classroom/icons/adjectives/3d/sad.png"
+    },
+    {
+      "word": "fast",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"fast\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One chunky blue toy car moving fast to the right, two thick sculpted motion streaks trailing behind and subtly spinning wheels. No letters or background. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-81614041-c492-4d1d-885e-1496c25f159a.png",
+      "output": "/classroom/icons/adjectives/3d/fast.png"
+    },
+    {
+      "word": "slow",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"slow\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One chunky blue toy car inching to the right beside a small rounded snail moving in the same direction. Clearly slow comparison, stationary crisp wheels, no speed streaks. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-4e8bb9af-eb32-4f88-b0b6-5734b56c1a57.png",
+      "output": "/classroom/icons/adjectives/3d/slow.png"
+    },
+    {
+      "word": "soft",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"soft\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One puffy blue cushion visibly indented by a gently pressing fingertip, soft pillowy folds surrounding indentation. Close-up material softness, no face. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-8ccc82b5-173c-4818-a286-616b1d283582.png",
+      "output": "/classroom/icons/adjectives/3d/soft.png"
+    },
+    {
+      "word": "hard",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"hard\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One solid blue-gray rounded stone block with a fingertip pressing on its top; surface stays rigid and flat, slight stone texture, clear unyielding hardness. No face. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-15d41373-122a-41da-a2d1-6e6044954711.png",
+      "output": "/classroom/icons/adjectives/3d/hard.png"
+    },
+    {
+      "word": "thick",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"thick\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: Two books same height and cover size, standing side by side: richly colored blue very thick book with broad many-page spine and pale gray very thin comparison book. Emphasize thick book. No text. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-f84c3cec-fec6-42ba-9a60-9f42bf749a08.png",
+      "output": "/classroom/icons/adjectives/3d/thick.png"
+    },
+    {
+      "word": "thin",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"thin\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: Two books same height and cover size, standing side by side: pale gray very thick comparison book and richly colored blue very thin book with few pages. Emphasize thin book. No text. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-9edb3dfb-e043-4c87-84c9-d832b9e274ab.png",
+      "output": "/classroom/icons/adjectives/3d/thin.png"
+    },
+    {
+      "word": "pink",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"pink\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One glossy rounded vivid pink artist's paint daub with a short chunky pink crayon lying beside it. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-826456e8-10d0-46a1-b796-4c3e65d3f32d.png",
+      "output": "/classroom/icons/adjectives/3d/pink.png"
+    },
+    {
+      "word": "purple",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"purple\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One glossy rounded purple artist's paint daub with a short chunky purple crayon lying beside it. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-85ecd3f3-1317-4533-b186-b52cff14e68d.png",
+      "output": "/classroom/icons/adjectives/3d/purple.png"
+    },
+    {
+      "word": "orange",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"orange\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One glossy rounded orange artist's paint daub with a short chunky orange crayon lying beside it. Color not fruit. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-e57d236c-122a-41d5-bf12-de2715afebb2.png",
+      "output": "/classroom/icons/adjectives/3d/orange.png"
+    },
+    {
+      "word": "brown",
+      "prompt": "Use case: scientific-educational. ONE standalone adjective vocabulary icon for \"brown\". Reference is STYLE ONLY: polished rounded 3D cartoon rendering, tactile materials, soft studio light, cheerful rich colors and gentle shading. Subject: One glossy rounded warm brown artist's paint daub with a short chunky brown crayon lying beside it. Square icon; entire subject visible with 8% transparent margin all sides. Quality instantly readable at 64px. Genuine transparent background. No ground rectangle, frame, text, labels or watermark. Volumetric 3D, NOT vector diagrams or line art.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-672c1914-d327-4e06-9477-2727f536efe5.png",
+      "output": "/classroom/icons/adjectives/3d/brown.png"
+    }
+  ]
+}

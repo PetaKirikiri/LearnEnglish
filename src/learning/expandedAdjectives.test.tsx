@@ -1,3 +1,4 @@
+import {existsSync} from 'node:fs'
 import {expect,it} from 'vitest'
 import {renderToStaticMarkup} from 'react-dom/server'
 import {descriptions,descriptionStages} from './everydayVocabulary'
@@ -15,7 +16,11 @@ it('keeps the original order, with one shared entry, icon and usable contrast pe
  for(const d of descriptions){
   const nouns=generatedNumberCatalogue.filter(n=>adjectiveFitsNoun(d.word,n)&&adjectiveFitsNoun(d.opposite,n))
   expect(nouns.length,d.word+' needs an available noun contrast').toBeGreaterThan(0)
-  expect(renderToStaticMarkup(<DescriptionPicture word={d.word}/>)).toContain('<svg')
+  const artwork=`/classroom/icons/adjectives/3d/${d.word}.png`
+  const html=renderToStaticMarkup(<DescriptionPicture word={d.word}/>)
+  expect(html).toContain(artwork)
+  expect(html).not.toContain('<svg')
+  expect(existsSync('public'+artwork),d.word+' artwork').toBe(true)
   for(const noun of nouns){
    expect(()=>nounPhraseUnits({noun:noun.word,nounThai:noun.thai,description:{english:d.word,thai:adjectiveThaiForNoun(d.word,noun)}})).not.toThrow()
   }
