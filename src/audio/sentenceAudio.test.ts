@@ -1,101 +1,55 @@
 // @vitest-environment happy-dom
 import {afterEach,expect,it,vi} from 'vitest'
-vi.mock('../lib/supabase',()=>({supabase:{auth:{getSession:vi.fn().mockResolvedValue({data:{session:{access_token:'test'}}})}}}))
-import {timingFromAlignment} from './sentenceTiming'
-import {playSentenceAudio,playTimedSentence,prepareSentenceAudio} from './sentenceAudio'
-afterEach(()=>vi.unstubAllGlobals())
-const q={id:'test-q',document:{english:'A test sentence not in the recordings.'}}
-it('uses recordings first and never requests generation during playback',()=>{
- const fetch=vi.fn();vi.stubGlobal('fetch',fetch);const speak=vi.fn();vi.stubGlobal('speechSynthesis',{getVoices:()=>[],speak,cancel:vi.fn()})
- let ended=()=>{};vi.stubGlobal('Audio',class{onended?:()=>void;onplaying?:()=>void;src:string;constructor(src:string){this.src=src}pause(){}play(){this.onplaying?.();ended=()=>this.onended?.();return Promise.resolve()}})
- const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn()};playSentenceAudio({...q,audioUrl:'/audio/existing.wav'},callbacks);ended()
- expect(callbacks.started).toHaveBeenCalledOnce();expect(callbacks.ended).toHaveBeenCalledOnce();expect(speak).not.toHaveBeenCalled();expect(fetch).not.toHaveBeenCalled()
+vi.mock('./kokoroAudio',()=>({kokoroAudio:vi.fn().mockResolvedValue('/kokoro.wav')}))
+vi.mock('./audioWaveform',()=>({loadAudioWaveform:vi.fn().mockResolvedValue({interval:1,levels:[.5,.5]}),waveformAtTime:()=>.5}))
+vi.mock('./alignAudio',()=>({alignAudio:vi.fn(async(_url:string,text:string)=>({version:1,text,words:[...text.matchAll(/[a-z]+/gi)].map((m,i)=>({text:m[0],start:m.index,end:m.index!+m[0].length,startTime:10+i,endTime:11+i}))}))}))
+import {kokoroAudio} from './kokoroAudio'
+import {playTimedSentence,prepareSentenceAudio} from './sentenceAudio'
+afterEach(()=>{vi.unstubAllGlobals();vi.clearAllMocks()})
+const flush=async()=>{for(let i=0;i<12;i++)await Promise.resolve()}
+it('does not generate or call paid APIs during background preparation',async()=>{
+ const fetch=vi.fn();vi.stubGlobal('fetch',fetch)
+ await prepareSentenceAudio([{id:'forecast',document:{english:'Unheard forecast sentence.'}}])
+ expect(fetch).not.toHaveBeenCalled();expect(kokoroAudio).not.toHaveBeenCalled()
 })
-it('reports unavailable audio without substituting a browser robot voice',()=>{
- const speak=vi.fn();vi.stubGlobal('speechSynthesis',{getVoices:()=>[{lang:'en-GB',localService:true}],speak,cancel:vi.fn()})
- const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn()}
- playSentenceAudio(q,callbacks)
- expect(callbacks.error).toHaveBeenCalledOnce();expect(speak).not.toHaveBeenCalled()
-})
-it('deduplicates concurrent preparation and reuses generated audio',async()=>{
- const timing=timingFromAlignment(q.document.english,{characters:[...q.document.english],character_start_times_seconds:[...q.document.english].map((_,i)=>i*.1),character_end_times_seconds:[...q.document.english].map((_,i)=>(i+1)*.1)})
- const fetch=vi.fn().mockResolvedValueOnce({ok:true,json:async()=>({url:'/cached/test.mp3',timingUrl:'/cached/test.timing.json'})}).mockResolvedValue({ok:true,json:async()=>timing});vi.stubGlobal('fetch',fetch)
- await Promise.all([prepareSentenceAudio([q,q]),prepareSentenceAudio([q])]);expect(fetch).toHaveBeenCalledTimes(2)
- await prepareSentenceAudio([q]);expect(fetch).toHaveBeenCalledTimes(2)
-})
-
-it('passes the ingredient recipe to background preparation without changing playback',async()=>{
- const recipe={version:1,ingredients:'reviewed fixture'},question={id:'recipe-audio',document:{english:'Recipe transport test.'},recipe}
- const fetch=vi.fn().mockResolvedValue({ok:true,json:async()=>({status:'unavailable'})});vi.stubGlobal('fetch',fetch)
- await prepareSentenceAudio([question])
- expect(fetch).toHaveBeenCalledWith('/api/sentence-audio',expect.objectContaining({body:JSON.stringify({id:question.id,recipe})}))
-})
-
-it('replaces untimed recordings and follows playback time, seeking, pause, replay and stop',async()=>{
- const question={id:'karaoke',document:{english:"I see my dog and my dog."},audioUrl:'/old.wav'}
- const text=question.document.english
- const timing=timingFromAlignment(text,{characters:[...text],character_start_times_seconds:[...text].map((_,i)=>i*.1),character_end_times_seconds:[...text].map((_,i)=>(i+1)*.1)})!
- const fetch=vi.fn().mockResolvedValueOnce({ok:true,json:async()=>({url:'/new.mp3',timingUrl:'/new.timing.json'})}).mockResolvedValueOnce({ok:true,json:async()=>timing})
- vi.stubGlobal('fetch',fetch)
- await prepareSentenceAudio([question])
+it('generates on demand, sweeps with media position, preserves slow pitch, and reuses audio',async()=>{
  let player:any
  vi.stubGlobal('Audio',class{
-  currentTime=0;paused=false;ended=false;onplaying?:()=>void;ontimeupdate?:()=>void;onseeked?:()=>void;onpause?:()=>void;onended?:()=>void
-  src:string;constructor(src:string){this.src=src;player=this}
-  pause(){this.paused=true;this.onpause?.()}
+  currentTime=0;duration=4;paused=true;ended=false;playbackRate=1;preservesPitch=false
+  onplaying?:()=>void;ontimeupdate?:()=>void;onpause?:()=>void
+  constructor(public src:string){player=this}
   play(){this.paused=false;this.onplaying?.();return Promise.resolve()}
+  pause(){this.paused=true;this.onpause?.()}
+ })
+ const q={id:'local',document:{english:'An uncached Kokoro integration sentence.'}}
+ const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn(),waveform:vi.fn(),word:vi.fn()}
+ const stop=playTimedSentence(q,callbacks,'slow');await flush()
+ expect(player.src).toBe('/kokoro.wav');expect(player.playbackRate).toBe(.55);expect(player.preservesPitch).toBe(true)
+ player.currentTime=2;player.ontimeupdate()
+ expect(callbacks.waveform).toHaveBeenLastCalledWith(.5,2,.5,expect.objectContaining({levels:[.5,.5]}))
+ stop();expect(callbacks.word).not.toHaveBeenCalled()
+ const replay=playTimedSentence(q,callbacks);await flush()
+ expect(kokoroAudio).toHaveBeenCalledTimes(1);replay()
+})
+it('cancels playback while synthesis is still pending',async()=>{
+ vi.mocked(kokoroAudio).mockImplementationOnce(()=>new Promise(()=>{}))
+ const audio=vi.fn();vi.stubGlobal('Audio',audio)
+ const stop=playTimedSentence({id:'cancel',document:{english:'Cancelled local synthesis.'}},{started:vi.fn(),ended:vi.fn(),error:vi.fn()})
+ stop();await flush();expect(audio).not.toHaveBeenCalled()
+})
+it('uses automatic word boundaries rather than evenly dividing the recording',async()=>{
+ const timing={version:1,text:'I am',words:[{text:'I',start:0,end:1,startTime:.1,endTime:.2},{text:'am',start:2,end:4,startTime:.22,endTime:.8}]}
+ const fetch=vi.fn().mockResolvedValue({ok:true,json:async()=>timing});vi.stubGlobal('fetch',fetch)
+ let player:any
+ vi.stubGlobal('Audio',class{
+  currentTime=0;duration=1;paused=true;ended=false;playbackRate=1;preservesPitch=true
+  onplaying?:()=>void;ontimeupdate?:()=>void;onpause?:()=>void
+  constructor(){player=this}play(){this.paused=false;this.onplaying?.();return Promise.resolve()}pause(){this.paused=true;this.onpause?.()}
  })
  const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn(),word:vi.fn()}
- const stop=playSentenceAudio(question,callbacks)
- expect(player.src).toBe('/new.mp3')
- const repeated=timing.words[5]
- player.currentTime=repeated.startTime-.06;player.ontimeupdate()
- expect(callbacks.word).toHaveBeenLastCalledWith({start:repeated.start,end:repeated.end})
- player.currentTime=0;player.onseeked()
- expect(callbacks.word).toHaveBeenLastCalledWith({start:0,end:1})
- player.pause();expect(callbacks.word).toHaveBeenLastCalledWith(null)
- player.play();expect(callbacks.started).toHaveBeenCalledTimes(1)
- player.onended();expect(callbacks.ended).toHaveBeenCalledOnce()
+ const stop=playTimedSentence({id:'aligned',document:{english:'I am'},audioUrl:'/aligned.wav',timingUrl:'/aligned.timing.json'},callbacks)
+ await flush();player.currentTime=.24;player.ontimeupdate()
+ expect(callbacks.word).toHaveBeenLastCalledWith({start:2,end:4})
+ player.currentTime=.9;player.ontimeupdate();expect(callbacks.word).toHaveBeenLastCalledWith(null)
  stop()
- expect(fetch).toHaveBeenCalledTimes(2)
-})
-it('plays the full slow sentence continuously without inserting pauses or changing pitch',async()=>{
- const question={id:'slow-playback',document:{english:'I am going to the hotel.'}}
- const text=question.document.english
- const timing=timingFromAlignment(text,{characters:[...text],character_start_times_seconds:[...text].map((_,i)=>i*.1),character_end_times_seconds:[...text].map((_,i)=>(i+1)*.1)})!
- vi.stubGlobal('fetch',vi.fn().mockResolvedValueOnce({ok:true,json:async()=>({url:'/slow.mp3',timingUrl:'/slow.json'})}).mockResolvedValueOnce({ok:true,json:async()=>timing}))
- await prepareSentenceAudio([question])
- let player:any
- vi.stubGlobal('Audio',class{
-  src:string;currentTime=0;paused=false;ended=false;playbackRate=1;preservesPitch=false
-  onplaying?:()=>void;onpause?:()=>void
-  constructor(src:string){this.src=src;player=this}
-  pause(){this.paused=true;setTimeout(()=>this.onpause?.(),0)}
-  play(){this.paused=false;this.onplaying?.();return Promise.resolve()}
- })
- vi.useFakeTimers()
- const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn()}
- try{
-  const stop=playSentenceAudio(question,callbacks,'slow')
-  expect(player.playbackRate).toBe(.55)
-  expect(player.preservesPitch).toBe(true)
-  for(const word of timing.words.slice(0,-1)){
-   player.currentTime=word.endTime+.001;player.onplaying()
-   expect(player.paused).toBe(false)
-   vi.advanceTimersByTime(180);expect(player.paused).toBe(false)
-  }
-  expect(callbacks.started).toHaveBeenCalledOnce()
-  stop();vi.advanceTimersByTime(1000)
-  expect(player.paused).toBe(true)
-  expect(callbacks.ended).not.toHaveBeenCalled()
- }finally{vi.useRealTimers()}
-})
-
-it('waits for timed audio and cancels a pending playback without speaking',async()=>{
- const speak=vi.fn();vi.stubGlobal('speechSynthesis',{speak})
- vi.stubGlobal('fetch',vi.fn().mockResolvedValue({ok:true,json:async()=>({status:'unavailable'})}))
- const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn()}
- const stop=playTimedSentence({id:'waiting',document:{english:'Waiting for a timed file.'}},callbacks)
- stop();await new Promise(resolve=>setTimeout(resolve,0))
- expect(speak).not.toHaveBeenCalled();expect(callbacks.started).not.toHaveBeenCalled();expect(callbacks.error).not.toHaveBeenCalled()
 })

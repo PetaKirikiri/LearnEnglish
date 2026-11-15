@@ -1,44 +1,40 @@
 import {getPlaybackMode,playbackRateFor,type PlaybackMode} from './usePlaybackMode'
 import {loadAudioWaveform,waveformAtTime,type AudioWaveform} from './audioWaveform'
-import {supabase} from '../lib/supabase'
+import {alignAudio} from './alignAudio'
+import {kokoroAudio} from './kokoroAudio'
 import manifest from '../race/generatedPracticeAudio.json'
 import {sentenceKey} from '../race/generatedPracticeContent'
 import {parseSentenceTiming,wordAtTime,type SentenceTiming,type SpokenWord} from './sentenceTiming'
-export type AudioSentence={whiteboard?:import('../learning/sentenceMatrix/LanguageQuadrant').LanguageDocument;recipe?:unknown;id:string;document:{english:string};audioUrl?:string}
+export type AudioSentence={whiteboard?:import('../learning/sentenceMatrix/LanguageQuadrant').LanguageDocument;recipe?:unknown;id:string;document:{english:string};audioUrl?:string;timingUrl?:string}
 const spokenKey=(text:string)=>text.normalize('NFC').trim().replace(/\s+/g,' ')
-const ready=new Map<string,{url:string;timing:SentenceTiming;waveform:AudioWaveform|null}>(),pending=new Map<string,Promise<void>>(),retryAfter=new Map<string,number>()
-let activeRequests=0
-const waiting:Array<()=>void>=[]
-async function acquire(){if(activeRequests>=2)await new Promise<void>(resolve=>waiting.push(resolve));else activeRequests++}
-function release(){const next=waiting.shift();if(next)next();else activeRequests--}
+const ready=new Map<string,{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming}>()
+const pending=new Map<string,Promise<void>>()
 const existing=(q:AudioSentence)=>q.audioUrl||(manifest as Record<string,string>)[sentenceKey(q.document.english)]
-/** Background preparation replaces untimed recordings. Two workers bound spend/concurrency. */
-export async function prepareSentenceAudio(questions:readonly AudioSentence[]){
- const queue=[...new Map(questions.slice(0,16).map(q=>[spokenKey(q.document.english),q])).values()]
- const {data}=await supabase.auth.getSession();const token=data.session?.access_token
- if(!token&&!queue.some(q=>q.whiteboard))return
- async function worker(){for(let q;(q=queue.shift());){
-  if(!token&&!q.whiteboard)continue
-  const key=spokenKey(q.document.english)
-  if(ready.has(key)||(retryAfter.get(key)??0)>Date.now())continue
-  const old=pending.get(key);if(old){await old;continue}
-  const id=q.id
-  const work=(async()=>{await acquire();try{
-   const response=await fetch('/api/sentence-audio',{method:'POST',headers:{'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{})},body:JSON.stringify({id,...(q.recipe?{recipe:q.recipe}:{}),...(q.whiteboard?{whiteboard:q.whiteboard}:{})}),signal:AbortSignal.timeout(55000)})
-   if(!response.ok)throw new Error('Audio unavailable')
-   const result=await response.json() as {url?:string;timingUrl?:string}
-   if(!result.url||!result.timingUrl)throw new Error('Timed audio unavailable')
-   const timingResponse=await fetch(result.timingUrl,{signal:AbortSignal.timeout(10000),cache:'no-cache'})
-   if(!timingResponse.ok)throw new Error('Timing unavailable')
-   const timing=parseSentenceTiming(await timingResponse.json(),q.document.english)
-   if(!timing)throw new Error('Timing does not match the sentence')
-   ready.set(key,{url:result.url,timing,waveform:await loadAudioWaveform(result.url)})
-  }catch{retryAfter.set(key,Date.now()+30000)}finally{pending.delete(key);release()}})()
-  pending.set(key,work);await work
- }}
- await Promise.all([worker(),worker()])
+/** Background calls deliberately do no synthesis or paid provider requests. */
+export async function prepareSentenceAudio(_questions:readonly AudioSentence[]){void _questions}
+async function prepareForPlayback(q:AudioSentence){
+ const key=spokenKey(q.document.english)
+ if(ready.has(key)&&(!q.timingUrl||ready.get(key)?.timing))return
+ const old=pending.get(key);if(old)return old
+ const work=(async()=>{
+  const url=existing(q)||await kokoroAudio(key)
+  const waveform=await loadAudioWaveform(url)
+  let timing:SentenceTiming|undefined
+  if(q.timingUrl){
+   const response=await fetch(q.timingUrl)
+   if(!response.ok)throw new Error('Alignment unavailable')
+   timing=parseSentenceTiming(await response.json(),q.document.english)??undefined
+   if(!timing)throw new Error('Alignment does not match sentence')
+   if(waveform)waveform.timing=timing
+  }
+  timing??=await alignAudio(url,q.document.english).catch(()=>undefined)
+  if(waveform)waveform.timing=timing
+  ready.set(key,{url,waveform,timing})
+ })()
+ pending.set(key,work)
+ try{await work}finally{pending.delete(key)}
 }
-export type PlaybackCallbacks={started:()=>void;ended:()=>void;error:(reason?:'sign-in'|'unavailable')=>void;word?:(word:SpokenWord|null)=>void;waveform?:(level:number,time:number)=>void}
+export type PlaybackCallbacks={started:()=>void;ended:()=>void;error:(reason?:'sign-in'|'unavailable')=>void;word?:(word:SpokenWord|null)=>void;waveform?:(level:number,time:number,progress?:number,recording?:AudioWaveform)=>void}
 export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mode:PlaybackMode=getPlaybackMode()):()=>void{
  let stopped=false,player:HTMLAudioElement|undefined,frame:number|undefined
  let current:SpokenWord|null=null,started=false
@@ -64,12 +60,13 @@ export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mo
   player.preservesPitch=true
   const sync=()=>{
    if(stopped)return
-   // Present the next visible frame ahead of the media clock: SVG rasterization
-   // and React's word-boundary commit otherwise make the cue trail the sound.
-   // Scale media time by playback rate to keep the same 80ms lead in slow mode.
-   const visualTime=player!.currentTime+.08*player!.playbackRate
-   callbacks.waveform?.(cached?.waveform?waveformAtTime(cached.waveform,visualTime):0,visualTime)
-   if(cached)highlight(wordAtTime(cached.timing,visualTime))
+   // Follow the media clock so pause, seeking and slow mode stay synchronized.
+   const visualTime=player!.currentTime
+
+   // Media position drives energy; measured word boundaries drive box selection.
+   const progress=Number.isFinite(player!.duration)&&player!.duration>0?Math.min(.999999,visualTime/player!.duration):0
+   callbacks.waveform?.(cached?.waveform?waveformAtTime(cached.waveform,visualTime):0,visualTime,progress,cached?.waveform??undefined)
+   highlight(cached?.timing?wordAtTime(cached.timing,visualTime):null)
   }
   const resume=()=>{void player!.play().catch(()=>{if(!stopped)failed()})}
   const tick=()=>{
@@ -85,16 +82,11 @@ export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mo
  return()=>{stopped=true;clear();player?.pause()}
 }
 
-/** Prepare the same timed recording before playback; never substitute device speech. */
+/** Generate only the sentence the learner explicitly plays; no device speech. */
 export function playTimedSentence(q:AudioSentence,callbacks:PlaybackCallbacks,mode:PlaybackMode=getPlaybackMode()){
  let stopped=false,stop:(()=>void)|undefined
- void supabase.auth.getSession().then(async({data})=>{
-  if(stopped)return
-  if(!data.session&&!q.whiteboard){callbacks.error('sign-in');return}
-  await prepareSentenceAudio([q])
-  if(stopped)return
-  if(!ready.has(spokenKey(q.document.english))){callbacks.error();return}
-  stop=playSentenceAudio(q,callbacks,mode)
- }).catch(()=>{if(!stopped)callbacks.error()})
+ void prepareForPlayback(q).then(()=>{
+  if(!stopped)stop=playSentenceAudio(q,callbacks,mode)
+ }).catch(()=>{if(!stopped)callbacks.error('unavailable')})
  return()=>{stopped=true;stop?.()}
 }

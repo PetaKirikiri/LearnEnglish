@@ -1,5 +1,5 @@
-export type AudioWaveState = {level:number;time:number}
-export type AudioWaveform = {interval:number;levels:number[]}
+export type AudioWaveState = {level:number;time:number;progress?:number;recording?:AudioWaveform}
+export type AudioWaveform = {interval:number;levels:number[];timing?:import('./sentenceTiming').SentenceTiming}
 
 /** Measure the real recording in 20ms windows, preserving silence between syllables. */
 export function waveformFromChannels(channels:readonly Float32Array[],sampleRate:number):AudioWaveform {
@@ -37,4 +37,18 @@ export async function loadAudioWaveform(url:string):Promise<AudioWaveform|null>{
   const channels=Array.from({length:audio.numberOfChannels},(_,index)=>audio.getChannelData(index))
   return waveformFromChannels(channels,audio.sampleRate)
  }catch{return null}
+}
+
+/** Exclude only leading/trailing silence; preserve all pauses inside the sentence. */
+export function speechBounds(waveform:AudioWaveform):{start:number;end:number}{
+ const first=waveform.levels.findIndex(level=>level>.015)
+ if(first<0)return {start:0,end:waveform.levels.length*waveform.interval}
+ let last=waveform.levels.length-1
+ while(last>first&&waveform.levels[last]<=.015)last--
+ return {start:first*waveform.interval,end:(last+1)*waveform.interval}
+}
+export function speechProgress(wave:AudioWaveState):number{
+ if(!wave.recording)return wave.progress??0
+ const {start,end}=speechBounds(wave.recording)
+ return end>start?Math.max(0,Math.min(1,(wave.time-start)/(end-start))):0
 }

@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "text": "Where is my shoe?",
+  "words": [
+    {
+      "text": "Where",
+      "start": 0,
+      "end": 5,
+      "startTime": 0.322,
+      "endTime": 0.463
+    },
+    {
+      "text": "is",
+      "start": 6,
+      "end": 8,
+      "startTime": 0.503,
+      "endTime": 0.584
+    },
+    {
+      "text": "my",
+      "start": 9,
+      "end": 11,
+      "startTime": 0.624,
+      "endTime": 0.765
+    },
+    {
+      "text": "shoe",
+      "start": 12,
+      "end": 16,
+      "startTime": 0.825,
+      "endTime": 1.046
+    }
+  ],
+  "alignmentHash": "c025fe9fd1411dd73162e2727be08bd47f4c701a1e51b8029b81bb587d45fca0",
+  "aligner": "whisperx-wav2vec2-en"
+}

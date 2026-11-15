@@ -1,6 +1,22 @@
+# Automatic word alignment
+
+Use `uv run --python 3.11 scripts/alignSentenceAudio.py --audio recording.wav --text "The known sentence."`. This runs WhisperX's English wav2vec2 forced aligner locally on CPU; no transcription, paid API, or manual timing is required. The script includes pinned Python dependencies and writes a `.timing.json` sidecar.
+
+For a corpus, pass `--jobs jobs.json` containing `{audio,text,output?}` entries. One process reuses the alignment model across all entries, skips audio/text hashes already processed, writes files atomically, and exits nonzero if any word could not be aligned. Changed audio or text invalidates the result. Do not present guessed linear positions as word timings.
+
+Pass an existing sidecar URL as `AudioSentence.timingUrl`. Without a sidecar, shared playback automatically runs the same English wav2vec2 acoustic model (quantized ONNX) with CTC forced alignment in a browser worker. No Python server or paid API is needed on the live website. The browser caches timings by the audio bytes and exact text. The Python batch tool remains available for preparing a corpus once. If alignment fails, audio can still play without guessed word highlighting.
+
 # Shared sentence audio
 
-Practice keeps its existing sentence boxes and pictures. GeneratedPractice uses account-wide word evidence for the next question; action practice delegates to it. Timed ElevenLabs recordings have first priority. A requested sentence with an untimed recording is prepared again with ElevenLabs timestamps in the background and shared across accounts. Playback waits for the timed recording and never substitutes browser speech.
+## Current playback contract: local Kokoro
+
+Playback uses existing bundled recordings when available; otherwise it generates the explicitly requested sentence locally with Kokoro Heart (q8, WASM in a worker). The model downloads on first use. Generated WAV recordings are cached on the device for replay. No browser speech synthesis is permitted.
+
+Background preparation must not synthesize audio or call paid providers. `prepareSentenceAudio` intentionally does nothing. Do not restore speculative paid generation without explicit user authorization. The historical ElevenLabs server endpoint below is not called by current shared playback.
+
+The decoded WAV amplitude drives tile distortion. There is no visible waveform panel. Word-specific tile animation uses validated automatic alignment; whole-sentence progress must not be used to guess which word is sounding. Slow and normal modes reuse one recording and its timing, preserving pitch. Cancellation prevents a finished generation from starting after the learner leaves.
+
+## Historical ElevenLabs implementation (inactive in shared playback)
 
 ## Server configuration
 

@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "text": "I am going to the hotel.",
+  "words": [
+    {
+      "text": "I",
+      "start": 0,
+      "end": 1,
+      "startTime": 0.401,
+      "endTime": 0.461
+    },
+    {
+      "text": "am",
+      "start": 2,
+      "end": 4,
+      "startTime": 0.561,
+      "endTime": 0.662
+    },
+    {
+      "text": "going",
+      "start": 5,
+      "end": 10,
+      "startTime": 0.722,
+      "endTime": 0.962
+    },
+    {
+      "text": "to",
+      "start": 11,
+      "end": 13,
+      "startTime": 1.002,
+      "endTime": 1.083
+    },
+    {
+      "text": "the",
+      "start": 14,
+      "end": 17,
+      "startTime": 1.103,
+      "endTime": 1.183
+    },
+    {
+      "text": "hotel",
+      "start": 18,
+      "end": 23,
+      "startTime": 1.243,
+      "endTime": 1.564
+    }
+  ],
+  "alignmentHash": "f29065dba67e5a67e1172dbfdc8ff3e60d5604d0246bd35a39ae1ae7cf6bf14c",
+  "aligner": "whisperx-wav2vec2-en"
+}

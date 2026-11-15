@@ -18,30 +18,45 @@ export default function MatrixCard({slot,children,action,control,affordance,clas
   const filterId='speech-wave-'+useId().replace(/[^a-zA-Z0-9-]/g,'')
   const displacement=useRef<SVGFEDisplacementMapElement|null>(null)
   const map=useRef<SVGFEImageElement|null>(null)
+  const distanceRef=useRef<number|undefined>(waveDistance)
+  useLayoutEffect(()=>{distanceRef.current=waveDistance},[waveDistance])
   useLayoutEffect(()=>{
     const card=cardRef.current
-    const distance=waveDistance===undefined?Infinity:Math.abs(waveDistance)
-    if(!card||!audioWave||distance!==0||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return
+    if(!card||!audioWave||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return
     const surface=card
-    const height=Math.max(1,card.getBoundingClientRect().height)
-    const maximumDisplacement=16/height
-    let frame=0,energy=0
-    surface.style.setProperty('--tile-wave-filter',`url(#${filterId})`)
-    function ripple(){
-      const target=Math.min(1,audioWave!.level*1.4)
-      energy=target>=energy?target:energy+(target-energy)*.25
+    let maximumDisplacement=0
+    const measure=()=>{maximumDisplacement=16/Math.max(1,card.getBoundingClientRect().height)}
+    measure()
+    const observer=typeof ResizeObserver==='undefined'?undefined:new ResizeObserver(measure)
+    observer?.observe(surface)
+    let frame=0,energy=0,previous=performance.now()
+    const displacementNode=displacement.current,mapNode=map.current
+    function ripple(now=performance.now()){
+      const delta=Math.min(.05,Math.max(0,(now-previous)/1000));previous=now
+      let sweep=distanceRef.current===0?1:0
+      const timing=audioWave!.recording?.timing
+      if(timing&&sweep){
+        const word=timing.words.find(word=>word.startTime<=audioWave!.time&&audioWave!.time<word.endTime)
+        if(word){
+          const position=(audioWave!.time-word.startTime)/Math.max(.001,word.endTime-word.startTime)
+          sweep=Math.sin(Math.PI*position)**2
+        }else sweep=0
+      }
+      const target=Math.min(1,audioWave!.level*1.4)*sweep
+      energy=sweep===0?0:audioWave!.progress===undefined?target:energy+(target-energy)*(1-Math.exp(-delta/.035))
+      if(sweep>0)surface.style.setProperty('--tile-wave-filter',`url(#${filterId})`);else surface.style.removeProperty('--tile-wave-filter')
       // Real syllable energy drives how far the tile bends. Silence settles it.
-      displacement.current?.setAttribute('scale',String(maximumDisplacement*energy))
-      map.current?.setAttribute('x',String(-1-(audioWave!.time*1.4)%1))
+      displacementNode?.setAttribute('scale',String(maximumDisplacement*energy))
+      mapNode?.setAttribute('x',String(-1-(audioWave!.time*1.4)%1))
       frame=requestAnimationFrame(ripple)
     }
     ripple()
     return()=>{
-      cancelAnimationFrame(frame)
+      cancelAnimationFrame(frame);observer?.disconnect()
       surface.style.removeProperty('--tile-wave-filter')
-      displacement.current?.setAttribute('scale','0')
+      displacementNode?.setAttribute('scale','0')
     }
-  },[waveDistance,spokenWord,filterId,audioWave])
+  },[filterId,audioWave])
   const distortion=<svg aria-hidden="true" focusable="false" style={{position:'absolute',width:0,height:0,pointerEvents:'none'}}>
     <defs><filter id={filterId} x="-.25" y="-.3" width="1.5" height="1.7" primitiveUnits="objectBoundingBox" colorInterpolationFilters="sRGB">
       <feImage ref={map} href={waveMap} x="-1" y="-.25" width="4" height="1.5" preserveAspectRatio="none" result="wave"/>

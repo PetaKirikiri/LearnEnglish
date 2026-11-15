@@ -8,8 +8,8 @@ import {useWordProgress} from '../learning/wordProgress/useWordProgress'
 import {wordOpacity,wordTokens,WORD_RULE_VERSION,type WordScores} from '../learning/wordProgress/model'
 import {loadEvidence,saveEvidence,evidenceScores,curriculumBaseline,type DeckOptions,type ListeningEvidence} from './generatedPracticeProgress'
 import {GENERATED_ROUND_SIZE,type GeneratedQuestion} from './generatedPracticeContent'
-import {playTimedSentence as playSentenceAudio,prepareSentenceAudio} from '../audio/sentenceAudio'
-import {audioPreparationPlan,nextPersonalQuestion} from './practiceForecast'
+import {playTimedSentence as playSentenceAudio} from '../audio/sentenceAudio'
+import {nextPersonalQuestion} from './practiceForecast'
 import type {PracticeLevel} from './PracticeLevelPicker'
 import PracticeHeader from './PracticeHeader'
 import PracticeStage from './PracticeStage'
@@ -55,17 +55,7 @@ function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof use
   props.onComplete?.(props.level,score,30,score>=27,next.id,!next.assisted)
  }
  const q=run?.questions[run.index]
- useEffect(()=>{
-  if(!run||run.done||run.picked!==null||!q)return
-  const timer=setTimeout(()=>{try{
-   const options={...props.options,familiar:curriculumBaseline(progress.rows,events,props.userId)}
-   const upcoming=audioPreparationPlan(props.level,progress.rows,events,run.id,run.index,q,options,props.settings)
-   void prepareSentenceAudio(upcoming).catch(()=>{/* Local speech remains available. */})
-  }catch{/* Keep current practice usable if forecasting fails. */}},0)
-  return()=>clearTimeout(timer)
- // Forecast only when account evidence or the question changes, not audio playback state.
- // eslint-disable-next-line react-hooks/exhaustive-deps
- },[run?.index,run?.id,events,progress.rows])
+
  function present(){
   if(!run||run.picked!==null||!q)return false
   try{
@@ -105,7 +95,7 @@ function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof use
 type QuestionProps={courseLabel?:string;attemptId:string;supportKey:string;question:GeneratedQuestion;scores:WordScores;settings?:MatrixSettings;picked:number|null;onPresented:()=>boolean;onChoose:(side:number,evidence:Pick<ListeningEvidence,'heard'|'hidden'|'assisted'|'plays'>)=>boolean;onNext:()=>void;userId?:string;onLevel?:Props['onLevel'];onExit?:()=>void;index:number;saveError:boolean;retry:()=>void}
 function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scores,settings,picked,onPresented,onChoose,onNext,userId,onLevel,onExit,index,saveError,retry}:QuestionProps){
  const [spokenWord,setSpokenWord]=useState<SpokenWord|null>(null)
- const audioWave=useRef({level:0,time:0})
+ const audioWave=useRef<{level:number;time:number;progress?:number;recording?:import('./../audio/audioWaveform').AudioWaveform}>({level:0,time:0})
  const [support]=useState(()=>{try{const old=JSON.parse(localStorage.getItem(supportKey)??'null');if(old?.id===attemptId&&old.scores&&typeof old.assisted==='boolean'&&Number.isInteger(old.plays)&&old.plays>=0&&Object.values(old.scores).every(v=>typeof v==='number'&&Number.isFinite(v)))return old as {id:string;scores:WordScores;plays:number;assisted:boolean}}catch{/* Retain fresh support when no presentation was saved. */}return {id:attemptId,scores:Object.fromEntries(wordTokens(q.document.english).map(w=>['en:'+w,scores['en:'+w]??0])),plays:0,assisted:false}})
  const snapshot=support.scores,[heard,setHeard]=useState(false),[audioError,setAudioError]=useState(false)
  const audio=useRef<(()=>void)|null>(null),plays=useRef(support.plays),assisted=useRef(support.assisted),locked=useRef(picked!==null)
@@ -122,7 +112,7 @@ function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scor
 
  const play=useCallback((mode=getPlaybackMode())=>{
   audio.current?.()
-  audio.current=playSentenceAudio({id:q.id,recipe:q.recipe,document:{english:q.document.english},audioUrl:q.audioUrl},{waveform:(level,time)=>{audioWave.current.level=level;audioWave.current.time=time},word:setSpokenWord,started:()=>{report.current();setAudioError(false);plays.current++;saveSupport()},ended:()=>setHeard(true),error:()=>setAudioError(true)},mode)
+  audio.current=playSentenceAudio({id:q.id,recipe:q.recipe,document:{english:q.document.english},audioUrl:q.audioUrl},{waveform:(level,time,progress,recording)=>{audioWave.current.level=level;audioWave.current.time=time;audioWave.current.progress=progress;if(recording)audioWave.current.recording=recording},word:setSpokenWord,started:()=>{report.current();setAudioError(false);plays.current++;saveSupport()},ended:()=>setHeard(true),error:()=>setAudioError(true)},mode)
  },[q.id,q.document.english,q.audioUrl,saveSupport])
  useEffect(()=>{play();return()=>{audio.current?.();audio.current=null}},[play])
  useEffect(()=>{locked.current=picked!==null},[picked,saveError])

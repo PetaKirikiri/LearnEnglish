@@ -9,6 +9,7 @@ import { classroomRaceProxy } from './server/classroomRaceProxy'
 import { raceLessonPlugin } from './server/raceLessonPlugin'
 
 export default defineConfig({
+  worker: {format: 'es'},
   plugins: [practiceAcceptancePlugin(),vocabularyDiagnosticsPlugin(),sentenceAudioPlugin(), react(), tailwindcss(), classroomRaceProxy(), raceLessonPlugin(), cityPlugin()],
   build: {
     rollupOptions: { input: { app: 'index.html', classroom: 'classroom/index.html', vocabulary: 'vocabulary-review.html' } },

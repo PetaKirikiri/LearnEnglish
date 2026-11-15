@@ -48,7 +48,7 @@ export function PracticeSession({ module,onCompleteModule,onRestartModule,userId
   const playbackRequest = useRef(0)
   const player = useRef<(()=>void)|null>(null)
   const [spokenWord,setSpokenWord]=useState<SpokenWord|null>(null)
-  const [audioWave,setAudioWave]=useState({level:0,time:0})
+  const [audioWave,setAudioWave]=useState<{level:number;time:number;progress?:number;recording?:import('./../audio/audioWaveform').AudioWaveform}>({level:0,time:0})
   const [deck, setDeck] = useState<ReturnType<typeof practiceDeck>>(() => saved?.deck ?? practiceDeck(lesson,module?.questionIds))
   const [index, setIndex] = useState<number>(saved?.index ?? 0)
   const [picked, setPicked] = useState<number | null>(saved?.picked ?? null)
@@ -84,7 +84,7 @@ export function PracticeSession({ module,onCompleteModule,onRestartModule,userId
     }
     if(!q.document){fail();return}
     player.current=playTimedSentence({id:q.id,document:q.document,whiteboard:q.document,audioUrl:q.audioUrl},{
-      word:setSpokenWord,waveform:(level,time)=>setAudioWave({level,time}),
+      word:setSpokenWord,waveform:(level,time,progress,recording)=>setAudioWave({level,time,progress,recording}),
       started:()=>{if(playbackRequest.current!==request)return;reportPresentation.current(q);replays.current++;setStarted(true);setAudioError(null)},
       ended:()=>{},error:()=>fail(),
     })

@@ -16,7 +16,7 @@ import '../race/numberFoundation.css'
 function ActionClassroomPractice({question,turn,onAnswer,onPresented,busy=false}:{question:ActionPracticeQuestion;turn:ClassTurn;onAnswer?:(answer:string,evidence?:{heard:boolean;plays:number;assisted:boolean})=>void;onPresented?:()=>boolean;busy?:boolean}){
  const q=classroomPracticeQuestion(question,turn),picked=turn.answer===null?null:turn.choices.indexOf(turn.answer),audio=useRef<(()=>void)|null>(null)
  const [spokenWord,setSpokenWord]=useState<SpokenWord|null>(null)
- const [audioWave,setAudioWave]=useState({level:0,time:0})
+ const [audioWave,setAudioWave]=useState<{level:number;time:number;progress?:number;recording?:import('./../audio/audioWaveform').AudioWaveform}>({level:0,time:0})
  const studentView=Boolean(onAnswer),reported=useRef(false),presentCallback=useRef(onPresented),report=useRef(()=>{})
  useEffect(()=>{presentCallback.current=onPresented;report.current=()=>{if(studentView&&turn.answer===null&&!reported.current&&presentCallback.current?.())reported.current=true}})
  useEffect(()=>{if(wordTokens(q.english).some(word=>wordOpacity(word,turn.scores??{},{fadeMode:true})>0))report.current()})
@@ -25,7 +25,7 @@ function ActionClassroomPractice({question,turn,onAnswer,onPresented,busy=false}
   const q=currentQuestion.current
   audio.current?.()
   const document={english:q.english,thai:'',units:q.units,construction:q.level===4?'action-question' as const:'action-answer' as const}
-  audio.current=playTimedSentence({id:q.id,document,whiteboard:document,audioUrl:question.audioUrl},{word:setSpokenWord,waveform:(level,time)=>setAudioWave({level,time}),started:()=>report.current(),ended:()=>{},error:()=>{}})
+  audio.current=playTimedSentence({id:q.id,document,whiteboard:document,audioUrl:question.audioUrl},{word:setSpokenWord,waveform:(level,time,progress,recording)=>setAudioWave({level,time,progress,recording}),started:()=>report.current(),ended:()=>{},error:()=>{}})
  },[question.audioUrl])
  useEffect(()=>{if(studentView)play();return()=>{audio.current?.()}},[play,turn.id,studentView])
  return <ActionPracticeStage key={turn.id} question={q} scores={turn.scores??{}} settings={{fadeMode:true,spokenWord,audioWave}} picked={picked} disabled={busy||picked!==null||!onAnswer} onChoose={side=>onAnswer?.(turn.choices[side])} onNext={()=>{}} onReplay={play} teacherControlled review={picked!==null}/>

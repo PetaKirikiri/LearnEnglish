@@ -37,7 +37,7 @@ it('pulses the active tile for each spoken word while words and icons remain fad
   expect(active.querySelector('.matrix-fading-word[data-speaking]')).toBeNull()
   await act(async()=>root.render(<ExampleLanguage matrix english={english} thai="" units={units} slotDetails={details} scores={scores} settings={{...settings,spokenWord:{start:start+3,end:start+6}}}/>))
   expect(request.mock.calls.length).toBeGreaterThanOrEqual(3)
-  expect(cancel).toHaveBeenCalled()
+  expect(cancel).not.toHaveBeenCalled()
   await act(async()=>root.render(<ExampleLanguage matrix english={english} thai="" units={units} scores={scores} settings={{fadeMode:true,spokenWord:null}}/>))
   expect(host.querySelector('.tonight-slot[data-speaking=true]')).toBeNull()
   expect(cancel).toHaveBeenCalled()
