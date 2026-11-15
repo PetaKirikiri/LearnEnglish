@@ -99,3 +99,21 @@ it('clears loading and reports failure when the media element never starts',asyn
  expect(callbacks.error).toHaveBeenCalledOnce()
  stop()
 })
+
+it('waits for successful media unlocking before changing the audio source',async()=>{
+ let player:any,finishUnlock=()=>{},unlocked=false
+ vi.stubGlobal('Audio',class{
+  currentTime=0;duration=2;paused=true;ended=false;onplaying?:()=>void;onpause?:()=>void
+  constructor(public src:string){player=this}pause(){this.paused=true;this.onpause?.()}
+  play(){
+   if(this.src.startsWith('data:'))return new Promise<void>(resolve=>{finishUnlock=()=>{unlocked=true;resolve()}})
+   if(!unlocked)return Promise.reject(Object.assign(new Error('Gesture lost'),{name:'NotAllowedError'}))
+   this.paused=false;this.onplaying?.();return Promise.resolve()
+  }
+ })
+ const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn()}
+ const stop=playTimedSentence({id:'ordered-unlock',document:{english:'Wait for the unlock clip.'},audioUrl:'/unlocked.wav'},callbacks)
+ await flush();expect(player.src).toMatch(/^data:/);expect(callbacks.started).not.toHaveBeenCalled()
+ finishUnlock();await flush()
+ expect(player.src).toBe('/unlocked.wav');expect(callbacks.started).toHaveBeenCalledOnce();expect(callbacks.error).not.toHaveBeenCalled();stop()
+})

@@ -1,3 +1,4 @@
+import {silentPlaybackUrl,unlockAudio} from './unlockAudio'
 import {getPlaybackMode,playbackRateFor,type PlaybackMode} from './usePlaybackMode'
 import {loadAudioWaveform,waveformAtTime,type AudioWaveform} from './audioWaveform'
 import {alignAudio} from './alignAudio'
@@ -90,13 +91,13 @@ export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mo
 }
 
 /** Unlock on the tap itself, before local model loading loses Safari's gesture. */
-const silentWav='data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQIAAAAAAA=='
+const silentWav=silentPlaybackUrl()
 export function playTimedSentence(q:AudioSentence,callbacks:PlaybackCallbacks,mode:PlaybackMode=getPlaybackMode()){
  let stopped=false,stop:(()=>void)|undefined,retried=false,didStart=false
  const progress=(value:VoiceProgress)=>{if(!stopped)callbacks.loading?.(true,value.phase==='generating'?'Creating audio…':value.progress===undefined?'Loading voice…':`Loading voice ${Math.round(value.progress)}%`)}
  callbacks.loading?.(true,'Loading audio…')
  const player=new Audio(silentWav)
- void player.play().catch(()=>{/* Autoplay can fail; the explicit replay tap can unlock it. */})
+ const unlocked=unlockAudio(player)
  const start=()=>{
   if(stopped)return
   stop=playSentenceAudio(q,{...callbacks,started:()=>{callbacks.loading?.(false);if(!didStart){didStart=true;callbacks.started()}},error:reason=>{
@@ -106,6 +107,6 @@ export function playTimedSentence(q:AudioSentence,callbacks:PlaybackCallbacks,mo
    void prepareForPlayback(q,true,progress).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
   }},mode,player)
  }
- void prepareForPlayback(q,false,progress).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
+ void Promise.all([prepareForPlayback(q,false,progress),unlocked]).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
  return()=>{stopped=true;stop?.();player.pause();callbacks.loading?.(false)}
 }
