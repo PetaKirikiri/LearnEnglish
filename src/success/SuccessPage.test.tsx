@@ -53,7 +53,7 @@ it('groups content by lesson locally, but does not expose draft tools in product
     expect(card.querySelector('.success-card-translation')?.textContent).toBe(successCourse.questions[i].answers[0][0].text)
     expect(card.querySelector('.success-card-alternative')?.textContent).toContain(successCourse.questions[i].answers[1][0].text)
   }
-  const first=host.querySelector<HTMLButtonElement>('[aria-label="Play Who"]')!
+  const first=host.querySelector<HTMLButtonElement>('[aria-label="Fast speaking speed"]')!
   await act(()=>first.click())
   expect(speech.speak.mock.calls[0].slice(0,2)).toEqual(['Who','/audio/success/success-lesson-1-1.wav'])
   expect(host.querySelector('[aria-label="Practice"]')?.getAttribute('href')).toBe('/success/preview')

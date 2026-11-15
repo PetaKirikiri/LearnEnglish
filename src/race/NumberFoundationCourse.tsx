@@ -1,3 +1,4 @@
+import {getPlaybackRate} from '../audio/usePlaybackMode'
 import VocabularyPicture from '../learning/VocabularyPicture'
 import './pictureSentence.css'
 import ActionStarCourse from './ActionStarCourse'
@@ -92,7 +93,7 @@ function NumberLevels({userId,minimumModule=1,selectedLevel,onLevel,onComplete,o
   replays.current++
   const current=++request.current
   audio.current?.pause();setAudioError(false)
-  const player=new Audio(saved.module!==1?numberSentenceAudio(prompt):prompt.audioUrl);audio.current=player
+  const player=new Audio(saved.module!==1?numberSentenceAudio(prompt):prompt.audioUrl);audio.current=player;player.playbackRate=getPlaybackRate();player.preservesPitch=true
   player.onended=()=>{if(request.current===current)setHeard(true)}
   player.onerror=()=>{if(request.current===current)setAudioError(true)}
   void player.play().catch(()=>{if(request.current===current)setAudioError(true)})

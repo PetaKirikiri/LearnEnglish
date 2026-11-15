@@ -1,4 +1,4 @@
-import type {PlaybackMode} from './usePlaybackMode'
+import {getPlaybackMode,type PlaybackMode} from './usePlaybackMode'
 import {loadAudioWaveform,waveformAtTime,type AudioWaveform} from './audioWaveform'
 import {supabase} from '../lib/supabase'
 import manifest from '../race/generatedPracticeAudio.json'
@@ -38,7 +38,7 @@ export async function prepareSentenceAudio(questions:readonly AudioSentence[]){
  await Promise.all([worker(),worker()])
 }
 export type PlaybackCallbacks={started:()=>void;ended:()=>void;error:()=>void;word?:(word:SpokenWord|null)=>void;waveform?:(level:number,time:number)=>void}
-export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mode:PlaybackMode='normal'):()=>void{
+export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mode:PlaybackMode=getPlaybackMode()):()=>void{
  let stopped=false,player:HTMLAudioElement|undefined,utterance:SpeechSynthesisUtterance|undefined,fallingBack=false,frame:number|undefined
  let current:SpokenWord|null=null,started=false
  const highlight=(word:SpokenWord|null)=>{

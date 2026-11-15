@@ -70,7 +70,7 @@ it('uses the selected noun and owner for recorded audio',async()=>{
  await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-2']}/>))
  await click('[data-picker-slot="2"]');await choose('your')
  await click('[data-picker-slot="3"]');await choose('keys')
- await click('.cw-sound')
+ await click('[aria-label="Fast speaking speed"]')
  expect(host.querySelector('audio')?.getAttribute('src')).toBe(classroomMatrices['lesson-2'].audio('keys','your','are'))
  expect(play).toHaveBeenCalledOnce()
 })

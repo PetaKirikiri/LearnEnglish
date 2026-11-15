@@ -1,3 +1,4 @@
+import PlaybackButtons from '../audio/PlaybackButtons'
 import { useEffect, useState } from 'react'
 import { speakEnglish, stopEnglishSpeech } from '../learning/speech'
 import { hotelQuestions, skillNames, skills, type HotelQuestion } from './course'
@@ -27,17 +28,12 @@ export default function HotelContentPage({ course = hotelContent }: { course?: C
   const pageSize=hasCurriculum?100:Math.max(1,allQuestions.length)
   const currentPage=Math.min(page,Math.max(0,Math.ceil(questions.length/pageSize)-1))
   const visible=questions.slice(currentPage*pageSize,(currentPage+1)*pageSize)
-  const [playing, setPlaying] = useState<string | null>(null)
+  const [, setPlaying] = useState<string | null>(null)
   const [error, setError] = useState('')
   useEffect(() => () => stopEnglishSpeech(), [])
 
   function play(question: HotelQuestion) {
     setError('')
-    if (playing === question.id) {
-      stopEnglishSpeech()
-      setPlaying(null)
-      return
-    }
     setPlaying(question.id)
     speakEnglish(question.english, question.audioUrl, state => {
       if (state !== 'playing') setPlaying(null)
@@ -61,9 +57,7 @@ export default function HotelContentPage({ course = hotelContent }: { course?: C
         <tbody>{visible.map((question, index) => <tr key={question.id}>
           <td>{currentPage*pageSize+index + 1}</td>
           <td>{course.contentStage?.(question) ?? courseSkillNames[courseSkills.indexOf(question.skill)]}{question.grammar ? <small> · {question.grammar.phase === 'transfer' ? 'Transfer' : 'Practice'} · {question.grammar.kind === 'form' ? 'Form' : 'Meaning'}{question.grammar.domain?` · ${question.grammar.domain}`:''}</small> : null}{data ? <small> · {data.skills.find(s=>s.id===data.courseSkills.find(m=>m.skill===question.skill)?.nodeId)?.level}</small> : null}</td>
-          <td><div className="hotel-content-english"><button type="button" onClick={() => play(question)} aria-label={`${playing === question.id ? 'Stop' : 'Play'} ${question.english}`} aria-pressed={playing === question.id}>
-            <svg viewBox="0 0 24 24" aria-hidden="true">{playing === question.id ? <path d="M7 5h3v14H7zM14 5h3v14h-3z" /> : <path d="m8 5 11 7-11 7z" />}</svg>
-          </button><CourseWordHelp question={question.grammar?.prompt ? {...question,english:question.grammar.prompt} : question} /></div>{question.grammar?.thai ? <small lang="th">{question.grammar.thai}</small> : null}</td>
+          <td><div className="hotel-content-english"><PlaybackButtons onPlay={() => play(question)}/><CourseWordHelp question={question.grammar?.prompt ? {...question,english:question.grammar.prompt} : question} /></div>{question.grammar?.thai ? <small lang="th">{question.grammar.thai}</small> : null}</td>
           <td lang={question.grammar?.kind==='form'?'en':'th'} className="hotel-content-correct">{question.answers[question.correct].map(segment => segment.text).join('')}</td>
           <td lang={question.grammar?.kind==='form'?'en':'th'}>{question.answers[question.correct === 0 ? 1 : 0].map(segment => segment.text).join('')}</td>
         </tr>)}</tbody>

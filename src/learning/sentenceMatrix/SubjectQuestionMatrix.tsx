@@ -1,3 +1,5 @@
+import {getPlaybackRate} from '../../audio/usePlaybackMode'
+import PlaybackButtons from '../../audio/PlaybackButtons'
 import {quadrantLayout} from './LanguageQuadrant'
 import {sentenceRoleSlots} from './sentenceRoles'
 import VocabularyPicture from '../VocabularyPicture'
@@ -50,7 +52,7 @@ export default function SubjectQuestionMatrix({config,initialVerb,mode,swapper,s
    slotDetails={units.map((_,index)=>({label:unitLabel(units[index].role),count:index===units.length-1?choices.length:index===1?verbs.length:1,icon:icons[index],control:settings.wordPicker!==false&&index===1&&verbs.length>1?<MatrixPicker buttonRef={verbPicker} label={`Change ${verbs.map(v=>v.word).join(' / ')}`} expanded={open==='verb'} controls={`${id}-words`} onClick={()=>setOpen(open==='verb'?false:'verb')}/>:index===units.length-1&&settings.wordPicker!==false?<MatrixPicker buttonRef={picker} label={mode==='pronoun'?'Change pronoun':'Change proper noun'} expanded={open==='subject'} controls={`${id}-words`} onClick={()=>setOpen(open==='subject'?false:'subject')}/>:undefined}))}
    unitActions={settings.explanations===false?undefined:units.map((unit,index)=>({index,label:`Explain ${unit.english.replace('?','')}`,expanded:false,controls:`${id}-explanation`,onClick:()=>{setOpen(false);setExplaining(index)}}))}
    afterUnits={settings.wordPicker===false?undefined:<WordTray id={`${id}-words`} active={open?(open==='verb'?1:3):null} choices={open==='verb'?verbs:choices} selected={open==='verb'?verb:item.word} canChoose={()=>true} onChoose={open==='verb'?chooseVerb:choose} onClose={()=>{setOpen(false);(open==='verb'?verbPicker:picker).current?.focus({preventScroll:true})}} renderIcon={open==='verb'?value=><WordSlotIcon slot={1} plural={value==='are'}/>:subjectIconFor}/>}
-   translationControl={settings.audio===false?undefined:<button type="button" className="cw-sound" aria-label="Listen to sentence" onClick={async()=>{setAudioError(false);if(audioSource&&audio.current){audio.current.src=audioSource;try{await audio.current.play()}catch{setAudioError(true)}}else if(window.speechSynthesis){window.speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance(english);speech.lang='en-US';speech.rate=.85;window.speechSynthesis.speak(speech)}else setAudioError(true)}}><Icon name="sound"/></button>}
+   translationControl={settings.audio===false?undefined:<PlaybackButtons onPlay={async()=>{setAudioError(false);if(audioSource&&audio.current){audio.current.src=audioSource;try{await (audio.current.playbackRate=getPlaybackRate(),audio.current.preservesPitch=true,audio.current.play())}catch{setAudioError(true)}}else if(window.speechSynthesis){window.speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance(english);speech.lang='en-US';speech.rate=getPlaybackRate();window.speechSynthesis.speak(speech)}else setAudioError(true)}}/>}
   /></div>{audioError&&<p role="alert">{th?'เล่นเสียงไม่ได้ ลองอีกครั้ง':'Could not play audio. Try again.'}</p>}
  </section>
 }

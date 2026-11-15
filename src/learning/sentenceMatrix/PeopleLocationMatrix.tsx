@@ -1,3 +1,5 @@
+import {getPlaybackRate} from '../../audio/usePlaybackMode'
+import PlaybackButtons from '../../audio/PlaybackButtons'
 import {lessonDeterminers,ownerThai,type Determiner,type ClassroomWord} from './model'
 import {determinerAgrees} from '../sentenceRules/determiners'
 import type {NominalReference} from '../sentenceRules/nominalReferences'
@@ -119,7 +121,7 @@ export default function PeopleLocationMatrix({lesson,settings={},word:controlled
         slotDetails={roles.map(role=>({label:category(role),count:choicesFor(role).length||1,icon:iconFor(role),control:picker(role)}))}
         unitActions={settings.explanations===false?undefined:roles.map((role,index)=>({index,label:`Slot ${index+1}: ${valueFor(role)}`,controls:`${id}-explanation`,expanded:false,onClick:()=>{restoreLabel.current=`Slot ${index+1}: ${valueFor(role)}`;setActive(null);setExplaining(role)}}))}
         afterUnits={active&&settings.wordPicker!==false?<WordTray vocabulary={active==='place'&&placeMode==='noun'?places:undefined} key={active} id={`${id}-words`} active={roles.indexOf(active)} selected={valueFor(active)} choices={choicesFor(active)} canChoose={()=>true} onChoose={value=>choose(active,value)} onClose={()=>{setActive(null);board.current?.querySelector<HTMLButtonElement>(`[data-word-role="${active}"]`)?.focus({preventScroll:true})}} renderIcon={value=>iconFor(active,value)}/>:undefined}
-        translationControl={settings.audio===false?undefined:<button type="button" className="cw-sound" aria-label="Listen to sentence" onClick={async()=>{setAudioError(false);if(subjectMode!=='pronoun'||placeMode!=='noun'||determiner!=='the'){if(window.speechSynthesis){window.speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance(sentence.english);speech.lang='en-US';speech.rate=.85;window.speechSynthesis.speak(speech)}else setAudioError(true)}else if(audio.current){audio.current.src=peopleAudio(sentence.english);try{await audio.current.play()}catch{setAudioError(true)}}}}><Icon name="sound"/></button>}
+        translationControl={settings.audio===false?undefined:<PlaybackButtons onPlay={async()=>{setAudioError(false);if(subjectMode!=='pronoun'||placeMode!=='noun'||determiner!=='the'){if(window.speechSynthesis){window.speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance(sentence.english);speech.lang='en-US';speech.rate=getPlaybackRate();window.speechSynthesis.speak(speech)}else setAudioError(true)}else if(audio.current){audio.current.src=peopleAudio(sentence.english);try{await (audio.current.playbackRate=getPlaybackRate(),audio.current.preservesPitch=true,audio.current.play())}catch{setAudioError(true)}}}}/>}
       />
     </div>
     {audioError&&<p role="alert">{th?'เล่นเสียงไม่ได้ ลองอีกครั้ง':'Could not play audio. Try again.'}</p>}

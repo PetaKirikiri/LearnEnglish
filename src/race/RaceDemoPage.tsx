@@ -1,3 +1,4 @@
+import {getPlaybackRate} from '../audio/usePlaybackMode'
 import { useEffect, useRef, useState } from 'react'
 import CartoonHorse from './CartoonHorse'
 import RaceWorldTrack from './RaceWorldTrack'
@@ -36,6 +37,7 @@ export default function RaceDemoPage() {
     const player = audio.current
     if (!player || !running || !sound) return
     player.src = snapshot.question.audioUrl ?? ''
+    player.playbackRate=getPlaybackRate();player.preservesPitch=true
     void player.play().catch(() => setAudioError(true))
     return () => player.pause()
   }, [snapshot.round, snapshot.question.audioUrl, running, sound])

@@ -1,3 +1,4 @@
+import PlaybackButtons from '../audio/PlaybackButtons'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ComponentType } from 'react'
 import type { User } from '@supabase/supabase-js'
@@ -222,7 +223,7 @@ export function HotelLesson({ userId, course = hotelCourse, active = true }: { u
         {course.skills.map((skill,i) => <span key={skill} title={course.skillNames?.[i] ?? skill} className={`${course.isSkillComplete(progress, skill) ? 'learned' : ''}${skill === currentSkill ? ' current' : ''}`} />)}
       </div>
     </div> : <div className="hotel-journey" aria-label="Listening progress">{course.skills.map(skill => <span key={skill} className={course.isSkillComplete(progress, skill) ? 'learned' : ''} />)}</div>}
-      <button className="hotel-listen" onClick={() => play(question)} aria-label="Play English audio"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 27h10l12-10v30L22 37H12zM43 23q12 9 0 18M49 15q21 17 0 34" /></svg></button>
+      <PlaybackButtons onPlay={() => play(question)}/>
       <p className="hotel-audio" aria-live="polite">{audio}</p>
       {question.grammar?.thai ? <p className="hotel-sentence" lang="th">{question.grammar.thai}</p> : null}
       {active && (course.gradualSupport || !assessment || revealed || selected !== null) ? <p className="hotel-sentence" lang="en"><CourseWordHelp key={course.gradualSupport ? question.id : `${question.id}-${selected === null}`} question={displayQuestion} onListen={() => play(question)} onHelp={helpWord} tokenOpacity={word => support ? (course.wordOpacity ?? (question.grammar ? listeningWordOpacity : wordOpacity))(wordMemory, word) : 1} /></p> : null}

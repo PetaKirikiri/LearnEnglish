@@ -1,21 +1,22 @@
+import {getPlaybackRate} from '../../audio/usePlaybackMode'
+import PlaybackButtons from '../../audio/PlaybackButtons'
 import { useEffect, useRef, useState } from 'react'
 import ExampleLanguage from '../ExampleLanguage'
-import Icon from '../../ui/Icon'
 import { t } from '../../classroom/language'
 import { locationSentence, type MatrixLesson } from './model'
 function Sound({ src, english, label = 'ฟังประโยค', onPlayed }: { src: string; english?:string; label?: string; onPlayed?: () => void }) {
   const audio = useRef<HTMLAudioElement>(null)
   const [error, setError] = useState(false)
-  const [playing, setPlaying] = useState(false)
+  const [, setPlaying] = useState(false)
   useEffect(() => { const player = audio.current; return () => { player?.pause() } }, [])
   async function play() {
-    if (!src && english) { window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(english); utterance.lang='en-GB'; utterance.rate=.85; window.speechSynthesis.speak(utterance); return }
+    if (!src && english) { window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(english); utterance.lang='en-GB'; utterance.rate=getPlaybackRate(); window.speechSynthesis.speak(utterance); return }
     const player = audio.current
     if (!player) return
     player.currentTime = 0; setError(false)
-    try { await player.play(); onPlayed?.() } catch { setError(true) }
+    try { await (player.playbackRate=getPlaybackRate(),player.preservesPitch=true,player.play()); onPlayed?.() } catch { setError(true) }
   }
-  return <div className="cw-audio"><audio ref={audio} src={src || undefined} preload="none" onPlay={() => setPlaying(true)} onEnded={() => setPlaying(false)} onPause={() => setPlaying(false)}/><button className={`cw-sound${playing ? ' is-playing' : ''}`} onClick={() => void play()} aria-label={t(label)}><Icon name="sound"/><span>{t(label)}</span></button>{error && <p role="alert">{t('เล่นเสียงไม่ได้ ลองกดอีกครั้ง')}</p>}</div>
+  return <div className="cw-audio"><audio ref={audio} src={src || undefined} preload="none" onPlay={() => setPlaying(true)} onEnded={() => setPlaying(false)} onPause={() => setPlaying(false)}/><PlaybackButtons label={t(label)} onPlay={() => void play()}/>{error && <p role="alert">{t('เล่นเสียงไม่ได้ ลองกดอีกครั้ง')}</p>}</div>
 }
 
 export default function PatternComparison({word,lesson}:{word:string;lesson:MatrixLesson}) {

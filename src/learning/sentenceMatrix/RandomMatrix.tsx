@@ -1,3 +1,5 @@
+import {getPlaybackRate} from '../../audio/usePlaybackMode'
+import PlaybackButtons from '../../audio/PlaybackButtons'
 import {actionCapabilities,composeLessonAction} from '../sentenceRules/actionCapabilities'
 import {useState} from 'react'
 import ExampleView from './ExampleView'
@@ -25,6 +27,6 @@ export default function RandomMatrix({lesson}:{lesson:MatrixLesson}){
  const [sentence,setSentence]=useState(()=>randomExample(lesson))
  return <section className="cw-sentence-board" aria-label="Random sentence"><div className="cw-sentence-display">
  <ExampleView matrix {...sentence} semanticSlots={sentence.slots} settings={{translations:false,explanations:false,wordPicker:false}} slotDetails={sentence.icons.map(icon=>({label:'',count:1,icon}))}/>
- <div className="cw-pattern-carousel"><button type="button" className="cw-sound" aria-label="Listen" onClick={()=>{speechSynthesis.cancel();const audio=new SpeechSynthesisUtterance(sentence.english);audio.lang='en-US';audio.rate=.85;speechSynthesis.speak(audio)}}><Icon name="sound"/></button><button type="button" className="cw-word-return" aria-label="Randomise sentence" onClick={()=>{speechSynthesis.cancel();setSentence(randomExample(lesson))}}><Icon name="arrow"/></button></div>
+ <div className="cw-pattern-carousel"><PlaybackButtons onPlay={()=>{speechSynthesis.cancel();const audio=new SpeechSynthesisUtterance(sentence.english);audio.lang='en-US';audio.rate=getPlaybackRate();speechSynthesis.speak(audio)}}/><button type="button" className="cw-word-return" aria-label="Randomise sentence" onClick={()=>{speechSynthesis.cancel();setSentence(randomExample(lesson))}}><Icon name="arrow"/></button></div>
  </div></section>
 }

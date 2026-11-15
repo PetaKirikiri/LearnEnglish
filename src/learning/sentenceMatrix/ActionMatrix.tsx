@@ -1,3 +1,5 @@
+import {getPlaybackRate} from '../../audio/usePlaybackMode'
+import PlaybackButtons from '../../audio/PlaybackButtons'
 import {personNames,objectPronouns,namedNouns,type NominalReference} from '../sentenceRules/nominalReferences'
 import {everydayPeopleCatalogue} from '../everydayVocabulary'
 import {sentenceRoleSlots} from './sentenceRoles'
@@ -21,7 +23,6 @@ import MatrixPicker from './MatrixPicker'
 import WordTray, {type WordChoiceGroup} from './WordTray'
 import WordSlotIcon from './WordSlotIcon'
 import PronounIcon from './PronounIcon'
-import Icon from '../../ui/Icon'
 import {ActionIcon} from './ActionVocabularyIcon'
 import {getLanguage} from '../../classroom/language'
 import EducationFrame from './EducationFrame'
@@ -130,7 +131,7 @@ export default function ActionMatrix({lesson,settings={},wordScores,initialActio
    <ExampleLanguage matrix {...sentence} settings={settings} scores={wordScores} layout={layout} semanticSlots={slots} slotDetails={details}
     unitActions={settings.explanations===false?undefined:roles.map((role,index)=>({index,label:`Slot ${index+1}: ${valueFor(role)}`,controls:`${id}-explanation`,expanded:false,onClick:()=>explain(index)}))}
     afterUnits={settings.wordPicker===false?undefined:<WordTray vocabulary={active==='object'&&objectBlock.mode==='noun'?nounCatalogue:undefined} reserveFilters key={active??'closed'} id={`${id}-words`} active={active===null?null:slots[roles.indexOf(active)]} choices={active?choicesFor(active):[]} groups={active?groupsFor(active):[]} selected={active==='person'&&personBlock.mode!=='pronoun'?personBlock.selected?.word??'':active==='object'&&objectBlock.mode==='name'?objectBlock.selected?.word??'':active?valueFor(active):''} canChoose={()=>true} renderIcon={value=>active?iconFor(active,value):null} onClose={closePicker} onChoose={value=>active&&choose(active,value)}/>}
-    translationControl={settings.audio===false?undefined:<button type="button" className="cw-sound" aria-label="Listen" onClick={()=>{window.speechSynthesis?.cancel();const utterance=new SpeechSynthesisUtterance(sentence.english);utterance.lang='en-US';utterance.rate=.85;window.speechSynthesis?.speak(utterance)}}><Icon name="sound"/></button>}/>
+    translationControl={settings.audio===false?undefined:<PlaybackButtons onPlay={()=>{window.speechSynthesis?.cancel();const utterance=new SpeechSynthesisUtterance(sentence.english);utterance.lang='en-US';utterance.rate=getPlaybackRate();window.speechSynthesis?.speak(utterance)}}/>}/>
   </div></section>
  </section>
 }

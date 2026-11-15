@@ -39,7 +39,7 @@ it('keeps recorded Lesson 1 playback', async () => {
  window.history.replaceState({}, '', '/english/notes?lesson=1')
  const play=vi.spyOn(HTMLMediaElement.prototype,'play').mockResolvedValue()
  await act(async()=>root.render(<MobileNotes/>))
- await click('.cw-sound')
+ await click('[aria-label="Fast speaking speed"]')
  expect(play).toHaveBeenCalledOnce()
  expect(host.querySelector('audio')?.src).toContain('/audio/race-class-one/hotel-the.wav')
 })

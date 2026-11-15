@@ -1,3 +1,5 @@
+import {getPlaybackRate} from '../../audio/usePlaybackMode'
+import PlaybackButtons from '../../audio/PlaybackButtons'
 import {objectPronouns,namedNouns,type NominalReference} from '../sentenceRules/nominalReferences'
 import {nounBlock,type NounMode} from './subjectEngine'
 import type {ClassroomWord} from './model'
@@ -20,7 +22,6 @@ import DistanceScene from './DistanceScene'
 import VocabularyPicture from '../VocabularyPicture'
 import MatrixPicker from './MatrixPicker'
 import WordTray from './WordTray'
-import Icon from '../../ui/Icon'
 import WordSlotIcon from './WordSlotIcon'
 import type {SentenceMatrixProps} from './SentenceMatrix'
 import './peopleLocation.css'
@@ -58,8 +59,8 @@ export default function IdentificationMatrix({lesson,settings={},wordScores}:Sen
  useEffect(()=>{const audio=player.current;return()=>{audio?.pause();window.speechSynthesis?.cancel()}},[sentence.english])
  async function play(){
   setError(false)
-  if(mode==='question'&&player.current){player.current.pause();player.current.src=identificationAudio(selected);try{await player.current.play()}catch{setError(true)}}
-  else if(window.speechSynthesis){window.speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance(sentence.english);speech.lang='en-US';speech.rate=.85;speech.onerror=()=>setError(true);window.speechSynthesis.speak(speech)}
+  if(mode==='question'&&player.current){player.current.pause();player.current.src=identificationAudio(selected);try{await (player.current.playbackRate=getPlaybackRate(),player.current.preservesPitch=true,player.current.play())}catch{setError(true)}}
+  else if(window.speechSynthesis){window.speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance(sentence.english);speech.lang='en-US';speech.rate=getPlaybackRate();speech.onerror=()=>setError(true);window.speechSynthesis.speak(speech)}
   else setError(true)
  }
  if(explaining!==null&&settings.explanations!==false){
@@ -79,7 +80,7 @@ export default function IdentificationMatrix({lesson,settings={},wordScores}:Sen
     <ExampleLanguage matrix {...sentence} semanticSlots={slots} settings={settings} scores={wordScores} layout={{...quadrantLayout(sentence),nounSwapper:mode==='answer'?{label:'Object block mode',modes:objectBlock.modes,mode:objectMode,onChange:next=>{setObjectMode(next);setActive(null)}}:undefined}}
      unitActions={settings.explanations===false?undefined:sentence.units.map((unit,index)=>({index,label:`Slot ${index+1}: ${unit.english.replace(/[?.]$/,'')}`,expanded:false,controls:`${id}-explanation`,onClick:()=>explain(index)}))}
      slotDetails={sentence.units.map(unit=>({label:unit.role,count:choicesFor(unit.role).length||1,icon:languageRoleIcon(unit,sentence.construction,object.word),control:settings.wordPicker===false||choicesFor(unit.role).length<2?undefined:<MatrixPicker role={unit.role} slot={unit.role==='reference'?3:undefined} label={unit.role==='reference'?'Change this / that / that over there / these / those':`Change ${unit.role}`} expanded={active===unit.role} controls={`${id}-words`} onClick={()=>setActive(active===unit.role?null:unit.role as ChoiceRole)}/>}))}
-     translationControl={settings.audio===false?undefined:<button className="cw-sound" aria-label={mode==='question'?'Listen to the question':'Listen to the answer'} onClick={()=>void play()}><Icon name="sound"/></button>}
+     translationControl={settings.audio===false?undefined:<PlaybackButtons onPlay={()=>void play()}/>}
      afterUnits={<WordTray id={`${id}-words`} active={active===null?null:active==='determiner'?2:3} choices={active?choicesFor(active):[]} selected={active?valueFor(active):''} vocabulary={active==='object'?objects:undefined} canChoose={()=>true} onClose={close} onChoose={value=>{if(active)choose(active,value);close()}} renderIcon={value=>active?iconFor(active,value):null}/>}/>
    </div>
    {error&&<button role="alert" onClick={()=>void play()}>🔊 Retry audio</button>}

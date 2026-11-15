@@ -1,3 +1,5 @@
+import PlaybackButtons from '../audio/PlaybackButtons'
+import {getPlaybackRate} from '../audio/usePlaybackMode'
 import { useEffect, useRef, useState } from 'react'
 import { HOST_KEY, raceRequest, useRaceConnection } from './connection'
 import { racePools } from './pools'
@@ -77,6 +79,7 @@ export default function RaceAdminPage() {
   function previewAudio(url?: string) {
     if (!audio.current || !url) return
     audio.current.src = url
+    audio.current.playbackRate=getPlaybackRate();audio.current.preservesPitch=true
     void audio.current.play().catch(() => setError('The audio could not play. Try again.'))
   }
   return <main className="race-admin">
@@ -105,7 +108,7 @@ export default function RaceAdminPage() {
             <div><strong>{q.english}</strong><span>{pool.kind === 'meaning' ? previews.find(p => p.id === q.id)?.choices.join(' · ') ?? q.answers[q.correct].map(s => s.text).join('') : q.answers[q.correct].map(s => s.text).join('')}</span>
               {pool.kind === 'meaning' && valid && selection.questionIds.includes(q.id) && q.meaningDistractor && <span className="race-admin-curveball">{q.answers[q.correct].map(s => s.text).join('')} · {q.meaningDistractor}</span>}
             </div>
-            {q.audioUrl && <button type="button" aria-label={`Play ${q.english}`} onClick={() => previewAudio(q.audioUrl)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 9 4 0 5-4v14l-5-4H4zm12-2c4 3 4 7 0 10m3-13c6 5 6 11 0 16"/></svg></button>}
+            {q.audioUrl && <PlaybackButtons onPlay={() => previewAudio(q.audioUrl)}/>}
           </article>)}</div>
         </details>
         {!valid && <p className="race-admin-validation">{judgement ? 'Include at least one correct and one wrong sentence.' : 'Choose at least two words for the two answers.'}</p>}

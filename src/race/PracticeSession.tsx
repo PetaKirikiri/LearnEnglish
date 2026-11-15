@@ -1,3 +1,5 @@
+import {getPlaybackRate} from '../audio/usePlaybackMode'
+import PlaybackButtons from '../audio/PlaybackButtons'
 import PictureSentence from './PictureSentence'
 import {requestedLesson} from '../learning/lessonRequests'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -39,7 +41,7 @@ export function PracticeSession({ module,onCompleteModule,onRestartModule,userId
   const baseSaveKey = userId ? `${guestSaveKey(lesson)}:${userId}` : guestSaveKey(lesson)
   const saveKey=module?`${baseSaveKey}:module:${module.id}`:baseSaveKey
   const [saved] = useState(() => restore(saveKey,lesson,module))
-  const [started, setStarted] = useState(false)
+  const [, setStarted] = useState(false)
   const [audioError, setAudioError] = useState<'blocked'|'failed'|null>(null)
   const autoPlayed = useRef<string|null>(null)
   const playbackRequest = useRef(0)
@@ -80,6 +82,7 @@ export function PracticeSession({ module,onCompleteModule,onRestartModule,userId
     if (!q.audioUrl) { fail(); return }
     const audio = player.current ?? new Audio(); player.current = audio
     audio.src = q.audioUrl
+    audio.playbackRate=getPlaybackRate();audio.preservesPitch=true
     audio.onerror = () => fail()
     void audio.play().then(() => {
       if (playbackRequest.current !== request) return
@@ -121,7 +124,7 @@ export function PracticeSession({ module,onCompleteModule,onRestartModule,userId
     if (!module && choice !== question.correct) setDeck(items => [...items, {...question, attemptId:crypto.randomUUID(), choices: [...question.choices].reverse(), correct: 1 - question.correct}])
   }
   return <main className="phone-practice" lang={english?"en":"th"}><div className="practice-shell">
-    <header>{tester && <div className="practice-languages" role="group" aria-label="Language"><button aria-label="English" aria-pressed={english} onClick={()=>setLanguage('en')}>🇬🇧</button><button aria-label="ไทย" aria-pressed={!english} onClick={()=>setLanguage('th')}>🇹🇭</button></div>}<a href={`/classroom/index.html?lesson=${lesson}`} aria-label="กลับบทเรียน"><Arrow back/></a><div className="practice-identity"><span lang="en">ENGLISH SUCCESS</span><strong>{label('บทที่','Lesson')} {lesson} · {module?`${label('ชุด','Module')} ${module.number}/${module.total}`:label('การบ้าน','Practice')}</strong>{module&&<span className="practice-module-pattern" lang="en">{module.title}</span>}</div><span>{Math.min(index + 1, deck.length)} / {deck.length}</span>{!finished && <button className="practice-audio" onClick={() => play(question)} aria-label="ฟังประโยคภาษาอังกฤษ"><svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><path d="M5 12h5l7-6v20l-7-6H5z" fill="currentColor"/><path d="M22 10q6 6 0 12M26 5q10 11 0 22" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/></svg>{started ? label('ฟังอีกครั้ง','Listen again') : label('ฟัง','Listen')}</button>}</header>
+    <header>{tester && <div className="practice-languages" role="group" aria-label="Language"><button aria-label="English" aria-pressed={english} onClick={()=>setLanguage('en')}>🇬🇧</button><button aria-label="ไทย" aria-pressed={!english} onClick={()=>setLanguage('th')}>🇹🇭</button></div>}<a href={`/classroom/index.html?lesson=${lesson}`} aria-label="กลับบทเรียน"><Arrow back/></a><div className="practice-identity"><span lang="en">ENGLISH SUCCESS</span><strong>{label('บทที่','Lesson')} {lesson} · {module?`${label('ชุด','Module')} ${module.number}/${module.total}`:label('การบ้าน','Practice')}</strong>{module&&<span className="practice-module-pattern" lang="en">{module.title}</span>}</div><span>{Math.min(index + 1, deck.length)} / {deck.length}</span>{!finished && <PlaybackButtons onPlay={() => play(question)}/>}</header>
     <progress value={index} max={deck.length} aria-label="ความคืบหน้า"/>
     {finished ? <section className="practice-complete practice-module-complete">{module&&<img className="practice-module-trophy" src="/images/race/answer-correct-v2.png" alt=""/>}<h1>{module?modulePassed(score,deck.length)?label('ผ่านชุดนี้แล้ว!','Module complete!'):label('จบชุดแล้ว มาลองอีกครั้ง','Round finished—let’s try again'):label('ฝึกครบแล้ว!','Practice complete!')}</h1>{module&&<p lang="en">{module.title}</p>}<p className="practice-module-score">{score} / {deck.length}</p>{module&&<p>{modulePassed(score,deck.length)?label('พร้อมสำหรับชุดต่อไป','Ready for the next module'):label('ตอบให้ถูกอย่างน้อย 75% เพื่อไปต่อ','Get at least 75% correct to continue')}</p>}{module&&modulePassed(score,deck.length)&&<button onClick={onCompleteModule}>{module.number===module.total?label('จบบทเรียน','Finish lesson'):label('ชุดต่อไป','Next module')} <Arrow/></button>}<button onClick={() => {if(module){try{localStorage.removeItem(saveKey)}catch{/* optional storage */}onRestartModule?.();return}setDeck(practiceDeck()); setIndex(0); setPicked(null); setScore(0); replays.current=0; answerLocked.current = false}}>{module?label('ฝึกชุดนี้อีกครั้ง','Replay this module'):label('ฝึกอีกครั้ง','Practise again')}</button>{module&&<a className="practice-module-break" href={`/english/notes?lesson=${lesson}`}>{label('พักก่อน','Take a break')}</a>}</section> : <>
       <div className="practice-stage">

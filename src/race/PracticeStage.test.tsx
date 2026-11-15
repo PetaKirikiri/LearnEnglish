@@ -6,8 +6,8 @@ it('places replay beside help and keeps classroom progression with the teacher',
  const host=document.createElement('div'),root=createRoot(host),replay=vi.fn()
  await act(async()=>root.render(<PracticeStage question="Question" prompt="Listen, then choose" correct={null} onNext={()=>{}} onReplay={replay} teacherControlled explanation={()=>null} answers={{choices:[{id:'a',label:'A',content:'A'},{id:'b',label:'B',content:'B'}],selected:null,disabled:false,onChoose:()=>{}}}/>))
  const controls=host.querySelector('.foundation-controls')!
- expect(controls.querySelector('.foundation-help')?.nextElementSibling?.className).toBe('foundation-replay');expect(controls.querySelector('.foundation-next')).toBeNull();expect(host.textContent).not.toContain('👆')
- await act(async()=>controls.querySelector<HTMLButtonElement>('.foundation-replay')!.click());expect(replay).toHaveBeenCalledOnce()
+ expect(controls.querySelector('.foundation-help')?.nextElementSibling?.className).toBe('playback-buttons');expect(controls.querySelector('.foundation-next')).toBeNull();expect(host.textContent).not.toContain('👆')
+ await act(async()=>controls.querySelector<HTMLButtonElement>('[aria-label="Fast speaking speed"]')!.click());expect(replay).toHaveBeenCalledOnce()
  await act(async()=>root.unmount())
 })
 
@@ -37,7 +37,7 @@ it('waits for a separate complete tap after answering and clears the continuatio
  await act(async()=>host.querySelector<HTMLButtonElement>('.binary-answer')!.click())
  expect(choose).toHaveBeenCalledOnce();expect(next).not.toHaveBeenCalled()
  await render(true)
- await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-replay')!.click())
+ await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Fast speaking speed"]')!.click())
  expect(replay).toHaveBeenCalledOnce();expect(next).not.toHaveBeenCalled()
  await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-help')!.click())
  expect(host.querySelector('.practice-continue-surface')).toBeNull()
@@ -46,7 +46,7 @@ it('waits for a separate complete tap after answering and clears the continuatio
  expect(next).toHaveBeenCalledOnce();expect(choose).toHaveBeenCalledOnce()
  await render(null)
  expect(host.querySelector('.practice-continue-surface')).toBeNull()
- expect(host.querySelector('[aria-pressed="true"]')).toBeNull()
+ expect(host.querySelector('.binary-answer [aria-pressed="true"]')).toBeNull()
  await render(false)
  expect(host.querySelector('.practice-continue-surface')).not.toBeNull()
  await render(true,true)

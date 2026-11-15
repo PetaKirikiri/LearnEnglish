@@ -109,7 +109,7 @@ it('allows a tap on audio when the phone blocks automatic playback', async () =>
   await act(() => speech.speak.mock.calls[0][2]('blocked'))
   expect(host.textContent).toContain('Tap to retry audio')
   expect(host.querySelectorAll('.hotel-answer')).toHaveLength(2)
-  await act(() => (host.querySelector('.hotel-listen') as HTMLButtonElement).click())
+  await act(() => (host.querySelector('[aria-label="Fast speaking speed"]') as HTMLButtonElement).click())
   expect(speech.speak).toHaveBeenCalledTimes(2)
 })
 it('plays on entry, waits for audio, records once, and only advances on Next', async () => {

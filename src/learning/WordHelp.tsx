@@ -1,3 +1,4 @@
+import PlaybackButtons from '../audio/PlaybackButtons'
 import { useContext, useId, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { createPortal } from 'react-dom'
@@ -64,7 +65,7 @@ export default function WordHelp({ text, onHelp, onOpenChange, pointsRemaining, 
     onKeyDown={event => event.stopPropagation()}
     onCancel={event => { event.preventDefault(); close() }}
     onClick={event => { if (event.target === event.currentTarget) { const r = event.currentTarget.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) close() } }}>
-    <header className="word-help-header"><h2 id={titleId} lang="en">{hint?.word}</h2>{onListen ? <button type="button" aria-label="Hear sentence" onClick={onListen} className="icon-button"><Icon name="sound" /></button> : null}<button type="button" aria-label="Close word help" onClick={close} className="icon-button"><Icon name="close" /></button></header>
+    <header className="word-help-header"><h2 id={titleId} lang="en">{hint?.word}</h2>{onListen ? <PlaybackButtons onPlay={onListen}/> : null}<button type="button" aria-label="Close word help" onClick={close} className="icon-button"><Icon name="close" /></button></header>
     {hint && auth?.user?.id && <WordConfidence key={`${auth.user.id}:${hint.word}`} userId={auth.user.id} word={hint.word} />}
     <div className="word-help-scroll">
       <p className="word-help-translation" lang={hint && (translations[normalizeHelpWord(hint.word)] ?? thaiTranslations[normalizeHelpWord(hint.word)]) ? 'th' : 'en'}>{hint ? translations[normalizeHelpWord(hint.word)] ?? thaiTranslations[normalizeHelpWord(hint.word)] ?? 'Translation not available yet.' : ''}</p>

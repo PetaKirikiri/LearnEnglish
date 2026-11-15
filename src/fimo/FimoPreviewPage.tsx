@@ -1,3 +1,4 @@
+import PlaybackButtons from '../audio/PlaybackButtons'
 import { useEffect, useId, useState, type CSSProperties } from 'react'
 import { speakEnglish, stopEnglishSpeech, type SpeechState } from '../learning/speech'
 import { pieceArtwork, specimens, translations, type Piece } from './examples'
@@ -29,7 +30,7 @@ export default function FimoPreviewPage() {
   const [index, setIndex] = useState(0)
   const [selected, setSelected] = useState<number | null>(null)
   const [answer, setAnswer] = useState<number | null>(null)
-  const [playing, setPlaying] = useState(false)
+  const [, setPlaying] = useState(false)
   const [audioError, setAudioError] = useState(false)
   const { example, row, rowIndex } = prompts[index]
   const chosen = selected === null ? null : row.pieces[selected]
@@ -63,9 +64,7 @@ export default function FimoPreviewPage() {
   return <main className="fimo-studio" aria-label="Translation practice preview">
     <div className="fimo-workspace">
       <section className="fimo-sentence" aria-label={sentence}>
-        {row.audio && <button className="fimo-audio" aria-label={`Listen: ${sentence}`} aria-pressed={playing} onClick={play}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M11 4 5 9H2v6h3l6 5 0-16ZM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg>
-        </button>}
+        {row.audio && <PlaybackButtons onPlay={play}/>}
         <div className="fimo-rail-scroll"><div className="fimo-rail" style={{ '--piece-count': row.pieces.length } as CSSProperties}>
           {row.pieces.map((piece, i) => <RailPiece key={i} piece={piece} selected={selected === i} onSelect={() => setSelected(selected === i ? null : i)}/>)}
         </div></div>
@@ -74,7 +73,7 @@ export default function FimoPreviewPage() {
         <strong>{chosen.word.replace(/[?.]$/, '')}</strong><span className="fimo-note-role">{chosen.label}</span><span>{chosen.note}</span>
         <button aria-label="Close word detail" onClick={() => setSelected(null)}>×</button>
       </aside>}
-      {audioError && <p role="status" className="fimo-audio-error">Audio couldn’t play. Tap the speaker to retry.</p>}
+      {audioError && <p role="status" className="fimo-audio-error">Audio couldn’t play. Tap Slow or Fast to retry.</p>}
       <div className="fimo-answers" role="group" aria-label="Choose the Thai translation" lang="th">
         {order.map(option => <button key={option} disabled={answer !== null}
           className={`fimo-answer${answer !== null && option === rowIndex ? ' is-correct' : ''}${answer === option && option !== rowIndex ? ' is-wrong' : ''}`}

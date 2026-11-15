@@ -1,5 +1,5 @@
+import PlaybackButtons from '../audio/PlaybackButtons'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import Icon from '../ui/Icon'
 import { speakEnglish as playRecording, stopEnglishSpeech as stopRecording } from '../learning/speech'
 import * as course from './course'
 import CoachWords from './CoachWords'
@@ -45,7 +45,7 @@ export default function CoachLesson({ userId }: { userId: string }) {
     setSelected(null); setHeard(false); setHelped(false); setRevealed(false); setFlipped(Math.random() < 0.5); answered.current = false
   }
   return <section className="hotel-lesson" lang="fr">
-    <button className="hotel-listen" onClick={() => play(question)} aria-label="Écouter en thaï"><Icon name="sound" /></button>
+    <PlaybackButtons onPlay={() => play(question)}/>
     <p className="hotel-audio" aria-live="polite">{audio}</p>
     <div className="hotel-sentence coach-sentence"><CoachWords key={question.id} tokens={question.tokens} onHelp={help}
       tokenOpacity={token => selected !== null || revealed ? 1 : course.opacity(words, token)} /></div>

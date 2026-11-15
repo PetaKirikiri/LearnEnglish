@@ -25,7 +25,8 @@ it('shows every real question, both complete answers and curriculum order', asyn
     const question = hotelQuestions[index]
     const cells = row.querySelectorAll('td')
     expect(cells[0].textContent).toBe(String(index + 1))
-    expect(cells[2].textContent).toBe((question.grammar?.prompt ?? question.english) + (question.grammar?.thai ?? ''))
+    const english=cells[2].cloneNode(true) as HTMLElement;english.querySelectorAll('.playback-buttons').forEach(el=>el.remove())
+    expect(english.textContent).toBe((question.grammar?.prompt ?? question.english) + (question.grammar?.thai ?? ''))
     expect(cells[3].textContent).toBe(question.answers[question.correct].map(s => s.text).join(''))
     expect(cells[4].textContent).toBe(question.answers[question.correct === 0 ? 1 : 0].map(s => s.text).join(''))
   })

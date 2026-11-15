@@ -1,3 +1,4 @@
+import PlaybackButtons from '../audio/PlaybackButtons'
 import { useEffect, useState } from 'react'
 import Icon from '../ui/Icon'
 import { successCourse, successLessons } from './course'
@@ -13,7 +14,7 @@ export default function SuccessPage() {
   const content = preview && /\/content\/?$/.test(window.location.pathname)
   const path = preview ? '/success/preview' : '/success'
   const selectedLesson=successLessons.find(l=>String(l.number)===new URLSearchParams(window.location.search).get('lesson'))
-  const [playing,setPlaying]=useState<string|null>(null)
+  const [,setPlaying]=useState<string|null>(null)
   const [audioError,setAudioError]=useState(false)
   useEffect(()=>{document.title='Success · English';return stopEnglishSpeech},[])
 
@@ -34,13 +35,13 @@ export default function SuccessPage() {
           <ol className="success-content-grid" aria-label={`Lesson ${lesson.number} content`}>
             {lesson.questions.map((q,i)=><li key={q.id} className="success-content-card" aria-label={q.english}>
               <div className="success-card-controls"><span className="success-card-number">{i+1}</span>
-              <button className="success-audio" aria-label={`Play ${q.english}`} aria-pressed={playing===q.id} onClick={()=>{
-                if(playing===q.id){stopEnglishSpeech();setPlaying(null);return}
+              <PlaybackButtons onPlay={()=>{
+
                 setAudioError(false);setPlaying(q.id);speakEnglish(q.english,q.audioUrl,state=>{
                   if(state!=='playing')setPlaying(null)
                   if(state==='blocked')setAudioError(true)
                 })
-              }}><Icon name="sound"/></button></div>
+              }}/></div>
               <SuccessWordHelp question={q}/>
               <p className="success-card-translation" lang="th">{q.answers[q.correct][0].text}</p>
               <details className="success-card-alternative"><summary>Other option</summary><span lang="th">{q.answers[1-q.correct][0].text}</span></details>

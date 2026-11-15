@@ -1,3 +1,5 @@
+import PlaybackButtons from '../audio/PlaybackButtons'
+import {getPlaybackRate} from '../audio/usePlaybackMode'
 import { useEffect, useRef, useState } from 'react'
 import CartoonHorse from './CartoonHorse'
 import RaceWorldTrack from './RaceWorldTrack'
@@ -22,12 +24,15 @@ export default function RaceHostView({ view, qr, busy, disconnected, countdown, 
     if (!player || !running || !sound || !audioUrl) return
     let active = true
     player.src = audioUrl
+    player.playbackRate=getPlaybackRate();player.preservesPitch=true
     void player.play().then(() => { if (active) setAudioError(false) }).catch(() => { if (active) setAudioError(true) })
     return () => { active = false; player.pause() }
   }, [audioUrl, view.round, running, sound])
   function retryAudio() {
     const player = audio.current
     if (!player) return
+    player.currentTime=0
+    player.playbackRate=getPlaybackRate();player.preservesPitch=true
     void player.play().then(() => setAudioError(false)).catch(() => setAudioError(true))
   }
   const locked = busy || disconnected
@@ -50,6 +55,7 @@ export default function RaceHostView({ view, qr, busy, disconnected, countdown, 
       <span className="race-host-timer" role="timer">{status}</span>
       <div className="race-host-buttons">
         {audioUrl && view.phase === 'answering' && <button onClick={() => setSound(!sound)} aria-pressed={sound}>{sound ? t('Sound on') : t('Sound off')}</button>}
+        {audioUrl && sound && view.phase === 'answering' && <PlaybackButtons onPlay={retryAudio}/>}
         {audioError && sound && view.phase === 'answering' && <button onClick={retryAudio}>{t('Retry audio')}</button>}
         {view.phase === 'answering' && <span className="race-answer-count">{view.players.filter(p => p.answered).length} / {view.players.length} {t('answered')}</span>}
         {view.phase === 'finished' ? <><a className="race-host-admin" href="/english/race/admin">{t('Admin')}</a><a className="race-primary race-next-race" href="/english/race/admin">{t('Next race →')}</a></> : <button className="race-close" aria-label={t('End race')} disabled={locked} onClick={() => onControl('finish')}>×</button>}

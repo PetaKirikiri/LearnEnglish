@@ -31,7 +31,7 @@ it('opens the shared modal, loads shared profiles and replays the sentence', asy
   expect(document.querySelector('dialog')?.textContent).toContain('saunas')
   expect(document.querySelector('dialog')?.textContent).toContain('The sauna.')
   expect(mocks.load).toHaveBeenCalledTimes(1)
-  await act(async () => { document.querySelector<HTMLButtonElement>('[aria-label="Hear sentence"]')!.click() })
+  await act(async () => { document.querySelector<HTMLButtonElement>('[aria-label="Fast speaking speed"]')!.click() })
   expect(mocks.speak).toHaveBeenCalledWith(question.english, question.audioUrl)
   await act(async () => { document.querySelector<HTMLButtonElement>('[aria-label="Close word help"]')!.click() })
   expect(document.querySelector('dialog')?.open).toBe(false)

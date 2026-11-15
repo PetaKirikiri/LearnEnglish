@@ -1,3 +1,5 @@
+import {getPlaybackRate} from '../../audio/usePlaybackMode'
+import PlaybackButtons from '../../audio/PlaybackButtons'
 import {possessiveFor} from '../sentenceRules/possessives'
 import {nounSubjectModes} from '../sentenceRules/nominalReferences'
 import IdentificationMatrix from './IdentificationMatrix'
@@ -14,7 +16,6 @@ import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import useMatrixEducation from './useMatrixEducation'
 import WordExplanation, { type Determiner } from './MatrixExplanation'
 import ExampleLanguage from '../ExampleLanguage'
-import Icon from '../../ui/Icon'
 import WordSlotIcon from './WordSlotIcon'
 import { isPluralVerb, type BeVerb, type MatrixLesson, type MatrixSettings } from './model'
 import { useLocationMatrix } from './useLocationMatrix'
@@ -73,12 +74,12 @@ export function LocationSentenceMatrix({lesson,settings={},word:controlledWord,o
     <div className="cw-sentence-display">
       <ExampleLanguage settings={settings} scores={wordScores} matrix layout={{construction:'question',noun:'phrase',nounSwapper}} {...sentence} english={`Where ${verb} ${owner} **${word}?**`} slotDetails={[{label:'Question',count:1,icon:<WordSlotIcon slot={0}/>},{label:tense==='past'?'Tense · before':'Tense · now',count:verbs.length,control:picker(1,verbs.length),icon:<WordSlotIcon slot={1} plural={isPluralVerb(verb)} past={tense==='past'}/>},{label:'Which / whose',count:owners.length,control:picker(2,owners.length),icon:<WordSlotIcon slot={2} word={owner}/>},{label:'Person / thing',count:catalogue.length,control:picker(3,catalogue.length),icon:<VocabularyPicture word={word}/>}]}
       afterUnits={settings.wordPicker !== false ? conveyor : undefined}
-      translationControl={settings.audio === false ? undefined : audioSource ? <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={async()=>{if(recording.current){recording.current.src=audioSource;setAudioError(false);try{await recording.current.play()}catch{setAudioError(true)}}}}><Icon name="sound"/></button> : owner === 'the' && audio ? audio : <button className="cw-sound" aria-label={t('ฟังประโยค')} onClick={() => {
+      translationControl={settings.audio === false ? undefined : audioSource ? <PlaybackButtons onPlay={async()=>{if(recording.current){recording.current.src=audioSource;setAudioError(false);try{await (recording.current.playbackRate=getPlaybackRate(),recording.current.preservesPitch=true,recording.current.play())}catch{setAudioError(true)}}}}/> : owner === 'the' && audio ? audio : <PlaybackButtons onPlay={() => {
         window.speechSynthesis.cancel()
         const speech = new SpeechSynthesisUtterance(`Where ${verb} ${owner} ${word}?`)
-        speech.lang = 'en-US'; speech.rate = .85
+        speech.lang = 'en-US'; speech.rate = getPlaybackRate()
         window.speechSynthesis.speak(speech)
-      }}><Icon name="sound"/></button>}
+      }}/>}
       unitActions={settings.explanations === false ? undefined : [
         {index:0,expanded:false,controls:explanationId,onClick:()=>explain(0),label:'Slot 1: Where'},
         {index:1,expanded:false,controls:explanationId,onClick:()=>explain(1),label:`Slot 2: ${verb}`},

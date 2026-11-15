@@ -1,3 +1,4 @@
+import {getPlaybackRate} from '../audio/usePlaybackMode'
 export type SpeechState = 'playing' | 'ended' | 'blocked'
 
 let activeAudio: HTMLAudioElement | null = null
@@ -26,6 +27,7 @@ export function speakEnglish(_text: string, audioUrl: string, onState?: (state: 
   // Keep one phone-unlocked player, but never substitute an arbitrary device
   // voice when the neural recording is unavailable.
   activeAudio ??= new Audio()
+  activeAudio.playbackRate=getPlaybackRate();activeAudio.preservesPitch=true
   activeAudio.src = audioUrl.startsWith('/audio/lessons/') ? `${audioUrl}?voice=kokoro-heart-v1&content=20260922-level-review` : audioUrl
   activeAudio.onended = () => { if (id === playbackId) { clearTimeout(loadTimer); notify('ended') } }
   const failed = () => {

@@ -1,3 +1,4 @@
+import {getPlaybackRate} from '../audio/usePlaybackMode'
 import GeneratedClassroomPractice from './GeneratedClassroomPractice'
 import type {GeneratedQuestion} from '../race/generatedPracticeContent'
 import {classroomPracticeQuestion} from './testingQuestions'
@@ -17,7 +18,7 @@ function ActionClassroomPractice({question,turn,onAnswer,onPresented,busy=false}
  presentCallback.current=onPresented
  report.current=()=>{if(studentView&&turn.answer===null&&!reported.current&&presentCallback.current?.())reported.current=true}
  useEffect(()=>{if(wordTokens(q.english).some(word=>wordOpacity(word,turn.scores??{},{fadeMode:true})>0))report.current()})
- const play=useCallback(()=>{audio.current?.pause();const player=new Audio(question.audioUrl);audio.current=player;player.onplaying=()=>report.current();void player.play().catch(()=>{})},[question.audioUrl])
+ const play=useCallback(()=>{audio.current?.pause();const player=new Audio(question.audioUrl);audio.current=player;player.playbackRate=getPlaybackRate();player.preservesPitch=true;player.onplaying=()=>report.current();void player.play().catch(()=>{})},[question.audioUrl])
  useEffect(()=>{if(studentView)play();return()=>{audio.current?.pause()}},[play,turn.id,studentView])
  return <ActionPracticeStage key={turn.id} question={q} scores={turn.scores??{}} settings={{fadeMode:true}} picked={picked} disabled={busy||picked!==null||!onAnswer} onChoose={side=>onAnswer?.(turn.choices[side])} onNext={()=>{}} onReplay={play} teacherControlled review={picked!==null}/>
 }

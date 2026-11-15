@@ -59,7 +59,7 @@ it('honors matrix help settings and plays the matching sentence recording',async
  await act(async()=>root.render(<SentenceMatrix lesson={classroomMatrices['lesson-3']} settings={{explanations:false,wordPicker:false}}/>))
  expect(host.querySelector('.example-unit-trigger')).toBeNull()
  expect(host.querySelector('.cw-slot-picker')).toBeNull()
- await click('[aria-label="Next pattern"]');await click('.cw-sound')
+ await click('[aria-label="Next pattern"]');await click('[aria-label="Fast speaking speed"]')
  expect(host.querySelector('audio')?.getAttribute('src')).toBe(peopleAudio('I am at the hotel.'))
  expect(play).toHaveBeenCalledOnce()
 })

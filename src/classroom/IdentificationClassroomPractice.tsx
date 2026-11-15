@@ -1,3 +1,4 @@
+import {getPlaybackRate} from '../audio/usePlaybackMode'
 import {useCallback,useEffect,useRef} from 'react'
 import type {ClassTurn} from './session'
 import type {identificationQuestions} from '../race/identificationContent'
@@ -9,7 +10,7 @@ import PracticeHelpDialog from '../race/PracticeHelpDialog'
 import PictureSentence from '../race/PictureSentence'
 export default function IdentificationClassroomPractice({question,turn,onAnswer,busy=false}:{question:typeof identificationQuestions[number];turn:ClassTurn;onAnswer?:(answer:string)=>void;busy?:boolean}){
  const audio=useRef<HTMLAudioElement|null>(null)
- const play=useCallback(()=>{audio.current?.pause();const player=new Audio(question.audioUrl);audio.current=player;void player.play().catch(()=>{})},[question.audioUrl])
+ const play=useCallback(()=>{audio.current?.pause();const player=new Audio(question.audioUrl);audio.current=player;player.playbackRate=getPlaybackRate();player.preservesPitch=true;void player.play().catch(()=>{})},[question.audioUrl])
  const studentView=Boolean(onAnswer)
  useEffect(()=>{if(studentView)play();return()=>{audio.current?.pause()}},[play,turn.id,studentView])
  const picked=turn.answer===null?null:turn.choices.indexOf(turn.answer)
