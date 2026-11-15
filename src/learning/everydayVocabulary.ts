@@ -37,7 +37,7 @@ export const everydayNounOrder=[...starterNouns,
  'bookstore','gym','racket','padel court',
  ...expandedVocabularyOrder,
 ] as const
-export const everydayActionOrder=['holding','opening','using','eating','drinking','talking','listening','walking','running','sleeping','reading','playing','driving','going','washing','cleaning','carrying','finding','buying','closing','wearing','putting on','taking off','riding','catching','getting on','helping','watching','teaching','sitting','standing','waiting','arriving','leaving',...everydayActions.map(action=>action.word)] as const
+export const everydayActionOrder=['eating','drinking','talking','listening','walking','holding','running','sleeping','reading','playing','driving','going','using','opening','washing','cleaning','carrying','finding','buying','closing','wearing','putting on','taking off','riding','catching','getting on','helping','watching','teaching','sitting','standing','waiting','arriving','leaving',...everydayActions.map(action=>action.word)] as const
 export const starterActions=['eating','drinking','talking','listening','walking','running'] as const
 export const introductoryActions=everydayActionOrder.filter(word=>!['holding','opening','washing'].includes(word))
 const colouredObjects=['bag','cup','phone','book','shirt','shoe','bottle','plate','bus','motorbike','wallet','towel','hat','sock','trousers','glasses','pen','pencil','umbrella','watch','fan','charger','bicycle','laptop','camera','remote','sandal','boot','racket','chair','table','car','door','window','bed','ball','computer','television']

@@ -10,11 +10,11 @@ const row=(word:string,proved=false):WordProgress=>({word_id:'en:'+word,correct:
 it('has five independent ordered hierarchies and exposure below full fade never advances a frontier',()=>{
  expect(Object.keys(wordHierarchies)).toEqual(['noun','verb','adjective','pronoun','determiner'])
  const state=hierarchyState(masteredWords([row('banana'),row('eating'),row('my')],[]))
- expect(Object.fromEntries(Object.entries(state).map(([k,v])=>[k,v.current[0]]))).toEqual({noun:'man',verb:'holding',adjective:'red',pronoun:'I',determiner:'the'})
+ expect(Object.fromEntries(Object.entries(state).map(([k,v])=>[k,v.current[0]]))).toEqual({noun:'man',verb:'eating',adjective:'red',pronoun:'I',determiner:'the'})
 })
 it('only advances past the completed prefix, independently per word type',()=>{
- const state=hierarchyState(masteredWords([row('man',true),row('banana',true),row('holding',true),row('the',true)],[]))
- expect(state.noun.current[0]).toBe('woman');expect(state.verb.current[0]).toBe('opening')
+ const state=hierarchyState(masteredWords([row('man',true),row('banana',true),row('eating',true),row('the',true)],[]))
+ expect(state.noun.current[0]).toBe('woman');expect(state.verb.current[0]).toBe('drinking')
  expect(state.determiner.current[0]).toBe('a');expect(state.adjective.current[0]).toBe('red');expect(state.pronoun.current[0]).toBe('I')
  const other=hierarchyState(masteredWords([row('i',true),row('red',true)],[]))
  expect(other.pronoun.current[0]).toBe('you');expect(other.adjective.current[0]).toBe('blue');expect(other.noun.current[0]).toBe('man')
