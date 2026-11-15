@@ -77,7 +77,7 @@ it('plays the full slow sentence continuously without inserting pauses or changi
  const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn()}
  try{
   const stop=playSentenceAudio(question,callbacks,'slow')
-  expect(player.playbackRate).toBe(.7)
+  expect(player.playbackRate).toBe(.55)
   expect(player.preservesPitch).toBe(true)
   for(const word of timing.words.slice(0,-1)){
    player.currentTime=word.endTime+.001;player.onplaying()

@@ -1,4 +1,4 @@
-import {getPlaybackMode,type PlaybackMode} from './usePlaybackMode'
+import {getPlaybackMode,playbackRateFor,type PlaybackMode} from './usePlaybackMode'
 import {loadAudioWaveform,waveformAtTime,type AudioWaveform} from './audioWaveform'
 import {supabase} from '../lib/supabase'
 import manifest from '../race/generatedPracticeAudio.json'
@@ -60,7 +60,7 @@ export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mo
  const url=cached?.url||existing(q)
  if(url){
   player=new Audio(url)
-  player.playbackRate=mode==='slow'?.7:1
+  player.playbackRate=playbackRateFor(mode)
   player.preservesPitch=true
   const sync=()=>{
    if(stopped)return

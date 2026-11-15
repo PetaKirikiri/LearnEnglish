@@ -7,7 +7,8 @@ export function getPlaybackMode():PlaybackMode{
  if(selected)return selected
  try{return localStorage.getItem(key)==='slow'?'slow':'normal'}catch{return 'normal'}
 }
-export function getPlaybackRate(){return getPlaybackMode()==='slow'?.7:1}
+export function playbackRateFor(mode:PlaybackMode){return mode==='slow'?.55:1}
+export function getPlaybackRate(){return playbackRateFor(getPlaybackMode())}
 function choose(next:PlaybackMode){
  selected=next
  try{localStorage.setItem(key,next)}catch{/* Keep the preference for this session. */}
