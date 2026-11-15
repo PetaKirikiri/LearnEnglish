@@ -79,3 +79,9 @@ The expanded catalogue contains 34 verbs. Phrasal particles such as putting on a
 The interactive whiteboard now uses the same timed player, word callbacks, waveform decoding and tile displacement as practice. Its authored document is checked against the existing matrix grammar and reviewed vocabulary by the audio API. The whiteboard sends its document instead of inventing a practice-question identifier. Both practice and whiteboard wait for a timed recording; missing audio is an explicit failure and never substitutes browser speech.
 
 Public whiteboard playback reuses existing timed files from the shared cache through the same playback engine. New generation still requires a learner session or the existing trusted local-development middleware context. Tile backgrounds, edges and corner shapes are shared regardless of timing. The wave has immediate attack and smooth release.
+
+## Playback resilience and answering
+
+A missing or unplayable existing recording must retry through local Kokoro. Animation decoding, sidecar fetches and automatic alignment run independently and must never delay or prevent sound. The media element is unlocked during the actual tap before asynchronous model loading, so Safari can reuse it afterward. Cache Storage is optional; in-memory caching remains available in restricted webviews.
+
+Answer buttons and answer handlers must never require completed audio. Record `heard:false` and assisted/visible evidence when a learner answers without finishing playback, rather than blocking the learner or granting listening mastery. Existing duplicate-answer, saving and teacher-control restrictions remain.

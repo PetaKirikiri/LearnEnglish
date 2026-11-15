@@ -9,6 +9,7 @@ type StageProps={
  question:ReactNode
  prompt?:string
  playbackError?:boolean
+ playbackLoading?:boolean
  answers:ComponentProps<typeof BinaryAnswerZone>
  correct:boolean|null
  onNext:()=>void
@@ -17,7 +18,7 @@ type StageProps={
  onReplay?:()=>void
  teacherControlled?:boolean
 }
-export default function PracticeStage({question,answers,correct,onNext,explanation,onHelp,onReplay,playbackError=false,teacherControlled=false}:StageProps){
+export default function PracticeStage({question,answers,correct,onNext,explanation,onHelp,onReplay,playbackError=false,playbackLoading=false,teacherControlled=false}:StageProps){
  const [helpOpen,setHelpOpen]=useState(false)
  const stage=useRef<HTMLDivElement>(null)
  const [toolbarHost,setToolbarHost]=useState<HTMLElement|null>(null)
@@ -90,7 +91,7 @@ export default function PracticeStage({question,answers,correct,onNext,explanati
  const fitChoice=(choice:typeof answers.choices[number])=>({...choice,icon:undefined,content:<AssessmentSentence>{choice.icon?<span className="assessment-choice-with-icon"><span className="binary-answer-icon" aria-hidden="true">{choice.icon}</span><span>{choice.content}</span></span>:choice.content}</AssessmentSentence>})
  const fittedAnswers={...answers,choices:[fitChoice(answers.choices[0]),fitChoice(answers.choices[1])] as const}
  const controls=(<div className="practice-feedback foundation-controls" role="group" aria-label="Playback and help" data-audio-error={playbackError||undefined}>
-   {onReplay&&<PlaybackButtons onPlay={onReplay}/>}
+   {onReplay&&<PlaybackButtons busy={playbackLoading} onPlay={onReplay}/>}
    <button type="button" className="foundation-help" aria-label="อธิบายรูปแบบประโยค" aria-haspopup="dialog" onClick={()=>{onHelp?.();setHelpOpen(true)}}>?</button>
    <span className="foundation-result-announcement" role="status">{correct===null?'':correct?'ถูกต้อง':'ยังไม่ถูก'}</span>
    {playbackError&&<span className="practice-audio-status" role="alert">Audio unavailable. Use the turtle or hare to retry.</span>}

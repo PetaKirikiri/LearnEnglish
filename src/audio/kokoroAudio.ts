@@ -5,7 +5,7 @@ const cache=new Map<string,Promise<string>>()
 export function kokoroAudio(text:string):Promise<string>{
  const old=cache.get(text);if(old)return old
  const work=(async()=>{
-  const stored=await caches.open('kokoro-heart-v1').catch(()=>undefined)
+  const stored=typeof caches==='undefined'?undefined:await caches.open('kokoro-heart-v1').catch(()=>undefined)
   const key=new URL('/__kokoro_audio/'+encodeURIComponent(text),location.origin).href
   const hit=await stored?.match(key).catch(()=>undefined)
   if(hit)return URL.createObjectURL(await hit.blob())

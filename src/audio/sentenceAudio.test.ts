@@ -3,6 +3,7 @@ import {afterEach,expect,it,vi} from 'vitest'
 vi.mock('./kokoroAudio',()=>({kokoroAudio:vi.fn().mockResolvedValue('/kokoro.wav')}))
 vi.mock('./audioWaveform',()=>({loadAudioWaveform:vi.fn().mockResolvedValue({interval:1,levels:[.5,.5]}),waveformAtTime:()=>.5}))
 vi.mock('./alignAudio',()=>({alignAudio:vi.fn(async(_url:string,text:string)=>({version:1,text,words:[...text.matchAll(/[a-z]+/gi)].map((m,i)=>({text:m[0],start:m.index,end:m.index!+m[0].length,startTime:10+i,endTime:11+i}))}))}))
+import {alignAudio} from './alignAudio'
 import {kokoroAudio} from './kokoroAudio'
 import {playTimedSentence,prepareSentenceAudio} from './sentenceAudio'
 afterEach(()=>{vi.unstubAllGlobals();vi.clearAllMocks()})
@@ -33,9 +34,10 @@ it('generates on demand, sweeps with media position, preserves slow pitch, and r
 })
 it('cancels playback while synthesis is still pending',async()=>{
  vi.mocked(kokoroAudio).mockImplementationOnce(()=>new Promise(()=>{}))
- const audio=vi.fn();vi.stubGlobal('Audio',audio)
+ const player={play:vi.fn().mockResolvedValue(undefined),pause:vi.fn()}
+ const audio=vi.fn(function(){return player});vi.stubGlobal('Audio',audio)
  const stop=playTimedSentence({id:'cancel',document:{english:'Cancelled local synthesis.'}},{started:vi.fn(),ended:vi.fn(),error:vi.fn()})
- stop();await flush();expect(audio).not.toHaveBeenCalled()
+ stop();await flush();expect(audio).toHaveBeenCalledOnce();expect(player.pause).toHaveBeenCalled()
 })
 it('uses automatic word boundaries rather than evenly dividing the recording',async()=>{
  const timing={version:1,text:'I am',words:[{text:'I',start:0,end:1,startTime:.1,endTime:.2},{text:'am',start:2,end:4,startTime:.22,endTime:.8}]}
@@ -52,4 +54,33 @@ it('uses automatic word boundaries rather than evenly dividing the recording',as
  expect(callbacks.word).toHaveBeenLastCalledWith({start:2,end:4})
  player.currentTime=.9;player.ontimeupdate();expect(callbacks.word).toHaveBeenLastCalledWith(null)
  stop()
+})
+
+it('starts audio even while alignment is pending',async()=>{
+ vi.mocked(alignAudio).mockImplementationOnce(()=>new Promise(()=>{}))
+ let player:any
+ vi.stubGlobal('Audio',class{
+  currentTime=0;duration=2;paused=true;ended=false
+  onplaying?:()=>void;onpause?:()=>void
+  constructor(public src:string){player=this}pause(){this.paused=true;this.onpause?.()}play(){this.paused=false;this.onplaying?.();return Promise.resolve()}
+ })
+ const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn()}
+ const stop=playTimedSentence({id:'pending-alignment',document:{english:'Audio must not wait for alignment.'},audioUrl:'/working.wav'},callbacks)
+ await flush();expect(player.src).toBe('/working.wav');expect(callbacks.started).toHaveBeenCalledOnce();stop()
+})
+it('retries a failed existing recording with Kokoro on the same unlocked player',async()=>{
+ const sources:string[]=[]
+ vi.stubGlobal('Audio',class{
+  currentTime=0;duration=2;paused=true;ended=false
+  onplaying?:()=>void;onpause?:()=>void
+  constructor(public src:string){}pause(){this.paused=true;this.onpause?.()}
+  play(){sources.push(this.src);if(this.src==='/missing.wav')return Promise.reject(new Error('Media unavailable'));this.paused=false;this.onplaying?.();return Promise.resolve()}
+ })
+ const callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn()}
+ const stop=playTimedSentence({id:'fallback',document:{english:'Broken recording falls back to Kokoro.'},audioUrl:'/missing.wav'},callbacks)
+ await flush();await flush()
+ expect(sources[0]).toMatch(/^data:audio\/wav/)
+ expect(sources).toContain('/missing.wav');expect(sources.at(-1)).toBe('/kokoro.wav')
+ expect(kokoroAudio).toHaveBeenCalledWith('Broken recording falls back to Kokoro.')
+ expect(callbacks.started).toHaveBeenCalledOnce();expect(callbacks.error).not.toHaveBeenCalled();stop()
 })

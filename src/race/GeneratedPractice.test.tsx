@@ -33,7 +33,7 @@ it('finishes after exactly thirty independently scored questions and starts a fr
   expect(first.questionIds).toHaveLength(30)
   for(let index=0;index<30;index++){
    expect(complete).not.toHaveBeenCalled();expect(host.querySelector('progress')?.max).toBe(30)
-   expect(host.querySelector<HTMLButtonElement>('.binary-answer')?.disabled).toBe(true)
+   expect(host.querySelector<HTMLButtonElement>('.binary-answer')?.disabled).toBe(false)
    await act(async()=>finishAudio())
    expect(host.querySelector('.binary-answer.correct,.binary-answer.incorrect')).toBeNull()
    expect(host.querySelector('.practice-continue-surface')).toBeNull()
@@ -206,3 +206,16 @@ it('records presentation before an answer, survives refresh once, and merges the
   for(const word of completed[0].sentence.toLowerCase().match(/[a-z]+/g)??[])expect(learningStates([],completed).get('en:'+word)?.fadeScore).toBe(focus.includes(word)?3:1)
  }finally{await act(async()=>root.unmount())}
 },30000)
+
+it('accepts an answer before completed audio without giving listening mastery',async()=>{
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<GeneratedPractice level={4}/>))
+  const button=host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correctSide(4)]
+  expect(button.disabled).toBe(false)
+  await act(async()=>button.click())
+  expect(answers()).toHaveLength(1)
+  expect(answers()[0].modality).toBe('visible')
+  expect(loadEvidence().find(event=>event.phase==='answered')).toMatchObject({heard:false,assisted:true})
+ }finally{await act(async()=>root.unmount())}
+})

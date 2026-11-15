@@ -51,7 +51,7 @@ it('runs and scores object questions from the app test even with a classroom les
   expect(host.querySelector('.practice-header')).not.toBeNull()
   expect(host.querySelectorAll('.binary-answer')).toHaveLength(2)
   expect(host.querySelector('.example-gloss,.example-translation,.cw-word-picker')).toBeNull()
-  expect(host.querySelector<HTMLButtonElement>('.binary-answer')!.disabled).toBe(true)
+  expect(host.querySelector<HTMLButtonElement>('.binary-answer')!.disabled).toBe(false)
   await act(async()=>state.ended())
   const correct=q.correct
   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correct].click())

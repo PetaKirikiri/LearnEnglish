@@ -11,7 +11,7 @@ export function alignAudio(url:string,text:string):Promise<SentenceTiming>{
   const identity=new Uint8Array([...new Uint8Array(bytes),...new TextEncoder().encode(text)])
   const digest=await crypto.subtle.digest('SHA-256',identity)
   const hash=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('')
-  const store=await caches.open('english-word-alignment-v1').catch(()=>undefined)
+  const store=typeof caches==='undefined'?undefined:await caches.open('english-word-alignment-v1').catch(()=>undefined)
   const cacheKey=new URL('/__word_alignment/'+hash,location.origin).href
   const cached=await store?.match(cacheKey)
   if(cached){const timing=parseSentenceTiming(await cached.json(),text);if(timing)return timing}
