@@ -1,6 +1,6 @@
 # Shared sentence audio
 
-Practice keeps its existing sentence boxes and pictures. GeneratedPractice uses account-wide word evidence for the next question; action practice delegates to it. Existing recordings have first priority. Missing recordings are prepared in the background, shared across accounts, and fall back to a local English speechSynthesis voice without waiting for ElevenLabs.
+Practice keeps its existing sentence boxes and pictures. GeneratedPractice uses account-wide word evidence for the next question; action practice delegates to it. Timed ElevenLabs recordings have first priority. A requested sentence with an untimed recording is prepared again with ElevenLabs timestamps in the background and shared across accounts. Playback can use the previous recording or a local English speechSynthesis voice while preparation completes.
 
 ## Server configuration
 
@@ -24,13 +24,17 @@ Forecast work is deferred until after rendering and replenished on question/evid
 
 ## Cache and failure behaviour
 
-The server accepts a question ID from the shared authored/generated catalogue, not client-supplied arbitrary text. It authenticates the learner, resolves the sentence server-side, and hashes exact normalized text, punctuation, voice, model, language, output format and voice settings. Account ID is not part of that identity.
+The server accepts a question ID from the shared authored/generated catalogue, not client-supplied arbitrary text. It authenticates the learner, resolves the sentence server-side, and hashes exact normalized text, punctuation, voice, model, language, output format voice settings (including natural speed 1.0) and timing format version. Account ID is not part of that identity.
 
-A database row lock gives one worker a two-minute lease. Ready audio is reused across users. A worker checks storage before generation to recover an already-uploaded file. Generation times out after 40 seconds. Failed requests back off for 15 minutes; quota/auth/rate failures pause generation for one hour. Three failed/abandoned attempts stop automatic retries for that sentence until an operator reviews it. A per-account cap of 100 new generation claims per UTC date limits speculative spending; cache hits are not charged against it.
+A database row lock gives one worker a two-minute lease. Ready audio is reused across users. A worker recovers an interrupted upload only when both its MP3 and validated timing JSON exist and the timing metadata matches the audio SHA-256 digest. Generation times out after 40 seconds. Failed requests back off for 15 minutes; quota/auth/rate failures pause generation for one hour. Three failed/abandoned attempts stop automatic retries for that sentence until an operator reviews it. A per-account cap of 100 new generation claims per UTC date limits speculative spending; cache hits are not charged against it.
 
 A provider success followed by a network/process failure before upload can still incur a duplicate provider charge on retry: ElevenLabs generation and our storage upload are not one atomic transaction. Leases and storage recovery reduce that risk but cannot promise exactly-once billing.
 
-Playback never calls ElevenLabs. It plays a known recording/shared-cache URL or immediately requests a local English voice. Missing local voices or browser autoplay restrictions show the existing replay control. Listening credit is granted only after playback ends. Actual iPhone voice availability, sound quality and offline playback still require a device check.
+New generation uses ElevenLabs’ `with-timestamps` endpoint. Character alignment is converted into word start/end times and UTF-16 display offsets, then stored as `<cache-key>.timing.json` beside the MP3. Text that differs from the requested sentence fails validation. The timing-versioned cache identity causes earlier untimed recordings to be replaced as they are requested.
+
+Playback pulses the sentence tile containing the spoken word using the audio element’s currentTime, including after seeking and replay. An SVG sine displacement bends the speaking tile’s edges as the wave moves across its surface. Each tile applies its own deformation, including its face, thick lower edge and shadow. Linked noun phrases keep independent speaking surfaces. Displacement is capped at approximately eight pixels, with smoothed sound energy making syllable peaks visible. The recording’s measured syllable energy controls the deformation strength; silence returns it to rest. Pauses, buffering, errors and completion clear the active cue while its short settling motion finishes. Local English voices use native word-boundary events when available. Words and icons retain their learning opacity while the tile itself pulses. Reduced-motion preferences use a static outline.
+
+Playback plays the prepared shared recording first, then an existing recording or local English voice while timed preparation is pending. Missing local voices or browser autoplay restrictions show the existing replay control. Listening credit is granted only after playback ends. Actual iPhone voice availability, sound quality and offline playback still require a device check.
 
 ## Verification
 

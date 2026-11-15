@@ -54,7 +54,7 @@ export default function MatrixLayout({request,settings={},cards:sourceCards,labe
   const head=linked(0,leading),tail=linked(leading,cards.length)
   const agreementTail=agreements.some(link=>link.start===leading&&link.end===cards.length)
   const style={'--matrix-max-width':`${settings.layout?.maxWidth??1100}px`,'--matrix-leading':head.map(item=>`${item.weight}fr`).join(' '),'--matrix-role-columns':tail.map(item=>`${item.weight}fr`).join(' ')} as CSSProperties
-  return <div ref={root} data-adaptive={adaptive||undefined} className="example-language example-matrix matrix-layout" data-matrix-layout={request.construction} data-card-count={cards.length} data-action-complement={request.actionComplement||undefined} data-noun-swapper={!!request.nounSwapper&&!settings.fadeMode} data-density={settings.layout?.density??'comfortable'} style={style}>
+  return <div ref={root} data-audio-wave={!!settings.audioWave||undefined} data-adaptive={adaptive||undefined} className="example-language example-matrix matrix-layout" data-matrix-layout={request.construction} data-card-count={cards.length} data-action-complement={request.actionComplement||undefined} data-noun-swapper={!!request.nounSwapper&&!settings.fadeMode} data-density={settings.layout?.density??'comfortable'} style={style}>
     <div className="matrix-layout-toolbar" aria-hidden={settings.fadeMode||undefined}>
       <div className="matrix-layout-leading-controls"><div>{!settings.fadeMode&&settings.english!==false&&request.subjectSwapper&&<NounModeToggle {...request.subjectSwapper}/>}</div></div>
       <div className="matrix-layout-noun-control">{!settings.fadeMode&&settings.english!==false&&request.nounSwapper&&<NounModeToggle {...request.nounSwapper}/>}</div>

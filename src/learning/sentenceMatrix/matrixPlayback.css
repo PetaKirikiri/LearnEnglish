@@ -1,0 +1,13 @@
+/* Animate the tile independently of the learning opacity inside it. */
+.tonight-slot[data-speaking=true]{position:relative;z-index:2;transform-origin:center}
+@media(prefers-reduced-motion:reduce){
+ .tonight-slot[data-speaking=true]{outline:2px solid currentColor;outline-offset:2px}
+}
+
+/* Each spoken tile owns its face and depth, even inside a linked noun phrase. */
+.classroom .cw-sentence-board .example-matrix[data-audio-wave=true] :is(.cw-noun-group,.matrix-agreement-group){
+ background:transparent;box-shadow:none
+}
+.classroom .cw-sentence-board .example-matrix[data-audio-wave=true] :is(.cw-noun-group,.matrix-agreement-group) .tonight-slot{
+ box-shadow:0 6px 0 var(--slot-edge),0 10px 16px #18385e12
+}

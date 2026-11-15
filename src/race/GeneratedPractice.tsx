@@ -1,3 +1,6 @@
+import PlaybackSpeedControls from '../audio/PlaybackSpeedControls'
+import {usePlaybackMode} from '../audio/usePlaybackMode'
+import type {SpokenWord} from '../audio/sentenceTiming'
 import LandscapePractice from './LandscapePractice'
 import {useCallback,useEffect,useRef,useState} from 'react'
 import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'
@@ -102,6 +105,9 @@ function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof use
 }
 type QuestionProps={courseLabel?:string;attemptId:string;supportKey:string;question:GeneratedQuestion;scores:WordScores;settings?:MatrixSettings;picked:number|null;onPresented:()=>boolean;onChoose:(side:number,evidence:Pick<ListeningEvidence,'heard'|'hidden'|'assisted'|'plays'>)=>boolean;onNext:()=>void;userId?:string;onLevel?:Props['onLevel'];onExit?:()=>void;index:number;saveError:boolean;retry:()=>void}
 function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scores,settings,picked,onPresented,onChoose,onNext,userId,onLevel,onExit,index,saveError,retry}:QuestionProps){
+ const [spokenWord,setSpokenWord]=useState<SpokenWord|null>(null)
+ const audioWave=useRef({level:0,time:0})
+ const [playbackMode,choosePlaybackMode]=usePlaybackMode()
  const [support]=useState(()=>{try{const old=JSON.parse(localStorage.getItem(supportKey)??'null');if(old?.id===attemptId&&old.scores&&typeof old.assisted==='boolean'&&Number.isInteger(old.plays)&&old.plays>=0&&Object.values(old.scores).every(v=>typeof v==='number'&&Number.isFinite(v)))return old as {id:string;scores:WordScores;plays:number;assisted:boolean}}catch{/* Retain fresh support when no presentation was saved. */}return {id:attemptId,scores:Object.fromEntries(wordTokens(q.document.english).map(w=>['en:'+w,scores['en:'+w]??0])),plays:0,assisted:false}})
  const snapshot=support.scores,[heard,setHeard]=useState(false),[audioError,setAudioError]=useState(false)
  const audio=useRef<(()=>void)|null>(null),plays=useRef(support.plays),assisted=useRef(support.assisted),locked=useRef(picked!==null)
@@ -116,15 +122,15 @@ function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scor
  // when its audio actually starts. Preparation and failed playback earn nothing.
  useEffect(()=>{if(wordTokens(q.document.english).some(word=>wordOpacity(word,snapshot,presentation)>0)){saveSupport();report.current()}})
 
- const play=useCallback(()=>{
+ const play=useCallback((mode=playbackMode)=>{
   audio.current?.()
-  audio.current=playSentenceAudio({id:q.id,document:{english:q.document.english},audioUrl:q.audioUrl},{started:()=>{report.current();setAudioError(false);plays.current++;saveSupport()},ended:()=>setHeard(true),error:()=>setAudioError(true)})
- },[q.id,q.document.english,q.audioUrl,saveSupport])
+  audio.current=playSentenceAudio({id:q.id,document:{english:q.document.english},audioUrl:q.audioUrl},{waveform:(level,time)=>{audioWave.current.level=level;audioWave.current.time=time},word:setSpokenWord,started:()=>{report.current();setAudioError(false);plays.current++;saveSupport()},ended:()=>setHeard(true),error:()=>setAudioError(true)},mode)
+ },[q.id,q.document.english,q.audioUrl,saveSupport,playbackMode])
  useEffect(()=>{play();return()=>{audio.current?.();audio.current=null}},[play])
  useEffect(()=>{locked.current=picked!==null},[picked,saveError])
  const choices=q.choices.map((label,side)=>({id:String(side),label,content:q.sceneChoices?<span className="distance-answer"><DistanceScene {...q.sceneChoices[side]}/><strong>{label}</strong></span>:q.alternatives?<PictureSentence document={q.alternatives[side]}/>:label,icon:q.kind==='judgement'?<PracticeAnswerIcon kind="judgement" second={side===1}/>:undefined,state:picked!==null&&side===q.correct?'correct':picked===side?'incorrect':undefined})) as [BinaryChoice,BinaryChoice]
  function choose(side:number){if(locked.current||!heard)return;locked.current=true;const targets=q.listeningWords.flatMap(wordTokens);if(!onChoose(side,{heard,hidden:targets.length>0&&targets.every(w=>wordOpacity(w,snapshot,presentation)===0),assisted:assisted.current,plays:plays.current}))locked.current=false}
- return <><PracticeHeader label={courseLabel} level={q.level} onLevel={onLevel} onExit={onExit} value={index+(picked===null?0:1)} total={GENERATED_ROUND_SIZE} userId={userId}/><PracticeStage onReplay={play} prompt="Listen, then choose" correct={picked===null?null:picked===q.correct} onNext={onNext} onHelp={()=>{if(picked===null){assisted.current=true;saveSupport()}}} answers={{choices,selected:picked,disabled:!heard||picked!==null,onChoose:choose}}
+ return <><PracticeHeader label={courseLabel} level={q.level} onLevel={onLevel} onExit={onExit} value={index+(picked===null?0:1)} total={GENERATED_ROUND_SIZE} userId={userId}/><PracticeStage onReplay={()=>play()} prompt="Listen, then choose" correct={picked===null?null:picked===q.correct} onNext={onNext} onHelp={()=>{if(picked===null){assisted.current=true;saveSupport()}}} answers={{choices,selected:picked,disabled:!heard||picked!==null,onChoose:choose}}
  explanation={close=><AdaptivePracticeExplanation question={q} onClose={close}/>}
- question={<><div className="classroom foundation-noun"><div className="cw-sentence-board"><LanguageQuadrant scores={snapshot} request={{document:q.document,referenceObject:q.sceneChoices?.[q.correct].word,presentation:{...presentation,size:'phone',english:true,icons:true,keepIconsWhenFading:true,thaiMeanings:false,thaiTranslation:false,explanations:false,wordPicker:false}}}/></div></div>{audioError&&<button role="alert" onClick={play}>🔊 ↻ Tap to listen</button>}{saveError&&<button role="alert" onClick={retry}>Retry saving progress</button>}</>}/></>
+ question={<><PlaybackSpeedControls mode={playbackMode} onChange={choosePlaybackMode}/><div className="classroom foundation-noun"><div className="cw-sentence-board"><LanguageQuadrant scores={snapshot} request={{document:q.document,referenceObject:q.sceneChoices?.[q.correct].word,presentation:{...presentation,spokenWord,audioWave:audioWave.current,size:'phone',english:true,icons:true,keepIconsWhenFading:true,thaiMeanings:false,thaiTranslation:false,explanations:false,wordPicker:false}}}/></div></div>{audioError&&<button role="alert" onClick={()=>play()}>🔊 ↻ Tap to listen</button>}{saveError&&<button role="alert" onClick={retry}>Retry saving progress</button>}</>}/></>
 }

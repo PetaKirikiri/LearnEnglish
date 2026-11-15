@@ -34,6 +34,10 @@ export default function ExampleLanguage({layout,english,thai,units,matrix=false,
   const sentenceLabel = settings.fadeMode ? 'Listen to the sentence' : showEnglish ? plain : showTranslation ? thai : 'Sentence'
   const roles=units.map((unit,index):LanguageRole=>sentenceUnitRole(unit,semanticSlots?.[index]))
   const agreementLinks=sentenceLinks(roles.map(role=>({role}))).filter(link=>link.kind==='agreement')
+  const speakingIndex=settings.spokenWord?units.findIndex((unit,index)=>{
+    const start=units.slice(0,index).reduce((sum,previous)=>sum+previous.english.length+1,0)
+    return start<settings.spokenWord!.end&&start+unit.english.length>settings.spokenWord!.start
+  }):-1
   const cards = units.map((unit,index)=>{
       const start=units.slice(0,index).reduce((sum,previous)=>sum+previous.english.length+1,0),end=start+unit.english.length
       const slot = semanticSlots?.[index] ?? sentenceRoleSlots[roles[index]]
@@ -51,7 +55,7 @@ export default function ExampleLanguage({layout,english,thai,units,matrix=false,
         {showMeanings && <span className="example-gloss" lang="th" title={unit.thai==='—'?'ภาษาไทยไม่มีคำแปลแยกตรงนี้':undefined}><span className="cw-word-gloss-text">{unit.thai}</span></span>}
         {!settings.fadeMode && detail && detail.count>0 && <small className="cw-slot-count" aria-label={`${detail.count} available words`}>▤ {detail.count}</small>}
       </>
-      return matrix ? <MatrixCard key={index} unitIndex={index} slot={slot} wordType={verbType} typeLabel={verbType?sentenceVerbLabels[verbType]:undefined} action={action} control={settings.fadeMode||settings.wordPicker===false||!showEnglish?undefined:detail?.control} affordance={action?.affordance} className={action ? 'example-unit-trigger' : ''}>{content}</MatrixCard> : <span className="example-unit" key={index}>{content}</span>
+      return matrix ? <MatrixCard key={index} unitIndex={index} audioWave={settings.audioWave} waveDistance={speakingIndex>=0?index-speakingIndex:undefined} spokenWord={settings.spokenWord&&start<settings.spokenWord.end&&end>settings.spokenWord.start?settings.spokenWord.start:undefined} slot={slot} wordType={verbType} typeLabel={verbType?sentenceVerbLabels[verbType]:undefined} action={action} control={settings.fadeMode||settings.wordPicker===false||!showEnglish?undefined:detail?.control} affordance={action?.affordance} className={action ? 'example-unit-trigger' : ''}>{content}</MatrixCard> : <span className="example-unit" key={index}>{content}</span>
     })
   const fallbackLinks=sentenceLinks(roles.map(role=>({role})))
   const linkedCards=(start:number,end:number)=>{
@@ -67,7 +71,7 @@ export default function ExampleLanguage({layout,english,thai,units,matrix=false,
   }
   const translation=!showTranslation ? translationControl : translationControl ? <div className="example-meaning-row">{translationControl}<p className="bird-thai example-translation" lang="th" aria-live={unitAction || unitActions ? 'polite' : undefined}>{thai}</p></div> : <p className="bird-thai example-translation" lang="th" aria-live={unitAction || unitActions ? 'polite' : undefined}>{thai}</p>
   if(matrix&&layout)return <MatrixLayout request={{...layout,agreementLinks}} settings={settings} cards={cards} label={sentenceLabel} translation={translation} tray={settings.wordPicker===false||!showEnglish?undefined:afterUnits}/>
-  return <div className={`example-language${matrix ? ' example-matrix' : ''}`}>
+  return <div data-audio-wave={!!settings.audioWave||undefined} className={`example-language${matrix ? ' example-matrix' : ''}`}>
     <p className={matrix ? "tonight-slots" : "bird-english example-alignment"} lang="en" aria-label={sentenceLabel}>{groupLastTwo ? <>{linkedCards(0,cards.length-groupSize)}<NounGroup label={groupLabel} size={groupSize}>{!settings.fadeMode&&groupControl}{cards.slice(-groupSize)}</NounGroup></> : matrix?linkedCards(0,cards.length):cards}</p>
     {!settings.fadeMode && settings.wordPicker!==false && showEnglish && afterUnits}
     {translation}

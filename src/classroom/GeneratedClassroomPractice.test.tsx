@@ -3,7 +3,7 @@ import {act} from 'react'
 import {createRoot} from 'react-dom/client'
 import {expect,it,vi} from 'vitest'
 const playback=vi.hoisted(()=>({callbacks:null as null|{started:()=>void;ended:()=>void;error:()=>void}}))
-vi.mock('../audio/sentenceAudio',()=>({playSentenceAudio:(_q:unknown,callbacks:typeof playback.callbacks)=>{playback.callbacks=callbacks;callbacks?.started();return ()=>{}}}))
+vi.mock('../audio/sentenceAudio',()=>({prepareSentenceAudio:vi.fn().mockResolvedValue(undefined),playSentenceAudio:(_q:unknown,callbacks:typeof playback.callbacks)=>{playback.callbacks=callbacks;callbacks?.started();return ()=>{}}}))
 import GeneratedClassroomPractice from './GeneratedClassroomPractice'
 import type {GeneratedQuestion} from '../race/generatedPracticeContent'
 const question:GeneratedQuestion={id:'test',version:1,level:1,document:{english:'the man',thai:'',construction:'noun-phrase',units:[{english:'the',thai:'',role:'determiner'},{english:'man',thai:'',role:'object'}]},choices:['the man','the woman'],correct:0,targetWords:['man'],listeningWords:['man'],family:'noun',vocabulary:['man','woman'],action:'',owner:'the',subject:'',plural:false,kind:'meaning',credit:'man'}

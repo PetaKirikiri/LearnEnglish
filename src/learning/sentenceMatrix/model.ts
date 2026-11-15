@@ -8,6 +8,8 @@ export type Tense = 'present' | 'past'
 export const isPluralVerb = (verb:BeVerb) => verb==='are'||verb==='were'
 export const tenseForVerb = (verb:BeVerb):Tense => verb==='was'||verb==='were'?'past':'present'
 export type MatrixSettings = import('../wordProgress/model').FadeSettings & {
+  audioWave?: import('../../audio/audioWaveform').AudioWaveState
+  spokenWord?: import('../../audio/sentenceTiming').SpokenWord | null
   initialPattern?: 'question' | 'answer'
   patternNavigation?: boolean
   keepIconsWhenFading?: boolean
