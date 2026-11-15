@@ -1,3 +1,4 @@
+import {addStructureResult,type StructureScores} from '../src/race/blueprintScores'
 import type {IncomingMessage,ServerResponse} from 'node:http'
 import {createClient} from '@supabase/supabase-js'
 /** Private, read-only diagnostic. Never bundled into a deployed API route. */
@@ -30,6 +31,16 @@ export default async function vocabularyDiagnostics(req:IncomingMessage,res:Serv
    if(result.error)throw result.error
    rows.push(...result.data);if(result.data.length<1000)break
   }
-  return send(200,{selected,students:students.map(({id,name})=>({id,name})),rows})
+  const structureScores:StructureScores={}
+  for(let offset=0;;offset+=1000){
+   const result=await db.from('english_word_attempts').select('correct,modality,english_word_questions!inner(sentence)').eq('learner_id',selected).order('id').range(offset,offset+999)
+   if(result.error)throw result.error
+   for(const row of result.data){
+    const question=row.english_word_questions as unknown as {sentence:string}
+    addStructureResult(structureScores,{sentence:question.sentence,correct:row.correct,modality:row.modality})
+   }
+   if(result.data.length<1000)break
+  }
+  return send(200,{selected,students:students.map(({id,name})=>({id,name})),rows,structureScores})
  }catch{return send(502,{error:'Could not load student progress'})}
 }

@@ -1,0 +1,75 @@
+{
+  "style": "Transparent 3D cartoon actions matching existing cleaning artwork; blue-shirt character; production copies 384px.",
+  "assets": [
+    {
+      "name": "cooking",
+      "subject": "The man cooking rice in a small pot on a compact stove, stirring with a wooden spoon, visible steaming rice; action clearly cooking, not eating.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-6e82622e-8637-4f14-8582-2dc009ca6604.png"
+    },
+    {
+      "name": "taking",
+      "subject": "The man actively taking one book OFF a small shelf, gripping and removing it, empty gap behind it; show hand and shelf clearly.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-fece66c2-6c15-48a8-8d21-5b81eee3544b.png"
+    },
+    {
+      "name": "bringing",
+      "subject": "The man walking toward a seated friend and delivering a cup of water held out to that friend; arriving with an object, recipient visible small at right.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-9a5ee2ee-7614-4944-b33a-46ccfe7345e9.png"
+    },
+    {
+      "name": "choosing",
+      "subject": "The man comparing a red shirt and a blue shirt, selecting the blue shirt with a clear pointing finger, both shirts on hangers in front; choice is visually clear.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-fc68c267-6620-4941-bf96-2042b2551e11.png"
+    },
+    {
+      "name": "cutting",
+      "subject": "The man carefully slicing a loaf of bread on a chopping board with a kitchen knife, several slices separated; action close-up, not eating.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-d606ad16-d274-48c8-a863-1e8ba7ae6f08.png"
+    },
+    {
+      "name": "drawing",
+      "subject": "The man drawing a small blue car with a pencil on white paper; pencil tip touching an unfinished outline of the car; actual small toy car beside paper as model.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-776e1cc9-0dee-49e6-bd0e-16c2ab354913.png"
+    },
+    {
+      "name": "painting",
+      "subject": "The man brushing bright blue paint onto a small wooden chair, partly unfinished wood and partly fresh blue paint; paintbrush and small paint pot visible.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-a9553e13-bdec-4728-b713-b513025ca6a6.png"
+    },
+    {
+      "name": "fixing",
+      "subject": "The man crouching beside a bicycle, using a wrench on its wheel axle to repair it; wheel, wrench and focused hands prominent.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-9ebae68e-4483-44a5-ba97-944ab0800eec.png"
+    },
+    {
+      "name": "pushing",
+      "subject": "The man facing right leaning forward with BOTH PALMS against the back of a wooden chair, arms extended moving it away from his body.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-0d00008f-6b3a-41d3-8d4f-fb079c96a9f8.png"
+    },
+    {
+      "name": "pulling",
+      "subject": "The man facing left leaning backward, BOTH HANDS GRIPPING the back of a wooden chair and drawing it toward his body; opposite body posture from pushing.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-deb1823d-3182-4e53-abcf-cc0eef45f63f.png"
+    },
+    {
+      "name": "lifting",
+      "subject": "The man bending arms and raising a small travel bag upward from a low surface; bag held at chest height, physical effort and upward action visible.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-d31f44bf-7f71-4b72-a85b-5b851f12afb8.png"
+    },
+    {
+      "name": "selling",
+      "subject": "The man standing behind a small stall with apples, handing an apple to a customer while accepting money from the customer; seller centered as main actor.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-f1e099d1-26c5-4eca-9219-ae1602a21b70.png"
+    },
+    {
+      "name": "visiting",
+      "subject": "The man arriving at a friend's house, smiling friend greeting him in an open doorway; empty hands, social visit.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-b751d53d-a9dd-43b5-926f-e319c174dae9.png"
+    },
+    {
+      "name": "coming",
+      "subject": "The man walking toward the viewer from an open doorway behind him, one foot forward, friendly beckoning or greeting gesture toward viewer; clear toward-camera movement.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-e93c7511-a41f-4eba-ad11-1e01d408dcde.png"
+    }
+  ]
+}

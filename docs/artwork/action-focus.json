@@ -1,0 +1,343 @@
+{
+  "style": "Action-focused polished 3D cartoon cutouts. Frame tools, contact, objects and movement; exclude faces unless essential to verb meaning.",
+  "generator": "built-in image_gen",
+  "assets": [
+    {
+      "word": "holding",
+      "subject": "Close-up hand steadily holding a blue mug by its handle, secure grip and mug large, no motion marks.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: holding. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hand steadily holding a blue mug by its handle, secure grip and mug large, no motion marks. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-38b99eae-1083-4f47-b3c8-8784b54a83fb.png",
+      "output": "/classroom/icons/actions/focused/holding.png"
+    },
+    {
+      "word": "opening",
+      "subject": "Close-up hand pulling open a zipper on a bag, zipper teeth separating and open interior clearly visible, no head.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: opening. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hand pulling open a zipper on a bag, zipper teeth separating and open interior clearly visible, no head. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-6de8bc30-ff11-4fa6-9c6c-ca4615a8b194.png",
+      "output": "/classroom/icons/actions/focused/opening.png"
+    },
+    {
+      "word": "using",
+      "subject": "Close-up hand operating a smartphone, index finger pressing a clear large button, simple pictorial screen no text.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: using. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hand operating a smartphone, index finger pressing a clear large button, simple pictorial screen no text. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-956f092b-00ef-415f-9f7d-1fab668f7568.png",
+      "output": "/classroom/icons/actions/focused/using.png"
+    },
+    {
+      "word": "eating",
+      "subject": "Close-up mouth biting apple held by hand, visible bite contact; crop only lips chin hand apple, no full head or eyes.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: eating. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up mouth biting apple held by hand, visible bite contact; crop only lips chin hand apple, no full head or eyes. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-b6ef076d-5644-4049-a24d-44e386287323.png",
+      "output": "/classroom/icons/actions/focused/eating.png"
+    },
+    {
+      "word": "drinking",
+      "subject": "Close-up lips touching rim of tilted water glass held by hand, water visible; only mouth chin glass hand, no full face.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: drinking. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up lips touching rim of tilted water glass held by hand, water visible; only mouth chin glass hand, no full face. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-db816245-4fdc-4368-8a51-239657c3cb71.png",
+      "output": "/classroom/icons/actions/focused/drinking.png"
+    },
+    {
+      "word": "talking",
+      "subject": "Tight side profile crop of mouth and chin speaking with three small curved sound marks emerging from lips. No eyes, hair or full head.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: talking. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Tight side profile crop of mouth and chin speaking with three small curved sound marks emerging from lips. No eyes, hair or full head. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-ccd2733a-74bb-4215-be5b-42a556990cb7.png",
+      "output": "/classroom/icons/actions/focused/talking.png"
+    },
+    {
+      "word": "listening",
+      "subject": "Extreme close-up ear and cupped hand, three sound-wave marks approaching ear, no eyes or full face.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: listening. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Extreme close-up ear and cupped hand, three sound-wave marks approaching ear, no eyes or full face. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-fa118724-d2be-44fb-81fe-59789d25c322.png",
+      "output": "/classroom/icons/actions/focused/listening.png"
+    },
+    {
+      "word": "walking",
+      "subject": "Close-up lower legs in ordinary walking stride, front heel meeting floor and back toe leaving it. No torso/head, no running motion.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: walking. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up lower legs in ordinary walking stride, front heel meeting floor and back toe leaving it. No torso/head, no running motion. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-eceec75c-bd91-49df-966b-97e8d8ff6883.png",
+      "output": "/classroom/icons/actions/focused/walking.png"
+    },
+    {
+      "word": "running",
+      "subject": "Close-up two legs in energetic running stride, both sneakers airborne, bent knees and subtle motion strokes. Crop at thighs, no upper body.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: running. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up two legs in energetic running stride, both sneakers airborne, bent knees and subtle motion strokes. Crop at thighs, no upper body. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-affb7ed1-d6a1-4897-a0ff-98fd3ce2897f.png",
+      "output": "/classroom/icons/actions/focused/running.png"
+    },
+    {
+      "word": "sleeping",
+      "subject": "Tight crop closed eyelids and cheek resting sideways on pillow with relaxed hand; pillow and sleeping cues, no big hair or body.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: sleeping. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Tight crop closed eyelids and cheek resting sideways on pillow with relaxed hand; pillow and sleeping cues, no big hair or body. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-76d86866-a8df-4b94-af47-0d63a28249a2.png",
+      "output": "/classroom/icons/actions/focused/sleeping.png"
+    },
+    {
+      "word": "reading",
+      "subject": "Close-up open book held by two hands with a fingertip tracking an illustrated line, simple non-legible lines and tiny picture on pages. Book dominates, no face.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: reading. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up open book held by two hands with a fingertip tracking an illustrated line, simple non-legible lines and tiny picture on pages. Book dominates, no face. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-97edc9e4-584c-4cbd-9344-fa46a07e4e4d.png",
+      "output": "/classroom/icons/actions/focused/reading.png"
+    },
+    {
+      "word": "playing",
+      "subject": "Close-up foot actively kicking a football, ball and foot contact dominate with a short curved movement trace. No upper body.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: playing. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up foot actively kicking a football, ball and foot contact dominate with a short curved movement trace. No upper body. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-92e65f04-b889-475d-afa7-d3635572db89.png",
+      "output": "/classroom/icons/actions/focused/playing.png"
+    },
+    {
+      "word": "driving",
+      "subject": "Driver's eye close-up two hands gripping steering wheel, small dashboard and simple road beyond. Wheel and hand action dominate, no person face.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: driving. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Driver's eye close-up two hands gripping steering wheel, small dashboard and simple road beyond. Wheel and hand action dominate, no person face. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-2b99b824-5022-4245-bfeb-168f458a7815.png",
+      "output": "/classroom/icons/actions/focused/driving.png"
+    },
+    {
+      "word": "going",
+      "subject": "Close rear view lower legs and shoes stepping AWAY from viewer toward a small doorway, arrow away from foreground. No torso/head.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: going. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close rear view lower legs and shoes stepping AWAY from viewer toward a small doorway, arrow away from foreground. No torso/head. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-e8880061-0b6d-4141-81bf-844f36c25b04.png",
+      "output": "/classroom/icons/actions/focused/going.png"
+    },
+    {
+      "word": "washing",
+      "subject": "Close-up two hands washing a white plate under flowing tap water with soap bubbles, plate and water contact dominate.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: washing. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up two hands washing a white plate under flowing tap water with soap bubbles, plate and water contact dominate. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-682f7f26-f854-4504-a267-8b54150d493d.png",
+      "output": "/classroom/icons/actions/focused/washing.png"
+    },
+    {
+      "word": "cleaning",
+      "subject": "Close-up hand wiping a table patch with cloth, clear division between dusty patch and shiny clean wiped area.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: cleaning. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hand wiping a table patch with cloth, clear division between dusty patch and shiny clean wiped area. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-094c5f4f-a044-4ff5-ac60-282c0060b469.png",
+      "output": "/classroom/icons/actions/focused/cleaning.png"
+    },
+    {
+      "word": "carrying",
+      "subject": "Close-up side view hand gripping bag at thigh while lower legs walk, bag and grip dominant, head and upper torso absent.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: carrying. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up side view hand gripping bag at thigh while lower legs walk, bag and grip dominant, head and upper torso absent. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-fda157c1-d108-441b-8ebf-23e8a0541619.png",
+      "output": "/classroom/icons/actions/focused/carrying.png"
+    },
+    {
+      "word": "finding",
+      "subject": "Close-up hand lifting cushion to reveal a lost key, discovered key dominant with tiny sparkle cue, no face.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: finding. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hand lifting cushion to reveal a lost key, discovered key dominant with tiny sparkle cue, no face. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-af985705-53ff-45c3-8478-86dba6d5a3f3.png",
+      "output": "/classroom/icons/actions/focused/finding.png"
+    },
+    {
+      "word": "buying",
+      "subject": "Close-up buyer blue-cuff hand offering money and taking apple from seller green-cuff hand across counter; buyer perspective, exchange dominates.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: buying. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up buyer blue-cuff hand offering money and taking apple from seller green-cuff hand across counter; buyer perspective, exchange dominates. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-3e7bd0da-365a-4cd6-9621-0c240b70a6b0.png",
+      "output": "/classroom/icons/actions/focused/buying.png"
+    },
+    {
+      "word": "closing",
+      "subject": "Close-up hand pulling a bag zipper closed, joined teeth and nearly sealed bag opening clearly visible.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: closing. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hand pulling a bag zipper closed, joined teeth and nearly sealed bag opening clearly visible. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-a72a1ae6-66a6-4e09-a4aa-1767359fd9ff.png",
+      "output": "/classroom/icons/actions/focused/closing.png"
+    },
+    {
+      "word": "wearing",
+      "subject": "Close-up feet already wearing tied sneakers, shoes firmly on feet, stationary stance, crop above ankles.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: wearing. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up feet already wearing tied sneakers, shoes firmly on feet, stationary stance, crop above ankles. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-43eac1ed-628c-44cb-bc54-f4196ca01ff8.png",
+      "output": "/classroom/icons/actions/focused/wearing.png"
+    },
+    {
+      "word": "putting-on",
+      "subject": "Close-up hands guiding foot INTO a sneaker, heel partially outside and fingers pulling heel tab, small inward arrow. No head.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: putting on. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hands guiding foot INTO a sneaker, heel partially outside and fingers pulling heel tab, small inward arrow. No head. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-8a0cea00-42ea-47a2-b8e8-8a79f89f9311.png",
+      "output": "/classroom/icons/actions/focused/putting-on.png"
+    },
+    {
+      "word": "taking-off",
+      "subject": "Close-up hands pulling sneaker OFF foot, heel freed and foot sliding out, small outward arrow. No head.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: taking off. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hands pulling sneaker OFF foot, heel freed and foot sliding out, small outward arrow. No head. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-0f67791a-ccf6-4648-b013-0c8da131bcd1.png",
+      "output": "/classroom/icons/actions/focused/taking-off.png"
+    },
+    {
+      "word": "riding",
+      "subject": "Close-up knees feet and pedals on a bicycle, one foot pushing pedal, bicycle crank and forward motion dominate. No head or upper torso.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: riding. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up knees feet and pedals on a bicycle, one foot pushing pedal, bicycle crank and forward motion dominate. No head or upper torso. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-6bcf3205-136f-47db-bbb2-0b6325b42329.png",
+      "output": "/classroom/icons/actions/focused/riding.png"
+    },
+    {
+      "word": "catching",
+      "subject": "Close-up running legs reaching an open bus doorway just in time, one foot on ground and reaching hand toward grab rail, bus entrance dominates; no heads.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: catching. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up running legs reaching an open bus doorway just in time, one foot on ground and reaching hand toward grab rail, bus entrance dominates; no heads. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-0c06164a-b68e-4da8-b596-ff34326a7094.png",
+      "output": "/classroom/icons/actions/focused/catching.png"
+    },
+    {
+      "word": "getting-on",
+      "subject": "Close-up foot stepping UP onto bus step and hand grasping boarding rail, large step foot contact, no head.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: getting on. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up foot stepping UP onto bus step and hand grasping boarding rail, large step foot contact, no head. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-7259965b-974d-4275-8c3b-9b33bd181a1e.png",
+      "output": "/classroom/icons/actions/focused/getting-on.png"
+    },
+    {
+      "word": "helping",
+      "subject": "Close-up one hand firmly supporting another person's forearm and helping them rise, supportive interlocked grip and small upward motion dominate. No faces.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: helping. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up one hand firmly supporting another person's forearm and helping them rise, supportive interlocked grip and small upward motion dominate. No faces. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-46dde852-019c-4e4b-93e9-14f1694d37c2.png",
+      "output": "/classroom/icons/actions/focused/helping.png"
+    },
+    {
+      "word": "watching",
+      "subject": "Close-up small side crop of eye directed toward a large screen showing football action, eye secondary and screen dominant. No full head.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: watching. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up small side crop of eye directed toward a large screen showing football action, eye secondary and screen dominant. No full head. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-c26aec48-7d78-4fa7-9844-99bc93b1d0e7.png",
+      "output": "/classroom/icons/actions/focused/watching.png"
+    },
+    {
+      "word": "teaching",
+      "subject": "Close-up hand with pointer indicating a simple picture on a small board and learner hand matching that picture on paper below. Instruction gesture dominates, no faces or written words.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: teaching. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hand with pointer indicating a simple picture on a small board and learner hand matching that picture on paper below. Instruction gesture dominates, no faces or written words. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-236035c4-9e95-452f-869d-589f2207d287.png",
+      "output": "/classroom/icons/actions/focused/teaching.png"
+    },
+    {
+      "word": "sitting",
+      "subject": "Side close-up hips and bent knees resting on chair seat with feet down; body-chair contact and seated posture clear, crop above waist.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: sitting. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Side close-up hips and bent knees resting on chair seat with feet down; body-chair contact and seated posture clear, crop above waist. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-8d3d3a4b-5144-4d6a-9217-0fad7a7d894b.png",
+      "output": "/classroom/icons/actions/focused/sitting.png"
+    },
+    {
+      "word": "standing",
+      "subject": "Close-up straight legs and feet planted evenly upright on floor, legs vertical and posture static, crop above waist.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: standing. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up straight legs and feet planted evenly upright on floor, legs vertical and posture static, crop above waist. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-00837876-80b6-4169-93a5-8988f7eb8688.png",
+      "output": "/classroom/icons/actions/focused/standing.png"
+    },
+    {
+      "word": "waiting",
+      "subject": "Close-up wristwatch and other hand checking it beside stationary trouser legs, waiting posture and time cue dominant, clock without numerals.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: waiting. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up wristwatch and other hand checking it beside stationary trouser legs, waiting posture and time cue dominant, clock without numerals. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-81d65bd3-2736-4137-9671-aa4ccb62ce53.png",
+      "output": "/classroom/icons/actions/focused/waiting.png"
+    },
+    {
+      "word": "arriving",
+      "subject": "Close-up feet completing a step onto doorstep, one shoe landed at threshold and small travel bag beside leg, inward arrow terminating at door. No head.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: arriving. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up feet completing a step onto doorstep, one shoe landed at threshold and small travel bag beside leg, inward arrow terminating at door. No head. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-52826bff-edd1-4126-b6ca-1eae23359557.png",
+      "output": "/classroom/icons/actions/focused/arriving.png"
+    },
+    {
+      "word": "leaving",
+      "subject": "Close-up legs with small bag stepping OUT across doorway threshold, trailing foot inside and leading foot outside, outward arrow. No head.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: leaving. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up legs with small bag stepping OUT across doorway threshold, trailing foot inside and leading foot outside, outward arrow. No head. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-9ac7ec2b-6d52-46c9-a47c-5034485386ad.png",
+      "output": "/classroom/icons/actions/focused/leaving.png"
+    },
+    {
+      "word": "cooking",
+      "subject": "Close-up hand stirring rice and vegetables in a cooking pot with wooden spoon; visible steam, food and spoon contact fill frame.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: cooking. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hand stirring rice and vegetables in a cooking pot with wooden spoon; visible steam, food and spoon contact fill frame. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-5bb95f5f-3361-450d-9847-3e2488388fb4.png",
+      "output": "/classroom/icons/actions/focused/cooking.png"
+    },
+    {
+      "word": "taking",
+      "subject": "Close-up hand actively lifting one blue book away from a small shelf edge, separation and outward movement clear.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: taking. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hand actively lifting one blue book away from a small shelf edge, separation and outward movement clear. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-86bde1ea-d0c5-4c6e-a310-b44734782f97.png",
+      "output": "/classroom/icons/actions/focused/taking.png"
+    },
+    {
+      "word": "bringing",
+      "subject": "Close-up hands carrying a tray with a glass of water toward a receiving hand at a table edge, delivery motion clear.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: bringing. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hands carrying a tray with a glass of water toward a receiving hand at a table edge, delivery motion clear. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-86fd540a-5053-4f5e-b143-672fc99bed48.png",
+      "output": "/classroom/icons/actions/focused/bringing.png"
+    },
+    {
+      "word": "choosing",
+      "subject": "Close-up index finger decisively touching one of two folded shirts, blue selected and red alternative, shirts large.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: choosing. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up index finger decisively touching one of two folded shirts, blue selected and red alternative, shirts large. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-805c4944-af50-439c-bbee-8f66d0d5349f.png",
+      "output": "/classroom/icons/actions/focused/choosing.png"
+    },
+    {
+      "word": "cutting",
+      "subject": "Close-up hands using a bread knife to slice a loaf on a small board, blade cutting through bread, separate slice visible. Safe anatomy.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: cutting. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hands using a bread knife to slice a loaf on a small board, blade cutting through bread, separate slice visible. Safe anatomy. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-0279a474-5c2f-4ea0-a4ae-753c2e052dde.png",
+      "output": "/classroom/icons/actions/focused/cutting.png"
+    },
+    {
+      "word": "drawing",
+      "subject": "A hand with yellow pencil actively tracing an unfinished blue car outline on white paper. Overhead oblique view; large pencil contact and drawing.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-a8d3a511-9c76-4787-b5e3-8be25ec175b7.png",
+      "prompt": "Redesign the drawing verb icon as a tight overhead oblique close-up of hand and yellow pencil tracing an unfinished blue car on white paper. Preserve polished soft 3D cartoon rendering and blue cuff. Paper and pencil contact dominate; no head, face, torso, toy car or surroundings. Transparent background, no text or border.",
+      "output": "/classroom/icons/actions/focused/drawing.png"
+    },
+    {
+      "word": "painting",
+      "subject": "Close-up hand dragging a broad brush loaded with blue paint across a wooden chair seat, fresh blue stroke and raw wood contrast.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: painting. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hand dragging a broad brush loaded with blue paint across a wooden chair seat, fresh blue stroke and raw wood contrast. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-88041c3f-1283-4d58-81b1-1bcf62b89633.png",
+      "output": "/classroom/icons/actions/focused/painting.png"
+    },
+    {
+      "word": "fixing",
+      "subject": "Close-up hand turning a wrench on a bicycle wheel axle nut, mechanical contact large and obvious.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: fixing. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hand turning a wrench on a bicycle wheel axle nut, mechanical contact large and obvious. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-72183fec-7019-41c9-a2c0-666628ce16dd.png",
+      "output": "/classroom/icons/actions/focused/fixing.png"
+    },
+    {
+      "word": "pushing",
+      "subject": "Close-up two open palms pressing against chair back and moving chair AWAY from wrists, one small directional arrow away; no head.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: pushing. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up two open palms pressing against chair back and moving chair AWAY from wrists, one small directional arrow away; no head. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-1d529acc-2a21-4584-a7bb-86d9b3341cd8.png",
+      "output": "/classroom/icons/actions/focused/pushing.png"
+    },
+    {
+      "word": "pulling",
+      "subject": "Close-up hand with curled fingers gripping chair back and drawing chair TOWARD wrist, one small directional arrow toward wrist; no head.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: pulling. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up hand with curled fingers gripping chair back and drawing chair TOWARD wrist, one small directional arrow toward wrist; no head. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-5ed3df7b-3d20-4588-9555-105241a72240.png",
+      "output": "/classroom/icons/actions/focused/pulling.png"
+    },
+    {
+      "word": "lifting",
+      "subject": "Close-up two hands raising a bag by its handles above a low surface with clearly visible gap and small upward arrow.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: lifting. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up two hands raising a bag by its handles above a low surface with clearly visible gap and small upward arrow. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-2f81574c-ac28-4712-a913-4544ff87f281.png",
+      "output": "/classroom/icons/actions/focused/lifting.png"
+    },
+    {
+      "word": "selling",
+      "subject": "Close-up exchange across counter: seller blue-cuff hand passes apple outward and receives banknote from customer green-cuff hand. Apple money hands dominate.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: selling. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close-up exchange across counter: seller blue-cuff hand passes apple outward and receives banknote from customer green-cuff hand. Apple money hands dominate. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-f92b61af-3a33-4dda-a7a2-8eb02d6f5d9e.png",
+      "output": "/classroom/icons/actions/focused/selling.png"
+    },
+    {
+      "word": "visiting",
+      "subject": "Tightly framed doorstep greeting: guest hand knocking on open door and host welcoming hand from inside; small shoulder edges only, no faces. Door opening and greeting dominate.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: visiting. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Tightly framed doorstep greeting: guest hand knocking on open door and host welcoming hand from inside; small shoulder edges only, no faces. Door opening and greeting dominate. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-0c6cdfcc-848f-4d5f-9da1-ea2e76775068.png",
+      "output": "/classroom/icons/actions/focused/visiting.png"
+    },
+    {
+      "word": "coming",
+      "subject": "Close view of trouser legs and shoes stepping TOWARD viewer through a narrow doorway, front shoe large, directional arrow toward foreground. No upper body.",
+      "prompt": "Use case: scientific-educational. Create ONE replacement English verb icon: coming. Reference image is STYLE ONLY: preserve its polished soft colorful 3D cartoon rendering, materials and blue cuff where a cuff appears, NOT its drawing subject. Scene: Close view of trouser legs and shoes stepping TOWARD viewer through a narrow doorway, front shoe large, directional arrow toward foreground. No upper body. Composition: tightly zoom into the ACTION. Tool, object, contact or movement occupies 80-90% of square frame. Person is incidental. Only necessary body parts. No portrait, large head, decorative character or distant scene. Clear readable silhouette at 64px. Genuinely transparent background; minimal isolated scene fragments only. No text, labels, words, watermark or enclosing square. Anatomically plausible hands.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-a231a210-c89b-48f7-9179-a79f3f8ff92c.png",
+      "output": "/classroom/icons/actions/focused/coming.png"
+    }
+  ],
+  "reference": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-a8d3a511-9c76-4787-b5e3-8be25ec175b7.png"
+}

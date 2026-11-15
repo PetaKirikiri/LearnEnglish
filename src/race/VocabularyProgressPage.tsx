@@ -1,3 +1,7 @@
+import {reviewVocabulary} from './reviewVocabulary'
+import type {StructureScores} from './blueprintScores'
+import BlueprintsPanel from './BlueprintsPanel'
+type VocabularyTab=HierarchyType|'blueprints'
 import {adjectivesForNoun} from '../learning/sentenceRules/adjectiveSemantics'
 import {useEffect,useState} from 'react'
 import type {User} from '@supabase/supabase-js'
@@ -5,7 +9,7 @@ import {supabase} from '../lib/supabase'
 import {useStudentVocabulary} from './studentVocabulary'
 import {recogniseHomeworkAccount} from '../auth/homeworkLine'
 import {useWordProgress} from '../learning/wordProgress/useWordProgress'
-import {wordHierarchies,hierarchyState,type HierarchyType} from './wordHierarchy'
+import {hierarchyState,type HierarchyType} from './wordHierarchy'
 import {loadEvidence} from './generatedPracticeProgress'
 import {vocabularyLearning} from './vocabularyProgress'
 import {learningStates,type WordLearning} from '../learning/wordProgress/learningLifecycle'
@@ -17,6 +21,7 @@ import {verbGroupFor,type VerbGroup} from '../learning/sentenceRules/verbGroups'
 import {nounVerbMatches} from './nounVerbMatches'
 import {nounGroupFor,type NounGroup} from './nounGroups'
 import DeterminerIcon from '../learning/sentenceMatrix/DeterminerIcon'
+const pronounGroups={subjects:['I','you','he','she','it','we','they'],objects:['me','you','him','her','it','us','them']} as const
 const localDiagnostic=import.meta.env.DEV&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)
 const lists=[
  {type:'noun',title:'Nouns',icon:VocabularyPicture},
@@ -25,6 +30,7 @@ const lists=[
  {type:'pronoun',title:'Pronouns',icon:PronounIcon},
  {type:'determiner',title:'Determiners',icon:DeterminerIcon},
 ] as const
+const tabs=[...lists,{type:'blueprints',title:'Blueprints'}] as const
 export default function VocabularyReview(){
  const [user,setUser]=useState<User|null>(null),[ready,setReady]=useState(false),[error,setError]=useState(''),[busy,setBusy]=useState(false)
  useEffect(()=>{
@@ -41,25 +47,26 @@ export default function VocabularyReview(){
 }
 function AccountVocabulary({userId,diagnostic=false}:{userId:string;diagnostic?:boolean}){
  const [selected,setSelected]=useState<string|null>(null)
- const [vocabularyType,setVocabularyType]=useState<HierarchyType>('noun')
+ const [vocabularyType,setVocabularyType]=useState<VocabularyTab>('noun')
  const {snapshot,error,retry}=useStudentVocabulary(userId,selected,diagnostic)
  const learner=selected??snapshot?.selected,student=snapshot?.students.find(s=>s.id===learner)
  const current=snapshot&&snapshot.selected===learner?snapshot:null
  const learning=current?learningStates(current.rows,current.selected===userId?loadEvidence(userId):[]):undefined
  const state=learning?hierarchyState(new Set([...learning].filter(([,s])=>s.provenAt).map(([id])=>id))):undefined
- return <><header className="vocab-account">{!diagnostic&&<a href="/english/practice" aria-label="Back to testing">←</a>}<div><h1>{student?`${student.name}’s words`:'Word progress'}</h1></div>{snapshot&&<label className="vocab-student">Student<select aria-label="Student" value={learner} onChange={event=>setSelected(event.target.value)}>{snapshot.students.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}</select></label>}</header>{error&&<button role="alert" onClick={retry}>Retry loading student progress</button>}{current?<VocabularyLists userId={current.selected} rows={current.rows} state={state} learning={learning} activeType={vocabularyType} onType={setVocabularyType}/>:!error?<p role="status">Loading progress…</p>:null}</>
+ return <><header className="vocab-account">{!diagnostic&&<a href="/english/practice" aria-label="Back to testing">←</a>}<div><h1>{student?`${student.name}’s words`:'Word progress'}</h1></div>{snapshot&&<label className="vocab-student">Student<select aria-label="Student" value={learner} onChange={event=>setSelected(event.target.value)}>{snapshot.students.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}</select></label>}</header>{error&&<button role="alert" onClick={retry}>Retry loading student progress</button>}{current?<VocabularyLists userId={current.selected} rows={current.rows} structureScores={current.structureScores} state={state} learning={learning} activeType={vocabularyType} onType={setVocabularyType}/>:!error?<p role="status">Loading progress…</p>:null}</>
 }
-export function VocabularyLists({userId,rows=[],state,learning,activeType,onType}:{userId?:string;rows?:ReturnType<typeof useWordProgress>['rows'];state?:ReturnType<typeof hierarchyState>;learning?:ReadonlyMap<string,WordLearning>;activeType?:HierarchyType;onType?:(type:HierarchyType)=>void}){
- const [internalType,setInternalType]=useState<HierarchyType>('noun')
+export function VocabularyLists({userId,rows=[],structureScores,state,learning,activeType,onType}:{userId?:string;rows?:ReturnType<typeof useWordProgress>['rows'];state?:ReturnType<typeof hierarchyState>;learning?:ReadonlyMap<string,WordLearning>;structureScores?:StructureScores;activeType?:VocabularyTab;onType?:(type:VocabularyTab)=>void}){
+ const [internalType,setInternalType]=useState<VocabularyTab>('noun')
  const [nounGroup,setNounGroup]=useState<NounGroup>('subjects')
+ const [pronounGroup,setPronounGroup]=useState<keyof typeof pronounGroups>('subjects')
  const [verbGroup,setVerbGroup]=useState<VerbGroup>('transitive')
  const selected=activeType??internalType,changeType=onType??setInternalType,progress=learning??learningStates(rows)
- return <><nav className="vocab-tabs" role="tablist" aria-label="Vocabulary types">{lists.map((list,index)=><button type="button" key={list.type} id={`vocab-tab-${list.type}`} role="tab" aria-selected={selected===list.type} aria-controls={`vocab-panel-${list.type}`} tabIndex={selected===list.type?0:-1} onClick={()=>changeType(list.type)} onKeyDown={event=>{
-  const next=event.key==='ArrowRight'?(index+1)%lists.length:event.key==='ArrowLeft'?(index+lists.length-1)%lists.length:event.key==='Home'?0:event.key==='End'?lists.length-1:null
-  if(next!==null){event.preventDefault();changeType(lists[next].type);document.getElementById(`vocab-tab-${lists[next].type}`)?.focus()}
- }}>{list.title}</button>)}</nav><div className="vocab-lists">{lists.filter(list=>list.type===selected).map(list=>{
-  const parentTrack=state?.[list.type],groupTrack=list.type==='noun'?parentTrack?.nounGroups?.[nounGroup]:list.type==='verb'?parentTrack?.verbGroups?.[verbGroup]:undefined,track=parentTrack&&groupTrack?{...parentTrack,...groupTrack}:parentTrack,words:readonly string[]=wordHierarchies[list.type].filter(word=>list.type==='noun'?nounGroupFor(word)===nounGroup:list.type==='verb'?verbGroupFor(word)===verbGroup:true),verified=words.filter(word=>vocabularyLearning(list.type,word,progress).provenAt).length
-  return <section key={list.type} role="tabpanel" id={`vocab-panel-${list.type}`} aria-labelledby={`vocab-tab-${list.type}`}><h2>{list.title}{track&&<small>{words.length?Math.round(verified/words.length*100):0}% learnt</small>}</h2>{list.type==='noun'&&<div className="vocab-subgroups" role="group" aria-label="Noun groups">{(['subjects','objects'] as const).map(group=><button key={group} type="button" aria-pressed={nounGroup===group} onClick={()=>setNounGroup(group)}>{group==='subjects'?'Subjects':'Objects'}</button>)}</div>}{list.type==='verb'&&<div className="vocab-subgroups" role="group" aria-label="Verb groups">{(['transitive','intransitive'] as const).map(group=><button key={group} type="button" aria-pressed={verbGroup===group} onClick={()=>setVerbGroup(group)}>{group==='transitive'?'Transitive':'Intransitive'}</button>)}</div>}{track&&<div className="vocab-pool"><p><strong>Current:</strong> {track.current.filter(word=>words.includes(word)).length?track.current.filter(word=>words.includes(word)).join(', '):verified===words.length?'All learnt':'—'}</p>{track.next&&words.includes(track.next)&&<p className="vocab-queued">Next: {track.next}</p>}</div>}<ol>{words.map(word=>{
+ return <><nav className="vocab-tabs" role="tablist" aria-label="Vocabulary types">{tabs.map((list,index)=><button type="button" key={list.type} id={`vocab-tab-${list.type}`} role="tab" aria-selected={selected===list.type} aria-controls={`vocab-panel-${list.type}`} tabIndex={selected===list.type?0:-1} onClick={()=>changeType(list.type)} onKeyDown={event=>{
+  const next=event.key==='ArrowRight'?(index+1)%tabs.length:event.key==='ArrowLeft'?(index+tabs.length-1)%tabs.length:event.key==='Home'?0:event.key==='End'?tabs.length-1:null
+  if(next!==null){event.preventDefault();changeType(tabs[next].type);document.getElementById(`vocab-tab-${tabs[next].type}`)?.focus()}
+ }}>{list.title}</button>)}</nav><div className="vocab-lists">{selected==='blueprints'&&<BlueprintsPanel scores={structureScores}/>}{lists.filter(list=>list.type===selected).map(list=>{
+  const parentTrack=state?.[list.type],groupTrack=list.type==='noun'?parentTrack?.nounGroups?.[nounGroup]:list.type==='verb'?parentTrack?.verbGroups?.[verbGroup]:undefined,track=parentTrack&&groupTrack?{...parentTrack,...groupTrack}:parentTrack,words:readonly string[]=list.type==='pronoun'?pronounGroups[pronounGroup]:reviewVocabulary[list.type].filter(word=>list.type==='noun'?nounGroupFor(word)===nounGroup:list.type==='verb'?verbGroupFor(word)===verbGroup:true),verified=words.filter(word=>vocabularyLearning(list.type,word,progress).provenAt).length
+  return <section key={list.type} role="tabpanel" id={`vocab-panel-${list.type}`} aria-labelledby={`vocab-tab-${list.type}`}><h2>{list.title}{track&&<small>{words.length?Math.round(verified/words.length*100):0}% learnt</small>}</h2>{list.type==='noun'&&<div className="vocab-subgroups" role="group" aria-label="Noun groups">{(['subjects','objects'] as const).map(group=><button key={group} type="button" aria-pressed={nounGroup===group} onClick={()=>setNounGroup(group)}>{group==='subjects'?'Subjects':'Objects'}</button>)}</div>}{list.type==='verb'&&<div className="vocab-subgroups" role="group" aria-label="Verb groups">{(['transitive','intransitive'] as const).map(group=><button key={group} type="button" aria-pressed={verbGroup===group} onClick={()=>setVerbGroup(group)}>{group==='transitive'?'Transitive':'Intransitive'}</button>)}</div>}{list.type==='pronoun'&&<div className="vocab-subgroups" role="group" aria-label="Pronoun groups">{(['subjects','objects'] as const).map(group=><button key={group} type="button" aria-pressed={pronounGroup===group} onClick={()=>setPronounGroup(group)}>{group==='subjects'?'Subjects':'Objects'}</button>)}</div>}{track&&<div className="vocab-pool"><p><strong>Current:</strong> {track.current.filter(word=>words.includes(word)).length?track.current.filter(word=>words.includes(word)).join(', '):verified===words.length?'All learnt':'—'}</p>{track.next&&words.includes(track.next)&&<p className="vocab-queued">Next: {track.next}</p>}</div>}<ol>{words.map(word=>{
    const score=vocabularyLearning(list.type,word,progress),status=track?(score.provenAt?'learnt':track.current.includes(word)?'current':track.next===word?'next':'later'):null
    return <li key={word} data-word={word} data-status={status??undefined}><span className="vocab-review-row">{list.icon&&<span className="vocab-review-icon" aria-hidden="true"><list.icon word={word}/></span>}<span className="vocab-word"><span>{word}</span>{userId&&<><small>{score.provenAt?`${score.due?'Review due':'Review'} ${score.reviewDueAt?new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',timeZone:'Asia/Bangkok'}).format(new Date(score.reviewDueAt)):''}`:`${score.stage==='relearning'?'Relearning':'Fading'} ${score.fadePercent}%`}</small><progress max={100} value={score.fadePercent} aria-label={`${word}: ${score.fadePercent}% faded`}/></>}</span>{status&&<span className={`vocab-status vocab-status-${score.due?'review':status}`}>{score.provenAt?(score.due?'Review due':'✓ Learnt'):status==='current'?'Current':status==='next'?'Next':'Later'}</span>}</span>{list.type==='noun'&&<><NounVerbs word={word}/><NounDescriptions word={word}/></>}</li>
   })}</ol></section>

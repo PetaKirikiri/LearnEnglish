@@ -11,7 +11,7 @@ vi.mock('./studentVocabulary',()=>({useStudentVocabulary:(viewer:string,selected
  const id=selected??(viewer==='other'?'other':'peta');mock.read(id)
  return {snapshot:{selected:id,students:viewer==='other'?[{id:'other',name:'Other'}]:[{id:'peta',name:'Peta'},{id:'other',name:'Other'}],rows:id==='peta'?mock.rows:[]},error:'',retry:vi.fn()}
 }}))
-import VocabularyReview from './VocabularyProgressPage'
+import VocabularyReview,{VocabularyLists} from './VocabularyProgressPage'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 beforeEach(()=>{localStorage.clear();mock.user={id:'peta',user_metadata:{display_name:'Peta'}};mock.rows=[];mock.read.mockClear()})
 it('shows the signed-in account and its actual scores while keeping later words behind the frontier',async()=>{
@@ -24,7 +24,7 @@ it('shows the signed-in account and its actual scores while keeping later words 
   await act(async()=>[...host.querySelectorAll<HTMLButtonElement>('.vocab-subgroups button')].find(b=>b.textContent==='Objects')!.click())
   const banana=host.querySelector('[data-word=banana]')!
   expect(banana.getAttribute('data-status')).toBe('later');expect(banana.textContent).toContain('Fading 0%');expect(banana.textContent).not.toContain('3 / 3')
-  expect(host.querySelectorAll('[role=tab]')).toHaveLength(5);expect(host.querySelectorAll('[role=tabpanel]')).toHaveLength(1)
+  expect(host.querySelectorAll('[role=tab]')).toHaveLength(6);expect(host.querySelectorAll('[role=tabpanel]')).toHaveLength(1)
   await act(async()=>mock.listener('SIGNED_OUT',null))
   expect(host.textContent).not.toContain('Peta');expect(host.textContent).not.toContain('3 / 3 correct');expect(host.textContent).toContain('Sign in with LINE')
  }finally{await act(async()=>root.unmount())}
@@ -66,5 +66,20 @@ it('switches vocabulary tabs while retaining the selected student',async()=>{
   await act(async()=>[...host.querySelectorAll<HTMLButtonElement>('.vocab-subgroups button')].find(b=>b.textContent==='Intransitive')!.click())
   expect(host.querySelector('[role=tabpanel]')?.textContent).toContain('Current: talking, listening, walking')
   expect(host.querySelector('[role=tabpanel]')?.textContent).toContain('Next: running')
+ }finally{await act(async()=>root.unmount())}
+})
+
+it('renders newly registered people, objects and verbs from the shared inventory',async()=>{
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<VocabularyLists activeType="noun"/>))
+  expect(host.querySelector('[data-word=brother]')).not.toBeNull()
+  expect(host.querySelector('[data-word=sister]')).not.toBeNull()
+  await act(async()=>[...host.querySelectorAll<HTMLButtonElement>('.vocab-subgroups button')].find(button=>button.textContent==='Objects')!.click())
+  expect(host.querySelector('[data-word=milk]')).not.toBeNull()
+  expect(host.querySelector('[data-word=car]')).not.toBeNull()
+  await act(async()=>root.render(<VocabularyLists activeType="verb"/>))
+  expect(host.querySelector('[data-word=painting]')).not.toBeNull()
+  expect(host.querySelector('[data-word=fixing]')).not.toBeNull()
  }finally{await act(async()=>root.unmount())}
 })

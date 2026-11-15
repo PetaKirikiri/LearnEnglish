@@ -1,4 +1,4 @@
-import {everydayPeopleCatalogue} from '../learning/everydayVocabulary'
+import {universityVocabulary} from '../learning/universityVocabulary'
 import {lessonOneCatalogue,lessonTwoMatrixCatalogue,lessonThreeMatrixCatalogue} from '../classroom/wordCatalogue'
 import {hasUntaughtIt} from '../learning/sentenceRules/assessmentScope'
 import {validateSentence} from '../learning/sentenceRules/blueprints'
@@ -11,7 +11,7 @@ export const numberCatalogue:NumberItem[]=lessonThreeMatrixCatalogue.map(word=>(
 })).filter(word=>!hasUntaughtIt(word.word)&&validateSentence({blueprint:'where-noun',noun:word,verb:word.pluralForm?'are':'is',determiner:'the'}).length===0)
 // Preserve the recorded foundation archive; composed practice has its own
 // expanded inventory while sharing the same noun/agreement lookup.
-export const generatedNumberCatalogue:NumberItem[]=[...numberCatalogue,...everydayPeopleCatalogue.map(word=>({...word,id:word.word,pluralForm:word.number==='plural',lesson:1}))]
+export const generatedNumberCatalogue:NumberItem[]=universityVocabulary.map(word=>({...word,id:word.word,pluralForm:word.number==='plural'||!!word.pairOnly,lesson:numberCatalogue.find(item=>item.word===word.word)?.lesson??1}))
 const byWord=new Map(generatedNumberCatalogue.map(item=>[item.word,item]))
 export const numberItem=(word:string)=>byWord.get(word)
 export const numberAudio=(word:string,sentence=false)=>`/audio/number-foundation/${sentence?`where-${numberItem(word)?.pluralForm?'are':'is'}-`:''}the-${word.replaceAll(' ','-')}.wav`

@@ -1,3 +1,4 @@
+import {expandedVocabularyIcon,expandedEverydayObjects} from './expandedEverydayVocabulary'
 import {everydayPeople} from './everydayVocabulary'
 import { lessonThreeWords } from '../classroom/lessonThreeVocabulary'
 import { pluralVocabulary, pairVocabulary } from '../race/pluralVocabulary'
@@ -33,6 +34,10 @@ const pluralForms: Record<string, string> = { shoes:'shoe', keys:'key', socks:'s
 export default function VocabularyPicture({ word, count }: { word: string; count?: number }) {
   const normalized = word.toLowerCase().replace(/[?!.,]/g, '').trim()
   const person=everydayPeople.find(p=>p.singular===normalized||p.plural===normalized)
+  const expanded=expandedEverydayObjects.find(item=>item.singular===normalized||item.plural===normalized)
+  const expandedName=person?.singular??expanded?.singular??normalized
+  const expandedIcon=expandedVocabularyIcon(expandedName)
+  if(expandedIcon)return <span className="vocabulary-picture vocabulary-picture-art" data-word={expandedName} aria-hidden="true">{Array.from({length:count??((person?.plural??expanded?.plural)===normalized?2:1)},(_,index)=><img key={index} src={expandedIcon} alt="" loading="lazy" decoding="async"/>)}</span>
   if(person){
    const family=['mother','father','son','daughter'].includes(person.singular)
    const identity=({mother:'woman',father:'man',son:'boy',daughter:'girl'} as Record<string,string>)[person.singular]??person.singular

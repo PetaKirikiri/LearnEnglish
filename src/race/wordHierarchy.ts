@@ -11,9 +11,10 @@ export const wordHierarchies={
  verb:[...everydayActionOrder],
  adjective:descriptionStages.flat(),
  pronoun:['I','you','he','she','we','they'],
- determiner:['the','my','your','his','her','our','their','a','an','this','that','that over there','these','those','some'],
+ determiner:['the','a','an','some','this','that','that over there','these','those','my','your','his','her','our','their'],
 } as const
 export const CURRENT_WORD_LIMIT=4
+export const CURRENT_DETERMINER_LIMIT=2
 export const PRONOUN_NOUN_THRESHOLD=2
 export type HierarchyType=keyof typeof wordHierarchies
 export const hierarchyTypes=Object.keys(wordHierarchies) as HierarchyType[]
@@ -34,8 +35,9 @@ export function hierarchyState(mastered:ReadonlySet<string>,blueprints:readonly 
    const pending=unfinished.filter(word=>verbGroupFor(word)===group)
    return [group,{current:pending.slice(0,3),next:pending[3]??null}]
   })) as Record<VerbGroup,{current:string[];next:string|null}>:undefined
-  const current=verbGroups?[...verbGroups.transitive.current,...verbGroups.intransitive.current]:nounGroups?[...nounGroups.subjects.current,...nounGroups.objects.current]:unfinished.slice(0,CURRENT_WORD_LIMIT)
-  const queued=verbGroups?[verbGroups.transitive.next,verbGroups.intransitive.next].filter((word):word is string=>!!word):nounGroups?[nounGroups.subjects.next,nounGroups.objects.next].filter((word):word is string=>!!word):unfinished.slice(CURRENT_WORD_LIMIT,CURRENT_WORD_LIMIT+1)
+  const limit=type==='determiner'?CURRENT_DETERMINER_LIMIT:CURRENT_WORD_LIMIT
+  const current=verbGroups?[...verbGroups.transitive.current,...verbGroups.intransitive.current]:nounGroups?[...nounGroups.subjects.current,...nounGroups.objects.current]:unfinished.slice(0,limit)
+  const queued=verbGroups?[verbGroups.transitive.next,verbGroups.intransitive.next].filter((word):word is string=>!!word):nounGroups?[nounGroups.subjects.next,nounGroups.objects.next].filter((word):word is string=>!!word):unfinished.slice(limit,limit+1)
   const next=queued[0]??null
   return [type,{waiting,index,current,next,queued,nounGroups,verbGroups,completed:words.filter(completed),allowed:words.filter(word=>compatible(word)&&(current.includes(word)||completed(word))),foil:next}]
  })) as unknown as Record<HierarchyType,{waiting:readonly string[];index:number;current:readonly string[];next:string|null;queued:readonly string[];verbGroups?:Record<VerbGroup,{current:readonly string[];next:string|null}>;nounGroups?:Record<'subjects'|'objects',{current:readonly string[];next:string|null}>;completed:readonly string[];allowed:readonly string[];foil:string|null}>

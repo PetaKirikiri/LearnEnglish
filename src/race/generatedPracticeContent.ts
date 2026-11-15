@@ -3,8 +3,8 @@ import {activeActionBlueprints,matchingActionBlueprint} from '../learning/senten
 import {adjectiveFitsNoun,adjectivesForNoun,adjectiveThaiForNoun} from '../learning/sentenceRules/adjectiveSemantics'
 import {subjectCanPerform} from '../learning/sentenceRules/actionSemantics'
 import {determinerAgrees} from '../learning/sentenceRules/determiners'
-import {everydayPeopleCatalogue,everydayNounOrder,descriptions} from '../learning/everydayVocabulary'
-import {lessonThreeMatrixCatalogue} from '../classroom/wordCatalogue'
+import {everydayNounOrder,descriptions} from '../learning/everydayVocabulary'
+import {universityVocabulary} from '../learning/universityVocabulary'
 import {actionVocabulary,actionDialogue,objectsForAction,objectDeterminers} from '../learning/sentenceRules/actionDialogue'
 import {assessedSubjectPronouns} from '../learning/sentenceRules/assessmentScope'
 import {meaningForWord} from '../learning/sentenceRules/blueprints'
@@ -20,7 +20,7 @@ export type PracticeStructure='identify'|'location'|'destination'
 
 export const GENERATED_ROUND_SIZE=30
 export type GeneratedQuestion={recipe?:unknown;id:string;version:1;level:PracticeLevel;document:LanguageDocument;choices:[string,string];correct:0|1;audioUrl?:string;sceneChoices?:[DistanceChoice,DistanceChoice];alternatives?:[LanguageDocument,LanguageDocument];targetWords:string[];listeningWords:string[];family:string;vocabulary:string[];action:string;owner:string;subject:string;plural:boolean;kind:'number'|'judgement'|'meaning';credit:string|null}
-const vocabulary=[...lessonThreeMatrixCatalogue,...everydayPeopleCatalogue]
+const vocabulary=[...universityVocabulary]
 const owners=allDeterminers.filter(d=>['the','my','your','his','her','our','their'].includes(d.word))
 export function sentenceKey(text:string){return text.toLowerCase().replace(/[.!?]/g,'').replace(/\s+/g,' ').trim()}
 export function sentenceHash(text:string){let hash=2166136261;for(const c of text)hash=Math.imul(hash^c.charCodeAt(0),16777619);return (hash>>>0).toString(36)}

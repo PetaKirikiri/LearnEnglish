@@ -1,8 +1,9 @@
+import {addStructureResult,type StructureScores,type SentenceResult} from './blueprintScores'
 import {useEffect,useState} from 'react'
 import {supabase} from '../lib/supabase'
 import {flushWordAttempts} from '../learning/wordProgress/store'
 import type {WordProgress} from '../learning/wordProgress/model'
-export type StudentVocabulary={selected:string;students:{id:string;name:string}[];rows:WordProgress[]}
+export type StudentVocabulary={selected:string;students:{id:string;name:string}[];rows:WordProgress[];structureScores?:StructureScores}
 export function useStudentVocabulary(viewerId:string,learnerId:string|null,diagnostic=false){
  const [snapshot,setSnapshot]=useState<StudentVocabulary|null>(null),[error,setError]=useState(''),[retry,setRetry]=useState(0)
  useEffect(()=>{
@@ -21,6 +22,17 @@ export function useStudentVocabulary(viewerId:string,learnerId:string|null,diagn
      const response=await supabase.rpc('english_vocabulary_student_progress',{p_learner:learnerId})
      if(response.error)throw response.error
      data=response.data as StudentVocabulary
+     const structures=await supabase.rpc('english_blueprint_student_results',{p_learner:data.selected})
+     if(!structures.error){
+      const scores:StructureScores={}
+      for(const row of structures.data as (SentenceResult&{attempts:number;correct_count:number;listening_correct:number})[]){
+       const partial:StructureScores={};addStructureResult(partial,row)
+       const id=Object.keys(partial)[0];if(!id)continue
+       const score=scores[id]??(scores[id]={attempts:0,correct:0,listeningCorrect:0})
+       score.attempts+=Number(row.attempts);score.correct+=Number(row.correct_count);score.listeningCorrect+=Number(row.listening_correct)
+      }
+      data.structureScores=scores
+     }
     }
     if(active){setSnapshot(data);setError('')}
    }catch{if(active)setError('Could not load student progress.')}

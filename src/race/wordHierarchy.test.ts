@@ -1,3 +1,4 @@
+import {nounGroupFor} from './nounGroups'
 // @vitest-environment happy-dom
 import {expect,it} from 'vitest'
 import {hierarchyState,wordHierarchies,hierarchyCompatible} from './wordHierarchy'
@@ -14,7 +15,7 @@ it('has five independent ordered hierarchies and exposure below full fade never 
 it('only advances past the completed prefix, independently per word type',()=>{
  const state=hierarchyState(masteredWords([row('man',true),row('banana',true),row('holding',true),row('the',true)],[]))
  expect(state.noun.current[0]).toBe('woman');expect(state.verb.current[0]).toBe('opening')
- expect(state.determiner.current[0]).toBe('my');expect(state.adjective.current[0]).toBe('red');expect(state.pronoun.current[0]).toBe('I')
+ expect(state.determiner.current[0]).toBe('a');expect(state.adjective.current[0]).toBe('red');expect(state.pronoun.current[0]).toBe('I')
  const other=hierarchyState(masteredWords([row('i',true),row('red',true)],[]))
  expect(other.pronoun.current[0]).toBe('you');expect(other.adjective.current[0]).toBe('blue');expect(other.noun.current[0]).toBe('man')
 })
@@ -79,7 +80,7 @@ it('refills subjects and objects independently, including lapses and exhausted g
  const object=hierarchyState(new Set(['en:bag'])).noun
  expect(object.nounGroups?.objects).toEqual({current:['phone','water'],next:'cup'})
  expect(object.nounGroups?.subjects).toEqual(initial.nounGroups?.subjects)
- const people=wordHierarchies.noun.filter(w=>['man','woman','boy','girl','mother','father','son','daughter','doctor'].includes(w))
+ const people=wordHierarchies.noun.filter(w=>nounGroupFor(w)==='subjects')
  const exhausted=hierarchyState(new Set(people.map(w=>'en:'+w))).noun
  expect(exhausted.current).toEqual(['phone','bag'])
  expect(hierarchyState(new Set()).noun.current).toEqual(initial.current)
@@ -90,4 +91,28 @@ it('checks possessive determiners in the subject block against the same word fro
  expect(q).toBeDefined()
  expect(q.document.units.some(unit=>unit.role==='person-determiner'&&unit.english==='her')).toBe(true)
  expect(hierarchyCompatible(q,hierarchyState(new Set()))).toBe(false)
+})
+
+it('starts determiners with articles and quantity, keeping possessives out of fresh questions and foils in every round',()=>{
+ const state=hierarchyState(new Set())
+ expect(state.determiner.current).toEqual(['the','a'])
+ expect(state.determiner.next).toBe('an')
+ for(const level of [1,2,3,4,5,6] as const){
+  for(const seed of ['new-learner-a','new-learner-b']){
+   for(const q of generatedDeck(level,[],[],seed)){
+    const documents=[q.document,...(q.alternatives??[])]
+    const determiners=documents.flatMap(doc=>doc.units.filter(unit=>['determiner','person-determiner'].includes(unit.role)).map(unit=>unit.english.toLowerCase()))
+    expect(determiners.every(word=>['the','a','an'].includes(word)),`${level}: ${q.document.english}`).toBe(true)
+   }
+  }
+ }
+ const advanced=hierarchyState(new Set(['en:his','en:their']))
+ expect(advanced.determiner.current).toEqual(['the','a'])
+})
+
+it('retains every determiner in the diagnostic order while cycling only two current words',()=>{
+ expect(wordHierarchies.determiner).toEqual(['the','a','an','some','this','that','that over there','these','those','my','your','his','her','our','their'])
+ const state=hierarchyState(new Set(['en:the']))
+ expect(state.determiner.current).toEqual(['a','an'])
+ expect(state.determiner.next).toBe('some')
 })

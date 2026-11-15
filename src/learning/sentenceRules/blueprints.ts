@@ -6,7 +6,7 @@ import type {ClassroomWord} from '../sentenceMatrix/model'
 import {categoriesForWord} from '../sentenceMatrix/vocabularyCategories'
 import {subjectVerb,type SubjectWord} from '../sentenceMatrix/subjectEngine'
 export type MeaningKind='place'|'person'|'physical-object'|'abstract'
-export type WordMeaning={actionContexts?:readonly import('./actionDialogue').ObjectCategory[];kind:MeaningKind;countability?:'count'|'mass'|'plural-only';roles?:readonly 'destination'[];locationPrepositions?:readonly ('at'|'in'|'on')[]}
+export type WordMeaning={collective?:boolean;actionContexts?:readonly import('./actionDialogue').ObjectCategory[];kind:MeaningKind;countability?:'count'|'mass'|'plural-only';roles?:readonly 'destination'[];locationPrepositions?:readonly ('at'|'in'|'on')[]}
 export type BlueprintId='where-noun'|'where-person'|'person-at-place'
 export const sentenceBlueprints={
  'where-noun':{pattern:'Where {be} {determiner} {noun}?',nounKinds:['place','person','physical-object'],agreement:'noun-number',nounModes:['noun','pronoun','name']},

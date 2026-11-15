@@ -1,0 +1,75 @@
+{
+  "style": "Transparent polished 3D educational icons, matching family-v2-son.png and level-three/apple.png",
+  "assets": [
+    {
+      "name": "brother",
+      "subject": "A boy clearly highlighted in foreground alongside his sister of similar age slightly muted behind him; sibling relationship, no parent. Both children.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-f7b7e5b4-85c9-4d29-8589-5290f9c15993.png"
+    },
+    {
+      "name": "sister",
+      "subject": "A girl clearly highlighted in foreground alongside her brother of similar age slightly muted behind her; sibling relationship, no parent. Both children.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-429279cb-cde0-4c60-98b5-f34533f34189.png"
+    },
+    {
+      "name": "friend",
+      "subject": "A young adult in sharp foreground with another young adult friend beside and slightly behind, friendly fist bump, casual clothes, no romance.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-8ba31a62-32d3-43ac-ac08-8b14562c32fc.png"
+    },
+    {
+      "name": "child",
+      "subject": "One cheerful young child, gender-neutral casual green shirt, full upper body, clearly child proportions.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-c2d02422-b439-436f-b0e7-86efa11c1d9f.png"
+    },
+    {
+      "name": "person",
+      "subject": "One ordinary adult human standing full body, neutral casual teal clothing, relaxed pose.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-bec9e7ff-7aa0-4326-975d-1378cc7a3634.png"
+    },
+    {
+      "name": "family",
+      "subject": "One cohesive family group of two parents and two children, affectionate grouping, all four fully visible.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-6663cc29-a4d1-46cb-9eb5-b091840c50e0.png"
+    },
+    {
+      "name": "home",
+      "subject": "One welcoming small house, warm light in window, red tiled roof, front door, no floating hearts.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-5d3cfa09-c87d-4ffb-a43a-a9a9e8eaa3dd.png"
+    },
+    {
+      "name": "room",
+      "subject": "One compact isometric cutaway room with two walls, floor, window, small chair and table; room interior is main subject, no bed.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-042f5fe1-82c0-4f7c-b0e8-f9990a0e2806.png"
+    },
+    {
+      "name": "food",
+      "subject": "One plate holding a varied meal of vegetables, rice and cooked food, clearly food as a general category.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-c860e27a-554c-42bf-8a05-34b9ccac7745.png"
+    },
+    {
+      "name": "rice",
+      "subject": "One small plain bowl full of cooked white rice, visible fluffy rice grains.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-bd24d420-a9c8-4c13-80eb-ed208db21d58.png"
+    },
+    {
+      "name": "bread",
+      "subject": "One golden loaf of bread with two cut slices showing soft crumb.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-049a7907-18f9-4fd4-84b1-506a43b9f80a.png"
+    },
+    {
+      "name": "milk",
+      "subject": "One clear glass full of white milk beside a plain unlabeled small milk carton.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-0efab4df-ade1-4fa7-8f94-e0700393088f.png"
+    },
+    {
+      "name": "money",
+      "subject": "A small stack of generic green banknotes and gold coins, no real currency markings or text.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-6ba70c07-69a6-4f83-9718-c616fd62d2ac.png"
+    },
+    {
+      "name": "car",
+      "subject": "One small blue passenger car in three-quarter view, all wheels and full car visible, no driver, no branding.",
+      "source": "/Users/petakirikiri/.codex/generated_images/01a1d9a5-e5f2-7181-8c4f-3ec072c353f3/exec-769f8369-74e9-413f-b7fa-f4ef812c5fde.png"
+    }
+  ]
+}

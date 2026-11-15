@@ -1,5 +1,5 @@
 import type {Action} from './actionDialogue'
-const icon=(id:string)=>`/classroom/icons/actions/expanded/${id}.png`
+import {actionArtwork as icon} from './actionArtwork'
 /** Each entry is a reviewed use: particles stay with phrasal verbs; prepositions get a slot. */
 export const expandedActions:readonly Action[]=[
  {word:'using',thai:'ใช้',complement:'object',objects:['usable'],categories:['everyday'],icon:icon('using')},

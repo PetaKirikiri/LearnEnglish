@@ -1,12 +1,13 @@
+import {presentContinuousGrammar,type SentenceGrammar} from './sentenceGrammar'
 import type {Action,ObjectCategory} from './actionDialogue'
 export type ActionConnection='bare'|'direct'|'to'|'in'|'on'|'at'|'off'
 export type ActionUse={objects:readonly ObjectCategory[];thai?:string;sentenceThai?:string;spoken?:string}
 export type ActionUses=Partial<Record<ActionConnection,ActionUse>>
-export type ActionBlueprint={id:string;connection:ActionConnection;nounCategories?:readonly ObjectCategory[]}
+export type ActionBlueprint={id:string;connection:ActionConnection;nounCategories?:readonly ObjectCategory[];grammar?:SentenceGrammar}
 /** These are the two existing action forms. Potential word uses cannot add slots. */
 export const activeActionBlueprints:readonly ActionBlueprint[]=[
- {id:'transitive-object',connection:'direct'},
- {id:'intransitive-to-object',connection:'to'},
+ {id:'transitive-object',connection:'direct',grammar:presentContinuousGrammar},
+ {id:'intransitive-to-object',connection:'to',grammar:presentContinuousGrammar},
 ]
 export function potentialActionUses(action:Action):ActionUses{
  if(action.uses)return action.uses

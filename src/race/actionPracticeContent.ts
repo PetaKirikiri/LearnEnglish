@@ -1,3 +1,4 @@
+import {possessiveFor} from '../learning/sentenceRules/possessives'
 import {diverseQuestions} from './diverseQuestions'
 import {taughtActionLine,recordedActionLine} from '../learning/sentenceRules/assessmentScope'
 import {subjectPronouns} from '../learning/sentenceMatrix/subjectEngine'
@@ -7,6 +8,13 @@ import {meaningForWord} from '../learning/sentenceRules/blueprints'
 import type {SubjectWord} from '../learning/sentenceMatrix/subjectEngine'
 import {actionDialogue,actionVocabulary,objectsForAction,objectDeterminers,type ActionSubject} from '../learning/sentenceRules/actionDialogue'
 import type {ClassroomWord} from '../learning/sentenceMatrix/model'
+// Recorded IDs depend on this original determiner rotation. New people belong to
+// adaptive practice; extending their possessives must not rewrite archived answers.
+const recordedPossessors=new Set(['man','men','woman','women','boy','boys','girl','girls','mother','mothers','father','fathers','son','sons','daughter','daughters','doctor','wife'])
+const recordedObjectDeterminers=(object:Parameters<typeof objectDeterminers>[0])=>objectDeterminers(object).filter(choice=>{
+ const possessor=possessiveFor(choice.word)?.possessor
+ return !possessor||possessor.kind==='name'||recordedPossessors.has(possessor.phrase.noun)
+})
 // Explicit, reviewed complements. No arbitrary verb/noun combinations.
 const vocabulary:ClassroomWord[]=['apple','water','book','hotel'].map(word=>lessonThreeMatrixCatalogue.find(item=>item.word===word)!)
 const subjects:ActionSubject[]=['you','he','she','they']
@@ -50,7 +58,7 @@ for(const speaker of speakers){add(4,speaker,'eating');for(const action of actio
 // Cover every compatible noun and determiner without a huge subject x noun product.
 let rotation=0
 for(const action of actionVocabulary.filter(a=>actions.includes(a.word)))for(const object of objectsForAction(action.word,lessonThreeMatrixCatalogue)){
- for(const determiner of objectDeterminers(object))add(5,speakers[rotation++%speakers.length],action.word,object.word,determiner.word)
+ for(const determiner of recordedObjectDeterminers(object))add(5,speakers[rotation++%speakers.length],action.word,object.word,determiner.word)
 }
 // Next level keeps the established frame; only reviewed verb/object combinations grow.
 const nextLevel:ActionPracticeQuestion[]=[]
@@ -121,7 +129,7 @@ function matchedPictureQuestion(q:ActionPracticeQuestion):ActionPracticeQuestion
   const noun=q.units.find(u=>u.role==='object')?.english.replace(/[?.!]$/,'')
   const object=objectsForAction(action,lessonThreeMatrixCatalogue).find(item=>item.noun===noun)
   const owner=q.units.find(u=>u.role==='determiner')?.english
-  const alternative=object&&objectDeterminers(object).find(d=>d.word!==owner&&!/^(a|an|the)$/.test(d.word))
+  const alternative=object&&recordedObjectDeterminers(object).find(d=>d.word!==owner&&!/^(a|an|the)$/.test(d.word))
   if(!subject||!object||!alternative)throw new Error(`No matched picture alternative: ${q.id}`)
   if(owner&&/^(a|an|the)$/.test(owner)){
    const otherSubject=nextSubjects.find(p=>p.word==='They')??nextSubjects.find(p=>p.word==='they')!

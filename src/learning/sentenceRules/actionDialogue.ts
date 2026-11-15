@@ -1,3 +1,5 @@
+import {actionArtwork} from './actionArtwork'
+import {everydayActions} from './everydayActions'
 import {actionInBlueprint,type ActionBlueprint,type ActionUses} from './actionBlueprints'
 import {possessiveChoices,possessiveFor} from './possessives'
 import {referencePhrase,type NominalReference} from './nominalReferences'
@@ -11,23 +13,24 @@ import {nounPhraseUnits,type NounPhrase} from '../sentenceMatrix/nounPhrase'
 import {subjectVerb,subjectPronouns,type SubjectWord} from '../sentenceMatrix/subjectEngine'
 /** Verb frames own their object requirements; lesson views never assemble arbitrary phrases. */
 export type ObjectCategory = keyof typeof nounActionAffordances | 'food' | 'drink' | 'destination' | 'person' | 'spatial-target'
-export type Action = {uses?:ActionUses;sentenceThai?:string;spoken?:string;preposition?:{english:string;thai:string};destination?:boolean;level?:number;word:string;thai:string;complement:'object'|'destination'|'none'|'prepositional';objects:readonly ObjectCategory[];categories:readonly VocabularyCategory[];icon:string}
+export type Action = {thaiByObject?:Readonly<Record<string,string>>;uses?:ActionUses;sentenceThai?:string;spoken?:string;preposition?:{english:string;thai:string};destination?:boolean;level?:number;word:string;thai:string;complement:'object'|'destination'|'none'|'prepositional';objects:readonly ObjectCategory[];categories:readonly VocabularyCategory[];icon:string}
 export type ActionObject = {word:string;thai:string;noun:string;phrase:NounPhrase;categories:readonly ObjectCategory[];icon?:string;plural?:boolean;mass?:boolean}
 export const actionVocabulary:readonly Action[] = [
- ...[{word:'talking',thai:'พูด'},{word:'listening',thai:'ฟัง'},{word:'driving',thai:'ขับรถ'}].map(action=>({...action,...(action.word==='driving'?{destination:true}:{uses:{to:{objects:['person'] as const,thai:action.word==='talking'?'กับ':'—',sentenceThai:action.word==='talking'?'พูดกับ':'ฟัง'}}}),categories:['everyday'] as const,icon:`/classroom/icons/everyday/${action.word}.webp`,complement:'none' as const,objects:[]})),
- {word:'eating',categories:['food'],icon:'/classroom/icons/actions/closeup/eating.png',thai:'กิน',complement:'object',objects:['food']},
- {word:'drinking',categories:['food'],icon:'/classroom/icons/actions/closeup/drinking.png',thai:'ดื่ม',complement:'object',objects:['drink']},
- {word:'sleeping',uses:{bare:{objects:[]},in:{objects:['sleep-inside'],thai:'ใน',sentenceThai:'นอนใน'},on:{objects:['sleep-surface'],thai:'บน',sentenceThai:'นอนบน'}},categories:['places'],icon:'/classroom/icons/actions/closeup/sleeping.png',thai:'นอน',complement:'none',objects:[]},
- {word:'running',uses:{to:{objects:['destination','person','spatial-target']}},destination:true,categories:['sports'],icon:'/classroom/icons/actions/closeup/running.png',thai:'วิ่ง',complement:'none',objects:[]},
- {word:'walking',uses:{to:{objects:['destination','person','spatial-target']}},destination:true,categories:['places', 'sports'],icon:'/classroom/icons/actions/closeup/walking.png',thai:'เดิน',complement:'none',objects:[]},
- {word:'playing',categories:['sports'],icon:'/classroom/icons/actions/closeup/playing.png',thai:'เล่น',complement:'none',objects:[]},
- {word:'reading',categories:['everyday'],icon:'/classroom/icons/actions/closeup/reading.png',thai:'อ่าน',complement:'object',objects:['readable']},
- {word:'going',uses:{to:{objects:['destination','person','spatial-target']}},destination:true,categories:['places', 'transport'],icon:'/classroom/icons/actions/closeup/walking.png',thai:'ไป',complement:'destination',objects:['destination']},
- {word:'holding',level:6,categories:['everyday'],icon:'/classroom/icons/actions/closeup/holding.png',thai:'ถือ',complement:'object',objects:['holdable']},
- {word:'opening',level:6,categories:['everyday'],icon:'/classroom/icons/actions/closeup/opening.png',thai:'เปิด',complement:'object',objects:['openable']},
- {word:'cleaning',level:6,categories:['everyday'],icon:'/classroom/icons/actions/expanded/cleaning.png',thai:'ทำความสะอาด',complement:'object',objects:['cleanable']},
+ ...[{word:'talking',thai:'พูด'},{word:'listening',thai:'ฟัง'},{word:'driving',thai:'ขับรถ'}].map(action=>({...action,...(action.word==='driving'?{destination:true,uses:{direct:{objects:['drivable'] as const},to:{objects:['destination'] as const}}}:{uses:{to:{objects:['person'] as const,thai:action.word==='talking'?'กับ':'—',sentenceThai:action.word==='talking'?'พูดกับ':'ฟัง'}}}),categories:['everyday'] as const,icon:actionArtwork(action.word),complement:'none' as const,objects:[]})),
+ {word:'eating',categories:['food'],icon:actionArtwork('eating'),thai:'กิน',complement:'object',objects:['food']},
+ {word:'drinking',categories:['food'],icon:actionArtwork('drinking'),thai:'ดื่ม',complement:'object',objects:['drink']},
+ {word:'sleeping',uses:{bare:{objects:[]},in:{objects:['sleep-inside'],thai:'ใน',sentenceThai:'นอนใน'},on:{objects:['sleep-surface'],thai:'บน',sentenceThai:'นอนบน'}},categories:['places'],icon:actionArtwork('sleeping'),thai:'นอน',complement:'none',objects:[]},
+ {word:'running',uses:{to:{objects:['destination','person','spatial-target']}},destination:true,categories:['sports'],icon:actionArtwork('running'),thai:'วิ่ง',complement:'none',objects:[]},
+ {word:'walking',uses:{to:{objects:['destination','person','spatial-target']}},destination:true,categories:['places', 'sports'],icon:actionArtwork('walking'),thai:'เดิน',complement:'none',objects:[]},
+ {word:'playing',categories:['sports'],icon:actionArtwork('playing'),thai:'เล่น',complement:'none',objects:[]},
+ {word:'reading',categories:['everyday'],icon:actionArtwork('reading'),thai:'อ่าน',complement:'object',objects:['readable']},
+ {word:'going',uses:{to:{objects:['destination','person','spatial-target']}},destination:true,categories:['places', 'transport'],icon:actionArtwork('going'),thai:'ไป',complement:'destination',objects:['destination']},
+ {word:'holding',level:6,categories:['everyday'],icon:actionArtwork('holding'),thai:'ถือ',complement:'object',objects:['holdable']},
+ {word:'opening',level:6,categories:['everyday'],icon:actionArtwork('opening'),thai:'เปิด',complement:'object',objects:['openable']},
+ {word:'cleaning',level:6,categories:['everyday'],icon:actionArtwork('cleaning'),thai:'ทำความสะอาด',complement:'object',objects:['cleanable']},
  ...expandedActions,
- {word:'washing',level:6,categories:['everyday'],icon:'/classroom/icons/actions/closeup/washing.png',thai:'ล้าง',complement:'object',objects:['washable']},
+ ...everydayActions,
+ {word:'washing',level:6,categories:['everyday'],icon:actionArtwork('washing'),thai:'ล้าง',complement:'object',objects:['washable']},
 ]
 export type ActionSubject = Lowercase<typeof subjectPronouns[number]['word']>
 /** Legacy dialogue replies retain you → I; all person and agreement data is shared. */
@@ -108,6 +111,7 @@ export function actionDialogue(subject:ActionSubject,word:string,selection:{blue
  const describedObject=baseObject&&selection.description?{...baseObject,phrase:{...baseObject.phrase,description:selection.description}}:baseObject
  const determinedObject=describedObject&&selectedDeterminer&&!selection.destination?{...describedObject,phrase:{...describedObject.phrase,determiner:possessiveFor(selectedDeterminer.word)??{english:selectedDeterminer.word,thai:selectedDeterminer.thai}}}:describedObject
  const referenceNoun=chosenObject&&selection.vocabulary.find(noun=>noun.word===chosenObject.noun)
+ const verbThai=action.thaiByObject?.[referenceNoun?.singular??referenceNoun?.word??'']??action.thai
  const isLocation=!selection.blueprint&&(action.complement==='destination'||!!action.preposition&&chosenObject?.categories.includes('destination'))
  if(selection.objectReference&&(!determinedObject||!referenceNoun))throw new Error('A reference requires a compatible source noun.')
  const object=selection.objectReference&&determinedObject&&referenceNoun?{...determinedObject,phrase:referencePhrase(referenceNoun,determinedObject.phrase,selection.objectReference,!!isLocation)}:determinedObject
@@ -115,14 +119,14 @@ export function actionDialogue(subject:ActionSubject,word:string,selection:{blue
   ?nounPhraseUnits(speaker.phrase).map((unit,index)=>({...unit,english:answer&&index===0?unit.english.charAt(0).toUpperCase()+unit.english.slice(1):unit.english,role:unit.role==='determiner'?'person-determiner' as const:unit.role==='description'?'description' as const:'person' as const}))
   :[{english:answer?answerSubject:questionSubject,thai:speaker?.thai??(answer?person.answerThai:person.thai),role:'person' as const}]
  const units=[...subjectParts(true),{english:be as string,thai:'กำลัง',role:'be' as const},
- {english:action.spoken??action.word,thai:action.thai,role:'action' as const},...(object?nounPhraseUnits(object.phrase).map(unit=>({...unit,role:unit.role==='noun'?'object' as const:unit.role})):[])]
+ {english:action.spoken??action.word,thai:verbThai,role:'action' as const},...(object?nounPhraseUnits(object.phrase).map(unit=>({...unit,role:unit.role==='noun'?'object' as const:unit.role})):[])]
  units[units.length-1]={...units[units.length-1],english:units[units.length-1].english+'.'}
  const nounMeaning=object?object.phrase.nounThai+(object.phrase.description?.thai??''):''
  const objectMeaning=selection.objectReference?object?.phrase.nounThai:object?(selectedDeterminer&&(possessiveFor(selectedDeterminer.word)||['the','my','your','his','her','our','their','this','that','these','those','some'].includes(selectedDeterminer.word))?nounMeaning+(selectedDeterminer.word==='the'?'':selectedDeterminer.thai.replace(/ \(.*\)/,'')):object.thai.replace(/^ไป(?:ที่|หา)/,'').replace(object.phrase.nounThai,nounMeaning)):''
  const movementToPerson=action.complement==='destination'&&chosenObject?.categories.includes('person')
- const meaning=selection.objectReference?.mode==='pronoun'&&isLocation?`${action.thai}${objectMeaning}`:action.complement==='destination'?`${action.thai}${movementToPerson?(word==='going'?'หา':'ไปหา'):(word==='going'?'ที่':'ไปที่')}${objectMeaning}`:`${action.sentenceThai??action.thai}${objectMeaning}`
+ const meaning=selection.objectReference?.mode==='pronoun'&&isLocation?`${action.thai}${objectMeaning}`:action.complement==='destination'?`${action.thai}${movementToPerson?(['going','coming'].includes(word)?'หา':'ไปหา'):(['going','coming'].includes(word)?'ที่':'ไปที่')}${objectMeaning}`:`${action.sentenceThai??verbThai}${objectMeaning}`
  return {
- question:{english:`${destinationQuestion?'Where':'What'} ${questionBe} ${questionSubject} ${destinationQuestion?action.word:'doing'}?`,thai:`${subjectMeaning??person.thai}กำลัง${destinationQuestion?`${action.thai}${word==='going'?'ไหน':'ไปไหน'}`:'ทำอะไร'}`,units:[{english:destinationQuestion?'Where':'What',thai:destinationQuestion?'ที่ไหน':'อะไร',role:'question' as const},{english:questionBe,thai:'—',role:'be' as const},...subjectParts(false),{english:destinationQuestion?`${action.word}?`:'doing?',thai:destinationQuestion?action.thai:'กำลังทำ',role:'action' as const}]},
+ question:{english:`${destinationQuestion?'Where':'What'} ${questionBe} ${questionSubject} ${destinationQuestion?action.word:'doing'}?`,thai:`${subjectMeaning??person.thai}กำลัง${destinationQuestion?`${action.thai}${word==='going'?'ไหน':word==='coming'?'ที่ไหน':'ไปไหน'}`:'ทำอะไร'}`,units:[{english:destinationQuestion?'Where':'What',thai:destinationQuestion?'ที่ไหน':'อะไร',role:'question' as const},{english:questionBe,thai:'—',role:'be' as const},...subjectParts(false),{english:destinationQuestion?`${action.word}?`:'doing?',thai:destinationQuestion?action.thai:'กำลังทำ',role:'action' as const}]},
  answer:{english:units.map(unit=>unit.english).join(' '),thai:`${subjectMeaning??person.answerThai}กำลัง${meaning}`,units},object,
  }
 }

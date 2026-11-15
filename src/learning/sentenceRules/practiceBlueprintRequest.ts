@@ -1,3 +1,5 @@
+import {blueprintFrames} from './blueprintCatalogue'
+import {presentContinuousGrammar,presentSimpleBeGrammar} from './sentenceGrammar'
 import {activeActionBlueprints} from './actionBlueprints'
 import type {PracticeLevel} from '../../race/PracticeLevelPicker'
 import type {PracticeStructure} from '../../race/generatedPracticeContent'
@@ -7,7 +9,10 @@ function createRequest(level:PracticeLevel,structure?:PracticeStructure){
  const construction=structure==='identify'?'identify':structure==='location'?'location':structure==='destination'?'action':level<=3?'noun':level===4?'activity-question':'action'
  const frames=activeActionBlueprints.filter(frame=>structure==='destination'?frame.connection==='to':level===6?frame.connection==='direct':true)
  const anchors:readonly HierarchyType[]=construction==='action'?['noun','verb','adjective','pronoun','determiner']:construction==='activity-question'?['noun','adjective','pronoun','determiner']:construction==='identify'?['noun','determiner']:construction==='location'?['noun','pronoun','determiner']:['noun','adjective','determiner']
- return {construction,frames,anchors,movementOnly:structure==='destination',level,
+ const grammar=construction==='action'||construction==='activity-question'?presentContinuousGrammar:level===1&&construction==='noun'?undefined:presentSimpleBeGrammar
+ const blueprintIds=construction==='action'?frames.map(frame=>frame.id):construction==='activity-question'?['activity']:construction==='location'?['location']:construction==='identify'?['identify-question','identify-answer']:level===1?[]:['where']
+ const blueprints=blueprintFrames.filter(blueprint=>blueprintIds.includes(blueprint.id))
+ return {construction,frames,blueprints,anchors,grammar,movementOnly:structure==='destination',level,
   subjectGroup:'subjects' as const,
   // Connections/categories come from the existing verb uses; never add a
   // preposition merely because a chosen ingredient cannot fit this blueprint.

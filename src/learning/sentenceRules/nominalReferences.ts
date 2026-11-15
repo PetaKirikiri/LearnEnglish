@@ -11,17 +11,18 @@ const plural=(noun:ClassroomWord)=>noun.number==='plural'||!!noun.pairOnly
 export function personNames(config?:SubjectModeConfig){const names=config?.names.filter(name=>name.kind==='person')??[];return [...new Map([...names,...defaultPersonNames].map(name=>[name.word,name])).values()]}
 export function placeNames(config?:SubjectModeConfig){return [...new Map([...(config?.names.filter(name=>name.kind==='place')??[]),...defaultPlaceNames].map(name=>[name.word,name])).values()]}
 export function nounSubjectModes(noun:ClassroomWord,config?:SubjectModeConfig):SubjectModeConfig{
- const human=meaningForWord(noun)?.kind==='person'
+ const human=meaningForWord(noun)?.kind==='person'&&!meaningForWord(noun)?.collective
  const pronouns=human?(config?.pronouns??subjectPronouns).filter(p=>p.word!=='it'):subjectPronouns.filter(p=>p.word===(plural(noun)?'they':'it'))
  const names=[...personNames(config),...placeNames(config)]
  return {pronouns,names,initialPronoun:human?config?.initialPronoun:pronouns[0]?.word,initialName:names[0]?.word}
 }
 export function objectPronouns(noun:ClassroomWord,location=false):ReferenceChoice[]{
- const words=location?['here','there']:plural(noun)?['them']:meaningForWord(noun)?.kind!=='person'?['it']:/^(woman|girl|mother|daughter)$/.test(noun.singular??noun.word)?['her']:/^(man|boy|father|son)$/.test(noun.singular??noun.word)?['him']:['him','her']
+ const words=location?['here','there']:plural(noun)?['them']:meaningForWord(noun)?.kind!=='person'||meaningForWord(noun)?.collective?['it']:/^(woman|girl|mother|daughter|sister)$/.test(noun.singular??noun.word)?['her']:/^(man|boy|father|son|brother)$/.test(noun.singular??noun.word)?['him']:['him','her']
  const meanings:Record<string,string>={it:'มัน',them:'พวกเขา / สิ่งเหล่านั้น',him:'เขา',her:'เธอ',here:'ที่นี่',there:'ที่นั่น'}
  return words.map(word=>({...noun,word,thai:meanings[word],reference:{mode:'pronoun',word}}))
 }
 export function namedNouns(noun:ClassroomWord,config?:SubjectModeConfig):ReferenceChoice[]{
+ if(meaningForWord(noun)?.collective)return []
  const kind=meaningForWord(noun)?.kind
  const names=kind==='person'?personNames(config):kind==='place'?placeNames(config):[]
  return names.map(name=>({...noun,word:name.word,thai:name.thai,reference:{mode:'name',name}}))

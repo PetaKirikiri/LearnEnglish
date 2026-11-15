@@ -19,16 +19,18 @@ it('routes every taught determiner through the same meaning-specific artwork in 
   for(const path of paths)expect(existsSync(resolve('public',path.slice(1))),word+': '+path).toBe(true)
   sources.set(word,paths.join('|'))
  }
- expect(new Set(sources.values()).size).toBe(wordHierarchies.determiner.length)
+ expect(sources.get('a')).toBe(sources.get('an'))
+ expect(new Set(sources.values()).size).toBe(wordHierarchies.determiner.length-1)
 })
 it('does not place the clock sprite behind transparent action artwork',()=>{
  const html=renderToStaticMarkup(<ActionIcon word="holding"/>)
  expect(html).toContain('background:none')
- expect(html).toContain('/actions/closeup/holding.png')
+ expect(html).toContain('/actions/focused/holding.png')
 })
 it('uses quantity rather than a question mark for some',()=>{
  const html=renderToStaticMarkup(<DeterminerIcon word="some"/>)
- expect([...html.matchAll(/<img /g)]).toHaveLength(3)
+ expect([...html.matchAll(/<img /g)]).toHaveLength(1)
+ expect(html).toContain('/determiners/v3/some.png')
  expect(html).toContain('an unspecified group')
  expect(html).not.toContain('?')
 })

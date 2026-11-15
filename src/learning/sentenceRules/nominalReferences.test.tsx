@@ -14,9 +14,9 @@ it('keeps the approved source noun and verb frame for every object/pronoun/name 
   const lesson=requestLesson(number),capability=actionCapabilities(lesson)
   for(const action of capability.actions)for(const object of capability.objects(action.word)){
    const source=lesson.vocabulary.find(n=>n.word===object.noun)!
-   const location=action.complement==='destination'||!!object.phrase.preposition&&object.categories.includes('destination')
-   for(const option of [...objectPronouns(source,location),...namedNouns(source,lesson.subjectModes)]){
-    const line=actionDialogue('i',action.word,{question:lesson.actionQuestion,vocabulary:lesson.vocabulary,object:object.word,objectReference:option.reference}).answer
+   // A fixed blueprint keeps its preposition; its noun slot takes it/them, not here/there.
+   for(const option of [...objectPronouns(source),...namedNouns(source,lesson.subjectModes)]){
+    const line=actionDialogue('i',action.word,{blueprint:capability.frame(action.word),question:lesson.actionQuestion,vocabulary:lesson.vocabulary,object:object.word,objectReference:option.reference}).answer
     expect(line.english).not.toMatch(/\b(?:the|a|an) (?:it|them|him|her|here|there)\b|\b(?:at|to) (?:here|there)\b/)
     expect(()=>quadrantLayout({...line,construction:'action-answer'}),line.english).not.toThrow()
     if(option.reference.mode==='name'){expect(line.units.some(u=>u.role==='object'&&u.english.replace(/\.$/,'')===option.reference.name.word)).toBe(true);expect(line.english).not.toMatch(/[’']s\b/)}
