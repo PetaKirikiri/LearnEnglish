@@ -1,7 +1,7 @@
 import {getPlaybackMode,playbackRateFor,type PlaybackMode} from './usePlaybackMode'
 import {loadAudioWaveform,waveformAtTime,type AudioWaveform} from './audioWaveform'
 import {alignAudio} from './alignAudio'
-import {kokoroAudio} from './kokoroAudio'
+import {kokoroAudio,type VoiceProgress} from './kokoroAudio'
 import manifest from '../race/generatedPracticeAudio.json'
 import {sentenceKey} from '../race/generatedPracticeContent'
 import {parseSentenceTiming,wordAtTime,type SentenceTiming,type SpokenWord} from './sentenceTiming'
@@ -12,13 +12,13 @@ const pending=new Map<string,Promise<void>>()
 const existing=(q:AudioSentence)=>q.audioUrl||(manifest as Record<string,string>)[sentenceKey(q.document.english)]
 /** Background calls deliberately do no synthesis or paid provider requests. */
 export async function prepareSentenceAudio(_questions:readonly AudioSentence[]){void _questions}
-async function prepareForPlayback(q:AudioSentence,forceKokoro=false){
+async function prepareForPlayback(q:AudioSentence,forceKokoro=false,onProgress?:(value:VoiceProgress)=>void){
  const key=spokenKey(q.document.english)
  if(!forceKokoro&&ready.has(key))return
  const requestKey=(forceKokoro?'kokoro:':'')+key
- const old=pending.get(requestKey);if(old)return old
+ const old=pending.get(requestKey);if(old){if(forceKokoro||!existing(q))void kokoroAudio(key,onProgress).catch(()=>{});return old}
  const work=(async()=>{
-  const url=(!forceKokoro&&existing(q))||await kokoroAudio(key)
+  const url=(!forceKokoro&&existing(q))||await kokoroAudio(key,onProgress)
   const entry:{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming}={url,waveform:null}
   ready.set(key,entry)
   // Audio starts independently. Optional animation preparation must never block it.
@@ -37,10 +37,11 @@ async function prepareForPlayback(q:AudioSentence,forceKokoro=false){
  pending.set(requestKey,work)
  try{await work}finally{pending.delete(requestKey)}
 }
-export type PlaybackCallbacks={loading?:(loading:boolean)=>void;started:()=>void;ended:()=>void;error:(reason?:'sign-in'|'unavailable'|'blocked')=>void;word?:(word:SpokenWord|null)=>void;waveform?:(level:number,time:number,progress?:number,recording?:AudioWaveform)=>void}
+export type PlaybackCallbacks={loading?:(loading:boolean,status?:string)=>void;started:()=>void;ended:()=>void;error:(reason?:'sign-in'|'unavailable'|'blocked')=>void;word?:(word:SpokenWord|null)=>void;waveform?:(level:number,time:number,progress?:number,recording?:AudioWaveform)=>void}
 export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mode:PlaybackMode=getPlaybackMode(),unlockedPlayer?:HTMLAudioElement):()=>void{
  let stopped=false,player:HTMLAudioElement|undefined,frame:number|undefined
  let current:SpokenWord|null=null,started=false
+ let startup:ReturnType<typeof setTimeout>|undefined
  const highlight=(word:SpokenWord|null)=>{
   if(word?.start===current?.start&&word?.end===current?.end)return
   current=word;callbacks.word?.(word)
@@ -50,11 +51,12 @@ export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mo
   highlight(null);callbacks.waveform?.(0,0)
  }
  const clear=()=>{
+  clearTimeout(startup)
   clearMotion()
  }
  const completed=()=>{if(!stopped){clear();callbacks.ended()}}
  const failed=(reason?:'blocked')=>{if(!stopped){clear();callbacks.error(reason)}}
- const begin=()=>{if(!stopped&&!started){started=true;callbacks.started()}}
+ const begin=()=>{clearTimeout(startup);if(!stopped&&!started){started=true;callbacks.started()}}
  const cached=ready.get(spokenKey(q.document.english))
  const url=cached?.url||existing(q)
  if(url){
@@ -81,6 +83,7 @@ export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mo
   player.onplaying=()=>{if(stopped)return;begin();clear();tick()}
   player.ontimeupdate=sync;player.onseeked=sync
   player.onpause=clearMotion;player.onwaiting=clearMotion;player.onended=completed;player.onerror=()=>failed()
+  startup=setTimeout(()=>{player?.pause();failed()},12000)
   resume()
  }else failed()
  return()=>{stopped=true;clear();player?.pause()}
@@ -90,7 +93,8 @@ export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mo
 const silentWav='data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQIAAAAAAA=='
 export function playTimedSentence(q:AudioSentence,callbacks:PlaybackCallbacks,mode:PlaybackMode=getPlaybackMode()){
  let stopped=false,stop:(()=>void)|undefined,retried=false,didStart=false
- callbacks.loading?.(true)
+ const progress=(value:VoiceProgress)=>{if(!stopped)callbacks.loading?.(true,value.phase==='generating'?'Creating audio…':value.progress===undefined?'Loading voice…':`Loading voice ${Math.round(value.progress)}%`)}
+ callbacks.loading?.(true,'Loading audio…')
  const player=new Audio(silentWav)
  void player.play().catch(()=>{/* Autoplay can fail; the explicit replay tap can unlock it. */})
  const start=()=>{
@@ -99,9 +103,9 @@ export function playTimedSentence(q:AudioSentence,callbacks:PlaybackCallbacks,mo
    if(stopped)return
    if(reason==='blocked'||retried||!existing(q)){callbacks.loading?.(false);callbacks.error(reason);return}
    retried=true;callbacks.loading?.(true);stop?.()
-   void prepareForPlayback(q,true).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
+   void prepareForPlayback(q,true,progress).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
   }},mode,player)
  }
- void prepareForPlayback(q).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
+ void prepareForPlayback(q,false,progress).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
  return()=>{stopped=true;stop?.();player.pause();callbacks.loading?.(false)}
 }

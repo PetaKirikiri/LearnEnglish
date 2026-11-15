@@ -10,6 +10,7 @@ type StageProps={
  prompt?:string
  playbackError?:boolean
  playbackLoading?:boolean
+ playbackStatus?:string
  answers:ComponentProps<typeof BinaryAnswerZone>
  correct:boolean|null
  onNext:()=>void
@@ -18,7 +19,7 @@ type StageProps={
  onReplay?:()=>void
  teacherControlled?:boolean
 }
-export default function PracticeStage({question,answers,correct,onNext,explanation,onHelp,onReplay,playbackError=false,playbackLoading=false,teacherControlled=false}:StageProps){
+export default function PracticeStage({question,answers,correct,onNext,explanation,onHelp,onReplay,playbackError=false,playbackLoading=false,playbackStatus='Loading audio…',teacherControlled=false}:StageProps){
  const [helpOpen,setHelpOpen]=useState(false)
  const stage=useRef<HTMLDivElement>(null)
  const [toolbarHost,setToolbarHost]=useState<HTMLElement|null>(null)
@@ -94,7 +95,8 @@ export default function PracticeStage({question,answers,correct,onNext,explanati
    {onReplay&&<PlaybackButtons busy={playbackLoading} onPlay={onReplay}/>}
    <button type="button" className="foundation-help" aria-label="อธิบายรูปแบบประโยค" aria-haspopup="dialog" onClick={()=>{onHelp?.();setHelpOpen(true)}}>?</button>
    <span className="foundation-result-announcement" role="status">{correct===null?'':correct?'ถูกต้อง':'ยังไม่ถูก'}</span>
-   {playbackError&&<span className="practice-audio-status" role="alert">Audio unavailable. Use the turtle or hare to retry.</span>}
+   {playbackLoading&&<span className="practice-audio-status" role="status">{playbackStatus}</span>}
+   {!playbackLoading&&playbackError&&<span className="practice-audio-status" role="alert">Audio couldn’t load. Tap to retry.</span>}
   </div>)
  return <div ref={stage} className="practice-stage adaptive-practice-stage" data-toolbar-in-header={!!toolbarHost||undefined}><AssessmentSentenceContext.Provider value={true}>
   {toolbarHost?createPortal(controls,toolbarHost):controls}

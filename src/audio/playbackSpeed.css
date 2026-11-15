@@ -13,6 +13,3 @@
 @media(max-width:480px){.playback-buttons .playback-speed-controls>button{width:76px;min-height:68px}.playback-speed-controls>button>.playback-art{width:64px;height:64px}}
 
 .playback-speed-controls .playback-art{position:relative}
-.playback-speed-controls[aria-busy=true] button[aria-pressed=true]>.playback-art::after{content:"";position:absolute;right:0;bottom:0;width:18px;height:18px;border:3px solid #ffffff;border-top-color:#1877ef;border-radius:50%;animation:audio-loading-spin .8s linear infinite}
-@keyframes audio-loading-spin{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.playback-speed-controls[aria-busy=true] button[aria-pressed=true]>.playback-art::after{animation:none}}

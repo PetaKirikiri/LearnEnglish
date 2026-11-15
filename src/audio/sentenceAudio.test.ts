@@ -6,7 +6,7 @@ vi.mock('./alignAudio',()=>({alignAudio:vi.fn(async(_url:string,text:string)=>({
 import {alignAudio} from './alignAudio'
 import {kokoroAudio} from './kokoroAudio'
 import {playTimedSentence,prepareSentenceAudio} from './sentenceAudio'
-afterEach(()=>{vi.unstubAllGlobals();vi.clearAllMocks()})
+afterEach(()=>{vi.useRealTimers();vi.unstubAllGlobals();vi.clearAllMocks()})
 const flush=async()=>{for(let i=0;i<12;i++)await Promise.resolve()}
 it('does not generate or call paid APIs during background preparation',async()=>{
  const fetch=vi.fn();vi.stubGlobal('fetch',fetch)
@@ -81,6 +81,21 @@ it('retries a failed existing recording with Kokoro on the same unlocked player'
  await flush();await flush()
  expect(sources[0]).toMatch(/^data:audio\/wav/)
  expect(sources).toContain('/missing.wav');expect(sources.at(-1)).toBe('/kokoro.wav')
- expect(kokoroAudio).toHaveBeenCalledWith('Broken recording falls back to Kokoro.')
+ expect(kokoroAudio).toHaveBeenCalledWith('Broken recording falls back to Kokoro.',expect.any(Function))
  expect(callbacks.started).toHaveBeenCalledOnce();expect(callbacks.error).not.toHaveBeenCalled();stop()
+})
+
+it('clears loading and reports failure when the media element never starts',async()=>{
+ vi.useFakeTimers()
+ vi.stubGlobal('Audio',class{
+  currentTime=0;duration=2;paused=true;ended=false
+  constructor(public src:string){}pause(){}play(){return Promise.resolve()}
+ })
+ const callbacks={loading:vi.fn(),started:vi.fn(),ended:vi.fn(),error:vi.fn()}
+ const stop=playTimedSentence({id:'stalled-media',document:{english:'Media startup must settle.'},audioUrl:'/stalled.wav'},callbacks)
+ await vi.advanceTimersByTimeAsync(25000)
+ expect(callbacks.started).not.toHaveBeenCalled()
+ expect(callbacks.loading).toHaveBeenLastCalledWith(false)
+ expect(callbacks.error).toHaveBeenCalledOnce()
+ stop()
 })
