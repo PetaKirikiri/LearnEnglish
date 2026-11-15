@@ -8,7 +8,7 @@ vi.mock('../learning/wordProgress/useWordProgress',()=>({useWordProgress:()=>({r
 // Forecast logic is covered separately; this flow test exercises thirty actual answers.
 vi.mock('./practiceForecast',async original=>({...await original<typeof import('./practiceForecast')>(),audioPreparationPlan:vi.fn().mockReturnValue([])}))
 vi.mock('./PracticeGold',()=>({default:()=>null,awardPracticeGold:vi.fn()}))
-vi.mock('../audio/sentenceAudio',async original=>({...await original<typeof import('../audio/sentenceAudio')>(),prepareSentenceAudio:vi.fn().mockResolvedValue(undefined)}))
+vi.mock('../audio/sentenceAudio',async original=>{const audio=await original<typeof import('../audio/sentenceAudio')>();return {...audio,prepareSentenceAudio:vi.fn().mockResolvedValue(undefined),playTimedSentence:(_q:unknown,callbacks:import('../audio/sentenceAudio').PlaybackCallbacks)=>{callbacks.started();finishAudio=callbacks.ended;return ()=>{}}}})
 import GeneratedPractice from './GeneratedPractice'
 import './testing/forbidSentenceBanks'
 import {canonicalBlueprintQuestion} from './blueprintWordServer'
@@ -70,7 +70,7 @@ it('counts listening evidence only when both target text and pictures were hidde
   try{
    await act(async()=>root.render(<GeneratedPractice level={1}/>));await act(async()=>finishAudio())
    if(mode==='help')await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-help')!.click())
-   if(mode==='replay'){await act(async()=>host.querySelector<HTMLButtonElement>('.foundation-replay')!.click());await act(async()=>finishAudio())}
+   if(mode==='replay'){await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Fast speaking speed"]')!.click());await act(async()=>finishAudio())}
    if(mode!=='visible')expect([...host.querySelectorAll<HTMLElement>('.practice-question .cw-slot-role')].some(n=>n.style.opacity==='0')).toBe(true)
    for(const word of host.querySelectorAll<HTMLElement>('.practice-question .matrix-fading-word')){
     if(word.style.opacity==='0'){

@@ -1,9 +1,11 @@
+import {actionVocabulary} from '../learning/sentenceRules/actionDialogue'
 export type StructureScore={attempts:number;correct:number;listeningCorrect:number}
 export type SentenceResult={sentence:string;correct:boolean;modality:string}
 export type StructureScores=Record<string,StructureScore>
 /** Only complete, recognised frames contribute. Noun phrases and unknown forms do not. */
 export function structureForSentence(sentence:string):string|null{
  const text=sentence.toLowerCase().replace(/[?.!]/g,'').replace(/\s+/g,' ').trim()
+ if(/^where (am|is|are) .+$/.test(text)&&actionVocabulary.some(action=>action.destination&&text.endsWith(' '+(action.spoken??action.word))))return 'destination-question'
  if(/^where (am|is|are) .+$/.test(text))return 'where'
  if(/^what (am|is|are) .+ doing$/.test(text))return 'activity'
  if(/^what (is|are) (this|that|these|those|that over there)$/.test(text))return 'identify-question'

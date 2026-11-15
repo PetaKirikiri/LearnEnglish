@@ -11,6 +11,7 @@ const fixed=(label:string):Part=>({label,kind:'question',binding:{type:'literal'
 export const blueprintFrames:readonly Frame[]=[
  {id:'where',title:'Present simple · Location question',grammar:presentSimpleBeGrammar,parts:[fixed('interrogative:where'),presentAV(),nounBlock('subject')]},
  {id:'location',title:'Present simple · Location statement',grammar:presentSimpleBeGrammar,parts:[nounBlock('subject'),presentAV(),fixed('preposition:at'),nounBlock('location','place')]},
+ {id:'destination-question',title:'Present continuous · Destination question',grammar:presentContinuousGrammar,parts:[fixed('interrogative:where'),presentAV(),nounBlock('subject'),mainVerb()]},
  {id:'activity',title:'Present continuous · Action question',grammar:presentContinuousGrammar,parts:[fixed('interrogative:what'),presentAV(),nounBlock('subject'),mainVerb('verb:doing')]},
  ...activeActionBlueprints.map(frame=>({id:frame.id,title:frame.connection==='direct'?'Present continuous · Transitive action':'Present continuous · Movement to a destination',grammar:frame.grammar??presentContinuousGrammar,parts:[nounBlock('subject'),presentAV(),mainVerb(),...(frame.connection==='direct'?[nounBlock('object')]:[fixed(`preposition:${frame.connection}`),nounBlock('destination','destination')])]})),
  {id:'identify-question',title:'Present simple · Identification question',grammar:presentSimpleBeGrammar,parts:[fixed('interrogative:what'),presentAV(),nounBlock('subject','det:deictic')]},

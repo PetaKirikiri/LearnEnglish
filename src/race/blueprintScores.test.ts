@@ -4,6 +4,7 @@ it('groups noun, pronoun and proper-name subjects in the same structure',()=>{
  for(const sentence of ['Where is the man?','Where are they?','Where is Bia?'])expect(structureForSentence(sentence)).toBe('where')
 })
 it('separates questions, action frames and identification from noun phrases',()=>{
+ expect(structureForSentence('Where are you going?')).toBe('destination-question')
  expect(structureForSentence('What is she doing?')).toBe('activity')
  expect(structureForSentence('She is holding the bag.')).toBe('transitive-object')
  expect(structureForSentence('Bia is walking to the school.')).toBe('intransitive-to-object')

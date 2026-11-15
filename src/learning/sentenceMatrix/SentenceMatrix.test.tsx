@@ -40,7 +40,7 @@ it('restricts both selection surfaces and counterpart forms to the supplied less
  const lesson:MatrixLesson={...classroomMatrices['lesson-2'],id:'limited',vocabulary:classroomMatrices['lesson-2'].vocabulary.filter(w=>['shoes','keys'].includes(w.word))}
  await act(async()=>root.render(<SentenceMatrix lesson={lesson}/>))
  await click('[data-picker-slot="3"]')
- expect(words('.cw-word-chip')).toEqual(['shoes','keys'])
+ expect(words('.cw-word-chip')).toEqual(['keys','shoes'])
  await choose('keys')
  await click('[data-picker-slot="1"]')
  expect([...host.querySelectorAll<HTMLButtonElement>('.cw-word-chip')].find(b=>b.textContent?.includes('is'))?.disabled).toBe(true)

@@ -1,4 +1,5 @@
-import {getPlaybackRate} from '../audio/usePlaybackMode'
+import {playTimedSentence} from '../audio/sentenceAudio'
+import type {SpokenWord} from '../audio/sentenceTiming'
 import PlaybackButtons from '../audio/PlaybackButtons'
 import PictureSentence from './PictureSentence'
 import {requestedLesson} from '../learning/lessonRequests'
@@ -45,21 +46,23 @@ export function PracticeSession({ module,onCompleteModule,onRestartModule,userId
   const [audioError, setAudioError] = useState<'blocked'|'failed'|null>(null)
   const autoPlayed = useRef<string|null>(null)
   const playbackRequest = useRef(0)
-  const player = useRef<HTMLAudioElement | null>(null)
+  const player = useRef<(()=>void)|null>(null)
+  const [spokenWord,setSpokenWord]=useState<SpokenWord|null>(null)
+  const [audioWave,setAudioWave]=useState({level:0,time:0})
   const [deck, setDeck] = useState<ReturnType<typeof practiceDeck>>(() => saved?.deck ?? practiceDeck(lesson,module?.questionIds))
   const [index, setIndex] = useState<number>(saved?.index ?? 0)
   const [picked, setPicked] = useState<number | null>(saved?.picked ?? null)
   const [score, setScore] = useState<number>(saved?.score ?? 0)
   const question = deck[index]
   const presented=useRef(new Set<string>()),presentTimes=useRef(new Map<string,string>()),reportPresentation=useRef((q:ReturnType<typeof practiceDeck>[number])=>{void q})
-  reportPresentation.current=q=>{
+  useEffect(()=>{reportPresentation.current=q=>{
     if(!progress.ready||picked!==null||presented.current.has(q.attemptId))return
     try{
       const at=presentTimes.current.get(q.attemptId)??new Date().toISOString();presentTimes.current.set(q.attemptId,at)
       progress.record({event:'presented',id:q.attemptId,questionId:q.id,version:QUESTION_VERSION,answer:'',occurredAt:at,modality:'visible',replays:0,ruleVersion:WORD_RULE_VERSION})
       presented.current.add(q.attemptId)
     }catch{setAttemptError('Retry saving progress')}
-  }
+  }})
   useEffect(()=>{if(question&&progress.ready&&(settings.fadeMode||!question.audioOnly)&&wordTokens(question.english).some(word=>wordOpacity(word,presentationScores.current,settings)>0))reportPresentation.current(question)},[question,progress.ready,settings])
 
   const correct = picked !== null && picked === question?.correct
@@ -73,33 +76,27 @@ export function PracticeSession({ module,onCompleteModule,onRestartModule,userId
   const play = useCallback((q: ReturnType<typeof practiceDeck>[number]) => {
     const request = ++playbackRequest.current
     autoPlayed.current = q.attemptId
-    player.current?.pause()
+    player.current?.()
     window.speechSynthesis?.cancel()
     const fail = (error?: unknown) => {
       if (playbackRequest.current !== request) return
       setAudioError(error instanceof DOMException && error.name === 'NotAllowedError' ? 'blocked' : 'failed')
     }
-    if (!q.audioUrl) { fail(); return }
-    const audio = player.current ?? new Audio(); player.current = audio
-    audio.src = q.audioUrl
-    audio.playbackRate=getPlaybackRate();audio.preservesPitch=true
-    audio.onerror = () => fail()
-    void audio.play().then(() => {
-      if (playbackRequest.current !== request) return
-      reportPresentation.current(q)
-      replays.current += 1
-      setStarted(true)
-      setAudioError(null)
-    }).catch(fail)
+    if(!q.document){fail();return}
+    player.current=playTimedSentence({id:q.id,document:q.document,whiteboard:q.document,audioUrl:q.audioUrl},{
+      word:setSpokenWord,waveform:(level,time)=>setAudioWave({level,time}),
+      started:()=>{if(playbackRequest.current!==request)return;reportPresentation.current(q);replays.current++;setStarted(true);setAudioError(null)},
+      ended:()=>{},error:()=>fail(),
+    })
   }, [])
   useEffect(() => {
     if (question && progress.ready && autoPlayed.current !== question.attemptId) play(question)
-    if (!question) { playbackRequest.current += 1; player.current?.pause() }
+    if (!question) { playbackRequest.current += 1; player.current?.() }
   }, [question, progress.ready, play])
   useEffect(() => () => {
     playbackRequest.current += 1
     autoPlayed.current = null
-    player.current?.pause()
+    player.current?.()
     window.speechSynthesis?.cancel()
   }, [])
   function next() {
@@ -132,7 +129,7 @@ export function PracticeSession({ module,onCompleteModule,onRestartModule,userId
 
       {audioError && <div role="alert"><button className="practice-audio-retry" onClick={() => play(question)}>{audioError === 'blocked' ? label('▶ แตะเพื่อเปิดเสียง','▶ Enable audio') : label('↻ ลองเล่นเสียงอีกครั้ง','↻ Retry audio')}</button></div>}
       {(progress.error || attemptError) && <p role="alert">{attemptError || progress.error} <button onClick={()=>void progress.retry()}>{label('ลองอีกครั้ง','Try again')}</button></p>}
-      {!progress.ready ? <span role="status" aria-label="กำลังโหลดความคืบหน้า">…</span> : (settings.fadeMode || !question.audioOnly) && <ListeningMatrix key={question.attemptId} sentence={question.english} document={question.document} scores={progress.scores} settings={settings} onSnapshot={scores=>{presentationScores.current=scores}}/>}
+      {!progress.ready ? <span role="status" aria-label="กำลังโหลดความคืบหน้า">…</span> : (settings.fadeMode || !question.audioOnly) && <ListeningMatrix key={question.attemptId} sentence={question.english} document={question.document} scores={progress.scores} settings={{...settings,spokenWord,audioWave}} onSnapshot={scores=>{presentationScores.current=scores}}/>}
       </section><div className={`practice-response${picked !== null ? ' has-answer' : ' is-ready'}`}><p id="practice-instruction" className="practice-instruction">{picked !== null ? label('ถัดไป →','Next →') : label('แตะคำตอบที่ตรงกับประโยค','Choose the matching answer')}</p>
       <div className="practice-answers" role="group" aria-labelledby="practice-instruction">{question.choices.map((choice, side) => <button ref={side === 0 ? firstAnswer : undefined} key={`${question.id}-${side}`} className={`choice-${side}${picked !== null && side === question.correct ? ' correct' : ''}${picked === side && !correct ? ' incorrect' : ''}`} disabled={picked !== null || !progress.ready} aria-pressed={picked === side} onClick={() => choose(side)}><span className="practice-choice-number" aria-hidden="true">{picked !== null && (side === question.correct || picked === side) ? <img src={`/images/race/answer-${side === question.correct ? 'correct' : 'wrong'}-v2.png`} alt=""/> : side + 1}</span><span className="practice-choice-label"><PictureSentence document={question.choiceDocuments[choice]}/></span><span className="practice-choice-go" aria-hidden="true"><Arrow/></span></button>)}</div></div></div>
       <footer className={`practice-feedback${picked !== null ? ' answered' : ''}${picked !== null ? correct ? ' is-correct' : ' is-incorrect' : ''}`}>
