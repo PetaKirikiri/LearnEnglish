@@ -24,7 +24,7 @@ import '../../classroom/sentenceLine.css'
 export type SentenceMatrixProps = { initialAction?: {answerPronoun?:string;subject?:import('../sentenceRules/actionDialogue').ActionSubject;action?:string;object?:string;determiner?:import('./model').Determiner;personMode?:NounMode;personWord?:string}; lesson: MatrixLesson; settings?: MatrixSettings; wordScores?:import('../wordProgress/model').WordScores; word?:string; onWord?:(word:string)=>void; audio?:ReactNode }
 export default function SentenceMatrix(props: SentenceMatrixProps) {
   if(props.lesson.pattern!==undefined&&!['people-location','present-action','identification'].includes(props.lesson.pattern))throw new Error(`Unsupported sentence construction: ${props.lesson.pattern}`)
-  const configured = {...props.lesson.settings,...props.settings}
+  const configured = {...props.lesson.settings,thaiTranslation:false,...props.settings}
   const settings = configured.fadeMode ? {...configured,explanations:false,wordPicker:false,explanationSelection:false} : configured
   const scope = JSON.stringify([props.lesson.id,props.lesson.pattern,props.lesson.actionGroup,props.lesson.actionQuestion,props.lesson.actions,props.lesson.actionBlueprints,props.lesson.actionReply,props.lesson.subjectModes,props.lesson.plural,props.lesson.initialOwner,props.lesson.past,props.lesson.owners,props.lesson.initialTense,props.lesson.initialWord,props.lesson.vocabulary,props.initialAction,settings])
   if(props.lesson.pattern==='identification') return <IdentificationMatrix key={scope} {...props} settings={settings}/>

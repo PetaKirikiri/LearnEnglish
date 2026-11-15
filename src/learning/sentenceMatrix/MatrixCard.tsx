@@ -26,7 +26,7 @@ export default function MatrixCard({slot,children,action,control,affordance,clas
     const height=Math.max(1,card.getBoundingClientRect().height)
     const maximumDisplacement=16/height
     let frame=0,energy=0
-    surface.style.filter=`url(#${filterId})`
+    surface.style.setProperty('--tile-wave-filter',`url(#${filterId})`)
     function ripple(){
       const target=Math.min(1,audioWave!.level*1.4)
       energy=target>=energy?target:energy+(target-energy)*.25
@@ -38,7 +38,7 @@ export default function MatrixCard({slot,children,action,control,affordance,clas
     ripple()
     return()=>{
       cancelAnimationFrame(frame)
-      surface.style.removeProperty('filter')
+      surface.style.removeProperty('--tile-wave-filter')
       displacement.current?.setAttribute('scale','0')
     }
   },[waveDistance,spokenWord,filterId,audioWave])
@@ -49,6 +49,7 @@ export default function MatrixCard({slot,children,action,control,affordance,clas
     </filter></defs>
   </svg>
   const content=<SentenceSlot slot={slot}>{children}</SentenceSlot>
-  const card=action ? <button ref={setCard} data-wave-distance={waveDistance} data-speaking={spokenWord!==undefined||undefined} data-spoken-word={spokenWord} type="button" data-word-type={wordType} title={typeLabel} data-unit-index={unitIndex} className={`tonight-slot slot-${slot}${className ? ` ${className}`:''}`} disabled={disabled} aria-label={action.label} aria-expanded={action.expanded} aria-controls={action.controls} onClick={action.onClick}>{distortion}{content}{affordance}</button> : <span ref={setCard} data-wave-distance={waveDistance} data-speaking={spokenWord!==undefined||undefined} data-spoken-word={spokenWord} data-unit-index={unitIndex} data-word-type={wordType} title={typeLabel} className={`tonight-slot slot-${slot}`}>{distortion}{content}</span>
+  const surfaceStyle={background:'transparent',borderColor:'transparent',boxShadow:'none',position:'relative',isolation:'isolate'} as const
+  const card=action ? <button ref={setCard} style={surfaceStyle} data-wave-distance={waveDistance} data-speaking={spokenWord!==undefined||undefined} data-spoken-word={spokenWord} type="button" data-word-type={wordType} title={typeLabel} data-unit-index={unitIndex} className={`tonight-slot slot-${slot}${className ? ` ${className}`:''}`} disabled={disabled} aria-label={action.label} aria-expanded={action.expanded} aria-controls={action.controls} onClick={action.onClick}>{distortion}{content}{affordance}</button> : <span ref={setCard} style={surfaceStyle} data-wave-distance={waveDistance} data-speaking={spokenWord!==undefined||undefined} data-spoken-word={spokenWord} data-unit-index={unitIndex} data-word-type={wordType} title={typeLabel} className={`tonight-slot slot-${slot}`}>{distortion}{content}</span>
   return <>{control ? <span className={`cw-slot-shell cw-slot-shell-${slot}`}>{card}{control}</span> : card}</>
 }

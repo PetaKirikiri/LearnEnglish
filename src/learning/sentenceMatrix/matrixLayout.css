@@ -296,3 +296,7 @@
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group .tonight-slot{border:2px solid var(--slot-edge);border-radius:24px}
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group>.cw-slot-shell,
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-agreement-group>.cw-slot-shell .tonight-slot{border-radius:24px}
+
+/* The illustrated audio controls own an intrinsic row below the card shadows. */
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout]:has(.matrix-timed-playback){grid-template-rows:44px auto minmax(100px,auto) minmax(0,auto)}
+.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-layout-translation:has(.matrix-timed-playback){align-items:flex-start;padding-top:16px}

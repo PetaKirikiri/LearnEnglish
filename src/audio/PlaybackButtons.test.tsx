@@ -17,6 +17,7 @@ it('replays at each selected speed, preserves pitch, and shares the preference a
  const play=()=>{rates.push(getPlaybackRate());speakEnglish('the hotel','/audio/test.mp3')}
  try{
   await act(async()=>root.render(<><PlaybackButtons onPlay={play}/><PlaybackButtons onPlay={play}/></>))
+  expect(host.textContent).not.toMatch(/Slow|Fast/);expect(host.querySelectorAll('.playback-art')).toHaveLength(4)
   const slow=host.querySelector<HTMLButtonElement>('[aria-label="Slow speaking speed"]')!
   const fast=host.querySelector<HTMLButtonElement>('[aria-label="Fast speaking speed"]')!
   await act(async()=>slow.click())

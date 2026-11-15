@@ -1,10 +1,13 @@
-.playback-speed-controls{display:flex;gap:6px;align-items:center;justify-content:center;margin:8px 0}
-.playback-speed-controls button{display:flex;align-items:center;gap:6px;min-height:44px;padding:8px 14px;border:2px solid #d9e5f3;border-radius:14px;background:#fff;color:#18385e;font:700 15px Nunito,sans-serif;cursor:pointer}
-.playback-speed-controls button[aria-pressed=true]{background:#e8f1ff;border-color:#1877ef}
-.playback-speed-controls button:focus-visible{outline:3px solid #1877ef;outline-offset:3px}
-.playback-speed-controls button span{font-size:25px;line-height:1}
+.playback-speed-controls{display:inline-flex;gap:12px;align-items:center;justify-content:center;margin:8px 0;padding-bottom:5px}
+.playback-speed-controls>button{--playback-edge:#c8d5e3;display:inline-grid;place-items:center;width:88px;min-width:72px;min-height:78px;padding:1px;border:2px solid #d9e5f3;border-radius:20px;background:#f2f6fb;color:#18385e;box-shadow:0 5px 0 var(--playback-edge);cursor:pointer}
+.playback-speed-controls>button[aria-pressed=true]{--playback-edge:#bc8b0c;background:#ffd43b;border-color:#bc8b0c}
+.playback-speed-controls>button:active{transform:translateY(3px);box-shadow:0 2px 0 var(--playback-edge)}
+.playback-speed-controls>button:focus-visible{outline:3px solid #1877ef;outline-offset:5px}
+.playback-speed-controls>button>.playback-art{display:block;flex:none;width:76px;height:76px;background-image:url('/classroom/icons/playback/animal-speakers-v1.png');background-size:200% 100%;background-repeat:no-repeat}
+.playback-speed-controls>button>.playback-art-slow{background-position:left center}
+.playback-speed-controls>button>.playback-art-fast{background-position:right center}
 .playback-buttons{display:inline-flex;flex-shrink:0;max-width:100%;vertical-align:middle}
 .playback-buttons .playback-speed-controls{display:inline-flex;flex-wrap:wrap;margin:0}
-@media(max-width:480px){.playback-buttons .playback-speed-controls button{padding:6px 8px;font-size:13px;gap:4px}.playback-buttons .playback-speed-controls button span{font-size:22px}}
-.playback-buttons .playback-speed-controls>button{position:static;width:auto;height:auto;min-height:44px;flex:0 0 auto;border-radius:14px;text-align:center;box-shadow:none}
-.playback-buttons .playback-speed-controls>button>span{display:inline;font-size:25px;font-weight:inherit}
+.playback-buttons .playback-speed-controls>button{position:static;width:88px;height:auto;min-width:72px;min-height:78px;flex:0 0 auto;border-radius:20px;padding:1px;text-align:center;box-shadow:0 5px 0 var(--playback-edge)}
+.playback-buttons .playback-speed-controls>button:active{box-shadow:0 2px 0 var(--playback-edge)}
+@media(max-width:480px){.playback-buttons .playback-speed-controls>button{width:76px;min-height:68px}.playback-speed-controls>button>.playback-art{width:64px;height:64px}}

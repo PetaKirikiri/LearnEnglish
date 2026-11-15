@@ -3,3 +3,7 @@
 @media(prefers-reduced-motion:reduce){
  .tonight-slot[data-speaking=true]{outline:2px solid currentColor;outline-offset:2px}
 }
+
+/* One painted surface owns the face, border and depth. Text stays in the tile's
+   normal layout and is never passed through the displacement filter. */
+.tonight-slot[data-unit-index]::before{content:"";position:absolute;inset:-2px;z-index:-1;pointer-events:none;border:2px solid var(--slot-edge);border-radius:inherit;background:var(--slot-fill);box-shadow:0 6px 0 var(--slot-edge),0 10px 16px #18385e12;filter:var(--tile-wave-filter,none)}

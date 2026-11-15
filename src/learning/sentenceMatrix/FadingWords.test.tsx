@@ -23,8 +23,11 @@ it('pulses the active tile for each spoken word while words and icons remain fad
   expect(active.dataset.spokenWord).toBe(String(start))
   expect(host.querySelectorAll('[data-wave-distance]')).toHaveLength(3)
   expect(active.dataset.waveDistance).toBe('0')
-  expect(active.style.filter).toMatch(/^url\(#speech-wave-/)
-  const filter=host.querySelector(active.style.filter.slice(4,-1))!
+  expect(active.style.filter).toBe('')
+  expect(active.style.background).toBe('transparent')
+  expect(active.style.boxShadow).toBe('none')
+  expect(active.style.getPropertyValue('--tile-wave-filter')).toMatch(/^url\(#speech-wave-/)
+  const filter=host.querySelector(active.style.getPropertyValue('--tile-wave-filter').slice(4,-1))!
   expect(Number(filter.querySelector('feDisplacementMap')?.getAttribute('scale'))).toBeGreaterThan(.03)
   frames.forEach(callback=>callback(performance.now()+300))
   expect(Number(filter.querySelector('feDisplacementMap')?.getAttribute('scale'))).toBeGreaterThan(.03)
@@ -55,8 +58,8 @@ it('deforms only the speaking tile, with independent depth inside a joined phras
   expect(surface.querySelector(':scope > svg')).toBeNull()
   expect(surface.firstElementChild?.classList.contains('tonight-slot')).toBe(true)
   expect(surface.lastElementChild?.classList.contains('tonight-slot')).toBe(true)
-  expect(host.querySelector<HTMLElement>('.tonight-slot[data-speaking=true]')?.style.filter).toMatch(/^url\(#speech-wave-/)
-  expect(host.querySelectorAll('.tonight-slot[style*="filter"]')).toHaveLength(1)
+  expect(host.querySelector<HTMLElement>('.tonight-slot[data-speaking=true]')?.style.getPropertyValue('--tile-wave-filter')).toMatch(/^url\(#speech-wave-/)
+  expect(host.querySelectorAll('.tonight-slot[style*="--tile-wave-filter"]')).toHaveLength(1)
   expect(host.querySelector('[data-audio-wave=true]')).not.toBeNull()
   expect(host.querySelector('feDisplacementMap')?.getAttribute('in')).toBe('SourceGraphic')
  }finally{await act(async()=>root.unmount());frame.mockRestore();cancel.mockRestore()}
