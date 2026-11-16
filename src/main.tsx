@@ -12,6 +12,11 @@ import { isSuccessRoute } from './success/course'
 import { classroomNotesDestination } from './classroom/notesRoute'
 const classroomDestination = classroomNotesDestination(location.pathname, location.search, location.hash)
 if (classroomDestination) location.replace(classroomDestination)
+const WordBattle = lazy(() => import('./wordBattle/WordBattle'))
+const battleQuery = new URLSearchParams(location.search)
+const battleState = battleQuery.get('liff.state') ?? ''
+const battleNested = new URLSearchParams(battleState.includes('?') ? battleState.slice(battleState.indexOf('?') + 1) : battleState)
+const isWordBattle = location.pathname.replace(/\/$/, '') === '/english/word-battle' || battleQuery.get('view') === 'word-battle' || battleNested.get('view') === 'word-battle'
 const AppEntry = lazy(() => import('./AppEntry'))
 const MobileNotes = lazy(() => import('./classroom/MobileNotes'))
 const isMobileNotes = window.location.pathname.replace(/\/$/, '') === '/english/notes'
@@ -46,7 +51,7 @@ const isEnglish = /^\/english(?:\/|$)/.test(window.location.pathname) || isEngli
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode><StartupBoundary>
-    {classroomDestination ? null : isDrawingPreview ? <Suspense fallback={<main>Opening…</main>}><DrawingPreview /></Suspense> : isSentenceReview ? <Suspense fallback={<main>Opening…</main>}><SentenceReviewPage /></Suspense> : isCity ? <Suspense fallback={<main>Opening…</main>}><CityPage /></Suspense> : isMobileNotes ? <Suspense fallback={<main>Opening…</main>}><MobileNotes /></Suspense> : isPhonePractice ? <Suspense fallback={<main role="status" style={{minHeight:'100dvh',display:'grid',placeItems:'center',background:'#edf4ff',color:'#18395e'}}>กำลังเปิด…</main>}><PhonePractice /></Suspense> : isRaceLesson ? <Suspense fallback={<main>Opening…</main>}><RaceLessonPage /></Suspense> : isRaceAdmin ? <Suspense fallback={<main>Opening…</main>}><RaceAdminPage /></Suspense> : isRaceDemo ? <Suspense fallback={<main>Opening…</main>}><RaceDemoPage /></Suspense> : isHorsePreview ? <Suspense fallback={<main>Opening…</main>}><HorsePreviewPage /></Suspense> : isRace ? <Suspense fallback={<main>Opening…</main>}><RacePage /></Suspense> : <>
+    {classroomDestination ? null : isWordBattle ? <Suspense fallback={<main>Opening…</main>}><WordBattle /></Suspense> : isDrawingPreview ? <Suspense fallback={<main>Opening…</main>}><DrawingPreview /></Suspense> : isSentenceReview ? <Suspense fallback={<main>Opening…</main>}><SentenceReviewPage /></Suspense> : isCity ? <Suspense fallback={<main>Opening…</main>}><CityPage /></Suspense> : isMobileNotes ? <Suspense fallback={<main>Opening…</main>}><MobileNotes /></Suspense> : isPhonePractice ? <Suspense fallback={<main role="status" style={{minHeight:'100dvh',display:'grid',placeItems:'center',background:'#edf4ff',color:'#18395e'}}>กำลังเปิด…</main>}><PhonePractice /></Suspense> : isRaceLesson ? <Suspense fallback={<main>Opening…</main>}><RaceLessonPage /></Suspense> : isRaceAdmin ? <Suspense fallback={<main>Opening…</main>}><RaceAdminPage /></Suspense> : isRaceDemo ? <Suspense fallback={<main>Opening…</main>}><RaceDemoPage /></Suspense> : isHorsePreview ? <Suspense fallback={<main>Opening…</main>}><HorsePreviewPage /></Suspense> : isRace ? <Suspense fallback={<main>Opening…</main>}><RacePage /></Suspense> : <>
     {isSuccessRoute(window.location.pathname) ? <Suspense fallback={<main>Opening…</main>}><SuccessPage /></Suspense> : isFimoPreview ? <Suspense fallback={<main>Opening…</main>}><FimoPreviewPage /></Suspense> : isCoach ? <Suspense fallback={<main>Ouverture…</main>}><CoachPage /></Suspense> : isPadel ? <Suspense fallback={<main>Opening…</main>}><PadelPage /></Suspense> : isHotel || isEnglish ? <Suspense fallback={<main>Opening…</main>}><HotelPage courseId={isEnglish ? 'english' : 'hotel'} /></Suspense> : <Suspense fallback={<main>Opening…</main>}><AppEntry /></Suspense>}
     </>}
   </StartupBoundary></StrictMode>,
