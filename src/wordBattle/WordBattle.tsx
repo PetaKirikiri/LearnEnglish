@@ -1,126 +1,104 @@
 import { useEffect, useRef, useState } from 'react'
-import { supabase } from '../lib/supabase'
 import { recogniseHomeworkAccount } from '../auth/homeworkLine'
-import { advance, evaluate, extendsPhrase, newMatch, troops, words } from './engine'
-import type { Card, Kind, Word } from './engine'
+import { supabase } from '../lib/supabase'
+import { emptyBoard, merge, move, offers, production } from './tableEngine'
+import type { Board, Tile } from './tableEngine'
+import type { Word } from './engine'
 import './wordBattle.css'
 
-type Attempt = { text: string; valid: boolean; at: number }
-const initial: Word[] = ['the', 'dog', 'runs', 'a', 'cat', 'big', 'quickly']
+type Game = { board: Board; shop: (Tile | null)[]; gold: number; tier: number; time: number; rival: Board; rivalGold: number; rivalShop: boolean[]; active: boolean }
+const first = (): Game => ({ board: emptyBoard(), shop: [{id:1,word:'the',rank:0},{id:2,word:'dog',rank:0},{id:3,word:'runs',rank:0}], gold:8, tier:1, time:0, rival:emptyBoard(), rivalGold:8, rivalShop:[true,true,true], active:false })
+const ranks = ['','★','★★']
 export default function WordBattle() {
-  const sequence = useRef(20)
-  const [hand, setHand] = useState<Card[]>(initial.map((word, id) => ({ word, id })))
-  const [play, setPlay] = useState<Card[]>([])
-  const [bank, setBank] = useState<Card[][]>([])
-  const [editing, setEditing] = useState<number | null>(null)
-  const [energy, setEnergy] = useState(0)
-  const [match, setMatch] = useState(newMatch)
-  const [running, setRunning] = useState(false)
-  const [practice, setPractice] = useState(false)
-  const [lane, setLane] = useState(1)
-  const [message, setMessage] = useState('')
-  const [account, setAccount] = useState<string | null>(null)
-  const [attempts, setAttempts] = useState<Attempt[]>([])
-  const [saveError, setSaveError] = useState(false)
-  const [help, setHelp] = useState(false)
-  const [order, setOrder] = useState<number[]>([])
-  const drag = useRef<{id:number;x:number;y:number} | null>(null)
-  const suppressClick = useRef(false)
-  const ended = match.tick >= 150 || match.you <= 0 || match.bot <= 0
-  const leftover = hand.length + play.filter(card => editing === null || !bank[editing]?.some(old => old.id === card.id)).length
-  const youFinal = Math.max(0, match.you - leftover)
-  const verdict = evaluate(play.map(card => card.word))
-  const previous = editing === null ? 0 : evaluate(bank[editing].map(card => card.word)).score
-  const freshCards = play.length - (editing === null ? 0 : bank[editing].length)
-  const burst = Math.max(0, freshCards - 2) * 2
-  const earned = Math.max(0, verdict.score - previous) + burst
-  useEffect(() => { let active = true; void supabase.auth.getSession().then(({ data }) => { if (active) setAccount(data.session?.user.id ?? null) }); const { data } = supabase.auth.onAuthStateChange((_event, session) => setAccount(session?.user.id ?? null)); return () => { active = false; data.subscription.unsubscribe() } }, [])
-  useEffect(() => {
-    if (/Line\//i.test(navigator.userAgent) || new URLSearchParams(location.search).has('liff.state')) {
-      void recogniseHomeworkAccount().catch(() => setMessage('LINE sign-in failed. You can still play.'))
-    }
-  }, [])
-  useEffect(() => {
-    try { setAttempts(JSON.parse(localStorage.getItem(`word-battle:attempts:${account ?? 'guest'}`) ?? '[]')) } catch { setAttempts([]) }
-  }, [account])
-  function record(attempt: Attempt) {
-    const next = [...attempts, attempt].slice(-100)
-    setAttempts(next)
-    try { localStorage.setItem(`word-battle:attempts:${account ?? 'guest'}`, JSON.stringify(next)); setSaveError(false) } catch { setSaveError(true) }
+  const [game,setGame] = useState<Game>(first)
+  const [selected,setSelected] = useState<{kind:'shop'|'board';index:number}|null>(null)
+  const [help,setHelp] = useState(false)
+  const [notice,setNotice] = useState('')
+  const id = useRef(100)
+  const account = useRef('guest')
+  const saveFailed = useRef(false)
+  const [storageError,setStorageError] = useState(false)
+  const drag = useRef<{kind:'shop'|'board';index:number;x:number;y:number}|null>(null)
+  const skipClick = useRef(false)
+  const output=production(game.board)
+  const rivalOutput=production(game.rival)
+  const finished=game.time>=300
+  useEffect(()=>{
+    void supabase.auth.getSession().then(({data})=>{account.current=data.session?.user.id??'guest'})
+    const {data}=supabase.auth.onAuthStateChange((_event,session)=>{account.current=session?.user.id??'guest'})
+    if(/Line\//i.test(navigator.userAgent)||new URLSearchParams(location.search).has('liff.state'))void recogniseHomeworkAccount().catch(()=>setNotice('LINE sign-in unavailable. You can still play.'))
+    return ()=>data.subscription.unsubscribe()
+  },[])
+  useEffect(()=>{
+    if(!game.active || finished)return
+    const timer=window.setInterval(()=>setGame(old=>{
+      const time=old.time+1
+      if(time%10!==0)return {...old,time}
+      const score=production(old.board)
+      const rival=[...old.rival]
+      // A visible, slow bot buys one card per tick, completing a simple sentence.
+      const botWords: Word[]=['the','cat','sleeps','a','dog','runs']
+      const turn=Math.floor(time/10)-1
+      const positions=[0,1,2,7,8,9]
+      const shop=[...old.rivalShop]
+      if(turn<6){rival[positions[turn]]={id:10000+turn,word:botWords[turn],rank:0};shop[turn%3]=false}
+      if(turn%3===2)shop.fill(true)
+      try {
+        const key=`word-battle:tables:${account.current}`
+        const history=JSON.parse(localStorage.getItem(key)??'[]')
+        localStorage.setItem(key,JSON.stringify([...history,{at:Date.now(),groups:score.groups}].slice(-100)))
+      }catch{saveFailed.current=true}
+      return {...old,time,gold:old.gold+1+score.net,rival,rivalShop:shop,rivalGold:old.rivalGold+1+production(old.rival).net-(turn<6?1:0)}
+    }),1000)
+    return ()=>window.clearInterval(timer)
+  },[game.active,finished])
+  useEffect(()=>{if(saveFailed.current)setStorageError(true)},[game.time])
+  useEffect(()=>{if(!notice)return;const timer=window.setTimeout(()=>setNotice(''),2600);return()=>window.clearTimeout(timer)},[notice])
+  function place(source:{kind:'shop'|'board';index:number},target:number){
+    if(finished)return
+    setGame(old=>{
+      if(source.kind==='board')return {...old,board:move(old.board,source.index,target)}
+      const card=old.shop[source.index]
+      if(!card || old.gold<1 || old.board[target])return old
+      const board=[...old.board];board[target]=card
+      const shop=[...old.shop];shop[source.index]=null
+      return {...old,gold:old.gold-1,board:merge(board),shop}
+    });setSelected(null)
   }
-  function draw() { setHand(cards => [...cards, { id: sequence.current++, word: words[Math.floor(Math.random() * words.length)] }]) }
-  useEffect(() => {
-    if (!running || ended || practice) return
-    const timer = window.setInterval(() => setMatch(state => advance(state)), 1000)
-    return () => window.clearInterval(timer)
-  }, [running, ended, practice])
-  useEffect(() => { if (match.tick > 0 && match.tick % 5 === 0) draw() }, [match.tick])
-  function reset(isPractice = practice) {
-    setRunning(false); setPractice(isPractice); setMatch(newMatch()); setEnergy(0); setPlay([]); setBank([]); setEditing(null)
-    setHand(initial.map(word => ({ word, id: sequence.current++ })))
-    setMessage('')
+  function sell(index:number){
+    setGame(old=>{if(!old.board[index]||finished)return old;const board=[...old.board];board[index]=null;return {...old,board,gold:old.gold-1}});setSelected(null);setNotice('Sold · −1 gold')
   }
-  function cancel() {
-    const originals = editing === null ? [] : bank[editing]
-    setHand(cards => [...cards, ...play.filter(card => !originals.some(old => old.id === card.id))]); setPlay([]); setEditing(null)
+  function clickSlot(index:number){
+    if(skipClick.current){skipClick.current=false;return}
+    if(selected){place(selected,index);return}
+    if(game.board[index])setSelected({kind:'board',index})
   }
-  function commit() {
-    if (play.length === 0 || ended || (!running && !practice)) return
-    const extension = editing === null || extendsPhrase(bank[editing].map(card => card.word), play.map(card => card.word))
-    const valid = verdict.valid && extension
-    record({ text: play.map(card => card.word).join(' '), valid, at: Date.now() })
-    if (!valid) {
-      if (!practice) setEnergy(value => value - 2)
-      setMessage(practice ? 'Try again' : '−2 ⚡')
-      cancel(); return
-    }
-    setEnergy(value => value + earned)
-    setBank(rows => editing === null ? [...rows, play] : rows.map((row, i) => i === editing ? play : row))
-    setMessage(`+${earned} ⚡${burst ? ` · +${burst} burst` : ''}`); setPlay([]); setEditing(null)
+  function pointerDown(event:React.PointerEvent<HTMLButtonElement>,kind:'shop'|'board',index:number){
+    drag.current={kind,index,x:event.clientX,y:event.clientY};skipClick.current=false;event.currentTarget.setPointerCapture(event.pointerId)
   }
-  function deploy(kind: Kind) {
-    if (energy < troops[kind].cost || !running || ended || practice) return
-    setEnergy(value => value - troops[kind].cost)
-    setMatch(state => ({ ...state, nextId: state.nextId + 1, units: [...state.units, { id: state.nextId, kind, side: 'you', lane, x: 6, hp: 8 }] }))
+  function pointerUp(event:React.PointerEvent<HTMLButtonElement>){
+    const source=drag.current;drag.current=null
+    if(!source || Math.hypot(event.clientX-source.x,event.clientY-source.y)<10)return
+    skipClick.current=true
+    const target=document.elementFromPoint(event.clientX,event.clientY)?.closest('[data-slot]')
+    if(target){place(source,Number(target.getAttribute('data-slot')));return}
+    const table=document.querySelector('.wt-board.you')?.getBoundingClientRect()
+    if(source.kind==='board' && table && event.clientY>table.bottom+12)sell(source.index)
   }
-  const pool = [...play, ...hand].sort((a,b) => {
-    const rank = (card: Card) => order.includes(card.id) ? order.indexOf(card.id) : 10000 + card.id
-    return rank(a) - rank(b)
-  })
-  function moveCard(from: number, to: number) {
-    const ids = pool.map(card => card.id)
-    const source = ids.indexOf(from), target = ids.indexOf(to)
-    if (source < 0 || target < 0 || source === target) return
-    ids.splice(source,1); ids.splice(target,0,from); setOrder(ids)
-    setPlay(cards => [...cards].sort((a,b) => ids.indexOf(a.id)-ids.indexOf(b.id)))
-  }
-  const weak = [...new Set(attempts.filter(attempt => !attempt.valid).map(attempt => attempt.text))].slice(-4)
-  return <main className="wb">
-    <section className="wb-arena" aria-label="Battlefield">
-      {[0, 1, 2].map(index => <button key={index} className={`wb-lane ${lane === index ? 'selected' : ''}`} onClick={() => setLane(index)} aria-label={`Deploy in lane ${index + 1}`} aria-pressed={lane === index}><span className="wb-path"/>{match.units.filter(unit => unit.lane === index).map(unit => <span key={unit.id} className={`wb-unit ${unit.side}`} style={{ left: `${unit.x}%` }}>{troops[unit.kind].icon}<small>{unit.hp}</small></span>)}</button>)}
-      {!running && !practice && !ended && <div className="wb-overlay"><button className="wb-primary" onClick={() => setRunning(true)}>Start battle →</button></div>}
-      {ended && <div className="wb-overlay"><h2>{youFinal > match.bot ? 'Victory!' : youFinal === match.bot ? 'Draw!' : 'Enemy wins'}</h2><p>Your base {match.you} − {leftover} leftover cards = {youFinal}<br/>Enemy base: {match.bot}</p><button className="wb-primary" onClick={() => reset()}>Play again</button></div>}
-      <div className="wb-battlebar"><span>🏰 {match.you}</span><b>⚡ {energy}</b><span>{practice ? '∞' : `${Math.floor((150-match.tick)/60)}:${String((150-match.tick)%60).padStart(2,'0')}`}</span><span>{match.bot} 🏯</span><button aria-label="Rules" onClick={()=>setHelp(value=>!value)}>?</button><button onClick={()=>reset(!practice)}>{practice ? 'Battle' : 'Practice'}</button></div>
+  function shopClick(index:number){if(skipClick.current){skipClick.current=false;return}setSelected(old=>old?.kind==='shop'&&old.index===index?null:{kind:'shop',index})}
+  return <main className="wt">
+    <header className="wt-controls"><span className="wt-time">{Math.floor((300-game.time)/60)}:{String((300-game.time)%60).padStart(2,'0')}</span><button onClick={()=>setHelp(!help)} aria-label="Rules">?</button><button disabled={game.tier>=3||game.gold<game.tier*5||finished} onClick={()=>setGame(old=>({...old,gold:old.gold-old.tier*5,tier:old.tier+1}))}>Tier {game.tier} ↑ <small>{game.tier<3?game.tier*5:'MAX'}</small></button><strong className={game.gold<0?'negative':''}>● {game.gold}</strong><button disabled={game.gold<1||finished} onClick={()=>{setGame(old=>({...old,gold:old.gold-1,shop:offers(old.tier,()=>id.current++)}));setSelected(null)}}>↻ 1</button><button onClick={()=>setGame(old=>({...old,active:!old.active}))} disabled={finished}>{game.active?'Ⅱ':'▶'}</button></header>
+    <aside className="wt-shop rival" aria-label="Opponent offers">{game.rivalShop.map((present,i)=><div key={i} className={`wt-offer back ${present?'':'vacant'}`} aria-label={present?'Face-down opponent offer':'Opponent bought this offer'}/>)}</aside>
+    <section className="wt-table">
+      <div className="wt-income rival"><span>Opponent · {game.rivalGold} ●</span><b>{1+rivalOutput.net>=0?'+':''}{1+rivalOutput.net} / tick</b></div>
+      <div className="wt-board rival" aria-label="Opponent table">{game.rival.map((card,i)=><div key={i} className={`wt-slot ${card?'back':''}`} aria-label={card?'Opponent card, face down':'Empty opponent slot'}/>)}</div>
+      <div className="wt-divider"><span>{10-game.time%10}s</span><div><i style={{width:`${(game.time%10)*10}%`}}/></div><b className={1+output.net<0?'negative':''}>{1+output.net>=0?'+':''}{1+output.net} ●</b></div>
+      <div className="wt-board you" aria-label="Your table">{game.board.map((card,i)=><button key={i} data-slot={i} className={`wt-slot ${card?(output.values[i]>0?'good':'bad'):''} ${card?.rank===1?'silver':card?.rank===2?'gold':''} ${selected?.kind==='board'&&selected.index===i?'chosen':''}`} aria-label={`Slot ${i+1}${card?`: ${card.word}`:''}`} aria-pressed={selected?.kind==='board'&&selected.index===i} disabled={finished} onClick={()=>clickSlot(i)} onPointerDown={event=>{if(card)pointerDown(event,'board',i)}} onPointerUp={pointerUp} onPointerCancel={()=>{drag.current=null}}>{card&&<><span>{card.word}</span><small>{ranks[card.rank]}</small></>}</button>)}</div>
+      <div className="wt-bottom"><span className={output.net<0?'negative':'positive'}>{output.net>=0?'+':''}{output.net} words · +1 base</span><button disabled={selected===null} onClick={()=>setSelected(null)}>×</button>{storageError&&<span role="alert">History could not save</span>}</div>
     </section>
-    <div className="wb-shop">{(Object.keys(troops) as Kind[]).map(kind => <button key={kind} disabled={energy < 6 || !running || ended || practice} onClick={() => deploy(kind)}><span>{troops[kind].icon}</span><div><b>{troops[kind].name}</b><small>› {troops[troops[kind].beats].icon}</small></div><strong>6 ⚡</strong></button>)}</div>
-    <div className="wb-workspace"><section className="wb-panel wb-cards">
-      <div className="wb-hand">{pool.map(card => {
-        const selected = play.findIndex(item=>item.id===card.id)
-        const original = editing !== null && bank[editing].some(item=>item.id===card.id)
-        return <button key={card.id} data-card-id={card.id} className={selected>=0 ? 'chosen' : ''} aria-pressed={selected>=0} disabled={ended}
-          onPointerDown={event=>{drag.current={id:card.id,x:event.clientX,y:event.clientY};suppressClick.current=false;event.currentTarget.setPointerCapture(event.pointerId)}}
-          onPointerUp={event=>{const source=drag.current;drag.current=null;if(source && Math.hypot(event.clientX-source.x,event.clientY-source.y)>12){suppressClick.current=true;const target=document.elementFromPoint(event.clientX,event.clientY)?.closest('[data-card-id]');if(target)moveCard(source.id,Number(target.getAttribute('data-card-id')))}}}
-          onClick={()=>{if(suppressClick.current){suppressClick.current=false;return}if(selected>=0){if(original)return;setPlay(cards=>cards.filter(item=>item.id!==card.id));setHand(cards=>[...cards,card])}else{setPlay(cards=>[...cards,card]);setHand(cards=>cards.filter(item=>item.id!==card.id))}}}>
-          {card.word}{selected>=0 && <sup>{selected+1}</sup>}
-        </button>
-      })}</div><button className="wb-primary wb-commit" onClick={commit} disabled={!play.length || ended || (!running && !practice)}>Commit</button>{practice && <button onClick={draw} aria-label="Draw a word">＋</button>}
-      {message && <p className="wb-message" role="status">{message}</p>}
-      {editing!==null && <button className="wb-cancel" onClick={cancel}>×</button>}
-    </section><section className="wb-panel wb-table">
-      <div className="wb-bank">{bank.map((row, index) => <button key={index} disabled={play.length > 0 || ended} onClick={() => { setEditing(index); setPlay(row) }}><span>{row.map(card => card.word).join(' ')}</span><b>{evaluate(row.map(card => card.word)).score} ⚡</b></button>)}</div>
-      {help && <details open><summary onClick={event => {event.preventDefault();setHelp(false)}}>Close rules ×</summary><p>Unused cards cost 1 base HP each when the round ends. Invalid plays cost 2 energy.</p><p>Phrase score = words × words. Complete sentence = +6. Extensions pay the difference. “the dog” = 4; “the big dog runs” = 22. A drop of 3+ new cards earns +2 per card beyond the first two. Holding earns a bigger burst; banking early lets you deploy sooner.</p><p>Tap a lane before deploying. Guards beat riders, riders beat archers, archers beat guards. The enemy sends one unit every 18 seconds.</p><p>Words: {words.join(', ')}. This small deck uses a/the + optional adjective + noun, runs/sleeps + optional adverb, and eats + noun phrase.</p></details>}
-      {practice && weak.length > 0 && <div className="wb-practice"><h3>Try these again</h3>{weak.map(text => <p key={text}>{text}</p>)}{!practice && <button onClick={() => reset(true)}>Practise without the clock →</button>}</div>}{saveError && <p role="alert">Your practice history could not be saved. Check browser storage.</p>}
-    </section></div>
-
+    <aside className="wt-shop you" aria-label="Your offers">{game.shop.map((card,i)=><button key={i} className={`wt-offer ${card?.rank===1?'silver':card?.rank===2?'gold':''} ${selected?.kind==='shop'&&selected.index===i?'chosen':''}`} aria-label={card?`Buy ${card.word} for 1 gold`:'Empty offer'} disabled={!card||game.gold<1||finished} onClick={()=>shopClick(i)} onPointerDown={event=>{if(card)pointerDown(event,'shop',i)}} onPointerUp={pointerUp} onPointerCancel={()=>{drag.current=null}}>{card&&<><span>{card.word}</span><small>{ranks[card.rank]} ● 1</small></>}</button>)}</aside>
+    {notice&&<div className="wt-toast" role="status">{notice}</div>}
+    {(!game.active||finished)&&!help&&<div className="wt-pause"><button onClick={()=>{if(finished){setGame(first());setSelected(null)}else setGame(old=>({...old,active:true}))}}>{finished?'Play again':game.time?'Resume':'Play'}</button>{finished&&<span>You {game.gold} · Opponent {game.rivalGold}</span>}</div>}
+    {help&&<div className="wt-help"><button onClick={()=>setHelp(false)}>×</button><p>Drag offers into empty slots, or tap a word then a slot. Move cards to arrange them. Empty slots split groups; rows score separately.</p><p>Green groups earn gold every 10 seconds. Red words cost 1 each. You also get 1 base gold per tick. Gold can fall below zero.</p><p>Refresh 1 · Buy 1 · Sell 1. To sell, drag below your table. You can sell even in debt. Pause with Ⅱ.</p><p>Three identical words merge into silver; three silvers into gold. Higher tavern tiers can offer silver/gold words. Upgrade costs 5 then 10. Silver/gold words add +1/+2 to a valid group’s tick.</p><p>12 words: the, a, big, small, dog, cat, fish, runs, sleeps, eats, quickly, slowly. Noun phrases and complete sentences score; “runs quickly” works too.</p><p>Five minutes. The slow bot’s cards stay hidden. Highest gold wins.</p></div>}
   </main>
 }
