@@ -1,5 +1,5 @@
 import {serveBlueprintDeck,NoCompatibleBlueprintChoice} from './blueprintWordServer'
-import {generatedDeck,evidenceScores,masteredWords,type ListeningEvidence,type DeckOptions} from './generatedPracticeProgress'
+import {generatedDeck,evidenceScores,masteredWords,curriculumBaseline,type ListeningEvidence,type DeckOptions} from './generatedPracticeProgress'
 import {wordOpacity,wordTokens,type WordProgress,type FadeSettings} from '../learning/wordProgress/model'
 import type {PracticeLevel} from './PracticeLevelPicker'
 import {type GeneratedQuestion} from './generatedPracticeContent'
@@ -51,4 +51,14 @@ export function audioPreparationPlan(level:PracticeLevel,rows:WordProgress[],eve
  const forecast=forecastPractice(level,rows,events,seed,index,current,options,settings)
  const queued=queuedAudioCandidates(level,rows,events,options)
  return [...new Map([...forecast,...queued].map(q=>[q.document.english.normalize('NFC').trim().replace(/\s+/g,' '),q])).values()].slice(0,16)
+}
+
+/** Only the immediate right/wrong branches; hypothetical evidence is never persisted. */
+export function nextAnswerCandidates(level:PracticeLevel,rows:WordProgress[],events:ListeningEvidence[],seed:string,index:number,current:GeneratedQuestion,attemptId:string,evidence:Pick<ListeningEvidence,'hidden'|'heard'|'assisted'|'plays'>,options:DeckOptions={}){
+ const now=options.now??Date.now(),shown=events.find(event=>event.id===attemptId)
+ return [false,true].map(correct=>{
+  const answer:ListeningEvidence={...evidence,id:attemptId,phase:'answered',presentedAt:shown?.presentedAt??shown?.at,questionId:current.id,level,sentence:current.document.english,targets:current.credit===null?[]:current.targetWords,vocabulary:current.vocabulary,correct,at:new Date(now).toISOString()}
+  const simulated=[...events.filter(event=>event.id!==attemptId),answer]
+  return nextPersonalQuestion(level,rows,simulated,seed,index+1,{...options,now,familiar:curriculumBaseline(rows,simulated)})
+ })
 }

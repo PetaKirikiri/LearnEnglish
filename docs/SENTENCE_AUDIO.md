@@ -4,7 +4,7 @@ Kokoro Heart and the English wav2vec2 forced aligner run on the existing server,
 
 ## Generation and cache
 
-The endpoint authenticates the learner and resolves the canonical question/recipe or validated whiteboard document. `registerOnly` continues to register scoring questions without generating speech. Only a requested sentence is generated; never forecast batches.
+The endpoint authenticates the learner and resolves the canonical question/recipe or validated whiteboard document. `registerOnly` continues to register scoring questions without generating speech. While a Testing question is open, silently prepare only its two immediate next-question branches (right and wrong). Use the same adaptive selector with hypothetical evidence; never save that evidence or count preparation as exposure. Check the shared cache first and start missing branch requests in parallel. Deduplicate identical sentences and in-flight requests; do not prepare whole forecast decks.
 
 `scripts/prepareVoiceModels.mjs` packages pinned public Kokoro and alignment weights at build time. Compressed models ship with the standard server function and expand atomically into its temporary filesystem. Runtime remote-model downloads are disabled. Native CPU inference is used; CUDA installation is disabled. Model loading and inference are reused within a warm function.
 

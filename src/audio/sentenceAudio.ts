@@ -7,11 +7,17 @@ import {sentenceKey} from '../race/generatedPracticeContent'
 import {parseSentenceTiming,wordAtTime,type SentenceTiming,type SpokenWord} from './sentenceTiming'
 export type AudioSentence={whiteboard?:import('../learning/sentenceMatrix/LanguageQuadrant').LanguageDocument;recipe?:unknown;id:string;document:{english:string};audioUrl?:string;timingUrl?:string}
 const spokenKey=(text:string)=>text.normalize('NFC').trim().replace(/\s+/g,' ')
-const ready=new Map<string,{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming}>()
+const ready=new Map<string,{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming;preparation?:Promise<void>}>()
 const pending=new Map<string,Promise<void>>()
 const existing=(q:AudioSentence)=>q.audioUrl||(manifest as Record<string,string>)[sentenceKey(q.document.english)]
-/** Background calls deliberately do no synthesis or paid provider requests. */
-export async function prepareSentenceAudio(_questions:readonly AudioSentence[]){void _questions}
+/** Silently warm only the requested candidates; failures never affect the current turn. */
+export async function prepareSentenceAudio(questions:readonly AudioSentence[]){
+ const unique=[...new Map(questions.map(q=>[spokenKey(q.document.english),q])).values()]
+ await Promise.allSettled(unique.map(async q=>{
+  await prepareForPlayback(q)
+  await ready.get(spokenKey(q.document.english))?.preparation
+ }))
+}
 async function prepareForPlayback(q:AudioSentence,forceKokoro=false){
  const key=spokenKey(q.document.english)
  if(!forceKokoro&&ready.has(key))return
@@ -22,10 +28,10 @@ async function prepareForPlayback(q:AudioSentence,forceKokoro=false){
   if(q.audioUrl&&q.timingUrl&&!forceKokoro)recording={url:q.audioUrl,timingUrl:q.timingUrl}
   else try{recording=await serverAudio(q)}catch(error){const fallback=!forceKokoro&&existing(q);if(!fallback)throw error;recording={url:fallback}}
   const {url,timingUrl}=recording
-  const entry:{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming}={url,waveform:null}
+  const entry:{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming;preparation?:Promise<void>}={url,waveform:null}
   ready.set(key,entry)
   // Audio starts independently. Optional animation preparation must never block it.
-  void(async()=>{
+  entry.preparation=(async()=>{
    entry.waveform=await loadAudioWaveform(url)
    if(timingUrl){
     try{

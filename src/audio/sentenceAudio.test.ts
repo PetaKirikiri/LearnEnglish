@@ -8,10 +8,22 @@ import {serverAudio} from './serverAudio'
 import {playTimedSentence,prepareSentenceAudio} from './sentenceAudio'
 afterEach(()=>{vi.useRealTimers();vi.unstubAllGlobals();vi.clearAllMocks()})
 const flush=async()=>{for(let i=0;i<12;i++)await Promise.resolve()}
-it('does not generate or call paid APIs during background preparation',async()=>{
- const fetch=vi.fn();vi.stubGlobal('fetch',fetch)
- await prepareSentenceAudio([{id:'forecast',document:{english:'Unheard forecast sentence.'}}])
- expect(fetch).not.toHaveBeenCalled();expect(serverAudio).not.toHaveBeenCalled()
+it('silently prepares both branches in parallel, deduplicates and reuses ready audio',async()=>{
+ const audio=vi.fn();vi.stubGlobal('Audio',audio)
+ let finishWrong!:(value:{url:string})=>void,finishRight!:(value:{url:string})=>void
+ vi.mocked(serverAudio).mockImplementationOnce(()=>new Promise(resolve=>{finishWrong=resolve})).mockImplementationOnce(()=>new Promise(resolve=>{finishRight=resolve}))
+ const wrong={id:'forecast-wrong',document:{english:'Wrong branch forecast.'}},right={id:'forecast-right',document:{english:'Right branch forecast.'}}
+ const work=prepareSentenceAudio([wrong,right,wrong]);await flush()
+ expect(serverAudio).toHaveBeenCalledTimes(2);expect(audio).not.toHaveBeenCalled()
+ const repeated=prepareSentenceAudio([wrong,right]);await flush();expect(serverAudio).toHaveBeenCalledTimes(2)
+ finishWrong({url:'/wrong.wav'});finishRight({url:'/right.wav'});await work;await repeated
+ await prepareSentenceAudio([wrong,right]);expect(serverAudio).toHaveBeenCalledTimes(2)
+})
+it('keeps a failed forecast silent and permits a later retry',async()=>{
+ const q={id:'forecast-retry',document:{english:'Retry this background forecast.'}}
+ vi.mocked(serverAudio).mockRejectedValueOnce(new Error('Offline'))
+ await expect(prepareSentenceAudio([q])).resolves.toBeUndefined()
+ await prepareSentenceAudio([q]);expect(serverAudio).toHaveBeenCalledTimes(2)
 })
 it('generates on demand, sweeps with media position, preserves slow pitch, and reuses audio',async()=>{
  let player:any
