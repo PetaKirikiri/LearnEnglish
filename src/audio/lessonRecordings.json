@@ -1,0 +1,26 @@
+{
+  "What are these?": {
+    "url": "https://gbsopnbovsxlstnmaaga.supabase.co/storage/v1/object/public/sentence-audio/kokoro-v1/b6ed56847fd282e2ed4fef28cc2b35b222ad23bbd13e86efb9295b9e3e583c6f/bb5f24cfc040fbcf6f3d46cadaceed0603899c10ca065810fbc4189ecf9c900a.wav",
+    "timingUrl": "https://gbsopnbovsxlstnmaaga.supabase.co/storage/v1/object/public/sentence-audio/kokoro-v1/b6ed56847fd282e2ed4fef28cc2b35b222ad23bbd13e86efb9295b9e3e583c6f/bb5f24cfc040fbcf6f3d46cadaceed0603899c10ca065810fbc4189ecf9c900a.timing.json"
+  },
+  "What are those?": {
+    "url": "https://gbsopnbovsxlstnmaaga.supabase.co/storage/v1/object/public/sentence-audio/kokoro-v1/22148b58ca3d84695e4eb2a7d25579e3c7761915be2790020a6a64a8f93a718c/0938cb05e316798cbbe907fd4c3c24dad237b48b1e4e9450d46e9cf74251e350.wav",
+    "timingUrl": "https://gbsopnbovsxlstnmaaga.supabase.co/storage/v1/object/public/sentence-audio/kokoro-v1/22148b58ca3d84695e4eb2a7d25579e3c7761915be2790020a6a64a8f93a718c/0938cb05e316798cbbe907fd4c3c24dad237b48b1e4e9450d46e9cf74251e350.timing.json"
+  },
+  "What are those over there?": {
+    "url": "https://gbsopnbovsxlstnmaaga.supabase.co/storage/v1/object/public/sentence-audio/kokoro-v1/42e9d85dea5b711b4d2e4553fa7590277707a18b5e8f7e1aa6197ba664f1dfc2/4899b61b7af49be8a5e059dea15cb3aae4f52f01ab3a5c2e5dd95b276367ba02.wav",
+    "timingUrl": "https://gbsopnbovsxlstnmaaga.supabase.co/storage/v1/object/public/sentence-audio/kokoro-v1/42e9d85dea5b711b4d2e4553fa7590277707a18b5e8f7e1aa6197ba664f1dfc2/4899b61b7af49be8a5e059dea15cb3aae4f52f01ab3a5c2e5dd95b276367ba02.timing.json"
+  },
+  "These are the phones.": {
+    "url": "https://gbsopnbovsxlstnmaaga.supabase.co/storage/v1/object/public/sentence-audio/kokoro-v1/dbc3acec6a3e5dca6b7a574ef8113e93d16417b241750802d56d7496f804ffe3/690fc1d841f0512a0f7ce135c6e36a2010a588197ffc6073304a5a1a62df7c74.wav",
+    "timingUrl": "https://gbsopnbovsxlstnmaaga.supabase.co/storage/v1/object/public/sentence-audio/kokoro-v1/dbc3acec6a3e5dca6b7a574ef8113e93d16417b241750802d56d7496f804ffe3/690fc1d841f0512a0f7ce135c6e36a2010a588197ffc6073304a5a1a62df7c74.timing.json"
+  },
+  "Those are the phones.": {
+    "url": "https://gbsopnbovsxlstnmaaga.supabase.co/storage/v1/object/public/sentence-audio/kokoro-v1/b2b5c17f5d0cd5ce38cd1284f4d5af9a0e2c1fb7d23ba78b60a4c333cb01663d/87c5475d72d0caacbfc20e5140b40a14a0c2767cb1c9c52f7e03244971649ac2.wav",
+    "timingUrl": "https://gbsopnbovsxlstnmaaga.supabase.co/storage/v1/object/public/sentence-audio/kokoro-v1/b2b5c17f5d0cd5ce38cd1284f4d5af9a0e2c1fb7d23ba78b60a4c333cb01663d/87c5475d72d0caacbfc20e5140b40a14a0c2767cb1c9c52f7e03244971649ac2.timing.json"
+  },
+  "Those over there are the phones.": {
+    "url": "https://gbsopnbovsxlstnmaaga.supabase.co/storage/v1/object/public/sentence-audio/kokoro-v1/f9fcde6693c82b6f9dc03dea3206385808681ea1ba7e03c3add0cc45d2c81223/df8a2f05c0e268a439b8de2ec9377ecc60f3661bd0ec006ca476024ec7537e10.wav",
+    "timingUrl": "https://gbsopnbovsxlstnmaaga.supabase.co/storage/v1/object/public/sentence-audio/kokoro-v1/f9fcde6693c82b6f9dc03dea3206385808681ea1ba7e03c3add0cc45d2c81223/df8a2f05c0e268a439b8de2ec9377ecc60f3661bd0ec006ca476024ec7537e10.timing.json"
+  }
+}

@@ -33,7 +33,7 @@ export default function ExampleLanguage({layout,english,thai,units,matrix=false,
   const playback=useWhiteboardPlayback(sharedAudio?{english:plain,thai,units:units.map((unit,index)=>({...unit,role:sentenceUnitRole(unit,semanticSlots?.[index])})),construction:(layout?.construction??'question') as LanguageDocument['construction']}:undefined)
   if(sharedAudio){
     settings={...settings,spokenWord:playback.spokenWord,audioWave:playback.audioWave}
-    translationControl=<span className="matrix-timed-playback"><PlaybackButtons onPlay={playback.play}/>{playback.loading&&<span role="status">Preparing audio…</span>}{playback.error&&<span role="alert">{playback.error}</span>}</span>
+    translationControl=<span className="matrix-timed-playback"><PlaybackButtons onPlay={playback.play} busy={playback.loading}/>{playback.error&&<span role="alert">{playback.error}</span>}</span>
   }
 
   if(units.map(unit=>unit.english).join(' ')!==plain) throw new Error(`Example alignment does not match: ${plain}`)

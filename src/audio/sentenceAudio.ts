@@ -3,13 +3,15 @@ import {getPlaybackMode,playbackRateFor,type PlaybackMode} from './usePlaybackMo
 import {loadAudioWaveform,waveformAtTime,type AudioWaveform} from './audioWaveform'
 import {serverAudio} from './serverAudio'
 import manifest from '../race/generatedPracticeAudio.json'
+import lessonRecordings from './lessonRecordings.json'
 import {sentenceKey} from '../race/generatedPracticeContent'
 import {parseSentenceTiming,wordAtTime,type SentenceTiming,type SpokenWord} from './sentenceTiming'
 export type AudioSentence={whiteboard?:import('../learning/sentenceMatrix/LanguageQuadrant').LanguageDocument;recipe?:unknown;id:string;document:{english:string};audioUrl?:string;timingUrl?:string}
 const spokenKey=(text:string)=>text.normalize('NFC').trim().replace(/\s+/g,' ')
 const ready=new Map<string,{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming;file?:Promise<void>;preparation?:Promise<void>}>()
 const pending=new Map<string,Promise<void>>()
-const existing=(q:AudioSentence)=>q.audioUrl||(manifest as Record<string,string>)[sentenceKey(q.document.english)]
+const lessonRecording=(q:AudioSentence)=>(lessonRecordings as Record<string,{url:string;timingUrl?:string}>)[spokenKey(q.document.english)]
+const existing=(q:AudioSentence)=>q.audioUrl||lessonRecording(q)?.url||(manifest as Record<string,string>)[sentenceKey(q.document.english)]
 /** Silently warm only the requested candidates; failures never affect the current turn. */
 export async function prepareSentenceAudio(questions:readonly AudioSentence[]){
  const unique=[...new Map(questions.map(q=>[spokenKey(q.document.english),q])).values()]
@@ -26,6 +28,7 @@ async function prepareForPlayback(q:AudioSentence,forceKokoro=false){
  const work=(async()=>{
   let recording:{url:string;timingUrl?:string}
   if(q.audioUrl&&q.timingUrl&&!forceKokoro)recording={url:q.audioUrl,timingUrl:q.timingUrl}
+  else if(lessonRecording(q)&&!forceKokoro)recording=lessonRecording(q)
   else try{recording=await serverAudio(q)}catch(error){const fallback=!forceKokoro&&existing(q);if(!fallback)throw error;recording={url:fallback}}
   const {url,timingUrl}=recording
   const entry:{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming;file?:Promise<void>;preparation?:Promise<void>}={url,waveform:null}

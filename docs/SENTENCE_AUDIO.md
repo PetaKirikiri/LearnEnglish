@@ -10,6 +10,8 @@ The endpoint authenticates the learner and resolves the canonical question/recip
 
 `server/kokoroCache.ts` stores immutable PCM16 WAV/timing pairs in the existing public `sentence-audio` bucket. Text/provider/model identity selects a cache pointer. Audio hashes bind each recording to its timing file; concurrent requests within a function share one task. Replays reuse the saved file, across learners. Existing recordings remain a sound fallback if the server is temporarily unavailable.
 
+Authored lesson recordings in `src/audio/lessonRecordings.json` use pinned public WAV/timing URLs directly, so public class notes can play saved examples without signing in. Missing unrecorded sentences still use the authenticated generation endpoint.
+
 ## UI and recovery
 
 Show one shared loading wheel over the turtle/hare pair. No visible preparation words. Keep actionable retry errors visible. Answers remain available if sound fails; an unheard answer must not earn independent listening mastery.
