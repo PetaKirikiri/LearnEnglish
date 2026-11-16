@@ -23,15 +23,18 @@ export function evaluate(input:string[]) {
   if(subject&&pronoun)out.push({end:start+1,be:subjectVerb(pronoun)})
   if(subject&&['this','that','these','those'].includes(w[start]))out.push({end:start+1,be:['these','those'].includes(w[start])?'are':'is'})
   let i=start;const det=owners.has(w[i])?w[i++]:undefined
-  while(adjectiveSet.has(w[i]))i++
-  const noun=nounMap.get(w[i]);if(!noun)return out
-  const plural=noun.number==='plural'||!!noun.pairOnly
-  const mass=noun.meaning?.countability==='mass'
-  if(!det&&!plural&&!mass)return out
-  if(det==='a'&&(plural||mass))return out
-  if(['this','that'].includes(det??'')&&plural)return out
-  if(['these','those'].includes(det??'')&&!plural)return out
-  out.push({end:i+1,be:plural?'are':'is'})
+  // A word can be both a noun and an adjective (e.g. orange).
+  while(i<w.length){
+   const noun=nounMap.get(w[i])
+   if(noun){
+    const plural=noun.number==='plural'||!!noun.pairOnly
+    const mass=noun.meaning?.countability==='mass'
+    const agrees=(!!det||plural||mass)&&!(det==='a'&&(plural||mass))&&!(['this','that'].includes(det??'')&&plural)&&!(['these','those'].includes(det??'')&&!plural)
+    if(agrees)out.push({end:i+1,be:plural?'are':'is'})
+   }
+   if(!adjectiveSet.has(w[i]))break
+   i++
+  }
   return out
  }
  function subjects(start:number):Phrase[]{

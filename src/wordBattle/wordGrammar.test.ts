@@ -31,3 +31,5 @@ it('uses the full shared noun and action inventories, including irregular plural
  expect(valid('the a doctors')).toBe(false)
  expect(valid('a doctors')).toBe(false)
 })
+
+it('keeps orange usable as a fruit noun as well as an adjective',()=>{expect(evaluate(['the','orange']).valid).toBe(true);expect(evaluate(['the','orange','book']).valid).toBe(true)})
