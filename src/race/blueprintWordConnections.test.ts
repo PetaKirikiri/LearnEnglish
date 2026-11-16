@@ -48,3 +48,15 @@ it('carries deictic number into AV and identification complement agreement',()=>
  const complements=words('identify-answer',part('identify-answer','complement'),{subject:reference.subject})
  expect(complements).toContain('the hotels');expect(complements).not.toContain('the hotel');expect(complements).not.toContain('Bia')
 })
+it('offers pointing references and real Thai vocabulary in the language-help blueprints',()=>{
+ const reference=part('word-for','reference')
+ expect(words('word-for',reference)).toEqual(['this','that','that over there','these','those'])
+ const thai=words('say-in-english',part('say-in-english','word to translate'))
+ expect(thai.length).toBeGreaterThan(0)
+ expect(thai.every(word=>/[ก-๙]/.test(word))).toBe(true)
+ expect(frame('say-in-english').grammar.finiteVerb.forms).toEqual(['do','does'])
+ expect(frame('say-in-english').grammar.mainVerb?.form).toBe('base')
+ expect(frame('say-in-english').parts.filter(slot=>slot.binding.type==='literal').map(slot=>slot.binding.type==='literal'?slot.binding.word:'')).toEqual(['how','do','you','say','in English'])
+ // Language-help teaching frames do not replace the existing app assessment.
+ expect(practiceBlueprintRequest(6,'identify').blueprints.map(frame=>frame.id)).toEqual(['identify-question','identify-answer'])
+})

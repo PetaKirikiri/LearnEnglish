@@ -15,6 +15,7 @@ export type ConnectionContext={subject?:SubjectWord;verb?:string;object?:string}
 export function blueprintWordConnections(frame:Frame,part:Part,context:ConnectionContext={}):WordConnection[]{
  const binding=part.binding
  const words=(values:readonly string[]):WordConnection[]=>values.map(word=>({word,form:'word'}))
+ if(binding.type==='language-prompt')return words(binding.source==='reference'?['this','that','that over there','these','those']:[...new Set(nouns.map(noun=>noun.thai).filter(Boolean))])
  if(binding.type==='literal')return words([binding.word])
  if(binding.type==='present-av')return words(context.subject?[subjectVerb(context.subject)]:frame.id.startsWith('identify')?['is','are']:['am','is','are'])
  const actionFrame=activeActionBlueprints.find(item=>item.id===(frame.id==='destination-question'?'intransitive-to-object':frame.id))

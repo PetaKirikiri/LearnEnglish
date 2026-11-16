@@ -1,6 +1,6 @@
-import {presentContinuousGrammar,presentSimpleBeGrammar,type SentenceGrammar} from './sentenceGrammar'
+import {presentContinuousGrammar,presentSimpleBeGrammar,presentSimpleDoGrammar,type SentenceGrammar} from './sentenceGrammar'
 import {activeActionBlueprints} from './actionBlueprints'
-export type WordBinding={type:'noun-block';role:string;accepts?:string}|{type:'present-av'}|{type:'action'}|{type:'literal';word:string}
+export type WordBinding={type:'language-prompt';source:'reference'|'thai'}|{type:'noun-block';role:string;accepts?:string}|{type:'present-av'}|{type:'action'}|{type:'literal';word:string}
 export type Part={label:string;kind:'noun'|'determiner'|'verb'|'question';role?:string;accepts?:string;binding:WordBinding}
 export type Frame={id:string;title:string;grammar:SentenceGrammar;parts:readonly Part[]}
 const nounBlock=(role:string,accepts?:string):Part=>({label:'noun block',kind:'noun',role,accepts,binding:{type:'noun-block',role,accepts}})
@@ -14,6 +14,8 @@ export const blueprintFrames:readonly Frame[]=[
  {id:'destination-question',title:'Present continuous · Destination question',grammar:presentContinuousGrammar,parts:[fixed('interrogative:where'),presentAV(),nounBlock('subject'),mainVerb()]},
  {id:'activity',title:'Present continuous · Action question',grammar:presentContinuousGrammar,parts:[fixed('interrogative:what'),presentAV(),nounBlock('subject'),mainVerb('verb:doing')]},
  ...activeActionBlueprints.map(frame=>({id:frame.id,title:frame.connection==='direct'?'Present continuous · Transitive action':'Present continuous · Movement to a destination',grammar:frame.grammar??presentContinuousGrammar,parts:[nounBlock('subject'),presentAV(),mainVerb(),...(frame.connection==='direct'?[nounBlock('object')]:[fixed(`preposition:${frame.connection}`),nounBlock('destination','destination')])]})),
+ {id:'word-for',title:'What’s the word for …?',grammar:presentSimpleBeGrammar,parts:[fixed('interrogative:what'),{label:'is',kind:'verb',binding:{type:'literal',word:'is'}},fixed('the word for'),{label:'this / that / …',kind:'noun',role:'reference',binding:{type:'language-prompt',source:'reference'}}]},
+ {id:'say-in-english',title:'How do you say … in English?',grammar:presentSimpleDoGrammar,parts:[fixed('interrogative:how'),{label:'do',kind:'verb',binding:{type:'literal',word:'do'}},{label:'you',kind:'noun',role:'subject',binding:{type:'literal',word:'you'}},{label:'say',kind:'verb',binding:{type:'literal',word:'say'}},{label:'Thai word',kind:'noun',role:'word to translate',binding:{type:'language-prompt',source:'thai'}},fixed('in English')]},
  {id:'identify-question',title:'Present simple · Identification question',grammar:presentSimpleBeGrammar,parts:[fixed('interrogative:what'),presentAV(),nounBlock('subject','det:deictic')]},
  {id:'identify-answer',title:'Present simple · Identification statement',grammar:presentSimpleBeGrammar,parts:[nounBlock('subject','det:deictic'),presentAV(),nounBlock('complement')]},
 ]
