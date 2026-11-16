@@ -1,32 +1,26 @@
 import {expect,it} from 'vitest'
 import {classroomWordQuestion} from './wordServer'
-import {nextPersonalQuestion} from '../race/practiceForecast'
-import {lessonPracticeTemplate} from '../race/lessonPracticeTemplate'
-import {wordHierarchies,rankWordChoices,hierarchyCompatible,hierarchyState} from '../race/wordHierarchy'
-import {masteredWords} from '../race/generatedPracticeProgress'
+import {wordHierarchies,rankWordChoices} from '../race/wordHierarchy'
 import type {WordProgress} from '../learning/wordProgress/model'
 const learnt=(word:string):WordProgress=>({word_id:'en:'+word,correct:28,attempts:28,listening_correct:3,direct_correct:0,last_practised:'2026-11-01T00:00:00Z',recent_results:[true],fade_score:25,confirmation_count:3,proven_at:'2026-11-01T00:00:00Z',review_due_at:'2040-01-01T00:00:00Z',learning_version:1})
-it('uses the exact individual-practice selector for every classroom lesson',()=>{
- for(let lesson=1;lesson<=6;lesson++){
-  const template=lessonPracticeTemplate(lesson)
-  const actual=classroomWordQuestion(lesson,'new-student',[],[],0,'class-turn')
-  expect(actual.question).toEqual(nextPersonalQuestion(template.level,[],[],'new-student:class-turn',0,template.options))
-  expect(hierarchyCompatible(actual.question,hierarchyState(new Set()))).toBe(true)
- }
-},30000)
-it('reads each learner’s progression afresh when switching activities and lessons',()=>{
- const rows=wordHierarchies.noun.slice(0,12).map(learnt)
- for(const lesson of [1,3,6]){
-  const fresh=classroomWordQuestion(lesson,'new',[],[],0,'turn').question
-  const advanced=classroomWordQuestion(lesson,'experienced',rows,[],0,'turn').question
-  expect(hierarchyCompatible(advanced,hierarchyState(masteredWords(rows,[])))).toBe(true)
-  expect(advanced.targetWords).not.toEqual(fresh.targetWords)
+const sharedRows=['the','phone','phones','bag','bags','man','men','woman','women','is','are','my','your','eating','drinking','water','apple','apples','big','small'].map(learnt)
+it('keeps full Class 7 sentences while contrasting only content words familiar to all three players',()=>{
+ const players=[sharedRows,sharedRows,sharedRows]
+ for(let turn=0;turn<30;turn++){
+  const q=classroomWordQuestion(7,'student',sharedRows,[],turn,'class-turn',players).question
+  expect(q.document.construction).toBe('identification-answer');expect(q.document.english).toMatch(/^These are the /)
+  expect(q.targetWords.every(word=>!['the','my','your','some','these','is','are'].includes(word))).toBe(true)
+  for(const doc of q.alternatives??[])for(const unit of doc.units.filter(u=>u.role==='object'))expect(sharedRows.some(row=>row.word_id==='en:'+unit.english.replace(/[.?!]$/,''))).toBe(true)
  }
 })
-it('never credits later deictic determiners just because their picture is available',()=>{
+it('blocks empty or non-overlapping histories instead of introducing unknown words',()=>{
+ expect(()=>classroomWordQuestion(7,'new',[],[],0,'turn',[[],sharedRows])).toThrow(/shared familiar content/)
+ expect(()=>classroomWordQuestion(7,'one',sharedRows,[],0,'turn',[sharedRows,['the','book','books','cup','cups'].map(learnt)])).toThrow(/shared familiar content/)
+})
+it('never uses determiner differences as the tested contrast, even after determiners have been seen',()=>{
  for(let turn=0;turn<12;turn++){
-  const q=classroomWordQuestion(6,'new',[],[],turn,'turn').question
-  expect(q.targetWords.some(word=>['this','that','these','those','some'].includes(word))).toBe(false)
+  const q=classroomWordQuestion(6,'student',sharedRows,[],turn,'turn',[sharedRows]).question
+  expect(q.targetWords.some(word=>['this','that','these','those','some','the','my'].includes(word))).toBe(false)
  }
 })
 it('orders the complete teacher selector without applying student limits',()=>{

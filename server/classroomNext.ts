@@ -24,16 +24,19 @@ export default async function handler(req:IncomingMessage&{body?:unknown},res:Se
   if(!online.length)throw new Error('No students online')
   const least=Math.min(...online.map(m=>m.turns)),candidates=online.filter(m=>m.turns===least)
   const learner=candidates[Math.floor(Math.random()*candidates.length)]
-  const rows:WordProgress[]=[]
-  for(let offset=0;;offset+=1000){const result=await db.from('english_word_progress').select('*').eq('learner_id',learner.id).order('word_id').range(offset,offset+999);if(result.error)throw result.error;rows.push(...result.data);if(result.data.length<1000)break}
+  const participants=state.members.filter(member=>member.active)
+  const progress:(WordProgress&{learner_id:string})[]=[]
+  for(let offset=0;;offset+=1000){const result=await db.from('english_word_progress').select('*').in('learner_id',participants.map(member=>member.id)).order('learner_id').order('word_id').range(offset,offset+999);if(result.error)throw result.error;progress.push(...result.data);if(result.data.length<1000)break}
+  const rows=progress.filter(row=>row.learner_id===learner.id)
+  const sharedProgress=participants.map(member=>progress.filter(row=>row.learner_id===member.id))
   const recent=await db.from('english_word_attempts').select('id,question_id,question_version,correct,occurred_at,modality,replays,english_word_questions(sentence,credit_sentence)').eq('learner_id',learner.id).order('occurred_at',{ascending:false}).limit(180)
   if(recent.error)throw recent.error
   const history:ListeningEvidence[]=recent.data.reverse().map(attempt=>{const source=attempt.english_word_questions as unknown as {sentence:string;credit_sentence:string|null};return {id:attempt.id,questionId:attempt.question_id,level:1,sentence:source.sentence,targets:source.credit_sentence?[...new Set([source.credit_sentence,...wordTokens(source.credit_sentence)])]:[],vocabulary:[],correct:attempt.correct,at:attempt.occurred_at,hidden:attempt.modality==='audio',heard:true,assisted:false,plays:attempt.replays+1}})
   // Persisted lifecycle rows are authoritative across devices and activities.
-  const {question,scores}=classroomWordQuestion(input.lesson,learner.id,rows,history,learner.turns,`${state.id}:${input.previous}`)
+  const {question,scores}=classroomWordQuestion(input.lesson,learner.id,rows,history,learner.turns,`${state.id}:${input.previous}`,sharedProgress)
   await registerPracticeQuestion(db,question)
   const result=await db.rpc('english_classroom',{p_action:'adaptive-next',p_session:state.id,p_payload:{hostSecret:input.hostSecret,previous:input.previous,learner:learner.id,question,scores}})
   if(result.error)throw result.error
   res.setHeader('Content-Type','application/json');res.end(JSON.stringify(result.data))
- }catch(error){res.statusCode=400;res.setHeader('Content-Type','application/json');res.end(JSON.stringify({error:error instanceof Error?error.message:'Could not select a question'}))}
+ }catch(error){const detail=error as {code?:string;message?:string};console.warn('Classroom word service failed',detail?.code??'',detail?.message??'Unknown error');res.statusCode=400;res.setHeader('Content-Type','application/json');res.end(JSON.stringify({error:error instanceof Error?error.message:'Could not select a question'}))}
 }

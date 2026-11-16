@@ -1,13 +1,13 @@
 import {beforeEach,expect,it,vi} from 'vitest'
-const mock=vi.hoisted(()=>({rpc:vi.fn(),from:vi.fn(),upsert:vi.fn(),rows:[] as unknown[],history:[] as unknown[]}))
+const mock=vi.hoisted(()=>({rpc:vi.fn(),from:vi.fn(),upsert:vi.fn(),participants:vi.fn(),rows:[] as unknown[],history:[] as unknown[]}))
 vi.mock('@supabase/supabase-js',()=>({createClient:()=>({rpc:mock.rpc,from:mock.from})}))
-import handler from '../../api/classroom-next'
+import handler from '../../server/classroomNext'
 const secret='a'.repeat(64)
 beforeEach(()=>{
  vi.stubEnv('SUPABASE_URL','https://database.invalid');vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY','server-only')
- mock.rows=[];mock.history=[];mock.rpc.mockReset();mock.upsert.mockReset().mockResolvedValue({error:null})
+ mock.rows=[];mock.history=[];mock.participants.mockClear();mock.rpc.mockReset();mock.upsert.mockReset().mockResolvedValue({error:null})
  mock.from.mockImplementation((table:string)=>{
-  const query={select:()=>query,eq:()=>query,order:()=>query,range:async()=>({data:mock.rows,error:null}),limit:async()=>({data:mock.history,error:null}),upsert:mock.upsert}
+  const query={select:()=>query,eq:()=>query,in:(_column:string,ids:string[])=>{mock.participants(ids);return query},order:()=>query,range:async()=>({data:mock.rows,error:null}),limit:async()=>({data:mock.history,error:null}),upsert:mock.upsert}
   if(!['english_word_progress','english_word_attempts','english_word_forms','english_word_questions'].includes(table))throw new Error('Unexpected table')
   return query
  })
@@ -27,7 +27,8 @@ it('selects from the chosen learner account and registers the same question sent
   expect(action).toBe('english_classroom');expect(args.p_action).toBe('adaptive-next')
   return {data:{id:'room',turn:{question:(args.p_payload as Record<string,unknown>).question}},error:null}
  })
- const result=await request({session:'room',hostSecret:secret,previous:'',lesson:6})
+ mock.rows=['the','phone','phones','bag','bags'].map(word=>({learner_id:'student',word_id:'en:'+word,exposure_count:1,attempts:0,correct:0,listening_correct:0,direct_correct:0,last_practised:'',recent_results:[]}))
+ const result=await request({session:'room',hostSecret:secret,previous:'',lesson:7})
  expect(result.status).toBe(200)
  const selected=mock.rpc.mock.calls.at(-1)![1].p_payload
  expect(selected.learner).toBe('student')
@@ -35,3 +36,12 @@ it('selects from the chosen learner account and registers the same question sent
  expect(selected.question.document.english).not.toMatch(/banana|apple/i)
  expect(mock.upsert.mock.calls.some(([record])=>record.id===selected.question.id&&record.credit_sentence===selected.question.credit)).toBe(true)
 },30000)
+
+it('checks all active participants and blocks a missing peer history before registering or serving a question',async()=>{
+ mock.rows=['the','phone','phones','bag','bags'].map(word=>({learner_id:'student',word_id:'en:'+word,exposure_count:1,attempts:0,correct:0,listening_correct:0,direct_correct:0,last_practised:'',recent_results:[]}))
+ mock.rpc.mockResolvedValue({data:{id:'room',host:true,turn:null,members:[{id:'student',active:true,turns:0,lastSeen:new Date().toISOString()},{id:'peer',active:true,turns:1,lastSeen:new Date().toISOString()}]},error:null})
+ const result=await request({session:'room',hostSecret:secret,previous:'',lesson:7})
+ expect(mock.participants).toHaveBeenCalledWith(['student','peer'])
+ expect(result.status).toBe(400);expect(result.body.error).toMatch(/shared familiar content/)
+ expect(mock.upsert).not.toHaveBeenCalled();expect(mock.rpc).toHaveBeenCalledTimes(1)
+})

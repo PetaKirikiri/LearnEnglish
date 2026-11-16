@@ -5,7 +5,8 @@ import {nextPersonalQuestion} from './practiceForecast'
 /** Word progression must not silently replace the selected sentence blueprint. */
 for(const lesson of [3,4,5,6])for(const activity of ['phone','casino'] as const)it(`keeps Lesson ${lesson}'s sentence structure for a new learner on ${activity}`,()=>{
  const template=lessonPracticeTemplate(lesson)
- const choices={phone:nextPersonalQuestion(template.level,[],[],'structure-continuity',0,template.options),casino:classroomWordQuestion(lesson,'new-student',[],[],0,'structure-continuity').question}
+ if(activity==='casino'){expect(()=>classroomWordQuestion(lesson,'new-student',[],[],0,'structure-continuity')).toThrow(/shared familiar content/);return}
+ const choices={phone:nextPersonalQuestion(template.level,[],[],'structure-continuity',0,template.options),casino:undefined}
  const expected=lesson===6?['identification-question','identification-answer']:['action-answer']
  {
   const q=choices[activity]

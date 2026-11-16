@@ -63,7 +63,7 @@ function sceneQuestion(level:PracticeLevel,reference:typeof references[number],f
  const doc=identificationQuestion(reference.id)
  return {id:`identify-v2-${reference.id}-${sentenceHash(item.word+'|'+foil.id)}`,version:1,level,document:doc,audioUrl:identificationAudio(reference.id),choices:[reference.word,foil.word],correct:0,sceneChoices:[{reference:reference.id,word:item.word},{reference:foil.id,word:item.word}],targetWords:[reference.word],listeningWords:[reference.word],family:family(item.word),vocabulary:[item.word],action:'identify',owner:'',subject:'',plural:reference.plural,kind:'meaning',credit:reference.word,recipe:{version:1,level,scene:{reference:reference.id,foil:foil.id,noun:item.word}}}
 }
-function nounQuestion(level:PracticeLevel,state:State,anchor:Anchor,turn:number,identify:boolean,pluralOnly=false):GeneratedQuestion|undefined{
+function nounQuestion(level:PracticeLevel,state:State,anchor:Anchor,turn:number,identify:boolean,pluralOnly=false,surfaces?:ReadonlySet<string>):GeneratedQuestion|undefined{
  if(identify&&anchor.type==='determiner'){
   const reference=references.find(item=>item.word===anchor.word&&(!pluralOnly||item.plural))
   const foil=reference&&rotate(references,turn).find(item=>item.word!==reference.word&&item.plural===reference.plural&&eligible(state,'determiner',item.word,true))
@@ -72,14 +72,14 @@ function nounQuestion(level:PracticeLevel,state:State,anchor:Anchor,turn:number,
  }
  if(!['noun','determiner','adjective'].includes(anchor.type))return
  if(identify&&anchor.type==='adjective')return // No adjective slot in this authored answer.
- const available=nouns.filter(item=>(!pluralOnly||item.pluralForm)&&eligible(state,'noun',item.word)&&(!identify||!item.pairOnly)&& (anchor.type!=='noun'||family(item.word)===anchor.word))
+ const available=nouns.filter(item=>(!surfaces||surfaces.has(clean(item.word)))&&(!pluralOnly||item.pluralForm)&&eligible(state,'noun',item.word)&&(!identify||!item.pairOnly)&& (anchor.type!=='noun'||family(item.word)===anchor.word))
  for(const item of rotate(available,turn)){
   if(anchor.type==='adjective'&&(!state.noun.completed.includes(family(item.word))||!adjectiveFitsNoun(anchor.word,item)))continue
   const owner=chooseOwner(item,state,turn,anchor.type==='determiner'?anchor.word:undefined)
   if(!owner)continue
   let otherItem=item,otherOwner=owner,otherDescription:string|undefined
   if(anchor.type==='noun'){
-   const candidates=nouns.filter(other=>other.word!==item.word&&eligible(state,'noun',other.word,true)&&agrees(owner,other)&&(!identify||other.pluralForm===item.pluralForm))
+   const candidates=nouns.filter(other=>(!surfaces||surfaces.has(clean(other.word)))&&other.word!==item.word&&eligible(state,'noun',other.word,true)&&agrees(owner,other)&&(!identify||other.pluralForm===item.pluralForm))
    const same=candidates.filter(other=>family(other.word)===family(item.word))
    const other=rotate(same.length?same:candidates,turn)[0];if(!other)continue;otherItem=other
   }else if(anchor.type==='determiner'){
@@ -202,7 +202,7 @@ function actionQuestion(level:PracticeLevel,state:State,anchor:Anchor,turn:numbe
   }
  }
 }
-export function serveBlueprintDeck(level:PracticeLevel,state:State,learning:Map<string,WordLearning>,events:ListeningEvidence[],seed:string,options:DeckOptions):GeneratedQuestion[]{
+export function serveBlueprintDeck(level:PracticeLevel,state:State,learning:Map<string,WordLearning>,events:ListeningEvidence[],seed:string,options:DeckOptions,surfaces?:ReadonlySet<string>):GeneratedQuestion[]{
  const request=practiceBlueprintRequest(level,options.structure),result:GeneratedQuestion[]=[],now=options.now??Date.now()
  const counts=new Map<string,number>()
  for(const event of events.slice(-180)){for(const type of hierarchyTypes)for(const word of state[type].current)if(targetsHierarchy({credit:event.targets.length?'answer':null,targetWords:event.targets},type,word))counts.set(type+':'+word,(counts.get(type+':'+word)??0)+1)}
@@ -216,7 +216,7 @@ export function serveBlueprintDeck(level:PracticeLevel,state:State,learning:Map<
   let selected:GeneratedQuestion|undefined
   for(const anchor of anchors){
    if(!request.anchors.includes(anchor.type))continue
-   selected=request.construction==='action'?actionQuestion(level,state,anchor,rotation,request):request.construction==='activity-question'?activityQuestion(level,state,anchor,rotation):request.construction==='location'?locationQuestion(level,state,anchor,rotation):nounQuestion(level,state,anchor,rotation,request.construction==='identify',options.referenceNumber==='plural')
+   selected=request.construction==='action'?actionQuestion(level,state,anchor,rotation,request):request.construction==='activity-question'?activityQuestion(level,state,anchor,rotation):request.construction==='location'?locationQuestion(level,state,anchor,rotation):nounQuestion(level,state,anchor,rotation,request.construction==='identify',options.referenceNumber==='plural',surfaces)
    if(selected){counts.set(anchor.type+':'+anchor.word,(counts.get(anchor.type+':'+anchor.word)??0)+1);break}
   }
   if(selected&&selected.recipe)selected.recipe={...(selected.recipe as PairRecipe),structure:options.structure}
