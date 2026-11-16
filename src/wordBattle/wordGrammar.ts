@@ -1,11 +1,10 @@
-import type { ClassroomWord } from '../learning/sentenceMatrix/model'
 import { descriptions } from '../learning/everydayVocabulary'
 import { universityVocabulary } from '../learning/universityVocabulary'
 import { actionVocabulary } from '../learning/sentenceRules/actionDialogue'
 import { subjectPronouns, subjectVerb } from '../learning/sentenceMatrix/subjectEngine'
 
 // The game reads the same noun forms and action entries as Success University.
-export const nouns:readonly ClassroomWord[] = [...universityVocabulary, ...[['dog','dogs'],['cat','cats'],['fish','fishes']].flatMap(([singular,plural])=>[{word:singular,singular,plural,thai:'',number:'singular' as const},{word:plural,singular,plural,thai:'',number:'plural' as const}])]
+export const nouns = universityVocabulary
 export const actions = actionVocabulary
 export const adjectives = [...new Set(descriptions.map(item=>item.word))]
 export const functionWords = ['the','a','my','your','his','her','our','their','this','that','these','those','is','are','am','and','to','at','in','on','with','where','what',...subjectPronouns.map(s=>s.word)]

@@ -15,7 +15,7 @@ it('buys words directly into slots, scores on ticks, moves them and refreshes fo
  await act(async()=>root.render(<WordBattle/>))
  function click(label:string){const el=host.querySelector(`[aria-label="${label}"]`) as HTMLButtonElement;expect(el,label).toBeTruthy();act(()=>el.click())}
  act(()=>[...host.querySelectorAll('button')].find(el=>el.textContent==='Play')!.click())
- click('Buy the for 1 gold');click('Slot 1');click('Buy dog for 1 gold');click('Slot 2')
+ click('Buy the for 1 gold');click('Slot 1');click('Buy doctor for 1 gold');click('Slot 2')
  expect(host.querySelector('.wt-controls strong')?.textContent).toBe('● 6')
  expect(host.querySelectorAll('.wt-slot.good')).toHaveLength(2)
  act(()=>vi.advanceTimersByTime(10000))
@@ -25,7 +25,7 @@ it('buys words directly into slots, scores on ticks, moves them and refreshes fo
  source.setPointerCapture=()=>{}
  document.elementFromPoint=()=>destination
  act(()=>{source.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,pointerId:1,clientX:10,clientY:10}));source.dispatchEvent(new PointerEvent('pointermove',{bubbles:true,pointerId:1,clientX:80,clientY:80}))})
- expect(host.querySelector('.wt-drag-ghost')?.textContent).toContain('dog')
+ expect(host.querySelector('.wt-drag-ghost')?.textContent).toContain('doctor')
  expect(destination.className).toContain('drop-target')
  act(()=>source.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,pointerId:1,clientX:80,clientY:80})))
  expect(host.querySelector('.wt-drag-ghost')).toBeNull()

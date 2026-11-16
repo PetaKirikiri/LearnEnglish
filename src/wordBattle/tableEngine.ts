@@ -1,4 +1,5 @@
-import { evaluate, words, nouns, actions, adjectives, functionWords } from './wordGrammar'
+import { evaluate } from './wordGrammar'
+import { taughtWords as words, taughtNouns, taughtActions, taughtFunctions } from './curriculumPool'
 import type { Word } from './wordGrammar'
 export type Tile = { id: number; word: Word; rank: number }
 export type Board = (Tile | null)[]
@@ -39,7 +40,7 @@ export function move(board: Board, from: number, to: number): Board {
 export function offers(tier:number,nextId:()=>number,board:Board=emptyBoard()):Tile[]{
  const pick=<T,>(pool:readonly T[]):T=>pool[Math.floor(Math.random()*pool.length)]
  const onTable=board.filter((card):card is Tile=>!!card)
- const support=['the','a','is','are','am','and','to','at','in','on',...onTable.map(card=>card.word)]
- const pools=[functionWords,nouns.map(noun=>noun.word),[...actions.map(action=>action.word),...adjectives],support]
+ const support=['the','is','are','am','to','at',...onTable.map(card=>card.word)].filter(word=>words.includes(word))
+ const pools=[taughtFunctions,taughtNouns.map(noun=>noun.word),taughtActions.map(action=>action.word),support]
  return pools.map(pool=>({id:nextId(),word:pick(pool),rank:tier>=3&&Math.random()<.08?2:tier>=2&&Math.random()<.2?1:0}))
 }

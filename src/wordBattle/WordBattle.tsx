@@ -3,11 +3,12 @@ import { recogniseHomeworkAccount } from '../auth/homeworkLine'
 import { supabase } from '../lib/supabase'
 import { emptyBoard, merge, move, offers, production } from './tableEngine'
 import type { Board, Tile } from './tableEngine'
-import { words, type Word } from './wordGrammar'
+import type { Word } from './wordGrammar'
+import { taughtWords } from './curriculumPool'
 import './wordBattle.css'
 
 type Game = { board: Board; shop: (Tile | null)[]; gold: number; tier: number; time: number; rival: Board; rivalGold: number; rivalShop: boolean[]; active: boolean }
-const first = (): Game => ({ board: emptyBoard(), shop: [{id:1,word:'the',rank:0},{id:2,word:'dog',rank:0},{id:3,word:'is',rank:0},{id:4,word:'running',rank:0}], gold:8, tier:1, time:0, rival:emptyBoard(), rivalGold:8, rivalShop:[true,true,true,true], active:false })
+const first = (): Game => ({ board: emptyBoard(), shop: [{id:1,word:'the',rank:0},{id:2,word:'doctor',rank:0},{id:3,word:'is',rank:0},{id:4,word:'reading',rank:0}], gold:8, tier:1, time:0, rival:emptyBoard(), rivalGold:8, rivalShop:[true,true,true,true], active:false })
 const ranks = ['','★','★★']
 export default function WordBattle() {
   const [game,setGame] = useState<Game>(first)
@@ -38,18 +39,18 @@ export default function WordBattle() {
       const score=production(old.board)
       const rival=[...old.rival]
       // A visible, slow bot buys one card per tick, completing a simple sentence.
-      const botWords: Word[]=['the','cat','is','sleeping','the','dogs','are','walking']
+      const botWords: Word[]=['I','am','reading','books','you','are','holding','the','book']
       const turn=Math.floor(time/10)-1
-      const positions=[0,1,2,3,7,8,9,10]
+      const positions=[0,1,2,3,7,8,9,10,11]
       const shop=[...old.rivalShop]
-      if(turn<8){rival[positions[turn]]={id:10000+turn,word:botWords[turn],rank:0};shop[turn%4]=false}
+      if(turn<botWords.length){rival[positions[turn]]={id:10000+turn,word:botWords[turn],rank:0};shop[turn%4]=false}
       if(turn%4===3)shop.fill(true)
       try {
         const key=`word-battle:tables:${account.current}`
         const history=JSON.parse(localStorage.getItem(key)??'[]')
         localStorage.setItem(key,JSON.stringify([...history,{at:Date.now(),groups:score.groups}].slice(-100)))
       }catch{saveFailed.current=true}
-      return {...old,time,gold:old.gold+1+score.net,rival,rivalShop:shop,rivalGold:old.rivalGold+1+production(old.rival).net-(turn<8?1:0)}
+      return {...old,time,gold:old.gold+1+score.net,rival,rivalShop:shop,rivalGold:old.rivalGold+1+production(old.rival).net-(turn<botWords.length?1:0)}
     }),1000)
     return ()=>window.clearInterval(timer)
   },[game.active,finished])
@@ -114,6 +115,6 @@ export default function WordBattle() {
     {dragView&&<><div className={`wt-drag-ghost ${dragView.selling?'selling':''} ${dragView.tile.rank===1?'silver':dragView.tile.rank===2?'gold':''}`} style={{left:dragView.x,top:dragView.y,width:Math.max(68,dragView.width),height:Math.max(45,dragView.height)}} aria-hidden="true"><span>{dragView.tile.word}</span><small>{dragView.selling?'Sell −1':ranks[dragView.tile.rank]}</small></div>{dragView.kind==='board'&&<div className={`wt-sell-edge ${dragView.selling?'active':''}`}>Sell −1</div>}</>}
     {notice&&<div className="wt-toast" role="status">{notice}</div>}
     {(!game.active||finished)&&!help&&<div className="wt-pause"><button onClick={()=>{if(finished){setGame(first());setSelected(null)}else setGame(old=>({...old,active:true}))}}>{finished?'Play again':game.time?'Resume':'Play'}</button>{finished&&<span>You {game.gold} · Opponent {game.rivalGold}</span>}</div>}
-    {help&&<div className="wt-help"><button onClick={()=>setHelp(false)}>×</button><p>Drag offers into empty slots, or tap a word then a slot. Move cards to arrange them. Empty slots split groups. Sentences continue from the last slot of the top row into the first slot below.</p><p>Green groups earn gold every 10 seconds. Red words cost 1 each. You also get 1 base gold per tick. Gold can fall below zero.</p><p>Refresh 1 · Buy 1 · Sell 1. To sell, drag below your table. You can sell even in debt. Pause with Ⅱ.</p><p>Three identical words merge into silver; three silvers into gold. Higher tavern tiers can offer silver/gold words. Upgrade costs 5 then 10. Silver/gold words add +1/+2 to a valid group’s tick.</p><p>{words.length} cards from the shared Success University nouns and actions, plus adjectives and connecting words. Match is/are/am to the subject: the dog is running; the dogs are walking. Join clauses with and, or extend with to/at/in/on.</p><p>Five minutes. The slow bot’s cards stay hidden. Highest gold wins.</p></div>}
+    {help&&<div className="wt-help"><button onClick={()=>setHelp(false)}>×</button><p>Drag offers into empty slots, or tap a word then a slot. Move cards to arrange them. Empty slots split groups. Sentences continue from the last slot of the top row into the first slot below.</p><p>Green groups earn gold every 10 seconds. Red words cost 1 each. You also get 1 base gold per tick. Gold can fall below zero.</p><p>Refresh 1 · Buy 1 · Sell 1. To sell, drag below your table. You can sell even in debt. Pause with Ⅱ.</p><p>Three identical words merge into silver; three silvers into gold. Higher tavern tiers can offer silver/gold words. Upgrade costs 5 then 10. Silver/gold words add +1/+2 to a valid group’s tick.</p><p>{taughtWords.length} words from the actual lesson 1–7 practice content. Match is/are/am to the subject. Extend combinations with the connecting words already in those lessons, such as to and at.</p><p>Five minutes. The slow bot’s cards stay hidden. Highest gold wins.</p></div>}
   </main>
 }
