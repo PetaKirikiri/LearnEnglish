@@ -24,7 +24,7 @@ it('plays local whiteboard audio without pretending unaligned words have timings
   await act(async()=>root.render(<ExampleView matrix english={text} thai="" units={units} layout={quadrantLayout({english:text,thai:'',units,construction:'action-answer'})} translationControl={<button onClick={robot}>old speaker</button>}/>))
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Fast speaking speed"]')!.click())
   expect(player.src).toBe('/kokoro.wav');expect(robot).not.toHaveBeenCalled()
-  expect(fetch).not.toHaveBeenCalled()
+  expect(fetch).toHaveBeenCalledWith('/kokoro.wav',expect.objectContaining({cache:'force-cache'}))
   await act(async()=>{player.currentTime=2;player.ontimeupdate()})
   expect(host.querySelectorAll('.tonight-slot[data-speaking="true"]')).toHaveLength(0)
 

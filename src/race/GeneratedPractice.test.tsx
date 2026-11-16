@@ -221,19 +221,26 @@ it('accepts an answer before completed audio without giving listening mastery',a
  }finally{await act(async()=>root.unmount())}
 })
 
-it('silently prepares both immediate outcomes before an answer and serves a prepared next question',async()=>{
- const host=document.createElement('div'),root=createRoot(host)
- vi.mocked(prepareSentenceAudio).mockClear()
- try{
-  await act(async()=>root.render(<GeneratedPractice level={4}/>))
-  expect(prepareSentenceAudio).toHaveBeenCalled()
-  const candidates=vi.mocked(prepareSentenceAudio).mock.calls.at(-1)![0]
-  expect(candidates).toHaveLength(2)
-  expect(answers()).toHaveLength(0)
-  expect(saved(4).questions.slice(1).every((q:unknown)=>q===null)).toBe(true)
-  await act(async()=>finishAudio())
-  await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correctSide(4)].click())
-  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-continue-surface')!.click())
-  expect(candidates.map(q=>q.id)).toContain(saved(4).questions[1].id)
- }finally{await act(async()=>root.unmount())}
+it('serves the exact prepared branch for right and wrong, even if progress refreshes before Continue',async()=>{
+ for(const correct of [false,true]){
+  localStorage.clear();mock.rows=[]
+  const host=document.createElement('div'),root=createRoot(host)
+  vi.mocked(prepareSentenceAudio).mockClear()
+  try{
+   await act(async()=>root.render(<GeneratedPractice level={4}/>))
+   expect(prepareSentenceAudio).toHaveBeenCalled()
+   expect(saved(4).questions.slice(1).every((q:unknown)=>q===null)).toBe(true)
+   await act(async()=>finishAudio())
+   const candidates=vi.mocked(prepareSentenceAudio).mock.calls.at(-1)![0]
+   expect(candidates).toHaveLength(2)
+   const side=correct?correctSide(4):1-correctSide(4)
+   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[side].click())
+   const selected=candidates[correct?1:0]
+   expect(saved(4).questions[1].id).toBe(selected.id)
+   mock.rows=[...mock.rows]
+   await act(async()=>root.render(<GeneratedPractice level={4}/>))
+   await act(async()=>host.querySelector<HTMLButtonElement>('.practice-continue-surface')!.click())
+   expect(saved(4).questions[1].id).toBe(selected.id)
+  }finally{await act(async()=>root.unmount())}
+ }
 })
