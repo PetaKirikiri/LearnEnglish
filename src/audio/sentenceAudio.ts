@@ -7,7 +7,7 @@ import {sentenceKey} from '../race/generatedPracticeContent'
 import {parseSentenceTiming,wordAtTime,type SentenceTiming,type SpokenWord} from './sentenceTiming'
 export type AudioSentence={whiteboard?:import('../learning/sentenceMatrix/LanguageQuadrant').LanguageDocument;recipe?:unknown;id:string;document:{english:string};audioUrl?:string;timingUrl?:string}
 const spokenKey=(text:string)=>text.normalize('NFC').trim().replace(/\s+/g,' ')
-const ready=new Map<string,{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming;preparation?:Promise<void>}>()
+const ready=new Map<string,{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming;file?:Promise<void>;preparation?:Promise<void>}>()
 const pending=new Map<string,Promise<void>>()
 const existing=(q:AudioSentence)=>q.audioUrl||(manifest as Record<string,string>)[sentenceKey(q.document.english)]
 /** Silently warm only the requested candidates; failures never affect the current turn. */
@@ -28,19 +28,29 @@ async function prepareForPlayback(q:AudioSentence,forceKokoro=false){
   if(q.audioUrl&&q.timingUrl&&!forceKokoro)recording={url:q.audioUrl,timingUrl:q.timingUrl}
   else try{recording=await serverAudio(q)}catch(error){const fallback=!forceKokoro&&existing(q);if(!fallback)throw error;recording={url:fallback}}
   const {url,timingUrl}=recording
-  const entry:{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming;preparation?:Promise<void>}={url,waveform:null}
+  const entry:{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming;file?:Promise<void>;preparation?:Promise<void>}={url,waveform:null}
   ready.set(key,entry)
   // Audio starts independently. Optional animation preparation must never block it.
-  entry.preparation=(async()=>{
-   entry.waveform=await loadAudioWaveform(url)
-   if(timingUrl){
+  entry.file=(async()=>{
+   // Keep the actual prepared bytes: a later media request must not fetch the WAV again.
+   try{
+    const response=await fetch(url,{cache:'force-cache',signal:AbortSignal.timeout(15000)})
+    if(response.ok)entry.url=URL.createObjectURL(await response.blob())
+   }catch{/* Retain the saved URL if local file preparation is unavailable. */}
+  })()
+  entry.preparation=Promise.all([
+   entry.file.then(async()=>{entry.waveform=await loadAudioWaveform(entry.url)}),
+   (async()=>{
+    if(!timingUrl)return
     try{
-     const response=await fetch(timingUrl,{signal:AbortSignal.timeout(5000)})
+     const response=await fetch(timingUrl,{cache:'force-cache',signal:AbortSignal.timeout(5000)})
      if(response.ok)entry.timing=parseSentenceTiming(await response.json(),q.document.english)??undefined
     }catch{/* A missing sidecar does not prevent audio playback. */}
-   }
-   if(entry.waveform)entry.waveform.timing=entry.timing
-  })().catch(()=>{/* Audio playback remains independent of animation availability. */})
+   })(),
+  ]).then(()=>{if(entry.waveform)entry.waveform.timing=entry.timing}).catch(()=>{/* Audio playback remains independent of animation availability. */})
+  // Bound retained phone memory while keeping the current and both next branches ready.
+  while(ready.size>64){const oldest=ready.keys().next().value!;const evicted=ready.get(oldest);ready.delete(oldest);void evicted?.preparation?.finally(()=>{if(evicted.url.startsWith('blob:'))URL.revokeObjectURL(evicted.url)})}
+
  })()
  pending.set(requestKey,work)
  try{await work}finally{pending.delete(requestKey)}
@@ -113,6 +123,6 @@ export function playTimedSentence(q:AudioSentence,callbacks:PlaybackCallbacks,mo
    void prepareForPlayback(q,true).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
   }},mode,player)
  }
- void Promise.all([prepareForPlayback(q,false),unlocked]).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
+ void Promise.all([prepareForPlayback(q,false).then(()=>ready.get(spokenKey(q.document.english))?.file),unlocked]).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
  return()=>{stopped=true;stop?.();player.pause();callbacks.loading?.(false)}
 }

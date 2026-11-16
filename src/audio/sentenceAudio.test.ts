@@ -1,11 +1,12 @@
 // @vitest-environment happy-dom
-import {afterEach,expect,it,vi} from 'vitest'
+import {beforeEach,afterEach,expect,it,vi} from 'vitest'
 vi.mock('./serverAudio',()=>({serverAudio:vi.fn().mockResolvedValue({url:'/kokoro.wav'})}))
 vi.mock('./audioWaveform',()=>({loadAudioWaveform:vi.fn().mockResolvedValue({interval:1,levels:[.5,.5]}),waveformAtTime:()=>.5}))
 vi.mock('./alignAudio',()=>({alignAudio:vi.fn(async(_url:string,text:string)=>({version:1,text,words:[...text.matchAll(/[a-z]+/gi)].map((m,i)=>({text:m[0],start:m.index,end:m.index!+m[0].length,startTime:10+i,endTime:11+i}))}))}))
 import {alignAudio} from './alignAudio'
 import {serverAudio} from './serverAudio'
 import {playTimedSentence,prepareSentenceAudio} from './sentenceAudio'
+beforeEach(()=>vi.stubGlobal('fetch',vi.fn().mockResolvedValue({ok:false})))
 afterEach(()=>{vi.useRealTimers();vi.unstubAllGlobals();vi.clearAllMocks()})
 const flush=async()=>{for(let i=0;i<12;i++)await Promise.resolve()}
 it('silently prepares both branches in parallel, deduplicates and reuses ready audio',async()=>{
@@ -131,4 +132,21 @@ it('waits for successful media unlocking before changing the audio source',async
  await flush();expect(player.src).toMatch(/^data:/);expect(callbacks.started).not.toHaveBeenCalled()
  finishUnlock();await flush()
  expect(player.src).toBe('/unlocked.wav');expect(callbacks.started).toHaveBeenCalledOnce();expect(callbacks.error).not.toHaveBeenCalled();stop()
+})
+
+it('downloads a prepared file once and plays its local bytes without another server request',async()=>{
+ const q={id:'local-prefetch-bytes',document:{english:'Keep these prepared audio bytes.'}}
+ const fetch=vi.fn().mockResolvedValue({ok:true,blob:async()=>new Blob(['audio'],{type:'audio/wav'})});vi.stubGlobal('fetch',fetch)
+ const make=vi.spyOn(URL,'createObjectURL').mockReturnValue('blob:prepared-sentence')
+ let player:any
+ vi.stubGlobal('Audio',class{
+  currentTime=0;duration=2;paused=true;ended=false;onplaying?:()=>void;onpause?:()=>void
+  constructor(public src:string){player=this}pause(){this.paused=true}play(){this.paused=false;this.onplaying?.();return Promise.resolve()}
+ })
+ try{
+  await prepareSentenceAudio([q]);expect(fetch).toHaveBeenCalledOnce();expect(make).toHaveBeenCalledOnce()
+  const calls=vi.mocked(serverAudio).mock.calls.length,callbacks={started:vi.fn(),ended:vi.fn(),error:vi.fn()}
+  const stop=playTimedSentence(q,callbacks);await flush()
+  expect(player.src).toBe('blob:prepared-sentence');expect(callbacks.started).toHaveBeenCalledOnce();expect(serverAudio).toHaveBeenCalledTimes(calls);expect(fetch).toHaveBeenCalledOnce();stop()
+ }finally{make.mockRestore()}
 })

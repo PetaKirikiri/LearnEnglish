@@ -55,10 +55,13 @@ function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof use
   props.onComplete?.(props.level,score,30,score>=27,next.id,!next.assisted)
  }
  const q=run?.questions[run.index]
+ const branchPlan=useRef<{attemptId:string;now:number;rows:typeof progress.rows;events:ListeningEvidence[];evidence:string;candidates:GeneratedQuestion[]}|null>(null)
  const prepareNext=useCallback((evidence:Pick<ListeningEvidence,'heard'|'hidden'|'assisted'|'plays'>)=>{
   if(!run||!q||run.picked!==null||run.index>=29)return
   try{
-   const candidates=nextAnswerCandidates(props.level,progress.rows,events,run.id,run.index,q,run.attemptId,evidence,props.options)
+   const now=branchPlan.current?.attemptId===run.attemptId?branchPlan.current.now:Date.now()
+   const candidates=nextAnswerCandidates(props.level,progress.rows,events,run.id,run.index,q,run.attemptId,evidence,{...props.options,now})
+   branchPlan.current={attemptId:run.attemptId,now,rows:progress.rows,events,evidence:JSON.stringify(evidence),candidates}
    void prepareSentenceAudio(candidates)
   }catch{/* Forecasting must never block the current question or an answer. */}
  },[run,q,props.level,props.options,progress.rows,events])
@@ -86,13 +89,21 @@ function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof use
    // listening proof still requires the contrasted word to be hidden.
    progress.record({id:event.id,questionId:q.id,recipe:q.recipe,version:q.version,answer:q.choices[side],occurredAt:event.at,modality:event.hidden&&event.heard&&!event.assisted&&event.plays===1?'audio':'visible',replays:Math.max(0,event.plays-1),ruleVersion:WORD_RULE_VERSION})
    const saved=saveEvidence(event,props.userId)
-   persist({...run,picked:side,answers:[...run.answers,correct],assisted:run.assisted||event.assisted})
+   const questions=[...run.questions],questionIds=[...run.questionIds],flipped=[...run.flipped]
+   if(run.index<29){
+    const plan=branchPlan.current,matching=plan?.attemptId===run.attemptId&&plan.rows===progress.rows&&plan.events===events&&plan.evidence===JSON.stringify(evidence)
+    const candidates=matching?plan.candidates:nextAnswerCandidates(props.level,progress.rows,events,run.id,run.index,q,run.attemptId,evidence,{...props.options,now:plan?.attemptId===run.attemptId?plan.now:Date.now()})
+    const following=candidates[correct?1:0],index=run.index+1
+    questions[index]=following;questionIds[index]=following.id;flipped[index]=following.kind==='meaning'&&following.correct===1
+    void prepareSentenceAudio([following])
+   }
+   persist({...run,questions,questionIds,flipped,picked:side,answers:[...run.answers,correct],assisted:run.assisted||event.assisted})
    setEvents(saved);awardPracticeGold(event.id,correct,props.userId);return true
   }catch{setSaveError(true);return false}
  }
  function next(){if(!run||run.picked===null)return;try{if(run.index===29){const done={...run,done:true};persist(done);complete(done)}else {
  const index=run.index+1,questionIds=[...run.questionIds],flipped=[...run.flipped],questions=[...run.questions]
- {const question=nextPersonalQuestion(props.level,progress.rows,events,run.id,index,{...props.options,familiar:curriculumBaseline(progress.rows,events,props.userId)});questions[index]=question;questionIds[index]=question.id;flipped[index]=question.kind==='meaning'&&question.correct===1}
+ {const question=questions[index]??nextPersonalQuestion(props.level,progress.rows,events,run.id,index,{...props.options,familiar:curriculumBaseline(progress.rows,events,props.userId)});questions[index]=question;questionIds[index]=question.id;flipped[index]=question.kind==='meaning'&&question.correct===1}
  persist({...run,questions,questionIds,flipped,index,picked:null,attemptId:crypto.randomUUID()})
  }}catch{setSaveError(true)}}
  return <main className={`phone-practice foundation-practice${props.options?.structure==='identify'?' identification-practice':''}`} lang="en"><div className="practice-shell">
@@ -128,10 +139,10 @@ function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scor
  useEffect(()=>{
   if(picked!==null)return
   const targets=q.listeningWords.flatMap(wordTokens)
-  onPrepareNext({heard:true,hidden:targets.length>0&&targets.every(w=>wordOpacity(w,snapshot,presentation)===0),assisted:assisted.current,plays:Math.max(1,plays.current)})
+  onPrepareNext({heard,hidden:targets.length>0&&targets.every(w=>wordOpacity(w,snapshot,presentation)===0),assisted:assisted.current||!heard,plays:plays.current})
  },[onPrepareNext,picked,heard,q,snapshot,audioLoading])
  function choose(side:number){if(locked.current)return;locked.current=true;const targets=q.listeningWords.flatMap(wordTokens);if(!onChoose(side,{heard,hidden:targets.length>0&&targets.every(w=>wordOpacity(w,snapshot,presentation)===0),assisted:assisted.current||!heard,plays:plays.current}))locked.current=false}
- return <><PracticeHeader label={courseLabel} level={q.level} onLevel={onLevel} onExit={onExit} value={index+(picked===null?0:1)} total={GENERATED_ROUND_SIZE} userId={userId}/><PracticeStage playbackLoading={audioLoading} playbackError={audioError} onReplay={()=>play()} prompt="Listen, then choose" correct={picked===null?null:picked===q.correct} onNext={onNext} onHelp={()=>{if(picked===null){assisted.current=true;saveSupport()}}} answers={{choices,selected:picked,disabled:picked!==null,onChoose:choose}}
+ return <><PracticeHeader label={courseLabel} level={q.level} onLevel={onLevel} onExit={onExit} value={index+(picked===null?0:1)} total={GENERATED_ROUND_SIZE} userId={userId}/><PracticeStage playbackLoading={audioLoading} playbackError={audioError} onReplay={()=>play()} prompt="Listen, then choose" correct={picked===null?null:picked===q.correct} onNext={onNext} onHelp={()=>{if(picked===null){assisted.current=true;saveSupport();const targets=q.listeningWords.flatMap(wordTokens);onPrepareNext({heard,hidden:targets.length>0&&targets.every(w=>wordOpacity(w,snapshot,presentation)===0),assisted:true,plays:plays.current})}}} answers={{choices,selected:picked,disabled:picked!==null,onChoose:choose}}
  explanation={close=><AdaptivePracticeExplanation question={q} onClose={close}/>}
  question={<><div className="classroom foundation-noun"><div className="cw-sentence-board"><LanguageQuadrant scores={snapshot} request={{document:q.document,referenceObject:q.sceneChoices?.[q.correct].word,presentation:{...presentation,spokenWord,audioWave:audioWave.current,size:'phone',english:true,icons:true,keepIconsWhenFading:true,thaiMeanings:false,thaiTranslation:false,explanations:false,wordPicker:false}}}/></div></div>{saveError&&<button role="alert" onClick={retry}>Retry saving progress</button>}</>}/></>
 }
