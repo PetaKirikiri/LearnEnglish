@@ -8,8 +8,8 @@ import {useWordProgress} from '../learning/wordProgress/useWordProgress'
 import {wordOpacity,wordTokens,WORD_RULE_VERSION,type WordScores} from '../learning/wordProgress/model'
 import {loadEvidence,saveEvidence,evidenceScores,curriculumBaseline,type DeckOptions,type ListeningEvidence} from './generatedPracticeProgress'
 import {GENERATED_ROUND_SIZE,type GeneratedQuestion} from './generatedPracticeContent'
-import {playTimedSentence as playSentenceAudio} from '../audio/sentenceAudio'
-import {nextPersonalQuestion} from './practiceForecast'
+import {playTimedSentence as playSentenceAudio,prepareSentenceAudio} from '../audio/sentenceAudio'
+import {nextPersonalQuestion,nextAnswerCandidates} from './practiceForecast'
 import type {PracticeLevel} from './PracticeLevelPicker'
 import PracticeHeader from './PracticeHeader'
 import PracticeStage from './PracticeStage'
@@ -55,6 +55,13 @@ function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof use
   props.onComplete?.(props.level,score,30,score>=27,next.id,!next.assisted)
  }
  const q=run?.questions[run.index]
+ const prepareNext=useCallback((evidence:Pick<ListeningEvidence,'heard'|'hidden'|'assisted'|'plays'>)=>{
+  if(!run||!q||run.picked!==null||run.index>=29)return
+  try{
+   const candidates=nextAnswerCandidates(props.level,progress.rows,events,run.id,run.index,q,run.attemptId,evidence,props.options)
+   void prepareSentenceAudio(candidates)
+  }catch{/* Forecasting must never block the current question or an answer. */}
+ },[run,q,props.level,props.options,progress.rows,events])
 
  function present(){
   if(!run||run.picked!==null||!q)return false
@@ -89,11 +96,11 @@ function ReadyPractice({progress,...props}:Props&{progress:ReturnType<typeof use
  persist({...run,questions,questionIds,flipped,index,picked:null,attemptId:crypto.randomUUID()})
  }}catch{setSaveError(true)}}
  return <main className={`phone-practice foundation-practice${props.options?.structure==='identify'?' identification-practice':''}`} lang="en"><div className="practice-shell">
- {!run?<><PracticeHeader label={props.label} level={props.level} onLevel={props.onLevel} onExit={props.onExit} userId={props.userId} value={0} total={30}/>{progress.error?<button role="alert" onClick={()=>void progress.retry()}>Retry loading progress</button>:<p role="status">…</p>}{<button role="alert" onClick={start}>Retry saving this set</button>}</>:run.done?<><PracticeHeader label={props.label} level={props.level} onLevel={props.onLevel} onExit={props.onExit} userId={props.userId} value={30} total={30}/><section className="practice-complete"><h1>{run.answers.filter(Boolean).length} / 30</h1><button onClick={start}>↻</button></section></>:q&&<GeneratedQuestionView courseLabel={props.label} key={run.attemptId} attemptId={run.attemptId} supportKey={runKey(props)+':presentation'} question={q} scores={scores} settings={props.settings} picked={run.picked} onPresented={present} onChoose={answer} onNext={next} userId={props.userId} onLevel={props.onLevel} onExit={props.onExit} index={run.index} saveError={saveError||!!progress.error} retry={()=>void progress.retry()}/>}
+ {!run?<><PracticeHeader label={props.label} level={props.level} onLevel={props.onLevel} onExit={props.onExit} userId={props.userId} value={0} total={30}/>{progress.error?<button role="alert" onClick={()=>void progress.retry()}>Retry loading progress</button>:<p role="status">…</p>}{<button role="alert" onClick={start}>Retry saving this set</button>}</>:run.done?<><PracticeHeader label={props.label} level={props.level} onLevel={props.onLevel} onExit={props.onExit} userId={props.userId} value={30} total={30}/><section className="practice-complete"><h1>{run.answers.filter(Boolean).length} / 30</h1><button onClick={start}>↻</button></section></>:q&&<GeneratedQuestionView courseLabel={props.label} key={run.attemptId} attemptId={run.attemptId} supportKey={runKey(props)+':presentation'} question={q} scores={scores} settings={props.settings} picked={run.picked} onPresented={present} onPrepareNext={prepareNext} onChoose={answer} onNext={next} userId={props.userId} onLevel={props.onLevel} onExit={props.onExit} index={run.index} saveError={saveError||!!progress.error} retry={()=>void progress.retry()}/>}
  </div></main>
 }
-type QuestionProps={courseLabel?:string;attemptId:string;supportKey:string;question:GeneratedQuestion;scores:WordScores;settings?:MatrixSettings;picked:number|null;onPresented:()=>boolean;onChoose:(side:number,evidence:Pick<ListeningEvidence,'heard'|'hidden'|'assisted'|'plays'>)=>boolean;onNext:()=>void;userId?:string;onLevel?:Props['onLevel'];onExit?:()=>void;index:number;saveError:boolean;retry:()=>void}
-function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scores,settings,picked,onPresented,onChoose,onNext,userId,onLevel,onExit,index,saveError,retry}:QuestionProps){
+type QuestionProps={courseLabel?:string;attemptId:string;supportKey:string;question:GeneratedQuestion;scores:WordScores;settings?:MatrixSettings;picked:number|null;onPresented:()=>boolean;onPrepareNext:(evidence:Pick<ListeningEvidence,'heard'|'hidden'|'assisted'|'plays'>)=>void;onChoose:(side:number,evidence:Pick<ListeningEvidence,'heard'|'hidden'|'assisted'|'plays'>)=>boolean;onNext:()=>void;userId?:string;onLevel?:Props['onLevel'];onExit?:()=>void;index:number;saveError:boolean;retry:()=>void}
+function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scores,settings,picked,onPresented,onPrepareNext,onChoose,onNext,userId,onLevel,onExit,index,saveError,retry}:QuestionProps){
  const [spokenWord,setSpokenWord]=useState<SpokenWord|null>(null)
  const audioWave=useRef<{level:number;time:number;progress?:number;recording?:import('./../audio/audioWaveform').AudioWaveform}>({level:0,time:0})
  const [support]=useState(()=>{try{const old=JSON.parse(localStorage.getItem(supportKey)??'null');if(old?.id===attemptId&&old.scores&&typeof old.assisted==='boolean'&&Number.isInteger(old.plays)&&old.plays>=0&&Object.values(old.scores).every(v=>typeof v==='number'&&Number.isFinite(v)))return old as {id:string;scores:WordScores;plays:number;assisted:boolean}}catch{/* Retain fresh support when no presentation was saved. */}return {id:attemptId,scores:Object.fromEntries(wordTokens(q.document.english).map(w=>['en:'+w,scores['en:'+w]??0])),plays:0,assisted:false}})
@@ -118,6 +125,11 @@ function GeneratedQuestionView({courseLabel,attemptId,supportKey,question:q,scor
  useEffect(()=>{play();return()=>{audio.current?.();audio.current=null}},[play])
  useEffect(()=>{locked.current=picked!==null},[picked,saveError])
  const choices=q.choices.map((label,side)=>({id:String(side),label,content:q.sceneChoices?<span className="distance-answer"><DistanceScene {...q.sceneChoices[side]}/><strong>{label}</strong></span>:q.alternatives?<PictureSentence document={q.alternatives[side]}/>:label,icon:q.kind==='judgement'?<PracticeAnswerIcon kind="judgement" second={side===1}/>:undefined,state:picked!==null&&side===q.correct?'correct':picked===side?'incorrect':undefined})) as [BinaryChoice,BinaryChoice]
+ useEffect(()=>{
+  if(picked!==null)return
+  const targets=q.listeningWords.flatMap(wordTokens)
+  onPrepareNext({heard:true,hidden:targets.length>0&&targets.every(w=>wordOpacity(w,snapshot,presentation)===0),assisted:assisted.current,plays:Math.max(1,plays.current)})
+ },[onPrepareNext,picked,heard,q,snapshot,audioLoading])
  function choose(side:number){if(locked.current)return;locked.current=true;const targets=q.listeningWords.flatMap(wordTokens);if(!onChoose(side,{heard,hidden:targets.length>0&&targets.every(w=>wordOpacity(w,snapshot,presentation)===0),assisted:assisted.current||!heard,plays:plays.current}))locked.current=false}
  return <><PracticeHeader label={courseLabel} level={q.level} onLevel={onLevel} onExit={onExit} value={index+(picked===null?0:1)} total={GENERATED_ROUND_SIZE} userId={userId}/><PracticeStage playbackLoading={audioLoading} playbackError={audioError} onReplay={()=>play()} prompt="Listen, then choose" correct={picked===null?null:picked===q.correct} onNext={onNext} onHelp={()=>{if(picked===null){assisted.current=true;saveSupport()}}} answers={{choices,selected:picked,disabled:picked!==null,onChoose:choose}}
  explanation={close=><AdaptivePracticeExplanation question={q} onClose={close}/>}

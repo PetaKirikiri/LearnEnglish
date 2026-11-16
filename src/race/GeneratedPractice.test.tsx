@@ -10,6 +10,7 @@ vi.mock('./practiceForecast',async original=>({...await original<typeof import('
 vi.mock('./PracticeGold',()=>({default:()=>null,awardPracticeGold:vi.fn()}))
 vi.mock('../audio/sentenceAudio',async original=>{const audio=await original<typeof import('../audio/sentenceAudio')>();return {...audio,prepareSentenceAudio:vi.fn().mockResolvedValue(undefined),playTimedSentence:(_q:unknown,callbacks:import('../audio/sentenceAudio').PlaybackCallbacks)=>{callbacks.started();finishAudio=callbacks.ended;return ()=>{}}}})
 import GeneratedPractice from './GeneratedPractice'
+import {prepareSentenceAudio} from '../audio/sentenceAudio'
 import './testing/forbidSentenceBanks'
 import {canonicalBlueprintQuestion} from './blueprintWordServer'
 import {generatedNumberCatalogue} from './numberCatalogue'
@@ -217,5 +218,22 @@ it('accepts an answer before completed audio without giving listening mastery',a
   expect(answers()).toHaveLength(1)
   expect(answers()[0].modality).toBe('visible')
   expect(loadEvidence().find(event=>event.phase==='answered')).toMatchObject({heard:false,assisted:true})
+ }finally{await act(async()=>root.unmount())}
+})
+
+it('silently prepares both immediate outcomes before an answer and serves a prepared next question',async()=>{
+ const host=document.createElement('div'),root=createRoot(host)
+ vi.mocked(prepareSentenceAudio).mockClear()
+ try{
+  await act(async()=>root.render(<GeneratedPractice level={4}/>))
+  expect(prepareSentenceAudio).toHaveBeenCalled()
+  const candidates=vi.mocked(prepareSentenceAudio).mock.calls.at(-1)![0]
+  expect(candidates).toHaveLength(2)
+  expect(answers()).toHaveLength(0)
+  expect(saved(4).questions.slice(1).every((q:unknown)=>q===null)).toBe(true)
+  await act(async()=>finishAudio())
+  await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correctSide(4)].click())
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-continue-surface')!.click())
+  expect(candidates.map(q=>q.id)).toContain(saved(4).questions[1].id)
  }finally{await act(async()=>root.unmount())}
 })

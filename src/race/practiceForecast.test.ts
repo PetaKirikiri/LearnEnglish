@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import {expect,it} from 'vitest'
-import {forecastPractice,nextPersonalQuestion} from './practiceForecast'
+import {forecastPractice,nextPersonalQuestion,nextAnswerCandidates} from './practiceForecast'
 import {vocabularyFamily,availableVocabulary,evidenceScores,type ListeningEvidence} from './generatedPracticeProgress'
 import {wordOpacity,wordTokens,type WordProgress} from '../learning/wordProgress/model'
 it('predicts the same next question as actual successful evidence without writing progress',()=>{
@@ -26,4 +26,19 @@ it('forecasts newly unlocked vocabulary while keeping earned evidence unchanged'
  const future=forecastPractice(1,rows,events,'unlock',index,current)
  expect(future.slice(1).some(question=>question.vocabulary.includes('boy')||question.vocabulary.includes('boys'))).toBe(true)
  expect(events).toHaveLength(0);expect(JSON.stringify(rows)).toBe(before);expect(availableVocabulary(rows,events).has('boy')).toBe(false)
+})
+
+it('prepares only the two immediate outcome branches using the actual adaptive selector without saving evidence',()=>{
+ const rows:WordProgress[]=[],events:ListeningEvidence[]=[],seed='two-branches',now=Date.parse('2026-11-16T00:00:00Z')
+ const current=nextPersonalQuestion(4,rows,events,seed,0,{now})
+ const shown:ListeningEvidence={id:'attempt',phase:'presented',questionId:current.id,level:4,sentence:current.document.english,targets:current.targetWords,vocabulary:current.vocabulary,correct:false,hidden:false,heard:false,assisted:false,plays:0,at:new Date(now-1000).toISOString()}
+ events.push(shown)
+ const evidence={heard:true,hidden:false,assisted:false,plays:1},before=JSON.stringify({rows,events}),stored=localStorage.length
+ const candidates=nextAnswerCandidates(4,rows,events,seed,0,current,'attempt',evidence,{now})
+ expect(candidates).toHaveLength(2)
+ for(const [index,correct] of [false,true].entries()){
+  const actual:ListeningEvidence={...shown,...evidence,phase:'answered',correct,targets:current.credit===null?[]:current.targetWords,presentedAt:shown.at,at:new Date(now).toISOString()}
+  expect(candidates[index].id).toBe(nextPersonalQuestion(4,rows,[actual],seed,1,{now}).id)
+ }
+ expect(JSON.stringify({rows,events})).toBe(before);expect(localStorage.length).toBe(stored)
 })
