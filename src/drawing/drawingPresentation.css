@@ -34,3 +34,5 @@
 .dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 .dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .example-source{font-size:clamp(18px,2.4vw,32px)!important;white-space:normal}
 .dg-sentence-boxes.classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .cw-noun-group[data-group-size='1']{grid-template-columns:minmax(0,1fr)!important}
+
+.dg-word-answer{display:grid;place-items:center;min-height:96px;padding:12px;border:3px solid #bc8b0c;border-radius:20px;background:#ffd43b;color:#18385e;font:500 clamp(28px,4vw,48px) Fredoka,sans-serif;box-sizing:border-box}

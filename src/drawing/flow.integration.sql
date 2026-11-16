@@ -14,17 +14,17 @@ begin
   perform public.english_drawing_game('start',sid,jsonb_build_object('hostSecret',secret,'round',0,'seconds',60));
   raise exception 'Unscored fallback accepted';
  exception when others then
-  if sqlerrm not like '%no scored drawing vocabulary%' then raise;end if;
+  if sqlerrm not like '%No shared seen%' then raise;end if;
  end;
  if exists(select 1 from public.english_drawings where session_id=sid) then raise exception 'Failed start left partial assignments';end if;
- insert into public.english_word_progress(learner_id,word_id,attempts,correct,last_practised) values(ids[3],'en:key',1,1,now());
+ insert into public.english_word_progress(learner_id,word_id,attempts,correct,last_practised) values(ids[2],'en:book',1,1,now()),(ids[3],'en:book',1,1,now());
  g:=public.english_drawing_game('start',sid,jsonb_build_object('hostSecret',secret,'round',0,'seconds',60));
  if g->>'phase'<>'drawing' or not (g->>'active')::boolean then raise exception 'Start did not activate phones';end if;
- if exists(select 1 from public.english_drawings d where session_id=sid and english<>case d.artist when ids[1] then 'a book' when ids[2] then 'a phone' else 'a key' end) then raise exception 'Assigned another learner vocabulary';end if;
+ if exists(select 1 from public.english_drawings d where session_id=sid and english<>'book') then raise exception 'Assigned another learner vocabulary';end if;
  foreach uid in array ids loop
   idx:=idx+1;perform set_config('request.jwt.claim.sub',uid::text,true);
   g:=public.english_drawing_game('state',sid);
-  if (select count(*) from jsonb_array_elements(g->'drawings') d where d->>'thai' is not null)<>1 then raise exception 'Private Thai prompt leaked';end if;
+  if (select count(*) from jsonb_array_elements(g->'drawings') d where d->>'english' is not null)<>1 then raise exception 'Private English prompt leaked';end if;
   g:=public.english_drawing_game('complete',sid,jsonb_build_object('round',1,'picture',pic));
   if idx<3 and g->>'phase'<>'drawing' then raise exception 'Advanced before all ready';end if;
  end loop;
@@ -55,4 +55,4 @@ begin
  if (select sum((v->>'points')::integer) from jsonb_array_elements(g->'scores') v)<>12 then raise exception 'Wrong total points';end if;
 end $$;
 rollback;
-select 'PASS: personal scored vocabulary, no fallback, atomic start, private Thai prompts, all-ready transition, all pictures, artist-only points, full gallery, one vote per person and final scores' result;
+select 'PASS: shared seen vocabulary, no fallback, atomic start, private English prompts, all-ready transition, all pictures, artist-only points, full gallery, one vote per person and final scores' result;
