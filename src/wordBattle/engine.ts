@@ -26,15 +26,15 @@ export type Match = { tick: number; you: number; bot: number; units: Unit[]; nex
 export const newMatch = (): Match => ({ tick: 0, you: 40, bot: 40, units: [], nextId: 1 })
 export function advance(state: Match): Match {
   const next: Match = { ...state, tick: state.tick + 1, units: state.units.map(unit => ({ ...unit })) }
-  if (next.tick % 9 === 0) {
+  if (next.tick % 18 === 0) {
     const kinds: Kind[] = ['shield', 'bow', 'horse']
-    next.units.push({ id: next.nextId++, kind: kinds[Math.floor(next.tick / 9 - 1) % 3], side: 'bot', lane: Math.floor(next.tick / 9 - 1) % 3, x: 94, hp: 8 })
+    next.units.push({ id: next.nextId++, kind: kinds[Math.floor(next.tick / 18 - 1) % 3], side: 'bot', lane: Math.floor(next.tick / 18 - 1) % 3, x: 94, hp: 8 })
   }
   const damage = new Map<number, number>()
   for (const unit of next.units) {
     const enemy = next.units.find(other => other.side !== unit.side && other.lane === unit.lane && Math.abs(other.x - unit.x) < 7)
     if (enemy) damage.set(enemy.id, (damage.get(enemy.id) ?? 0) + (troops[unit.kind].beats === enemy.kind ? 4 : 1))
-    else unit.x += unit.side === 'you' ? 3 : -3
+    else unit.x += unit.side === 'you' ? 1 : -1
   }
   for (const unit of next.units) {
     unit.hp -= damage.get(unit.id) ?? 0

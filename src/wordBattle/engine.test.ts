@@ -28,7 +28,7 @@ describe('word battle', () => {
     const next = advance(state)
     expect(next.bot).toBe(36)
     expect(advance(next).bot).toBe(36)
-    expect(advance({ ...newMatch(), tick: 8 }).units[0].kind).toBe('shield')
+    expect(advance({ ...newMatch(), tick: 17 }).units[0].kind).toBe('shield')
     expect(state.units[0].x).toBe(99)
   })
 })
