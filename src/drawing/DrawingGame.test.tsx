@@ -13,3 +13,9 @@ describe('class drawing game',()=>{
  it('shows the chosen name after voting without allowing another vote',async()=>{const v=await render({...game,phase:'voting',vote:'b'},'a');expect(v.el.querySelector('[role=status]')?.textContent).toBe('✓ Ben');expect(v.el.querySelector('button,img')).toBeNull();v.close()})
  it('waits for the host in lobby and results without phone menus or pictures',async()=>{for(const phase of ['lobby','results'] as const){const v=await render({...game,phase},'a');expect(v.el.textContent).toContain('Look at the screen');expect(v.el.querySelector('button,img,select,nav')).toBeNull();v.close()}})
 })
+
+it('shows the artist an English content word instead of the Thai prompt',async()=>{
+ const canvas=vi.spyOn(HTMLCanvasElement.prototype,'getContext').mockReturnValue({drawImage:vi.fn(),fillRect:vi.fn()} as unknown as CanvasRenderingContext2D)
+ const v=await render({...game,phase:'drawing',deadline:new Date(Date.now()+60000).toISOString(),drawings:game.drawings.map(d=>d.artist==='a'?{...d,english:'running',thai:'วิ่ง'}:d)},'a')
+ try{expect(v.el.querySelector('.dg-prompt h1')?.textContent).toBe('running');expect(v.el.querySelector('.dg-prompt h1')?.getAttribute('lang')).toBe('en')}finally{v.close();canvas.mockRestore()}
+})

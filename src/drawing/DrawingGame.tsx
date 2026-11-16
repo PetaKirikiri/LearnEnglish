@@ -52,7 +52,7 @@ export function DrawingStudent({game,userId,busy,error,act,offset}:{game:Game;us
  return <main className={`dg dg-phone is-${game.phase}`}>
  {error&&<p role="alert">{error}</p>}
  {game.phase==='lobby'&&<Waiting/>}
- {game.phase==='drawing'&&(mine?.finishRank?<Finished rank={mine.finishRank} bonus={mine.finishBonus??0}/>:mine?<section className="dg-studio"><div className="dg-prompt"><div><h1>{mine.thai}</h1></div><Clock game={game} offset={offset}/></div><DrawingPad key={game.round} storageKey={`drawing:${userId}:${game.round}:${game.deadline}`} initial={mine.picture} deadline={Date.parse(game.deadline!)-offset} save={picture=>act('save',{round:game.round,picture})} complete={picture=>act('complete',{round:game.round,picture})}/></section>:<Waiting/>)}
+ {game.phase==='drawing'&&(mine?.finishRank?<Finished rank={mine.finishRank} bonus={mine.finishBonus??0}/>:mine?<section className="dg-studio"><div className="dg-prompt"><div><h1 lang="en">{mine.english}</h1></div><Clock game={game} offset={offset}/></div><DrawingPad key={game.round} storageKey={`drawing:${userId}:${game.round}:${game.deadline}`} initial={mine.picture} deadline={Date.parse(game.deadline!)-offset} save={picture=>act('save',{round:game.round,picture})} complete={picture=>act('complete',{round:game.round,picture})}/></section>:<Waiting/>)}
  {game.phase==='guessing'&&(game.artist===userId&&!game.revealed?<AwardPanel game={game} userId={userId} busy={busy} act={act}/>:<Waiting message={current?.awarded?`+1 · ${game.scores.find(s=>s.id===current.awarded)?.name??''}`:undefined}/>)}
  {game.phase==='voting'&&<VotingPanel game={game} userId={userId} busy={busy} act={act}/>}
  {game.phase==='results'&&<Waiting/>}
