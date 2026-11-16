@@ -150,3 +150,9 @@ it('downloads a prepared file once and plays its local bytes without another ser
   expect(player.src).toBe('blob:prepared-sentence');expect(callbacks.started).toHaveBeenCalledOnce();expect(serverAudio).toHaveBeenCalledTimes(calls);expect(fetch).toHaveBeenCalledOnce();stop()
  }finally{make.mockRestore()}
 })
+
+it('plays saved Class 7 questions without authentication or a generation request',async()=>{
+ for(const english of ['What are these?','What are those?','What are those over there?','These are the phones.','Those are the phones.','Those over there are the phones.'])await prepareSentenceAudio([{id:'class-seven-notes',document:{english}}])
+ expect(serverAudio).not.toHaveBeenCalled()
+ expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/sentence-audio/kokoro-v1/'),expect.objectContaining({cache:'force-cache'}))
+})
