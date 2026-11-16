@@ -1,8 +1,7 @@
 import {silentPlaybackUrl,unlockAudio} from './unlockAudio'
 import {getPlaybackMode,playbackRateFor,type PlaybackMode} from './usePlaybackMode'
 import {loadAudioWaveform,waveformAtTime,type AudioWaveform} from './audioWaveform'
-import {alignAudio} from './alignAudio'
-import {kokoroAudio,type VoiceProgress} from './kokoroAudio'
+import {serverAudio} from './serverAudio'
 import manifest from '../race/generatedPracticeAudio.json'
 import {sentenceKey} from '../race/generatedPracticeContent'
 import {parseSentenceTiming,wordAtTime,type SentenceTiming,type SpokenWord} from './sentenceTiming'
@@ -13,25 +12,27 @@ const pending=new Map<string,Promise<void>>()
 const existing=(q:AudioSentence)=>q.audioUrl||(manifest as Record<string,string>)[sentenceKey(q.document.english)]
 /** Background calls deliberately do no synthesis or paid provider requests. */
 export async function prepareSentenceAudio(_questions:readonly AudioSentence[]){void _questions}
-async function prepareForPlayback(q:AudioSentence,forceKokoro=false,onProgress?:(value:VoiceProgress)=>void){
+async function prepareForPlayback(q:AudioSentence,forceKokoro=false){
  const key=spokenKey(q.document.english)
  if(!forceKokoro&&ready.has(key))return
  const requestKey=(forceKokoro?'kokoro:':'')+key
- const old=pending.get(requestKey);if(old){if(forceKokoro||!existing(q))void kokoroAudio(key,onProgress).catch(()=>{});return old}
+ const old=pending.get(requestKey);if(old)return old
  const work=(async()=>{
-  const url=(!forceKokoro&&existing(q))||await kokoroAudio(key,onProgress)
+  let recording:{url:string;timingUrl?:string}
+  if(q.audioUrl&&q.timingUrl&&!forceKokoro)recording={url:q.audioUrl,timingUrl:q.timingUrl}
+  else try{recording=await serverAudio(q)}catch(error){const fallback=!forceKokoro&&existing(q);if(!fallback)throw error;recording={url:fallback}}
+  const {url,timingUrl}=recording
   const entry:{url:string;waveform:AudioWaveform|null;timing?:SentenceTiming}={url,waveform:null}
   ready.set(key,entry)
   // Audio starts independently. Optional animation preparation must never block it.
   void(async()=>{
    entry.waveform=await loadAudioWaveform(url)
-   if(q.timingUrl&&!forceKokoro){
+   if(timingUrl){
     try{
-     const response=await fetch(q.timingUrl,{signal:AbortSignal.timeout(5000)})
+     const response=await fetch(timingUrl,{signal:AbortSignal.timeout(5000)})
      if(response.ok)entry.timing=parseSentenceTiming(await response.json(),q.document.english)??undefined
     }catch{/* A missing sidecar does not prevent audio playback. */}
    }
-   entry.timing??=await alignAudio(url,q.document.english).catch(()=>undefined)
    if(entry.waveform)entry.waveform.timing=entry.timing
   })().catch(()=>{/* Audio playback remains independent of animation availability. */})
  })()
@@ -94,7 +95,6 @@ export function playSentenceAudio(q:AudioSentence,callbacks:PlaybackCallbacks,mo
 const silentWav=silentPlaybackUrl()
 export function playTimedSentence(q:AudioSentence,callbacks:PlaybackCallbacks,mode:PlaybackMode=getPlaybackMode()){
  let stopped=false,stop:(()=>void)|undefined,retried=false,didStart=false
- const progress=(value:VoiceProgress)=>{if(!stopped)callbacks.loading?.(true,value.phase==='generating'?'Creating audio…':value.progress===undefined?'Loading voice…':`Loading voice ${Math.round(value.progress)}%`)}
  callbacks.loading?.(true,'Loading audio…')
  const player=new Audio(silentWav)
  const unlocked=unlockAudio(player)
@@ -104,9 +104,9 @@ export function playTimedSentence(q:AudioSentence,callbacks:PlaybackCallbacks,mo
    if(stopped)return
    if(reason==='blocked'||retried||!existing(q)){callbacks.loading?.(false);callbacks.error(reason);return}
    retried=true;callbacks.loading?.(true);stop?.()
-   void prepareForPlayback(q,true,progress).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
+   void prepareForPlayback(q,true).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
   }},mode,player)
  }
- void Promise.all([prepareForPlayback(q,false,progress),unlocked]).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
+ void Promise.all([prepareForPlayback(q,false),unlocked]).then(start).catch(()=>{if(!stopped){callbacks.loading?.(false);callbacks.error('unavailable')}})
  return()=>{stopped=true;stop?.();player.pause();callbacks.loading?.(false)}
 }

@@ -6,7 +6,7 @@ vi.mock('../lib/supabase',()=>({supabase:{auth:{getSession:async()=>({data:{sess
 vi.mock('./audioWaveform',()=>({loadAudioWaveform:async()=>({interval:1,levels:[.8,.8,.8,.8]}),waveformAtTime:()=>.8}))
 import {quadrantLayout} from '../learning/sentenceMatrix/LanguageQuadrant'
 import ExampleView from '../learning/sentenceMatrix/ExampleView'
-vi.mock('./kokoroAudio',()=>({kokoroAudio:vi.fn().mockResolvedValue('/kokoro.wav')}))
+vi.mock('./serverAudio',()=>({serverAudio:vi.fn().mockResolvedValue({url:'/kokoro.wav'})}))
 it('plays local whiteboard audio without pretending unaligned words have timings',async()=>{
  Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
  const text='I am going to the hotel.'
