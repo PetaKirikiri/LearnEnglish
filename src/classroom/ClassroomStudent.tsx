@@ -1,3 +1,4 @@
+import LandscapePractice from '../race/LandscapePractice'
 import {useClassActivity} from './activity'
 import {DrawingStudent} from '../drawing/DrawingGame'
 import {useDrawingGame} from '../drawing/game'
@@ -30,7 +31,7 @@ export default function ClassroomStudent({sessionId,userId}:{sessionId:string;us
   try{const next=await classroomCall('answer',sessionId,{turn:turn.id,answer:value,evidence});setSession(next);awardPracticeGold(turn.id,next.turn?.correct===true,userId);setError('')}catch(e){setError((e as Error).message)}finally{lock.current=false;setBusy(false)}
  }
  if(activity?.activity==='race'&&drawing.game?.active)return <DrawingStudent game={{...drawing.game,drawings:drawing.game.drawings.map(d=>({...d,avatar:session?.members.find(m=>m.id===d.artist)?.avatar})),scores:drawing.game.scores.map(s=>({...s,avatar:session?.members.find(m=>m.id===s.id)?.avatar}))}} userId={userId} busy={drawing.busy} error={drawing.error} act={drawing.act} offset={drawing.offset.current}/>
- return <main className="phone-practice foundation-practice su-student"><div className="practice-shell"><PracticeHeader level={q?.level??4} label={session?.members.find(m=>m.id===userId)?.name??'Class'} userId={userId}/>{tracking.error&&<button onClick={()=>void tracking.retry()}>Retry saving progress</button>}{(error||activityError)&&<p role="alert">{error||activityError}</p>}
+ return <LandscapePractice enabled={activity?.activity==='test'&&mine}><main className="phone-practice foundation-practice su-student"><div className="practice-shell"><PracticeHeader level={q?.level??4} label={session?.members.find(m=>m.id===userId)?.name??'Class'} userId={userId}/>{tracking.error&&<button onClick={()=>void tracking.retry()}>Retry saving progress</button>}{(error||activityError)&&<p role="alert">{error||activityError}</p>}
  {activity?.activity!=='test'||!mine?<section className="su-wait"><h1>{session?.members.find(m=>m.id===userId)?.name??'…'}</h1><p>รอรอบของคุณ</p>{activity?.activity==='test'&&turn&&<div className="su-current-student" aria-live="polite"><small>ตอนนี้เป็นรอบของ</small><strong>{session?.members.find(m=>m.id===turn.learner)?.name??'…'}</strong></div>}</section>:q&&turn?<ClassroomPractice question={q} turn={turn} busy={busy} onPresented={presented} onAnswer={(value,evidence)=>void answer(value,evidence)}/>:<p role="alert">กรุณาโหลดหน้านี้ใหม่</p>}
- </div></main>
+ </div></main></LandscapePractice>
 }

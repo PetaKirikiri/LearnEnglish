@@ -1,6 +1,5 @@
 import {getPlaybackMode} from '../audio/usePlaybackMode'
 import type {SpokenWord} from '../audio/sentenceTiming'
-import LandscapePractice from '../race/LandscapePractice'
 import {useCallback,useEffect,useRef,useState} from 'react'
 import type {GeneratedQuestion} from '../race/generatedPracticeContent'
 import type {ClassTurn} from './session'
@@ -14,18 +13,20 @@ import {wordTokens,wordOpacity} from '../learning/wordProgress/model'
 import {playTimedSentence as playSentenceAudio} from '../audio/sentenceAudio'
 /** Host and phone render the same server-selected question and frozen learner support. */
 type Props={question:GeneratedQuestion;turn:ClassTurn;onAnswer?:(answer:string,evidence?:{heard:boolean;plays:number;assisted:boolean})=>void;onPresented?:()=>boolean;busy?:boolean}
-export default function GeneratedClassroomPractice(props:Props){return <LandscapePractice enabled={Boolean(props.onAnswer)}><ClassroomQuestion {...props}/></LandscapePractice>}
+export default function GeneratedClassroomPractice(props:Props){return <ClassroomQuestion {...props}/>}
 function ClassroomQuestion({question:q,turn,onAnswer,onPresented,busy=false}:Props){
  const [spokenWord,setSpokenWord]=useState<SpokenWord|null>(null)
  const audioWave=useRef<{level:number;time:number;progress?:number;recording?:import('./../audio/audioWaveform').AudioWaveform}>({level:0,time:0})
  const [heard,setHeard]=useState(false),[audioError,setAudioError]=useState(false),[audioLoading,setAudioLoading]=useState(false),audio=useRef<(()=>void)|null>(null)
  const plays=useRef(0),assisted=useRef(false)
+ const {id,version,audioUrl}=q,english=q.document.english,recipe=useRef(q.recipe)
+ recipe.current=q.recipe
  const studentView=Boolean(onAnswer)
  const reported=useRef(false),presentCallback=useRef(onPresented),report=useRef(()=>{})
  presentCallback.current=onPresented
  report.current=()=>{if(studentView&&turn.answer===null&&!reported.current&&presentCallback.current?.())reported.current=true}
  useEffect(()=>{if(wordTokens(q.document.english).some(word=>wordOpacity(word,turn.scores??{},{fadeMode:true})>0))report.current()})
- const play=useCallback((mode=getPlaybackMode())=>{setHeard(false);audio.current?.();audio.current=playSentenceAudio({id:q.id,recipe:q.recipe,document:{english:q.document.english},audioUrl:q.audioUrl},{loading:setAudioLoading,waveform:(level,time,progress,recording)=>{audioWave.current.level=level;audioWave.current.time=time;audioWave.current.progress=progress;if(recording)audioWave.current.recording=recording},word:setSpokenWord,started:()=>{report.current();setHeard(false);plays.current++;setAudioError(false)},ended:()=>setHeard(true),error:()=>setAudioError(true)},mode)},[q])
+ const play=useCallback((mode=getPlaybackMode())=>{setHeard(false);audio.current?.();audio.current=playSentenceAudio({id,recipe:recipe.current,document:{english},audioUrl},{loading:setAudioLoading,waveform:(level,time,progress,recording)=>{audioWave.current.level=level;audioWave.current.time=time;audioWave.current.progress=progress;if(recording)audioWave.current.recording=recording},word:setSpokenWord,started:()=>{report.current();setHeard(false);plays.current++;setAudioError(false)},ended:()=>setHeard(true),error:()=>setAudioError(true)},mode)},[id,version,english,audioUrl])
  useEffect(()=>{if(studentView)play();return()=>audio.current?.()},[play,turn.id,studentView])
  const picked=turn.answer===null?null:turn.choices.indexOf(turn.answer)
  const choices=turn.choices.map((label,side)=>{
