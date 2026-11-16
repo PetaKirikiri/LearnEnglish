@@ -29,7 +29,8 @@ import './peopleLocation.css'
 type ChoiceRole='reference'|'determiner'|'object'
 /** Lesson data feeds the shared question/answer navigation, boxes and word dock. */
 export default function IdentificationMatrix({lesson,settings={},wordScores}:SentenceMatrixProps){
- const [selected,setSelected]=useState<ReferenceId>('this')
+ const lessonReferences=references.filter(item=>!lesson.identificationReferences||lesson.identificationReferences.includes(item.id))
+ const [selected,setSelected]=useState<ReferenceId>(lesson.initialReference??'this')
  const [mode,setMode]=useState<'question'|'answer'>(settings.initialPattern??'question')
  const [active,setActive]=useState<ChoiceRole|null>(null),[error,setError]=useState(false)
  const [word,setWord]=useState(lesson.initialWord),[owner,setOwner]=useState<Determiner>(lesson.initialOwner??'the')
@@ -45,7 +46,7 @@ export default function IdentificationMatrix({lesson,settings={},wordScores}:Sen
  const player=useRef<HTMLAudioElement>(null),board=useRef<HTMLElement>(null),id=useId()
  const {explaining,explain}=useMatrixEducation(board,`${id}-explanation`,()=>setActive(null))
  const th=getLanguage()==='th',slots=sentence.units.map(unit=>sentenceRoleSlots[unit.role])
- const choicesFor=(role:LanguageRole)=>role==='reference'?references:role==='determiner'?owners:role==='object'?objectBlock.choices:[]
+ const choicesFor=(role:LanguageRole)=>role==='reference'?lessonReferences:role==='determiner'?owners:role==='object'?objectBlock.choices:[]
  const valueFor=(role:LanguageRole)=>role==='reference'?reference.word:role==='determiner'?owner:role==='object'?objectBlock.selected?.word??object.word:''
  const iconFor=(role:LanguageRole,value:string)=>role==='reference'?<DistanceScene compact reference={references.find(item=>item.word===value.toLowerCase())!.id} word={object.word}/>:role==='determiner'?<WordSlotIcon slot={2} word={value}/>:objectMode==='pronoun'?<PronounIcon word={value}/>:<VocabularyPicture word={object.word}/>
  function choose(role:ChoiceRole,value:string){
@@ -73,13 +74,16 @@ export default function IdentificationMatrix({lesson,settings={},wordScores}:Sen
   </EducationFrame>
  }
  return <section ref={board} className="cw-pattern-stage" onKeyDown={event=>{if(event.key==='Escape'&&active){event.stopPropagation();close()}}}>
+  {lesson.plural&&settings.wordPicker!==false&&!settings.fadeMode&&<nav className="identification-distance-steps" aria-label="Point to more than one">
+   {lessonReferences.filter(item=>item.plural).map(item=><button key={item.id} type="button" aria-pressed={selected===item.id} onClick={()=>{setSelected(item.id);setActive(null);setError(false)}}><DistanceScene compact reference={item.id} word={object.word}/><span>{item.word}</span></button>)}
+  </nav>}
   {settings.patternNavigation!==false&&<PatternNavigation label="Question and answer" pattern={mode} onChange={value=>{setMode(value);setActive(null);setError(false)}}/>}
   <section className="cw-sentence-board identification-matrix" aria-label={settings.fadeMode?'Listen to the sentence':sentence.english}>
    <audio ref={player} preload="none" onError={()=>setError(true)}/>
    <div className="cw-sentence-display">
     <ExampleLanguage matrix {...sentence} semanticSlots={slots} settings={settings} scores={wordScores} layout={{...quadrantLayout(sentence),nounSwapper:mode==='answer'?{label:'Object block mode',modes:objectBlock.modes,mode:objectMode,onChange:next=>{setObjectMode(next);setActive(null)}}:undefined}}
      unitActions={settings.explanations===false?undefined:sentence.units.map((unit,index)=>({index,label:`Slot ${index+1}: ${unit.english.replace(/[?.]$/,'')}`,expanded:false,controls:`${id}-explanation`,onClick:()=>explain(index)}))}
-     slotDetails={sentence.units.map(unit=>({label:unit.role,count:choicesFor(unit.role).length||1,icon:languageRoleIcon(unit,sentence.construction,object.word),control:settings.wordPicker===false||choicesFor(unit.role).length<2?undefined:<MatrixPicker role={unit.role} slot={unit.role==='reference'?3:undefined} label={unit.role==='reference'?'Change this / that / that over there / these / those':`Change ${unit.role}`} expanded={active===unit.role} controls={`${id}-words`} onClick={()=>setActive(active===unit.role?null:unit.role as ChoiceRole)}/>}))}
+     slotDetails={sentence.units.map(unit=>({label:unit.role,count:choicesFor(unit.role).length||1,icon:languageRoleIcon(unit,sentence.construction,object.word),control:settings.wordPicker===false||choicesFor(unit.role).length<2?undefined:<MatrixPicker role={unit.role} slot={unit.role==='reference'?3:undefined} label={unit.role==='reference'?'Change this / that / that over there / these / those / those over there':`Change ${unit.role}`} expanded={active===unit.role} controls={`${id}-words`} onClick={()=>setActive(active===unit.role?null:unit.role as ChoiceRole)}/>}))}
      translationControl={settings.audio===false?undefined:<PlaybackButtons onPlay={()=>void play()}/>}
      afterUnits={<WordTray id={`${id}-words`} active={active===null?null:active==='determiner'?2:3} choices={active?choicesFor(active):[]} selected={active?valueFor(active):''} vocabulary={active==='object'?objects:undefined} canChoose={()=>true} onClose={close} onChoose={value=>{if(active)choose(active,value);close()}} renderIcon={value=>active?iconFor(active,value):null}/>}/>
    </div>

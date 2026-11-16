@@ -10,6 +10,7 @@ export const references=[
  {id:'over-there',word:'that over there',thai:'โน่น',sentenceThai:'โน่นคืออะไร',distance:2,plural:false,scene:'over-there'},
  {id:'these',word:'these',thai:'พวกนี้',sentenceThai:'พวกนี้คืออะไร',distance:0,plural:true,scene:'this'},
  {id:'those',word:'those',thai:'พวกนั้น',sentenceThai:'พวกนั้นคืออะไร',distance:1,plural:true,scene:'that'},
+ {id:'those-over-there',word:'those over there',thai:'พวกโน้น',sentenceThai:'พวกโน้นคืออะไร',distance:2,plural:true,scene:'over-there'},
 ] as const
 export type ReferenceId=typeof references[number]['id']
 export function referenceFor(id:ReferenceId){return references.find(item=>item.id===id)!}

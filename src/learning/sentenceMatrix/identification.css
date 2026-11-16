@@ -29,3 +29,10 @@
 .distance-scene .distance-scene-object .vocabulary-picture-art:has(img:nth-child(2)) img:first-child{align-self:start;justify-self:end}
 .distance-scene .distance-scene-object .vocabulary-picture-art:has(img:nth-child(2)) img:nth-child(2){align-self:end;justify-self:start}
 .some-scene{display:flex;align-items:center;justify-content:center;background:#fff}.some-scene>.vocabulary-picture{display:flex;gap:4px;align-items:center;width:95%;height:80%;margin:0}.some-scene>.vocabulary-picture>img,.some-scene>.everyday-person>.person-copy{position:static;grid-area:auto;width:32%!important;height:75%!important;filter:none;align-self:center}
+
+.identification-distance-steps{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 16px}
+.identification-distance-steps>button{display:grid;justify-items:center;gap:6px;padding:8px;border:2px solid #d9e5f3;border-radius:12px;background:#fff;color:#18385e;font:inherit;cursor:pointer}
+.identification-distance-steps>button[aria-pressed=true]{border-color:#1877ef;background:#edf4ff}
+.identification-distance-steps>button:focus-visible{outline:3px solid #1877ef;outline-offset:3px}
+.identification-distance-steps>button>.distance-scene{width:120px;height:80px;max-width:100%}
+@media(max-width:480px){.identification-distance-steps{flex-wrap:nowrap;gap:4px}.identification-distance-steps>button{flex:1;min-width:0;padding:5px;font-size:12px}.identification-distance-steps>button>.distance-scene{width:100%;height:auto;aspect-ratio:3/2}}

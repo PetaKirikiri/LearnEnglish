@@ -34,6 +34,8 @@ export type MatrixSettings = import('../wordProgress/model').FadeSettings & {
 export type MatrixLesson = {
   id: string
   stages?: readonly string[]
+  identificationReferences?: readonly import('../sentenceRules/identification').ReferenceId[]
+  initialReference?: import('../sentenceRules/identification').ReferenceId
   practiceMode?: 'journey' | 'lesson' | 'action-stars' | 'identification'
   pattern?: 'people-location' | 'present-action' | 'identification'
   subjectModes?: SubjectModeConfig

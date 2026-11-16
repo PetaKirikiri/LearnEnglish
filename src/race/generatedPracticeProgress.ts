@@ -43,7 +43,7 @@ export function availableVocabulary(rows:WordProgress[],events:ListeningEvidence
 export function eligiblePracticeActions(rows:WordProgress[],events:ListeningEvidence[]){const verbs=hierarchyState(masteredWords(rows,events)).verb;return new Set([...verbs.allowed,...verbs.queued])}
 export function availableActions(rows:WordProgress[],events:ListeningEvidence[]){return new Set(hierarchyState(masteredWords(rows,events)).verb.allowed)}
 export function availableDescriptions(rows:WordProgress[],events:ListeningEvidence[]){return new Set(hierarchyState(masteredWords(rows,events)).adjective.allowed)}
-export type DeckOptions={focus?:{type:HierarchyType;word:string};selectionIndex?:number;structure?:PracticeStructure;limit?:number;now?:number;actions?:string[];familiar?:string[];progressiveActions?:boolean;reviewActions?:string[]}
+export type DeckOptions={referenceNumber?:'plural';focus?:{type:HierarchyType;word:string};selectionIndex?:number;structure?:PracticeStructure;limit?:number;now?:number;actions?:string[];familiar?:string[];progressiveActions?:boolean;reviewActions?:string[]}
 export function curriculumBaseline(rows:WordProgress[],events:ListeningEvidence[],_user?:string){void _user;return [...availableVocabulary(rows,events)]}
 /** The blueprint server fills constrained slots from the account's word drawers. */
 export function generatedDeck(level:PracticeLevel,rows:WordProgress[],events:ListeningEvidence[],seed:string,options:DeckOptions={}):GeneratedQuestion[]{
