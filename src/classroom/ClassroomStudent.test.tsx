@@ -8,7 +8,7 @@ vi.mock('../drawing/game',()=>({useDrawingGame:mocks.drawing}))
 vi.mock('./session',()=>({classroomCall:mocks.classroom}))
 vi.mock('../drawing/DrawingGame',()=>({DrawingStudent:()=> <div>Same-class drawing</div>}))
 vi.mock('./ClassroomPractice',()=>({default:({turn,question}:{turn:{questionId:string};question:{id:string}})=><div data-question={question.id}>Shared question {turn.questionId}</div>}))
-vi.mock('../race/PracticeHeader',()=>({default:()=>null}))
+vi.mock('../race/PracticeHeader',()=>({default:()=> <header className="practice-header"><span data-practice-toolbar-host/></header>}))
 import ClassroomStudent from './ClassroomStudent'
 import {classroomWordQuestion} from './wordServer'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
@@ -28,7 +28,8 @@ it('follows the shared Lesson 6 turn and activity changes without rejoining',asy
 
 it('renders the server-selected personal question rather than looking it up in the old classroom catalogue',async()=>{
  mocks.classroom.mockClear()
- const question=classroomWordQuestion(6,'student-1',[],[],0,'phone-test').question
+ const seen=['the','phone','phones','bag','bags'].map(word=>({word_id:'en:'+word,exposure_count:1,attempts:0,correct:0,listening_correct:0,direct_correct:0,last_practised:'',recent_results:[]}))
+ const question=classroomWordQuestion(6,'student-1',seen,[],0,'phone-test').question
  const el=document.createElement('div'),root=createRoot(el)
  mocks.classroom.mockResolvedValue({id:'class-2',members:[{id:'student-1',name:'Ann',active:true}],turn:{id:'adaptive-turn',learner:'student-1',questionId:question.id,question,choices:question.choices,answer:null}})
  mocks.activity.mockReturnValue({activity:{activity:'test',lesson:6},error:''})
@@ -36,6 +37,8 @@ it('renders the server-selected personal question rather than looking it up in t
  try{
   await act(async()=>root.render(<ClassroomStudent sessionId="class-2" userId="student-1"/>))
   expect(el.querySelector('[data-question]')?.getAttribute('data-question')).toBe(question.id)
+  expect(el.querySelector('.practice-landscape-frame .practice-header')).not.toBeNull()
+  expect(el.querySelectorAll('.practice-landscape-viewport')).toHaveLength(1)
   expect(mocks.classroom.mock.calls.filter(([action])=>action==='join')).toHaveLength(1)
  }finally{await act(async()=>root.unmount())}
 },30000)
