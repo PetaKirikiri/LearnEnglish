@@ -22,7 +22,8 @@ export const classroomMatrices = {
   'lesson-3': {subjectNouns:everydayPeopleCatalogue,id:'lesson-3', practiceMode:'lesson', stages:['lesson-three-people','lesson-three-answers','lesson-three-review'], owners:['the','my','your','his','her','our','their'], vocabulary:lessonThreeMatrixCatalogue, plural:true, pattern:'people-location', subjectModes:{pronouns:subjectPronouns,names:[{word:'Bia',thai:'Bia',kind:'person'},{word:'Central',thai:'เซ็นทรัล',kind:'place'},{word:'Success',thai:'Success',kind:'place'}],initialPronoun:'you',initialName:'Bia',audio:(sentence,mode)=>mode==='pronoun'?peopleAudio(sentence):undefined}, settings:{explanations:true,wordPicker:true}, initialWord:'hotel', audio:lessonThreeQuestionAudio},
   'lesson-4': {subjectNouns:everydayPeopleCatalogue,id:'lesson-4', practiceMode:'action-stars', stages:['lesson-four-actions'], vocabulary:lessonThreeMatrixCatalogue, plural:true, pattern:'present-action', actionReply:'same-subject', actionGroup:'transitive', owners:['the','my','your','his','her','our','their'], initialOwner:'the', subjectModes:{pronouns:assessedSubjectPronouns,names:defaultPersonNames,initialPronoun:'I'}, settings:{explanations:true,wordPicker:true,initialPattern:'answer'}, initialWord:'apple'},
   'lesson-5': {subjectNouns:everydayPeopleCatalogue,id:'lesson-5', practiceMode:'lesson', stages:['lesson-five-destinations'], vocabulary:lessonThreeMatrixCatalogue.filter(item=>['hotel','school','gym','bedroom','kitchen'].includes(item.word)), plural:false, pattern:'present-action', actionQuestion:'destination', actionGroup:'intransitive',  owners:['the','my','your','his','her','our','their'], initialOwner:'the', subjectModes:{pronouns:assessedSubjectPronouns,names:defaultPersonNames,initialPronoun:'you'}, settings:{explanations:true,wordPicker:true,initialPattern:'question'}, initialWord:'hotel'},
-  'lesson-6': {subjectNouns:everydayPeopleCatalogue,subjectModes:defaultSubjectModes,id:'lesson-6',practiceMode:'identification',stages:['lesson-six-identification'],vocabulary:lessonThreeMatrixCatalogue,plural:false,pattern:'identification',initialWord:'phone',settings:{wordPicker:true,explanations:true}},
+  'lesson-6': {subjectNouns:everydayPeopleCatalogue,subjectModes:defaultSubjectModes,identificationReferences:['this','that','over-there','these','those'],id:'lesson-6',practiceMode:'identification',stages:['lesson-six-identification'],vocabulary:lessonThreeMatrixCatalogue,plural:false,pattern:'identification',initialWord:'phone',settings:{wordPicker:true,explanations:true}},
+  'lesson-7': {subjectNouns:everydayPeopleCatalogue,subjectModes:defaultSubjectModes,id:'lesson-7',practiceMode:'identification',stages:['lesson-seven-plural-identification'],vocabulary:lessonThreeMatrixCatalogue,plural:true,pattern:'identification',initialReference:'these',identificationReferences:['these','those','those-over-there'],initialWord:'phone',settings:{wordPicker:true,explanations:true}},
 } satisfies Record<LessonId, MatrixLesson>
 
 export const lessonRegistry = classroomMatrices
@@ -30,7 +31,7 @@ export function requestLesson(value: unknown): MatrixLesson { return lessonRegis
 
 /** A question and its answer are one construction entry, supplied to shared navigation. */
 export const classroomStructures = [
- {id:'identify',question:'What is this?',lesson:classroomMatrices['lesson-6'],lessonIds:['lesson-6']},
+ {id:'identify',question:'What is this?',lesson:classroomMatrices['lesson-6'],lessonIds:['lesson-6','lesson-7']},
  {id:'where',question:'Where is the hotel?',lesson:classroomMatrices['lesson-3'],lessonIds:['lesson-1','lesson-2']},
  {id:'ask',question:'What are you doing?',lesson:{...classroomMatrices['lesson-3'],pattern:'present-action'},lessonIds:['lesson-3','lesson-4']},
  {id:'destination',question:'Where are you going?',lesson:classroomMatrices['lesson-5'],lessonIds:['lesson-5']},
@@ -38,7 +39,7 @@ export const classroomStructures = [
 /** Only introduced constructions are available; earlier lessons stay available for revision. */
 export function structuresForLesson(lesson:LessonId){
  const level=Number(lesson.slice(7))
- return classroomStructures.filter(structure=>Math.min(...structure.lessonIds.map(id=>Number(id.slice(7))))<=level)
+ return classroomStructures.filter(structure=>Math.min(...structure.lessonIds.map(id=>Number(id.slice(7))))<=level).map(structure=>lesson==='lesson-7'&&structure.id==='identify'?{...structure,question:'What are these?'}:structure)
 }
 export type ClassroomStructureId=typeof classroomStructures[number]['id']
 export function structureForLesson(id?:LessonId):ClassroomStructureId{return classroomStructures.find(structure=>id!==undefined&&(structure.lessonIds as readonly LessonId[]).includes(id))?.id??'ask'}

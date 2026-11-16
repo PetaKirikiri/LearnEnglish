@@ -28,5 +28,11 @@
     "seconds": 1.215,
     "text": "What are those?",
     "voice": "kokoro-1.0-heart-v1"
+  },
+  "those-over-there.wav": {
+    "fingerprint": "4899b61b7af49be8a5e059dea15cb3aae4f52f01ab3a5c2e5dd95b276367ba02",
+    "seconds": 1.8,
+    "text": "What are those over there?",
+    "voice": "kokoro-1.0-heart-v1"
   }
 }

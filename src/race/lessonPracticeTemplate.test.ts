@@ -6,7 +6,7 @@ import {canonicalBlueprintQuestion} from './blueprintWordServer'
 import {forecastPractice,nextPersonalQuestion} from './practiceForecast'
 beforeEach(()=>localStorage.clear())
 it('every lesson specifies structure without owning questions, vocabulary or a deck',()=>{
- for(let lesson=1;lesson<=6;lesson++){
+ for(let lesson=1;lesson<=7;lesson++){
   const template=lessonPracticeTemplate(lesson)
   expect(Object.keys(template).sort()).toEqual(['label','level','options','scope'])
   const deck=generatedDeck(template.level,[],[],'same-account',template.options)
@@ -28,4 +28,12 @@ it('identification alternatives preserve matching pictures when flipped and fore
  const q=nextPersonalQuestion(6,[],[],'run',0,options)
  for(const item of generatedDeck(6,[],[],'run',options).filter(q=>q.sceneChoices))expect(item.sceneChoices?.[item.correct].reference).toBe(canonicalBlueprintQuestion(item.recipe)?.sceneChoices?.[0].reference)
  expect(forecastPractice(6,[],[],'run',0,q,options)).toHaveLength(11)
+})
+
+it('Class 7 continues identification with plural-only questions and its own saved scope',()=>{
+ const template=lessonPracticeTemplate(7)
+ expect(template).toMatchObject({level:6,label:'Lesson 7',scope:'lesson-7',options:{structure:'identify',referenceNumber:'plural'}})
+ const deck=generatedDeck(template.level,[],[],'class-seven',template.options)
+ expect(deck).toHaveLength(30)
+ expect(deck.every(q=>q.plural&&q.document.units.some(unit=>unit.role==='be'&&unit.english==='are'))).toBe(true)
 })

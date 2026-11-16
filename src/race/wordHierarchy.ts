@@ -11,7 +11,7 @@ export const wordHierarchies={
  verb:[...everydayActionOrder],
  adjective:descriptionStages.flat(),
  pronoun:['I','you','he','she','we','they'],
- determiner:['the','a','an','some','this','that','that over there','these','those','my','your','his','her','our','their'],
+ determiner:['the','a','an','some','this','that','that over there','these','those','those over there','my','your','his','her','our','their'],
 } as const
 export const CURRENT_WORD_LIMIT=4
 export const CURRENT_DETERMINER_LIMIT=2

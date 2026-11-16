@@ -63,16 +63,16 @@ function sceneQuestion(level:PracticeLevel,reference:typeof references[number],f
  const doc=identificationQuestion(reference.id)
  return {id:`identify-v2-${reference.id}-${sentenceHash(item.word+'|'+foil.id)}`,version:1,level,document:doc,audioUrl:identificationAudio(reference.id),choices:[reference.word,foil.word],correct:0,sceneChoices:[{reference:reference.id,word:item.word},{reference:foil.id,word:item.word}],targetWords:[reference.word],listeningWords:[reference.word],family:family(item.word),vocabulary:[item.word],action:'identify',owner:'',subject:'',plural:reference.plural,kind:'meaning',credit:reference.word,recipe:{version:1,level,scene:{reference:reference.id,foil:foil.id,noun:item.word}}}
 }
-function nounQuestion(level:PracticeLevel,state:State,anchor:Anchor,turn:number,identify:boolean):GeneratedQuestion|undefined{
+function nounQuestion(level:PracticeLevel,state:State,anchor:Anchor,turn:number,identify:boolean,pluralOnly=false):GeneratedQuestion|undefined{
  if(identify&&anchor.type==='determiner'){
-  const reference=references.find(item=>item.word===anchor.word)
+  const reference=references.find(item=>item.word===anchor.word&&(!pluralOnly||item.plural))
   const foil=reference&&rotate(references,turn).find(item=>item.word!==reference.word&&item.plural===reference.plural&&eligible(state,'determiner',item.word,true))
   const item=reference&&rotate(nouns,turn).find(item=>!item.pluralForm&&!item.pairOnly&&eligible(state,'noun',item.word)&&(!reference.plural||!!item.plural))
   if(reference&&foil&&item)return sceneQuestion(level,reference,foil,item)
  }
  if(!['noun','determiner','adjective'].includes(anchor.type))return
  if(identify&&anchor.type==='adjective')return // No adjective slot in this authored answer.
- const available=nouns.filter(item=>eligible(state,'noun',item.word)&&(!identify||!item.pairOnly)&& (anchor.type!=='noun'||family(item.word)===anchor.word))
+ const available=nouns.filter(item=>(!pluralOnly||item.pluralForm)&&eligible(state,'noun',item.word)&&(!identify||!item.pairOnly)&& (anchor.type!=='noun'||family(item.word)===anchor.word))
  for(const item of rotate(available,turn)){
   if(anchor.type==='adjective'&&(!state.noun.completed.includes(family(item.word))||!adjectiveFitsNoun(anchor.word,item)))continue
   const owner=chooseOwner(item,state,turn,anchor.type==='determiner'?anchor.word:undefined)
@@ -216,7 +216,7 @@ export function serveBlueprintDeck(level:PracticeLevel,state:State,learning:Map<
   let selected:GeneratedQuestion|undefined
   for(const anchor of anchors){
    if(!request.anchors.includes(anchor.type))continue
-   selected=request.construction==='action'?actionQuestion(level,state,anchor,rotation,request):request.construction==='activity-question'?activityQuestion(level,state,anchor,rotation):request.construction==='location'?locationQuestion(level,state,anchor,rotation):nounQuestion(level,state,anchor,rotation,request.construction==='identify')
+   selected=request.construction==='action'?actionQuestion(level,state,anchor,rotation,request):request.construction==='activity-question'?activityQuestion(level,state,anchor,rotation):request.construction==='location'?locationQuestion(level,state,anchor,rotation):nounQuestion(level,state,anchor,rotation,request.construction==='identify',options.referenceNumber==='plural')
    if(selected){counts.set(anchor.type+':'+anchor.word,(counts.get(anchor.type+':'+anchor.word)??0)+1);break}
   }
   if(selected&&selected.recipe)selected.recipe={...(selected.recipe as PairRecipe),structure:options.structure}

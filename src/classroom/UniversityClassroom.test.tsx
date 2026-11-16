@@ -54,9 +54,12 @@ it('keeps the lesson navigator above the brand on every tab and changes lessons 
  expect(label()).toBe('Lesson 05')
  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Next lesson"]')!.click())
  expect(label()).toBe('Lesson 06');expect(host.querySelector('#note-title')?.textContent).toBe('What is this?')
+ expect(host.querySelector<HTMLButtonElement>('[aria-label="Next lesson"]')!.disabled).toBe(false)
+ await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Next lesson"]')!.click())
+ expect(label()).toBe('Lesson 07');expect(host.querySelector('#note-title')?.textContent).toBe('What are these? · What are those?')
  expect(host.querySelector<HTMLButtonElement>('[aria-label="Next lesson"]')!.disabled).toBe(true)
- for(const name of ['Students','Testing','Game','Whiteboard']){await click(name);expect(label()).toBe('Lesson 06')}
- for(let i=0;i<5;i++)await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Previous lesson"]')!.click())
+ for(const name of ['Students','Testing','Game','Whiteboard']){await click(name);expect(label()).toBe('Lesson 07')}
+ for(let i=0;i<6;i++)await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label="Previous lesson"]')!.click())
  expect(host.querySelector('.su-lesson-nav select')).toBeNull()
  expect(label()).toBe('Lesson 01');expect(host.querySelector('.cw-panel-lesson')?.textContent).toContain('01')
  expect(host.querySelector<HTMLButtonElement>('[aria-label="Previous lesson"]')!.disabled).toBe(true)

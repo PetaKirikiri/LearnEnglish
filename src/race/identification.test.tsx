@@ -14,7 +14,7 @@ import SentenceMatrix from '../learning/sentenceMatrix/SentenceMatrix'
 import {requestLesson} from '../learning/lessonRegistry'
 Object.assign(globalThis,{IS_REACT_ACT_ENVIRONMENT:true})
 
-it('serves account-eligible identification first, then all five reference forms when earned',()=>{
+it('serves account-eligible identification first, then all six reference forms when earned',()=>{
  localStorage.clear()
  const initial=hierarchyState(new Set())
  for(const seed of ['tonight','repeat','student']){
@@ -62,7 +62,7 @@ it('uses the shared boxes and dropdown without a separate gallery or practice li
   expect(host.querySelector('.cw-sentence-display .matrix-layout')).not.toBeNull()
   expect(host.querySelectorAll('.tonight-slot')).toHaveLength(3)
   expect(host.querySelector('.identification-options,.identification-scene,.identification-practice-link')).toBeNull()
-  for(const reference of references){
+  for(const reference of references.filter(reference=>reference.id!=='those-over-there')){
    await act(async()=>host.querySelector<HTMLButtonElement>('[data-picker-slot="3"]')!.click())
    expect(host.querySelector('.cw-word-conveyor')?.hasAttribute('hidden')).toBe(false)
    expect(host.querySelectorAll('.cw-word-chip')).toHaveLength(5)
@@ -107,4 +107,21 @@ it('preserves old question definitions and changes only number or distance in ne
   const [a,b]=question.sceneChoices.map(scene=>referenceFor(scene.reference))
   expect(Number(a.distance!==b.distance)+Number(a.plural!==b.plural)).toBe(1)
  }
+})
+
+it('extends Lesson 6 in Lesson 7 with three plural distances using the same scene, boxes and agreement',async()=>{
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<SentenceMatrix lesson={requestLesson(7)} settings={{audio:false}}/>))
+  const steps=host.querySelectorAll<HTMLButtonElement>('.identification-distance-steps>button')
+  expect([...steps].map(button=>button.textContent)).toEqual(['these','those','those over there'])
+  for(const [index,id] of (['these','those','those-over-there'] as const).entries()){
+   await act(async()=>steps[index].click())
+   expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe(identificationQuestion(id).english)
+   expect(host.querySelector('.cw-slot-role .distance-scene')?.getAttribute('data-count')).toBe('2')
+   expect(host.querySelector('.cw-slot-role .distance-scene')?.getAttribute('data-distance')).toBe(id)
+  }
+  await act(async()=>host.querySelectorAll<HTMLButtonElement>('.cw-pattern-tabs button')[1].click())
+  expect(host.querySelector('.cw-sentence-board')?.getAttribute('aria-label')).toBe('Those over there are the phones.')
+ }finally{await act(async()=>root.unmount())}
 })

@@ -9,7 +9,7 @@ export type {DistanceChoice} from './generatedPracticeContent'
 const legacyObjects=['phone','bag','cup','key','bottle','plate','book','shoe','hat','apple']
 export const identificationQuestions=legacyObjects.flatMap((word,index)=>references.filter(reference=>!reference.plural||!!numberItem(word)?.plural).map(reference=>{
  const singular=references.filter(r=>!r.plural),ri=singular.findIndex(r=>r.id===reference.id)
- const other=reference.plural?references.find(r=>r.id===(reference.id==='these'?(index%2?'this':'those'):(index%2?'that':'these')))!:singular[(ri+1+index%2)%singular.length]
+ const other=reference.id==='those-over-there'?references.find(r=>r.id==='those')!:reference.plural?references.find(r=>r.id===(reference.id==='these'?(index%2?'this':'those'):(index%2?'that':'these')))!:singular[(ri+1+index%2)%singular.length]
  return {id:`identify-v1-${reference.id}-${word}`,version:1,level:6,document:identificationQuestion(reference.id),audioUrl:identificationAudio(reference.id),choices:[reference.word,other.word],correct:0,sceneChoices:[{reference:reference.id,word},{reference:other.id,word}],targetWords:[reference.word],listeningWords:[reference.word],family:word,vocabulary:[word],action:'identify',owner:'',subject:'',plural:reference.plural,kind:'meaning',credit:reference.word}
 })) as (GeneratedQuestion&{audioUrl:string;sceneChoices:[DistanceChoice,DistanceChoice]})[]
 
