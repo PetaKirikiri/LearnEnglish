@@ -29,3 +29,6 @@ dist-ssr
 .classroom-races/
 
 supabase/.temp/
+
+# Packaged during the server build from pinned public model revisions.
+api/kokoro-models/

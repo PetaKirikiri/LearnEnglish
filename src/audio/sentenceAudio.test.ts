@@ -1,17 +1,17 @@
 // @vitest-environment happy-dom
 import {afterEach,expect,it,vi} from 'vitest'
-vi.mock('./kokoroAudio',()=>({kokoroAudio:vi.fn().mockResolvedValue('/kokoro.wav')}))
+vi.mock('./serverAudio',()=>({serverAudio:vi.fn().mockResolvedValue({url:'/kokoro.wav'})}))
 vi.mock('./audioWaveform',()=>({loadAudioWaveform:vi.fn().mockResolvedValue({interval:1,levels:[.5,.5]}),waveformAtTime:()=>.5}))
 vi.mock('./alignAudio',()=>({alignAudio:vi.fn(async(_url:string,text:string)=>({version:1,text,words:[...text.matchAll(/[a-z]+/gi)].map((m,i)=>({text:m[0],start:m.index,end:m.index!+m[0].length,startTime:10+i,endTime:11+i}))}))}))
 import {alignAudio} from './alignAudio'
-import {kokoroAudio} from './kokoroAudio'
+import {serverAudio} from './serverAudio'
 import {playTimedSentence,prepareSentenceAudio} from './sentenceAudio'
 afterEach(()=>{vi.useRealTimers();vi.unstubAllGlobals();vi.clearAllMocks()})
 const flush=async()=>{for(let i=0;i<12;i++)await Promise.resolve()}
 it('does not generate or call paid APIs during background preparation',async()=>{
  const fetch=vi.fn();vi.stubGlobal('fetch',fetch)
  await prepareSentenceAudio([{id:'forecast',document:{english:'Unheard forecast sentence.'}}])
- expect(fetch).not.toHaveBeenCalled();expect(kokoroAudio).not.toHaveBeenCalled()
+ expect(fetch).not.toHaveBeenCalled();expect(serverAudio).not.toHaveBeenCalled()
 })
 it('generates on demand, sweeps with media position, preserves slow pitch, and reuses audio',async()=>{
  let player:any
@@ -30,10 +30,10 @@ it('generates on demand, sweeps with media position, preserves slow pitch, and r
  expect(callbacks.waveform).toHaveBeenLastCalledWith(.5,2,.5,expect.objectContaining({levels:[.5,.5]}))
  stop();expect(callbacks.word).not.toHaveBeenCalled()
  const replay=playTimedSentence(q,callbacks);await flush()
- expect(kokoroAudio).toHaveBeenCalledTimes(1);replay()
+ expect(serverAudio).toHaveBeenCalledTimes(1);replay()
 })
 it('cancels playback while synthesis is still pending',async()=>{
- vi.mocked(kokoroAudio).mockImplementationOnce(()=>new Promise(()=>{}))
+ vi.mocked(serverAudio).mockImplementationOnce(()=>new Promise(()=>{}))
  const player={play:vi.fn().mockResolvedValue(undefined),pause:vi.fn()}
  const audio=vi.fn(function(){return player});vi.stubGlobal('Audio',audio)
  const stop=playTimedSentence({id:'cancel',document:{english:'Cancelled local synthesis.'}},{started:vi.fn(),ended:vi.fn(),error:vi.fn()})
@@ -56,7 +56,8 @@ it('uses automatic word boundaries rather than evenly dividing the recording',as
  stop()
 })
 
-it('starts audio even while alignment is pending',async()=>{
+it('starts audio without running an alignment model on the device',async()=>{
+ vi.mocked(serverAudio).mockResolvedValueOnce({url:'/working.wav'})
  vi.mocked(alignAudio).mockImplementationOnce(()=>new Promise(()=>{}))
  let player:any
  vi.stubGlobal('Audio',class{
@@ -69,6 +70,7 @@ it('starts audio even while alignment is pending',async()=>{
  await flush();expect(player.src).toBe('/working.wav');expect(callbacks.started).toHaveBeenCalledOnce();stop()
 })
 it('retries a failed existing recording with Kokoro on the same unlocked player',async()=>{
+ vi.mocked(serverAudio).mockRejectedValueOnce(new Error('Initial server request failed'))
  const sources:string[]=[]
  vi.stubGlobal('Audio',class{
   currentTime=0;duration=2;paused=true;ended=false
@@ -81,7 +83,7 @@ it('retries a failed existing recording with Kokoro on the same unlocked player'
  await flush();await flush()
  expect(sources[0]).toMatch(/^data:audio\/wav/)
  expect(sources).toContain('/missing.wav');expect(sources.at(-1)).toBe('/kokoro.wav')
- expect(kokoroAudio).toHaveBeenCalledWith('Broken recording falls back to Kokoro.',expect.any(Function))
+ expect(serverAudio).toHaveBeenCalledWith(expect.objectContaining({document:{english:'Broken recording falls back to Kokoro.'}}))
  expect(callbacks.started).toHaveBeenCalledOnce();expect(callbacks.error).not.toHaveBeenCalled();stop()
 })
 
@@ -101,6 +103,7 @@ it('clears loading and reports failure when the media element never starts',asyn
 })
 
 it('waits for successful media unlocking before changing the audio source',async()=>{
+ vi.mocked(serverAudio).mockResolvedValueOnce({url:'/unlocked.wav'})
  let player:any,finishUnlock=()=>{},unlocked=false
  vi.stubGlobal('Audio',class{
   currentTime=0;duration=2;paused=true;ended=false;onplaying?:()=>void;onpause?:()=>void

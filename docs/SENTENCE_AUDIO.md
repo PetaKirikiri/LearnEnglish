@@ -1,93 +1,23 @@
-# Automatic word alignment
+# Sentence playback contract
 
-Use `uv run --python 3.11 scripts/alignSentenceAudio.py --audio recording.wav --text "The known sentence."`. This runs WhisperX's English wav2vec2 forced aligner locally on CPU; no transcription, paid API, or manual timing is required. The script includes pinned Python dependencies and writes a `.timing.json` sidecar.
+Kokoro Heart and the English wav2vec2 forced aligner run on the existing server, on standard CPU. The browser never needs to download or execute either model. Both PC and LINE/iPhone request `/api/sentence-audio`, receive a saved WAV and word-timing URL, and use the same player and sentence boxes. No ElevenLabs API call or new provider secret is involved.
 
-For a corpus, pass `--jobs jobs.json` containing `{audio,text,output?}` entries. One process reuses the alignment model across all entries, skips audio/text hashes already processed, writes files atomically, and exits nonzero if any word could not be aligned. Changed audio or text invalidates the result. Do not present guessed linear positions as word timings.
+## Generation and cache
 
-Pass an existing sidecar URL as `AudioSentence.timingUrl`. Without a sidecar, shared playback automatically runs the same English wav2vec2 acoustic model (quantized ONNX) with CTC forced alignment in a browser worker. No Python server or paid API is needed on the live website. The browser caches timings by the audio bytes and exact text. The Python batch tool remains available for preparing a corpus once. If alignment fails, audio can still play without guessed word highlighting.
+The endpoint authenticates the learner and resolves the canonical question/recipe or validated whiteboard document. `registerOnly` continues to register scoring questions without generating speech. Only a requested sentence is generated; never forecast batches.
 
-# Shared sentence audio
+`scripts/prepareVoiceModels.mjs` packages pinned public Kokoro and alignment weights at build time. Compressed models ship with the standard server function and expand atomically into its temporary filesystem. Runtime remote-model downloads are disabled. Native CPU inference is used; CUDA installation is disabled. Model loading and inference are reused within a warm function.
 
-## Current playback contract: local Kokoro
+`server/kokoroCache.ts` stores immutable PCM16 WAV/timing pairs in the existing public `sentence-audio` bucket. Text/provider/model identity selects a cache pointer. Audio hashes bind each recording to its timing file; concurrent requests within a function share one task. Replays reuse the saved file, across learners. Existing recordings remain a sound fallback if the server is temporarily unavailable.
 
-Playback uses existing bundled recordings when available; otherwise it generates the explicitly requested sentence locally with Kokoro Heart (q8, WASM in a worker). The model downloads on first use. Generated WAV recordings are cached on the device for replay. No browser speech synthesis is permitted.
+## UI and recovery
 
-Background preparation must not synthesize audio or call paid providers. `prepareSentenceAudio` intentionally does nothing. Do not restore speculative paid generation without explicit user authorization. The historical ElevenLabs server endpoint below is not called by current shared playback.
+Show one shared loading wheel over the turtle/hare pair. No visible preparation words. Keep actionable retry errors visible. Answers remain available if sound fails; an unheard answer must not earn independent listening mastery.
 
-The decoded WAV amplitude drives tile distortion. There is no visible waveform panel. Word-specific tile animation uses validated automatic alignment; whole-sentence progress must not be used to guess which word is sounding. Slow and normal modes reuse one recording and its timing, preserving pitch. Cancellation prevents a finished generation from starting after the learner leaves.
-
-## Historical ElevenLabs implementation (inactive in shared playback)
-
-## Server configuration
-
-Configure these as server-only environment variables in Vercel and, for local use, the ignored `.env.local` file:
-
-- `ELEVENLABS_API_KEY`: a current speech-generation key. Never prefix with `VITE_`, put in source, or send to the phone.
-- `ELEVENLABS_VOICE_ID`: the chosen English voice ID.
-- `ELEVENLABS_MODEL_ID`: optional; default `eleven_multilingual_v2`.
-- `SUPABASE_SERVICE_ROLE_KEY`: existing app database service credential (`CITY_SUPABASE_SERVICE_KEY` also accepted).
-- `VITE_SUPABASE_URL`: existing app database URL.
-
-The old one-day Māori test key is not a production credential. Add a current key securely; do not paste it in chat. `vite` loads local secrets only into its server middleware. Vite exposes only its usual `VITE_` variables to client code.
-
-Apply `supabase/migrations/20261111010000_sentence_audio.sql` and `supabase/migrations/20261115010000_remove_sentence_audio_daily_cap.sql`. The public `sentence-audio` bucket contains only authored lesson audio. The cache, spending counters and provider cooldown are service-role-only. `node scripts/buildRaceServer.mjs` bundles `api/sentence-audio.js`; the route has a 60-second Vercel timeout.
-
-## Selection and forecast
-
-`nextPersonalQuestion` uses the same vocabulary eligibility and evidence across Levels 1–6. Each actual answer selects the next question using updated evidence. `forecastPractice` makes a temporary evidence copy and simulates ten correct, unassisted answers, including the actual fading/listening requirements. These hypothetical answers never enter storage or earn XP. The forecast includes the current sentence plus ten upcoming sentences. All lesson routes use this forecast, including identification. Lessons provide only construction constraints through `lessonPracticeTemplate`; none can supply a question array or deck callback.
-
-Forecast work is deferred until after rendering and replenished on question/evidence changes. A batch contains the current sentence, ten forecast answers, and up to one queued replacement scenario per word type, deduplicated and capped at 16 sentences. Two generation requests can run at once per browser; server leases deduplicate globally. The construction catalogue defines valid combinations for validation and rendering; account evidence selects the actual questions. The old identification v1 catalogue remains solely to resolve already-issued classroom turns. It is not a source for new individual practice rounds.
-
-## Cache and failure behaviour
-
-The server accepts a question ID from the shared authored/generated catalogue, not client-supplied arbitrary text. It authenticates the learner, resolves the sentence server-side, and hashes exact normalized text, punctuation, voice, model, language, output format voice settings (including natural speed 1.0) and timing format version. Account ID is not part of that identity.
-
-A database row lock gives one worker a two-minute lease. Ready audio is reused across users. A worker recovers an interrupted upload only when both its MP3 and validated timing JSON exist and the timing metadata matches the audio SHA-256 digest. Generation times out after 40 seconds. Failed requests back off for 15 minutes; quota/auth/rate failures pause generation for one hour. Three failed/abandoned attempts stop automatic retries for that sentence until an operator reviews it. There is no app-imposed per-account daily generation cap. Request counts are observational only and must not block generation. Do not reintroduce a daily cap without an explicit user request. Cache hits continue to reuse the shared recording.
-
-A provider success followed by a network/process failure before upload can still incur a duplicate provider charge on retry: ElevenLabs generation and our storage upload are not one atomic transaction. Leases and storage recovery reduce that risk but cannot promise exactly-once billing.
-
-New generation uses ElevenLabs’ `with-timestamps` endpoint. Character alignment is converted into word start/end times and UTF-16 display offsets, then stored as `<cache-key>.timing.json` beside the MP3. Text that differs from the requested sentence fails validation. The timing-versioned cache identity causes earlier untimed recordings to be replaced as they are requested.
-
-Playback pulses the sentence tile containing the spoken word using the audio element’s currentTime, including after seeking and replay. An SVG sine displacement bends the speaking tile’s edges as the wave moves across its surface. Each tile applies its own deformation, including its face, thick lower edge and shadow. Linked noun phrases keep independent speaking surfaces. Displacement is capped at approximately eight pixels, with immediate attack and a smooth release so syllable peaks do not trail the sound. The recording’s measured syllable energy controls the deformation strength; silence returns it to rest. Pauses, buffering, errors and completion clear the active cue while its short settling motion finishes. Words and icons retain their learning opacity while the tile itself pulses. Reduced-motion preferences use a static outline.
-
-Playback uses the prepared shared recording. Preparation failure or browser autoplay restrictions show an actionable retry message. Listening credit is granted only after playback ends.
+Use a valid 100ms PCM clip to unlock the media element during a real tap, and await playback start before replacing its source. A one-sample clip was rejected in mobile WebKit. Slow/normal playback share the same file and timing. The amplitude-driven tile effect remains, without a separate waveform panel.
 
 ## Verification
 
-Tests cover forecast/live selection parity, no simulated progress writes, cross-level vocabulary eligibility, 30-answer practice rounds, exact resume, cache identity, auth rejection, duplicate jobs, quota fallback, recording preference and local-only speech. Database checks run inside rollback transactions and verify locking ownership, shared hits and RPC permissions.
+Verify server synthesis, shared cache hits, then the full Testing UI without client model downloads. Desktop/mobile-configured WebKit tests do not prove real LINE iPhone acceptance; keep that final user check explicit.
 
-## Ordered word hierarchies
-
-`wordHierarchy.ts` owns five ordered tracks: nouns, verbs, adjectives, pronouns and determiners. Nouns have two Current subjects and two Current objects, each with a separate Next replacement. Verbs have three Current transitive and three Current intransitive uses, with independent replacement queues. Other tracks have four Current unfinished words and one Next queued replacement. Current words rotate; any learnt slot refills from the hierarchy. Historic exposure to a later word does not move that frontier or admit the later word into the current question. Existing independent listening mastery remains the completion criterion; visible correct counts still control fading, not curriculum position.
-
-Question selection rotates across compatible track frontiers before applying variety or recency. Correct sentences use the completed prefix and current word. The immediate following item can appear as a contrasting alternative, but cannot become the credited target early. If a construction cannot express the current word, shared noun prerequisite practice is used instead of skipping ahead to a food/object that happens to fit. Thirty answers may revisit the current word; thirty distinct sentences is no longer a reason to introduce later vocabulary. Round 6 stars do not supply verb lists. The review page shows all five lists from the same source.
-
-Saved sets use v16 so an old banana question cannot resume under the new policy. Answer history and earned scores remain intact. The audio forecast uses this same selector and simulates hierarchy advancement without storing hypothetical progress.
-
-## Fading, proof and scheduled review
-
-`english_word_progress` now stores canonical fading weight, independent confirmation, proof date and next review date. `learningLifecycle.ts` mirrors the database replay. Five initial successes retain full support; the next twenty fade it to 100%. Errors reduce support confidence. Only three correct, first-play, unassisted hidden-word answers after full fading can mark a word learnt. Historical attempts are replayed in occurrence order; summary-only legacy exposure can backfill fading as of migration time, but cannot manufacture old confirmation. Raw answer counts are retained for audit, not presented as a proficiency rating.
-
-Initial proof schedules a one-day review. Successful due reviews then use 3, 7, 14 and 30 days, continuing at 30 days. Early practice cannot push a due review forward. A failed review restores support and requires fresh proof. Due reviews take priority when compatible with the structure. Local pending answers and forecast simulations use the same transitions; already-uploaded events are not counted twice.
-
-Queued audio preparation checks both noun subgroup queues independently and temporarily assumes the closest Current word in each pool is learnt and picks one compatible sentence for the queued replacement. This neither serves the queued word nor writes progress. The actual ten-answer forecast remains separate and includes stage transitions and review results.
-
-Pronoun subjects enter compatible sentence structures after two distinct noun families are Learnt, counting subjects and objects together. Fading or exposure alone does not unlock them; singular and plural forms count as one family. Existing proved pronouns remain available for established learners. Once unlocked, every third question opportunity prioritizes a Current pronoun when the structure and known vocabulary support it; noun practice and due reviews continue. The audio forecast uses the same threshold.
-
-The expanded catalogue contains 34 verbs. Phrasal particles such as putting on and taking off remain complete action chunks; getting on and arriving use reviewed on/at complements. Every verb has a genuinely contrastive, creditable listening question. Current eligibility bounds client-side candidate construction; the full server allowlist uses stable, collision-checked compound question identifiers. The forecast uses the same candidate and progression rules.
-
-The interactive whiteboard now uses the same timed player, word callbacks, waveform decoding and tile displacement as practice. Its authored document is checked against the existing matrix grammar and reviewed vocabulary by the audio API. The whiteboard sends its document instead of inventing a practice-question identifier. Both practice and whiteboard wait for a timed recording; missing audio is an explicit failure and never substitutes browser speech.
-
-Public whiteboard playback reuses existing timed files from the shared cache through the same playback engine. New generation still requires a learner session or the existing trusted local-development middleware context. Tile backgrounds, edges and corner shapes are shared regardless of timing. The wave has immediate attack and smooth release.
-
-## Playback resilience and answering
-
-A missing or unplayable existing recording must retry through local Kokoro. Animation decoding, sidecar fetches and automatic alignment run independently and must never delay or prevent sound. The media element is unlocked during the actual tap before asynchronous model loading, so Safari can reuse it afterward. Cache Storage is optional; in-memory caching remains available in restricted webviews.
-
-Answer buttons and answer handlers must never require completed audio. Record `heard:false` and assisted/visible evidence when a learner answers without finishing playback, rather than blocking the learner or granting listening mastery. Existing duplicate-answer, saving and teacher-control restrictions remain.
-
-Voice preparation must settle rather than remain indefinitely busy. Cache Storage reads are optional and time-bounded; writes never block playback. A silent synthesis worker is terminated after 45 seconds without progress (120 seconds overall), and failed pending entries are removed so the next tap can retry. Media startup has a 12-second watchdog. These are per-attempt failure recovery deadlines, not generation quotas. Failure messages must be visible, not hidden with screen-reader-only CSS.
-
-Loading presentation: show one shared spinner over the turtle/hare pair, independent of selected speed. Do not display download percentages, “creating audio,” or other preparation words. Keep loading accessible through the spinner’s label. Preserve bounded failure recovery and actionable retry errors.
-
-For iPhone/LINE media unlocking, use a valid 100ms PCM clip and await its playback-start promise before replacing the media element source. A one-sample WAV was rejected by the mobile WebKit decoder, and replacing the source before the unlock promise settles aborts the unlock. Safari desktop checks alone do not establish that the LINE iPhone Testing entry works; verify the complete Testing flow and keep real-device acceptance separate.
+The local batch helper remains available: `uv run --python 3.11 scripts/alignSentenceAudio.py --jobs jobs.json`. It is not required by the live phone.
