@@ -74,6 +74,7 @@ export function evaluate(input:string[]) {
   const beIndex=['where','what'].includes(w[start])?start+1:start
   if(['am','is','are'].includes(w[beIndex]))for(const subject of subjects(beIndex+1))if(w[beIndex]===subject.be){
    if(beIndex>start)ends.push(subject.end)
+   if(w[start]==='where'&&actionMap.get(w[subject.end])?.destination)ends.push(subject.end+1)
    ends.push(...predicates(subject.end))
   }
   return ends

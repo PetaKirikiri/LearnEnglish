@@ -12,7 +12,7 @@ import { isSuccessRoute } from './success/course'
 import { classroomNotesDestination } from './classroom/notesRoute'
 const classroomDestination = classroomNotesDestination(location.pathname, location.search, location.hash)
 if (classroomDestination) location.replace(classroomDestination)
-const WordBattle = lazy(() => import('./wordBattle/WordBattle'))
+const WordBattle = lazy(() => import('./wordBattle/WordBattleEntry'))
 const battleQuery = new URLSearchParams(location.search)
 const battleState = battleQuery.get('liff.state') ?? ''
 const battleNested = new URLSearchParams(battleState.includes('?') ? battleState.slice(battleState.indexOf('?') + 1) : battleState)

@@ -4,15 +4,16 @@ import {sentenceAudioPlugin} from './server/sentenceAudioPlugin'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
+import {wordBattlePlugin} from './server/wordBattlePlugin'
 import { cityPlugin } from './server/cityPlugin'
 import { classroomRaceProxy } from './server/classroomRaceProxy'
 import { raceLessonPlugin } from './server/raceLessonPlugin'
 
 export default defineConfig({
   worker: {format: 'es'},
-  plugins: [practiceAcceptancePlugin(),vocabularyDiagnosticsPlugin(),sentenceAudioPlugin(), react(), tailwindcss(), classroomRaceProxy(), raceLessonPlugin(), cityPlugin()],
+  plugins: [wordBattlePlugin(),practiceAcceptancePlugin(),vocabularyDiagnosticsPlugin(),sentenceAudioPlugin(), react(), tailwindcss(), classroomRaceProxy(), raceLessonPlugin(), cityPlugin()],
   build: {
-    rollupOptions: { input: { app: 'index.html', classroom: 'classroom/index.html', vocabulary: 'vocabulary-review.html' } },
+    rollupOptions: { input: { app: 'index.html', wordBattle:'word-battle.html', classroom: 'classroom/index.html', vocabulary: 'vocabulary-review.html' } },
   },
   resolve: {
     dedupe: ['react', 'react-dom'],

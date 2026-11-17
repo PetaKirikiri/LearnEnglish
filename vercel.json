@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/english/word-battle",
+      "destination": "/word-battle.html"
+    },
+    {
       "source": "/success",
       "destination": "/index.html"
     },

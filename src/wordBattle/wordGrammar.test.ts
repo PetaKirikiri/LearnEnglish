@@ -33,3 +33,5 @@ it('uses the full shared noun and action inventories, including irregular plural
 })
 
 it('keeps orange usable as a fruit noun as well as an adjective',()=>{expect(evaluate(['the','orange']).valid).toBe(true);expect(evaluate(['the','orange','book']).valid).toBe(true)})
+
+it('scores taught destination questions with correct auxiliary agreement',()=>{for(const sentence of ['where am I going','where are you going','where is he going','where is she going','where are we going','where are they going'])expect(evaluate(sentence.split(' ')).valid,sentence).toBe(true);expect(evaluate(['where','is','they','going']).valid).toBe(false)})
