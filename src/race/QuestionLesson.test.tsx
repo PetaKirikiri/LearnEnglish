@@ -56,10 +56,39 @@ it('renders the shared landscape and two illustrated answers, hides day 7 captio
   expect(record.mock.calls.map(c=>c[0])).toEqual(expect.arrayContaining([
    expect.objectContaining({questionId:'daily-question-7-interrogative-What',answer:expect.any(String),modality:'visible'}),
   ]))
-  const snapshot=JSON.parse(localStorage.getItem('englishsuccess:question-lesson:v2:learner:7')!)
+  const snapshot=JSON.parse(localStorage.getItem('englishsuccess:question-lesson:v3:learner:7')!)
   expect(snapshot.picked).toBe(0)
+  expect(snapshot.streaks).toHaveLength(2)
   await act(async()=>root.render(<QuestionLesson level={8} userId="learner" onExit={vi.fn()} onComplete={vi.fn()}/>))
   expect(host.querySelector('.practice-question')?.textContent).toContain('name?')
   expect(host.querySelector('.practice-question .example-source')).not.toBeNull()
  }finally{await act(async()=>root.unmount());host.remove()}
+})
+
+it('requires two consecutive correct answers per type and adds one type at a time',async()=>{
+ const host=document.createElement('div'),root=createRoot(host)
+ const key='englishsuccess:question-lesson:v3:learner:7'
+ const saved=()=>JSON.parse(localStorage.getItem(key)!)
+ const seed=(index:number,streaks:number[])=>localStorage.setItem(key,JSON.stringify({
+  index,streaks,score:0,attempts:0,picked:null,id:crypto.randomUUID(),startedAt:new Date().toISOString()
+ }))
+ const render=async()=>{await act(async()=>root.render(<QuestionLesson level={7} userId="learner" onExit={vi.fn()} onComplete={vi.fn()}/>))}
+ const answer=async(correct:boolean)=>{
+  const side=Number(parseInt(saved().id[0],16)%2===1)
+  await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correct?side:1-side].click())
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-continue-surface')!.click())
+ }
+ try{
+  vi.spyOn(Math,"random").mockReturnValue(0.25)
+  seed(0,[1,2])
+  await render()
+  await answer(false)
+  expect(saved().streaks).toEqual([0,2])
+  for(let i=0;i<4;i++)await answer(true)
+  expect(saved()).toMatchObject({index:2,streaks:[2,2,0]})
+  await answer(true)
+  await answer(true)
+  await answer(true)
+  expect(saved()).toMatchObject({index:3,streaks:[2,2,2,0]})
+ }finally{vi.restoreAllMocks();await act(async()=>root.unmount())}
 })
