@@ -20,10 +20,10 @@ const examples: Record<string,Example> = {
  'How many':{question:'How many books is Som holding',answer:'She is holding 3 books',foil:'She is holding her books'},
  'How much':{question:'How much is Som paying',answer:'She is paying 20 baht',foil:'She is paying on Monday'},
  When:{question:'When is Som running',answer:'She is running on Monday',foil:'She is running at school'},
- 'What time':{question:'What time does Som run',answer:'She runs at 9 o’clock',foil:'She runs at school'},
+ 'What time':{question:'What time is Som running',answer:'She is running at 9 o’clock',foil:'She is running at school'},
  'How long':{question:'How long is the lesson',answer:'The lesson is 30 minutes long',foil:'The lesson is on Monday'},
- 'How often':{question:'How often does Som run',answer:'She runs every day',foil:'She runs for 10 minutes'},
- 'How far':{question:'How far does Som run',answer:'She runs 2 kilometres',foil:'She runs for 10 minutes'},
+ 'How often':{question:'How often is Som running',answer:'She is running every day',foil:'She is running for 10 minutes'},
+ 'How far':{question:'How far is Som running',answer:'She is running 2 kilometres',foil:'She is running for 10 minutes'},
  Why:{question:'Why is Som drinking water',answer:'She is thirsty',foil:'She is at school'},
 }
 

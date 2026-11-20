@@ -39,6 +39,10 @@ it('includes every distinct picture cue in day 7 and all full questions in day 8
  const distance=seven.find(q=>q.document.english==='How far')!
  expect(distance.choices).toEqual(['5 kilometres','Happy'])
  expect(distance.alternatives![0].units.map(u=>u.artwork)).toEqual([{numeral:5},{src:'/classroom/icons/question-deck/kilometre-unit.svg'}])
+ const time=eight.find(q=>q.family==='What time')!
+ expect(time.document.english).toBe('What time is Som running?')
+ expect(time.choices[0]).toBe('Som is running at 9 o’clock.')
+ for(const q of eight)expect([q.document.english,...q.choices].join(' ')).not.toMatch(/\b(?:run|runs)\b/i)
  const helping=eight.find(q=>q.document.english==='Who is helping Som?')!
  expect(helping.choices).toEqual(['The teacher is helping Som.','Som is at school.'])
  expect(helping.alternatives![0].units.map(u=>u.english)).toEqual(['The','teacher','is','helping','Som.'])
