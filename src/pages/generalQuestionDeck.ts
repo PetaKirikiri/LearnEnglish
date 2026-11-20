@@ -37,7 +37,7 @@ const art:Record<string,string>=Object.fromEntries(
 Object.assign(art,{
  which:iconRoot+'which-scenes/dresses.webp', whose:deckArt('whose-cue'), when:deckArt('when-cue'), why:deckArt('why-because'),
  name:deckArt('name'), how:iconRoot+'question-deck/how-quality.png', going:iconRoot+'actions/focused/going.png', feeling:deckArt('feeling-scale'), 'what colour':deckArt('colour'),lesson:iconRoot+'actions/focused/teaching.png',long:deckArt('how-long'), 'how big':iconRoot+'adjectives/3d/big.png', what:iconRoot+'constructions/what.png', doing:iconRoot+'constructions/doing.png',
- baht:iconRoot+'everyday/expanded/money.png', 'o’clock':deckArt('oclock'), 'bia’s':deckArt('bia-owner'),
+ baht:iconRoot+'question-deck/baht.svg', 'o’clock':deckArt('oclock'), 'bia’s':deckArt('bia-owner'),
  som:iconRoot+'people/som.png',she:iconRoot+'pronouns/she-standing.png',run:iconRoot+'actions/closeup/running.png', runs:iconRoot+'actions/running.png',
 })
 const wordChoices:Record<string,[string,string]>={
@@ -53,7 +53,7 @@ const wordChoices:Record<string,[string,string]>={
 Object.assign(art,{
  kilometres:iconRoot+'question-deck/kilometre-unit.svg',teacher:iconRoot+'everyday/expanded/teacher.png',orange:iconRoot+'adjectives/3d/orange.png','30min':deckArt('minutes'),'2km':deckArt('kilometres'),
  happy:iconRoot+'adjectives/3d/happy.png',blue:iconRoot+'adjectives/3d/blue.png',small:iconRoot+'adjectives/3d/small.png',at:deckArt('at-place'),called:iconRoot+'question-deck/blank-name.png', hours:deckArt('how-long'),daily:deckArt('every'),thirst:deckArt('thirsty'),
- '฿20':iconRoot+'everyday/expanded/money.png','9:00':deckArt('oclock'),this:iconRoot+'deictic/v2/this.png',
+ '฿20':iconRoot+'question-deck/twenty-baht.svg','9:00':deckArt('oclock'),this:iconRoot+'deictic/v2/this.png',
  school:iconRoot+'level-one/school.png',table:iconRoot+'level-one/table.png',running:iconRoot+'actions/running.png',
 })
 const groups:Partial<Record<LanguageRole,string[]>>={
