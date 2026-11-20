@@ -79,3 +79,17 @@ it('browser Back from a round returns to the testing map',async()=>{
   expect(host.querySelectorAll('.journey-node')).toHaveLength(8)
  }finally{await act(async()=>root.unmount())}
 })
+
+it.each([[7,17,20],[8,19,17]] as const)('keeps legacy and current clears for Level %i',async(level,legacy,current)=>{
+ const prior={best:legacy,total:legacy,cleared:true,stars:3}
+ localStorage.setItem('englishsuccess:journey:v1:test',JSON.stringify({[level]:prior}))
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<PracticeJourney userId="test"/>))
+  expect(host.querySelector(`.journey-node[aria-label="Level ${level}"].cleared`)).not.toBeNull()
+  expect(recordStars(level,prior)).toBe(3)
+  expect(mergeRun({[level]:prior},{level,score:1,total:current,passed:false})[level]).toEqual(prior)
+  expect(mergeRun({[level]:prior},{level,score:current,total:current,passed:true})[level]).toEqual({best:current,total:current,cleared:true,stars:3})
+  expect(mergeRun({}, {level,score:current*2,total:current*3,passed:true})).toEqual({})
+ }finally{await act(async()=>root.unmount())}
+})

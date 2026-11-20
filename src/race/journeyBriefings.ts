@@ -4,7 +4,7 @@ import type {PracticeLevel} from './PracticeLevelPicker'
 import type {LanguageDocument} from '../learning/sentenceMatrix/LanguageQuadrant'
 import {ACTION_PRACTICE_ROUND_SIZE,actionPracticeQuestions, type ActionPracticeQuestion} from './actionPracticeContent'
 import {numberNounPool} from './numberFoundation'
-import {questionLessonDeck,type QuestionLessonLevel} from '../pages/generalQuestionDeck'
+import {questionLessonGroups,type QuestionLessonLevel} from '../pages/generalQuestionDeck'
 export type JourneyLevel=PracticeLevel|QuestionLessonLevel
 
 export type BriefingExample = {
@@ -51,7 +51,7 @@ function fromQuestion(q:ActionPracticeQuestion,switchLabel:string,rule:string,fo
 }
 const pair=(level:1|2|3)=>[numberExample(level,false),numberExample(level,true)]
 function questionBriefing(level:QuestionLessonLevel):LevelBriefing{
- const deck=questionLessonDeck(level),q=deck[0]
+ const deck=questionLessonGroups(level),q=deck[0][0]
  return {id:level,title:level===7?'คำถามจากภาพ':'ประโยคคำถาม',change:level===7?'new':'extend',changeText:level===7?'รูปคำถาม':'จากภาพ → ทั้งประโยค',task:level===7?'ดูภาพ → เลือกคำตอบ':'ฟังคำถาม → เลือกคำตอบ',total:deck.length,examples:[{document:q.document,switchLabel:q.family,choices:q.choices,correct:q.correct,rule:'',focus:q.targetWords}]}
 }
 export const journeyBriefings:readonly LevelBriefing[]=[

@@ -12,7 +12,16 @@ function lookup(key:string,id:string,create:()=>GeneratedQuestion[]){
 export function canonicalPracticeQuestion(id:string,recipe?:unknown){
  if(recipe!==undefined){const question=canonicalBlueprintQuestion(recipe);return question?.id===id?question:undefined}
  const daily=/^daily-question-([78])-/.exec(id)
- if(daily){const level=daily[1]==='7'?7:8;const format=id.startsWith('daily-question-8-beginner-')?'beginner':id.startsWith('daily-question-8-word-')?'word':level===8&&!id.startsWith('daily-question-8-sentence-')?'original':'sentence';return lookup('daily-'+level+'-'+format,id,()=>questionLessonDeck(level,format))}
+ if(daily){
+  const level=daily[1]==='7'?7:8
+  // Changed answer keys need fresh IDs. Older typed questions stay available for queued receipts.
+  const format=level===7
+   ? id.startsWith('daily-question-7-typed-')?'beginner':'legacy-typed'
+   : id.startsWith('daily-question-8-beginner-')?'beginner'
+   : id.startsWith('daily-question-8-word-')?'word'
+   : id.startsWith('daily-question-8-sentence-')?'sentence':'original'
+  return lookup('daily-'+level+'-'+format,id,()=>questionLessonDeck(level,format))
+ }
  // Historical pending receipts retain their old catalogue lookup only.
  if(id.startsWith('identify-v2-'))return lookup('identify',id,()=>structureCandidates('identify'))
  const match=/^compose-v2-l([1-6])-/.exec(id)

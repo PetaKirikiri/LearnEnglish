@@ -83,7 +83,7 @@ it('renders the shared landscape and two illustrated answers, hides day 7 captio
   expect(host.querySelectorAll('.practice-answer-area .picture-sentence')).toHaveLength(2)
   await act(async()=>buttons[0].click())
   expect(record.mock.calls.map(c=>c[0])).toEqual(expect.arrayContaining([
-   expect.objectContaining({questionId:'daily-question-7-interrogative-What',answer:expect.any(String),modality:'visible'}),
+   expect.objectContaining({questionId:'daily-question-7-typed-interrogative-What',answer:expect.any(String),modality:'visible'}),
   ]))
   const snapshot=JSON.parse(localStorage.getItem('englishsuccess:question-lesson:v3:learner:7')!)
   expect(snapshot.picked).toBe(0)
@@ -120,4 +120,21 @@ it.each([7,8] as const)('requires two consecutive correct answers per type in le
   await answer(true)
   expect(saved()).toMatchObject({index:3,streaks:[2,2,2,0]})
  }finally{vi.restoreAllMocks();await act(async()=>root.unmount())}
+})
+
+it.each([[7,20],[8,17]] as const)('reports mastered question types, not attempts, when Level %i finishes',async(level,total)=>{
+ const host=document.createElement('div'),root=createRoot(host)
+ const key=level===7?'englishsuccess:question-lesson:v3:learner:7':'englishsuccess:question-lesson:v2:learner:8'
+ const onComplete=vi.fn()
+ localStorage.setItem(key,JSON.stringify({
+  index:total-1,streaks:[...Array(total-1).fill(2),1],score:total*2-1,attempts:total*3,picked:null,
+  id:'00000000-0000-4000-8000-000000000001',startedAt:new Date().toISOString()
+ }))
+ try{
+  await act(async()=>root.render(<QuestionLesson level={level} userId="learner" onExit={vi.fn()} onComplete={onComplete}/>))
+  await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[0].click())
+  await act(async()=>host.querySelector<HTMLButtonElement>('.practice-continue-surface')!.click())
+  expect(onComplete).toHaveBeenCalledExactlyOnceWith(level,total,total,true)
+  expect(localStorage.getItem(key)).toBeNull()
+ }finally{await act(async()=>root.unmount())}
 })

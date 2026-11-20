@@ -110,7 +110,7 @@ const beginnerFoils:Record<string,string>={
  'How long':'Som is at school', 'How often':'Som is happy', 'How far':'Som is at school',
  'How big':'Som is running',
 }
-export function questionLessonDeck(level:QuestionLessonLevel,format:'beginner'|'sentence'|'word'|'original'='beginner'):GeneratedQuestion[]{
+export function questionLessonDeck(level:QuestionLessonLevel,format:'beginner'|'sentence'|'word'|'original'|'legacy-typed'='beginner'):GeneratedQuestion[]{
  const seen=new Set<string>()
  const deck=generalQuestionDeck().flatMap(q=>{
   const cue=q.family==='Where are'?'Where':q.family
@@ -127,8 +127,9 @@ export function questionLessonDeck(level:QuestionLessonLevel,format:'beginner'|'
     questionLayout:{construction:'question' as const,noun:'single' as const,leadingCount:gap?words.length-1:0,questionStarterSize:words.length===2?2:undefined,ungroupedTail:true},
     units:words.map((word,index)=>({english:word,thai:'',role:'question' as const,artwork:{src:gap&&index>0&&index<words.length-1?art.what:index===1&&art[label.toLowerCase()]?art[label.toLowerCase()]:art[word.toLowerCase()]}})),
    }:q.document
+   const oldTypedAnswer=format==='legacy-typed'?(label==='How long'?'Hours':label==='How far'?'Kilometres':undefined):undefined
    const alternatives:[Answer,Answer]=level===7
-    ? [wordAnswer(wordChoices[label][0]),wordAnswer(wordChoices[label][1])]
+    ? [wordAnswer(oldTypedAnswer??wordChoices[label][0]),wordAnswer(wordChoices[label][1])]
     : format==='original' ?[q.alternatives![q.correct],q.alternatives![1-q.correct]]
     : cue==='Who'?[sentence('The teacher is helping Som'),sentence('Som is at school')]
     : format==='beginner'?[
@@ -137,7 +138,7 @@ export function questionLessonDeck(level:QuestionLessonLevel,format:'beginner'|'
     ]
     : format==='sentence'?(cue==='When'?[sentence('Som is running on Monday'),sentence('Som is running at school')]:[q.alternatives![q.correct],q.alternatives![1-q.correct]].map(answer=>sentence(answer.english.replace(/^She /,'Som ').replace(/\.$/,''))) as [Answer,Answer])
     : [wordAnswer(fullQuestionAnswers[cue][0]),wordAnswer(fullQuestionAnswers[cue][1])]
-   const id=level===7?'daily-question-7-interrogative-'+label.replaceAll(' … ','-').replaceAll(' ','-'):(format==='original'?'daily-question-8-':'daily-question-8-'+format+'-')+q.id
+   const id=level===7?(format==='legacy-typed'?'daily-question-7-interrogative-':'daily-question-7-typed-interrogative-')+label.replaceAll(' … ','-').replaceAll(' ','-'):(format==='original'?'daily-question-8-':'daily-question-8-'+format+'-')+q.id
    return {...q,id,document,alternatives,choices:[alternatives[0].english,alternatives[1].english] as [string,string],correct:0 as const,
     targetWords:[cue],listeningWords:[label],credit:cue}
   })
@@ -147,4 +148,21 @@ export function questionLessonDeck(level:QuestionLessonLevel,format:'beginner'|'
   'What called','What doing','What colour','What time','How feeling','How old',
   'How big','How many','How much','How long','How often','How far']
  return deck.sort((a,b)=>order.indexOf(a.listeningWords[0].replace(' … ',' '))-order.indexOf(b.listeningWords[0].replace(' … ',' ')))
+}
+
+/** One group per assessed question type. The map and round share this count. */
+export function questionLessonGroups(level:QuestionLessonLevel):GeneratedQuestion[][]{
+ const questions=questionLessonDeck(level)
+ if(level===7)return questions.map(q=>[q])
+ const groups=new Map<string,GeneratedQuestion[]>()
+ for(const q of questions){
+  const family=q.family==='Where are'?'Where':q.family
+  const group=groups.get(family)
+  if(group)group.push(q)
+  else groups.set(family,[q])
+ }
+ return questionLessonDeck(7).flatMap(q=>{
+  const group=groups.get(q.listeningWords[0])
+  return group?[group]:[]
+ })
 }

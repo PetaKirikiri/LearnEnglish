@@ -2,7 +2,7 @@ import {useState} from 'react'
 import {useWordProgress} from '../learning/wordProgress/useWordProgress'
 import {WORD_RULE_VERSION} from '../learning/wordProgress/model'
 import type {MatrixSettings} from '../learning/sentenceMatrix/model'
-import {questionLessonDeck,type QuestionLessonLevel} from '../pages/generalQuestionDeck'
+import {questionLessonGroups,type QuestionLessonLevel} from '../pages/generalQuestionDeck'
 import {GeneratedQuestionView} from './GeneratedPractice'
 import LandscapePractice from './LandscapePractice'
 import PracticeHeader from './PracticeHeader'
@@ -16,18 +16,7 @@ export default function QuestionLesson(props:Props){
  return <LandscapePractice><Round key={`${props.userId??'guest'}:${props.level}`} {...props}/></LandscapePractice>
 }
 function Round({level,userId,settings,onExit,onComplete}:Props){
- const [deck]=useState(()=>{
-  const questions=questionLessonDeck(level)
-  if(level===7)return questions.map(q=>[q])
-  const groups=new Map<string,typeof questions>()
-  for(const q of questions){
-   const family=q.family==='Where are'?'Where':q.family
-   const group=groups.get(family)
-   if(group)group.push(q)
-   else groups.set(family,[q])
-  }
-  return questionLessonDeck(7).flatMap(q=>groups.has(q.listeningWords[0])?[groups.get(q.listeningWords[0])!]:[])
- })
+ const [deck]=useState(()=>questionLessonGroups(level))
  const storage=`englishsuccess:question-lesson:${level===7?'v3':'v2'}:${userId??'guest'}:${level}`
  const progress=useWordProgress(userId)
  const [error,setError]=useState(false)
@@ -60,9 +49,9 @@ function Round({level,userId,settings,onExit,onComplete}:Props){
     onNext={()=>{
      if(run.picked===null)return
      const streaks=[...run.streaks]
-     if(streaks.every(n=>n===2)){
+     if(!streaks.some(n=>n!==2)){
       if(streaks.length===deck.length){
-       try{localStorage.removeItem(storage);onComplete(level,run.score,run.attempts,true)}catch{setError(true)}
+       try{localStorage.removeItem(storage);onComplete(level,streaks.filter(n=>n===2).length,deck.length,true)}catch{setError(true)}
        return
       }
       const index=streaks.length

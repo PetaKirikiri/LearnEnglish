@@ -17,21 +17,31 @@ import './practiceJourney.css'
 export type RunResult={level:JourneyLevel;score:number;total:number;passed:boolean}
 type RecordEntry={best:number;total:number;cleared:boolean;stars?:number}
 export type JourneyRecord=Partial<Record<JourneyLevel,RecordEntry>>
+function currentTotal(level:JourneyLevel){return level===6?90:briefingFor(level).total}
+function acceptedTotal(level:JourneyLevel,total:number){
+ return total===currentTotal(level)||(level===7&&total===17)||(level===8&&total===19)
+}
 /** Only complete assessed rounds earn performance stars. Short review runs cannot earn them. */
 export function runStars(result:RunResult){
- if(result.level===6||result.total!==briefingFor(result.level).total)return 0
+ if(result.level===6||!acceptedTotal(result.level,result.total))return 0
  if(result.passed&&result.score===result.total)return 3
  if(result.passed)return 2
  return result.score>=Math.ceil(result.total*.7)?1:0
 }
 export function recordStars(level:JourneyLevel,record?:RecordEntry){
- if(!record||record.total!==(level===6?90:briefingFor(level).total))return 0
+ if(!record||!acceptedTotal(level,record.total))return 0
  return Math.max(record.stars??0,runStars({level,score:record.best,total:record.total,passed:record.cleared}))
 }
 export function mergeRun(record:JourneyRecord,result:RunResult):JourneyRecord{
- if(result.total!==(result.level===6?90:briefingFor(result.level).total))return record
+ if(!acceptedTotal(result.level,result.total))return record
  if(!Number.isInteger(result.total)||result.total<=0||!Number.isInteger(result.score)||result.score<0||result.score>result.total)return record
- const previous=record[result.level],old=previous?.total===result.total?previous:undefined,better=!old||result.score/result.total>old.best/old.total
+ const previous=record[result.level]
+ const old=previous&&acceptedTotal(result.level,previous.total)?previous:undefined
+ const better=!old||(result.total===old.total
+  ? result.score>old.best
+  : result.passed!==old.cleared
+   ? result.passed
+   : result.total===currentTotal(result.level))
  return {...record,[result.level]:{best:better?result.score:old.best,total:better?result.total:old.total,cleared:!!old?.cleared||result.passed,stars:Math.max(recordStars(result.level,old),runStars(result))}}
 }
 function loadRecords(key:string):JourneyRecord{
@@ -39,7 +49,7 @@ function loadRecords(key:string):JourneyRecord{
   const data=JSON.parse(localStorage.getItem(key)??'{}')
   return Object.fromEntries(Object.entries(data??{}).map(([id,value])=>{const r=value as RecordEntry;return [id,Number(id)===6&&r?.total===150?{...r,best:Math.round(r.best*90/150),total:90,stars:r.cleared?3:r.stars}:r] as [string,RecordEntry]}).filter(([id,value])=>{
    const r=value as RecordEntry
-   return [1,2,3,4,5,6,7,8].includes(Number(id))&&r&&Number.isInteger(r.best)&&r.best>=0&&Number.isInteger(r.total)&&r.total===(Number(id)===6?90:briefingFor(Number(id) as JourneyLevel).total)&&r.best<=r.total&&typeof r.cleared==='boolean'&&(r.stars===undefined||(Number.isInteger(r.stars)&&r.stars>=0&&r.stars<=3))
+   return [1,2,3,4,5,6,7,8].includes(Number(id))&&r&&Number.isInteger(r.best)&&r.best>=0&&Number.isInteger(r.total)&&acceptedTotal(Number(id) as JourneyLevel,r.total)&&r.best<=r.total&&typeof r.cleared==='boolean'&&(r.stars===undefined||(Number.isInteger(r.stars)&&r.stars>=0&&r.stars<=3))
   }))
  }catch{return {}}
 }
