@@ -47,11 +47,11 @@ const wordChoices:Record<string,[string,string]>={
  'How big':['Small','Blue'], 'What colour':['Blue','Som'], Who:['Som','Table'],
  Which:['This','Happy'], Whose:['Bia’s','Running'], 'How many':['7','Table'],
  'How much':['฿20','Monday'], When:['Monday','Table'], 'What time':['9:00','Som'],
- 'How long':['2 hours','School'], 'How often':['Daily','Blue'], 'How far':['Kilometres','Happy'],
+ 'How long':['2 hours','School'], 'How often':['Daily','Blue'], 'How far':['5 kilometres','Happy'],
  Why:['Thirst','Monday'],
 }
 Object.assign(art,{
- teacher:iconRoot+'everyday/expanded/teacher.png',orange:iconRoot+'adjectives/3d/orange.png','30min':deckArt('minutes'),'2km':deckArt('kilometres'),
+ kilometres:iconRoot+'question-deck/kilometre-unit.svg',teacher:iconRoot+'everyday/expanded/teacher.png',orange:iconRoot+'adjectives/3d/orange.png','30min':deckArt('minutes'),'2km':deckArt('kilometres'),
  happy:iconRoot+'adjectives/3d/happy.png',blue:iconRoot+'adjectives/3d/blue.png',small:iconRoot+'adjectives/3d/small.png',at:deckArt('at-place'),called:iconRoot+'question-deck/blank-name.png', hours:deckArt('how-long'),daily:deckArt('every'),thirst:deckArt('thirsty'),
  '฿20':iconRoot+'everyday/expanded/money.png','9:00':deckArt('oclock'),this:iconRoot+'deictic/v2/this.png',
  school:iconRoot+'level-one/school.png',table:iconRoot+'level-one/table.png',running:iconRoot+'actions/running.png',
@@ -123,6 +123,7 @@ export function questionLessonDeck(level:QuestionLessonLevel,legacyAnswers=false
    const alternatives:[Answer,Answer]=level===7
     ? [wordAnswer(wordChoices[label][0]),wordAnswer(wordChoices[label][1])]
     : legacyAnswers?[q.alternatives![q.correct],q.alternatives![1-q.correct]]
+    : cue==='Who'?[sentence('The teacher is helping Som'),sentence('Som is at school')]
     : [wordAnswer(fullQuestionAnswers[cue][0]),wordAnswer(fullQuestionAnswers[cue][1])]
    const id=level===7?'daily-question-7-interrogative-'+label.replaceAll(' … ','-').replaceAll(' ','-'):(legacyAnswers?'daily-question-8-':'daily-question-8-word-')+q.id
    return {...q,id,document,alternatives,choices:[alternatives[0].english,alternatives[1].english] as [string,string],correct:0 as const,

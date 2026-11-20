@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <title>Kilometre road marker</title>
+  <path fill="#be2431" d="M19 35a31 31 0 0 1 62 0v4H19z"/>
+  <path fill="#f8f5eb" stroke="#cfc9b8" stroke-width="2" d="M19 38h62v53H19z"/>
+  <text x="50" y="74" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="35" fill="#193650">km</text>
+</svg>
