@@ -38,7 +38,14 @@ it('includes every distinct picture cue in day 7 and all full questions in day 8
  const helping=eight.find(q=>q.document.english==='Who is helping Som?')!
  expect(helping.choices).toEqual(['The teacher is helping Som.','Som is at school.'])
  expect(helping.alternatives![0].units.map(u=>u.english)).toEqual(['The','teacher','is','helping','Som.'])
- for(const q of [...seven,...eight].filter(q=>q!==duration&&q!==distance&&q!==helping))expect(q.choices.every(word=>/^\S+$/.test(word))).toBe(true)
+ expect(eight.find(q=>q.family==='Which')?.choices[0]).toBe('Som is holding the blue bag.')
+ expect(eight.find(q=>q.family==='When')?.choices).toEqual(['Som is running on Monday.','Som is running at school.'])
+ for(const q of eight)for(const answer of q.alternatives!){
+  expect(answer.units.length).toBeGreaterThan(2)
+  expect(answer.units.map(u=>u.english).join(' ')).toBe(answer.english)
+  expect(answer.english.endsWith('.')).toBe(true)
+ }
+ for(const q of seven.filter(q=>q!==duration&&q!==distance))expect(q.choices.every(word=>/^\S+$/.test(word))).toBe(true)
  const artwork=new Set<string>()
  for(const q of [...seven,...eight]){
   expect(q.choices).toHaveLength(2)

@@ -103,7 +103,7 @@ const fullQuestionAnswers:Record<string,[string,string]>={
  'What colour':['Orange','School'],'How many':['3','Table'],'How long':['30min','Monday'],
  'How far':['2km','Daily'],Why:['Thirsty','Monday'],
 }
-export function questionLessonDeck(level:QuestionLessonLevel,legacyAnswers=false):GeneratedQuestion[]{
+export function questionLessonDeck(level:QuestionLessonLevel,format:'sentence'|'word'|'original'='sentence'):GeneratedQuestion[]{
  const seen=new Set<string>()
  const deck=generalQuestionDeck().flatMap(q=>{
   const cue=q.family==='Where are'?'Where':q.family
@@ -122,10 +122,11 @@ export function questionLessonDeck(level:QuestionLessonLevel,legacyAnswers=false
    }:q.document
    const alternatives:[Answer,Answer]=level===7
     ? [wordAnswer(wordChoices[label][0]),wordAnswer(wordChoices[label][1])]
-    : legacyAnswers?[q.alternatives![q.correct],q.alternatives![1-q.correct]]
+    : format==='original' ?[q.alternatives![q.correct],q.alternatives![1-q.correct]]
     : cue==='Who'?[sentence('The teacher is helping Som'),sentence('Som is at school')]
+    : format==='sentence'?(cue==='When'?[sentence('Som is running on Monday'),sentence('Som is running at school')]:[q.alternatives![q.correct],q.alternatives![1-q.correct]].map(answer=>sentence(answer.english.replace(/^She /,'Som ').replace(/\.$/,''))) as [Answer,Answer])
     : [wordAnswer(fullQuestionAnswers[cue][0]),wordAnswer(fullQuestionAnswers[cue][1])]
-   const id=level===7?'daily-question-7-interrogative-'+label.replaceAll(' … ','-').replaceAll(' ','-'):(legacyAnswers?'daily-question-8-':'daily-question-8-word-')+q.id
+   const id=level===7?'daily-question-7-interrogative-'+label.replaceAll(' … ','-').replaceAll(' ','-'):(format==='original'?'daily-question-8-':'daily-question-8-'+format+'-')+q.id
    return {...q,id,document,alternatives,choices:[alternatives[0].english,alternatives[1].english] as [string,string],correct:0 as const,
     targetWords:[cue],listeningWords:[label],credit:cue}
   })
