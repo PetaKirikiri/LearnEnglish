@@ -91,6 +91,11 @@ export function generalQuestionDeck():GeneratedQuestion[]{
  })
 }
 
+function wordAnswer(word:string):Answer{
+ const doc=sentence(word)
+ return {...doc,english:word,units:doc.units.map(unit=>({...unit,english:word}))}
+}
+
 export type QuestionLessonLevel=7|8
 export function questionLessonDeck(level:QuestionLessonLevel):GeneratedQuestion[]{
  const seen=new Set<string>()
@@ -108,10 +113,7 @@ export function questionLessonDeck(level:QuestionLessonLevel):GeneratedQuestion[
     units:words.map(word=>({english:word,thai:'',role:'question' as const,artwork:{src:art[word.toLowerCase()]}})),
    }:q.document
    const alternatives:[Answer,Answer]=level===7
-    ? wordChoices[label].map(word=>{
-      const doc=sentence(word)
-      return {...doc,english:word,units:doc.units.map(unit=>({...unit,english:word}))}
-     }) as [Answer,Answer]
+    ? [wordAnswer(wordChoices[label][0]),wordAnswer(wordChoices[label][1])]
     : [q.alternatives![q.correct],q.alternatives![1-q.correct]]
    const id=level===7?'daily-question-7-interrogative-'+label.replaceAll(' … ','-').replaceAll(' ','-'):'daily-question-8-'+q.id
    return {...q,id,document,alternatives,choices:[alternatives[0].english,alternatives[1].english] as [string,string],correct:0 as const,
