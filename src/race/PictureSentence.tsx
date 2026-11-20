@@ -9,12 +9,12 @@ type Unit=LanguageDocument['units'][number]
 /** Every word keeps its own picture; shared links provide the outer shape. */
 export function pictureChunks(units:readonly Unit[]){return units.map(unit=>({english:unit.english,unit}))}
 /** Read-only answers share the question's semantic links, icons and colours. */
-export default function PictureSentence({document,coloured=true}:{document:LanguageDocument;coloured?:boolean}){
+export default function PictureSentence({document,coloured=true,wordAlpha}:{document:LanguageDocument;coloured?:boolean;wordAlpha?:(word:string)=>number}){
  const links=sentenceLinks(document.units),parts:ReactNode[]=[]
  const roles=document.units.map(unit=>unit.role)
  const tile=(unit:Unit,index:number)=><span data-word-type={sentenceVerbType(unit.role,roles)} title={sentenceVerbType(unit.role,roles)?sentenceVerbLabels[sentenceVerbType(unit.role,roles)!]:undefined} key={index} className="picture-sentence-part" data-role={unit.role} data-action={unit.role==='action'?unit.english.replace(/[?.!]$/,''):undefined}>
   <span className="picture-sentence-art" aria-hidden="true">{languageRoleIcon(unit,document.construction)}</span>
-  <span className="picture-sentence-word">{unit.english}</span>
+  <span className="picture-sentence-word" style={wordAlpha?{visibility:'visible',display:'block',opacity:wordAlpha(unit.english)}:undefined}>{unit.english}</span>
  </span>
  for(let index=0;index<document.units.length;index++){
   const link=links.find(link=>link.start===index)

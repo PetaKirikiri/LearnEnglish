@@ -36,7 +36,7 @@ const art:Record<string,string>=Object.fromEntries(
 )
 Object.assign(art,{
  which:iconRoot+'which-scenes/dresses.webp', whose:deckArt('whose-cue'), when:deckArt('when-cue'), why:deckArt('why-because'),
- name:deckArt('name'), how:iconRoot+'question-deck/how-asking.png', going:iconRoot+'actions/focused/going.png', feeling:deckArt('feeling-scale'), 'what colour':deckArt('colour'),lesson:iconRoot+'actions/focused/teaching.png',long:deckArt('how-long'), 'how big':iconRoot+'adjectives/3d/big.png', what:iconRoot+'constructions/what.png', doing:iconRoot+'constructions/doing.png',
+ name:deckArt('name'), how:iconRoot+'question-deck/how-quality.png', going:iconRoot+'actions/focused/going.png', feeling:deckArt('feeling-scale'), 'what colour':deckArt('colour'),lesson:iconRoot+'actions/focused/teaching.png',long:deckArt('how-long'), 'how big':iconRoot+'adjectives/3d/big.png', what:iconRoot+'constructions/what.png', doing:iconRoot+'constructions/doing.png',
  baht:iconRoot+'everyday/expanded/money.png', 'o’clock':deckArt('oclock'), 'bia’s':deckArt('bia-owner'),
  som:iconRoot+'people/som.png',she:iconRoot+'pronouns/she-standing.png',run:iconRoot+'actions/closeup/running.png', runs:iconRoot+'actions/running.png',
 })
@@ -51,7 +51,7 @@ const wordChoices:Record<string,[string,string]>={
  Why:['Thirst','Monday'],
 }
 Object.assign(art,{
- called:deckArt('name'), hours:deckArt('how-long'),daily:deckArt('every'),thirst:deckArt('thirsty'),
+ happy:iconRoot+'adjectives/3d/happy.png',blue:iconRoot+'adjectives/3d/blue.png',small:iconRoot+'adjectives/3d/small.png',at:deckArt('at-place'),called:iconRoot+'question-deck/blank-name.png', hours:deckArt('how-long'),daily:deckArt('every'),thirst:deckArt('thirsty'),
  '฿20':iconRoot+'everyday/expanded/money.png','9:00':deckArt('oclock'),this:iconRoot+'deictic/v2/this.png',
  school:iconRoot+'level-one/school.png',table:iconRoot+'level-one/table.png',running:iconRoot+'actions/running.png',
 })
@@ -106,11 +106,13 @@ export function questionLessonDeck(level:QuestionLessonLevel):GeneratedQuestion[
   // Use stable answer ordering for the scoring service; the UI may shuffle.
   const cues=level===8?[cue]:cue==='What'?['What','What … called','What … doing']:cue==='How'?['How','How … feeling']:[cue]
   return cues.map(label=>{
-   const words=label.split(' … ')
+   const gap=label.includes(' … ')
+   const middle=label.endsWith('called')?'is it':label.endsWith('doing')?'is she':'is Som'
+   const words=label.replace(' … ',' '+middle+' ').split(' ')
    const document=level===7?{
     english:words.join(' '),thai:'',construction:'question' as const,
-    questionLayout:{construction:'question' as const,noun:'single' as const,leadingCount:words.length-1,ungroupedTail:true},
-    units:words.map(word=>({english:word,thai:'',role:'question' as const,artwork:{src:art[word.toLowerCase()]}})),
+    questionLayout:{construction:'question' as const,noun:'single' as const,leadingCount:gap?words.length-1:0,questionStarterSize:words.length===2?2:undefined,ungroupedTail:true},
+    units:words.map((word,index)=>({english:word,thai:'',role:'question' as const,artwork:{src:gap&&index>0&&index<words.length-1?art.what:index===1&&art[label.toLowerCase()]?art[label.toLowerCase()]:art[word.toLowerCase()]}})),
    }:q.document
    const alternatives:[Answer,Answer]=level===7
     ? [wordAnswer(wordChoices[label][0]),wordAnswer(wordChoices[label][1])]
@@ -124,5 +126,5 @@ export function questionLessonDeck(level:QuestionLessonLevel):GeneratedQuestion[
  const order=['What','Who','Where','When','Which','Whose','Why','How',
   'What called','What doing','What colour','What time','How feeling','How old',
   'How big','How many','How much','How long','How often','How far']
- return deck.sort((a,b)=>order.indexOf(a.document.english)-order.indexOf(b.document.english))
+ return deck.sort((a,b)=>order.indexOf(a.listeningWords[0].replace(' … ',' '))-order.indexOf(b.listeningWords[0].replace(' … ',' ')))
 }

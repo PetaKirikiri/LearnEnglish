@@ -22,7 +22,11 @@ it('includes every distinct picture cue in day 7 and all full questions in day 8
  expect(eight).toHaveLength(19)
  expect(eight.map(q=>q.document.english)).toEqual(general.map(q=>q.document.english))
  expect(eight.some(q=>q.document.english==='Where are you going?')).toBe(true)
- expect(seven.map(q=>q.document.english)).toEqual(expect.arrayContaining(['What called','What doing','How feeling','How many','How long','How often']))
+ expect(seven.map(q=>q.document.english)).toEqual(expect.arrayContaining(['What is it called','What is she doing','How is Som feeling','How many','How long','How often']))
+ for(const q of seven){
+  expect(q.document.units.map(unit=>unit.english)).toEqual(q.document.english.split(' '))
+  for(const unit of [...q.document.units,...q.alternatives!.flatMap(d=>d.units)])expect(unit.artwork).toBeDefined()
+ }
  for(const q of seven)expect(q.choices.every(word=>/^\S+$/.test(word))).toBe(true)
  const artwork=new Set<string>()
  for(const q of [...seven,...eight]){

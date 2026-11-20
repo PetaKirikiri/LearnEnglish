@@ -150,3 +150,9 @@
 .phone-practice.foundation-practice .practice-shell>.practice-header .practice-header-tools .foundation-help,
 .cw-panel-header .practice-header-tools .foundation-help{position:static;display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;min-width:36px;min-height:36px;margin:0;padding:0;border:1px solid #d2def0;border-radius:50%;background:white;color:#1877ef;font:800 24px/1 system-ui,sans-serif}
 .practice-header-tools .foundation-controls[data-audio-error=true] .playback-speed-controls>button{outline:1px solid #c82743;outline-offset:1px}
+
+/* A separated cue keeps one covered tile for each intervening word. */
+.practice-question [data-gap-cue] .cw-sentence-board .tonight-slot:is([data-unit-index="1"],[data-unit-index="2"]){
+ background:#151515!important;border-color:#080808!important;box-shadow:0 3px 0 #080808!important;
+}
+.practice-question [data-gap-cue] .tonight-slot:is([data-unit-index="1"],[data-unit-index="2"]) > *{visibility:hidden}
