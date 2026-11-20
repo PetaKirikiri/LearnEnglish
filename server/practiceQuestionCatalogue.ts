@@ -12,7 +12,7 @@ function lookup(key:string,id:string,create:()=>GeneratedQuestion[]){
 export function canonicalPracticeQuestion(id:string,recipe?:unknown){
  if(recipe!==undefined){const question=canonicalBlueprintQuestion(recipe);return question?.id===id?question:undefined}
  const daily=/^daily-question-([78])-/.exec(id)
- if(daily){const level=daily[1]==='7'?7:8;return lookup('daily-'+level,id,()=>questionLessonDeck(level))}
+ if(daily){const level=daily[1]==='7'?7:8;const legacy=level===8&&!id.startsWith('daily-question-8-word-');return lookup('daily-'+level+'-'+legacy,id,()=>questionLessonDeck(level,legacy))}
  // Historical pending receipts retain their old catalogue lookup only.
  if(id.startsWith('identify-v2-'))return lookup('identify',id,()=>structureCandidates('identify'))
  const match=/^compose-v2-l([1-6])-/.exec(id)

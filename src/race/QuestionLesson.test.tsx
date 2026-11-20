@@ -27,7 +27,7 @@ it('includes every distinct picture cue in day 7 and all full questions in day 8
   expect(q.document.units.map(unit=>unit.english)).toEqual(q.document.english.split(' '))
   for(const unit of [...q.document.units,...q.alternatives!.flatMap(d=>d.units)])expect(unit.artwork).toBeDefined()
  }
- for(const q of seven)expect(q.choices.every(word=>/^\S+$/.test(word))).toBe(true)
+ for(const q of [...seven,...eight])expect(q.choices.every(word=>/^\S+$/.test(word))).toBe(true)
  const artwork=new Set<string>()
  for(const q of [...seven,...eight]){
   expect(q.choices).toHaveLength(2)
@@ -65,14 +65,14 @@ it('renders the shared landscape and two illustrated answers, hides day 7 captio
  }finally{await act(async()=>root.unmount());host.remove()}
 })
 
-it('requires two consecutive correct answers per type and adds one type at a time',async()=>{
+it.each([7,8] as const)('requires two consecutive correct answers per type in level %i',async(level)=>{
  const host=document.createElement('div'),root=createRoot(host)
- const key='englishsuccess:question-lesson:v3:learner:7'
+ const key=level===7?'englishsuccess:question-lesson:v3:learner:7':'englishsuccess:question-lesson:v2:learner:8'
  const saved=()=>JSON.parse(localStorage.getItem(key)!)
  const seed=(index:number,streaks:number[])=>localStorage.setItem(key,JSON.stringify({
   index,streaks,score:0,attempts:0,picked:null,id:crypto.randomUUID(),startedAt:new Date().toISOString()
  }))
- const render=async()=>{await act(async()=>root.render(<QuestionLesson level={7} userId="learner" onExit={vi.fn()} onComplete={vi.fn()}/>))}
+ const render=async()=>{await act(async()=>root.render(<QuestionLesson level={level} userId="learner" onExit={vi.fn()} onComplete={vi.fn()}/>))}
  const answer=async(correct:boolean)=>{
   const side=Number(parseInt(saved().id[0],16)%2===1)
   await act(async()=>host.querySelectorAll<HTMLButtonElement>('.binary-answer')[correct?side:1-side].click())

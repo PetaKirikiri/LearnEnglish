@@ -9,22 +9,34 @@ import PracticeHeader from './PracticeHeader'
 import {awardPracticeGold} from './PracticeGold'
 
 type Props={level:QuestionLessonLevel;userId?:string;settings?:MatrixSettings;onExit:()=>void;onComplete:(level:QuestionLessonLevel,score:number,total:number,passed:boolean)=>void}
-type Run={index:number;picked:number|null;score:number;id:string;startedAt:string;attempts?:number;streaks?:number[]}
-const fresh=(index=0,score=0):Run=>({index,score,id:crypto.randomUUID(),picked:null,startedAt:new Date().toISOString()})
+type Run={index:number;picked:number|null;score:number;id:string;startedAt:string;attempts:number;streaks:number[]}
+const fresh=(index=0,score=0)=>({index,score,id:crypto.randomUUID(),picked:null,startedAt:new Date().toISOString()})
 const noForecast=()=>{}
 export default function QuestionLesson(props:Props){
  return <LandscapePractice><Round key={`${props.userId??'guest'}:${props.level}`} {...props}/></LandscapePractice>
 }
 function Round({level,userId,settings,onExit,onComplete}:Props){
- const [deck]=useState(()=>questionLessonDeck(level))
- const storage=`englishsuccess:question-lesson:${level===7?'v3':'v1'}:${userId??'guest'}:${level}`
+ const [deck]=useState(()=>{
+  const questions=questionLessonDeck(level)
+  if(level===7)return questions.map(q=>[q])
+  const groups=new Map<string,typeof questions>()
+  for(const q of questions){
+   const family=q.family==='Where are'?'Where':q.family
+   const group=groups.get(family)
+   if(group)group.push(q)
+   else groups.set(family,[q])
+  }
+  return questionLessonDeck(7).flatMap(q=>groups.has(q.listeningWords[0])?[groups.get(q.listeningWords[0])!]:[])
+ })
+ const storage=`englishsuccess:question-lesson:${level===7?'v3':'v2'}:${userId??'guest'}:${level}`
  const progress=useWordProgress(userId)
  const [error,setError]=useState(false)
  const [run,setRun]=useState<Run>(()=>{
-  try{const r=JSON.parse(localStorage.getItem(storage)??'null');if(r&&typeof r.id==='string'&&typeof r.startedAt==='string'&&Number.isInteger(r.index)&&r.index>=0&&r.index<deck.length&&[null,0,1].includes(r.picked)&&Number.isInteger(r.score)&&r.score>=0&&(level===7||r.score<=r.index+Number(r.picked!==null)))if(level!==7||Array.isArray(r.streaks)&&r.streaks.length>=2&&r.streaks.length<=deck.length&&r.index<r.streaks.length&&r.streaks.every((n:number)=>Number.isInteger(n)&&n>=0&&n<=2))return r}catch{/* Start a new round. */}
-  return level===7?{...fresh(),attempts:0,streaks:[0,0]}:fresh()
+  try{const r=JSON.parse(localStorage.getItem(storage)??'null');if(r&&typeof r.id==='string'&&typeof r.startedAt==='string'&&Number.isInteger(r.index)&&r.index>=0&&r.index<deck.length&&[null,0,1].includes(r.picked)&&Number.isInteger(r.score)&&r.score>=0&&Number.isInteger(r.attempts)&&r.attempts>=r.score&&Array.isArray(r.streaks)&&r.streaks.length>=2&&r.streaks.length<=deck.length&&r.index<r.streaks.length&&r.streaks.every((n:number)=>Number.isInteger(n)&&n>=0&&n<=2))return r}catch{/* Start a new round. */}
+  return {...fresh(),attempts:0,streaks:[0,0]}
  })
- const source=deck[run.index]
+ const variants=deck[run.index]
+ const source=variants[parseInt(run.id.slice(1,7),16)%variants.length]
  const q=parseInt(run.id[0],16)%2===1?{...source,correct:1 as const,choices:[source.choices[1],source.choices[0]] as typeof source.choices,alternatives:[source.alternatives![1],source.alternatives![0]] as NonNullable<typeof source.alternatives>}:source
  const base={id:run.id,questionId:q.id,version:q.version,ruleVersion:WORD_RULE_VERSION}
  const persist=(next:Run)=>{
@@ -33,41 +45,35 @@ function Round({level,userId,settings,onExit,onComplete}:Props){
  }
  return <main className="phone-practice foundation-practice" lang="en"><div className="practice-shell">
   {!progress.ready?<><PracticeHeader label={`Level ${level}`} level={6} onExit={onExit} value={0} total={deck.length}/>{progress.error?<button onClick={()=>void progress.retry()}>Retry loading progress</button>:<p role="status">…</p>}</>:
-  <GeneratedQuestionView key={run.id} courseLabel={`Level ${level}`} question={q} roundTotal={deck.length} cueOnly={level===7} index={run.streaks?run.streaks.filter(n=>n===2).length-Number(run.picked!==null):run.index} scores={progress.scores} settings={settings} picked={run.picked} attemptId={run.id} supportKey={storage+':presentation'} userId={userId} onExit={onExit}
+  <GeneratedQuestionView key={run.id} courseLabel={`Level ${level}`} question={q} roundTotal={deck.length} cueOnly={level===7} index={run.streaks.filter(n=>n===2).length-Number(run.picked!==null)} scores={progress.scores} settings={settings} picked={run.picked} attemptId={run.id} supportKey={storage+':presentation'} userId={userId} onExit={onExit}
     saveError={error||!!progress.error} retry={()=>void progress.retry()} onPrepareNext={noForecast}
     onPresented={()=>{try{progress.record({...base,event:'presented',answer:'',occurredAt:run.startedAt,modality:'visible',replays:0});return true}catch{setError(true);return false}}}
     onChoose={(side,evidence)=>{
      if(run.picked!==null)return false
      const correct=side===q.correct
      try{progress.record({...base,answer:q.choices[side],occurredAt:new Date().toISOString(),modality:level!==7&&evidence.hidden&&evidence.heard&&!evidence.assisted&&evidence.plays===1?'audio':'visible',replays:Math.max(0,evidence.plays-1)})}catch{setError(true);return false}
-     const streaks=run.streaks?.map((n,i)=>i!==run.index?n:correct?Math.min(2,n+1):0)
-     if(!persist({...run,attempts:level===7?(run.attempts??0)+1:undefined,streaks,picked:side,score:run.score+Number(correct)}))return false
+     const streaks=run.streaks.map((n,i)=>i!==run.index?n:correct?Math.min(2,n+1):0)
+     if(!persist({...run,attempts:run.attempts+1,streaks,picked:side,score:run.score+Number(correct)}))return false
      awardPracticeGold(run.id,correct,userId)
      return true
     }}
     onNext={()=>{
      if(run.picked===null)return
-     if(run.streaks){
-      const streaks=[...run.streaks]
-      if(streaks.every(n=>n===2)){
-       if(streaks.length===deck.length){
-        try{localStorage.removeItem(storage);onComplete(level,run.score,run.attempts??run.score,true)}catch{setError(true)}
-        return
-       }
-       const index=streaks.length
-       streaks.push(0)
-       persist({...fresh(index,run.score),attempts:run.attempts,streaks})
+     const streaks=[...run.streaks]
+     if(streaks.every(n=>n===2)){
+      if(streaks.length===deck.length){
+       try{localStorage.removeItem(storage);onComplete(level,run.score,run.attempts,true)}catch{setError(true)}
        return
       }
-      const others=streaks.map((_,i)=>i).filter(i=>i!==run.index)
-      const learning=others.filter(i=>streaks[i]<2)
-      const pool=learning.length&&Math.random()<0.8?learning:others
-      persist({...fresh(pool[Math.floor(Math.random()*pool.length)],run.score),attempts:run.attempts,streaks})
+      const index=streaks.length
+      streaks.push(0)
+      persist({...fresh(index,run.score),attempts:run.attempts,streaks})
       return
      }
-     if(run.index+1<deck.length){persist(fresh(run.index+1,run.score));return}
-     try{localStorage.removeItem(storage);onComplete(level,run.score,deck.length,run.score>=Math.ceil(deck.length*.9))}
-     catch{setError(true)}
+     const others=streaks.map((_,i)=>i).filter(i=>i!==run.index)
+     const learning=others.filter(i=>streaks[i]<2)
+     const pool=learning.length&&Math.random()<0.8?learning:others
+     persist({...fresh(pool[Math.floor(Math.random()*pool.length)],run.score),attempts:run.attempts,streaks})
     }}/>
   }
  </div></main>

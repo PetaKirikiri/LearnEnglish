@@ -51,6 +51,7 @@ const wordChoices:Record<string,[string,string]>={
  Why:['Thirst','Monday'],
 }
 Object.assign(art,{
+ teacher:iconRoot+'everyday/expanded/teacher.png',orange:iconRoot+'adjectives/3d/orange.png','30min':deckArt('minutes'),'2km':deckArt('kilometres'),
  happy:iconRoot+'adjectives/3d/happy.png',blue:iconRoot+'adjectives/3d/blue.png',small:iconRoot+'adjectives/3d/small.png',at:deckArt('at-place'),called:iconRoot+'question-deck/blank-name.png', hours:deckArt('how-long'),daily:deckArt('every'),thirst:deckArt('thirsty'),
  '฿20':iconRoot+'everyday/expanded/money.png','9:00':deckArt('oclock'),this:iconRoot+'deictic/v2/this.png',
  school:iconRoot+'level-one/school.png',table:iconRoot+'level-one/table.png',running:iconRoot+'actions/running.png',
@@ -97,7 +98,12 @@ function wordAnswer(word:string):Answer{
 }
 
 export type QuestionLessonLevel=7|8
-export function questionLessonDeck(level:QuestionLessonLevel):GeneratedQuestion[]{
+const fullQuestionAnswers:Record<string,[string,string]>={
+ ...wordChoices,What:['Som','Blue'],Who:['Teacher','Table'],Which:['Blue','Happy'],
+ 'What colour':['Orange','School'],'How many':['3','Table'],'How long':['30min','Monday'],
+ 'How far':['2km','Daily'],Why:['Thirsty','Monday'],
+}
+export function questionLessonDeck(level:QuestionLessonLevel,legacyAnswers=false):GeneratedQuestion[]{
  const seen=new Set<string>()
  const deck=generalQuestionDeck().flatMap(q=>{
   const cue=q.family==='Where are'?'Where':q.family
@@ -116,8 +122,9 @@ export function questionLessonDeck(level:QuestionLessonLevel):GeneratedQuestion[
    }:q.document
    const alternatives:[Answer,Answer]=level===7
     ? [wordAnswer(wordChoices[label][0]),wordAnswer(wordChoices[label][1])]
-    : [q.alternatives![q.correct],q.alternatives![1-q.correct]]
-   const id=level===7?'daily-question-7-interrogative-'+label.replaceAll(' … ','-').replaceAll(' ','-'):'daily-question-8-'+q.id
+    : legacyAnswers?[q.alternatives![q.correct],q.alternatives![1-q.correct]]
+    : [wordAnswer(fullQuestionAnswers[cue][0]),wordAnswer(fullQuestionAnswers[cue][1])]
+   const id=level===7?'daily-question-7-interrogative-'+label.replaceAll(' … ','-').replaceAll(' ','-'):(legacyAnswers?'daily-question-8-':'daily-question-8-word-')+q.id
    return {...q,id,document,alternatives,choices:[alternatives[0].english,alternatives[1].english] as [string,string],correct:0 as const,
     targetWords:[cue],listeningWords:[label],credit:cue}
   })
