@@ -132,7 +132,7 @@ export function questionLessonDeck(level:QuestionLessonLevel,format:'beginner'|'
     : format==='original' ?[q.alternatives![q.correct],q.alternatives![1-q.correct]]
     : cue==='Who'?[sentence('The teacher is helping Som'),sentence('Som is at school')]
     : format==='beginner'?[
-     sentence(q.alternatives![q.correct].english.replace(/^She /,'Som ').replace(/\.$/,'')),
+     sentence(cue==='Whose'?'Som is holding my bag':q.alternatives![q.correct].english.replace(/^She /,'Som ').replace(/\.$/,'')),
      sentence(beginnerFoils[cue]??q.alternatives![1-q.correct].english.replace(/^She /,'Som ').replace(/\.$/,'')),
     ]
     : format==='sentence'?(cue==='When'?[sentence('Som is running on Monday'),sentence('Som is running at school')]:[q.alternatives![q.correct],q.alternatives![1-q.correct]].map(answer=>sentence(answer.english.replace(/^She /,'Som ').replace(/\.$/,''))) as [Answer,Answer])

@@ -38,6 +38,9 @@ it('includes every distinct picture cue in day 7 and all full questions in day 8
  const helping=eight.find(q=>q.document.english==='Who is helping Som?')!
  expect(helping.choices).toEqual(['The teacher is helping Som.','Som is at school.'])
  expect(helping.alternatives![0].units.map(u=>u.english)).toEqual(['The','teacher','is','helping','Som.'])
+ const owner=eight.find(q=>q.family==='Whose')!.alternatives![0]
+ expect(owner.english).toBe('Som is holding my bag.')
+ expect(owner.units.slice(-2).map(u=>[u.english,u.role])).toEqual([['my','determiner'],['bag.','object']])
  expect(eight.find(q=>q.family==='Which')?.choices).toEqual(['Som is holding the blue bag.','Som is happy.'])
  expect(eight.find(q=>q.family==='When')?.choices).toEqual(['Som is running on Monday.','Som is at school.'])
  for(const q of eight)for(const answer of q.alternatives!){
