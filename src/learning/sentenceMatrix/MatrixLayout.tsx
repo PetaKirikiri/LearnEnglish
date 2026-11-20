@@ -8,6 +8,8 @@ import './matrixLayout.css'
 
 /** Callers describe the construction; this component owns every layout coordinate. */
 export type MatrixLayoutRequest = {
+  questionStarterSize?:number
+  ungroupedTail?:boolean
   nounSize?:number
   leadingCount?:number
   actionComplement?:boolean
@@ -28,6 +30,13 @@ export default function MatrixLayout({request,settings={},cards:sourceCards,labe
   useMatrixSizing(root,adaptive,JSON.stringify([label,request,layoutSettings]),assessment)
   const cards:ReactNode[]=[],ranges:{start:number;end:number}[]=[]
   for(let index=0;index<sourceCards.length;index++){
+    if(index===0 && request.questionStarterSize){
+      const end=request.questionStarterSize
+      cards.push(<span key="starter" className="matrix-agreement-group" role="group" aria-label="Question starter" data-link="question">{sourceCards.slice(0,end)}</span>)
+      ranges.push({start:0,end})
+      index=end-1
+      continue
+    }
     const group=request.nounGroups?.find(group=>group.start===index)
     if(group){
       if(![2,3].includes(group.end-group.start)||group.end>sourceCards.length)throw new Error('A determiner and noun must occupy separate cards.')
@@ -62,7 +71,7 @@ export default function MatrixLayout({request,settings={},cards:sourceCards,labe
     </div>
     <div className="tonight-slots" lang={settings.english===false?"th":"en"} aria-label={label}>
       <div className="matrix-layout-leading">{head.map(item=>item.node)}</div>
-      {actionRoles||agreementTail?<div className="matrix-role-group" role="group" aria-label={agreementTail?"Subject and matching verb":"Main verb phrase"} data-group-size={groupSize}>
+      {request.ungroupedTail?<div className="matrix-role-group">{tail.map(item=>item.node)}</div>:actionRoles||agreementTail?<div className="matrix-role-group" role="group" aria-label={agreementTail?"Subject and matching verb":"Main verb phrase"} data-group-size={groupSize}>
         {!settings.fadeMode&&settings.english!==false&&request.nounSwapper&&<div className="matrix-layout-inline-control"><NounModeToggle {...request.nounSwapper}/></div>}
         {tail.map(item=>item.node)}
       </div>:<NounGroup size={groupSize} label={request.construction==='question'?'Subject':request.construction==='location-answer'?'Location noun phrase':'Object noun phrase'} swapper={settings.fadeMode||settings.english===false?undefined:request.nounSwapper}>{cards.slice(leading)}</NounGroup>}

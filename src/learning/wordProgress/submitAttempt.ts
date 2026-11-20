@@ -10,7 +10,7 @@ export async function submitAttempt(source:'word'|'number',payload:Record<string
   || data.client_id!==payload.p_id || !['received','needs_review','scored'].includes(data.status)){
   throw new Error('Answer receipt not confirmed')
  }
- if(source==='word'&&data.status!=='scored'&&typeof payload.p_question==='string'&&/^(compose-v2-|identify-v2-)/.test(payload.p_question)){
+ if(source==='word'&&data.status!=='scored'&&typeof payload.p_question==='string'&&/^(compose-v2-|identify-v2-|daily-question-[78]-)/.test(payload.p_question)){
   const session=await supabase.auth.getSession(),token=session.data.session?.access_token
   if(!token)throw new Error('Sign in to finish saving progress')
   const response=await fetch('/api/sentence-audio',{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify({id:payload.p_question,registerOnly:true,...(recipe?{recipe}:{})}),signal:AbortSignal.timeout(55000)})

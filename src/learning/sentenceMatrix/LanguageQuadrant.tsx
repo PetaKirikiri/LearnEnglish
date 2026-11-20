@@ -23,6 +23,15 @@ export type QuadrantRequest = {
 }
 export function languageRoleIcon(unit:LanguageDocument['units'][number],construction:LanguageDocument['construction'],referenceObject?:string){
  const word=unit.english.replace(/[?.!]$/,'')
+ if(unit.role==='question' && unit.artwork && 'src' in unit.artwork && ['what','who','where','when','why'].includes(word.toLowerCase())){
+  return <span className="cw-game-icon interrogative-picture" aria-hidden="true">
+   <span className="thought-clue"><img src={unit.artwork.src} alt="" draggable={false}/>
+   </span>
+   <img className="learner-question-mark" src="/classroom/icons/constructions/what.png" alt="" draggable={false}/>
+   <img className="thinking-learner" src="/classroom/icons/question-deck/asking.webp" alt="" draggable={false}/>
+  </span>
+ }
+ if(unit.artwork)return 'src' in unit.artwork?<img className="cw-game-icon" src={unit.artwork.src} alt="" draggable={false}/>:<strong className="answer-numeral">{unit.artwork.numeral}</strong>
  if(unit.role==='reference'){const reference=references.find(r=>r.word===word.toLowerCase());return reference?<DistanceScene compact reference={reference.id} word={referenceObject}/>:null}
  if(unit.role==='description')return <DescriptionPicture word={word}/>
  if(unit.role==='person')return subjectPronouns.some(subject=>subject.word.toLowerCase()===word.toLowerCase())?<PronounIcon word={word}/>:word==='Bia'?<ProperNounIcon word={word}/>:<VocabularyPicture word={word}/>

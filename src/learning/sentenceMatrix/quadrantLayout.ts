@@ -3,10 +3,11 @@ import {adjectiveFitsNoun} from '../sentenceRules/adjectiveSemantics'
 import {references} from '../sentenceRules/identification'
 import type {MatrixLayoutRequest} from './MatrixLayout'
 export type LanguageDocument = {
+  questionLayout?:MatrixLayoutRequest
   english:string
   thai:string
   construction:'identification-answer'|'identification-question'|'question'|'noun-phrase'|'location-answer'|'action-question'|'action-answer'
-  units:readonly {english:string;thai:string;role:LanguageRole}[]
+  units:readonly {english:string;thai:string;role:LanguageRole;referent?:string;artwork?:{src:string}|{numeral:number}}[]
 }
 export function quadrantLayout(document:LanguageDocument):MatrixLayoutRequest {
  const {construction,units}=document
@@ -19,6 +20,7 @@ export function quadrantLayout(document:LanguageDocument):MatrixLayoutRequest {
  const objectIndex=roles.indexOf('object'),objectDescription=objectIndex>=1&&roles[objectIndex-1]==='description'
  const nounGroups=roles.flatMap((role,index)=>role==='person-determiner'?[{start:index,end:index+(roles[index+1]==='description'?3:2)}]:[])
  const collapsedSubjectCards=nounGroups.reduce((total,group)=>total+group.end-group.start-1,0)
+ if(document.questionLayout)return document.questionLayout
  if(construction==='identification-question'){
   if(roles.join(',')!=='question,be,reference'||units[0].english!=='What'||!references.some(r=>units[2].english===r.word+'?'&&units[1].english===(r.plural?'are':'is')))throw new Error('Unsupported identification question')
   return {construction,noun:'single'}

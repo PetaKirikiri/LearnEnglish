@@ -15,14 +15,14 @@ it('starts the selected round in one tap and preserves assessed progress',async(
  try{
   await act(async()=>root.render(<PracticeJourney userId="test"/>))
   const cards=host.querySelectorAll('.journey-node')
-  expect(cards).toHaveLength(6)
+  expect(cards).toHaveLength(8)
   expect(host.querySelector('.journey-briefing,.journey-goals,.binary-answer')).toBeNull()
   for(const card of cards)expect(card.querySelectorAll('button')).toHaveLength(1)
-  expect([...cards].map(card=>[...card.querySelectorAll('.tonight-slots')].map(matrix=>matrix.getAttribute('aria-label')))).toEqual([
+  expect([...cards].slice(0,6).map(card=>[...card.querySelectorAll('.tonight-slots')].map(matrix=>matrix.getAttribute('aria-label')))).toEqual([
    ['key','keys'],['Where is the key?'],['Where are the keys?'],
    ['What are you doing?'],['I am walking to the hotel.'],['I am eating your apple.'],
   ])
-  expect(host.querySelectorAll('[data-density="thumbnail"]')).toHaveLength(7)
+  expect(host.querySelectorAll('[data-density="thumbnail"]')).toHaveLength(9)
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 1:"]')!.click())
   expect(host.textContent).toContain('Run 1')
   await act(async()=>[...host.querySelectorAll('button')].find(b=>b.textContent==='Finish')!.click())
@@ -64,7 +64,7 @@ it('opens the unlocked Level 6 round directly and keeps earlier star results', a
   expect(loadActionStarProgress('test').progress[2]?.passes).toBe(1)
   expect(loadActionStarProgress('test').progress[1]).toEqual({passes: 2, best: 28})
   await act(async () => host.querySelector<HTMLButtonElement>('button:last-child')!.click())
-  expect(host.querySelectorAll('.journey-node')).toHaveLength(6)
+  expect(host.querySelectorAll('.journey-node')).toHaveLength(8)
  } finally { await act(async () => root.unmount()) }
 })
 
@@ -76,6 +76,6 @@ it('browser Back from a round returns to the testing map',async()=>{
   expect(host.textContent).toContain('Run 6')
   expect(history.state.englishPracticeRound).toBe(true)
   await act(async()=>window.dispatchEvent(new PopStateEvent('popstate',{state:{}})))
-  expect(host.querySelectorAll('.journey-node')).toHaveLength(6)
+  expect(host.querySelectorAll('.journey-node')).toHaveLength(8)
  }finally{await act(async()=>root.unmount())}
 })

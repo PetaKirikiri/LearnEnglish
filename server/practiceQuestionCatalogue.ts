@@ -1,6 +1,7 @@
 import {canonicalBlueprintQuestion} from '../src/race/blueprintWordServer'
 import {generatedCandidates,structureCandidates,determinerCandidates,type GeneratedQuestion} from '../src/race/generatedPracticeContent'
 import type {PracticeLevel} from '../src/race/PracticeLevelPicker'
+import {questionLessonDeck} from '../src/pages/generalQuestionDeck'
 const indexes=new Map<string,Map<string,GeneratedQuestion>>()
 function lookup(key:string,id:string,create:()=>GeneratedQuestion[]){
  let index=indexes.get(key)
@@ -10,6 +11,8 @@ function lookup(key:string,id:string,create:()=>GeneratedQuestion[]){
 /** Resolve only server-authored combinations, building relevant construction banks on demand. */
 export function canonicalPracticeQuestion(id:string,recipe?:unknown){
  if(recipe!==undefined){const question=canonicalBlueprintQuestion(recipe);return question?.id===id?question:undefined}
+ const daily=/^daily-question-([78])-/.exec(id)
+ if(daily){const level=daily[1]==='7'?7:8;return lookup('daily-'+level,id,()=>questionLessonDeck(level))}
  // Historical pending receipts retain their old catalogue lookup only.
  if(id.startsWith('identify-v2-'))return lookup('identify',id,()=>structureCandidates('identify'))
  const match=/^compose-v2-l([1-6])-/.exec(id)

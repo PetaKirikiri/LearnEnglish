@@ -4,6 +4,8 @@ import type {PracticeLevel} from './PracticeLevelPicker'
 import type {LanguageDocument} from '../learning/sentenceMatrix/LanguageQuadrant'
 import {ACTION_PRACTICE_ROUND_SIZE,actionPracticeQuestions, type ActionPracticeQuestion} from './actionPracticeContent'
 import {numberNounPool} from './numberFoundation'
+import {questionLessonDeck,type QuestionLessonLevel} from '../pages/generalQuestionDeck'
+export type JourneyLevel=PracticeLevel|QuestionLessonLevel
 
 export type BriefingExample = {
  document:LanguageDocument
@@ -15,7 +17,7 @@ export type BriefingExample = {
  focus:readonly string[]
 }
 export type LevelBriefing = {
- id:PracticeLevel
+ id:JourneyLevel
  title:string
  change:'new'|'extend'|'combine'
  changeText:string
@@ -48,6 +50,10 @@ function fromQuestion(q:ActionPracticeQuestion,switchLabel:string,rule:string,fo
  return {document:{english:q.english,thai:q.thai,units:q.units,construction:q.level===4?'action-question':'action-answer'},audio:q.audioUrl,switchLabel,choices:q.choices,correct:q.correct,rule,focus}
 }
 const pair=(level:1|2|3)=>[numberExample(level,false),numberExample(level,true)]
+function questionBriefing(level:QuestionLessonLevel):LevelBriefing{
+ const deck=questionLessonDeck(level),q=deck[0]
+ return {id:level,title:level===7?'คำถามจากภาพ':'ประโยคคำถาม',change:level===7?'new':'extend',changeText:level===7?'รูปคำถาม':'จากภาพ → ทั้งประโยค',task:level===7?'ดูภาพ → เลือกคำตอบ':'ฟังคำถาม → เลือกคำตอบ',total:deck.length,examples:[{document:q.document,switchLabel:q.family,choices:q.choices,correct:q.correct,rule:'',focus:q.targetWords}]}
+}
 export const journeyBriefings:readonly LevelBriefing[]=[
  {id:1,title:'หนึ่งหรือหลาย',change:'new',changeText:'เสียงท้ายคำ',task:'ฟัง → เลือกจำนวน',total:30,examples:pair(1)},
  {id:2,title:'is หรือ are',change:'extend',changeText:'จากคำ → ทั้งประโยค',task:'ฟัง → เลือกจำนวน',total:30,examples:pair(2)},
@@ -66,8 +72,9 @@ export const journeyBriefings:readonly LevelBriefing[]=[
   actionExample('I am eating my apple.','my','my = ของฉัน · คนทำกับเจ้าของอาจไม่ใช่คนเดียวกัน',['my']),
   actionExample('I am eating your apple.','your','your = ของคุณ · ฉันกิน แต่แอปเปิลเป็นของคุณ',['your']),
  ]},
+ questionBriefing(7),questionBriefing(8),
 ]
-export const briefingFor=(level:PracticeLevel)=>journeyBriefings[level-1]
+export const briefingFor=(level:JourneyLevel)=>journeyBriefings[level-1]
 export function levelPreview(level:PracticeLevel){
  const role=level===4?'person':'action'
  const words=level<=3?numberNounPool(level).map(n=>n.singular):[...new Set(actionPracticeQuestions.filter(q=>q.level===level).flatMap(q=>q.units.filter(u=>u.role===role).map(u=>u.english.replace(/[?.]/g,'').trim())))]

@@ -300,3 +300,25 @@
 /* The illustrated audio controls own an intrinsic row below the card shadows. */
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout]:has(.matrix-timed-playback){grid-template-rows:44px auto minmax(100px,auto) minmax(0,auto)}
 .classroom .cw-sentence-board .matrix-layout.example-matrix[data-matrix-layout] .matrix-layout-translation:has(.matrix-timed-playback){align-items:flex-start;padding-top:16px}
+
+.cw-game-icon.interrogative-picture {
+  display: inline-block;
+  position: relative;
+  aspect-ratio: 1;
+  background: none;
+}
+/* The two dots lead from the learner's gaze to the missing information. */
+.interrogative-picture .thought-clue {
+  position:absolute; top:0; right:0; width:74%; height:60%;
+  border-radius:48%; background:#fff; box-shadow:0 1px 3px #18385e55;
+  display:grid; place-items:center;
+}
+.interrogative-picture .thought-clue::before,
+.interrogative-picture .thought-clue::after {
+  content:""; position:absolute; border-radius:50%; background:#fff;
+  width:14%; height:14%; left:32%; bottom:-6%;
+}
+.interrogative-picture .thought-clue::after {width:8%;height:8%;left:26%;bottom:-13%}
+.interrogative-picture .thought-clue img {position:absolute;inset:10% 13%;width:74%;height:80%;object-fit:contain}
+.interrogative-picture .learner-question-mark {position:absolute;left:5%;bottom:45%;width:19%;height:22%;object-fit:contain}
+.interrogative-picture .thinking-learner {position:absolute;left:0;bottom:0;width:44%;height:43%;object-fit:contain;object-position:bottom left}

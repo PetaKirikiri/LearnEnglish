@@ -25,7 +25,7 @@ it('opens the standalone test without the classroom lesson-template validator',a
  const host=document.createElement('div'),root=createRoot(host)
  try{
   await act(async()=>root.render(<HomeworkEntry/>))
-  expect(host.querySelectorAll('.journey-node')).toHaveLength(6)
+  expect(host.querySelectorAll('.journey-node')).toHaveLength(8)
   expect(host.textContent).not.toContain('Choose a lesson')
  }finally{await act(async()=>root.unmount())}
 })
@@ -38,7 +38,7 @@ it('runs and scores object questions from the app test even with a classroom les
  const host=document.createElement('div'),root=createRoot(host)
  try{
   await act(async()=>root.render(<PhonePractice userId="test-student"/>))
-  expect(host.querySelectorAll('.journey-node')).toHaveLength(6)
+  expect(host.querySelectorAll('.journey-node')).toHaveLength(8)
   await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 6:"]')!.click())
   const runKey=Array.from({length:localStorage.length},(_,i)=>localStorage.key(i)!).find(key=>key.startsWith('englishsuccess:composed-run:')&&key.endsWith(':test-student:6:star-1'))!
   const saved=JSON.parse(localStorage.getItem(runKey)!)
@@ -59,5 +59,29 @@ it('runs and scores object questions from the app test even with a classroom les
   expect(state.record.mock.calls.filter(([event])=>event.event==='presented')).toHaveLength(1)
   expect(state.award).toHaveBeenCalledWith(expect.any(String),true,'test-student')
   expect(localStorage.getItem('classroom-notes')).toBe('preserve these notes')
+ }finally{await act(async()=>root.unmount())}
+})
+
+it('opens both new levels beside previous tests through the existing LINE target and restores an answered day 7 attempt',async()=>{
+ localStorage.clear();history.replaceState({},'','/english/practice?liff.state=%3Flesson%3D2')
+ state.record.mockClear()
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<PhonePractice userId="test-student"/>))
+  expect(host.querySelectorAll('.journey-node')).toHaveLength(8)
+  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 7:"]')!.click())
+  expect(host.querySelector('.practice-question .example-source')).toBeNull()
+  expect(host.querySelector('.practice-question img')).not.toBeNull()
+  const picked=host.querySelector<HTMLButtonElement>('.binary-answer')!
+  await act(async()=>picked.click())
+  expect(state.record.mock.calls.filter(([event])=>event.event!=='presented')).toHaveLength(1)
+  await act(async()=>window.dispatchEvent(new PopStateEvent('popstate')))
+  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 7:"]')!.click())
+  expect([...host.querySelectorAll<HTMLButtonElement>('.binary-answer')].every(b=>b.disabled)).toBe(true)
+  expect(state.record.mock.calls.filter(([event])=>event.event!=='presented')).toHaveLength(1)
+  await act(async()=>window.dispatchEvent(new PopStateEvent('popstate')))
+  await act(async()=>host.querySelector<HTMLButtonElement>('[aria-label^="เปิด Level 8:"]')!.click())
+  expect(host.querySelector('.practice-question .example-source')).not.toBeNull()
+  expect(host.querySelectorAll('.binary-answer')).toHaveLength(2)
  }finally{await act(async()=>root.unmount())}
 })

@@ -4,19 +4,19 @@ import ActionStarCourse from './ActionStarCourse'
 import NumberFoundation from './NumberFoundationCourse'
 import GeneratedPractice from './GeneratedPractice'
 import PracticeGold from './PracticeGold'
-import type {PracticeLevel} from './PracticeLevelPicker'
+import QuestionLesson from './QuestionLesson'
 import type {MatrixSettings} from '../learning/sentenceMatrix/model'
 import LanguageQuadrant from '../learning/sentenceMatrix/LanguageQuadrant'
 import ExampleLanguage from '../learning/ExampleLanguage'
 import VocabularyPicture from '../learning/VocabularyPicture'
 import Icon from '../ui/Icon'
 import {PracticeAnswerIcon} from './BinaryAnswerZone'
-import {briefingFor,journeyBriefings,type LevelBriefing} from './journeyBriefings'
+import {briefingFor,journeyBriefings,type LevelBriefing,type JourneyLevel} from './journeyBriefings'
 import './practiceJourney.css'
 
-export type RunResult={level:PracticeLevel;score:number;total:number;passed:boolean}
+export type RunResult={level:JourneyLevel;score:number;total:number;passed:boolean}
 type RecordEntry={best:number;total:number;cleared:boolean;stars?:number}
-export type JourneyRecord=Partial<Record<PracticeLevel,RecordEntry>>
+export type JourneyRecord=Partial<Record<JourneyLevel,RecordEntry>>
 /** Only complete assessed rounds earn performance stars. Short review runs cannot earn them. */
 export function runStars(result:RunResult){
  if(result.level===6||result.total!==briefingFor(result.level).total)return 0
@@ -24,7 +24,7 @@ export function runStars(result:RunResult){
  if(result.passed)return 2
  return result.score>=Math.ceil(result.total*.7)?1:0
 }
-export function recordStars(level:PracticeLevel,record?:RecordEntry){
+export function recordStars(level:JourneyLevel,record?:RecordEntry){
  if(!record||record.total!==(level===6?90:briefingFor(level).total))return 0
  return Math.max(record.stars??0,runStars({level,score:record.best,total:record.total,passed:record.cleared}))
 }
@@ -39,7 +39,7 @@ function loadRecords(key:string):JourneyRecord{
   const data=JSON.parse(localStorage.getItem(key)??'{}')
   return Object.fromEntries(Object.entries(data??{}).map(([id,value])=>{const r=value as RecordEntry;return [id,Number(id)===6&&r?.total===150?{...r,best:Math.round(r.best*90/150),total:90,stars:r.cleared?3:r.stars}:r] as [string,RecordEntry]}).filter(([id,value])=>{
    const r=value as RecordEntry
-   return [1,2,3,4,5,6].includes(Number(id))&&r&&Number.isInteger(r.best)&&r.best>=0&&Number.isInteger(r.total)&&r.total===(Number(id)===6?90:briefingFor(Number(id) as PracticeLevel).total)&&r.best<=r.total&&typeof r.cleared==='boolean'&&(r.stars===undefined||(Number.isInteger(r.stars)&&r.stars>=0&&r.stars<=3))
+   return [1,2,3,4,5,6,7,8].includes(Number(id))&&r&&Number.isInteger(r.best)&&r.best>=0&&Number.isInteger(r.total)&&r.total===(Number(id)===6?90:briefingFor(Number(id) as JourneyLevel).total)&&r.best<=r.total&&typeof r.cleared==='boolean'&&(r.stars===undefined||(Number.isInteger(r.stars)&&r.stars>=0&&r.stars<=3))
   }))
  }catch{return {}}
 }
@@ -57,14 +57,14 @@ function LevelArtwork({item}:{item:LevelBriefing}){
       layout={{construction:'noun-phrase',noun:'single'}}
       slotDetails={[{label:'',count:0,icon:<VocabularyPicture word={noun.english}/>}]} settings={previewSettings}/>
     </div>
-   }):<div className="cw-sentence-board"><LanguageQuadrant request={{document:example.document,presentation:{...previewSettings,size:'compact'}}}/></div>}
+   }):<div className="cw-sentence-board"><LanguageQuadrant request={{document:example.document,presentation:{...previewSettings,english:item.id!==7,size:'compact'}}}/></div>}
   </div>
  </div>
 }
 function LevelTask({item}: {item: LevelBriefing}) {
  const translate = item.id >= 4
  const kind = item.id === 3 ? 'judgement' : 'number'
- return <span className="journey-topic" id={`journey-task-${item.id}`} role="img" aria-label={translate?'Listen → choose the pictures':item.task}>
+ return <span className="journey-topic" id={`journey-task-${item.id}`} role="img" aria-label={item.id===7?item.task:translate?'Listen → choose the pictures':item.task}>
   <span className="journey-cue">
    <img src="/classroom/icons/listening-headphones.png" alt="" draggable={false}/>
   </span>
@@ -82,9 +82,9 @@ export default function PracticeJourney(props:{userId?:string;minimumModule?:1|3
 }
 function Journey(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settings?:MatrixSettings}){
  const key=`englishsuccess:journey:v1:${props.userId??'guest'}`
- const [records,setRecords]=useState<JourneyRecord>(()=>loadRecords(key)),[screen,setScreen]=useState<'map'|'run'|'result'>('map'),[level,setLevel]=useState<PracticeLevel>(props.minimumModule??1),[result,setResult]=useState<RunResult|null>(null)
+ const [records,setRecords]=useState<JourneyRecord>(()=>loadRecords(key)),[screen,setScreen]=useState<'map'|'run'|'result'>('map'),[level,setLevel]=useState<JourneyLevel>(props.minimumModule??1),[result,setResult]=useState<RunResult|null>(null)
  const {passes,unavailable}=useJourneyPasses(props.userId,records)
- const complete=useCallback((level:PracticeLevel,score:number,total:number,passed:boolean)=>{const next={level,score,total,passed};setRecords(old=>mergeRun(old,next));setResult(next);setScreen('result')},[])
+ const complete=useCallback((level:JourneyLevel,score:number,total:number,passed:boolean)=>{const next={level,score,total,passed};setRecords(old=>mergeRun(old,next));setResult(next);setScreen('result')},[])
  useEffect(()=>{try{localStorage.setItem(key,JSON.stringify(records))}catch{/* Practice keeps its own durable answer queue. */}},[key,records])
  useEffect(()=>{
   const back=()=>setScreen('map')
@@ -95,21 +95,22 @@ function Journey(props:{userId?:string;minimumModule?:1|3;tester?:boolean;settin
   setScreen('map')
   if(history.state?.englishPracticeRound)history.back()
  }
- const start=(value:PracticeLevel)=>{
+ const start=(value:JourneyLevel)=>{
   if(screen==='map')history.pushState({...history.state,englishPracticeRound:true},'',location.href)
   setLevel(value);setScreen('run')
  }
  const nextLevel=journeyBriefings.find(item=>!records[item.id]?.cleared)?.id
  if(import.meta.env.DEV&&new URLSearchParams(location.search).has('preview'))return <NumberFoundation {...props}/>
+ if(screen==='run'&&(level===7||level===8))return <QuestionLesson level={level} settings={props.settings} userId={props.userId} onExit={returnToMap} onComplete={complete}/>
  if(screen==='run'&&level===6)return <ActionStarCourse settings={props.settings} onLevel={start} userId={props.userId} onExit={returnToMap} onComplete={(score,total)=>complete(6,score,total,true)}/>
- if(screen==='run')return <GeneratedPractice key={level} {...props} level={level} onLevel={start} onComplete={complete} onExit={returnToMap}/>
+ if(screen==='run'&&level!==7&&level!==8)return <GeneratedPractice key={level} {...props} level={level} onLevel={start} onComplete={complete} onExit={returnToMap}/>
  return <main className="practice-journey" lang="th">
   <header className="journey-header">
    <img src="/brand/success-university-su.svg" alt="Success University"/>
    <a className="vocab-account-link" href="/vocabulary-review.html">My words</a>
    <PracticeGold userId={props.userId}/>
   </header>
-  {screen==='result'&&result?<section className="journey-result"><div className="journey-result-stars" aria-label={`${result.level===6&&result.passed?3:runStars(result)} ดาว`}>{[1,2,3].map(star=><span key={star} className={runStars(result)>=star||result.level===6&&result.passed?'earned':''}>★</span>)}</div><h1>{result.passed?'ผ่านแล้ว!':'ลองอีกครั้ง'}</h1><p>LEVEL {result.level}</p><strong>{result.score}<small> / {result.total}</small></strong><div className="journey-result-actions"><button className="journey-card-play" onClick={()=>start(result.passed&&level<6?(level+1) as PracticeLevel:level)}>{result.passed&&level<6?'ด่านต่อไป →':'เล่นอีกครั้ง ↻'}</button><button onClick={returnToMap}>เลือกด่าน</button></div></section>:<section className="journey-map" aria-label="เลือกด่าน">
+  {screen==='result'&&result?<section className="journey-result"><div className="journey-result-stars" aria-label={`${result.level===6&&result.passed?3:runStars(result)} ดาว`}>{[1,2,3].map(star=><span key={star} className={runStars(result)>=star||result.level===6&&result.passed?'earned':''}>★</span>)}</div><h1>{result.passed?'ผ่านแล้ว!':'ลองอีกครั้ง'}</h1><p>LEVEL {result.level}</p><strong>{result.score}<small> / {result.total}</small></strong><div className="journey-result-actions"><button className="journey-card-play" onClick={()=>start(result.passed&&level<8?(level+1) as JourneyLevel:level)}>{result.passed&&level<8?'ด่านต่อไป →':'เล่นอีกครั้ง ↻'}</button><button onClick={returnToMap}>เลือกด่าน</button></div></section>:<section className="journey-map" aria-label="เลือกด่าน">
    <h1 className="journey-map-title">เลือกด่าน</h1>
    <div className="journey-level-grid">
     {journeyBriefings.map(item=>{const record=records[item.id];return <article key={item.id} className={`journey-node ${record?.cleared?'cleared':''} ${item.id===nextLevel?'next-level':''}`} aria-label={`Level ${item.id}`}>

@@ -13,12 +13,12 @@ describe('shared level briefings',()=>{
   expect(runStars({...short,score:30,total:30})).toBe(3)
  })
  it('uses valid shared constructions and existing recorded audio for every example',()=>{
-  expect(journeyBriefings.map(b=>b.id)).toEqual([1,2,3,4,5,6])
+  expect(journeyBriefings.map(b=>b.id)).toEqual([1,2,3,4,5,6,7,8])
   for(const b of journeyBriefings)for(const e of b.examples){
    expect(()=>quadrantLayout(e.document)).not.toThrow()
-   expect(existsSync(`public${e.audio}`),e.audio).toBe(true)
+   if(b.id<=6)expect(existsSync(`public${e.audio}`),e.audio).toBe(true)
    expect(e.choices).toHaveLength(2)
-   if(b.id>=4){const q=actionPracticeQuestions.find(q=>q.english===e.document.english)!;expect(e.choices).toEqual(q.choices);expect(e.correct).toBe(q.correct)}
+   if(b.id>=4&&b.id<=6){const q=actionPracticeQuestions.find(q=>q.english===e.document.english)!;expect(e.choices).toEqual(q.choices);expect(e.correct).toBe(q.correct)}
   }
  })
 })
