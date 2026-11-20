@@ -27,7 +27,12 @@ it('includes every distinct picture cue in day 7 and all full questions in day 8
   expect(q.document.units.map(unit=>unit.english)).toEqual(q.document.english.split(' '))
   for(const unit of [...q.document.units,...q.alternatives!.flatMap(d=>d.units)])expect(unit.artwork).toBeDefined()
  }
- for(const q of [...seven,...eight])expect(q.choices.every(word=>/^\S+$/.test(word))).toBe(true)
+ const duration=seven.find(q=>q.document.english==='How long')!
+ expect(duration.choices).toEqual(['2 hours','School'])
+ expect(duration.alternatives![0].units.map(u=>[u.english,u.artwork])).toEqual([
+  ['2',{numeral:2}],['hours',{src:'/classroom/icons/question-deck/how-long.webp'}],
+ ])
+ for(const q of [...seven,...eight].filter(q=>q!==duration))expect(q.choices.every(word=>/^\S+$/.test(word))).toBe(true)
  const artwork=new Set<string>()
  for(const q of [...seven,...eight]){
   expect(q.choices).toHaveLength(2)

@@ -47,7 +47,7 @@ const wordChoices:Record<string,[string,string]>={
  'How big':['Small','Blue'], 'What colour':['Blue','Som'], Who:['Som','Table'],
  Which:['This','Happy'], Whose:['Bia’s','Running'], 'How many':['7','Table'],
  'How much':['฿20','Monday'], When:['Monday','Table'], 'What time':['9:00','Som'],
- 'How long':['Hours','School'], 'How often':['Daily','Blue'], 'How far':['Kilometres','Happy'],
+ 'How long':['2 hours','School'], 'How often':['Daily','Blue'], 'How far':['Kilometres','Happy'],
  Why:['Thirst','Monday'],
 }
 Object.assign(art,{
@@ -94,7 +94,7 @@ export function generalQuestionDeck():GeneratedQuestion[]{
 
 function wordAnswer(word:string):Answer{
  const doc=sentence(word)
- return {...doc,english:word,units:doc.units.map(unit=>({...unit,english:word}))}
+ return {...doc,english:word,units:doc.units.map(unit=>({ ...unit,english:unit.english.replace(/\.$/,'')}))}
 }
 
 export type QuestionLessonLevel=7|8
