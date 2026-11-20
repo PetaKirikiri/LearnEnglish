@@ -2,6 +2,7 @@ import { NounModeIcon } from './NounModeToggle'
 import './pronounIcon.css'
 
 const portraits: Record<string, string> = {
+  som: '/classroom/icons/question-deck/name.webp',
   bia: '/classroom/icons/people/bia.png',
 }
 

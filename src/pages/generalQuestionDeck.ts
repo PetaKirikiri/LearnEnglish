@@ -36,9 +36,9 @@ const art:Record<string,string>=Object.fromEntries(
 )
 Object.assign(art,{
  which:iconRoot+'which-scenes/dresses.webp', whose:deckArt('whose-cue'), when:deckArt('when-cue'), why:deckArt('why-because'),
- name:deckArt('name'), how:iconRoot+'question-deck/how-quality.png', going:iconRoot+'actions/focused/going.png', feeling:deckArt('feeling-scale'), 'what colour':deckArt('colour'),lesson:iconRoot+'actions/focused/teaching.png',long:deckArt('how-long'), 'how big':iconRoot+'adjectives/3d/big.png', what:iconRoot+'constructions/what.png', doing:iconRoot+'constructions/doing.png',
+ name:iconRoot+'question-deck/blank-name.png', how:iconRoot+'question-deck/how-quality.png', going:iconRoot+'actions/focused/going.png', feeling:deckArt('feeling-scale'), 'what colour':deckArt('colour'),lesson:iconRoot+'actions/focused/teaching.png',long:deckArt('how-long'), 'how big':iconRoot+'adjectives/3d/big.png', what:iconRoot+'constructions/what.png', doing:iconRoot+'constructions/doing.png',
  baht:iconRoot+'question-deck/baht.svg', 'o’clock':deckArt('oclock'), 'bia’s':deckArt('bia-owner'),
- som:iconRoot+'people/som.png',she:iconRoot+'pronouns/she-standing.png',run:iconRoot+'actions/closeup/running.png', runs:iconRoot+'actions/running.png',
+ som:deckArt('name'),she:iconRoot+'pronouns/she-standing.png',run:iconRoot+'actions/closeup/running.png', runs:iconRoot+'actions/running.png',
 })
 const wordChoices:Record<string,[string,string]>={
  What:['Table','At'], How:['Happy','School'],

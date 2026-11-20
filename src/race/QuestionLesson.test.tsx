@@ -27,6 +27,10 @@ it('includes every distinct picture cue in day 7 and all full questions in day 8
   expect(q.document.units.map(unit=>unit.english)).toEqual(q.document.english.split(' '))
   for(const unit of [...q.document.units,...q.alternatives!.flatMap(d=>d.units)])expect(unit.artwork).toBeDefined()
  }
+ const introduction=eight.find(q=>q.document.english==='What is your name?')!
+ const nameAnswer=introduction.alternatives![0].units
+ expect(nameAnswer[1].artwork).toEqual({src:'/classroom/icons/question-deck/blank-name.png'})
+ expect(nameAnswer[3].artwork).toEqual({src:'/classroom/icons/question-deck/name.webp'})
  const duration=seven.find(q=>q.document.english==='How long')!
  expect(duration.choices).toEqual(['2 hours','School'])
  expect(duration.alternatives![0].units.map(u=>[u.english,u.artwork])).toEqual([
