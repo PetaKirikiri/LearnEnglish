@@ -103,7 +103,14 @@ const fullQuestionAnswers:Record<string,[string,string]>={
  'What colour':['Orange','School'],'How many':['3','Table'],'How long':['30min','Monday'],
  'How far':['2km','Daily'],Why:['Thirsty','Monday'],
 }
-export function questionLessonDeck(level:QuestionLessonLevel,format:'sentence'|'word'|'original'='sentence'):GeneratedQuestion[]{
+// Beginner foils use familiar sentences that answer a visibly different question.
+const beginnerFoils:Record<string,string>={
+ Which:'Som is happy', Whose:'Som is running', 'How many':'Som is at school',
+ 'How much':'Som is happy', When:'Som is at school', 'What time':'Som is happy',
+ 'How long':'Som is at school', 'How often':'Som is happy', 'How far':'Som is at school',
+ 'How big':'Som is running',
+}
+export function questionLessonDeck(level:QuestionLessonLevel,format:'beginner'|'sentence'|'word'|'original'='beginner'):GeneratedQuestion[]{
  const seen=new Set<string>()
  const deck=generalQuestionDeck().flatMap(q=>{
   const cue=q.family==='Where are'?'Where':q.family
@@ -124,6 +131,10 @@ export function questionLessonDeck(level:QuestionLessonLevel,format:'sentence'|'
     ? [wordAnswer(wordChoices[label][0]),wordAnswer(wordChoices[label][1])]
     : format==='original' ?[q.alternatives![q.correct],q.alternatives![1-q.correct]]
     : cue==='Who'?[sentence('The teacher is helping Som'),sentence('Som is at school')]
+    : format==='beginner'?[
+     sentence(q.alternatives![q.correct].english.replace(/^She /,'Som ').replace(/\.$/,'')),
+     sentence(beginnerFoils[cue]??q.alternatives![1-q.correct].english.replace(/^She /,'Som ').replace(/\.$/,'')),
+    ]
     : format==='sentence'?(cue==='When'?[sentence('Som is running on Monday'),sentence('Som is running at school')]:[q.alternatives![q.correct],q.alternatives![1-q.correct]].map(answer=>sentence(answer.english.replace(/^She /,'Som ').replace(/\.$/,''))) as [Answer,Answer])
     : [wordAnswer(fullQuestionAnswers[cue][0]),wordAnswer(fullQuestionAnswers[cue][1])]
    const id=level===7?'daily-question-7-interrogative-'+label.replaceAll(' … ','-').replaceAll(' ','-'):(format==='original'?'daily-question-8-':'daily-question-8-'+format+'-')+q.id
