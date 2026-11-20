@@ -24,12 +24,13 @@ export type QuadrantRequest = {
 export function languageRoleIcon(unit:LanguageDocument['units'][number],construction:LanguageDocument['construction'],referenceObject?:string){
  const word=unit.english.replace(/[?.!]$/,'')
  if(unit.role==='question' && unit.artwork && 'src' in unit.artwork && ['what','who','where','when','why'].includes(word.toLowerCase())){
-  return <span className="cw-game-icon interrogative-picture" aria-hidden="true">
-   <span className="thought-clue"><img src={unit.artwork.src} alt="" draggable={false}/>
-   </span>
-   <img className="learner-question-mark" src="/classroom/icons/constructions/what.png" alt="" draggable={false}/>
-   <img className="thinking-learner" src="/classroom/icons/question-deck/asking.webp" alt="" draggable={false}/>
-  </span>
+  return <svg className="cw-game-icon interrogative-picture" viewBox="0 0 100 100" aria-hidden="true">
+   <ellipse cx="63" cy="31" rx="35" ry="28" fill="white"/>
+   <circle cx="44" cy="59" r="4" fill="white"/><circle cx="37" cy="64" r="2.3" fill="white"/>
+   <image href={unit.artwork.src} x="38" y="8" width="50" height="46"/>
+   <image href="/classroom/icons/constructions/what.png" x="5" y="38" width="18" height="18"/>
+   <image href="/classroom/icons/question-deck/asking.webp" x="1" y="56" width="38" height="43"/>
+  </svg>
  }
  if(unit.artwork)return 'src' in unit.artwork?<img className="cw-game-icon" src={unit.artwork.src} alt="" draggable={false}/>:<strong className="answer-numeral">{unit.artwork.numeral}</strong>
  if(unit.role==='reference'){const reference=references.find(r=>r.word===word.toLowerCase());return reference?<DistanceScene compact reference={reference.id} word={referenceObject}/>:null}

@@ -8,9 +8,9 @@
 .journey-header>img{width:34px;height:38px;object-fit:contain}
 .journey-header .practice-gold{margin-left:auto}
 
-.journey-map{flex:1;min-height:0;display:flex;flex-direction:column;width:min(960px,100%);align-self:center;padding:22px 24px max(24px,env(safe-area-inset-bottom));gap:22px}
+.journey-map{overflow-y:auto;flex:1;min-height:0;display:flex;flex-direction:column;width:min(960px,100%);align-self:center;padding:22px 24px max(24px,env(safe-area-inset-bottom));gap:22px}
 .journey-map-title{margin:0;flex:none;font-size:24px;font-weight:900}
-.journey-level-grid{min-height:0;flex:1;max-height:620px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:26px}
+.journey-level-grid{flex:none;grid-auto-rows:clamp(215px,27vh,275px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
 .journey-node{--tile-edge:#1656b1;--tile-face:#267bea;--tile-ink:#fff;min-width:0;min-height:0;display:flex;flex-direction:column;border:3px solid var(--tile-edge);border-radius:30px;background:var(--tile-face);box-shadow:0 7px 0 var(--tile-edge),0 12px 0 #c9dcf13d;transition:transform .16s,box-shadow .16s;isolation:isolate}
 .journey-node.next-level{--tile-edge:#c79908;--tile-face:#ffdc39;--tile-ink:#183b66}
 .journey-level-open{position:relative;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) 42px;gap:10px;padding:10px;border:0;border-radius:27px;width:100%;background:transparent;color:var(--tile-ink);text-align:left;box-shadow:inset 0 2px 0 #ffffff54}
@@ -72,7 +72,7 @@
 
 @media(max-width:650px){
  .journey-map{padding:14px 16px max(23px,env(safe-area-inset-bottom));gap:20px}.journey-map-title{font-size:21px}
- .journey-level-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:22px 14px;max-height:none}
+ .journey-level-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:220px;gap:22px 14px;max-height:none}
  .journey-node{border-radius:23px}.journey-level-open{padding:7px;gap:6px;border-radius:20px;grid-template-rows:minmax(0,1fr) 30px}.journey-node-number{height:35px;width:40px;font-size:20px;border-radius:12px;left:9px;top:-10px}.journey-level-art{border-radius:15px;padding:23px 6px 5px;gap:5%}.journey-tile-footer{padding:0 2px 1px 6px}.journey-tile-play{width:26px;height:26px;font-size:12px}
 }
 @media(max-height:650px){

@@ -40,6 +40,21 @@ Object.assign(art,{
  baht:iconRoot+'everyday/expanded/money.png', 'o’clock':deckArt('oclock'), 'bia’s':deckArt('bia-owner'),
  som:iconRoot+'people/som.png',she:iconRoot+'pronouns/she-standing.png',run:iconRoot+'actions/closeup/running.png', runs:iconRoot+'actions/running.png',
 })
+const wordChoices:Record<string,[string,string]>={
+ What:['Table','At'], How:['Happy','School'],
+ 'What … called':['Som','Happy'], 'What … doing':['Running','School'],
+ 'How … feeling':['Happy','School'], 'How old':['10','Blue'], Where:['School','Happy'],
+ 'How big':['Small','Blue'], 'What colour':['Blue','Som'], Who:['Som','Table'],
+ Which:['This','Happy'], Whose:['Bia’s','Running'], 'How many':['7','Table'],
+ 'How much':['฿20','Monday'], When:['Monday','Table'], 'What time':['9:00','Som'],
+ 'How long':['Hours','School'], 'How often':['Daily','Blue'], 'How far':['Kilometres','Happy'],
+ Why:['Thirst','Monday'],
+}
+Object.assign(art,{
+ called:deckArt('name'), hours:deckArt('how-long'),daily:deckArt('every'),thirst:deckArt('thirsty'),
+ '฿20':iconRoot+'everyday/expanded/money.png','9:00':deckArt('oclock'),this:iconRoot+'deictic/v2/this.png',
+ school:iconRoot+'level-one/school.png',table:iconRoot+'level-one/table.png',running:iconRoot+'actions/running.png',
+})
 const groups:Partial<Record<LanguageRole,string[]>>={
  person:['som','she','i','you'],determiner:['my','your','a','an','the','her','bia’s','every'],be:['is','are','does','am'],
  action:['going','running','helping','doing','drinking','holding','paying','run','runs','reading','wearing','feeling'],
@@ -79,18 +94,33 @@ export function generalQuestionDeck():GeneratedQuestion[]{
 export type QuestionLessonLevel=7|8
 export function questionLessonDeck(level:QuestionLessonLevel):GeneratedQuestion[]{
  const seen=new Set<string>()
- return generalQuestionDeck().flatMap(q=>{
+ const deck=generalQuestionDeck().flatMap(q=>{
   const cue=q.family==='Where are'?'Where':q.family
   if(level===7&&seen.has(cue))return []
   seen.add(cue)
   // Use stable answer ordering for the scoring service; the UI may shuffle.
-  const alternatives=[q.alternatives![q.correct],q.alternatives![1-q.correct]] as [Answer,Answer]
-  const document=level===7?{
-   english:cue,thai:'',construction:'question' as const,
-   questionLayout:{construction:'question' as const,noun:'single' as const,leadingCount:0,ungroupedTail:true},
-   units:[{english:cue,thai:'',role:'question' as const,artwork:{src:art[cue.toLowerCase()]}}],
-  }:q.document
-  return [{...q,id:`daily-question-${level}-${q.id}`,document,alternatives,choices:[alternatives[0].english,alternatives[1].english] as [string,string],correct:0 as const,
-   targetWords:[cue],listeningWords:[cue],credit:cue}]
+  const cues=level===8?[cue]:cue==='What'?['What','What … called','What … doing']:cue==='How'?['How','How … feeling']:[cue]
+  return cues.map(label=>{
+   const words=label.split(' … ')
+   const document=level===7?{
+    english:words.join(' '),thai:'',construction:'question' as const,
+    questionLayout:{construction:'question' as const,noun:'single' as const,leadingCount:words.length-1,ungroupedTail:true},
+    units:words.map(word=>({english:word,thai:'',role:'question' as const,artwork:{src:art[word.toLowerCase()]}})),
+   }:q.document
+   const alternatives:[Answer,Answer]=level===7
+    ? wordChoices[label].map(word=>{
+      const doc=sentence(word)
+      return {...doc,english:word,units:doc.units.map(unit=>({...unit,english:word}))}
+     }) as [Answer,Answer]
+    : [q.alternatives![q.correct],q.alternatives![1-q.correct]]
+   const id=level===7?'daily-question-7-interrogative-'+label.replaceAll(' … ','-').replaceAll(' ','-'):'daily-question-8-'+q.id
+   return {...q,id,document,alternatives,choices:[alternatives[0].english,alternatives[1].english] as [string,string],correct:0 as const,
+    targetWords:[cue],listeningWords:[label],credit:cue}
+  })
  })
+ if(level===8)return deck
+ const order=['What','Who','Where','When','Which','Whose','Why','How',
+  'What called','What doing','What colour','What time','How feeling','How old',
+  'How big','How many','How much','How long','How often','How far']
+ return deck.sort((a,b)=>order.indexOf(a.document.english)-order.indexOf(b.document.english))
 }

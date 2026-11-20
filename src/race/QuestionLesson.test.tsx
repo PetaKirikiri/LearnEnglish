@@ -17,11 +17,13 @@ beforeEach(()=>{localStorage.clear();record.mockClear()})
 
 it('includes every distinct picture cue in day 7 and all full questions in day 8, with stable canonical scoring',()=>{
  const seven=questionLessonDeck(7),eight=questionLessonDeck(8),general=generalQuestionDeck()
- expect(seven).toHaveLength(17)
+ expect(seven).toHaveLength(20)
+ expect(seven.slice(0,8).map(q=>q.document.english)).toEqual(['What','Who','Where','When','Which','Whose','Why','How'])
  expect(eight).toHaveLength(19)
  expect(eight.map(q=>q.document.english)).toEqual(general.map(q=>q.document.english))
  expect(eight.some(q=>q.document.english==='Where are you going?')).toBe(true)
- expect(new Set(seven.map(q=>q.document.english))).toEqual(new Set(eight.map(q=>q.targetWords[0])))
+ expect(seven.map(q=>q.document.english)).toEqual(expect.arrayContaining(['What called','What doing','How feeling','How many','How long','How often']))
+ for(const q of seven)expect(q.choices.every(word=>/^\S+$/.test(word))).toBe(true)
  const artwork=new Set<string>()
  for(const q of [...seven,...eight]){
   expect(q.choices).toHaveLength(2)
@@ -42,7 +44,7 @@ it('renders the shared landscape and two illustrated answers, hides day 7 captio
   expect(host.querySelector('.practice-landscape-frame')).not.toBeNull()
   const prompt=host.querySelector('.practice-question')!
   expect(prompt.textContent).not.toContain('What')
-  expect(prompt.querySelector('img[src*="what.png"]')).not.toBeNull()
+  expect(prompt.querySelector('svg image[href*="what.png"]')).not.toBeNull()
   const buttons=host.querySelectorAll<HTMLButtonElement>('.binary-answer')
   expect(buttons).toHaveLength(2)
   expect(host.querySelectorAll('.practice-answer-area .picture-sentence')).toHaveLength(2)
@@ -50,7 +52,7 @@ it('renders the shared landscape and two illustrated answers, hides day 7 captio
   expect(record.mock.calls.map(c=>c[0])).toEqual(expect.arrayContaining([
    expect.objectContaining({questionId:'daily-question-7-interrogative-What',answer:expect.any(String),modality:'visible'}),
   ]))
-  const snapshot=JSON.parse(localStorage.getItem('englishsuccess:question-lesson:v1:learner:7')!)
+  const snapshot=JSON.parse(localStorage.getItem('englishsuccess:question-lesson:v2:learner:7')!)
   expect(snapshot.picked).toBe(0)
   await act(async()=>root.render(<QuestionLesson level={8} userId="learner" onExit={vi.fn()} onComplete={vi.fn()}/>))
   expect(host.querySelector('.practice-question')?.textContent).toContain('name?')

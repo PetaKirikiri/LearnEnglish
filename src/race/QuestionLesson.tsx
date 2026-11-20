@@ -17,7 +17,7 @@ export default function QuestionLesson(props:Props){
 }
 function Round({level,userId,settings,onExit,onComplete}:Props){
  const [deck]=useState(()=>questionLessonDeck(level))
- const storage=`englishsuccess:question-lesson:v1:${userId??'guest'}:${level}`
+ const storage=`englishsuccess:question-lesson:${level===7?'v2':'v1'}:${userId??'guest'}:${level}`
  const progress=useWordProgress(userId)
  const [error,setError]=useState(false)
  const [run,setRun]=useState<Run>(()=>{
