@@ -57,3 +57,10 @@ it('retains the ingredient recipe with an offline attempt until the same receipt
  await flushWordAttempts('a')
  expect(pendingAttempts('a')).toEqual([])
 })
+
+it.each(['Unknown practice question','Answer saved; progression is still being processed'])('keeps a held question and uploads the next answer: %s',async message=>{
+ queueAttempt('a',attempt);queueAttempt('a',{...attempt,id:'attempt-2'})
+ mocks.rpc.mockResolvedValueOnce({error:new Error(message)}).mockResolvedValueOnce(receipt('attempt-2'))
+ await expect(flushWordAttempts('a')).rejects.toThrow(message)
+ expect(pendingAttempts('a')).toEqual([attempt])
+})

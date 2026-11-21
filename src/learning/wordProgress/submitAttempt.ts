@@ -14,6 +14,7 @@ export async function submitAttempt(source:'word'|'number',payload:Record<string
   const session=await supabase.auth.getSession(),token=session.data.session?.access_token
   if(!token)throw new Error('Sign in to finish saving progress')
   const response=await fetch('/api/sentence-audio',{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify({id:payload.p_question,registerOnly:true,...(recipe?{recipe}:{})}),signal:AbortSignal.timeout(55000)})
+  if(response.status===400)throw new Error('Unknown practice question')
   if(!response.ok||(await response.json()).registered!==payload.p_question)throw new Error('Could not register the practice question')
   const scored=await supabase.rpc('submit_english_attempt',{p_source:source,p_payload:payload})
   if(scored.error)throw scored.error
